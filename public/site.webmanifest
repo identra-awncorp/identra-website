@@ -1,0 +1,17 @@
+{
+  "name": "Identra",
+  "short_name": "Identra",
+  "description": "Ví định danh số tự chủ an toàn, riêng tư và tương thích tiêu chuẩn W3C.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F8FC",
+  "theme_color": "#5B6CFF",
+  "icons": [
+    {
+      "src": "/identra-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

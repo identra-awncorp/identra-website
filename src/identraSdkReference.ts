@@ -82,17 +82,17 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     number: '02',
     phase: 'identity',
     actor: 'issuer',
-    title: { vi: 'Tạo DID Document và đăng ký trên CertNet', en: 'Create a DID Document and register it on CertNet' },
+    title: { vi: 'Tạo DID Document và publish lên DID registry', en: 'Create a DID Document and publish it to a DID registry' },
     summary: {
-      vi: 'DID Document chứa khóa công khai và DIDComm service endpoint. CertNet kiểm tra document, lưu phiên bản đầu tiên và trả về DID chuẩn dùng trong VC.',
-      en: 'The DID Document contains the public key and DIDComm service endpoint. CertNet validates and stores its first version, then returns the canonical DID used in VCs.',
+      vi: 'DID Document chứa khóa công khai và DIDComm service endpoint. SDK có thể publish document lên CertNet, did:web, ION hoặc registry nội bộ rồi trả về DID chuẩn dùng trong VC.',
+      en: 'The DID Document contains the public key and DIDComm service endpoint. The SDK can publish it to CertNet, did:web, ION, or an internal registry, then return the canonical DID used in VCs.',
     },
-    protocol: 'DID Core + CertNet',
+    protocol: 'DID Core + DID Registry',
     inputs: [{ vi: 'Khóa công khai và DIDComm endpoint', en: 'Public key and DIDComm endpoint' }],
     outputs: [{ vi: 'DID chuẩn và DID Document đã lưu', en: 'Canonical DID and stored DID Document' }],
     security: {
-      vi: 'CertNet không nhận khóa bí mật. verificationMethod trong DID Document phải trỏ đúng keyId dùng để ký VC.',
-      en: 'CertNet never receives the private key. The DID Document verificationMethod must reference the keyId used to sign VCs.',
+      vi: 'Registry không nhận khóa bí mật. verificationMethod trong DID Document phải trỏ đúng keyId dùng để ký VC, dù document được publish lên CertNet, did:web hay registry khác.',
+      en: 'The registry never receives the private key. The DID Document verificationMethod must reference the keyId used to sign VCs, whether the document is published to CertNet, did:web, or another registry.',
     },
     codeKey: 'issuerDid',
     variants: allIssuerVerifierVariants,
@@ -107,7 +107,7 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
       vi: 'Ứng dụng tạo khóa DID, DID Document và kho VC. Khóa bí mật DID và khóa mã hóa kho được bọc bởi khóa bảo vệ không thể export trong Secure Enclave hoặc Android Keystore.',
       en: 'The app creates DID keys, a DID Document, and a VC vault. The DID private key and vault encryption key are wrapped by a non-exportable protection key in Secure Enclave or Android Keystore.',
     },
-    protocol: 'Mobile Secure Storage + CertNet',
+    protocol: 'Mobile Secure Storage + DID Registry',
     inputs: [{ vi: 'Sinh trắc học và chính sách đổi thiết bị', en: 'Biometric and device-migration policy' }],
     outputs: [{ vi: 'Holder DID và secure vault đã kích hoạt', en: 'Holder DID and activated secure vault' }],
     security: {
@@ -144,8 +144,8 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     actor: 'holder',
     title: { vi: 'Holder quét QR và thiết lập kết nối với Issuer', en: 'Holder scans QR and connects to the Issuer' },
     summary: {
-      vi: 'Ví giải mã invitation, resolve DID Document của Issuer trên CertNet, xác thực endpoint rồi hoàn tất DIDComm handshake.',
-      en: 'The wallet decodes the invitation, resolves the Issuer DID Document on CertNet, validates the endpoint, and completes the DIDComm handshake.',
+      vi: 'Ví giải mã invitation, resolve DID Document của Issuer qua registry provider tương ứng, xác thực endpoint rồi hoàn tất DIDComm handshake.',
+      en: 'The wallet decodes the invitation, resolves the Issuer DID Document through the matching registry provider, validates the endpoint, and completes the DIDComm handshake.',
     },
     protocol: 'DIDComm DID Exchange',
     inputs: [{ vi: 'QR payload từ Issuer', en: 'QR payload from Issuer' }],
@@ -171,8 +171,8 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     inputs: [{ vi: 'Issuer DID, Holder DID, claims và connectionId', en: 'Issuer DID, Holder DID, claims, and connectionId' }],
     outputs: [{ vi: 'VC đã ký và message ID', en: 'Signed VC and message ID' }],
     security: {
-      vi: 'proof.verificationMethod phải trỏ đến khóa công khai tương ứng trên CertNet; khóa bí mật chỉ được gọi qua key handle.',
-      en: 'proof.verificationMethod must reference the corresponding public key on CertNet; the private key is accessed only through its key handle.',
+      vi: 'proof.verificationMethod phải trỏ đến khóa công khai tương ứng trong DID Document đã publish; khóa bí mật chỉ được gọi qua key handle.',
+      en: 'proof.verificationMethod must reference the corresponding public key in the published DID Document; the private key is accessed only through its key handle.',
     },
     codeKey: 'issueCredential',
     variants: allIssuerVerifierVariants,
@@ -184,10 +184,10 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     actor: 'holder',
     title: { vi: 'Holder xác minh và lưu VC vào secure vault', en: 'Holder verifies and stores the VC in the secure vault' },
     summary: {
-      vi: 'Ví nhận VC, resolve issuer DID trên CertNet, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu cục bộ.',
-      en: 'The wallet receives the VC, resolves the issuer DID on CertNet, verifies signature and status, then encrypts the VC before local storage.',
+      vi: 'Ví nhận VC, resolve issuer DID qua registry provider, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu cục bộ.',
+      en: 'The wallet receives the VC, resolves the issuer DID through the registry provider, verifies signature and status, then encrypts the VC before local storage.',
     },
-    protocol: 'CertNet Resolve + Encrypted Vault',
+    protocol: 'DID Resolve + Encrypted Vault',
     inputs: [{ vi: 'VC nhận qua DIDComm', en: 'VC received over DIDComm' }],
     outputs: [{ vi: 'Credential record được mã hóa', en: 'Encrypted credential record' }],
     security: {
@@ -204,10 +204,10 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     actor: 'verifier',
     title: { vi: 'Khởi tạo danh tính của bên xác minh', en: 'Initialize the Verifier identity' },
     summary: {
-      vi: 'Verifier tạo khóa, đăng ký DID Document chứa khóa công khai và DIDComm endpoint trên CertNet để Holder xác thực trước khi chia sẻ.',
-      en: 'The Verifier creates keys and registers a DID Document containing its public key and DIDComm endpoint on CertNet so the Holder can authenticate it before sharing.',
+      vi: 'Verifier tạo khóa, publish DID Document chứa khóa công khai và DIDComm endpoint lên registry đã chọn để Holder xác thực trước khi chia sẻ.',
+      en: 'The Verifier creates keys and publishes a DID Document containing its public key and DIDComm endpoint to the selected registry so the Holder can authenticate it before sharing.',
     },
-    protocol: 'DID Core + CertNet',
+    protocol: 'DID Core + DID Registry',
     inputs: [{ vi: 'Khóa công khai và endpoint nhận VP', en: 'Public key and VP receiving endpoint' }],
     outputs: [{ vi: 'Verifier DID', en: 'Verifier DID' }],
     security: {
@@ -244,8 +244,8 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     actor: 'holder',
     title: { vi: 'Holder quét QR và kết nối với Verifier', en: 'Holder scans QR and connects to the Verifier' },
     summary: {
-      vi: 'Ví resolve Verifier DID trên CertNet, hiển thị danh tính Verifier và chỉ thiết lập DIDComm connection sau khi người dùng xác nhận.',
-      en: 'The wallet resolves the Verifier DID on CertNet, displays its identity, and establishes a DIDComm connection only after user confirmation.',
+      vi: 'Ví resolve Verifier DID qua registry provider, hiển thị danh tính Verifier và chỉ thiết lập DIDComm connection sau khi người dùng xác nhận.',
+      en: 'The wallet resolves the Verifier DID through the registry provider, displays its identity, and establishes a DIDComm connection only after user confirmation.',
     },
     protocol: 'DIDComm DID Exchange',
     inputs: [{ vi: 'QR payload từ Verifier', en: 'QR payload from Verifier' }],
@@ -304,10 +304,10 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
     actor: 'verifier',
     title: { vi: 'Verifier resolve DID và xác minh VP', en: 'Verifier resolves DIDs and verifies the VP' },
     summary: {
-      vi: 'Verifier nhận VP, resolve Holder DID và từng Issuer DID trên CertNet, lấy khóa công khai tương ứng rồi kiểm tra chữ ký, challenge, domain, schema và trạng thái VC.',
-      en: 'The Verifier receives the VP, resolves the Holder DID and every Issuer DID on CertNet, obtains the corresponding public keys, then checks signatures, challenge, domain, schema, and VC status.',
+      vi: 'Verifier nhận VP, resolve Holder DID và từng Issuer DID qua registry provider, lấy khóa công khai tương ứng rồi kiểm tra chữ ký, challenge, domain, schema và trạng thái VC.',
+      en: 'The Verifier receives the VP, resolves the Holder DID and every Issuer DID through the registry provider, obtains the corresponding public keys, then checks signatures, challenge, domain, schema, and VC status.',
     },
-    protocol: 'CertNet Resolve + W3C VC/VP Verification',
+    protocol: 'DID Resolve + W3C VC/VP Verification',
     inputs: [{ vi: 'VP nhận qua DIDComm và verification session', en: 'VP received over DIDComm and verification session' }],
     outputs: [{ vi: 'VerificationResult có mã lỗi chi tiết', en: 'VerificationResult with detailed reason codes' }],
     security: {
@@ -342,13 +342,15 @@ export const sdkReferenceSteps: SdkReferenceStep[] = [
 const comments = {
   vi: {
     mock: 'API minh họa. Tên package và contract chưa được phát hành.',
-    resolve: 'Resolve DID Document từ CertNet để lấy khóa công khai tin cậy.',
+    resolve: 'Resolve DID Document từ registry tương ứng để lấy khóa công khai tin cậy.',
     secure: 'Khóa bí mật không rời khỏi vùng bảo vệ; SDK chỉ sử dụng key handle.',
+    registry: 'Có thể publish DID Document lên CertNet, did:web, ION hoặc registry nội bộ; CertNet chỉ là provider mặc định trong ví dụ.',
   },
   en: {
     mock: 'Illustrative API. Package names and contracts have not been released.',
-    resolve: 'Resolve the DID Document from CertNet to obtain a trusted public key.',
+    resolve: 'Resolve the DID Document from the matching registry to obtain a trusted public key.',
     secure: 'The private key never leaves protected storage; the SDK uses only its key handle.',
+    registry: 'DID Documents can be published to CertNet, did:web, ION, or an internal registry; CertNet is only the default provider in examples.',
   },
 } as const;
 
@@ -360,7 +362,13 @@ function jsReference(key: ReferenceCodeKey, variantId: SdkVariantId, lang: 'vi' 
   const init = `import { ${root} } from '${variant.packageName}';
 
 // ${c.mock}
-const identra = new ${root}({ environment: 'sandbox' });`;
+const identra = new ${root}({
+  environment: 'sandbox',
+  didRegistry: {
+    defaultProvider: 'certnet',
+    providers: ['certnet', 'did:web', 'ion', 'internal-ledger']
+  }
+});`;
   const bodies: Record<ReferenceCodeKey, string> = {
     issuerKeys: `// ${c.secure}
 const issuerKey = await identra.crypto.generateSigningKey({
@@ -370,7 +378,8 @@ const issuerKey = await identra.crypto.generateSigningKey({
 });
 
 const publicKey = await issuerKey.exportPublicKey();`,
-    issuerDid: `const draft = identra.did.createDocument({
+    issuerDid: `// ${lang === 'vi' ? 'DID Document chỉ chứa khóa công khai và service endpoint, không chứa khóa bí mật.' : 'The DID Document contains only public keys and service endpoints, never private keys.'}
+const draft = identra.did.createDocument({
   verificationMethods: [{
     id: '#issuer-signing-key',
     type: 'Multikey',
@@ -382,21 +391,26 @@ const publicKey = await issuerKey.exportPublicKey();`,
   }]
 });
 
+// ${c.registry}
 const { did, didDocumentVersion } =
-  await identra.certNet.registerDidDocument(draft);`,
+  await identra.didRegistry.publishDidDocument(draft, {
+    registries: ['certnet', 'did:web']
+  });`,
     holderWallet: `const wallet = await identra.holder.createWallet({
   singleDevice: true,
   exportCredentials: false,
   requireBiometric: true
 });
 
+// ${lang === 'vi' ? 'Khóa đối xứng bảo vệ vault được tạo trong secure storage của điện thoại.' : 'The symmetric vault protection key is created in the phone secure storage.'}
 const protectionKey = await wallet.secureStorage.createProtectionKey({
   extractable: false
 });
 const didKey = await wallet.crypto.generateWrappedSigningKey(protectionKey);
 const vaultKey = await wallet.crypto.generateWrappedVaultKey(protectionKey);
 
-const { did: holderDid } = await wallet.certNet.registerDid({
+// ${c.registry}
+const { did: holderDid } = await wallet.didRegistry.publishDid({
   publicKey: await didKey.exportPublicKey(),
   didcommEndpoint: wallet.didcomm.mediatorEndpoint
 });`,
@@ -408,10 +422,12 @@ const { did: holderDid } = await wallet.certNet.registerDid({
 const invitation = await issuanceSession.didcomm.createInvitation({
   goalCode: 'receive-credential'
 });
+// ${lang === 'vi' ? 'QR chỉ chứa invitation để bootstrap DIDComm, không chứa credential.' : 'The QR contains only an invitation to bootstrap DIDComm, not the credential.'}
 const qrPayload = await identra.qr.encode(invitation);`,
     holderIssuerConnection: `const invitation = await wallet.qr.decode(scannedQr);
+// ${c.resolve}
 const issuerDocument =
-  await wallet.certNet.resolveDidDocument(invitation.from);
+  await wallet.didRegistry.resolveDidDocument(invitation.from);
 await wallet.ui.confirmConnection({ didDocument: issuerDocument });
 
 const issuerConnection =
@@ -425,6 +441,7 @@ const issuerConnection =
   signingKey: issuerKey
 });
 
+// ${lang === 'vi' ? 'Credential được gửi qua kết nối DIDComm đã thiết lập sau khi Holder quét QR.' : 'The credential is sent over the DIDComm connection established after the Holder scans the QR.'}
 await issuanceSession.didcomm.sendCredential({
   connectionId: issuerConnection.id,
   credential
@@ -432,9 +449,10 @@ await issuanceSession.didcomm.sendCredential({
     holderStore: `wallet.didcomm.onCredential(async ({ credential }) => {
   // ${c.resolve}
   const issuerDocument =
-    await wallet.certNet.resolveDidDocument(credential.issuer);
+    await wallet.didRegistry.resolveDidDocument(credential.issuer);
   await wallet.credentials.verify({ credential, issuerDocument });
 
+  // ${lang === 'vi' ? 'VC chỉ được lưu sau khi chữ ký và trạng thái được xác minh.' : 'The VC is stored only after its signature and status are verified.'}
   await wallet.credentials.storeEncrypted({
     credential,
     vaultKey,
@@ -446,7 +464,8 @@ await issuanceSession.didcomm.sendCredential({
   protection: '${variant.environment === 'server' ? 'hsm' : mobile ? 'platform-keystore' : 'managed-session'}',
   extractable: false
 });
-const { did: verifierDid } = await identra.certNet.registerDid({
+// ${c.registry}
+const { did: verifierDid } = await identra.didRegistry.publishDid({
   publicKey: await verifierKey.exportPublicKey(),
   didcommEndpoint: 'https://verifier.example/didcomm'
 });`,
@@ -458,10 +477,12 @@ const { did: verifierDid } = await identra.certNet.registerDid({
     expiresIn: '5m'
   });
 const invitation = await verificationSession.didcomm.createInvitation();
+// ${lang === 'vi' ? 'Verifier đưa invitation vào QR để Holder chủ động mở kết nối DIDComm.' : 'The verifier places an invitation in the QR so the Holder initiates DIDComm.'}
 const qrPayload = await identra.qr.encode(invitation);`,
     holderVerifierConnection: `const invitation = await wallet.qr.decode(scannedQr);
+// ${c.resolve}
 const verifierDocument =
-  await wallet.certNet.resolveDidDocument(invitation.from);
+  await wallet.didRegistry.resolveDidDocument(invitation.from);
 await wallet.ui.confirmConnection({ didDocument: verifierDocument });
 
 const verifierConnection =
@@ -470,6 +491,7 @@ const verifierConnection =
   purpose: 'Verify university degree for recruitment',
   presentationDefinition: {
     credentialType: 'UniversityDegree',
+    // ${lang === 'vi' ? 'Chỉ yêu cầu những claim thật sự cần cho nghiệp vụ.' : 'Request only the claims truly needed for the business flow.'}
     fields: ['degree', 'graduationYear']
   }
 });
@@ -480,6 +502,7 @@ await verificationSession.didcomm.sendRequest({
     createPresentation: `const request = await wallet.didcomm.waitForPresentationRequest();
 const consent = await wallet.ui.requestDisclosureConsent(request);
 
+// ${lang === 'vi' ? 'Người dùng phải đồng ý và mở khóa vault trước khi SDK tạo VP.' : 'The user must consent and unlock the vault before the SDK creates a VP.'}
 const presentation = await wallet.presentations.create({
   request,
   consent,
@@ -498,12 +521,13 @@ const result = await identra.verifier.verifyPresentation({
   challenge: verificationSession.challenge,
   domain: verificationSession.domain,
   // ${c.resolve}
-  resolveDidDocument: identra.certNet.resolveDidDocument,
+  resolveDidDocument: identra.didRegistry.resolveDidDocument,
   checkCredentialStatus: true
 });`,
     verificationReceipt: `const receipt = await verificationSession.createSignedReceipt({
   verified: result.verified,
   reasonCode: result.reasonCode,
+  // ${lang === 'vi' ? 'Receipt không lặp lại claim nhạy cảm của Holder.' : 'The receipt does not repeat sensitive Holder claims.'}
   includeClaims: false
 });
 await verificationSession.didcomm.sendReceipt({
@@ -525,21 +549,29 @@ function goReference(key: ReferenceCodeKey, lang: 'vi' | 'en') {
     Algorithm: "Ed25519", Protection: "hsm", Extractable: false,
   })
   publicKey, _ := issuerKey.ExportPublicKey(ctx)`,
-    issuerDid: `draft := identra.NewDIDDocument(publicKey, "https://issuer.example/didcomm")
-  registration, _ := client.CertNet.RegisterDIDDocument(ctx, draft)
+    issuerDid: `// ${c.registry}
+  draft := identra.NewDIDDocument(publicKey, "https://issuer.example/didcomm")
+  registration, _ := client.DIDRegistry.PublishDIDDocument(ctx, draft, identra.PublishOptions{
+    Registries: []string{"certnet", "did:web"},
+  })
   issuerDID := registration.DID`,
     issuerInvitation: `session, _ := client.Issuer.CreateIssuanceSession(ctx, issuerDID, "5m")
   invitation, _ := session.DIDComm.CreateInvitation(ctx, "receive-credential")
   qrPayload, _ := client.QR.Encode(invitation)`,
-    issueCredential: `credential, _ := client.Issuer.IssueCredential(ctx, identra.IssueOptions{
+    issueCredential: `// ${c.secure}
+  credential, _ := client.Issuer.IssueCredential(ctx, identra.IssueOptions{
     IssuerDID: issuerDID, SubjectDID: holderDID,
     Type: "UniversityDegree", SigningKey: issuerKey,
   })
+  // ${lang === 'vi' ? 'Credential được gửi qua DIDComm, không nhúng trực tiếp trong QR.' : 'The credential is sent over DIDComm, not embedded directly in the QR.'}
   _ = session.DIDComm.SendCredential(ctx, connectionID, credential)`,
     verifierIdentity: `verifierKey, _ := client.Crypto.GenerateSigningKey(ctx, identra.KeyOptions{
     Algorithm: "Ed25519", Protection: "hsm", Extractable: false,
   })
-  verifierDID, _ := client.CertNet.RegisterDID(ctx, verifierKey.PublicKey())`,
+  // ${c.registry}
+  verifierDID, _ := client.DIDRegistry.PublishDID(ctx, verifierKey.PublicKey(), identra.PublishOptions{
+    Registries: []string{"certnet", "did:web"},
+  })`,
     verifierInvitation: `session, _ := client.Verifier.CreateSession(ctx, verifierDID, identra.SessionOptions{
     Domain: "jobs.example", Challenge: identra.RandomChallenge(),
   })
@@ -548,6 +580,7 @@ function goReference(key: ReferenceCodeKey, lang: 'vi' | 'en') {
     presentationRequest: `request, _ := session.CreatePresentationRequest(ctx, identra.Request{
     Purpose: "Verify university degree for recruitment",
     CredentialType: "UniversityDegree",
+    // ${lang === 'vi' ? 'Chỉ yêu cầu claim cần thiết để holder không chia sẻ quá mức.' : 'Request only the required claims so the holder does not overshare.'}
     Fields: []string{"degree", "graduationYear"},
   })
   _ = session.DIDComm.SendRequest(ctx, connectionID, request)`,
@@ -555,9 +588,10 @@ function goReference(key: ReferenceCodeKey, lang: 'vi' | 'en') {
   // ${c.resolve}
   result, _ := client.Verifier.VerifyPresentation(ctx, presentation, identra.VerifyOptions{
     Challenge: session.Challenge, Domain: session.Domain,
-    ResolveDIDFromCertNet: true, CheckCredentialStatus: true,
+    ResolveDIDFromRegistry: true, CheckCredentialStatus: true,
   })`,
-    verificationReceipt: `receipt, _ := session.CreateSignedReceipt(ctx, result, false)
+    verificationReceipt: `// ${lang === 'vi' ? 'Receipt không chứa lại claim nhạy cảm, chỉ gửi kết quả xác minh.' : 'The receipt does not include sensitive claims, only the verification result.'}
+  receipt, _ := session.CreateSignedReceipt(ctx, result, false)
   _ = session.DIDComm.SendReceipt(ctx, connectionID, receipt)
   if result.Verified { runBusinessWorkflow() }`,
   };
@@ -590,33 +624,43 @@ let publicKey = try await issuerKey.exportPublicKey()`,
 PublicKey publicKey = issuerKey.exportPublicKey();`,
     ),
     issuerDid: line(
-      `let draft = IdentraDIDDocument(
+      `// ${c.registry}
+let draft = IdentraDIDDocument(
   publicKey: publicKey,
   didcommEndpoint: "https://issuer.example/didcomm"
 )
-let registration = try await identra.certNet.registerDIDDocument(draft)
+let registration = try await identra.didRegistry.publishDIDDocument(
+  draft, registries: [.certnet, .didWeb]
+)
 let issuerDID = registration.did`,
-      `DIDDocument draft = DIDDocument.create(
+      `// ${c.registry}
+DIDDocument draft = DIDDocument.create(
   publicKey, "https://issuer.example/didcomm"
 );
-DIDRegistration registration = identra.certNet().registerDidDocument(draft);
+DIDRegistration registration = identra.didRegistry().publishDidDocument(
+  draft, List.of("certnet", "did:web")
+);
 String issuerDid = registration.did();`,
     ),
     holderWallet: line(
       `let wallet = try await identra.holder.createWallet(
   singleDevice: true, exportCredentials: false, requireBiometric: true
 )
+// ${lang === 'vi' ? 'Khóa bảo vệ vault nằm trong secure storage của điện thoại.' : 'The vault protection key lives in the phone secure storage.'}
 let protectionKey = try await wallet.secureStorage.createProtectionKey(extractable: false)
 let didKey = try await wallet.crypto.generateWrappedSigningKey(protectionKey)
 let vaultKey = try await wallet.crypto.generateWrappedVaultKey(protectionKey)
-let holderDID = try await wallet.certNet.registerDID(
+// ${c.registry}
+let holderDID = try await wallet.didRegistry.publishDID(
   publicKey: didKey.publicKey, didcommEndpoint: wallet.didcomm.mediatorEndpoint
 )`,
       `HolderWallet wallet = identra.holder().createWallet(true, false, true);
+// ${lang === 'vi' ? 'Khóa bảo vệ vault nằm trong secure storage của điện thoại.' : 'The vault protection key lives in the phone secure storage.'}
 ProtectionKey protectionKey = wallet.secureStorage().createProtectionKey(false);
 WrappedKey didKey = wallet.crypto().generateWrappedSigningKey(protectionKey);
 WrappedKey vaultKey = wallet.crypto().generateWrappedVaultKey(protectionKey);
-String holderDid = wallet.certNet().registerDid(
+// ${c.registry}
+String holderDid = wallet.didRegistry().publishDid(
   didKey.publicKey(), wallet.didcomm().mediatorEndpoint()
 );`,
     ),
@@ -634,16 +678,19 @@ String qrPayload = identra.qr().encode(invitation);`,
     ),
     holderIssuerConnection: line(
       `let invitation = try await wallet.qr.decode(scannedQR)
-let issuerDocument = try await wallet.certNet.resolveDIDDocument(invitation.from)
+// ${c.resolve}
+let issuerDocument = try await wallet.didRegistry.resolveDIDDocument(invitation.from)
 try await wallet.ui.confirmConnection(issuerDocument)
 let issuerConnection = try await wallet.didcomm.acceptInvitation(invitation)`,
       `Invitation invitation = wallet.qr().decode(scannedQr);
-DIDDocument issuerDocument = wallet.certNet().resolveDidDocument(invitation.from());
+// ${c.resolve}
+DIDDocument issuerDocument = wallet.didRegistry().resolveDidDocument(invitation.from());
 wallet.ui().confirmConnection(issuerDocument);
 Connection issuerConnection = wallet.didcomm().acceptInvitation(invitation);`,
     ),
     issueCredential: line(
-      `let credential = try await identra.issuer.issueCredential(
+      `// ${c.secure}
+let credential = try await identra.issuer.issueCredential(
   issuerDID: issuerDID,
   subjectDID: holderDID,
   type: "UniversityDegree",
@@ -651,22 +698,27 @@ Connection issuerConnection = wallet.didcomm().acceptInvitation(invitation);`,
   signingKey: issuerKey
 )
 try await session.didcomm.sendCredential(connectionID, credential)`,
-      `VerifiableCredential credential = identra.issuer().issueCredential(
+      `// ${c.secure}
+VerifiableCredential credential = identra.issuer().issueCredential(
   issuerDid, holderDid, "UniversityDegree", claims, issuerKey
 );
 session.didcomm().sendCredential(connectionId, credential);`,
     ),
     holderStore: line(
       `wallet.didcomm.onCredential { credential in
-  let issuerDocument = try await wallet.certNet.resolveDIDDocument(credential.issuer)
+  // ${c.resolve}
+  let issuerDocument = try await wallet.didRegistry.resolveDIDDocument(credential.issuer)
   try await wallet.credentials.verify(credential, issuerDocument: issuerDocument)
+  // ${lang === 'vi' ? 'VC chỉ lưu sau khi xác minh chữ ký và trạng thái.' : 'The VC is stored only after signature and status checks.'}
   try await wallet.credentials.storeEncrypted(
     credential, vaultKey: vaultKey, requireBiometric: true
   )
 }`,
       `wallet.didcomm().onCredential(credential -> {
-  DIDDocument issuerDocument = wallet.certNet().resolveDidDocument(credential.issuer());
+  // ${c.resolve}
+  DIDDocument issuerDocument = wallet.didRegistry().resolveDidDocument(credential.issuer());
   wallet.credentials().verify(credential, issuerDocument);
+  // ${lang === 'vi' ? 'VC chỉ lưu sau khi xác minh chữ ký và trạng thái.' : 'The VC is stored only after signature and status checks.'}
   wallet.credentials().storeEncrypted(credential, vaultKey, true);
 });`,
     ),
@@ -674,14 +726,16 @@ session.didcomm().sendCredential(connectionId, credential);`,
       `let verifierKey = try await identra.crypto.generateSigningKey(
   algorithm: .ed25519, protection: .secureEnclave, extractable: false
 )
-let verifierDID = try await identra.certNet.registerDID(
+// ${c.registry}
+let verifierDID = try await identra.didRegistry.publishDID(
   publicKey: verifierKey.publicKey,
   didcommEndpoint: "https://verifier.example/didcomm"
 )`,
       `KeyHandle verifierKey = identra.crypto().generateSigningKey(
   Algorithm.ED25519, Protection.ANDROID_KEYSTORE, false
 );
-String verifierDid = identra.certNet().registerDid(
+// ${c.registry}
+String verifierDid = identra.didRegistry().publishDid(
   verifierKey.publicKey(), "https://verifier.example/didcomm"
 );`,
     ),
@@ -701,11 +755,13 @@ String qrPayload = identra.qr().encode(invitation);`,
     ),
     holderVerifierConnection: line(
       `let invitation = try await wallet.qr.decode(scannedQR)
-let verifierDocument = try await wallet.certNet.resolveDIDDocument(invitation.from)
+// ${c.resolve}
+let verifierDocument = try await wallet.didRegistry.resolveDIDDocument(invitation.from)
 try await wallet.ui.confirmConnection(verifierDocument)
 let verifierConnection = try await wallet.didcomm.acceptInvitation(invitation)`,
       `Invitation invitation = wallet.qr().decode(scannedQr);
-DIDDocument verifierDocument = wallet.certNet().resolveDidDocument(invitation.from());
+// ${c.resolve}
+DIDDocument verifierDocument = wallet.didRegistry().resolveDidDocument(invitation.from());
 wallet.ui().confirmConnection(verifierDocument);
 Connection verifierConnection = wallet.didcomm().acceptInvitation(invitation);`,
     ),
@@ -743,7 +799,8 @@ let result = try await identra.verifier.verifyPresentation(
   presentation,
   challenge: session.challenge,
   domain: session.domain,
-  resolveDIDDocument: identra.certNet.resolveDIDDocument,
+  // ${c.resolve}
+  resolveDIDDocument: identra.didRegistry.resolveDIDDocument,
   checkCredentialStatus: true
 )`,
       `VerifiablePresentation presentation = session.didcomm().waitForPresentation();
@@ -751,19 +808,22 @@ VerificationResult result = identra.verifier().verifyPresentation(
   presentation,
   session.challenge(),
   session.domain(),
-  identra.certNet()::resolveDidDocument,
+  // ${c.resolve}
+  identra.didRegistry()::resolveDidDocument,
   true
 );`,
     ),
     verificationReceipt: line(
-      `let receipt = try await session.createSignedReceipt(
+      `// ${lang === 'vi' ? 'Receipt không chứa lại claim nhạy cảm, chỉ gửi kết quả xác minh.' : 'The receipt does not include sensitive claims, only the verification result.'}
+let receipt = try await session.createSignedReceipt(
   verified: result.verified,
   reasonCode: result.reasonCode,
   includeClaims: false
 )
 try await session.didcomm.sendReceipt(verifierConnection.id, receipt)
 if result.verified { try await runBusinessWorkflow() }`,
-      `VerificationReceipt receipt = session.createSignedReceipt(
+      `// ${lang === 'vi' ? 'Receipt không chứa lại claim nhạy cảm, chỉ gửi kết quả xác minh.' : 'The receipt does not include sensitive claims, only the verification result.'}
+VerificationReceipt receipt = session.createSignedReceipt(
   result.verified(), result.reasonCode(), false
 );
 session.didcomm().sendReceipt(verifierConnection.id(), receipt);

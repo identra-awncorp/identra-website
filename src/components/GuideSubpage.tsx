@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, BookOpenCheck, FileBadge2, LockKeyhole, ShieldCheck, Smartphone, TriangleAlert } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpenCheck, Database, FileBadge2, LockKeyhole, ShieldCheck, Smartphone, TriangleAlert } from 'lucide-react';
 import { sdkFlows, type SdkFlow } from '../identraSdkCatalog';
 import SdkCodeExplorer from './SdkCodeExplorer';
 import SubpageBrowserHeroVisual from './SubpageBrowserHeroVisual';
@@ -27,7 +27,7 @@ export default function GuideSubpage({ lang, onBack, onNavigate, onOpenDemo }: G
     },
     verification: {
       question: isVi ? 'Bên xác minh tin vào VP bằng cách nào?' : 'How does the verifier trust a VP?',
-      answer: isVi ? 'Verifier nhận VP, lấy DID của holder và issuer bên trong, resolve DID Document trên CertNet rồi kiểm tra chữ ký, challenge và trạng thái thu hồi.' : 'The verifier receives a VP, extracts holder and issuer DIDs, resolves DID Documents on CertNet, then checks signatures, challenge, and revocation status.',
+      answer: isVi ? 'Verifier nhận VP, lấy DID của holder và issuer bên trong, resolve DID Document qua registry provider tương ứng như CertNet, did:web hoặc ION rồi kiểm tra chữ ký, challenge và trạng thái thu hồi.' : 'The verifier receives a VP, extracts holder and issuer DIDs, resolves DID Documents through the matching registry provider such as CertNet, did:web, or ION, then checks signatures, challenge, and revocation status.',
       boundary: isVi ? 'Verifier có thể chạy trên web, server hoặc app nhưng không được lưu VC như một Holder.' : 'A verifier may run on web, server, or app, but it must not store VCs as a Holder.',
     },
   };
@@ -77,6 +77,13 @@ export default function GuideSubpage({ lang, onBack, onNavigate, onOpenDemo }: G
         <div className="mx-auto max-w-7xl">
           <div className="max-w-3xl text-left"><h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">{isVi ? 'SSI không có nghĩa mọi nền tảng đều giữ thực chứng' : 'SSI does not mean every platform holds credentials'}</h2><p className="mt-4 text-base leading-relaxed text-slate-600 dark:text-slate-400">{isVi ? 'Identra phân tách rõ trách nhiệm: Issuer tạo VC, điện thoại của Holder là kho duy nhất, Verifier chỉ yêu cầu và xác minh VP.' : 'Identra separates responsibilities clearly: the Issuer creates VCs, the Holder phone is the only vault, and the Verifier only requests and verifies VPs.'}</p></div>
           <div className="mt-8 flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-left dark:border-amber-500/20 dark:bg-amber-500/5"><TriangleAlert className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" /><div><p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">{isVi ? 'Quy tắc quan trọng nhất' : 'Most important rule'}</p><p className="mt-1 text-xs leading-relaxed text-amber-800 dark:text-amber-300/80">{isVi ? 'Web và server không bao giờ nhận SDK nắm giữ. Chúng không được import, export hoặc sao lưu VC của người dùng.' : 'Web and server never receive a holding SDK. They cannot import, export, or back up user VCs.'}</p></div></div>
+          <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#5B6CFF]/15 bg-[#5B6CFF]/5 p-4 text-left">
+            <Database className="mt-0.5 size-5 shrink-0 text-[#5B6CFF] dark:text-[#7C8CFF]" />
+            <div>
+              <p className="text-sm font-extrabold text-slate-900 dark:text-white">{isVi ? 'DID registry không bị khóa vào CertNet' : 'DID registry is not locked to CertNet'}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{isVi ? 'CertNet là provider mặc định trong sandbox. Cùng SDK có thể publish và resolve DID Document trên CertNet, did:web, ION hoặc registry nội bộ tùy chính sách triển khai.' : 'CertNet is the default sandbox provider. The same SDK can publish and resolve DID Documents on CertNet, did:web, ION, or an internal registry depending on deployment policy.'}</p>
+            </div>
+          </div>
         </div>
       </section>
 

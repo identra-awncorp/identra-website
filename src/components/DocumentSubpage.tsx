@@ -106,8 +106,8 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
                 </h1>
                 <p className="max-w-2xl text-base leading-relaxed text-[#6B7280] dark:text-gray-400 sm:text-lg">
                   {isVi
-                    ? 'Tài liệu API chi tiết từ tạo khóa, đăng ký DID trên CertNet, thiết lập DIDComm, cấp phát và mã hóa VC đến tạo VP, xác minh và trả kết quả cho Holder.'
-                    : 'A detailed API reference from key creation and CertNet DID registration through DIDComm, VC issuance and encryption, VP creation, verification, and Holder receipts.'}
+                    ? 'Tài liệu API chi tiết từ tạo khóa, publish DID Document lên DID registry như CertNet, did:web, ION hoặc registry nội bộ, thiết lập DIDComm, cấp phát và mã hóa VC đến tạo VP, xác minh và trả kết quả cho Holder.'
+                    : 'A detailed API reference from key creation and publishing DID Documents to registries such as CertNet, did:web, ION, or internal registries through DIDComm, VC issuance and encryption, VP creation, verification, and Holder receipts.'}
                 </p>
               </div>
               <button type="button" onClick={() => scrollToStep(sdkReferenceSteps[0].id)} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#5B6CFF] px-5 py-3 text-sm font-semibold text-white hover:bg-[#4A5AF0]">
@@ -143,7 +143,7 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
 
                   <div className="space-y-3 rounded-xl border border-slate-800/60 bg-slate-950/80 p-3.5 font-sans">
                     <div className="flex items-center justify-between text-[9px] font-bold tracking-wide text-gray-500">
-                      <span>CERTNET + DIDCOMM</span>
+                      <span>DID REGISTRY + DIDCOMM</span>
                       <span className="text-blue-400">14 API STAGES</span>
                     </div>
                     <div className="space-y-1.5">
@@ -152,8 +152,8 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
                       </p>
                       <p className="text-[10px] leading-tight text-gray-500">
                         {isVi
-                          ? 'Tạo khóa · Đăng ký DID · Cấp VC · Tạo VP · Xác minh · Gửi receipt'
-                          : 'Create keys · Register DID · Issue VC · Create VP · Verify · Send receipt'}
+                          ? 'Tạo khóa · Publish DID · Cấp VC · Tạo VP · Xác minh · Gửi receipt'
+                          : 'Create keys · Publish DID · Issue VC · Create VP · Verify · Send receipt'}
                       </p>
                     </div>
                     <div className="space-y-1">
@@ -169,7 +169,7 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
 
                   <div className="space-y-1.5 pl-1.5 font-mono text-[9px] text-gray-500">
                     <p className="font-bold text-gray-600">// sdk_execution_log:</p>
-                    <p>✓ did_document_registered: <span className="text-emerald-400">"certnet://confirmed"</span></p>
+                    <p>✓ did_document_published: <span className="text-emerald-400">"certnet + did:web"</span></p>
                     <p>✓ vp_signature_verified: <span className="text-emerald-400">"public_key_resolved"</span></p>
                     <p>→ verification_receipt: <span className="text-yellow-400">"sent_to_holder"</span></p>
                   </div>
@@ -180,7 +180,7 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
                     <ShieldCheck className="size-5" />
                   </div>
                   <div className="text-left font-sans">
-                    <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-500">CertNet resolved</span>
+                    <span className="block text-[9px] font-black uppercase tracking-wider text-emerald-500">DID registry resolved</span>
                     <span className="block text-xs font-black text-slate-900 dark:text-white">{isVi ? 'Khóa công khai hợp lệ' : 'Valid public key'}</span>
                   </div>
                 </div>
@@ -205,6 +205,14 @@ export default function DocumentSubpage({ lang, onBack, onOpenDemo }: DocumentSu
           <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-left dark:border-amber-500/20 dark:bg-amber-500/5">
             <TriangleAlert className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" />
             <div><p className="text-sm font-extrabold text-amber-900 dark:text-amber-200">{isVi ? 'Contract SDK trong tài liệu là thiết kế minh họa' : 'SDK contracts in this reference are illustrative'}</p><p className="mt-1 text-xs leading-relaxed text-amber-800 dark:text-amber-300/80">{isVi ? 'Tên package, API và endpoint chưa được phát hành. Tài liệu mô tả contract dự kiến và các ràng buộc bảo mật bắt buộc.' : 'Package names, APIs, and endpoints are not released. This reference describes intended contracts and mandatory security boundaries.'}</p></div>
+          </div>
+
+          <div className="flex items-start gap-3 rounded-2xl border border-[#5B6CFF]/15 bg-[#5B6CFF]/5 p-4 text-left">
+            <Database className="mt-0.5 size-5 shrink-0 text-[#5B6CFF] dark:text-[#7C8CFF]" />
+            <div>
+              <p className="text-sm font-extrabold text-slate-900 dark:text-white">{isVi ? 'Public DID Document trên nhiều registry' : 'Publish DID Documents across registries'}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{isVi ? 'Các SDK minh họa đều dùng lớp `didRegistry`: CertNet là provider mặc định trong sandbox, nhưng cùng contract có thể publish/resolve qua did:web, ION hoặc registry nội bộ.' : 'The illustrative SDKs use the `didRegistry` layer: CertNet is the default sandbox provider, but the same contract can publish/resolve through did:web, ION, or an internal registry.'}</p>
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">

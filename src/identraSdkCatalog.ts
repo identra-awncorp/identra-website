@@ -49,13 +49,13 @@ export const sdkFlows: SdkFlowDefinition[] = [
     shortTitle: { vi: 'Phát hành', en: 'Issuance' },
     actor: { vi: 'Bên phát hành', en: 'Issuer' },
     description: {
-      vi: 'Tạo DID tổ chức, công bố DID Document lên CertNet, ký VC và gửi offer qua DIDComm.',
-      en: 'Create an organization DID, publish its DID Document to CertNet, sign a VC, and send an offer over DIDComm.',
+      vi: 'Tạo DID tổ chức, công bố DID Document lên CertNet, did:web, ION hoặc registry nội bộ, ký VC và gửi offer qua DIDComm.',
+      en: 'Create an organization DID, publish its DID Document to CertNet, did:web, ION, or an internal registry, sign a VC, and send an offer over DIDComm.',
     },
     availability: ['web', 'server', 'mobile'],
     steps: [
       { vi: 'Khởi tạo SDK cho môi trường đang chạy.', en: 'Initialize the SDK for the current runtime.' },
-      { vi: 'Tạo hoặc nạp DID của bên phát hành trên CertNet.', en: 'Create or load the issuer DID on CertNet.' },
+      { vi: 'Tạo hoặc nạp DID của bên phát hành trên DID registry đã chọn.', en: 'Create or load the issuer DID on the selected DID registry.' },
       { vi: 'Ký Verifiable Credential cho DID của người nhận.', en: 'Sign a Verifiable Credential for the recipient DID.' },
       { vi: 'Gửi credential offer qua kết nối DIDComm.', en: 'Send the credential offer over DIDComm.' },
     ],
@@ -83,15 +83,15 @@ export const sdkFlows: SdkFlowDefinition[] = [
     shortTitle: { vi: 'Xác minh', en: 'Verification' },
     actor: { vi: 'Bên xác minh', en: 'Verifier' },
     description: {
-      vi: 'Tạo QR yêu cầu dữ liệu, nhận VP, resolve DID Document từ CertNet và kiểm tra toàn bộ bằng chứng.',
-      en: 'Create a QR data request, receive a VP, resolve DID Documents from CertNet, and verify every proof.',
+      vi: 'Tạo QR yêu cầu dữ liệu, nhận VP, resolve DID Document từ registry tương ứng và kiểm tra toàn bộ bằng chứng.',
+      en: 'Create a QR data request, receive a VP, resolve DID Documents from the corresponding registry, and verify every proof.',
     },
     availability: ['web', 'server', 'mobile'],
     steps: [
       { vi: 'Tạo presentation request kèm challenge chống phát lại.', en: 'Create a presentation request with a replay-resistant challenge.' },
       { vi: 'Hiển thị QR chứa DIDComm invitation.', en: 'Display a QR containing the DIDComm invitation.' },
       { vi: 'Nhận VP qua kết nối vừa thiết lập.', en: 'Receive the VP over the newly established connection.' },
-      { vi: 'Resolve holder và issuer DID trên CertNet rồi xác minh.', en: 'Resolve holder and issuer DIDs on CertNet and verify.' },
+      { vi: 'Resolve holder và issuer DID qua registry provider rồi xác minh.', en: 'Resolve holder and issuer DIDs through the registry provider and verify.' },
     ],
   },
 ];
@@ -108,12 +108,14 @@ const comments = {
     issuer: 'Chạy ở phía bên phát hành: web, server hoặc ứng dụng nội bộ.',
     holder: 'Chỉ chạy trên điện thoại. VC không được export lên web hoặc thiết bị thứ hai.',
     verifier: 'Chạy ở phía bên xác minh: web, server hoặc ứng dụng.',
+    registry: 'DID Document có thể publish lên nhiều registry; CertNet chỉ là provider mặc định trong sandbox.',
   },
   en: {
     mock: 'Illustrative SDK, not for production use.',
     issuer: 'Runs for the issuer on web, server, or an internal app.',
     holder: 'Runs only on the phone. VCs cannot be exported to web or a second device.',
     verifier: 'Runs for the verifier on web, server, or an app.',
+    registry: 'A DID Document can be published to multiple registries; CertNet is only the default sandbox provider.',
   },
 } as const;
 
@@ -125,7 +127,10 @@ function jsSnippet(flow: SdkFlow, variant: SdkVariant, lang: 'vi' | 'en') {
 // ${c.mock}
 const identra = new Identra${variant.environment === 'mobile' ? 'Mobile' : ''}({
   environment: 'sandbox',
-  certNetUrl: 'https://sandbox.certnet.identra.dev',
+  didRegistry: {
+    defaultProvider: 'certnet',
+    providers: ['certnet', 'did:web', 'ion', 'internal-ledger']
+  },
   mediatorUrl: 'https://mediator.sandbox.identra.dev'
 });`;
 
@@ -136,14 +141,20 @@ const issuer = await identra.issuer.create({
   did: 'did:identra:university',
   keyProtection: '${variant.environment === 'server' ? 'hsm' : 'platform-secure-storage'}'
 });
-await issuer.publishDidDocument();
+
+// ${c.registry}
+await issuer.publishDidDocument({
+  registries: ['certnet', 'did:web']
+});
 
 const credential${typed ? ': VerifiableCredential' : ''} = await issuer.issue({
+  // ${lang === 'vi' ? 'Holder DID được lấy sau khi thiết lập kết nối hoặc tra từ hệ thống nghiệp vụ.' : 'The Holder DID is obtained after connection setup or from the business system.'}
   subjectDid: 'did:identra:holder',
   type: 'UniversityDegree',
   claims: { degree: 'Information Technology', graduationYear: 2026 }
 });
 
+// ${lang === 'vi' ? 'Credential không đi qua QR; QR chỉ dùng để bootstrap kết nối DIDComm.' : 'The credential is not placed in the QR; the QR only bootstraps the DIDComm connection.'}
 await issuer.didcomm.sendCredentialOffer({ credential, connectionId });`;
 
   if (flow === 'holder') return `${init}
@@ -156,9 +167,11 @@ const wallet = await identra.holder.activateSingleDeviceVault({
 });
 
 await wallet.didcomm.onCredential(async (credential) => {
+  // ${lang === 'vi' ? 'SDK resolve issuer DID, kiểm tra chữ ký/status, rồi mới lưu vào vault.' : 'The SDK resolves the issuer DID, checks signature/status, then stores it in the vault.'}
   await wallet.verifyAndStore(credential);
 });
 
+// ${lang === 'vi' ? 'QR của verifier chỉ chứa invitation/yêu cầu, không chứa credential của holder.' : 'The verifier QR contains only an invitation/request, never the holder credential.'}
 const request = await wallet.scanPresentationQr(scannedQr);
 const consent = await wallet.requestUserConsent(request);
 const presentation = await wallet.createPresentation({ request, consent });
@@ -173,6 +186,7 @@ const verifier = await identra.verifier.create({
 
 const request = await verifier.createPresentationRequest({
   credentialType: 'UniversityDegree',
+  // ${lang === 'vi' ? 'Chỉ yêu cầu các claim cần thiết để giảm dữ liệu holder phải chia sẻ.' : 'Request only the required claims to reduce holder disclosure.'}
   fields: ['degree', 'graduationYear'],
   challenge: crypto.randomUUID()
 });
@@ -181,7 +195,8 @@ const qrDataUrl = await verifier.createQr(request);
 const presentation = await verifier.didcomm.waitForPresentation(request.id);
 const result = await verifier.verify({
   presentation,
-  resolveDid: (did) => identra.certNet.resolveDidDocument(did),
+  // ${lang === 'vi' ? 'Resolver tự chọn provider theo DID method: did:identra, did:web, did:ion...' : 'The resolver selects a provider by DID method: did:identra, did:web, did:ion...'}
+  resolveDid: (did) => identra.didRegistry.resolveDidDocument(did),
   checkCredentialStatus: true
 });
 
@@ -195,22 +210,27 @@ function goSnippet(flow: SdkFlow, lang: 'vi' | 'en') {
     ? `issuer, _ := client.Issuer.Create(ctx, identra.IssuerOptions{
     DID: "did:identra:university", KeyProtection: "hsm",
   })
-  _ = issuer.PublishDIDDocument(ctx)
+  // ${c.registry}
+  _ = issuer.PublishDIDDocument(ctx, identra.PublishOptions{
+    Registries: []string{"certnet", "did:web"},
+  })
   vc, _ := issuer.Issue(ctx, identra.Credential{
     SubjectDID: "did:identra:holder",
     Type: "UniversityDegree",
     Claims: map[string]any{"graduationYear": 2026},
   })
+  // ${lang === 'vi' ? 'Credential được gửi qua DIDComm, không nhúng trực tiếp trong QR.' : 'The credential is sent over DIDComm, not embedded directly in the QR.'}
   _ = issuer.DIDComm.SendCredentialOffer(ctx, connectionID, vc)`
     : `verifier, _ := client.Verifier.Create(ctx, "did:identra:jobs-example")
   request, _ := verifier.CreatePresentationRequest(ctx, identra.Request{
     CredentialType: "UniversityDegree",
+    // ${lang === 'vi' ? 'Chỉ yêu cầu claim cần thiết để holder không chia sẻ quá mức.' : 'Request only the required claims so the holder does not overshare.'}
     Fields: []string{"degree", "graduationYear"},
   })
   qr, _ := verifier.CreateQR(ctx, request)
   presentation, _ := verifier.DIDComm.WaitForPresentation(ctx, request.ID)
   result, _ := verifier.Verify(ctx, presentation, identra.VerifyOptions{
-    ResolveDIDFromCertNet: true, CheckCredentialStatus: true,
+    ResolveDIDFromRegistry: true, CheckCredentialStatus: true,
   })
   if result.Verified { grantAccess() }`;
   return `package main
@@ -230,9 +250,10 @@ func main() {
 
 function javaSnippet(flow: SdkFlow, lang: 'vi' | 'en') {
   const c = comments[lang];
-  const body = flow === 'issuance'
+const body = flow === 'issuance'
     ? `Issuer issuer = identra.issuer().create("did:identra:university");
-issuer.publishDidDocument();
+// ${c.registry}
+issuer.publishDidDocument(List.of("certnet", "did:web"));
 VerifiableCredential vc = issuer.issue(
   "did:identra:holder", "UniversityDegree", claims
 );
@@ -249,6 +270,7 @@ Consent consent = wallet.requestUserConsent(request);
 wallet.didcomm().sendPresentation(wallet.createPresentation(request, consent));`
       : `Verifier verifier = identra.verifier().create("did:identra:jobs-example");
 PresentationRequest request = verifier.createPresentationRequest(
+  // ${lang === 'vi' ? 'Yêu cầu tối thiểu dữ liệu cần xác minh.' : 'Request the minimum data needed for verification.'}
   "UniversityDegree", List.of("degree", "graduationYear")
 );
 String qr = verifier.createQr(request);
@@ -264,9 +286,10 @@ ${body}`;
 
 function swiftSnippet(flow: SdkFlow, lang: 'vi' | 'en') {
   const c = comments[lang];
-  const body = flow === 'issuance'
+const body = flow === 'issuance'
     ? `let issuer = try await identra.issuer.create(did: "did:identra:university")
-try await issuer.publishDIDDocument()
+// ${c.registry}
+try await issuer.publishDIDDocument(registries: [.certnet, .didWeb])
 let credential = try await issuer.issue(
   subjectDID: "did:identra:holder",
   type: "UniversityDegree",
@@ -293,7 +316,7 @@ let request = try await verifier.createPresentationRequest(
 let qr = try await verifier.createQR(request)
 let presentation = try await verifier.didcomm.waitForPresentation(request.id)
 let result = try await verifier.verify(
-  presentation, resolveDIDsFromCertNet: true, checkCredentialStatus: true
+  presentation, resolveDIDsFromRegistry: true, checkCredentialStatus: true
 )`;
   return `import IdentraSDK
 

@@ -18,9 +18,6 @@ export const ABOUT_TRANSLATIONS = {
     commitment3Badge: 'Commitment 03',
     commitment3Title: 'Work in public',
     commitment3Desc: 'Sharing early and often to create an open space for questions and collaboration.',
-    ourMissionBadge: 'Our Mission',
-    ourMissionTitle: 'At Identra, we’re humanizing online identity by helping companies verify that their users are who they say they are.',
-    ourMissionDesc: 'We want to build a safer and more accessible internet. By being the identity layer that powers it.',
     ourValuesBadge: 'Our Values',
     ourValuesTitle: 'At Identra, we\'re united by our desire to continue improving and use these values as our guiding principles.',
     
@@ -61,6 +58,19 @@ export const ABOUT_TRANSLATIONS = {
     joinTeamTitle: 'Interested in joining our team?',
     joinTeamDesc: 'Check out our open positions and learn more about life as a Personerd, including benefits, perks, and how we collaborate to build a better web.',
     seeOpenPositions: 'See open positions',
+
+    // Our Journey
+    journeyBadge: 'Milestones',
+    journeyTitle: 'Our Journey',
+    journeyDesc: 'From the belief that online identity should be safer, more human, and easier to trust, Identra has grown into a platform that helps teams verify users and reduce risk at scale.',
+    journey2022Title: 'The Beginning',
+    journey2022Desc: 'Identra began with a simple goal: make identity verification more reliable, accessible, and human.',
+    journey2023Title: 'Laying the Foundation',
+    journey2023Desc: 'We built the foundation of a flexible identity platform that brings document checks, biometrics, and risk signals into one flow.',
+    journey2026Title: 'Research & Development',
+    journey2026Desc: 'We expanded passive signals, graph analysis, and developer tooling to help teams respond to faster, more sophisticated fraud.',
+    journey2027Title: 'Next Chapter',
+    journey2027Desc: 'Identra will continue extending adaptive identity infrastructure for teams that need trust decisions in every critical moment.',
   },
   es: {
     backToPlatform: 'Volver a la plataforma',
@@ -76,9 +86,6 @@ export const ABOUT_TRANSLATIONS = {
     commitment3Badge: 'Compromiso 03',
     commitment3Title: 'Trabajar en público',
     commitment3Desc: 'Compartir temprano y con frecuencia para crear un espacio abierto para preguntas y colaboración.',
-    ourMissionBadge: 'Nuestra misión',
-    ourMissionTitle: 'En Identra, estamos humanizando la identidad en línea ayudando a las empresas a verificar que sus usuarios son quienes dicen ser.',
-    ourMissionDesc: 'Queremos construir un internet más seguro y accesible siendo la capa de identidad que lo impulse.',
     ourValuesBadge: 'Nuestros valores',
     ourValuesTitle: 'En Identra, nos une nuestro deseo de seguir mejorando y utilizamos estos valores como nuestros principios rectores.',
     
@@ -119,6 +126,19 @@ export const ABOUT_TRANSLATIONS = {
     joinTeamTitle: '¿Te interesa unirte a nuestro equipo?',
     joinTeamDesc: 'Conoce nuestras vacantes y aprende más sobre la vida como Personerd, incluyendo beneficios, ventajas y cómo colaboramos para construir una mejor red.',
     seeOpenPositions: 'Ver vacantes',
+
+    // Our Journey
+    journeyBadge: 'Hitos clave',
+    journeyTitle: 'Nuestra Trayectoria',
+    journeyDesc: 'Desde la convicción de que la identidad en línea debe ser más segura, más humana y más fácil de confiar, Identra ha crecido hasta convertirse en una plataforma que ayuda a los equipos a verificar usuarios y reducir riesgos a escala.',
+    journey2022Title: 'El Comienzo',
+    journey2022Desc: 'Identra comenzó con un objetivo sencillo: hacer que la verificación de identidad sea más confiable, accesible y humana.',
+    journey2023Title: 'Sentando las Bases',
+    journey2023Desc: 'Construimos la base de una plataforma de identidad flexible que reúne verificaciones de documentos, biometría y señales de riesgo en un solo flujo.',
+    journey2026Title: 'Investigación y Desarrollo',
+    journey2026Desc: 'Ampliamos señales pasivas, análisis de grafos y herramientas para desarrolladores para ayudar a los equipos a responder a fraudes más rápidos y sofisticados.',
+    journey2027Title: 'Próximo capítulo',
+    journey2027Desc: 'Identra seguirá ampliando infraestructura de identidad adaptativa para equipos que necesitan decisiones de confianza en cada momento crítico.',
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
@@ -134,9 +154,6 @@ export const ABOUT_TRANSLATIONS = {
     commitment3Badge: 'コミットメント 03',
     commitment3Title: 'パブリックに働く',
     commitment3Desc: '早期かつ頻繁に共有し、質問や共同作業のためのオープンなスペースを作ること。',
-    ourMissionBadge: '私たちの使命',
-    ourMissionTitle: 'Identraは、ユーザーが本人であることを企業が検証できるように支援することで、オンラインアイデンティティを人間らしいものにしています。',
-    ourMissionDesc: '私たちは、より安全でアクセスしやすいインターネットを構築したいと考えています。それを支えるアイデンティティレイヤーとなることで。',
     ourValuesBadge: '私たちの価値観',
     ourValuesTitle: 'Identraでは、向上し続けたいという願いのもと結束し、これらの価値観を指針としています。',
     
@@ -175,8 +192,21 @@ export const ABOUT_TRANSLATIONS = {
 
     // Join Team CTA
     joinTeamTitle: '私たちのチームに加わりませんか？',
-    joinTeamDesc: '募集中の職種をチェックし、福利厚生やペルク、より良いウェブ構築のためのコラボレーション方法など、Personerdとしての生活について詳しく知ってください。',
+    joinTeamDesc: '募集中の職種を確認し、福利厚生や特典、より良いウェブを築くための協働のあり方など、Personerdとしての働き方について詳しくご覧ください。',
     seeOpenPositions: '募集職種を見る',
+
+    // Our Journey
+    journeyBadge: 'マイルストーン',
+    journeyTitle: '私たちの歩み',
+    journeyDesc: 'オンラインアイデンティティはより安全で、人間らしく、信頼しやすいものであるべきだという考えから、Identraはユーザー確認とリスク低減を大規模に支えるプラットフォームへと成長してきました。',
+    journey2022Title: '始まり',
+    journey2022Desc: 'Identraは、本人確認をより信頼でき、使いやすく、人間らしいものにするというシンプルな目標から始まりました。',
+    journey2023Title: '基盤作り',
+    journey2023Desc: '本人確認書類チェック、生体認証、リスクシグナルを一つのフローにまとめる柔軟なアイデンティティ基盤を構築しました。',
+    journey2026Title: '研究開発',
+    journey2026Desc: 'より速く巧妙化する不正に対応できるよう、パッシブシグナル、グラフ分析、開発者向けツールを拡張しました。',
+    journey2027Title: '次の章',
+    journey2027Desc: 'Identraは、重要なあらゆる瞬間に信頼判断を必要とするチームのため、適応型アイデンティティ基盤をさらに広げていきます。',
   },
   de: {
     backToPlatform: 'Zurück zur Plattform',
@@ -192,9 +222,6 @@ export const ABOUT_TRANSLATIONS = {
     commitment3Badge: 'Engagement 03',
     commitment3Title: 'Öffentlich arbeiten',
     commitment3Desc: 'Frühzeitig und oft teilen, um einen offenen Raum für Fragen und Zusammenarbeit zu schaffen.',
-    ourMissionBadge: 'Unsere Mission',
-    ourMissionTitle: 'Bei Identra machen wir die Online-Identität menschlicher, indem wir Unternehmen dabei helfen, zu verifizieren, dass ihre Nutzer die sind, die sie vorgeben zu sein.',
-    ourMissionDesc: 'Wir wollen ein sichereres und barrierefreieres Internet aufbauen. Indem wir die Identitätsschicht sind, die es antreibt.',
     ourValuesBadge: 'Unsere Werte',
     ourValuesTitle: 'Bei Identra verbindet uns der Wunsch, uns ständig zu verbessern, und wir nutzen diese Werte als unsere Leitprinzipien.',
     
@@ -235,6 +262,19 @@ export const ABOUT_TRANSLATIONS = {
     joinTeamTitle: 'Haben Sie Interesse, unserem Team beizutreten?',
     joinTeamDesc: 'Sehen Sie sich unsere offenen Stellen an und erfahren Sie mehr über das Leben als Personerd, einschließlich Sozialleistungen, Vergünstigungen und wie wir zusammenarbeiten, um ein besseres Web zu bauen.',
     seeOpenPositions: 'Offene Stellen ansehen',
+
+    // Our Journey
+    journeyBadge: 'Meilensteine',
+    journeyTitle: 'Unsere Reise',
+    journeyDesc: 'Aus der Überzeugung, dass Online-Identität sicherer, menschlicher und vertrauenswürdiger sein sollte, ist Identra zu einer Plattform gewachsen, die Teams hilft, Nutzer zu verifizieren und Risiken in großem Maßstab zu reduzieren.',
+    journey2022Title: 'Der Anfang',
+    journey2022Desc: 'Identra begann mit einem einfachen Ziel: Identitätsprüfung zuverlässiger, zugänglicher und menschlicher zu machen.',
+    journey2023Title: 'Grundsteinlegung',
+    journey2023Desc: 'Wir legten die Grundlage für eine flexible Identitätsplattform, die Dokumentenprüfung, Biometrie und Risikosignale in einem Flow zusammenführt.',
+    journey2026Title: 'Forschung & Entwicklung',
+    journey2026Desc: 'Wir erweiterten passive Signale, Graph-Analysen und Entwicklerwerkzeuge, damit Teams schneller auf ausgefeilteren Betrug reagieren können.',
+    journey2027Title: 'Nächstes Kapitel',
+    journey2027Desc: 'Identra wird adaptive Identitätsinfrastruktur weiter ausbauen, für Teams, die in jedem kritischen Moment Vertrauensentscheidungen treffen müssen.',
   },
   vi: {
     backToPlatform: 'Quay lại Nền tảng',
@@ -250,9 +290,6 @@ export const ABOUT_TRANSLATIONS = {
     commitment3Badge: 'Cam kết 03',
     commitment3Title: 'Làm việc công khai',
     commitment3Desc: 'Chia sẻ sớm và thường xuyên để tạo không gian cởi mở cho các câu hỏi và sự hợp tác.',
-    ourMissionBadge: 'Sứ mệnh của chúng tôi',
-    ourMissionTitle: 'Tại Identra, chúng tôi đang nhân văn hóa danh tính trực tuyến bằng cách giúp các công ty xác minh rằng người dùng của họ chính là người họ khai nhận.',
-    ourMissionDesc: 'Chúng tôi muốn xây dựng một internet an toàn và dễ tiếp cận hơn bằng cách trở thành lớp danh tính thúc đẩy internet phát triển.',
     ourValuesBadge: 'Giá trị cốt lõi',
     ourValuesTitle: 'Tại Identra, chúng tôi đoàn kết bởi mong muốn không ngừng cải tiến và lấy các giá trị này làm nguyên tắc dẫn đường.',
     
@@ -293,5 +330,18 @@ export const ABOUT_TRANSLATIONS = {
     joinTeamTitle: 'Bạn muốn gia nhập đội ngũ của chúng tôi?',
     joinTeamDesc: 'Khám phá các vị trí tuyển dụng của chúng tôi và tìm hiểu thêm về cuộc sống của một Personerd, bao gồm các chế độ đãi ngộ, đặc quyền và cách chúng tôi cùng nhau xây dựng một mạng web tốt đẹp hơn.',
     seeOpenPositions: 'Xem các vị trí tuyển dụng',
+
+    // Our Journey
+    journeyBadge: 'Các cột mốc',
+    journeyTitle: 'Hành trình của chúng tôi',
+    journeyDesc: 'Từ niềm tin rằng danh tính trực tuyến cần an toàn hơn, nhân văn hơn và dễ tin cậy hơn, Identra đã phát triển thành nền tảng giúp các đội ngũ xác minh người dùng và giảm rủi ro ở quy mô lớn.',
+    journey2022Title: 'Khởi đầu',
+    journey2022Desc: 'Identra bắt đầu với một mục tiêu đơn giản: giúp xác minh danh tính đáng tin cậy hơn, dễ tiếp cận hơn và nhân văn hơn.',
+    journey2023Title: 'Đặt nền móng',
+    journey2023Desc: 'Chúng tôi xây dựng nền móng cho một nền tảng danh tính linh hoạt, kết hợp kiểm tra giấy tờ, sinh trắc học và tín hiệu rủi ro trong một luồng.',
+    journey2026Title: 'Nghiên cứu & phát triển',
+    journey2026Desc: 'Chúng tôi mở rộng tín hiệu thụ động, phân tích liên kết và công cụ cho nhà phát triển để giúp các đội ngũ ứng phó với gian lận nhanh và tinh vi hơn.',
+    journey2027Title: 'Chặng tiếp theo',
+    journey2027Desc: 'Identra sẽ tiếp tục mở rộng hạ tầng danh tính thích ứng cho các đội ngũ cần đưa ra quyết định tin cậy ở mọi thời điểm quan trọng.',
   },
 };

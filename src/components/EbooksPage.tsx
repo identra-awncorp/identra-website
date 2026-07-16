@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { EBOOKS_PAGE_TRANSLATIONS } from '../translations/EbooksPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
-import { SENTINEL_EBOOK_DETAIL_ID, type EbookDetailId } from '../types/routes';
 
 // Interfaces
 type EbookId = keyof typeof EBOOKS_PAGE_TRANSLATIONS.en.ebooks;
@@ -33,7 +32,6 @@ interface Ebook {
 interface EbooksPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
-  onOpenEbookDetail: (id: EbookDetailId) => void;
 }
 
 // 40 High-Fidelity Ebooks and Reports
@@ -355,7 +353,7 @@ function CoverIllustration({ type }: { type: Ebook['illustration'] }) {
   }
 }
 
-export default function EbooksPage({ onOpenSandbox, onBackToLanding, onOpenEbookDetail }: EbooksPageProps) {
+export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPageProps) {
 
   const { language } = useLanguage();
 
@@ -422,10 +420,6 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding, onOpenEbook
 
   // Reset Form states
   const openEbookModal = (ebook: Ebook) => {
-    if (ebook.id === 'ebook-sentinel') {
-      onOpenEbookDetail(SENTINEL_EBOOK_DETAIL_ID);
-      return;
-    }
     setActiveEbookModal(ebook);
     setEmail('');
     setFirstName('');

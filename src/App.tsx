@@ -9,8 +9,8 @@ import { LanguageProvider } from './context/LanguageContext';
 import SkeletonLoader from './components/SkeletonLoader';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import type { AppView, EbookDetailId } from './types/routes';
-import { ebookDetailPath, pathToEbookDetailId, pathToView, viewToPath } from './types/routes';
+import type { AppView, BlogDetailId } from './types/routes';
+import { blogDetailPath, pathToBlogDetailId, pathToView, viewToPath } from './types/routes';
 
 function InitialLoadMarker({ onReady }: { onReady: () => void }) {
   useEffect(() => {
@@ -39,7 +39,7 @@ const PricingPage = lazy(() => import('./components/PricingPage'));
 const LoginPage = lazy(() => import('./components/LoginPage'));
 const BlogPage = lazy(() => import('./components/BlogPage'));
 const EbooksPage = lazy(() => import('./components/EbooksPage'));
-const EbookDetailPage = lazy(() => import('./components/EbookDetailPage'));
+const BlogDetailPage = lazy(() => import('./components/BlogDetailPage'));
 const EventsPage = lazy(() => import('./components/EventsPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
@@ -176,10 +176,10 @@ export default function App() {
   }, [location.key, navigationType, restoreWindowScroll]);
 
   useEffect(() => {
-    if (currentView === 'ebook-detail') {
-      const canonicalEbookDetailPath = ebookDetailPath(pathToEbookDetailId(location.pathname));
-      if (location.pathname !== canonicalEbookDetailPath) {
-        navigate(canonicalEbookDetailPath, { replace: true, state: location.state as RouteNavigationState | null });
+    if (currentView === 'blog-detail') {
+      const canonicalBlogDetailPath = blogDetailPath(pathToBlogDetailId(location.pathname));
+      if (location.pathname !== canonicalBlogDetailPath) {
+        navigate(canonicalBlogDetailPath, { replace: true, state: location.state as RouteNavigationState | null });
         return;
       }
     }
@@ -200,11 +200,11 @@ export default function App() {
     navigate(viewToPath(view), { state: IN_APP_NAVIGATION_STATE });
   };
 
-  const handleEbookDetailChange = (id: EbookDetailId) => {
-    if (currentView === 'ebook-detail' && location.pathname === ebookDetailPath(id)) return;
+  const handleBlogDetailChange = (id: BlogDetailId) => {
+    if (currentView === 'blog-detail' && location.pathname === blogDetailPath(id)) return;
 
     saveCurrentScrollPosition();
-    navigate(ebookDetailPath(id), { state: IN_APP_NAVIGATION_STATE });
+    navigate(blogDetailPath(id), { state: IN_APP_NAVIGATION_STATE });
   };
 
   const handleBackNavigation = (fallbackView: AppView) => {
@@ -220,7 +220,7 @@ export default function App() {
   };
 
   const activeView = currentView;
-  const headerView = activeView === 'ebook-detail' ? 'ebooks' : activeView;
+  const headerView = activeView === 'blog-detail' ? 'blog' : activeView;
   const isStandaloneView = activeView === 'login' || activeView === 'docs';
   const markInitialLoadComplete = () => setHasCompletedInitialLoad(true);
   const pageSkeleton = <SkeletonLoader view={activeView} />;
@@ -300,19 +300,18 @@ export default function App() {
           />
         ) : currentView === 'blog' ? (
           <BlogPage
-            onOpenSandbox={handleOpenSandbox}
             onBackToLanding={() => handleBackNavigation('landing')}
+            onOpenBlogDetail={handleBlogDetailChange}
           />
         ) : currentView === 'ebooks' ? (
           <EbooksPage 
             onOpenSandbox={handleOpenSandbox} 
             onBackToLanding={() => handleBackNavigation('landing')} 
-            onOpenEbookDetail={handleEbookDetailChange}
           />
-        ) : currentView === 'ebook-detail' ? (
-          <EbookDetailPage
-            ebookId={pathToEbookDetailId(location.pathname)}
-            onBack={() => handleBackNavigation('ebooks')}
+        ) : currentView === 'blog-detail' ? (
+          <BlogDetailPage
+            blogId={pathToBlogDetailId(location.pathname)}
+            onBack={() => handleBackNavigation('blog')}
             onOpenSandbox={handleOpenSandbox}
           />
         ) : currentView === 'careers' ? (

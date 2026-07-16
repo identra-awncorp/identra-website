@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -11,26 +11,29 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  EBOOK_DETAIL_DATA_TRANSLATIONS,
-  EBOOK_DETAIL_PAGE_TRANSLATIONS
-} from '../translations/EbookDetailPageTranslations';
+  BLOG_DETAIL_DATA_TRANSLATIONS,
+  BLOG_DETAIL_PAGE_TRANSLATIONS
+} from '../translations/BlogDetailPageTranslations';
+import { BLOG_PAGE_TRANSLATIONS } from '../translations/BlogPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { copyTextToClipboard } from '../utils/clipboard';
-import type { EbookDetailId } from '../types/routes';
+import { blogDetailPath, type BlogDetailId } from '../types/routes';
 
-interface EbookDetailPageProps {
-  ebookId: EbookDetailId;
+interface BlogDetailPageProps {
+  blogId: BlogDetailId;
   onBack: () => void;
   onOpenSandbox: () => void;
 }
 
-export default function EbookDetailPage({ ebookId, onBack, onOpenSandbox }: EbookDetailPageProps) {
+export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDetailPageProps) {
 
   const { language } = useLanguage();
 
-  const t = getLocalizedRecord(EBOOK_DETAIL_PAGE_TRANSLATIONS, language as keyof typeof EBOOK_DETAIL_PAGE_TRANSLATIONS, 'EBOOK_DETAIL_PAGE_TRANSLATIONS');
-  const dataT = getLocalizedRecord(EBOOK_DETAIL_DATA_TRANSLATIONS, language as keyof typeof EBOOK_DETAIL_DATA_TRANSLATIONS, 'EBOOK_DETAIL_DATA_TRANSLATIONS');
+  const t = getLocalizedRecord(BLOG_DETAIL_PAGE_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_PAGE_TRANSLATIONS, 'BLOG_DETAIL_PAGE_TRANSLATIONS');
+  const dataT = getLocalizedRecord(BLOG_DETAIL_DATA_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_DATA_TRANSLATIONS, 'BLOG_DETAIL_DATA_TRANSLATIONS');
+  const blogPageT = BLOG_PAGE_TRANSLATIONS[language];
+  const currentPost = blogPageT.posts[blogId];
 
   const [activeSection, setActiveSection] = useState('how-it-works');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -80,7 +83,7 @@ export default function EbookDetailPage({ ebookId, onBack, onOpenSandbox }: Eboo
   };
 
   const handleShare = async () => {
-    const copied = await copyTextToClipboard(`${window.location.origin}/ebook-detail/${ebookId}`);
+    const copied = await copyTextToClipboard(`${window.location.origin}${blogDetailPath(blogId)}`);
     setCopyStatus(copied ? 'success' : 'error');
     setTimeout(() => setCopyStatus('idle'), 2000);
   };
@@ -89,15 +92,15 @@ export default function EbookDetailPage({ ebookId, onBack, onOpenSandbox }: Eboo
     <div className="bg-[#FAFBFD] min-h-screen text-slate-800 font-sans antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]">
       
       {/* Navigation & Actions Top Bar */}
-      <div className="sticky top-16 z-30 bg-[#FAFBFD]/95 backdrop-blur-md border-b border-slate-150 py-4 px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 pt-6 pb-2">
+        <div className="flex items-center justify-between">
           <button 
-            id="btn-back-to-ebooks"
+            id="btn-back-to-blog"
             onClick={onBack}
             className="flex items-center gap-2 text-slate-500 hover:text-[#354CE1] font-semibold text-sm transition group"
           >
             <ChevronLeft className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform" />
-            <span>{t.copy.backToEbooksGuides}</span>
+            <span>{t.copy.backToBlog}</span>
           </button>
           
           <div className="flex items-center gap-3">
@@ -150,16 +153,16 @@ export default function EbookDetailPage({ ebookId, onBack, onOpenSandbox }: Eboo
                 <Calendar className="w-3.5 h-3.5 text-indigo-200" />
                 <span>{t.copy.publishedJune262026}</span>
               </div>
-              <span className="text-white/40">•</span>
+              <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/40" />
               <div className="flex items-center gap-1.5 text-xs text-indigo-100">
                 <Clock className="w-3.5 h-3.5 text-indigo-200" />
-                <span>{t.copy.text6MinRead}</span>
+                <span>{currentPost.duration || t.copy.text6MinRead}</span>
               </div>
             </div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight max-w-4xl mb-6">{t.copy.identrasSentinelHelpsYouAssessRiskAtEvery}</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight tracking-tight max-w-4xl mb-6">{currentPost.title}</h1>
             
-            <p className="text-base md:text-lg text-slate-200 font-normal leading-relaxed max-w-3xl mb-8">{t.copy.identrasSentinelPassivelyCollectsDeviceAndNetworkSignals}</p>
+            <p className="text-base md:text-lg text-slate-200 font-normal leading-relaxed max-w-3xl mb-8">{currentPost.description}</p>
 
             <div className="flex items-center gap-3 border-t border-white/10 pt-6 mt-8">
               <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#354CE1] to-[#BE185D] flex items-center justify-center font-bold text-sm tracking-wide text-white border-2 border-white/20 shadow-md">
@@ -478,30 +481,6 @@ export default function EbookDetailPage({ ebookId, onBack, onOpenSandbox }: Eboo
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Final Banner */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="bg-gradient-to-r from-[#3B52E2] to-[#4F46E5] text-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden shadow-xl">
-          {/* Subtle background glow */}
-          <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-indigo-500/20 rounded-full blur-2xl" />
-          
-          <div className="space-y-2 max-w-lg">
-            <h2 className="text-2xl font-bold tracking-tight">{t.copy.readyToGetStarted}</h2>
-            <p className="text-indigo-100 text-sm font-normal leading-relaxed">{t.copy.getInTouchOrStartExploringIdentraPassively}</p>
-          </div>
-          
-          <div className="flex flex-wrap items-center gap-3 shrink-0 relative z-10">
-            <button 
-              onClick={onOpenSandbox}
-              className="bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs px-5 py-3 rounded-full shadow-md transition"
-            >{t.copy.getADemo}</button>
-            <button 
-              onClick={onOpenSandbox}
-              className="text-white hover:text-indigo-100 font-semibold text-xs px-5 py-3 rounded-full bg-white/10 hover:bg-white/20 transition border border-white/20"
-            >{t.copy.tryItNow}</button>
           </div>
         </div>
       </div>

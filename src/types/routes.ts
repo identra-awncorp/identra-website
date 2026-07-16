@@ -6,7 +6,7 @@ export const APP_VIEWS = [
   'login',
   'blog',
   'ebooks',
-  'ebook-detail',
+  'blog-detail',
   'events',
   'careers',
   'research',
@@ -68,23 +68,33 @@ export const APP_VIEWS = [
 
 export type AppView = typeof APP_VIEWS[number];
 
-export const EBOOK_DETAIL_IDS = [
-  'k8m4q2z7v9p1x6d3',
+export const BLOG_DETAIL_IDS = [
+  'blog-1',
+  'blog-2',
+  'blog-3',
+  'blog-4',
+  'blog-5',
+  'blog-6',
+  'blog-7',
+  'blog-8',
+  'blog-9',
+  'blog-10',
+  'blog-11',
+  'blog-12',
 ] as const;
 
-export type EbookDetailId = typeof EBOOK_DETAIL_IDS[number];
+export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
 
-export const SENTINEL_EBOOK_DETAIL_ID: EbookDetailId = 'k8m4q2z7v9p1x6d3';
-export const DEFAULT_EBOOK_DETAIL_ID: EbookDetailId = SENTINEL_EBOOK_DETAIL_ID;
+export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'blog-1';
 
 export const VALID_VIEWS = new Set<AppView>(APP_VIEWS);
-export const VALID_EBOOK_DETAIL_IDS = new Set<EbookDetailId>(EBOOK_DETAIL_IDS);
+export const VALID_BLOG_DETAIL_IDS = new Set<BlogDetailId>(BLOG_DETAIL_IDS);
 
 export const isAppView = (value: string): value is AppView =>
   VALID_VIEWS.has(value as AppView);
 
-export const isEbookDetailId = (value: string): value is EbookDetailId =>
-  VALID_EBOOK_DETAIL_IDS.has(value as EbookDetailId);
+export const isBlogDetailId = (value: string): value is BlogDetailId =>
+  VALID_BLOG_DETAIL_IDS.has(value as BlogDetailId);
 
 export const pathToView = (pathname: string): AppView => {
   const cleanPath = pathname.replace(/^\/+/, '').replace(/\/+$/, '');
@@ -94,24 +104,24 @@ export const pathToView = (pathname: string): AppView => {
   return isAppView(viewSegment) ? viewSegment : 'landing';
 };
 
-export const pathToEbookDetailId = (pathname: string): EbookDetailId => {
+export const pathToBlogDetailId = (pathname: string): BlogDetailId => {
   const cleanPath = pathname.replace(/^\/+/, '').replace(/\/+$/, '');
   const [viewSegment, detailId] = cleanPath.split('/');
-  if (viewSegment !== 'ebook-detail' || !detailId) return DEFAULT_EBOOK_DETAIL_ID;
+  if (viewSegment !== 'blog-detail' || !detailId) return DEFAULT_BLOG_DETAIL_ID;
 
   try {
     const decodedDetailId = decodeURIComponent(detailId);
-    return isEbookDetailId(decodedDetailId) ? decodedDetailId : DEFAULT_EBOOK_DETAIL_ID;
+    return isBlogDetailId(decodedDetailId) ? decodedDetailId : DEFAULT_BLOG_DETAIL_ID;
   } catch {
-    return DEFAULT_EBOOK_DETAIL_ID;
+    return DEFAULT_BLOG_DETAIL_ID;
   }
 };
 
-export const ebookDetailPath = (id: EbookDetailId) => `/ebook-detail/${encodeURIComponent(id)}`;
+export const blogDetailPath = (id: BlogDetailId) => `/blog-detail/${encodeURIComponent(id)}`;
 
 export const viewToPath = (view: AppView) => {
   if (view === 'landing') return '/';
-  if (view === 'ebook-detail') return ebookDetailPath(DEFAULT_EBOOK_DETAIL_ID);
+  if (view === 'blog-detail') return blogDetailPath(DEFAULT_BLOG_DETAIL_ID);
 
   return `/${view}`;
 };

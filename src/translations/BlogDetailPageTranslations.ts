@@ -1,18 +1,18 @@
-/**
+﻿/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
+export const BLOG_DETAIL_PAGE_TRANSLATIONS = {
   "en": {
     "copy": {
-      "backToEbooksGuides": "Back to Ebooks & Guides",
+      "backToBlog": "Back to Blog",
       "bookmarkArticle": "Bookmark article",
-      "copyOriginalLink": "Copy original link",
+      "copyOriginalLink": "Copy article link",
       "copied": "Copied!",
       "copyFailed": "Copy failed",
       "getADemo": "Get a demo",
-      "blogGuide": "Blog &amp; Guide",
+      "blogGuide": "Blog",
       "publishedJune262026": "Published June 26, 2026",
       "text6MinRead": "6 min read",
       "identrasSentinelHelpsYouAssessRiskAtEvery": "Identra’s Sentinel helps you assess risk at every moment",
@@ -58,18 +58,18 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
       "readArticle": "Read article",
       "readyToGetStarted": "Ready to get started?",
       "getInTouchOrStartExploringIdentraPassively": "Get in touch or start exploring Identra passively using Sentinel today.",
-      "tryItNow": "Try it now &rarr;",
+      "tryItNow": "Try it now →",
     },
   },
   "es": {
     "copy": {
-      "backToEbooksGuides": "Volver a ebooks y guías",
+      "backToBlog": "Volver al blog",
       "bookmarkArticle": "Guardar artículo",
-      "copyOriginalLink": "Copiar enlace original",
+      "copyOriginalLink": "Copiar enlace del artículo",
       "copied": "¡Copiado!",
       "copyFailed": "No se pudo copiar",
       "getADemo": "Solicitar una demo",
-      "blogGuide": "Blog y guía",
+      "blogGuide": "Blog",
       "publishedJune262026": "Publicado el 26 de junio de 2026",
       "text6MinRead": "Lectura de 6 min",
       "identrasSentinelHelpsYouAssessRiskAtEvery": "Sentinel de Identra le ayuda a evaluar riesgo en cada momento",
@@ -110,7 +110,7 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
       "tableOfContents": "Índice",
       "needAContinuousRiskSignalsStrategy": "¿Necesita una estrategia continua de señales de riesgo?",
       "configureSentinelsPassiveTelemetryToAnalyzeBrowsersProxy": "Configure la telemetría pasiva de Sentinel para analizar navegadores, proxies, emuladores y cuentas compartidas.",
-      "launchInteractiveSandbox": "Abrir sandbox interactivo",
+      "launchInteractiveSandbox": "Abrir entorno interactivo",
       "continueReading": "Seguir leyendo",
       "readArticle": "Leer artículo",
       "readyToGetStarted": "¿Listo para empezar?",
@@ -120,13 +120,13 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
   },
   "ja": {
     "copy": {
-      "backToEbooksGuides": "Ebookとガイドに戻る",
+      "backToBlog": "ブログに戻る",
       "bookmarkArticle": "記事を保存",
-      "copyOriginalLink": "元のリンクをコピー",
+      "copyOriginalLink": "記事リンクをコピー",
       "copied": "コピーしました！",
       "copyFailed": "コピーできませんでした",
       "getADemo": "デモを依頼",
-      "blogGuide": "ブログ & ガイド",
+      "blogGuide": "ブログ",
       "publishedJune262026": "2026年6月26日公開",
       "text6MinRead": "6分で読める",
       "identrasSentinelHelpsYouAssessRiskAtEvery": "IdentraのSentinelはあらゆる瞬間のリスク評価を支援します",
@@ -167,7 +167,7 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
       "tableOfContents": "目次",
       "needAContinuousRiskSignalsStrategy": "継続的なリスクシグナル戦略が必要ですか？",
       "configureSentinelsPassiveTelemetryToAnalyzeBrowsersProxy": "Sentinelの受動テレメトリで、ブラウザー、プロキシ利用、エミュレーター、アカウント共有を分析します。",
-      "launchInteractiveSandbox": "インタラクティブSandboxを起動",
+      "launchInteractiveSandbox": "インタラクティブ環境を起動",
       "continueReading": "続きを読む",
       "readArticle": "記事を読む",
       "readyToGetStarted": "始める準備はできましたか？",
@@ -177,13 +177,13 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
   },
   "de": {
     "copy": {
-      "backToEbooksGuides": "Zurück zu E-Books und Guides",
+      "backToBlog": "Zurück zum Blog",
       "bookmarkArticle": "Artikel merken",
-      "copyOriginalLink": "Originallink kopieren",
+      "copyOriginalLink": "Artikellink kopieren",
       "copied": "Kopiert!",
       "copyFailed": "Kopieren fehlgeschlagen",
       "getADemo": "Demo anfragen",
-      "blogGuide": "Blog & Guide",
+      "blogGuide": "Blog",
       "publishedJune262026": "Veröffentlicht am 26. Juni 2026",
       "text6MinRead": "6 Min. Lesezeit",
       "identrasSentinelHelpsYouAssessRiskAtEvery": "Identras Sentinel hilft, Risiko in jedem Moment zu bewerten",
@@ -224,7 +224,7 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
       "tableOfContents": "Inhaltsverzeichnis",
       "needAContinuousRiskSignalsStrategy": "Benötigen Sie eine Strategie für kontinuierliche Risikosignale?",
       "configureSentinelsPassiveTelemetryToAnalyzeBrowsersProxy": "Konfigurieren Sie Sentinels passive Telemetrie zur Analyse von Browsern, Proxy-Nutzung, Emulatoren und Account-Sharing.",
-      "launchInteractiveSandbox": "Interaktive Sandbox starten",
+      "launchInteractiveSandbox": "Interaktive Testumgebung starten",
       "continueReading": "Weiterlesen",
       "readArticle": "Artikel lesen",
       "readyToGetStarted": "Bereit loszulegen?",
@@ -234,13 +234,13 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
   },
   "vi": {
     "copy": {
-      "backToEbooksGuides": "Quay lại Ebook & Hướng dẫn",
+      "backToBlog": "Quay lại Blog",
       "bookmarkArticle": "Lưu bài viết",
-      "copyOriginalLink": "Sao chép liên kết gốc",
+      "copyOriginalLink": "Sao chép liên kết bài viết",
       "copied": "Đã sao chép!",
       "copyFailed": "Không thể sao chép",
       "getADemo": "Nhận bản demo",
-      "blogGuide": "Blog & Hướng dẫn",
+      "blogGuide": "Blog",
       "publishedJune262026": "Xuất bản ngày 26 tháng 6 năm 2026",
       "text6MinRead": "Đọc trong 6 phút",
       "identrasSentinelHelpsYouAssessRiskAtEvery": "Sentinel của Identra giúp bạn đánh giá rủi ro ở mọi thời điểm",
@@ -281,7 +281,7 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
       "tableOfContents": "Mục lục",
       "needAContinuousRiskSignalsStrategy": "Bạn cần chiến lược tín hiệu rủi ro liên tục?",
       "configureSentinelsPassiveTelemetryToAnalyzeBrowsersProxy": "Cấu hình telemetry thụ động của Sentinel để phân tích trình duyệt, việc dùng proxy, trình giả lập và chia sẻ tài khoản trong bảng điều khiển đang hoạt động.",
-      "launchInteractiveSandbox": "Mở sandbox tương tác",
+      "launchInteractiveSandbox": "Mở môi trường tương tác",
       "continueReading": "Tiếp tục đọc",
       "readArticle": "Đọc bài viết",
       "readyToGetStarted": "Sẵn sàng bắt đầu?",
@@ -291,7 +291,7 @@ export const EBOOK_DETAIL_PAGE_TRANSLATIONS = {
   },
 } as const;
 
-export const EBOOK_DETAIL_DATA_TRANSLATIONS = {
+export const BLOG_DETAIL_DATA_TRANSLATIONS = {
   en: {
     signals: [
       'Device or browser fingerprint',

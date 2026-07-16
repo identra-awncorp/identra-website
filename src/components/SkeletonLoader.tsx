@@ -34,7 +34,7 @@ export default function SkeletonLoader({ view }: SkeletonLoaderProps) {
   ) {
     layoutType = 'list';
   } else if (
-    ['about', 'pricing', 'contact', 'partners', 'security', 'privacy-overview'].includes(viewLower)
+    ['about', 'pricing', 'contact', 'partners', 'security', 'privacy-overview', 'blog-detail'].includes(viewLower)
   ) {
     layoutType = 'text';
   } else if (

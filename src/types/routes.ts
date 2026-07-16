@@ -4,6 +4,7 @@ export const APP_VIEWS = [
   'about',
   'pricing',
   'login',
+  'blog',
   'ebooks',
   'ebook-detail',
   'events',

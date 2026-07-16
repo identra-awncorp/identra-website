@@ -37,6 +37,7 @@ const GovernmentIdPage = lazy(() => import('./components/GovernmentIdPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
 const LoginPage = lazy(() => import('./components/LoginPage'));
+const BlogPage = lazy(() => import('./components/BlogPage'));
 const EbooksPage = lazy(() => import('./components/EbooksPage'));
 const EbookDetailPage = lazy(() => import('./components/EbookDetailPage'));
 const EventsPage = lazy(() => import('./components/EventsPage'));
@@ -296,6 +297,11 @@ export default function App() {
           <PricingPage 
             onOpenSandbox={handleOpenSandbox} 
             onBackToLanding={() => handleBackNavigation('landing')} 
+          />
+        ) : currentView === 'blog' ? (
+          <BlogPage
+            onOpenSandbox={handleOpenSandbox}
+            onBackToLanding={() => handleBackNavigation('landing')}
           />
         ) : currentView === 'ebooks' ? (
           <EbooksPage 

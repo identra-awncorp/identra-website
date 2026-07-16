@@ -30,7 +30,7 @@ export default function SkeletonLoader({ view }: SkeletonLoaderProps) {
   } else if (viewLower === 'docs') {
     layoutType = 'dashboard';
   } else if (
-    ['ebooks', 'events', 'careers', 'research', 'resource-center', 'academy'].includes(viewLower)
+    ['blog', 'ebooks', 'events', 'careers', 'research', 'resource-center', 'academy'].includes(viewLower)
   ) {
     layoutType = 'list';
   } else if (

@@ -88,7 +88,7 @@ const SOLUTIONS_GOALS = [
 const COMPANY_LEARNING_ITEMS = [
   { label: HEADER_COPY_KEYS.resourceCenter, icon: 'Search', href: '#resource-center', isNew: true },
   { label: HEADER_COPY_KEYS.demo, icon: 'Sparkles', href: '#demo', isNew: true },
-  { label: HEADER_COPY_KEYS.blog, icon: 'Newspaper', href: '#' },
+  { label: HEADER_COPY_KEYS.blog, icon: 'Newspaper', href: '#blog' },
   { label: HEADER_COPY_KEYS.ebooksReports, icon: 'BookOpen', href: '#ebooks' },
   { label: HEADER_COPY_KEYS.webinarsVideos, icon: 'Video', href: '#' },
   { label: HEADER_COPY_KEYS.identityGlossary, icon: 'BookOpen', href: '#' },
@@ -171,7 +171,7 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
 interface HeaderProps {
   onOpenSandbox: () => void;
   onViewChange?: (view: AppView) => void;
-  currentView?: 'landing' | 'government-id' | 'about' | 'pricing' | 'login' | 'ebooks' | 'events' | 'careers' | 'research' | 'compliance' | 'connect' | 'platform' | 'nfc' | 'customers' | 'dynamic-flow' | 'relay' | 'kyb' | 'business-fraud' | 'contact' | 'partners' | 'security' | 'docs' | 'passive-signals' | 'case-management' | 'graph' | 'workflows' | 'copilot' | 'marketplace' | 'document-ai' | 'selfie-age-estimation' | 'selfie-recognition' | 'database-checks' | 'phone-email' | 'mobile-drivers-license' | 'watchlists' | 'adverse-media' | 'profile-report' | 'phone-email-risk' | 'address-lookup' | 'social-media-lookup' | 'age-assurance' | 'candidate-verification' | 'workforce-idv' | 'background-checks' | 'reverification' | 'manual-review' | 'fintech' | 'marketplaces' | 'digital-health' | 'payments' | 'cryptocurrency' | 'government' | 'financial-institutions' | 'e-learning' | 'higher-education' | 'compliance-goal' | 'trust' | 'fraud-prevent' | 'global-expansion' | 'resource-center' | 'privacy-overview' | 'academy' | 'demo';
+  currentView?: AppView;
 }
 
 const NAVIGATION_ITEMS: NavItem[] = [
@@ -213,7 +213,7 @@ const NAVIGATION_ITEMS: NavItem[] = [
       { label: HEADER_COPY_KEYS.resourceCenter, description: HEADER_COPY_KEYS.descResourceCenter, href: '#resource-center' },
       { label: HEADER_COPY_KEYS.ebooksReports, description: HEADER_COPY_KEYS.descEbooksReports, href: '#ebooks' },
       { label: HEADER_COPY_KEYS.identraAcademy, description: HEADER_COPY_KEYS.descIdentraAcademy, href: '#academy' },
-      { label: HEADER_COPY_KEYS.blog, description: HEADER_COPY_KEYS.descBlog, href: '#' },
+      { label: HEADER_COPY_KEYS.blog, description: HEADER_COPY_KEYS.descBlog, href: '#blog' },
     ]
   }
 ];
@@ -360,6 +360,8 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
       onViewChange('security');
     } else if (lowercaseLabel.includes('event') || href === '#events') {
       onViewChange('events');
+    } else if (lowercaseLabel.includes('blog') || href === '#blog') {
+      onViewChange('blog');
     } else if (lowercaseLabel.includes('e-books') || lowercaseLabel.includes('ebook') || href === '#ebooks') {
       onViewChange('ebooks');
     } else if (lowercaseLabel.includes('doc') || lowercaseLabel.includes('api reference') || href === '#docs') {
@@ -541,6 +543,11 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
     } else if (onViewChange && (label === HEADER_COPY_KEYS.pricing || href === '#pricing')) {
       e.preventDefault();
       onViewChange('pricing');
+      setActiveDropdown(null);
+      setMobileMenuOpen(false);
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.blog || label === 'Blog' || href === '#blog')) {
+      e.preventDefault();
+      onViewChange('blog');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
     } else if (onViewChange && (label === 'Ebooks & Reports' || label === 'Ebooks' || href === '#ebooks')) {

@@ -673,7 +673,7 @@ export const FOOTER_SECTIONS = [
   {
     titleKey: 'resources',
     links: [
-      { key: 'blog' },
+      { key: 'blog', view: 'blog' },
       { key: 'ebooksReports', view: 'ebooks' },
       { key: 'research', view: 'research' },
       { key: 'webinarsVideos' },

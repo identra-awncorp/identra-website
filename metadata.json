@@ -1,0 +1,6 @@
+{
+  "name": "Identra Website",
+  "description": "A highly-polished interactive Identra identity verification platform website, featuring an interactive live verification sandbox, custom product visualizers, and a responsive design.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

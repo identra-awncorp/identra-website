@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /en/login
+Disallow: /es/login
+Disallow: /ja/login
+Disallow: /de/login
+Disallow: /vi/login
+
+Sitemap: https://identra.com/sitemap.xml

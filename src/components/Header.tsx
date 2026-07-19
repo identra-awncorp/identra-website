@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { AppView } from '../types/routes';
+import { SUPPORTED_LOCALES, type AppView } from '../types/routes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
@@ -858,7 +858,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setLangDropdownOpen(false)} />
                 <div className="absolute right-0 mt-1.5 w-32 bg-white rounded-xl shadow-xl border border-slate-100 p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  {(['en', 'es', 'ja', 'de', 'vi'] as const).map((lang) => (
+                  {SUPPORTED_LOCALES.map((lang) => (
                     <button
                       key={lang}
                       onClick={() => {
@@ -1209,7 +1209,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
                   {tm(HEADER_COPY_KEYS.language)}
                 </span>
                 <div className="flex gap-1 flex-wrap">
-                  {(['en', 'es', 'ja', 'de', 'vi'] as const).map((lang) => (
+                  {SUPPORTED_LOCALES.map((lang) => (
                     <button
                       key={lang}
                       onClick={() => setLanguage(lang)}

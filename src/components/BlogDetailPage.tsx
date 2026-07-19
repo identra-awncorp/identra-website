@@ -83,7 +83,9 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
   };
 
   const handleShare = async () => {
-    const copied = await copyTextToClipboard(`${window.location.origin}${blogDetailPath(blogId)}`);
+    const copied = await copyTextToClipboard(
+      `${window.location.origin}${blogDetailPath(blogId, language)}`,
+    );
     setCopyStatus(copied ? 'success' : 'error');
     setTimeout(() => setCopyStatus('idle'), 2000);
   };

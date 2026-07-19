@@ -3,11 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, type ReactNode } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { translations } from '../translations/LanguageContextTranslations';
+import {
+  DEFAULT_LOCALE,
+  isLocale,
+  pathToLocale,
+  replacePathLocale,
+  type Locale,
+} from '../types/routes';
 import { getLocalizedValue } from '../utils/i18nRuntime';
 
-export type Language = 'en' | 'es' | 'ja' | 'de' | 'vi';
+export type Language = Locale;
 
 interface LanguageContextType {
   language: Language;
@@ -17,22 +25,20 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined' || !navigator) {
-    return 'en';
+export const getPreferredLanguage = (): Language => {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+    return DEFAULT_LOCALE;
   }
 
-  // Check localStorage first for saved preference
   try {
     const saved = localStorage.getItem('identra_lang');
-    if (saved && ['en', 'es', 'ja', 'de', 'vi'].includes(saved)) {
-      return saved as Language;
+    if (saved && isLocale(saved)) {
+      return saved;
     }
-  } catch (e) {
+  } catch {
     // Ignore localStorage errors
   }
 
-  // Fall back to browser locale detection
   const locales = [
     ...(navigator.languages || []),
     navigator.language
@@ -40,25 +46,42 @@ const getInitialLanguage = (): Language => {
 
   for (const locale of locales) {
     const langPrefix = locale.split('-')[0].split('_')[0].toLowerCase();
-    if (['en', 'es', 'ja', 'de', 'vi'].includes(langPrefix)) {
-      return langPrefix as Language;
+    if (isLocale(langPrefix)) {
+      return langPrefix;
     }
   }
 
-  return 'en';
+  return DEFAULT_LOCALE;
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const language = pathToLocale(location.pathname) ?? getPreferredLanguage();
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
+  useEffect(() => {
     try {
-      localStorage.setItem('identra_lang', lang);
-    } catch (e) {
+      localStorage.setItem('identra_lang', language);
+    } catch {
       // Ignore localStorage errors
     }
-  };
+  }, [language]);
+
+  const setLanguage = useCallback((lang: Language) => {
+    try {
+      localStorage.setItem('identra_lang', lang);
+    } catch {
+      // Ignore localStorage errors
+    }
+
+    navigate(
+      {
+        pathname: replacePathLocale(location.pathname, lang),
+        search: location.search,
+        hash: location.hash,
+      },
+    );
+  }, [location.hash, location.pathname, location.search, navigate]);
 
   const t = (key: keyof typeof translations['en']): string => {
     return getLocalizedValue(translations[language], key, language, 'LanguageContextTranslations');

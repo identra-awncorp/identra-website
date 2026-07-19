@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "npm run generate:seo && vite build && npm run generate:localized-pages",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
+    "generate:seo": "tsx scripts/generate-seo-assets.ts",
+    "generate:localized-pages": "tsx scripts/generate-localized-pages.ts",
     "lint": "tsc --noEmit",
     "scan:localization": "node scripts/localization-scanner.mjs --path src/components --summary",
     "scan:i18n-architecture": "node scripts/i18n-architecture-scanner.mjs --path src/components --summary",

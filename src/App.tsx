@@ -5,12 +5,13 @@
 
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
-import { LanguageProvider } from './context/LanguageContext';
+import { useLanguage } from './context/LanguageContext';
 import SkeletonLoader from './components/SkeletonLoader';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import SeoMetadata from './components/SeoMetadata';
 import type { AppView, BlogDetailId } from './types/routes';
-import { blogDetailPath, pathToBlogDetailId, pathToView, viewToPath } from './types/routes';
+import { blogDetailPath, localizePath, pathToBlogDetailId, pathToView, viewToPath } from './types/routes';
 
 function InitialLoadMarker({ onReady }: { onReady: () => void }) {
   useEffect(() => {
@@ -97,17 +98,25 @@ const ResourceCenterPage = lazy(() => import('./components/ResourceCenterPage'))
 const PrivacyPage = lazy(() => import('./components/PrivacyPage'));
 const AcademyPage = lazy(() => import('./components/AcademyPage'));
 const DemoPage = lazy(() => import('./components/DemoPage'));
+const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const navigationType = useNavigationType();
+  const { language } = useLanguage();
 
   const [isSandboxOpen, setIsSandboxOpen] = useState(false);
   const [hasCompletedInitialLoad, setHasCompletedInitialLoad] = useState(false);
   const scrollPositionsRef = useRef<Map<string, number>>(new Map());
   const scrollRestoreVersionRef = useRef(0);
-  const currentView = pathToView(location.pathname);
+  const resolvedView = pathToView(location.pathname);
+  const resolvedBlogId = resolvedView === 'blog-detail'
+    ? pathToBlogDetailId(location.pathname)
+    : null;
+  const isNotFound = resolvedView === null
+    || (resolvedView === 'blog-detail' && resolvedBlogId === null);
+  const currentView: AppView = resolvedView ?? 'landing';
 
   const saveCurrentScrollPosition = useCallback((key = location.key) => {
     scrollPositionsRef.current.set(key, window.scrollY);
@@ -176,14 +185,19 @@ export default function App() {
   }, [location.key, navigationType, restoreWindowScroll]);
 
   useEffect(() => {
-    if (currentView === 'blog-detail') {
-      const canonicalBlogDetailPath = blogDetailPath(pathToBlogDetailId(location.pathname));
-      if (location.pathname !== canonicalBlogDetailPath) {
-        navigate(canonicalBlogDetailPath, { replace: true, state: location.state as RouteNavigationState | null });
-        return;
-      }
+    const canonicalPath = localizePath(location.pathname, language);
+
+    if (canonicalPath && location.pathname !== canonicalPath) {
+      navigate(
+        {
+          pathname: canonicalPath,
+          search: location.search,
+          hash: location.hash,
+        },
+        { replace: true, state: location.state as RouteNavigationState | null },
+      );
     }
-  }, [location.pathname, location.state, currentView, navigate]);
+  }, [language, location.hash, location.pathname, location.search, location.state, navigate]);
 
   const handleOpenSandbox = () => {
     setIsSandboxOpen(true);
@@ -194,17 +208,17 @@ export default function App() {
   };
 
   const handleViewChange = (view: AppView) => {
-    if (view === currentView) return;
+    if (!isNotFound && view === currentView) return;
 
     saveCurrentScrollPosition();
-    navigate(viewToPath(view), { state: IN_APP_NAVIGATION_STATE });
+    navigate(viewToPath(view, language), { state: IN_APP_NAVIGATION_STATE });
   };
 
   const handleBlogDetailChange = (id: BlogDetailId) => {
-    if (currentView === 'blog-detail' && location.pathname === blogDetailPath(id)) return;
+    if (currentView === 'blog-detail' && location.pathname === blogDetailPath(id, language)) return;
 
     saveCurrentScrollPosition();
-    navigate(blogDetailPath(id), { state: IN_APP_NAVIGATION_STATE });
+    navigate(blogDetailPath(id, language), { state: IN_APP_NAVIGATION_STATE });
   };
 
   const handleBackNavigation = (fallbackView: AppView) => {
@@ -234,7 +248,12 @@ export default function App() {
   const suspenseFallback = !hasCompletedInitialLoad || isStandaloneView ? pageSkeleton : layoutSkeleton;
 
   return (
-    <LanguageProvider>
+    <>
+      <SeoMetadata
+        currentView={currentView}
+        blogId={resolvedBlogId ?? undefined}
+        isNotFound={isNotFound}
+      />
       <Suspense fallback={suspenseFallback}>
       {(() => {
         if (currentView === 'login') {
@@ -263,7 +282,9 @@ export default function App() {
 
       {/* Main Content Sections */}
       <main>
-        {currentView === 'landing' ? (
+        {isNotFound ? (
+          <NotFoundPage onBackToLanding={() => handleViewChange('landing')} />
+        ) : currentView === 'landing' ? (
           <>
             {/* Hero Section */}
             <Hero onOpenSandbox={handleOpenSandbox} />
@@ -310,7 +331,7 @@ export default function App() {
           />
         ) : currentView === 'blog-detail' ? (
           <BlogDetailPage
-            blogId={pathToBlogDetailId(location.pathname)}
+            blogId={resolvedBlogId!}
             onBack={() => handleBackNavigation('blog')}
             onOpenSandbox={handleOpenSandbox}
           />
@@ -660,6 +681,6 @@ export default function App() {
         );
       })()}
       </Suspense>
-    </LanguageProvider>
+    </>
   );
 }

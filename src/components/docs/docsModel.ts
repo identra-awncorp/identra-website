@@ -113,7 +113,6 @@ export interface DocsArticleLayoutUi {
 }
 
 export interface DocsContentPageProps {
-  categories: Record<string, string>;
   ui: DocsArticleLayoutUi;
   copyStatus: 'idle' | 'success' | 'error';
   feedbackSubmitted: null | 'yes' | 'no';

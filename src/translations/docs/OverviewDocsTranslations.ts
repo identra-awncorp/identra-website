@@ -7,7 +7,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'Understand SSI by where each piece of code actually runs',
+        title: 'SSI runtimes',
         blocks: [
           { type: 'p', text: 'Role-based SSI guide. Walk through the three roles, understand data boundaries, and compare examples across web, server, and mobile SDK runtimes.' },
           { type: 'p', text: 'Self-sovereign identity becomes easier to understand when each responsibility has a clear owner. An Issuer creates a Verifiable Credential (VC), the Holder keeps it in a mobile secure vault, and a Verifier requests and verifies a Verifiable Presentation (VP).' },
@@ -22,7 +22,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
       },
       {
         id: 'data-boundaries',
-        title: 'SSI does not mean every platform holds credentials',
+        title: 'Credential boundaries',
         blocks: [
           { type: 'p', text: 'Identra separates responsibilities clearly: the Issuer creates VCs, the Holder phone is the only vault, and the Verifier only requests and verifies VPs.' },
           { type: 'subheading', text: 'Most important rule' },
@@ -105,7 +105,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'Entender SSI según dónde se ejecuta realmente cada pieza de código',
+        title: 'Entornos SSI',
         blocks: [
           { type: 'p', text: 'Guía SSI basada en roles. Recorre los tres roles, entiende los límites de datos y compara ejemplos entre SDK web, servidor y móvil.' },
           { type: 'p', text: 'La identidad autosoberana se entiende mejor cuando cada responsabilidad tiene un propietario claro. El Emisor crea una Credencial Verificable (VC), el Titular la conserva en una bóveda segura del móvil y el Verificador solicita y valida una Presentación Verificable (VP).' },
@@ -120,7 +120,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
       },
       {
         id: 'data-boundaries',
-        title: 'SSI no significa que todas las plataformas guarden credenciales',
+        title: 'Límites de credenciales',
         blocks: [
           { type: 'p', text: 'Identra separa claramente las responsabilidades: el Emisor crea las VC, el teléfono del Titular es la única bóveda, y el Verificador solo solicita y verifica VP.' },
           { type: 'subheading', text: 'Regla más importante' },
@@ -203,7 +203,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: '各コードが実際にどこで動くかからSSIを理解する',
+        title: 'SSIの実行環境',
         blocks: [
           { type: 'p', text: 'ロール別SSIガイドです。3つの役割を順にたどり、データ境界を理解し、Web、サーバー、モバイルSDKの例を比較します。' },
           { type: 'p', text: '自己主権型IDは、各責任の主体を明確にすると理解しやすくなります。発行者が検証可能なクレデンシャル（VC）を作成し、保有者がモバイル端末の安全な保管庫に保存し、検証者が検証可能な提示内容（VP）を要求して検証します。' },
@@ -218,7 +218,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
       },
       {
         id: 'data-boundaries',
-        title: 'SSIでもすべての基盤がクレデンシャルを保持するわけではない',
+        title: 'クレデンシャル境界',
         blocks: [
           { type: 'p', text: 'Identraは責任を明確に分離します。発行者がVCを作成し、保有者の電話だけが唯一の保管庫となり、検証者はVPを要求して検証するだけです。' },
           { type: 'subheading', text: '最も重要なルール' },
@@ -301,7 +301,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'SSI anhand des tatsächlichen Ausführungsorts jedes Codeteils verstehen',
+        title: 'SSI-Laufzeiten',
         blocks: [
           { type: 'p', text: 'Rollenbasierter SSI-Leitfaden. Gehen Sie die drei Rollen durch, verstehen Sie Datengrenzen und vergleichen Sie Beispiele für Web-, Server- und Mobile-SDKs.' },
           { type: 'p', text: 'Selbstbestimmte Identität wird verständlich, wenn jede Verantwortung klar zugeordnet ist. Der Aussteller erstellt einen überprüfbaren Nachweis (VC), der Inhaber bewahrt ihn im sicheren mobilen Tresor auf und der Prüfer fordert eine überprüfbare Präsentation (VP) an und prüft sie.' },
@@ -316,7 +316,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
       },
       {
         id: 'data-boundaries',
-        title: 'SSI bedeutet nicht, dass jede Plattform Nachweise speichert',
+        title: 'Nachweisgrenzen',
         blocks: [
           { type: 'p', text: 'Identra trennt Verantwortlichkeiten klar: Der Aussteller erstellt VCs, das Telefon des Inhabers ist der einzige Tresor, und der Prüfer fordert und prüft nur VPs.' },
           { type: 'subheading', text: 'Wichtigste Regel' },
@@ -399,7 +399,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'Hiểu SSI qua nơi từng đoạn mã thực sự chạy',
+        title: 'Môi trường SSI',
         blocks: [
           { type: 'p', text: 'Hướng dẫn SSI theo vai trò. Đi từng bước qua ba vai trò, xem ranh giới dữ liệu và so sánh ví dụ giữa các SDK web, server và mobile.' },
           { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo Thực chứng có thể xác minh (VC), Người nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn Bên xác minh yêu cầu và kiểm tra Bản trình bày có thể xác minh (VP).' },
@@ -414,7 +414,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
       },
       {
         id: 'data-boundaries',
-        title: 'SSI không có nghĩa mọi nền tảng đều giữ thực chứng',
+        title: 'Ranh giới thực chứng',
         blocks: [
           { type: 'p', text: 'Identra phân tách rõ trách nhiệm: Bên phát hành tạo VC, điện thoại của Người nắm giữ là kho duy nhất, còn Bên xác minh chỉ yêu cầu và xác minh VP.' },
           { type: 'subheading', text: 'Quy tắc quan trọng nhất' },

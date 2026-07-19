@@ -323,7 +323,6 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
           )}
         >
           <CurrentDocsPage
-            categories={t.categories}
             ui={ui}
             copyStatus={copyStatus}
             feedbackSubmitted={feedbackSubmitted}

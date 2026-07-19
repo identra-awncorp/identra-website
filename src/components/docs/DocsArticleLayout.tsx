@@ -268,7 +268,6 @@ const renderBlock = (block: DocBlock, index: number) => {
 
 export default function DocsArticleLayout({
   content,
-  categories,
   ui,
   copyStatus,
   feedbackSubmitted,
@@ -333,9 +332,9 @@ export default function DocsArticleLayout({
         </nav>
       </aside>
 
-      <main className="col-span-1 md:col-span-7 space-y-8 min-h-[60vh] md:pr-4">
+      <main aria-label={content.title} className="col-span-1 md:col-span-7 space-y-8 min-h-[60vh] md:pr-4">
         <div className="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500">
-          <span>{categories[content.category]}</span>
+          <span>{content.title}</span>
           <button onClick={onCopyPage} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-300 font-medium transition cursor-pointer">
             {copyStatus === 'success' ? (
               <Check className="w-3.5 h-3.5 text-emerald-500" />
@@ -346,10 +345,6 @@ export default function DocsArticleLayout({
             )}
             <span>{copyStatus === 'success' ? ui.copied : copyStatus === 'error' ? ui.copyFailed : ui.copyPage}</span>
           </button>
-        </div>
-
-        <div className="border-b border-slate-100 dark:border-slate-850/30 pb-6">
-          <h1 className="font-sans font-bold text-3xl md:text-4xl text-slate-900 dark:text-white tracking-tight">{content.title}</h1>
         </div>
 
         <div className="md:hidden space-y-2">

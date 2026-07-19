@@ -20,7 +20,7 @@ import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { DOCS_PAGE_TRANSLATIONS } from '../translations/DocsPageTranslations';
 import { copyTextToClipboard } from '../utils/clipboard';
 import identraLogo from '../assets/images/identra-logo.svg';
-import { DOCS_TAB_PAGE_IDS, DOCS_TAB_SEQUENCE, getTabIdForPage } from './docs/docsNavigation';
+import { DOCS_TAB_PAGE_IDS, getTabIdForPage } from './docs/docsNavigation';
 import type { DocPage, DocsContentPageProps, DocsTabId } from './docs/docsModel';
 
 const DocsOverviewPage = React.lazy(() => import('./docs/DocsOverviewPage'));
@@ -93,11 +93,6 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
     { id: 'changelog', label: ui.tabs.changelog, Icon: Clock }
   ], [ui.tabs]);
 
-  const currentTabIndex = DOCS_TAB_SEQUENCE.indexOf(currentTab);
-  const previousTabId = currentTabIndex > 0 ? DOCS_TAB_SEQUENCE[currentTabIndex - 1] : null;
-  const nextTabId = currentTabIndex < DOCS_TAB_SEQUENCE.length - 1 ? DOCS_TAB_SEQUENCE[currentTabIndex + 1] : null;
-  const previousTab = previousTabId ? tabItems.find(tab => tab.id === previousTabId) : null;
-  const nextTab = nextTabId ? tabItems.find(tab => tab.id === nextTabId) : null;
   const CurrentDocsPage = DOCS_PAGE_COMPONENTS[currentTab];
 
   const filteredSearchPages = searchQuery.trim() === ''
@@ -326,11 +321,8 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
             ui={ui}
             copyStatus={copyStatus}
             feedbackSubmitted={feedbackSubmitted}
-            previousPage={previousTab ?? null}
-            nextPage={nextTab ?? null}
             onCopyPage={handleCopyPage}
             onFeedback={setFeedbackSubmitted}
-            onNavigate={handleTabChange}
             onBackToLanding={onBackToLanding}
           />
         </React.Suspense>

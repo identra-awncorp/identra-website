@@ -271,11 +271,8 @@ export default function DocsArticleLayout({
   ui,
   copyStatus,
   feedbackSubmitted,
-  previousPage,
-  nextPage,
   onCopyPage,
   onFeedback,
-  onNavigate,
   onBackToLanding
 }: DocsArticleLayoutProps) {
   const [activeSectionId, setActiveSectionId] = useState(content.sections[0]?.id ?? '');
@@ -290,6 +287,13 @@ export default function DocsArticleLayout({
   }, [content]);
 
   const activeSection = content.sections.find(section => section.id === activeSectionId) ?? content.sections[0];
+  const activeSectionIndex = activeSection
+    ? content.sections.findIndex(section => section.id === activeSection.id)
+    : -1;
+  const previousSection = activeSectionIndex > 0 ? content.sections[activeSectionIndex - 1] : null;
+  const nextSection = activeSectionIndex >= 0 && activeSectionIndex < content.sections.length - 1
+    ? content.sections[activeSectionIndex + 1]
+    : null;
   const topics = useMemo(
     () => activeSection ? createTopics(activeSection, ui.topicLabels) : [],
     [activeSection, ui.topicLabels]
@@ -401,26 +405,26 @@ export default function DocsArticleLayout({
           )}
         </div>
 
-        <div className="pt-6 border-t border-slate-100 dark:border-slate-850/30 flex items-center justify-between">
-          {previousPage ? (
-            <button onClick={() => onNavigate(previousPage.id)} className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-[#354CE1] dark:hover:text-[#5F75FF] hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl border border-transparent hover:border-slate-100 dark:hover:border-slate-800/40 transition text-left">
-              <ChevronLeft className="w-4 h-4" />
+        <div className="pt-6 border-t border-slate-100 dark:border-slate-850/30 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {previousSection ? (
+            <button onClick={() => handleSectionChange(previousSection.id)} className="flex min-h-20 w-full max-w-xs cursor-pointer items-center gap-4 rounded-xl border border-slate-100 bg-white p-4 text-left transition hover:border-[#354CE1]/50 hover:bg-slate-50 dark:border-slate-800/40 dark:bg-slate-900 dark:hover:bg-slate-850">
+              <ChevronLeft className="w-5 h-5 text-slate-400 shrink-0" />
               <div>
-                <span className="text-[10px] text-slate-400 block uppercase">{ui.previous}</span>
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{previousPage.label}</span>
+                <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">{ui.previousSection}</span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white mt-1 block">{previousSection.title}</span>
               </div>
             </button>
-          ) : <div />}
+          ) : <div className="hidden sm:block" />}
 
-          {nextPage ? (
-            <button onClick={() => onNavigate(nextPage.id)} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 hover:border-[#354CE1]/50 transition text-right max-w-xs w-full">
+          {nextSection ? (
+            <button onClick={() => handleSectionChange(nextSection.id)} className="flex min-h-20 w-full max-w-xs cursor-pointer items-center justify-between gap-4 rounded-xl border border-slate-100 bg-white p-4 text-left transition hover:border-[#354CE1]/50 hover:bg-slate-50 dark:border-slate-800/40 dark:bg-slate-900 dark:hover:bg-slate-850 sm:justify-self-end">
               <div className="text-left">
-                <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">{ui.nextPage}</span>
-                <span className="text-sm font-bold text-slate-900 dark:text-white mt-1 block">{nextPage.label}</span>
+                <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">{ui.nextSection}</span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white mt-1 block">{nextSection.title}</span>
               </div>
               <ChevronRight className="w-5 h-5 text-slate-400 shrink-0" />
             </button>
-          ) : <div />}
+          ) : <div className="hidden sm:block" />}
         </div>
       </main>
 

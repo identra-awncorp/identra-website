@@ -78,11 +78,6 @@ export type LocalizedDocsContent = Record<Locale, DocContent>;
 
 export type DocsTabId = 'overview' | 'inquiries' | 'transactions' | 'relay' | 'api-ref' | 'changelog';
 
-export interface DocsNavigationItem {
-  id: DocsTabId;
-  label: string;
-}
-
 export interface DocsArticleLayoutUi {
   backToMain: string;
   copied: string;
@@ -93,8 +88,8 @@ export interface DocsArticleLayoutUi {
   thanks: string;
   yes: string;
   no: string;
-  previous: string;
-  nextPage: string;
+  previousSection: string;
+  nextSection: string;
   onThisPage: string;
   documentSections: string;
   sectionTopics: string;
@@ -114,10 +109,7 @@ export interface DocsContentPageProps {
   ui: DocsArticleLayoutUi;
   copyStatus: 'idle' | 'success' | 'error';
   feedbackSubmitted: null | 'yes' | 'no';
-  previousPage: DocsNavigationItem | null;
-  nextPage: DocsNavigationItem | null;
   onCopyPage: () => void;
   onFeedback: (feedback: 'yes' | 'no') => void;
-  onNavigate: (tabId: DocsTabId) => void;
   onBackToLanding: () => void;
 }

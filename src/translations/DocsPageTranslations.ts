@@ -89,6 +89,18 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       nextPage: 'Next Page',
       builtWith: 'Built with',
       onThisPage: 'On this page',
+      documentSections: 'Document sections',
+      sectionTopics: 'In this section',
+      topicLabels: {
+        introduction: 'Introduction',
+        details: 'Details',
+        keyConcepts: 'Key concepts',
+        importantNote: 'Important note',
+        guidance: 'Guidance',
+        reference: 'Reference',
+        codeExample: 'Code example',
+        releaseHistory: 'Release history'
+      },
       identra: 'identra',
       fern: 'fern',
       tabs: {
@@ -349,9 +361,21 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       nextPage: 'Página siguiente',
       builtWith: 'Creado con',
       onThisPage: 'En esta página',
+      documentSections: 'Secciones del documento',
+      sectionTopics: 'En esta sección',
+      topicLabels: {
+        introduction: 'Introducción',
+        details: 'Detalles',
+        keyConcepts: 'Conceptos clave',
+        importantNote: 'Nota importante',
+        guidance: 'Orientación',
+        reference: 'Referencia',
+        codeExample: 'Ejemplo de código',
+        releaseHistory: 'Historial de versiones'
+      },
       identra: 'identra',
       fern: 'fern',
-      tabs: { overview: 'Resumen', inquiries: 'Inquiries', transactions: 'Transacciones', relay: 'Relay', api: 'Referencia API', changelog: 'Historial de cambios' }
+      tabs: { overview: 'Resumen', inquiries: 'Solicitudes', transactions: 'Transacciones', relay: 'Retransmisión', api: 'Referencia API', changelog: 'Historial de cambios' }
     },
     categories: { overview: 'Resumen', sending: 'Enviar datos a Identra', retrieving: 'Recuperar datos de Identra', resources: 'Recursos' },
     pages: []
@@ -380,11 +404,23 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'いいえ',
       previous: '前へ',
       nextPage: '次のページ',
-      builtWith: 'Built with',
+      builtWith: '使用ツール',
       onThisPage: 'このページ',
+      documentSections: 'ドキュメントの構成',
+      sectionTopics: 'このセクション',
+      topicLabels: {
+        introduction: 'はじめに',
+        details: '詳細',
+        keyConcepts: '主要概念',
+        importantNote: '重要な注意',
+        guidance: 'ガイド',
+        reference: 'リファレンス',
+        codeExample: 'コード例',
+        releaseHistory: 'リリース履歴'
+      },
       identra: 'identra',
       fern: 'fern',
-      tabs: { overview: '概要', inquiries: 'Inquiries', transactions: 'Transactions', relay: 'Relay', api: 'APIリファレンス', changelog: '変更履歴' }
+      tabs: { overview: '概要', inquiries: '照会', transactions: '取引', relay: '中継', api: 'APIリファレンス', changelog: '変更履歴' }
     },
     categories: { overview: '概要', sending: 'Identraへデータ送信', retrieving: 'Identraからデータ取得', resources: 'リソース' },
     pages: []
@@ -400,7 +436,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       openApi: 'OpenAPI-Spezifikation',
       status: 'Status',
       serviceOperational: 'Dienst betriebsbereit',
-      toggleTheme: 'Theme umschalten',
+      toggleTheme: 'Darstellung wechseln',
       documentationNavigation: 'Dokumentationsnavigation',
       backToMain: 'Zur Hauptseite',
       copied: 'Kopiert',
@@ -415,9 +451,21 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       nextPage: 'Nächste Seite',
       builtWith: 'Erstellt mit',
       onThisPage: 'Auf dieser Seite',
+      documentSections: 'Dokumentabschnitte',
+      sectionTopics: 'In diesem Abschnitt',
+      topicLabels: {
+        introduction: 'Einführung',
+        details: 'Details',
+        keyConcepts: 'Kernkonzepte',
+        importantNote: 'Wichtiger Hinweis',
+        guidance: 'Anleitung',
+        reference: 'Referenz',
+        codeExample: 'Codebeispiel',
+        releaseHistory: 'Versionsverlauf'
+      },
       identra: 'identra',
       fern: 'fern',
-      tabs: { overview: 'Übersicht', inquiries: 'Inquiries', transactions: 'Transaktionen', relay: 'Relay', api: 'API-Referenz', changelog: 'Changelog' }
+      tabs: { overview: 'Übersicht', inquiries: 'Prüfvorgänge', transactions: 'Transaktionen', relay: 'Weiterleitung', api: 'API-Referenz', changelog: 'Änderungsprotokoll' }
     },
     categories: { overview: 'Übersicht', sending: 'Daten an Identra senden', retrieving: 'Daten von Identra abrufen', resources: 'Ressourcen' },
     pages: []
@@ -448,9 +496,21 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       nextPage: 'Trang tiếp theo',
       builtWith: 'Được xây dựng bằng',
       onThisPage: 'Trong trang này',
+      documentSections: 'Các phần chính',
+      sectionTopics: 'Mục trong phần này',
+      topicLabels: {
+        introduction: 'Giới thiệu',
+        details: 'Chi tiết',
+        keyConcepts: 'Khái niệm chính',
+        importantNote: 'Lưu ý quan trọng',
+        guidance: 'Hướng dẫn',
+        reference: 'Bảng tham chiếu',
+        codeExample: 'Ví dụ mã',
+        releaseHistory: 'Lịch sử phát hành'
+      },
       identra: 'identra',
       fern: 'fern',
-      tabs: { overview: 'Tổng quan', inquiries: 'Inquiries', transactions: 'Giao dịch', relay: 'Relay', api: 'Tham chiếu API', changelog: 'Nhật ký thay đổi' }
+      tabs: { overview: 'Tổng quan', inquiries: 'Hồ sơ xác minh', transactions: 'Giao dịch', relay: 'Chuyển tiếp', api: 'Tham chiếu API', changelog: 'Nhật ký thay đổi' }
     },
     categories: { overview: 'Tổng quan', sending: 'Gửi dữ liệu đến Identra', retrieving: 'Lấy dữ liệu từ Identra', resources: 'Tài nguyên' },
     pages: []
@@ -499,9 +559,9 @@ translatePages('es', {
   security: { title: 'Seguridad y cumplimiento', sections: { commitments: { title: 'Seguridad de primer nivel', blocks: [{ type: 'p', text: 'Identra está diseñada para proteger datos de identidad sensibles con controles sólidos de seguridad, privacidad y cumplimiento.' }, { type: 'list', items: [{ title: 'Cifrado', text: 'AES-256 en reposo y TLS 1.3 en tránsito.' }, { title: 'Estándares', text: 'Controles SOC 2 Type II, GDPR y CCPA.' }, { title: 'Respaldo redundante', text: 'Infraestructura multi-región con replicación continua.' }] }] } } },
   environments: { title: 'Entornos', sections: { 'sandbox-prod': { title: 'Sandbox vs Producción', blocks: [{ type: 'p', text: 'Sandbox permite diseñar, construir y probar flujos antes de pasar a Producción.' }, { type: 'table', headers: ['Función', 'Sandbox', 'Producción'], rows: [['Verificaciones reales', 'No (pruebas simuladas)', 'Sí'], ['Endpoint API', '/v1/sandbox/*', '/v1/*'], ['Precio / facturación', 'Gratis', 'Por uso']] }] } } },
   'choose-integration': { title: 'Elegir un método de integración', sections: { 'integration-options': { title: 'Opciones de integración', blocks: [{ type: 'p', text: 'Identra ofrece rutas desde SDKs personalizados hasta enlaces alojados sin desarrollo.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Renderiza Identra dentro de tu aplicación con marca personalizada.' }, { title: 'Hosted Flow', text: 'Envía usuarios a una URL segura alojada por Identra.' }] }, { type: 'subheading', text: 'Ejemplo: integración con React' }, { type: 'p', text: 'Renderiza Identra de forma segura y gestiona eventos de finalización.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
-  inquiries: { title: 'Inquiries', sections: { 'inquiries-intro': { title: 'Resumen de Inquiries', blocks: [{ type: 'p', text: 'Un Inquiry es el punto central del SDK de Identra. Tu backend lo crea mediante REST API y entrega el token al flujo cliente.' }, { type: 'subheading', text: 'Crear un Inquiry con REST API' }, { type: 'p', text: 'Crea la sesión en tu backend seguro para proteger reglas y referencias internas.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
+  inquiries: { title: 'Solicitudes de verificación', sections: { 'inquiries-intro': { title: 'Resumen de solicitudes', blocks: [{ type: 'p', text: 'Un Inquiry es el punto central del SDK de Identra. Tu backend lo crea mediante REST API y entrega el token al flujo cliente.' }, { type: 'subheading', text: 'Crear un Inquiry con REST API' }, { type: 'p', text: 'Crea la sesión en tu backend seguro para proteger reglas y referencias internas.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transacciones', sections: { 'transactions-intro': { title: 'Monitorear transacciones', blocks: [{ type: 'p', text: 'Rastrea movimientos de dinero, transferencias, sesiones y pagos para prevenir toma de cuentas y fraude.' }] } } },
-  relay: { title: 'Relay', sections: { 'relay-intro': { title: 'Enrutamiento seguro con Relay', blocks: [{ type: 'p', text: 'Relay enruta PII verificada y comprobaciones a terceros o APIs posteriores sin que tengas que conservar esos datos.' }] } } },
+  relay: { title: 'Retransmisión', sections: { 'relay-intro': { title: 'Enrutamiento seguro con Relay', blocks: [{ type: 'p', text: 'Relay enruta PII verificada y comprobaciones a terceros o APIs posteriores sin que tengas que conservar esos datos.' }] } } },
   webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Configurar webhooks', blocks: [{ type: 'p', text: 'Identra envía eventos webhook cuando cambia el estado de un Inquiry.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
   'api-reference': { title: 'Referencia API', sections: { 'api-auth': { title: 'Autenticación', blocks: [{ type: 'p', text: 'Las REST APIs de Identra usan JSON. Autentica solicitudes con el token secreto en el header Authorization.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
   'understanding-payloads': { title: 'Entender un payload API de Identra', sections: { 'anatomy-payload': { title: 'Anatomía de un payload', blocks: [{ type: 'p', text: 'Las respuestas de Identra devuelven recursos JSON anidados con ID, tipo y componentes de verificación.' }] } } },
@@ -514,9 +574,9 @@ translatePages('ja', {
   security: { title: 'セキュリティとコンプライアンス', sections: { commitments: { title: '高度なセキュリティ', blocks: [{ type: 'p', text: 'Identraは、機微な本人確認データを安全に扱うため、セキュリティ、プライバシー、コンプライアンスを重視して設計されています。' }, { type: 'list', items: [{ title: '暗号化', text: '保存時AES-256、転送時TLS 1.3。' }, { title: '基準', text: 'SOC 2 Type II、GDPR、CCPA対応の管理策。' }, { title: '冗長バックアップ', text: 'マルチリージョン基盤と継続的なレプリケーション。' }] }] } } },
   environments: { title: '環境', sections: { 'sandbox-prod': { title: 'SandboxとProduction', blocks: [{ type: 'p', text: 'Sandboxでは、Productionへ移行する前にフローを設計、構築、テストできます。' }, { type: 'table', headers: ['機能', 'Sandbox', 'Production'], rows: [['実検証', 'いいえ（模擬チェック）', 'はい'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['料金 / 請求', '無料', '使用量ベース']] }] } } },
   'choose-integration': { title: '統合方法の選択', sections: { 'integration-options': { title: '統合オプション', blocks: [{ type: 'p', text: 'Identraは、カスタムSDKから開発不要のホスト型リンクまで複数の統合方法を提供します。' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Identraをアプリ内に表示し、ブランドに合わせた体験を提供します。' }, { title: 'Hosted Flow', text: '安全なIdentraホストURLへユーザーを送ります。' }] }, { type: 'subheading', text: '例: Reactで埋め込み' }, { type: 'p', text: 'Identraを安全に表示し、完了イベントを処理します。' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
-  inquiries: { title: 'Inquiries', sections: { 'inquiries-intro': { title: 'Inquiriesの概要', blocks: [{ type: 'p', text: 'InquiryはIdentra SDKの中心です。バックエンドがREST APIで作成し、生成されたトークンをクライアントへ渡します。' }, { type: 'subheading', text: 'REST APIでInquiryを作成' }, { type: 'p', text: 'セキュアなバックエンドでセッションを作成し、ルールや参照IDを保護します。' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
-  transactions: { title: 'Transactions', sections: { 'transactions-intro': { title: 'Transactionsの監視', blocks: [{ type: 'p', text: '資金移動、口座移管、ログイン、支払いイベントを追跡し、不正を防ぎます。' }] } } },
-  relay: { title: 'Relay', sections: { 'relay-intro': { title: 'Relayによる安全なルーティング', blocks: [{ type: 'p', text: 'Relayは、検証済みPIIとチェック結果を、データを保持せずに第三者や下流APIへ安全にルーティングします。' }] } } },
+  inquiries: { title: '照会', sections: { 'inquiries-intro': { title: '照会の概要', blocks: [{ type: 'p', text: 'InquiryはIdentra SDKの中心です。バックエンドがREST APIで作成し、生成されたトークンをクライアントへ渡します。' }, { type: 'subheading', text: 'REST APIでInquiryを作成' }, { type: 'p', text: 'セキュアなバックエンドでセッションを作成し、ルールや参照IDを保護します。' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
+  transactions: { title: '取引', sections: { 'transactions-intro': { title: '取引の監視', blocks: [{ type: 'p', text: '資金移動、口座移管、ログイン、支払いイベントを追跡し、不正を防ぎます。' }] } } },
+  relay: { title: '中継', sections: { 'relay-intro': { title: '安全な中継経路', blocks: [{ type: 'p', text: 'Relayは、検証済みPIIとチェック結果を、データを保持せずに第三者や下流APIへ安全にルーティングします。' }] } } },
   webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Webhook設定', blocks: [{ type: 'p', text: 'IdentraはInquiryの状態変更時にwebhookイベントを送信します。' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
   'api-reference': { title: 'APIリファレンス', sections: { 'api-auth': { title: '認証', blocks: [{ type: 'p', text: 'Identra REST APIsはJSONを使います。Authorization headerにsecret tokenを含めて認証します。' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
   'understanding-payloads': { title: 'Identra API Payloadの理解', sections: { 'anatomy-payload': { title: 'Payloadの構造', blocks: [{ type: 'p', text: 'Identraの応答は、ID、type、検証コンポーネントを含むネストされたJSONです。' }] } } },
@@ -529,13 +589,13 @@ translatePages('de', {
   security: { title: 'Sicherheit und Compliance', sections: { commitments: { title: 'Erstklassige Sicherheit', blocks: [{ type: 'p', text: 'Identra schützt sensible Identitätsdaten mit starken Sicherheits-, Datenschutz- und Compliance-Kontrollen.' }, { type: 'list', items: [{ title: 'Verschlüsselung', text: 'AES-256 im Ruhezustand und TLS 1.3 bei Übertragung.' }, { title: 'Standards', text: 'SOC 2 Type II, GDPR- und CCPA-Kontrollen.' }, { title: 'Redundanz', text: 'Multi-Region-Infrastruktur mit fortlaufender Replikation.' }] }] } } },
   environments: { title: 'Umgebungen', sections: { 'sandbox-prod': { title: 'Sandbox vs Production', blocks: [{ type: 'p', text: 'Sandbox ermöglicht Design, Aufbau und Tests vor dem Wechsel zu Production.' }, { type: 'table', headers: ['Funktion', 'Sandbox', 'Production'], rows: [['Echte Verifizierungen', 'Nein (Mock-Prüfungen)', 'Ja'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['Preise / Abrechnung', 'Kostenlos', 'Nutzungsbasiert']] }] } } },
   'choose-integration': { title: 'Integrationsmethode wählen', sections: { 'integration-options': { title: 'Integrationsoptionen', blocks: [{ type: 'p', text: 'Identra bietet Wege von eigenen SDK-Integrationen bis zu gehosteten Links ohne Entwicklung.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Zeigen Sie Identra direkt in Ihrer App mit eigenem Branding an.' }, { title: 'Hosted Flow', text: 'Leiten Sie Nutzer zu einer sicheren Identra-gehosteten URL weiter.' }] }, { type: 'subheading', text: 'Beispiel: Einbettung mit React' }, { type: 'p', text: 'Rendern Sie Identra sicher und verarbeiten Sie Abschlussereignisse.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
-  inquiries: { title: 'Inquiries', sections: { 'inquiries-intro': { title: 'Überblick über Inquiries', blocks: [{ type: 'p', text: 'Ein Inquiry ist der Mittelpunkt des Identra SDK. Ihr Backend erstellt ihn per REST API und gibt das Token an den Client weiter.' }, { type: 'subheading', text: 'Inquiry per REST API erstellen' }, { type: 'p', text: 'Erstellen Sie die Sitzung auf Ihrem sicheren Backend, um Regeln und Referenzen zu schützen.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
+  inquiries: { title: 'Prüfvorgänge', sections: { 'inquiries-intro': { title: 'Überblick über Prüfvorgänge', blocks: [{ type: 'p', text: 'Ein Inquiry ist der Mittelpunkt des Identra SDK. Ihr Backend erstellt ihn per REST API und gibt das Token an den Client weiter.' }, { type: 'subheading', text: 'Inquiry per REST API erstellen' }, { type: 'p', text: 'Erstellen Sie die Sitzung auf Ihrem sicheren Backend, um Regeln und Referenzen zu schützen.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transaktionen', sections: { 'transactions-intro': { title: 'Transaktionen überwachen', blocks: [{ type: 'p', text: 'Verfolgen Sie Geldflüsse, Transfers, Sitzungen und Auszahlungen, um Betrug zu verhindern.' }] } } },
-  relay: { title: 'Relay', sections: { 'relay-intro': { title: 'Sicheres Routing mit Relay', blocks: [{ type: 'p', text: 'Relay leitet verifizierte PII und Prüfergebnisse sicher an Dritte oder nachgelagerte APIs weiter, ohne dass Sie die Daten halten müssen.' }] } } },
+  relay: { title: 'Weiterleitung', sections: { 'relay-intro': { title: 'Sichere Weiterleitung', blocks: [{ type: 'p', text: 'Relay leitet verifizierte PII und Prüfergebnisse sicher an Dritte oder nachgelagerte APIs weiter, ohne dass Sie die Daten halten müssen.' }] } } },
   webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Webhooks konfigurieren', blocks: [{ type: 'p', text: 'Identra sendet webhook events bei Statusänderungen eines Inquiry.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
   'api-reference': { title: 'API-Referenz', sections: { 'api-auth': { title: 'Authentifizierung', blocks: [{ type: 'p', text: 'Identra REST APIs verwenden JSON. Authentifizieren Sie Anfragen mit Ihrem secret token im Authorization header.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
   'understanding-payloads': { title: 'Identra API Payload verstehen', sections: { 'anatomy-payload': { title: 'Anatomie eines Payloads', blocks: [{ type: 'p', text: 'Identra-Antworten enthalten verschachtelte JSON-Ressourcen mit ID, type und Verifizierungskomponenten.' }] } } },
-  changelog: { title: 'Changelog', sections: { 'changelog-intro': { title: 'Neueste Updates', blocks: [{ type: 'p', text: 'Bleiben Sie über Verbesserungen und Korrekturen von API und SDKs informiert.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Verbesserte Dokumentprüfmaschine', text: 'Machine-Learning-Modelle für moderne Führerscheine und nationale IDs.' }, { version: 'v2025-06-15', title: 'Relay-Routing-Verbesserungen', text: 'Routing partieller Inquiry-Objekte mit anpassbaren PII-Filtern.' }, { version: 'v2024-11-01', title: 'Inline-Sandbox-Anpassung', text: 'Template-Overrides zur Simulation von Ablehnung und Review.' }] }] } } }
+  changelog: { title: 'Änderungsprotokoll', sections: { 'changelog-intro': { title: 'Neueste Updates', blocks: [{ type: 'p', text: 'Bleiben Sie über Verbesserungen und Korrekturen von API und SDKs informiert.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Verbesserte Dokumentprüfmaschine', text: 'Machine-Learning-Modelle für moderne Führerscheine und nationale IDs.' }, { version: 'v2025-06-15', title: 'Relay-Routing-Verbesserungen', text: 'Routing partieller Inquiry-Objekte mit anpassbaren PII-Filtern.' }, { version: 'v2024-11-01', title: 'Inline-Sandbox-Anpassung', text: 'Template-Overrides zur Simulation von Ablehnung und Review.' }] }] } } }
 });
 
 translatePages('vi', {
@@ -544,9 +604,9 @@ translatePages('vi', {
   security: { title: 'Bảo mật và tuân thủ', sections: { commitments: { title: 'Bảo mật hàng đầu', blocks: [{ type: 'p', text: 'Identra được thiết kế để bảo vệ dữ liệu danh tính nhạy cảm bằng các kiểm soát bảo mật, quyền riêng tư và tuân thủ mạnh mẽ.' }, { type: 'list', items: [{ title: 'Mã hóa', text: 'AES-256 khi lưu trữ và TLS 1.3 khi truyền.' }, { title: 'Tiêu chuẩn', text: 'Kiểm soát SOC 2 Type II, GDPR và CCPA.' }, { title: 'Sao lưu dự phòng', text: 'Hạ tầng đa vùng với sao chép liên tục.' }] }] } } },
   environments: { title: 'Môi trường', sections: { 'sandbox-prod': { title: 'Sandbox và Production', blocks: [{ type: 'p', text: 'Sandbox cho phép thiết kế, xây dựng và kiểm thử luồng trước khi chuyển sang Production.' }, { type: 'table', headers: ['Tính năng', 'Sandbox', 'Production'], rows: [['Xác minh thật', 'Không (kiểm tra mô phỏng)', 'Có'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['Giá / thanh toán', 'Miễn phí', 'Theo mức sử dụng']] }] } } },
   'choose-integration': { title: 'Chọn phương thức tích hợp', sections: { 'integration-options': { title: 'Tùy chọn tích hợp', blocks: [{ type: 'p', text: 'Identra cung cấp nhiều cách tích hợp, từ SDK tùy chỉnh đến liên kết được lưu trữ không cần phát triển.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Hiển thị Identra trực tiếp trong ứng dụng với thương hiệu tùy chỉnh.' }, { title: 'Hosted Flow', text: 'Chuyển người dùng đến URL an toàn do Identra lưu trữ.' }] }, { type: 'subheading', text: 'Ví dụ: nhúng với React' }, { type: 'p', text: 'Hiển thị Identra an toàn và xử lý sự kiện hoàn tất trong ứng dụng.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
-  inquiries: { title: 'Inquiries', sections: { 'inquiries-intro': { title: 'Tổng quan về Inquiries', blocks: [{ type: 'p', text: 'Inquiry là điểm trung tâm của Identra SDK. Backend tạo Inquiry qua REST API và chuyển token sang luồng phía client.' }, { type: 'subheading', text: 'Tạo Inquiry qua REST API' }, { type: 'p', text: 'Tạo phiên trên backend an toàn để bảo vệ quy tắc và mã tham chiếu nội bộ.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
+  inquiries: { title: 'Hồ sơ xác minh', sections: { 'inquiries-intro': { title: 'Tổng quan về hồ sơ xác minh', blocks: [{ type: 'p', text: 'Inquiry là điểm trung tâm của Identra SDK. Backend tạo Inquiry qua REST API và chuyển token sang luồng phía client.' }, { type: 'subheading', text: 'Tạo Inquiry qua REST API' }, { type: 'p', text: 'Tạo phiên trên backend an toàn để bảo vệ quy tắc và mã tham chiếu nội bộ.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Giao dịch', sections: { 'transactions-intro': { title: 'Giám sát giao dịch', blocks: [{ type: 'p', text: 'Theo dõi dòng tiền, chuyển khoản, phiên đăng nhập và thanh toán để chống chiếm đoạt tài khoản và gian lận.' }] } } },
-  relay: { title: 'Relay', sections: { 'relay-intro': { title: 'Định tuyến an toàn với Relay', blocks: [{ type: 'p', text: 'Relay định tuyến PII đã xác minh và kết quả kiểm tra đến bên thứ ba hoặc API hạ nguồn mà không cần bạn lưu giữ dữ liệu.' }] } } },
+  relay: { title: 'Chuyển tiếp', sections: { 'relay-intro': { title: 'Chuyển tiếp dữ liệu an toàn', blocks: [{ type: 'p', text: 'Relay định tuyến PII đã xác minh và kết quả kiểm tra đến bên thứ ba hoặc API hạ nguồn mà không cần bạn lưu giữ dữ liệu.' }] } } },
   webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Cấu hình webhooks', blocks: [{ type: 'p', text: 'Identra gửi sự kiện webhook khi trạng thái Inquiry thay đổi.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
   'api-reference': { title: 'Tham chiếu API', sections: { 'api-auth': { title: 'Xác thực', blocks: [{ type: 'p', text: 'Identra REST APIs dùng JSON. Xác thực yêu cầu bằng secret token trong Authorization header.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
   'understanding-payloads': { title: 'Hiểu Identra API Payload', sections: { 'anatomy-payload': { title: 'Cấu trúc payload', blocks: [{ type: 'p', text: 'Phản hồi Identra trả về tài nguyên JSON lồng nhau với ID, trường type và các thành phần kiểm tra xác minh.' }] } } },

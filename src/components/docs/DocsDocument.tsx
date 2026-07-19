@@ -10,6 +10,7 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import CodeBlock from '../CodeBlock';
+import DocsSdkCodeExplorer from './DocsSdkCodeExplorer';
 import type { DocBlock, DocContent, DocSection, DocsContentPageProps, DocsDocumentUi } from './docsTypes';
 
 interface DocsDocumentProps extends DocsContentPageProps {
@@ -39,6 +40,8 @@ const getTopicLabel = (
     case 'table':
       return labels.reference;
     case 'code':
+      return labels.codeExample;
+    case 'sdkExplorer':
       return labels.codeExample;
     case 'changelog':
       return labels.releaseHistory;
@@ -148,6 +151,14 @@ const renderBlock = (block: DocBlock, index: number) => {
     return (
       <React.Fragment key={index}>
         <CodeBlock language={block.language} code={block.code} fileName={block.fileName} />
+      </React.Fragment>
+    );
+  }
+
+  if (block.type === 'sdkExplorer') {
+    return (
+      <React.Fragment key={index}>
+        <DocsSdkCodeExplorer flow={block.flow} />
       </React.Fragment>
     );
   }

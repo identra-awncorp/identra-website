@@ -8,7 +8,10 @@ export type DocBlock =
   | { type: 'cards'; cards: Array<{ title: string; text: string }> }
   | { type: 'table'; headers: string[]; rows: string[][] }
   | { type: 'code'; language: string; code: string; fileName?: string }
+  | { type: 'sdkExplorer'; flow: DocsSdkFlow }
   | { type: 'changelog'; items: Array<{ version: string; title: string; text: string }> };
+
+export type DocsSdkFlow = 'issuance' | 'holder' | 'verification';
 
 export interface DocSection {
   id: string;

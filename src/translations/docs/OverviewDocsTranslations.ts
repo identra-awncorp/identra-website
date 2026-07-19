@@ -1,101 +1,5 @@
 import type { LocalizedDocsContent } from '../../components/docs/docsTypes';
 
-const issuerCode = `import { Identra } from '@identra/web';
-
-const identra = new Identra({
-  environment: 'sandbox',
-  didRegistry: {
-    defaultProvider: 'certnet',
-    providers: ['certnet', 'did:web', 'ion', 'internal-ledger']
-  },
-  mediatorUrl: 'https://mediator.sandbox.identra.dev'
-});
-
-const issuer = await identra.issuer.create({
-  did: 'did:identra:university',
-  keyProtection: 'platform-secure-storage'
-});
-
-await issuer.publishDidDocument({
-  registries: ['certnet', 'did:web']
-});
-
-const credential = await issuer.issue({
-  subjectDid: 'did:identra:holder',
-  type: 'UniversityDegree',
-  claims: {
-    degree: 'Information Technology',
-    graduationYear: 2026
-  }
-});
-
-await issuer.didcomm.sendCredentialOffer({
-  credential,
-  connectionId
-});`;
-
-const holderCode = `import { IdentraMobile } from '@identra/react-native';
-
-const identra = new IdentraMobile({
-  environment: 'sandbox',
-  didRegistry: {
-    defaultProvider: 'certnet',
-    providers: ['certnet', 'did:web', 'ion', 'internal-ledger']
-  },
-  mediatorUrl: 'https://mediator.sandbox.identra.dev'
-});
-
-const wallet = await identra.holder.activateSingleDeviceVault({
-  migrationPolicy: 'wipe-old-device',
-  exportCredentials: false,
-  requireBiometric: true
-});
-
-await wallet.didcomm.onCredential(async (credential) => {
-  await wallet.verifyAndStore(credential);
-});
-
-const request = await wallet.scanPresentationQr(scannedQr);
-const consent = await wallet.requestUserConsent(request);
-const presentation = await wallet.createPresentation({
-  request,
-  consent
-});
-
-await wallet.didcomm.sendPresentation(presentation);`;
-
-const verifierCode = `import { Identra } from '@identra/web';
-
-const identra = new Identra({
-  environment: 'sandbox',
-  didRegistry: {
-    defaultProvider: 'certnet',
-    providers: ['certnet', 'did:web', 'ion', 'internal-ledger']
-  },
-  mediatorUrl: 'https://mediator.sandbox.identra.dev'
-});
-
-const verifier = await identra.verifier.create({
-  did: 'did:identra:jobs-example'
-});
-
-const request = await verifier.createPresentationRequest({
-  credentialType: 'UniversityDegree',
-  fields: ['degree', 'graduationYear'],
-  challenge: crypto.randomUUID()
-});
-
-const qrDataUrl = await verifier.createQr(request);
-const presentation = await verifier.didcomm.waitForPresentation(request.id);
-
-const result = await verifier.verify({
-  presentation,
-  resolveDid: (did) => identra.didRegistry.resolveDidDocument(did),
-  checkCredentialStatus: true
-});
-
-if (result.verified) grantAccess();`;
-
 export const OVERVIEW_DOCS_TRANSLATIONS = {
   en: {
     title: 'Overview',
@@ -103,10 +7,10 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'Understand SSI through where code actually runs',
+        title: 'Understand SSI by where each piece of code actually runs',
         blocks: [
+          { type: 'p', text: 'Role-based SSI guide. Walk through the three roles, understand data boundaries, and compare examples across web, server, and mobile SDK runtimes.' },
           { type: 'p', text: 'Self-sovereign identity becomes easier to understand when each responsibility has a clear owner. An Issuer creates a Verifiable Credential (VC), the Holder keeps it in a mobile secure vault, and a Verifier requests and verifies a Verifiable Presentation (VP).' },
-          { type: 'p', text: 'Identra separates these roles across web, server, and mobile SDKs so that credentials do not drift into systems that should never store them.' },
           { type: 'callout', text: '[Issuer validates and signs VC] -> [Holder stores VC on mobile] -> [Holder consents and creates VP] -> [Verifier validates VP]' },
           { type: 'cards', cards: [
             { title: 'Issuer', text: 'Validates source data, signs the credential, and sends a credential offer through DIDComm.' },
@@ -120,60 +24,77 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'SSI does not mean every platform holds credentials',
         blocks: [
-          { type: 'p', text: 'Identra enforces a strict boundary: the Issuer creates the VC, the Holder phone is its only storage location, and the Verifier receives a presentation created for a specific request. The Verifier does not become a second Holder.' },
-          { type: 'callout', text: 'Web and server environments never receive a Holder SDK. They cannot import, export, back up, or silently retain a user credential.' },
-          { type: 'list', items: [
-            { title: 'Credential transport', text: 'The VC is delivered through an authenticated DIDComm connection; it is not embedded in a QR code.' },
-            { title: 'QR purpose', text: 'A QR code bootstraps a connection or carries a presentation request, not the Holder credential itself.' },
-            { title: 'Registry choice', text: 'CertNet is the default Sandbox provider, but the same SDK can publish and resolve DID Documents through did:web, ION, or an internal registry.' },
-            { title: 'Selective disclosure', text: 'A Verifier asks only for claims required by its current purpose, and the Holder approves the request before a VP is created.' }
-          ] },
-          { type: 'callout', text: 'The SDKs and endpoints below are illustrative Sandbox examples and are not production packages or contracts.' }
+          { type: 'p', text: 'Identra separates responsibilities clearly: the Issuer creates VCs, the Holder phone is the only vault, and the Verifier only requests and verifies VPs.' },
+          { type: 'subheading', text: 'Most important rule' },
+          { type: 'callout', text: 'Web and server never receive a holding SDK. They cannot import, export, or back up user VCs.' },
+          { type: 'subheading', text: 'DID registry is not locked to CertNet' },
+          { type: 'p', text: 'CertNet is the default sandbox provider. The same SDK can publish and resolve DID Documents on CertNet, did:web, ION, or an internal registry depending on deployment policy.' },
+          { type: 'callout', text: 'Illustrative SDK, not for production use. Package names and contracts shown in this Overview are sample documentation.' }
         ]
       },
       {
         id: 'issue-credential',
-        title: 'Step 1: Issue a credential',
+        title: 'Credential issuance',
         blocks: [
-          { type: 'p', text: 'The Issuer verifies authoritative source data, signs a VC, and sends it to the user. Issuer code can run in an internal web application, a server service, or a managed mobile application.' },
-          { type: 'p', text: 'Protect the organization signing key for its environment. A server integration should prefer an HSM or managed key service and must never send the private key to the browser.' },
-          { type: 'table', headers: ['Runtime', 'Typical integration', 'Key protection'], rows: [
-            ['Web client', '@identra/web with JavaScript or TypeScript', 'Platform secure storage for approved internal use'],
-            ['Server', 'Server SDK or protected service', 'HSM or managed KMS preferred'],
-            ['Mobile app', 'Managed issuer application', 'Hardware-backed platform keystore']
+          { type: 'subheading', text: 'Issuer' },
+          { type: 'p', text: 'STEP 01 of 03 in the role-based SSI flow.' },
+          { type: 'subheading', text: 'Who creates a credential and where does the code run?' },
+          { type: 'p', text: 'The issuer checks data, signs a VC, and sends it to the user. It may integrate on internal web, server, or app.' },
+          { type: 'subheading', text: 'Data and key boundary' },
+          { type: 'callout', text: 'Organization signing keys must be protected for the runtime, preferably by an HSM on server.' },
+          { type: 'table', headers: ['Runtime', 'SDK example', 'When to use'], rows: [
+            ['Web client', '@identra/web with Browser JavaScript or TypeScript', 'Internal issuer tools with a controlled key policy'],
+            ['Server', '@identra/node or identra-go', 'Protected signing services backed by HSM or managed KMS'],
+            ['Mobile app', '@identra/react-native, Android SDK, or iOS SDK', 'Managed internal issuer applications']
           ] },
-          { type: 'code', language: 'typescript', fileName: 'issueCredential.ts', code: issuerCode },
-          { type: 'p', text: 'The Holder DID comes from the established relationship or your business system. The VC travels through DIDComm after connection setup; the QR code is used only to establish that connection.' }
+          { type: 'subheading', text: 'Flow steps' },
+          { type: 'list', items: [
+            { title: 'Initialize', text: 'Initialize the SDK for the current runtime.' },
+            { title: 'Create DID', text: 'Create or load the issuer DID on the selected DID registry.' },
+            { title: 'Sign VC', text: 'Sign a Verifiable Credential for the recipient DID.' },
+            { title: 'Send offer', text: 'Send the credential offer over DIDComm.' }
+          ] },
+          { type: 'sdkExplorer', flow: 'issuance' },
+          { type: 'p', text: 'The Holder DID is obtained after connection setup or from the business system. The credential is not placed in the QR; the QR only bootstraps the DIDComm connection.' }
         ]
       },
       {
         id: 'hold-and-share',
-        title: 'Step 2: Hold and share a credential',
+        title: 'Credential holding and sharing',
         blocks: [
-          { type: 'p', text: 'The VC remains in a secure vault on the Holder phone. When the user scans a Verifier QR code, the app shows the request, asks for consent, creates a VP, and sends it through DIDComm.' },
-          { type: 'callout', text: 'Holder is mobile-only. There is no Holder SDK for web or server, credentials cannot be exported, and moving to a new device wipes the old device vault.' },
+          { type: 'subheading', text: 'Holder' },
+          { type: 'p', text: 'STEP 02 of 03 in the role-based SSI flow.' },
+          { type: 'subheading', text: 'Where does the credential live and how is it shared?' },
+          { type: 'p', text: 'The VC lives only in the phone secure vault. The user scans a QR, reviews the request, consents, and only then does the app create and send a VP over DIDComm.' },
+          { type: 'subheading', text: 'Data and device boundary' },
+          { type: 'callout', text: 'There is no Holder SDK for web or server. VCs cannot be exported. Device migration deletes every VC from the old phone.' },
           { type: 'list', items: [
-            { title: 'Supported SDKs', text: 'React Native with TypeScript, native Android with Java, and native iOS with Swift.' },
-            { title: 'Single-device vault', text: 'One secure vault is the only credential store; biometric access protects local use.' },
-            { title: 'Credential intake', text: 'The wallet resolves the Issuer DID and checks signature and status before saving the VC.' },
-            { title: 'User consent', text: 'The wallet creates and sends a VP only after the user has reviewed and approved the request.' }
+            { title: 'Available SDKs', text: 'React Native, Java Android, and Swift iOS.' },
+            { title: 'Activate vault', text: 'Activate the single credential vault on this device.' },
+            { title: 'Receive VC', text: 'Receive, verify, and store the VC in the secure vault.' },
+            { title: 'Scan request', text: 'Scan the QR and review the verifier request.' },
+            { title: 'Share VP', text: 'Create a user-approved VP and send it over DIDComm.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'holderWallet.ts', code: holderCode }
+          { type: 'sdkExplorer', flow: 'holder' }
         ]
       },
       {
         id: 'verify-presentation',
-        title: 'Step 3: Verify a presentation',
+        title: 'Credential verification',
         blocks: [
-          { type: 'p', text: 'The Verifier receives a VP, reads the Holder and Issuer DIDs, resolves their DID Documents through the matching registry provider, and validates signatures, challenge, and revocation status.' },
-          { type: 'p', text: 'Verifier code may run on web, server, or mobile, but it must not store the VC as though it were a Holder. Persist only the decision and the minimum evidence required by policy.' },
+          { type: 'subheading', text: 'Verifier' },
+          { type: 'p', text: 'STEP 03 of 03 in the role-based SSI flow.' },
+          { type: 'subheading', text: 'How does the verifier trust a VP?' },
+          { type: 'p', text: 'The verifier receives a VP, extracts holder and issuer DIDs, resolves DID Documents through the matching registry provider such as CertNet, did:web, or ION, then checks signatures, challenge, and revocation status.' },
+          { type: 'subheading', text: 'Data and storage boundary' },
+          { type: 'callout', text: 'A verifier may run on web, server, or app, but it must not store VCs as a Holder.' },
           { type: 'list', items: [
-            { title: 'Request', text: 'Specify the credential type, required claims, purpose, and a fresh challenge.' },
-            { title: 'Resolve', text: 'Choose the appropriate provider based on the DID method, such as did:identra, did:web, or did:ion.' },
-            { title: 'Validate', text: 'Check presentation proof, credential proof, challenge binding, expiry, and credential status.' },
-            { title: 'Decide', text: 'Grant access only after verification succeeds and your own policy accepts the disclosed claims.' }
+            { title: 'Create request', text: 'Create a presentation request with a replay-resistant challenge.' },
+            { title: 'Show QR', text: 'Display a QR containing the DIDComm invitation.' },
+            { title: 'Receive VP', text: 'Receive the VP over the newly established connection.' },
+            { title: 'Resolve and verify', text: 'Resolve holder and issuer DIDs through the registry provider and verify.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'verifyPresentation.ts', code: verifierCode }
+          { type: 'sdkExplorer', flow: 'verification' }
         ]
       }
     ]
@@ -184,10 +105,10 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'Entender SSI según dónde se ejecuta cada código',
+        title: 'Entender SSI según dónde se ejecuta realmente cada pieza de código',
         blocks: [
+          { type: 'p', text: 'Guía SSI basada en roles. Recorre los tres roles, entiende los límites de datos y compara ejemplos entre SDK web, servidor y móvil.' },
           { type: 'p', text: 'La identidad autosoberana se entiende mejor cuando cada responsabilidad tiene un propietario claro. El Emisor crea una Credencial Verificable (VC), el Titular la conserva en una bóveda segura del móvil y el Verificador solicita y valida una Presentación Verificable (VP).' },
-          { type: 'p', text: 'Identra separa estos roles entre SDK web, servidor y móvil para impedir que las credenciales terminen en sistemas que nunca deberían almacenarlas.' },
           { type: 'callout', text: '[Emisor valida y firma la VC] -> [Titular guarda la VC en el móvil] -> [Titular acepta y crea la VP] -> [Verificador valida la VP]' },
           { type: 'cards', cards: [
             { title: 'Emisor', text: 'Valida datos de origen, firma la credencial y envía una oferta mediante DIDComm.' },
@@ -201,60 +122,77 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'SSI no significa que todas las plataformas guarden credenciales',
         blocks: [
-          { type: 'p', text: 'Identra aplica un límite estricto: el Emisor crea la VC, el teléfono del Titular es su único almacenamiento y el Verificador recibe una presentación creada para una solicitud concreta. El Verificador no se convierte en un segundo Titular.' },
-          { type: 'callout', text: 'Los entornos web y servidor nunca reciben un SDK de Titular. No pueden importar, exportar, respaldar ni conservar silenciosamente una credencial.' },
-          { type: 'list', items: [
-            { title: 'Transporte', text: 'La VC se entrega por una conexión DIDComm autenticada; no se incluye dentro de un código QR.' },
-            { title: 'Función del QR', text: 'El QR inicia una conexión o contiene una solicitud de presentación, no la credencial del Titular.' },
-            { title: 'Elección de registro', text: 'CertNet es el proveedor predeterminado de Sandbox, pero el SDK también admite did:web, ION y registros internos.' },
-            { title: 'Divulgación selectiva', text: 'El Verificador pide solo los atributos necesarios y el Titular aprueba antes de crear la VP.' }
-          ] },
-          { type: 'callout', text: 'Los SDK y puntos de acceso siguientes son ejemplos ilustrativos del entorno de pruebas, no paquetes ni contratos para producción.' }
+          { type: 'p', text: 'Identra separa claramente las responsabilidades: el Emisor crea las VC, el teléfono del Titular es la única bóveda, y el Verificador solo solicita y verifica VP.' },
+          { type: 'subheading', text: 'Regla más importante' },
+          { type: 'callout', text: 'Web y servidor nunca reciben un SDK de custodia. No pueden importar, exportar ni respaldar las VC de los usuarios.' },
+          { type: 'subheading', text: 'El registro DID no está limitado a CertNet' },
+          { type: 'p', text: 'CertNet es el proveedor predeterminado en sandbox. El mismo SDK puede publicar y resolver documentos DID en CertNet, did:web, ION o un registro interno según la política de despliegue.' },
+          { type: 'callout', text: 'SDK ilustrativo, no destinado a producción. Los nombres de paquetes y contratos mostrados en este Overview son documentación de ejemplo.' }
         ]
       },
       {
         id: 'issue-credential',
-        title: 'Paso 1: Emitir una credencial',
+        title: 'Emisión de credenciales',
         blocks: [
-          { type: 'p', text: 'El Emisor verifica datos autorizados, firma una VC y la envía al usuario. El código puede ejecutarse en una aplicación web interna, un servicio de servidor o una app móvil administrada.' },
-          { type: 'p', text: 'Protege la clave de firma según el entorno. En servidor, usa preferiblemente un HSM o un servicio de claves y nunca envíes la clave privada al navegador.' },
-          { type: 'table', headers: ['Entorno', 'Integración habitual', 'Protección de clave'], rows: [
-            ['Web', '@identra/web con JavaScript o TypeScript', 'Almacenamiento seguro de plataforma para uso interno aprobado'],
-            ['Servidor', 'SDK de servidor o servicio protegido', 'HSM o KMS administrado'],
-            ['Aplicación móvil', 'Aplicación de emisor administrada', 'Almacén de claves de plataforma protegido por hardware']
+          { type: 'subheading', text: 'Emisor' },
+          { type: 'p', text: 'PASO 01 de 03 en el flujo SSI basado en roles.' },
+          { type: 'subheading', text: '¿Quién crea la credencial y dónde se ejecuta el código?' },
+          { type: 'p', text: 'El emisor comprueba los datos, firma una VC y la envía al usuario. Puede integrarse en una web interna, servidor o aplicación.' },
+          { type: 'subheading', text: 'Límite de datos y claves' },
+          { type: 'callout', text: 'Las claves de firma de la organización deben protegerse según el entorno de ejecución, preferiblemente con HSM en servidor.' },
+          { type: 'table', headers: ['Entorno', 'Ejemplo de SDK', 'Cuándo usarlo'], rows: [
+            ['Cliente web', '@identra/web con JavaScript o TypeScript en navegador', 'Herramientas internas de emisión con política de claves controlada'],
+            ['Servidor', '@identra/node o identra-go', 'Servicios de firma protegidos con HSM o KMS administrado'],
+            ['Aplicación móvil', '@identra/react-native, Android SDK o iOS SDK', 'Aplicaciones internas de emisión administradas']
           ] },
-          { type: 'code', language: 'typescript', fileName: 'issueCredential.ts', code: issuerCode },
-          { type: 'p', text: 'El DID del Titular procede de la relación establecida o del sistema de negocio. La VC viaja por DIDComm; el QR solo establece la conexión.' }
+          { type: 'subheading', text: 'Pasos del flujo' },
+          { type: 'list', items: [
+            { title: 'Inicializar', text: 'Inicializa el SDK para el entorno en ejecución.' },
+            { title: 'Crear DID', text: 'Crea o carga el DID del emisor en el registro DID seleccionado.' },
+            { title: 'Firmar VC', text: 'Firma una Credencial Verificable para el DID del destinatario.' },
+            { title: 'Enviar oferta', text: 'Envía la oferta de credencial por DIDComm.' }
+          ] },
+          { type: 'sdkExplorer', flow: 'issuance' },
+          { type: 'p', text: 'El DID del Titular se obtiene después de establecer la conexión o desde el sistema de negocio. La credencial no se coloca en el QR; el QR solo inicia la conexión DIDComm.' }
         ]
       },
       {
         id: 'hold-and-share',
-        title: 'Paso 2: Guardar y compartir una credencial',
+        title: 'Custodia y compartición de credenciales',
         blocks: [
-          { type: 'p', text: 'La VC permanece en una bóveda segura del teléfono. Al escanear el QR del Verificador, la app muestra la solicitud, pide consentimiento, crea una VP y la envía por DIDComm.' },
-          { type: 'callout', text: 'El Titular solo funciona en móvil. No existe SDK para web o servidor, las credenciales no se exportan y migrar de dispositivo elimina la bóveda anterior.' },
+          { type: 'subheading', text: 'Titular' },
+          { type: 'p', text: 'PASO 02 de 03 en el flujo SSI basado en roles.' },
+          { type: 'subheading', text: '¿Dónde vive la credencial y cómo se comparte?' },
+          { type: 'p', text: 'La VC vive únicamente en la bóveda segura del teléfono. El usuario escanea un QR, revisa la solicitud, acepta, y solo entonces la app crea y envía una VP por DIDComm.' },
+          { type: 'subheading', text: 'Límite de datos y dispositivo' },
+          { type: 'callout', text: 'No existe SDK de Titular para web ni servidor. Las VC no pueden exportarse. La migración de dispositivo elimina todas las VC del teléfono anterior.' },
           { type: 'list', items: [
-            { title: 'SDK compatibles', text: 'React Native con TypeScript, Android nativo con Java e iOS nativo con Swift.' },
-            { title: 'Bóveda de un dispositivo', text: 'Una única bóveda segura almacena las credenciales y el acceso local requiere biometría.' },
-            { title: 'Recepción', text: 'La cartera digital resuelve el DID del Emisor y comprueba firma y estado antes de guardar la VC.' },
-            { title: 'Consentimiento', text: 'La cartera digital solo crea y envía la VP después de que el usuario apruebe la solicitud.' }
+            { title: 'SDK disponibles', text: 'React Native, Java Android y Swift iOS.' },
+            { title: 'Activar bóveda', text: 'Activa la única bóveda de credenciales en este dispositivo.' },
+            { title: 'Recibir VC', text: 'Recibe, verifica y guarda la VC en la bóveda segura.' },
+            { title: 'Escanear solicitud', text: 'Escanea el QR y revisa la solicitud del verificador.' },
+            { title: 'Compartir VP', text: 'Crea una VP aprobada por el usuario y la envía por DIDComm.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'holderWallet.ts', code: holderCode }
+          { type: 'sdkExplorer', flow: 'holder' }
         ]
       },
       {
         id: 'verify-presentation',
-        title: 'Paso 3: Verificar una presentación',
+        title: 'Verificación de credenciales',
         blocks: [
-          { type: 'p', text: 'El Verificador recibe una VP, lee los DID del Titular y Emisor, resuelve sus documentos con el proveedor correspondiente y valida firmas, valor de desafío y revocación.' },
-          { type: 'p', text: 'Puede ejecutarse en web, servidor o móvil, pero no debe guardar la VC como un Titular. Conserva solo la decisión y la evidencia mínima que exija la política.' },
+          { type: 'subheading', text: 'Verificador' },
+          { type: 'p', text: 'PASO 03 de 03 en el flujo SSI basado en roles.' },
+          { type: 'subheading', text: '¿Cómo confía el verificador en una VP?' },
+          { type: 'p', text: 'El verificador recibe una VP, extrae los DID del titular y del emisor, resuelve los documentos DID mediante el proveedor de registro correspondiente como CertNet, did:web o ION, y luego comprueba firmas, desafío y estado de revocación.' },
+          { type: 'subheading', text: 'Límite de datos y almacenamiento' },
+          { type: 'callout', text: 'Un verificador puede ejecutarse en web, servidor o aplicación, pero no debe almacenar VC como si fuera un Titular.' },
           { type: 'list', items: [
-            { title: 'Solicitar', text: 'Indica el tipo de credencial, atributos requeridos, finalidad y un valor de desafío nuevo.' },
-            { title: 'Resolver', text: 'Elige el proveedor según el método DID, como did:identra, did:web o did:ion.' },
-            { title: 'Validar', text: 'Comprueba prueba de presentación, firma de credencial, valor de desafío, caducidad y estado.' },
-            { title: 'Decidir', text: 'Concede acceso solo cuando la validación y la política propia acepten los atributos.' }
+            { title: 'Crear solicitud', text: 'Crea una solicitud de presentación con un desafío resistente a repetición.' },
+            { title: 'Mostrar QR', text: 'Muestra un QR que contiene la invitación DIDComm.' },
+            { title: 'Recibir VP', text: 'Recibe la VP mediante la conexión recién establecida.' },
+            { title: 'Resolver y verificar', text: 'Resuelve los DID del titular y emisor con el proveedor de registro y verifica.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'verifyPresentation.ts', code: verifierCode }
+          { type: 'sdkExplorer', flow: 'verification' }
         ]
       }
     ]
@@ -265,10 +203,10 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'コードの実行場所からSSIを理解する',
+        title: '各コードが実際にどこで動くかからSSIを理解する',
         blocks: [
+          { type: 'p', text: 'ロール別SSIガイドです。3つの役割を順にたどり、データ境界を理解し、Web、サーバー、モバイルSDKの例を比較します。' },
           { type: 'p', text: '自己主権型IDは、各責任の主体を明確にすると理解しやすくなります。発行者が検証可能なクレデンシャル（VC）を作成し、保有者がモバイル端末の安全な保管庫に保存し、検証者が検証可能な提示内容（VP）を要求して検証します。' },
-          { type: 'p', text: 'Identraはこれらの役割をWeb、サーバー、モバイルの各SDKに分離し、クレデンシャルが保管対象ではないシステムへ流れ込むことを防ぎます。' },
           { type: 'callout', text: '[発行者がVCを確認・署名] -> [保有者がモバイル端末に保管] -> [保有者が同意してVPを作成] -> [検証者がVPを検証]' },
           { type: 'cards', cards: [
             { title: '発行者', text: '元データを確認してクレデンシャルへ署名し、DIDCommで受け取り案内を送ります。' },
@@ -282,60 +220,77 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'SSIでもすべての基盤がクレデンシャルを保持するわけではない',
         blocks: [
-          { type: 'p', text: 'Identraは境界を明確にします。発行者がVCを作成し、保有者の端末だけが保管し、検証者は特定の要求向けに作られたVPを受け取ります。検証者が2人目の保有者になることはありません。' },
-          { type: 'callout', text: 'Webとサーバーには保有者向けSDKを提供しません。利用者のクレデンシャルを取り込み、書き出し、バックアップ、または暗黙的に保存することはできません。' },
-          { type: 'list', items: [
-            { title: 'クレデンシャルの転送', text: 'VCは認証済みのDIDComm接続で配信され、QRコードの中には入りません。' },
-            { title: 'QRコードの役割', text: 'QRコードは接続の開始またはVPの提示要求に使い、保有者のクレデンシャル自体は含みません。' },
-            { title: 'レジストリの選択', text: 'SandboxではCertNetが既定ですが、同じSDKでdid:web、ION、社内レジストリも利用できます。' },
-            { title: '選択的開示', text: '検証者は目的に必要な属性だけを要求し、保有者の承認後にVPを作成します。' }
-          ] },
-          { type: 'callout', text: '以下のSDKとAPIエンドポイントはSandbox向けの説明用サンプルであり、本番環境向けのパッケージや契約仕様ではありません。' }
+          { type: 'p', text: 'Identraは責任を明確に分離します。発行者がVCを作成し、保有者の電話だけが唯一の保管庫となり、検証者はVPを要求して検証するだけです。' },
+          { type: 'subheading', text: '最も重要なルール' },
+          { type: 'callout', text: 'Webとサーバーには保管用SDKを提供しません。利用者のVCをインポート、エクスポート、バックアップすることはできません。' },
+          { type: 'subheading', text: 'DIDレジストリはCertNetに固定されない' },
+          { type: 'p', text: 'CertNetはSandboxの既定プロバイダーです。同じSDKで、デプロイ方針に応じてCertNet、did:web、ION、社内レジストリへDID文書を公開し、解決できます。' },
+          { type: 'callout', text: '説明用SDKであり、本番利用向けではありません。このOverviewに示すパッケージ名と契約仕様はサンプル文書です。' }
         ]
       },
       {
         id: 'issue-credential',
-        title: 'ステップ1：クレデンシャルを発行する',
+        title: 'クレデンシャル発行',
         blocks: [
-          { type: 'p', text: '発行者は信頼できる元データを確認し、VCへ署名して利用者へ送ります。発行処理は社内Webアプリ、サーバーサービス、管理対象のモバイルアプリで実行できます。' },
-          { type: 'p', text: '組織の署名鍵を実行環境に応じて保護します。サーバー連携ではHSMまたは管理対象の鍵管理サービスを優先し、秘密鍵をブラウザーへ渡してはいけません。' },
-          { type: 'table', headers: ['実行環境', '一般的な連携', '鍵の保護'], rows: [
-            ['Webクライアント', 'JavaScriptまたはTypeScriptの@identra/web', '承認済み社内利用向けの安全なプラットフォーム保管領域'],
-            ['サーバー', 'サーバーSDKまたは保護されたサービス', 'HSMまたは管理対象KMSを推奨'],
-            ['モバイルアプリ', '管理対象の発行者アプリ', 'ハードウェアで保護されたプラットフォーム鍵保管領域']
+          { type: 'subheading', text: '発行者' },
+          { type: 'p', text: 'ロール別SSIフローのステップ01/03です。' },
+          { type: 'subheading', text: '誰がクレデンシャルを作り、コードはどこで動くのか' },
+          { type: 'p', text: '発行者はデータを確認し、VCへ署名して利用者へ送ります。社内Web、サーバー、アプリのいずれにも組み込めます。' },
+          { type: 'subheading', text: 'データと鍵の境界' },
+          { type: 'callout', text: '組織の署名鍵は実行環境に応じて保護する必要があります。サーバーではHSMを優先します。' },
+          { type: 'table', headers: ['実行環境', 'SDK例', '使う場面'], rows: [
+            ['Webクライアント', '@identra/web（Browser JavaScriptまたはTypeScript）', '鍵ポリシーを管理できる社内発行ツール'],
+            ['サーバー', '@identra/nodeまたはidentra-go', 'HSMや管理KMSで保護する署名サービス'],
+            ['モバイルアプリ', '@identra/react-native、Android SDK、iOS SDK', '管理対象の社内発行アプリ']
           ] },
-          { type: 'code', language: 'typescript', fileName: 'issueCredential.ts', code: issuerCode },
-          { type: 'p', text: '保有者のDIDは確立済みの関係または業務システムから取得します。VCは接続確立後にDIDCommで送り、QRコードは接続の開始にだけ使います。' }
+          { type: 'subheading', text: 'フローの手順' },
+          { type: 'list', items: [
+            { title: '初期化', text: '現在の実行環境向けにSDKを初期化します。' },
+            { title: 'DID作成', text: '選択したDIDレジストリで発行者DIDを作成または読み込みます。' },
+            { title: 'VC署名', text: '受け取り側DID向けに検証可能なクレデンシャルへ署名します。' },
+            { title: 'オファー送信', text: 'DIDCommでクレデンシャルオファーを送ります。' }
+          ] },
+          { type: 'sdkExplorer', flow: 'issuance' },
+          { type: 'p', text: '保有者DIDは接続確立後、または業務システムから取得します。クレデンシャルはQRに入れず、QRはDIDComm接続を開始するためだけに使います。' }
         ]
       },
       {
         id: 'hold-and-share',
-        title: 'ステップ2：クレデンシャルを保管・共有する',
+        title: 'クレデンシャルの保管と共有',
         blocks: [
-          { type: 'p', text: 'VCは保有者の端末にある安全な保管庫だけに保存されます。検証者のQRコードを読み取ると、アプリが要求を表示して同意を求め、VPを作成してDIDCommで送ります。' },
-          { type: 'callout', text: '保有者機能はモバイル専用です。Webやサーバー向けSDKはなく、クレデンシャルを書き出すこともできません。端末移行時は旧端末の保管庫を消去します。' },
+          { type: 'subheading', text: '保有者' },
+          { type: 'p', text: 'ロール別SSIフローのステップ02/03です。' },
+          { type: 'subheading', text: 'クレデンシャルはどこにあり、どう共有されるのか' },
+          { type: 'p', text: 'VCは電話の安全な保管庫だけに存在します。利用者がQRを読み取り、要求を確認して同意した後にだけ、アプリがVPを作成してDIDCommで送信します。' },
+          { type: 'subheading', text: 'データと端末の境界' },
+          { type: 'callout', text: 'Webやサーバー向けの保有者SDKはありません。VCはエクスポートできません。端末移行では旧端末のすべてのVCが削除されます。' },
           { type: 'list', items: [
-            { title: '対応SDK', text: 'TypeScriptのReact Native、JavaのAndroidネイティブ、SwiftのiOSネイティブ。' },
-            { title: '単一端末の保管庫', text: '1つの安全な保管庫だけがクレデンシャルを保存し、生体認証で端末上のアクセスを保護します。' },
-            { title: '受信時の検証', text: 'ウォレットは発行者のDIDを解決し、署名と状態を確認してからVCを保存します。' },
-            { title: '利用者の同意', text: '利用者が要求を確認・承認した後だけVPを作成して送信します。' }
+            { title: '利用可能なSDK', text: 'React Native、Java Android、Swift iOS。' },
+            { title: '保管庫を有効化', text: 'この端末上で唯一のクレデンシャル保管庫を有効化します。' },
+            { title: 'VCを受信', text: 'VCを受け取り、検証し、安全な保管庫へ保存します。' },
+            { title: '要求を読み取る', text: 'QRを読み取り、検証者からの要求を確認します。' },
+            { title: 'VPを共有', text: '利用者が承認したVPを作成し、DIDCommで送信します。' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'holderWallet.ts', code: holderCode }
+          { type: 'sdkExplorer', flow: 'holder' }
         ]
       },
       {
         id: 'verify-presentation',
-        title: 'ステップ3：提示内容を検証する',
+        title: 'クレデンシャル検証',
         blocks: [
-          { type: 'p', text: '検証者はVPを受信し、保有者と発行者のDIDを読み取り、対応するレジストリ提供元でDID文書を解決して、署名、チャレンジ値、失効状態を検証します。' },
-          { type: 'p', text: '検証処理はWeb、サーバー、モバイルで実行できますが、保有者のようにVCを保存してはいけません。方針で必要な最小限の証跡と判定だけを保持します。' },
+          { type: 'subheading', text: '検証者' },
+          { type: 'p', text: 'ロール別SSIフローのステップ03/03です。' },
+          { type: 'subheading', text: '検証者はどのようにVPを信頼するのか' },
+          { type: 'p', text: '検証者はVPを受信し、保有者と発行者のDIDを取り出し、CertNet、did:web、IONなど対応するレジストリプロバイダーでDID文書を解決してから、署名、チャレンジ、失効状態を確認します。' },
+          { type: 'subheading', text: 'データと保存の境界' },
+          { type: 'callout', text: '検証者はWeb、サーバー、アプリで動かせますが、保有者のようにVCを保存してはいけません。' },
           { type: 'list', items: [
-            { title: '要求', text: 'クレデンシャルの種類、必要な属性、目的、新しいチャレンジ値を指定します。' },
-            { title: '解決', text: 'did:identra、did:web、did:ionなど、DIDメソッドに合う提供元を選択します。' },
-            { title: '検証', text: 'VPとVCの証明、チャレンジ値、期限、状態を確認します。' },
-            { title: '判定', text: '検証が成功し、自社方針が開示された属性を受け入れた場合だけアクセスを許可します。' }
+            { title: '要求作成', text: '再送攻撃に強いチャレンジ付きの提示要求を作成します。' },
+            { title: 'QR表示', text: 'DIDComm invitationを含むQRを表示します。' },
+            { title: 'VP受信', text: '新しく確立した接続でVPを受け取ります。' },
+            { title: '解決と検証', text: '保有者と発行者のDIDをレジストリプロバイダーで解決し、検証します。' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'verifyPresentation.ts', code: verifierCode }
+          { type: 'sdkExplorer', flow: 'verification' }
         ]
       }
     ]
@@ -346,10 +301,10 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
     sections: [
       {
         id: 'ssi-role-based-flow',
-        title: 'SSI anhand des tatsächlichen Ausführungsorts verstehen',
+        title: 'SSI anhand des tatsächlichen Ausführungsorts jedes Codeteils verstehen',
         blocks: [
+          { type: 'p', text: 'Rollenbasierter SSI-Leitfaden. Gehen Sie die drei Rollen durch, verstehen Sie Datengrenzen und vergleichen Sie Beispiele für Web-, Server- und Mobile-SDKs.' },
           { type: 'p', text: 'Selbstbestimmte Identität wird verständlich, wenn jede Verantwortung klar zugeordnet ist. Der Aussteller erstellt einen überprüfbaren Nachweis (VC), der Inhaber bewahrt ihn im sicheren mobilen Tresor auf und der Prüfer fordert eine überprüfbare Präsentation (VP) an und prüft sie.' },
-          { type: 'p', text: 'Identra trennt diese Rollen auf Web-, Server- und Mobil-SDKs, damit Nachweise nicht in Systemen landen, die sie nie speichern sollten.' },
           { type: 'callout', text: '[Aussteller prüft und signiert VC] -> [Inhaber speichert VC mobil] -> [Inhaber stimmt zu und erstellt VP] -> [Prüfer prüft VP]' },
           { type: 'cards', cards: [
             { title: 'Aussteller', text: 'Prüft Quelldaten, signiert den Nachweis und sendet ein Angebot über DIDComm.' },
@@ -363,60 +318,77 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'SSI bedeutet nicht, dass jede Plattform Nachweise speichert',
         blocks: [
-          { type: 'p', text: 'Identra setzt eine klare Grenze: Der Aussteller erstellt den VC, das Telefon des Inhabers ist der einzige Speicherort und der Prüfer erhält eine VP für eine konkrete Anfrage. Der Prüfer wird nicht zu einem zweiten Inhaber.' },
-          { type: 'callout', text: 'Web und Server erhalten kein SDK für Inhaber. Sie können Nutzernachweise weder einlesen, ausgeben, sichern noch unbemerkt aufbewahren.' },
-          { type: 'list', items: [
-            { title: 'Übertragung', text: 'Der VC wird über eine authentifizierte DIDComm-Verbindung zugestellt und nicht in einen QR-Code eingebettet.' },
-            { title: 'QR-Funktion', text: 'Ein QR-Code startet die Verbindung oder enthält eine Präsentationsanfrage, aber nicht den Nachweis.' },
-            { title: 'Registerauswahl', text: 'CertNet ist Standard in der Testumgebung; dasselbe SDK unterstützt auch did:web, ION oder interne Register.' },
-            { title: 'Selektive Offenlegung', text: 'Der Prüfer fordert nur benötigte Attribute an und der Inhaber stimmt vor Erstellung der VP zu.' }
-          ] },
-          { type: 'callout', text: 'Die folgenden SDKs und API-Endpunkte sind Beispiele für die Testumgebung und keine Pakete oder Verträge für den Produktivbetrieb.' }
+          { type: 'p', text: 'Identra trennt Verantwortlichkeiten klar: Der Aussteller erstellt VCs, das Telefon des Inhabers ist der einzige Tresor, und der Prüfer fordert und prüft nur VPs.' },
+          { type: 'subheading', text: 'Wichtigste Regel' },
+          { type: 'callout', text: 'Web und Server erhalten niemals ein SDK zum Aufbewahren. Sie können Nutzer-VCs weder importieren, exportieren noch sichern.' },
+          { type: 'subheading', text: 'Das DID-Register ist nicht auf CertNet festgelegt' },
+          { type: 'p', text: 'CertNet ist der Standardanbieter in der Sandbox. Dasselbe SDK kann DID-Dokumente je nach Bereitstellungsrichtlinie auf CertNet, did:web, ION oder einem internen Register veröffentlichen und auflösen.' },
+          { type: 'callout', text: 'Illustratives SDK, nicht für den Produktivbetrieb. Paketnamen und Verträge in diesem Overview sind Beispieldokumentation.' }
         ]
       },
       {
         id: 'issue-credential',
-        title: 'Schritt 1: Nachweis ausstellen',
+        title: 'Nachweise ausstellen',
         blocks: [
-          { type: 'p', text: 'Der Aussteller prüft maßgebliche Quelldaten, signiert einen VC und sendet ihn an den Nutzer. Der Ausstellercode kann in einer internen Webanwendung, einem Serverdienst oder einer verwalteten mobilen App laufen.' },
-          { type: 'p', text: 'Schützen Sie den Signaturschlüssel passend zur Umgebung. Serverintegrationen sollten ein HSM oder einen verwalteten Schlüsseldienst verwenden und private Schlüssel nie an den Browser senden.' },
-          { type: 'table', headers: ['Laufzeit', 'Typische Integration', 'Schlüsselschutz'], rows: [
-            ['Webclient', '@identra/web mit JavaScript oder TypeScript', 'Sicherer Plattformspeicher für freigegebene interne Nutzung'],
-            ['Server', 'Server-SDK oder geschützter Dienst', 'HSM oder verwaltetes KMS'],
-            ['Mobile App', 'Verwaltete Ausstelleranwendung', 'Hardwaregestützter Plattform-Schlüsselspeicher']
+          { type: 'subheading', text: 'Aussteller' },
+          { type: 'p', text: 'SCHRITT 01 von 03 im rollenbasierten SSI-Ablauf.' },
+          { type: 'subheading', text: 'Wer erstellt einen Nachweis und wo läuft der Code?' },
+          { type: 'p', text: 'Der Aussteller prüft Daten, signiert einen VC und sendet ihn an den Nutzer. Die Integration kann in internem Web, Server oder App laufen.' },
+          { type: 'subheading', text: 'Daten- und Schlüsselgrenze' },
+          { type: 'callout', text: 'Signaturschlüssel der Organisation müssen passend zur Laufzeit geschützt werden, auf dem Server vorzugsweise durch ein HSM.' },
+          { type: 'table', headers: ['Laufzeit', 'SDK-Beispiel', 'Einsatzfall'], rows: [
+            ['Webclient', '@identra/web mit Browser-JavaScript oder TypeScript', 'Interne Ausstellerwerkzeuge mit kontrollierter Schlüsselrichtlinie'],
+            ['Server', '@identra/node oder identra-go', 'Geschützte Signaturdienste mit HSM oder verwaltetem KMS'],
+            ['Mobile App', '@identra/react-native, Android SDK oder iOS SDK', 'Verwaltete interne Ausstelleranwendungen']
           ] },
-          { type: 'code', language: 'typescript', fileName: 'issueCredential.ts', code: issuerCode },
-          { type: 'p', text: 'Die DID des Inhabers stammt aus der aufgebauten Beziehung oder dem Geschäftssystem. Der VC wird nach dem Verbindungsaufbau über DIDComm gesendet; der QR-Code stellt nur die Verbindung her.' }
+          { type: 'subheading', text: 'Ablaufschritte' },
+          { type: 'list', items: [
+            { title: 'Initialisieren', text: 'SDK für die aktuelle Laufzeit initialisieren.' },
+            { title: 'DID erstellen', text: 'Aussteller-DID im gewählten DID-Register erstellen oder laden.' },
+            { title: 'VC signieren', text: 'Einen überprüfbaren Nachweis für die DID des Empfängers signieren.' },
+            { title: 'Angebot senden', text: 'Credential Offer über DIDComm senden.' }
+          ] },
+          { type: 'sdkExplorer', flow: 'issuance' },
+          { type: 'p', text: 'Die DID des Inhabers wird nach dem Verbindungsaufbau oder aus dem Geschäftssystem bezogen. Der Nachweis liegt nicht im QR; der QR startet nur die DIDComm-Verbindung.' }
         ]
       },
       {
         id: 'hold-and-share',
-        title: 'Schritt 2: Nachweis aufbewahren und teilen',
+        title: 'Nachweise aufbewahren und teilen',
         blocks: [
-          { type: 'p', text: 'Der VC bleibt im sicheren Tresor auf dem Telefon des Inhabers. Nach dem Scannen des Prüfer-QR-Codes zeigt die App die Anfrage, holt Zustimmung ein, erstellt eine VP und sendet sie über DIDComm.' },
-          { type: 'callout', text: 'Die Inhaberfunktion ist ausschließlich mobil. Es gibt kein Web- oder Server-SDK, Nachweise sind nicht exportierbar und ein Gerätewechsel löscht den Tresor des alten Geräts.' },
+          { type: 'subheading', text: 'Inhaber' },
+          { type: 'p', text: 'SCHRITT 02 von 03 im rollenbasierten SSI-Ablauf.' },
+          { type: 'subheading', text: 'Wo liegt der Nachweis und wie wird er geteilt?' },
+          { type: 'p', text: 'Der VC liegt nur im sicheren Tresor des Telefons. Der Nutzer scannt einen QR, prüft die Anfrage, stimmt zu, und erst dann erstellt und sendet die App eine VP über DIDComm.' },
+          { type: 'subheading', text: 'Daten- und Gerätegrenze' },
+          { type: 'callout', text: 'Es gibt kein Holder-SDK für Web oder Server. VCs können nicht exportiert werden. Eine Gerätemigration löscht alle VCs vom alten Telefon.' },
           { type: 'list', items: [
-            { title: 'Unterstützte SDKs', text: 'React Native mit TypeScript, natives Android mit Java und natives iOS mit Swift.' },
-            { title: 'Ein-Gerät-Tresor', text: 'Ein sicherer Tresor ist der einzige Nachweisspeicher; Biometrie schützt den lokalen Zugriff.' },
-            { title: 'Empfang', text: 'Die digitale Brieftasche löst die DID des Ausstellers auf und prüft Signatur und Status vor dem Speichern.' },
-            { title: 'Zustimmung', text: 'Die digitale Brieftasche erstellt und sendet eine VP erst nach Prüfung und Freigabe durch den Nutzer.' }
+            { title: 'Verfügbare SDKs', text: 'React Native, Java Android und Swift iOS.' },
+            { title: 'Tresor aktivieren', text: 'Den einzigen Credential-Tresor auf diesem Gerät aktivieren.' },
+            { title: 'VC empfangen', text: 'VC empfangen, prüfen und im sicheren Tresor speichern.' },
+            { title: 'Anfrage scannen', text: 'QR scannen und die Anfrage des Prüfers ansehen.' },
+            { title: 'VP teilen', text: 'Eine vom Nutzer freigegebene VP erstellen und über DIDComm senden.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'holderWallet.ts', code: holderCode }
+          { type: 'sdkExplorer', flow: 'holder' }
         ]
       },
       {
         id: 'verify-presentation',
-        title: 'Schritt 3: Präsentation prüfen',
+        title: 'Nachweise prüfen',
         blocks: [
-          { type: 'p', text: 'Der Prüfer empfängt eine VP, liest die DIDs von Inhaber und Aussteller, löst die DID-Dokumente über den passenden Registeranbieter auf und prüft Signaturen, Prüfwert und Widerrufsstatus.' },
-          { type: 'p', text: 'Prüfcode kann auf Web, Server oder Mobilgeräten laufen, darf den VC aber nicht wie ein Inhaber speichern. Bewahren Sie nur Entscheidung und die laut Richtlinie nötigen minimalen Nachweise auf.' },
+          { type: 'subheading', text: 'Prüfer' },
+          { type: 'p', text: 'SCHRITT 03 von 03 im rollenbasierten SSI-Ablauf.' },
+          { type: 'subheading', text: 'Wie vertraut der Prüfer einer VP?' },
+          { type: 'p', text: 'Der Prüfer empfängt eine VP, entnimmt Holder- und Issuer-DIDs, löst DID-Dokumente über den passenden Registeranbieter wie CertNet, did:web oder ION auf und prüft anschließend Signaturen, Challenge und Widerrufsstatus.' },
+          { type: 'subheading', text: 'Daten- und Speichergrenze' },
+          { type: 'callout', text: 'Ein Prüfer kann auf Web, Server oder App laufen, darf VCs aber nicht wie ein Holder speichern.' },
           { type: 'list', items: [
-            { title: 'Anfordern', text: 'Nachweistyp, erforderliche Attribute, Zweck und einen neuen Prüfwert angeben.' },
-            { title: 'Auflösen', text: 'Passenden Anbieter anhand der DID-Methode wie did:identra, did:web oder did:ion wählen.' },
-            { title: 'Prüfen', text: 'Präsentationsnachweis, Nachweissignatur, Prüfwertbindung, Ablauf und Status prüfen.' },
-            { title: 'Entscheiden', text: 'Zugriff erst gewähren, wenn Prüfung und eigene Richtlinie die offengelegten Attribute akzeptieren.' }
+            { title: 'Anfrage erstellen', text: 'Eine Präsentationsanfrage mit replay-sicherer Challenge erstellen.' },
+            { title: 'QR anzeigen', text: 'Einen QR mit DIDComm Invitation anzeigen.' },
+            { title: 'VP empfangen', text: 'VP über die neu aufgebaute Verbindung empfangen.' },
+            { title: 'Auflösen und prüfen', text: 'Holder- und Issuer-DIDs über den Registeranbieter auflösen und prüfen.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'verifyPresentation.ts', code: verifierCode }
+          { type: 'sdkExplorer', flow: 'verification' }
         ]
       }
     ]
@@ -429,8 +401,8 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'ssi-role-based-flow',
         title: 'Hiểu SSI qua nơi từng đoạn mã thực sự chạy',
         blocks: [
+          { type: 'p', text: 'Hướng dẫn SSI theo vai trò. Đi từng bước qua ba vai trò, xem ranh giới dữ liệu và so sánh ví dụ giữa các SDK web, server và mobile.' },
           { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo Thực chứng có thể xác minh (VC), Người nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn Bên xác minh yêu cầu và kiểm tra Bản trình bày có thể xác minh (VP).' },
-          { type: 'p', text: 'Identra tách các vai trò này giữa SDK cho web, máy chủ và thiết bị di động để thực chứng không đi vào những hệ thống vốn không nên lưu giữ chúng.' },
           { type: 'callout', text: '[Bên phát hành kiểm tra và ký VC] -> [Người nắm giữ lưu VC trên thiết bị di động] -> [Người dùng đồng ý và tạo VP] -> [Bên xác minh kiểm tra VP]' },
           { type: 'cards', cards: [
             { title: 'Bên phát hành', text: 'Kiểm tra dữ liệu nguồn, ký thực chứng và gửi đề nghị nhận VC qua DIDComm.' },
@@ -444,60 +416,77 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'SSI không có nghĩa mọi nền tảng đều giữ thực chứng',
         blocks: [
-          { type: 'p', text: 'Identra phân tách rõ ranh giới dữ liệu: Bên phát hành tạo VC, điện thoại của Người nắm giữ là nơi lưu duy nhất, còn Bên xác minh chỉ nhận VP được tạo riêng cho một yêu cầu cụ thể. Bên xác minh không trở thành một Người nắm giữ thứ hai.' },
-          { type: 'callout', text: 'Môi trường web và máy chủ không bao giờ nhận SDK dành cho Người nắm giữ. Chúng không được nhập, xuất, sao lưu hoặc âm thầm lưu VC của người dùng.' },
-          { type: 'list', items: [
-            { title: 'Cách chuyển thực chứng', text: 'VC được gửi qua kết nối DIDComm đã xác thực, không được nhúng trong mã QR.' },
-            { title: 'Vai trò của QR', text: 'QR chỉ dùng để thiết lập kết nối hoặc mang yêu cầu trình bày, không chứa thực chứng của người dùng.' },
-            { title: 'Lựa chọn sổ đăng ký', text: 'CertNet là nhà cung cấp mặc định trong môi trường thử nghiệm; cùng SDK có thể dùng did:web, ION hoặc sổ đăng ký nội bộ.' },
-            { title: 'Chia sẻ có chọn lọc', text: 'Bên xác minh chỉ yêu cầu thuộc tính cần cho mục đích hiện tại và người dùng phải đồng ý trước khi VP được tạo.' }
-          ] },
-          { type: 'callout', text: 'Các SDK và điểm cuối API dưới đây chỉ là ví dụ minh họa trong môi trường thử nghiệm, chưa phải gói phần mềm hoặc hợp đồng dùng cho môi trường thật.' }
+          { type: 'p', text: 'Identra phân tách rõ trách nhiệm: Bên phát hành tạo VC, điện thoại của Người nắm giữ là kho duy nhất, còn Bên xác minh chỉ yêu cầu và xác minh VP.' },
+          { type: 'subheading', text: 'Quy tắc quan trọng nhất' },
+          { type: 'callout', text: 'Web và server không bao giờ nhận SDK nắm giữ. Chúng không được import, export hoặc sao lưu VC của người dùng.' },
+          { type: 'subheading', text: 'DID registry không bị khóa vào CertNet' },
+          { type: 'p', text: 'CertNet là provider mặc định trong sandbox. Cùng SDK có thể publish và resolve DID Document trên CertNet, did:web, ION hoặc registry nội bộ tùy chính sách triển khai.' },
+          { type: 'callout', text: 'SDK minh họa, chưa dùng cho production. Tên package và contract trong Overview này là tài liệu mẫu.' }
         ]
       },
       {
         id: 'issue-credential',
-        title: 'Bước 1: Phát hành thực chứng',
+        title: 'Phát hành thực chứng',
         blocks: [
-          { type: 'p', text: 'Tổ chức phát hành kiểm tra dữ liệu có thẩm quyền, ký VC và gửi cho người dùng. Mã phía Bên phát hành có thể chạy trong ứng dụng web nội bộ, dịch vụ máy chủ hoặc ứng dụng di động được quản lý.' },
-          { type: 'p', text: 'Khóa ký của tổ chức phải được bảo vệ phù hợp với môi trường. Tích hợp phía máy chủ nên ưu tiên HSM hoặc dịch vụ quản lý khóa và tuyệt đối không chuyển khóa riêng xuống trình duyệt.' },
-          { type: 'table', headers: ['Môi trường chạy', 'Cách tích hợp thường dùng', 'Bảo vệ khóa'], rows: [
-            ['Trình duyệt web', '@identra/web với JavaScript hoặc TypeScript', 'Kho bảo mật của nền tảng cho ứng dụng nội bộ đã được phê duyệt'],
-            ['Máy chủ', 'SDK cho máy chủ hoặc dịch vụ được bảo vệ', 'Ưu tiên HSM hoặc KMS được quản lý'],
-            ['Ứng dụng di động', 'Ứng dụng phát hành được quản lý', 'Kho khóa phần cứng của nền tảng']
+          { type: 'subheading', text: 'Bên phát hành' },
+          { type: 'p', text: 'BƯỚC 01 trong 03 bước của luồng SSI theo vai trò.' },
+          { type: 'subheading', text: 'Ai tạo thực chứng và đoạn mã chạy ở đâu?' },
+          { type: 'p', text: 'Tổ chức phát hành kiểm tra dữ liệu, ký VC và gửi cho người dùng. Họ có thể tích hợp trên web nội bộ, server hoặc ứng dụng.' },
+          { type: 'subheading', text: 'Ranh giới dữ liệu và khóa' },
+          { type: 'callout', text: 'Khóa ký của tổ chức phải được bảo vệ phù hợp với môi trường chạy, ưu tiên HSM trên server.' },
+          { type: 'table', headers: ['Môi trường chạy', 'SDK ví dụ', 'Khi nào dùng'], rows: [
+            ['Web client', '@identra/web với Browser JavaScript hoặc TypeScript', 'Công cụ phát hành nội bộ có chính sách khóa được kiểm soát'],
+            ['Server', '@identra/node hoặc identra-go', 'Dịch vụ ký được bảo vệ bằng HSM hoặc KMS được quản lý'],
+            ['Ứng dụng mobile', '@identra/react-native, Android SDK hoặc iOS SDK', 'Ứng dụng phát hành nội bộ được quản lý']
           ] },
-          { type: 'code', language: 'typescript', fileName: 'issueCredential.ts', code: issuerCode },
-          { type: 'p', text: 'DID của Người nắm giữ được lấy sau khi thiết lập mối quan hệ hoặc từ hệ thống nghiệp vụ. VC được chuyển qua DIDComm sau khi kết nối hoàn tất; QR chỉ dùng để khởi tạo kết nối.' }
+          { type: 'subheading', text: 'Các bước của luồng' },
+          { type: 'list', items: [
+            { title: 'Khởi tạo', text: 'Khởi tạo SDK cho môi trường đang chạy.' },
+            { title: 'Tạo DID', text: 'Tạo hoặc nạp DID của bên phát hành trên DID registry đã chọn.' },
+            { title: 'Ký VC', text: 'Ký Verifiable Credential cho DID của người nhận.' },
+            { title: 'Gửi offer', text: 'Gửi credential offer qua kết nối DIDComm.' }
+          ] },
+          { type: 'sdkExplorer', flow: 'issuance' },
+          { type: 'p', text: 'Holder DID được lấy sau khi thiết lập kết nối hoặc tra từ hệ thống nghiệp vụ. Credential không đi qua QR; QR chỉ dùng để bootstrap kết nối DIDComm.' }
         ]
       },
       {
         id: 'hold-and-share',
-        title: 'Bước 2: Nắm giữ và chia sẻ thực chứng',
+        title: 'Nắm giữ và chia sẻ thực chứng',
         blocks: [
-          { type: 'p', text: 'VC chỉ nằm trong kho bảo mật trên điện thoại của Người nắm giữ. Khi quét QR của Bên xác minh, ứng dụng hiển thị yêu cầu, xin sự đồng ý, tạo VP rồi gửi qua DIDComm.' },
-          { type: 'callout', text: 'Vai trò Người nắm giữ chỉ hỗ trợ thiết bị di động. Không có SDK dành cho Người nắm giữ trên web hoặc máy chủ, VC không thể xuất ra ngoài và khi đổi thiết bị, kho dữ liệu trên thiết bị cũ phải bị xóa.' },
+          { type: 'subheading', text: 'Người nắm giữ' },
+          { type: 'p', text: 'BƯỚC 02 trong 03 bước của luồng SSI theo vai trò.' },
+          { type: 'subheading', text: 'Thực chứng nằm ở đâu và được chia sẻ thế nào?' },
+          { type: 'p', text: 'VC chỉ nằm trong secure vault trên điện thoại. Người dùng quét QR, xem yêu cầu, đồng ý rồi ứng dụng mới tạo VP và gửi qua DIDComm.' },
+          { type: 'subheading', text: 'Ranh giới dữ liệu và thiết bị' },
+          { type: 'callout', text: 'Không có SDK Holder cho web hoặc server. Không export VC. Đổi thiết bị đồng nghĩa xóa toàn bộ VC trên thiết bị cũ.' },
           { type: 'list', items: [
-            { title: 'SDK khả dụng', text: 'React Native với TypeScript, Android gốc với Java và iOS gốc với Swift.' },
-            { title: 'Kho dữ liệu một thiết bị', text: 'Một kho bảo mật duy nhất là nơi lưu thực chứng; sinh trắc học bảo vệ việc truy cập trên thiết bị.' },
-            { title: 'Tiếp nhận VC', text: 'Ví định danh phân giải DID của Bên phát hành, kiểm tra chữ ký và trạng thái rồi mới lưu VC.' },
-            { title: 'Sự đồng ý của người dùng', text: 'Ví định danh chỉ tạo và gửi VP sau khi người dùng xem và chấp thuận yêu cầu.' }
+            { title: 'SDK khả dụng', text: 'React Native, Java Android và Swift iOS.' },
+            { title: 'Kích hoạt vault', text: 'Kích hoạt kho thực chứng duy nhất trên thiết bị.' },
+            { title: 'Nhận VC', text: 'Nhận, xác minh và lưu VC vào secure vault.' },
+            { title: 'Quét yêu cầu', text: 'Quét QR và xem yêu cầu chia sẻ từ verifier.' },
+            { title: 'Chia sẻ VP', text: 'Tạo VP được người dùng chấp thuận và gửi qua DIDComm.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'holderWallet.ts', code: holderCode }
+          { type: 'sdkExplorer', flow: 'holder' }
         ]
       },
       {
         id: 'verify-presentation',
-        title: 'Bước 3: Xác minh bản trình bày',
+        title: 'Xác minh thực chứng',
         blocks: [
-          { type: 'p', text: 'Bên xác minh nhận VP, lấy DID của Người nắm giữ và Bên phát hành, phân giải tài liệu DID qua nhà cung cấp sổ đăng ký tương ứng rồi kiểm tra chữ ký, giá trị thử thách và trạng thái thu hồi.' },
-          { type: 'p', text: 'Mã xác minh có thể chạy trên web, máy chủ hoặc ứng dụng di động nhưng không được lưu VC như một Người nắm giữ. Chỉ lưu quyết định và lượng bằng chứng tối thiểu mà chính sách yêu cầu.' },
+          { type: 'subheading', text: 'Bên xác minh' },
+          { type: 'p', text: 'BƯỚC 03 trong 03 bước của luồng SSI theo vai trò.' },
+          { type: 'subheading', text: 'Bên xác minh tin vào VP bằng cách nào?' },
+          { type: 'p', text: 'Verifier nhận VP, lấy DID của holder và issuer bên trong, resolve DID Document qua registry provider tương ứng như CertNet, did:web hoặc ION rồi kiểm tra chữ ký, challenge và trạng thái thu hồi.' },
+          { type: 'subheading', text: 'Ranh giới dữ liệu và lưu trữ' },
+          { type: 'callout', text: 'Verifier có thể chạy trên web, server hoặc app nhưng không được lưu VC như một Holder.' },
           { type: 'list', items: [
-            { title: 'Tạo yêu cầu', text: 'Xác định loại thực chứng, các thuộc tính cần thiết, mục đích sử dụng và một giá trị thử thách mới.' },
-            { title: 'Phân giải DID', text: 'Chọn nhà cung cấp phù hợp theo phương thức DID như did:identra, did:web hoặc did:ion.' },
-            { title: 'Kiểm tra', text: 'Xác minh bằng chứng của bản trình bày, bằng chứng của thực chứng, giá trị thử thách, thời hạn và trạng thái thực chứng.' },
-            { title: 'Ra quyết định', text: 'Chỉ cấp quyền sau khi xác minh thành công và chính sách nội bộ chấp nhận các thuộc tính được chia sẻ.' }
+            { title: 'Tạo request', text: 'Tạo presentation request kèm challenge chống phát lại.' },
+            { title: 'Hiển thị QR', text: 'Hiển thị QR chứa DIDComm invitation.' },
+            { title: 'Nhận VP', text: 'Nhận VP qua kết nối vừa thiết lập.' },
+            { title: 'Resolve và xác minh', text: 'Resolve holder và issuer DID qua registry provider rồi xác minh.' }
           ] },
-          { type: 'code', language: 'typescript', fileName: 'verifyPresentation.ts', code: verifierCode }
+          { type: 'sdkExplorer', flow: 'verification' }
         ]
       }
     ]

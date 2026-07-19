@@ -34,19 +34,6 @@ const inquiryCode = `const response = await fetch('https://api.withidentra.com/v
 
 const inquiry = await response.json();`;
 
-const webhookCode = `{
-  "event": "inquiry.completed",
-  "created_at": "2026-07-07T22:00:00Z",
-  "data": {
-    "id": "inq_9A4b8CdEf...",
-    "status": "completed",
-    "verifications": ["gov_id_approved"]
-  }
-}`;
-
-const apiCode = `curl -X GET https://api.withidentra.com/v1/inquiries \\
-  -H "Authorization: Bearer prsk_test_..."`;
-
 const DOCS_PAGE_STRUCTURE = [
   { id: 'introduction', category: 'overview', nextPageId: 'how-identra-works', sections: ['welcome', 'questions'] },
   { id: 'how-identra-works', category: 'overview', prevPageId: 'introduction', nextPageId: 'security', sections: ['core-concepts', 'lifecycle'] },
@@ -55,11 +42,9 @@ const DOCS_PAGE_STRUCTURE = [
   { id: 'choose-integration', category: 'sending', prevPageId: 'environments', nextPageId: 'inquiries', sections: ['integration-options'] },
   { id: 'inquiries', category: 'sending', prevPageId: 'choose-integration', nextPageId: 'transactions', sections: ['inquiries-intro'] },
   { id: 'transactions', category: 'sending', prevPageId: 'inquiries', nextPageId: 'relay', sections: ['transactions-intro'] },
-  { id: 'relay', category: 'sending', prevPageId: 'transactions', nextPageId: 'webhooks', sections: ['relay-intro'] },
-  { id: 'webhooks', category: 'retrieving', prevPageId: 'relay', nextPageId: 'api-reference', sections: ['webhooks-guide'] },
-  { id: 'api-reference', category: 'retrieving', prevPageId: 'webhooks', nextPageId: 'understanding-payloads', sections: ['api-auth'] },
-  { id: 'understanding-payloads', category: 'retrieving', prevPageId: 'api-reference', nextPageId: 'changelog', sections: ['anatomy-payload'] },
-  { id: 'changelog', category: 'resources', prevPageId: 'understanding-payloads', sections: ['changelog-intro'] }
+  { id: 'relay', category: 'sending', prevPageId: 'transactions', nextPageId: 'api-reference', sections: ['relay-intro'] },
+  { id: 'api-reference', category: 'retrieving', prevPageId: 'relay', nextPageId: 'changelog', sections: ['api-lifecycle-overview', 'identity', 'issuance', 'verification'] },
+  { id: 'changelog', category: 'resources', prevPageId: 'api-reference', sections: ['changelog-intro'] }
 ];
 
 export const DOCS_PAGE_TRANSLATIONS: any = {
@@ -272,7 +257,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         title: 'Relay',
         category: 'sending',
         prevPageId: 'transactions',
-        nextPageId: 'webhooks',
+        nextPageId: 'api-reference',
         sections: [
           { id: 'relay-intro', title: 'Secure Routing with Relay', blocks: [
             { type: 'p', text: 'Relay routes verified PII and checks securely to third-party servers, partner banks, or downstream APIs without requiring you to hold the data.' }
@@ -280,40 +265,23 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         ]
       },
       {
-        id: 'webhooks',
-        title: 'Webhooks',
-        category: 'retrieving',
-        prevPageId: 'relay',
-        nextPageId: 'api-reference',
-        sections: [
-          { id: 'webhooks-guide', title: 'Configuring Webhooks', blocks: [
-            { type: 'p', text: 'Identra sends webhook events when status changes occur, such as an Inquiry completing verification or being flagged for manual review.' },
-            { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }
-          ] }
-        ]
-      },
-      {
         id: 'api-reference',
         title: 'API Reference',
         category: 'retrieving',
-        prevPageId: 'webhooks',
-        nextPageId: 'understanding-payloads',
-        sections: [
-          { id: 'api-auth', title: 'Authentication', blocks: [
-            { type: 'p', text: 'Identra REST APIs use JSON. Authenticate requests by including your secret token in the Authorization header.' },
-            { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }
-          ] }
-        ]
-      },
-      {
-        id: 'understanding-payloads',
-        title: 'Understanding a Identra API Payload',
-        category: 'retrieving',
-        prevPageId: 'api-reference',
+        prevPageId: 'relay',
         nextPageId: 'changelog',
         sections: [
-          { id: 'anatomy-payload', title: 'Anatomy of a Payload', blocks: [
-            { type: 'p', text: 'Identra responses return nested JSON resources with a top-level ID, type field, and nested components describing verification checks.' }
+          { id: 'api-lifecycle-overview', title: 'Lifecycle Overview', blocks: [
+            { type: 'p', text: 'Follow the full SDK lifecycle from key creation and DID Document publication through credential issuance, holder storage, presentation, and verifier receipts.' }
+          ] },
+          { id: 'identity', title: 'Identity and Key Foundation', blocks: [
+            { type: 'p', text: 'Create secure keys, publish DID Documents, and prepare issuer, holder, and verifier identities before any credential exchange begins.' }
+          ] },
+          { id: 'issuance', title: 'Credential Issuance and Storage', blocks: [
+            { type: 'p', text: 'Open DIDComm channels, sign verifiable credentials, deliver them to the holder, and store them in the mobile wallet.' }
+          ] },
+          { id: 'verification', title: 'Presentation and Verification', blocks: [
+            { type: 'p', text: 'Request a presentation, let the holder approve and submit a verifiable presentation, verify it, and return the result.' }
           ] }
         ]
       },
@@ -321,7 +289,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         id: 'changelog',
         title: 'Changelog',
         category: 'resources',
-        prevPageId: 'understanding-payloads',
+        prevPageId: 'api-reference',
         sections: [
           { id: 'changelog-intro', title: 'Latest Updates', blocks: [
             { type: 'p', text: 'Stay up to date with additions, improvements, and fixes to the Identra API and SDKs.' },
@@ -562,9 +530,12 @@ translatePages('es', {
   inquiries: { title: 'Solicitudes de verificación', sections: { 'inquiries-intro': { title: 'Resumen de solicitudes', blocks: [{ type: 'p', text: 'Un Inquiry es el punto central del SDK de Identra. Tu backend lo crea mediante REST API y entrega el token al flujo cliente.' }, { type: 'subheading', text: 'Crear un Inquiry con REST API' }, { type: 'p', text: 'Crea la sesión en tu backend seguro para proteger reglas y referencias internas.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transacciones', sections: { 'transactions-intro': { title: 'Monitorear transacciones', blocks: [{ type: 'p', text: 'Rastrea movimientos de dinero, transferencias, sesiones y pagos para prevenir toma de cuentas y fraude.' }] } } },
   relay: { title: 'Retransmisión', sections: { 'relay-intro': { title: 'Enrutamiento seguro con Relay', blocks: [{ type: 'p', text: 'Relay enruta PII verificada y comprobaciones a terceros o APIs posteriores sin que tengas que conservar esos datos.' }] } } },
-  webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Configurar webhooks', blocks: [{ type: 'p', text: 'Identra envía eventos webhook cuando cambia el estado de un Inquiry.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
-  'api-reference': { title: 'Referencia API', sections: { 'api-auth': { title: 'Autenticación', blocks: [{ type: 'p', text: 'Las REST APIs de Identra usan JSON. Autentica solicitudes con el token secreto en el header Authorization.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
-  'understanding-payloads': { title: 'Entender un payload API de Identra', sections: { 'anatomy-payload': { title: 'Anatomía de un payload', blocks: [{ type: 'p', text: 'Las respuestas de Identra devuelven recursos JSON anidados con ID, tipo y componentes de verificación.' }] } } },
+  'api-reference': { title: 'Referencia API', sections: {
+    'api-lifecycle-overview': { title: 'Resumen del ciclo de vida', blocks: [{ type: 'p', text: 'Sigue todo el ciclo SDK: claves, DID Documents, emisión de credenciales, almacenamiento del titular, presentación y recibos del verificador.' }] },
+    identity: { title: 'Base de identidad y claves', blocks: [{ type: 'p', text: 'Crea claves seguras, publica DID Documents y prepara las identidades de emisor, titular y verificador antes del intercambio.' }] },
+    issuance: { title: 'Emisión y almacenamiento de credenciales', blocks: [{ type: 'p', text: 'Abre canales DIDComm, firma credenciales verificables, entrégalas al titular y guárdalas en la wallet móvil.' }] },
+    verification: { title: 'Presentación y verificación', blocks: [{ type: 'p', text: 'Solicita una presentación, permite que el titular la apruebe y envíe, verifica la prueba y devuelve el resultado.' }] }
+  } },
   changelog: { title: 'Historial de cambios', sections: { 'changelog-intro': { title: 'Últimas actualizaciones', blocks: [{ type: 'p', text: 'Mantente al día con mejoras y correcciones de la API y SDKs de Identra.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Motor mejorado de comprobación documental', text: 'Modelos de aprendizaje automático para licencias modernas e ID nacionales.' }, { version: 'v2025-06-15', title: 'Mejoras de enrutamiento Relay', text: 'Enrutamiento de objetos parciales con filtros PII personalizables.' }, { version: 'v2024-11-01', title: 'Personalización inline de Sandbox', text: 'Overrides de plantilla para simular rechazos y revisiones.' }] }] } } }
 });
 
@@ -577,9 +548,12 @@ translatePages('ja', {
   inquiries: { title: '照会', sections: { 'inquiries-intro': { title: '照会の概要', blocks: [{ type: 'p', text: 'InquiryはIdentra SDKの中心です。バックエンドがREST APIで作成し、生成されたトークンをクライアントへ渡します。' }, { type: 'subheading', text: 'REST APIでInquiryを作成' }, { type: 'p', text: 'セキュアなバックエンドでセッションを作成し、ルールや参照IDを保護します。' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: '取引', sections: { 'transactions-intro': { title: '取引の監視', blocks: [{ type: 'p', text: '資金移動、口座移管、ログイン、支払いイベントを追跡し、不正を防ぎます。' }] } } },
   relay: { title: '中継', sections: { 'relay-intro': { title: '安全な中継経路', blocks: [{ type: 'p', text: 'Relayは、検証済みPIIとチェック結果を、データを保持せずに第三者や下流APIへ安全にルーティングします。' }] } } },
-  webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Webhook設定', blocks: [{ type: 'p', text: 'IdentraはInquiryの状態変更時にwebhookイベントを送信します。' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
-  'api-reference': { title: 'APIリファレンス', sections: { 'api-auth': { title: '認証', blocks: [{ type: 'p', text: 'Identra REST APIsはJSONを使います。Authorization headerにsecret tokenを含めて認証します。' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
-  'understanding-payloads': { title: 'Identra API Payloadの理解', sections: { 'anatomy-payload': { title: 'Payloadの構造', blocks: [{ type: 'p', text: 'Identraの応答は、ID、type、検証コンポーネントを含むネストされたJSONです。' }] } } },
+  'api-reference': { title: 'APIリファレンス', sections: {
+    'api-lifecycle-overview': { title: 'ライフサイクル概要', blocks: [{ type: 'p', text: '鍵作成、DID Document公開、クレデンシャル発行、Holder保存、提示、Verifierの受領結果まで、SDK全体の流れを追います。' }] },
+    identity: { title: 'IDと鍵の基盤', blocks: [{ type: 'p', text: 'クレデンシャル交換の前に、安全な鍵を作成し、DID Documentsを公開し、Issuer、Holder、VerifierのIDを準備します。' }] },
+    issuance: { title: 'クレデンシャルの発行と保存', blocks: [{ type: 'p', text: 'DIDCommチャネルを開き、検証可能なクレデンシャルに署名し、Holderへ届けてモバイルウォレットへ保存します。' }] },
+    verification: { title: '提示と検証', blocks: [{ type: 'p', text: '提示を要求し、Holderが承認して送信したVerifiable Presentationを検証し、結果を返します。' }] }
+  } },
   changelog: { title: '変更履歴', sections: { 'changelog-intro': { title: '最新更新', blocks: [{ type: 'p', text: 'Identra APIとSDKsの追加、改善、修正を確認できます。' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: '書類チェックエンジン強化', text: '現代的な免許証と国民ID向けに機械学習モデルを強化しました。' }, { version: 'v2025-06-15', title: 'Relayルーティング改善', text: 'カスタムPIIフィルター付き部分Inquiryルーティングを追加しました。' }, { version: 'v2024-11-01', title: 'Inline Sandboxカスタマイズ', text: '失敗やレビュー判定をシミュレーションするテンプレート上書きを追加しました。' }] }] } } }
 });
 
@@ -592,9 +566,12 @@ translatePages('de', {
   inquiries: { title: 'Prüfvorgänge', sections: { 'inquiries-intro': { title: 'Überblick über Prüfvorgänge', blocks: [{ type: 'p', text: 'Ein Inquiry ist der Mittelpunkt des Identra SDK. Ihr Backend erstellt ihn per REST API und gibt das Token an den Client weiter.' }, { type: 'subheading', text: 'Inquiry per REST API erstellen' }, { type: 'p', text: 'Erstellen Sie die Sitzung auf Ihrem sicheren Backend, um Regeln und Referenzen zu schützen.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transaktionen', sections: { 'transactions-intro': { title: 'Transaktionen überwachen', blocks: [{ type: 'p', text: 'Verfolgen Sie Geldflüsse, Transfers, Sitzungen und Auszahlungen, um Betrug zu verhindern.' }] } } },
   relay: { title: 'Weiterleitung', sections: { 'relay-intro': { title: 'Sichere Weiterleitung', blocks: [{ type: 'p', text: 'Relay leitet verifizierte PII und Prüfergebnisse sicher an Dritte oder nachgelagerte APIs weiter, ohne dass Sie die Daten halten müssen.' }] } } },
-  webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Webhooks konfigurieren', blocks: [{ type: 'p', text: 'Identra sendet webhook events bei Statusänderungen eines Inquiry.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
-  'api-reference': { title: 'API-Referenz', sections: { 'api-auth': { title: 'Authentifizierung', blocks: [{ type: 'p', text: 'Identra REST APIs verwenden JSON. Authentifizieren Sie Anfragen mit Ihrem secret token im Authorization header.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
-  'understanding-payloads': { title: 'Identra API Payload verstehen', sections: { 'anatomy-payload': { title: 'Anatomie eines Payloads', blocks: [{ type: 'p', text: 'Identra-Antworten enthalten verschachtelte JSON-Ressourcen mit ID, type und Verifizierungskomponenten.' }] } } },
+  'api-reference': { title: 'API-Referenz', sections: {
+    'api-lifecycle-overview': { title: 'Lebenszyklusüberblick', blocks: [{ type: 'p', text: 'Verfolgen Sie den vollständigen SDK-Ablauf von Schlüsseln und DID Documents bis zu Ausstellung, Speicherung, Präsentation, Prüfung und Ergebnisbeleg.' }] },
+    identity: { title: 'Identitäts- und Schlüsselbasis', blocks: [{ type: 'p', text: 'Erstellen Sie sichere Schlüssel, veröffentlichen Sie DID Documents und bereiten Sie Aussteller-, Inhaber- und Prüferidentitäten vor.' }] },
+    issuance: { title: 'Ausstellung und Speicherung von Nachweisen', blocks: [{ type: 'p', text: 'Öffnen Sie DIDComm-Kanäle, signieren Sie verifizierbare Nachweise, liefern Sie sie an den Inhaber und speichern Sie sie in der mobilen Wallet.' }] },
+    verification: { title: 'Präsentation und Prüfung', blocks: [{ type: 'p', text: 'Fordern Sie eine Präsentation an, lassen Sie den Inhaber zustimmen und senden, prüfen Sie den Nachweis und geben Sie das Ergebnis zurück.' }] }
+  } },
   changelog: { title: 'Änderungsprotokoll', sections: { 'changelog-intro': { title: 'Neueste Updates', blocks: [{ type: 'p', text: 'Bleiben Sie über Verbesserungen und Korrekturen von API und SDKs informiert.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Verbesserte Dokumentprüfmaschine', text: 'Machine-Learning-Modelle für moderne Führerscheine und nationale IDs.' }, { version: 'v2025-06-15', title: 'Relay-Routing-Verbesserungen', text: 'Routing partieller Inquiry-Objekte mit anpassbaren PII-Filtern.' }, { version: 'v2024-11-01', title: 'Inline-Sandbox-Anpassung', text: 'Template-Overrides zur Simulation von Ablehnung und Review.' }] }] } } }
 });
 
@@ -607,8 +584,11 @@ translatePages('vi', {
   inquiries: { title: 'Hồ sơ xác minh', sections: { 'inquiries-intro': { title: 'Tổng quan về hồ sơ xác minh', blocks: [{ type: 'p', text: 'Inquiry là điểm trung tâm của Identra SDK. Backend tạo Inquiry qua REST API và chuyển token sang luồng phía client.' }, { type: 'subheading', text: 'Tạo Inquiry qua REST API' }, { type: 'p', text: 'Tạo phiên trên backend an toàn để bảo vệ quy tắc và mã tham chiếu nội bộ.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Giao dịch', sections: { 'transactions-intro': { title: 'Giám sát giao dịch', blocks: [{ type: 'p', text: 'Theo dõi dòng tiền, chuyển khoản, phiên đăng nhập và thanh toán để chống chiếm đoạt tài khoản và gian lận.' }] } } },
   relay: { title: 'Chuyển tiếp', sections: { 'relay-intro': { title: 'Chuyển tiếp dữ liệu an toàn', blocks: [{ type: 'p', text: 'Relay định tuyến PII đã xác minh và kết quả kiểm tra đến bên thứ ba hoặc API hạ nguồn mà không cần bạn lưu giữ dữ liệu.' }] } } },
-  webhooks: { title: 'Webhooks', sections: { 'webhooks-guide': { title: 'Cấu hình webhooks', blocks: [{ type: 'p', text: 'Identra gửi sự kiện webhook khi trạng thái Inquiry thay đổi.' }, { type: 'code', language: 'json', fileName: 'webhook_payload.json', code: webhookCode }] } } },
-  'api-reference': { title: 'Tham chiếu API', sections: { 'api-auth': { title: 'Xác thực', blocks: [{ type: 'p', text: 'Identra REST APIs dùng JSON. Xác thực yêu cầu bằng secret token trong Authorization header.' }, { type: 'code', language: 'bash', fileName: 'api_request.sh', code: apiCode }] } } },
-  'understanding-payloads': { title: 'Hiểu Identra API Payload', sections: { 'anatomy-payload': { title: 'Cấu trúc payload', blocks: [{ type: 'p', text: 'Phản hồi Identra trả về tài nguyên JSON lồng nhau với ID, trường type và các thành phần kiểm tra xác minh.' }] } } },
+  'api-reference': { title: 'Tham chiếu API', sections: {
+    'api-lifecycle-overview': { title: 'Tổng quan vòng đời', blocks: [{ type: 'p', text: 'Theo dõi toàn bộ vòng đời SDK: tạo khóa, công bố DID Document, cấp phát thực chứng, lưu vào ví, trình bày bằng chứng và trả kết quả xác minh.' }] },
+    identity: { title: 'Nền tảng định danh và khóa', blocks: [{ type: 'p', text: 'Tạo khóa an toàn, công bố DID Documents và chuẩn bị định danh cho bên phát hành, holder và bên xác minh trước khi trao đổi thực chứng.' }] },
+    issuance: { title: 'Cấp phát và lưu thực chứng', blocks: [{ type: 'p', text: 'Mở kênh DIDComm, ký verifiable credential, chuyển cho holder và lưu thực chứng vào ví trên thiết bị di động.' }] },
+    verification: { title: 'Trình bày và xác minh', blocks: [{ type: 'p', text: 'Gửi yêu cầu trình bày, để holder phê duyệt và gửi verifiable presentation, xác minh bằng chứng rồi trả lại kết quả.' }] }
+  } },
   changelog: { title: 'Nhật ký thay đổi', sections: { 'changelog-intro': { title: 'Cập nhật mới nhất', blocks: [{ type: 'p', text: 'Theo dõi các bổ sung, cải tiến và bản sửa lỗi cho Identra API và SDKs.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Nâng cấp engine kiểm tra giấy tờ', text: 'Dùng mô hình machine learning cho giấy phép lái xe và ID quốc gia hiện đại.' }, { version: 'v2025-06-15', title: 'Cải tiến định tuyến Relay', text: 'Thêm định tuyến đối tượng Inquiry một phần với bộ lọc PII tùy chỉnh.' }, { version: 'v2024-11-01', title: 'Tùy chỉnh Sandbox inline', text: 'Thêm override cấp template để mô phỏng kết quả từ chối và đánh giá.' }] }] } } }
 });

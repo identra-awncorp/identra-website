@@ -7,7 +7,7 @@ export const DOCS_TAB_PAGE_IDS: Record<DocsTabId, string[]> = {
   inquiries: ['inquiries'],
   transactions: ['transactions'],
   relay: ['relay'],
-  'api-ref': ['api-reference', 'webhooks', 'understanding-payloads'],
+  'api-ref': ['api-reference'],
   changelog: ['changelog']
 };
 

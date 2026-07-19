@@ -1,4 +1,5 @@
 import type { Locale } from '../../types/routes';
+import type { DocsSdkVariantId } from './docsSdkCatalog';
 
 export type DocBlock =
   | { type: 'p'; text: string }
@@ -9,9 +10,48 @@ export type DocBlock =
   | { type: 'table'; headers: string[]; rows: string[][] }
   | { type: 'code'; language: string; code: string; fileName?: string }
   | { type: 'sdkExplorer'; flow: DocsSdkFlow }
+  | { type: 'referenceStage'; stage: DocsReferenceStage }
   | { type: 'changelog'; items: Array<{ version: string; title: string; text: string }> };
 
 export type DocsSdkFlow = 'issuance' | 'holder' | 'verification';
+
+export type DocsReferenceActor = 'issuer' | 'holder' | 'verifier';
+export type DocsReferencePhase = 'identity' | 'issuance' | 'verification';
+export type DocsReferenceCodeKey =
+  | 'issuerKeys'
+  | 'issuerDid'
+  | 'holderWallet'
+  | 'issuerInvitation'
+  | 'holderIssuerConnection'
+  | 'issueCredential'
+  | 'holderStore'
+  | 'verifierIdentity'
+  | 'verifierInvitation'
+  | 'holderVerifierConnection'
+  | 'presentationRequest'
+  | 'createPresentation'
+  | 'verifyPresentation'
+  | 'verificationReceipt';
+
+export interface DocsReferenceStage {
+  id: string;
+  number: string;
+  phase: DocsReferencePhase;
+  phaseLabel: string;
+  actor: DocsReferenceActor;
+  actorLabel: string;
+  protocol: string;
+  title: string;
+  summary: string;
+  inputLabel: string;
+  outputLabel: string;
+  securityLabel: string;
+  inputs: string[];
+  outputs: string[];
+  security: string;
+  codeKey: DocsReferenceCodeKey;
+  variants: DocsSdkVariantId[];
+}
 
 export interface DocSection {
   id: string;

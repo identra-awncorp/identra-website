@@ -2,10 +2,12 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   AlertCircle,
   ArrowLeft,
+  ArrowRight,
   Check,
   ChevronLeft,
   ChevronRight,
   Copy,
+  ShieldCheck,
   ThumbsDown,
   ThumbsUp
 } from 'lucide-react';
@@ -22,6 +24,14 @@ interface DocTopic {
   title: string;
   blocks: DocBlock[];
 }
+
+const DocsSdkReferenceCode = React.lazy(() => import('./DocsSdkReferenceCode'));
+
+const referenceActorStyles = {
+  issuer: 'bg-[#5B6CFF]/10 text-[#5B6CFF] dark:text-[#7C8CFF]',
+  holder: 'bg-violet-500/10 text-violet-600 dark:text-violet-400',
+  verifier: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+};
 
 const getTopicLabel = (
   block: Exclude<DocBlock, { type: 'subheading' }>,
@@ -43,6 +53,8 @@ const getTopicLabel = (
       return labels.codeExample;
     case 'sdkExplorer':
       return labels.codeExample;
+    case 'referenceStage':
+      return block.stage.title;
     case 'changelog':
       return labels.releaseHistory;
   }
@@ -160,6 +172,76 @@ const renderBlock = (block: DocBlock, index: number) => {
       <React.Fragment key={index}>
         <DocsSdkCodeExplorer flow={block.flow} />
       </React.Fragment>
+    );
+  }
+
+  if (block.type === 'referenceStage') {
+    const { stage } = block;
+
+    return (
+      <div key={index} className="not-prose overflow-hidden rounded-2xl border border-slate-100 bg-white text-left shadow-sm dark:border-slate-800/40 dark:bg-slate-900">
+        <div className="p-4 sm:p-5">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+            <div className="min-w-0 space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-extrabold text-[#5B6CFF] dark:text-[#7C8CFF]">
+                  {stage.number} · {stage.phaseLabel}
+                </span>
+                <span className={`inline-flex rounded-lg px-2 py-1 text-[10px] font-extrabold ${referenceActorStyles[stage.actor]}`}>
+                  {stage.actorLabel}
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {stage.summary}
+              </p>
+            </div>
+            <div className="shrink-0 rounded-xl bg-[#F7F8FC] px-3 py-2 text-xs font-bold text-slate-600 dark:bg-[#0B0F1A] dark:text-slate-300">
+              {stage.protocol}
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <div className="rounded-2xl bg-[#F7F8FC] p-4 dark:bg-[#0B0F1A]">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                {stage.inputLabel}
+              </p>
+              <div className="mt-3 space-y-2">
+                {stage.inputs.map(item => (
+                  <p key={item} className="flex items-start gap-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    <ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#5B6CFF] dark:text-[#7C8CFF]" />
+                    <span>{item}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl bg-[#F7F8FC] p-4 dark:bg-[#0B0F1A]">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+                {stage.outputLabel}
+              </p>
+              <div className="mt-3 space-y-2">
+                {stage.outputs.map(item => (
+                  <p key={item} className="flex items-start gap-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                    <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                    <span>{item}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#5B6CFF]/15 bg-[#5B6CFF]/5 p-4">
+            <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#5B6CFF] dark:text-[#7C8CFF]" />
+            <div>
+              <p className="text-xs font-extrabold text-slate-900 dark:text-white">{stage.securityLabel}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-300">{stage.security}</p>
+            </div>
+          </div>
+        </div>
+
+        <React.Suspense fallback={<div className="h-40 bg-[#0D1220]" />}>
+          <DocsSdkReferenceCode codeKey={stage.codeKey} variants={stage.variants} />
+        </React.Suspense>
+      </div>
     );
   }
 

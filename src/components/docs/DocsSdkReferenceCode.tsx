@@ -6,16 +6,15 @@ import {
   docsSdkEnvironmentLabels,
   docsSdkExplorerCopy,
   docsSdkVariants,
-  getDocsSdkFileName,
-  getDocsSdkSnippet,
-  getSupportedDocsSdkVariants,
   type DocsSdkEnvironment,
   type DocsSdkVariantId
 } from './docsSdkCatalog';
-import type { DocsSdkFlow } from './docsTypes';
+import { getDocsReferenceFileName, getDocsReferenceSnippet } from './docsSdkReferenceCatalog';
+import type { DocsReferenceCodeKey } from './docsTypes';
 
-interface DocsSdkCodeExplorerProps {
-  flow: DocsSdkFlow;
+interface DocsSdkReferenceCodeProps {
+  codeKey: DocsReferenceCodeKey;
+  variants: DocsSdkVariantId[];
 }
 
 const environmentIcons: Record<DocsSdkEnvironment, typeof Monitor> = {
@@ -26,49 +25,49 @@ const environmentIcons: Record<DocsSdkEnvironment, typeof Monitor> = {
 
 const compactCodeMaxHeight = 'max-h-[34rem]';
 
-export default function DocsSdkCodeExplorer({ flow }: DocsSdkCodeExplorerProps) {
+export default function DocsSdkReferenceCode({ codeKey, variants }: DocsSdkReferenceCodeProps) {
   const { language } = useLanguage();
   const copy = docsSdkExplorerCopy[language];
-  const supportedVariants = useMemo(() => getSupportedDocsSdkVariants(flow), [flow]);
-  const [environment, setEnvironment] = useState<DocsSdkEnvironment>(supportedVariants[0].environment);
-  const [variantId, setVariantId] = useState<DocsSdkVariantId>(supportedVariants[0].id);
+  const availableVariants = useMemo(
+    () => docsSdkVariants.filter(variant => variants.includes(variant.id)),
+    [variants]
+  );
+  const [variantId, setVariantId] = useState<DocsSdkVariantId>(availableVariants[0]?.id ?? 'web-javascript');
 
   useEffect(() => {
-    const nextVariant = getSupportedDocsSdkVariants(flow)[0];
-    setEnvironment(nextVariant.environment);
-    setVariantId(nextVariant.id);
-  }, [flow]);
+    setVariantId(availableVariants[0]?.id ?? 'web-javascript');
+  }, [availableVariants]);
 
-  const environments = Array.from(new Set<DocsSdkEnvironment>(supportedVariants.map(variant => variant.environment)));
-  const variantsForEnvironment = supportedVariants.filter(variant => variant.environment === environment);
-  const selectedVariant = docsSdkVariants.find(variant => variant.id === variantId) ?? variantsForEnvironment[0];
-  const code = getDocsSdkSnippet(flow, selectedVariant.id, language);
+  const selectedVariant = availableVariants.find(variant => variant.id === variantId) ?? availableVariants[0];
 
-  const selectEnvironment = (nextEnvironment: DocsSdkEnvironment) => {
-    const nextVariant = supportedVariants.find(variant => variant.environment === nextEnvironment);
-    if (!nextVariant) return;
+  if (!selectedVariant) return null;
 
-    setEnvironment(nextEnvironment);
-    setVariantId(nextVariant.id);
+  const environments = Array.from(new Set<DocsSdkEnvironment>(availableVariants.map(variant => variant.environment)));
+  const variantsForEnvironment = availableVariants.filter(variant => variant.environment === selectedVariant.environment);
+  const code = getDocsReferenceSnippet(codeKey, selectedVariant.id, language);
+
+  const selectEnvironment = (environment: DocsSdkEnvironment) => {
+    const nextVariant = availableVariants.find(variant => variant.environment === environment);
+    if (nextVariant) setVariantId(nextVariant.id);
   };
 
   return (
-    <div className="not-prose mt-4 min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white text-left dark:border-slate-800 dark:bg-slate-900">
+    <div className="border-t border-slate-100 dark:border-slate-800/40">
       <div className="grid gap-5 p-4 sm:p-5">
         <div>
           <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
             {copy.chooseRuntime}
           </p>
           <div className="flex flex-wrap gap-2">
-            {environments.map(item => {
-              const Icon = environmentIcons[item];
-              const isActive = item === environment;
+            {environments.map(environment => {
+              const Icon = environmentIcons[environment];
+              const isActive = environment === selectedVariant.environment;
 
               return (
                 <button
-                  key={item}
+                  key={environment}
                   type="button"
-                  onClick={() => selectEnvironment(item)}
+                  onClick={() => selectEnvironment(environment)}
                   className={`inline-flex min-h-10 items-center gap-2 rounded-xl border px-3 text-xs font-bold transition-colors ${
                     isActive
                       ? 'border-[#5B6CFF] bg-[#5B6CFF]/8 text-[#5B6CFF] dark:text-[#7C8CFF]'
@@ -76,16 +75,11 @@ export default function DocsSdkCodeExplorer({ flow }: DocsSdkCodeExplorerProps) 
                   }`}
                 >
                   <Icon className="h-4 w-4" />
-                  <span>{docsSdkEnvironmentLabels[item][language]}</span>
+                  <span>{docsSdkEnvironmentLabels[environment][language]}</span>
                 </button>
               );
             })}
           </div>
-          {flow === 'holder' && (
-            <p className="mt-3 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
-              {copy.mobileOnly}
-            </p>
-          )}
         </div>
 
         <div>
@@ -118,7 +112,7 @@ export default function DocsSdkCodeExplorer({ flow }: DocsSdkCodeExplorerProps) 
       <CodeBlock
         language={selectedVariant.syntax}
         code={code}
-        fileName={getDocsSdkFileName(selectedVariant)}
+        fileName={getDocsReferenceFileName(selectedVariant)}
         maxHeightClassName={compactCodeMaxHeight}
         flush
       />

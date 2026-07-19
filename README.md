@@ -1,144 +1,215 @@
-# Identra Website - Interactive Identity Verification Platform
+# Identra Website
 
-A highly-polished, interactive **Identra** identity verification platform website. This application features an interactive live verification sandbox, custom product visualizers, a responsive bento-grid design, custom-styled multi-view routing, and a dynamic decision engine.
+Identra is a multilingual React website for an identity verification platform. It includes public marketing pages, product and solution pages, a developer Docs experience, resource pages, localized blog details, SEO-ready static HTML output, and an interactive demo sandbox.
 
----
+This README is the human-friendly entry point for the repository. For detailed implementation rules, see [CODEX.md](CODEX.md) and the focused guides in [docs/](docs/).
 
-## 🚀 Key Features
+## What Is In This App
 
-- **Interactive Verification Sandbox (`/demo`)**: Simulates real-world verification flows including:
-  - **Airlines & Hotels**: Passport & Boarding Pass checking.
-  - **Job Applicant Verification**: Verification flow for candidate onboarding.
-  - **Bank Account Setup**: Full KYC & AML screening simulation.
-  - **Government Services**: Mobile Driver's License and Government database checks.
-- **Dynamic Decision Logic & Graph Engine**:
-  - Custom decision flow visualization.
-  - **Interactive Flow Graph**: Visualizes the flow path of identity verification steps dynamically.
-- **Embedded Sandbox Terminal**:
-  - Live mock-terminal logger inside the scenario runs. 
-  - Uses smart native scroll-containment for simulating high-performance real-time processing outputs without triggering page-level jumping or scrolling.
-- **Highly-Polished Modals**:
-  - Interactive decision logic summary screen styled with high-contrast slate aesthetics, customized scroll-bars, and perfect flex containment (`overflow-hidden` container limits scroll footprint directly to the modal content card).
-- **Extensive UI Catalog**:
-  - Features dozens of tailored service sub-pages (KYB, Document AI, NFC scanning, selfie age estimation, biometric match, and more) replicating Identra’s comprehensive suite.
-- **Multilingual Context Framework**:
-  - Built-in provider support for rapid localization and internationalization toggles.
+- Public website pages for Identra products, industries, solutions, company content, resources, and developer documentation.
+- Locale-aware routing for five supported languages: `en`, `es`, `ja`, `de`, and `vi`.
+- Localized SEO metadata, canonical URLs, `hreflang` alternates, sitemap generation, robots rules, Open Graph, Twitter cards, and JSON-LD.
+- Blog and resource pages with separate Blog Detail behavior.
+- A standalone Docs page with section navigation, article layouts, code blocks, and localized documentation content.
+- An interactive demo sandbox with fictional verification scenarios, flow graphs, summary modals, and dashboard-style demo content.
 
----
+## Tech Stack
 
-## 🛠️ Tech Stack
+- React 19
+- TypeScript
+- Vite 6
+- Tailwind CSS v4
+- React Router
+- Motion
+- Lucide React
+- Recharts
+- Prism.js
 
-- **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite 6](https://vite.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with Vite post-processors
-- **Animations**: [Motion](https://motion.dev/) (`motion/react` lightweight animations)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Data Visualizations**: [Recharts](https://recharts.org/)
-- **Code Syntax Highlighting**: [Prism.js](https://prismjs.com/)
+## Quick Start
 
----
+### Requirements
 
-## 📦 Getting Started
+- Node.js 18 or newer
+- npm
 
-### Prerequisites
+### Install
 
-- **Node.js**: v18.0.0 or higher
-- **npm** or **yarn** / **pnpm**
-
-### Installation
-
-1. Clone the repository or navigate to the project directory:
-   ```bash
-   cd identra-website
-   ```
-
-2. Install all required dependencies:
-   ```bash
-   npm install
-   ```
-
-### Running the Application
-
-To start the development server on host `0.0.0.0` and port `3000` (default preview ingress configuration):
-
-```bash
-npm run dev
+```powershell
+npm install
 ```
 
-The application will be accessible locally at:
-- **Local Development URL**: [http://localhost:3000](http://localhost:3000)
+### Configure Environment
 
-### Production Build
+Copy the example file and adjust values for your environment:
 
-To compile the application into a production-optimized bundle:
-
-```bash
-npm run build
+```powershell
+Copy-Item .env.example .env
 ```
 
-This will output highly optimized HTML, JS, and CSS static assets in the `/dist` directory. To preview the production bundle locally:
+Important variables:
 
-```bash
-npm run preview
+| Variable | Purpose |
+| --- | --- |
+| `VITE_SITE_URL` | Public canonical origin used by SEO metadata, sitemap, social previews, and localized static pages. |
+| `APP_URL` | Runtime host URL used by applet or hosting environments when needed. |
+
+For local development, `VITE_SITE_URL` can stay pointed at the intended public site. For production SEO output, set it to the real public origin.
+
+### Run The Dev Server
+
+```powershell
+npm.cmd run dev
 ```
 
----
-
-## ⚙️ Environment Variables
-
-Copy the example environment file to configure custom API bindings:
-
-```bash
-cp .env.example .env
-```
-
-Define the following parameters in your `.env` file:
-
-```env
-# Required for any integrated server-side Gemini AI features
-GEMINI_API_KEY="your_gemini_api_key_here"
-
-# Canonical URL hosting the application (for callback routing / assets)
-APP_URL="http://localhost:3000"
-```
-
----
-
-## 📂 Project Structure
+The app runs at:
 
 ```text
-├── .env.example          # Environment variables template
-├── index.html            # Main SPA HTML entry-point
-├── vite.config.ts        # Vite build & plugin settings
-├── tailwind.config.js    # Tailwind configuration
-├── metadata.json         # Project capabilities & configuration
-├── src/
-│   ├── main.tsx          # SPA bootstrap script
-│   ├── App.tsx           # Router, dynamic view definitions & global layouts
-│   ├── types.ts          # Shared TypeScript interfaces & types
-│   ├── context/          # State managers (e.g., Language Context)
-│   ├── components/       # Reusable components and detailed site sub-pages
-│   │   ├── demo/         # Interactive sandbox scenarios and visualizer modules
-│   │   │   ├── DemoSummaryModal.tsx       # Flow execution decision summarizer
-│   │   │   ├── IdentityFlowGraph.tsx     # Custom interactive node graph
-│   │   │   └── DemoAirlinesHotels.tsx     # Scenario specific mock steps
-│   │   ├── Header.tsx    # Responsive navigation bar
-│   │   ├── Footer.tsx    # Navigation and site footer
-│   │   └── ...           # Dozens of dedicated features and platform details pages
-│   └── assets/           # Client-side static images, vector patterns & SVGs
+http://localhost:3000
 ```
 
----
+### Build
 
-## 🔧 Developer Notes & Troubleshooting
-
-### Scroll Containment Optimizations
-- **Terminal Simulator**: In earlier versions, auto-scroll triggered global screen jumps using `scrollIntoView()`. This has been optimized using a `terminalContainerRef` and `.scrollTo({ top: scrollHeight })` to restrict scrolling exclusively to the terminal window itself.
-- **Decision Modal Containment**: The summary decision card (`DemoSummaryModal`) uses nested scroll containment (`flex flex-col` and `overflow-hidden` on the card parent, and a scrollable `overflow-y-auto` inner layout wrapper). This keeps the page-level and backdrop scrolling locked while letting you navigate complex workflows seamlessly inside the modal view.
-
-### Code Style & Linters
-To validate typing and syntax correctness, run:
-```bash
-npm run lint
+```powershell
+npm.cmd run build
 ```
-This runs `tsc --noEmit` to ensure type-safety compliance across the codebase.
+
+The build command:
+
+1. Generates SEO assets.
+2. Runs the Vite production build.
+3. Generates localized HTML entry points under `dist/{locale}/...`.
+
+### Preview A Production Build
+
+```powershell
+npm.cmd run preview
+```
+
+The Vite preview middleware serves locale-prefixed static entries and localized 404 pages from `dist/`.
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm.cmd run dev` | Starts the Vite dev server on port `3000`. |
+| `npm.cmd run build` | Generates SEO assets, builds the app, and generates localized pages. |
+| `npm.cmd run preview` | Serves the production build locally. |
+| `npm.cmd run lint` | Runs TypeScript checking with `tsc --noEmit`. |
+| `npm.cmd run generate:seo` | Generates SEO assets such as sitemap and robots files. |
+| `npm.cmd run generate:localized-pages` | Generates localized HTML entries from the built app. |
+| `npm.cmd run scan:localization` | Scans components for likely hard-coded user-visible copy. |
+| `npm.cmd run scan:i18n-architecture` | Scans for forbidden i18n implementation patterns. |
+| `npm.cmd run scan:component-translation-data` | Scans for component-owned translation data patterns. |
+| `npm.cmd run scan:routing-types` | Scans route type safety and route helper usage. |
+| `npm.cmd run scan:translation-encoding` | Scans for mojibake and encoding problems. |
+| `npm.cmd run scan:translation-inheritance` | Scans translation dictionaries for inheritance and fallback patterns. |
+
+## Project Map
+
+```text
+.
+|-- CODEX.md                         # General contributor and coding-agent guide
+|-- BACKLOG.md                       # Deferred implementation notes
+|-- docs/                            # Focused architecture and process guides
+|-- public/                          # Public assets generated or served by Vite
+|-- scripts/                         # SEO generators, localized page generator, scanners
+|-- src/
+|   |-- App.tsx                      # Route state, lazy page mapping, shell behavior
+|   |-- components/                  # Pages, shared UI, Docs, demo components
+|   |-- context/                     # Runtime context such as language state
+|   |-- translations/                # Localized UI, page, SEO, and docs content
+|   |-- types/routes.ts              # Route and locale source of truth
+|   |-- utils/                       # SEO, i18n, and shared helpers
+|   `-- assets/                      # Source images and visual assets
+|-- index.html                       # SPA HTML template with SEO placeholders
+|-- package.json                     # Scripts and dependencies
+|-- vite.config.ts                   # Vite config and localized preview behavior
+`-- tsconfig.json
+```
+
+## Routing And Localization
+
+`src/types/routes.ts` is the source of truth for route values and locale-aware URL helpers.
+
+Public URLs are locale-prefixed:
+
+```text
+/en
+/vi/blog
+/de/docs
+/ja/blog-detail/blog-1
+```
+
+The root path `/` routes users into a supported locale. Language changes should preserve the current route when possible, for example from `/en/blog` to `/vi/blog`.
+
+Translation dictionaries live in `src/translations/`. All user-visible copy should exist in all five locales. Do not add English fallback, partial locale inheritance, or translated strings stored in long-lived state.
+
+Read more:
+
+- [docs/i18n-architecture.md](docs/i18n-architecture.md)
+- [docs/routing-and-locales.md](docs/routing-and-locales.md)
+
+## SEO Pipeline
+
+SEO is built from typed route data, localized SEO copy, and generation scripts.
+
+The current pipeline handles:
+
+- Canonical locale-prefixed URLs
+- `hreflang` alternates and `x-default`
+- Open Graph and Twitter card metadata
+- Localized HTML fallback content before hydration
+- Sitemap and robots output
+- JSON-LD for public pages and blog posts
+
+Read more:
+
+- [docs/seo-requirements.md](docs/seo-requirements.md)
+
+## Working Guides
+
+Use these documents when changing a focused area:
+
+- [CODEX.md](CODEX.md) for general coding, localization, routing, branding, verification, and handoff rules.
+- [docs/i18n-architecture.md](docs/i18n-architecture.md) for translation dictionaries, language behavior, and i18n scanners.
+- [docs/routing-and-locales.md](docs/routing-and-locales.md) for locale-prefixed URLs and route helpers.
+- [docs/page-implementation-patterns.md](docs/page-implementation-patterns.md) for adding or updating public pages.
+- [docs/seo-requirements.md](docs/seo-requirements.md) for SEO metadata and generated SEO output.
+- [docs/docs-page-architecture.md](docs/docs-page-architecture.md) for the standalone Docs experience.
+- [docs/demo-sandbox-architecture.md](docs/demo-sandbox-architecture.md) for interactive demo scenarios.
+- [docs/scripts-and-scanners.md](docs/scripts-and-scanners.md) for scripts, scanners, and generated assets.
+
+## Verification
+
+For TypeScript or UI implementation changes:
+
+```powershell
+npm.cmd run lint
+npm.cmd run build
+```
+
+For localization or copy changes, also run:
+
+```powershell
+npm.cmd run scan:localization
+npm.cmd run scan:i18n-architecture
+npm.cmd run scan:component-translation-data
+npm.cmd run scan:translation-encoding
+npm.cmd run scan:translation-inheritance
+```
+
+For route changes, also run:
+
+```powershell
+npm.cmd run scan:routing-types
+```
+
+For SEO, Docs, demo, or script-specific work, follow the matching guide in [docs/](docs/).
+
+## Repository Notes
+
+- Do not edit `dist/`, `node_modules/`, or other generated/dependency output directly.
+- Do not commit real personal data, secrets, production credentials, or access tokens.
+- Keep demo data fictional.
+- Put deferred product or implementation notes in `BACKLOG.md`, not in `CODEX.md`.
+- Keep project documentation readable for people first; detailed implementation rules should live in focused files under `docs/`.

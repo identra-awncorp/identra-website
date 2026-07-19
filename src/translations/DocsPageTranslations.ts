@@ -72,7 +72,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'No',
       previous: 'Previous',
       nextPage: 'Next Page',
-      builtWith: 'Built with',
       onThisPage: 'On this page',
       documentSections: 'Document sections',
       sectionTopics: 'In this section',
@@ -87,7 +86,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Release history'
       },
       identra: 'identra',
-      fern: 'fern',
       tabs: {
         overview: 'Overview',
         inquiries: 'Inquiries',
@@ -327,7 +325,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'No',
       previous: 'Anterior',
       nextPage: 'Página siguiente',
-      builtWith: 'Creado con',
       onThisPage: 'En esta página',
       documentSections: 'Secciones del documento',
       sectionTopics: 'En esta sección',
@@ -342,7 +339,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Historial de versiones'
       },
       identra: 'identra',
-      fern: 'fern',
       tabs: { overview: 'Resumen', inquiries: 'Solicitudes', transactions: 'Transacciones', relay: 'Retransmisión', api: 'Referencia API', changelog: 'Historial de cambios' }
     },
     categories: { overview: 'Resumen', sending: 'Enviar datos a Identra', retrieving: 'Recuperar datos de Identra', resources: 'Recursos' },
@@ -372,7 +368,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'いいえ',
       previous: '前へ',
       nextPage: '次のページ',
-      builtWith: '使用ツール',
       onThisPage: 'このページ',
       documentSections: 'ドキュメントの構成',
       sectionTopics: 'このセクション',
@@ -387,7 +382,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'リリース履歴'
       },
       identra: 'identra',
-      fern: 'fern',
       tabs: { overview: '概要', inquiries: '照会', transactions: '取引', relay: '中継', api: 'APIリファレンス', changelog: '変更履歴' }
     },
     categories: { overview: '概要', sending: 'Identraへデータ送信', retrieving: 'Identraからデータ取得', resources: 'リソース' },
@@ -417,7 +411,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'Nein',
       previous: 'Zurück',
       nextPage: 'Nächste Seite',
-      builtWith: 'Erstellt mit',
       onThisPage: 'Auf dieser Seite',
       documentSections: 'Dokumentabschnitte',
       sectionTopics: 'In diesem Abschnitt',
@@ -432,7 +425,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Versionsverlauf'
       },
       identra: 'identra',
-      fern: 'fern',
       tabs: { overview: 'Übersicht', inquiries: 'Prüfvorgänge', transactions: 'Transaktionen', relay: 'Weiterleitung', api: 'API-Referenz', changelog: 'Änderungsprotokoll' }
     },
     categories: { overview: 'Übersicht', sending: 'Daten an Identra senden', retrieving: 'Daten von Identra abrufen', resources: 'Ressourcen' },
@@ -462,7 +454,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       no: 'Không',
       previous: 'Trước',
       nextPage: 'Trang tiếp theo',
-      builtWith: 'Được xây dựng bằng',
       onThisPage: 'Trong trang này',
       documentSections: 'Các phần chính',
       sectionTopics: 'Mục trong phần này',
@@ -477,7 +468,6 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Lịch sử phát hành'
       },
       identra: 'identra',
-      fern: 'fern',
       tabs: { overview: 'Tổng quan', inquiries: 'Hồ sơ xác minh', transactions: 'Giao dịch', relay: 'Chuyển tiếp', api: 'Tham chiếu API', changelog: 'Nhật ký thay đổi' }
     },
     categories: { overview: 'Tổng quan', sending: 'Gửi dữ liệu đến Identra', retrieving: 'Lấy dữ liệu từ Identra', resources: 'Tài nguyên' },

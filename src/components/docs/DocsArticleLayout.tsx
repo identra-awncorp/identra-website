@@ -422,12 +422,6 @@ export default function DocsArticleLayout({
             </button>
           ) : <div />}
         </div>
-
-        <div className="pt-12 text-center">
-          <span className="inline-flex items-center gap-1.5 text-xs text-slate-400 font-medium">
-            {ui.builtWith} <span className="font-bold text-slate-600 dark:text-slate-300 flex items-center gap-0.5">{ui.fern}</span>
-          </span>
-        </div>
       </main>
 
       <aside className="hidden md:block md:col-span-2 sticky top-32 max-h-[calc(100vh-10rem)] overflow-y-auto scrollbar-none pr-2">

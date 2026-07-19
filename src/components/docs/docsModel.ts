@@ -95,8 +95,6 @@ export interface DocsArticleLayoutUi {
   no: string;
   previous: string;
   nextPage: string;
-  builtWith: string;
-  fern: string;
   onThisPage: string;
   documentSections: string;
   sectionTopics: string;

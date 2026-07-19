@@ -10,6 +10,7 @@ This file is the working guide for coding agents contributing to the Identra web
 - Translation dictionaries live in `src/translations/`.
 - Shared route definitions live in `src/types/routes.ts`.
 - Localization uses `useLanguage` from `src/context/LanguageContext.tsx` and the guards in `src/utils/i18nRuntime.ts`.
+- Area-specific implementation guides live in `docs/`.
 - The supported locales are exactly `en`, `es`, `ja`, `de`, and `vi` unless the product requirements change.
 - The current brand is Identra. Do not reintroduce Persona branding, `withpersona`, or `persona_*` assets.
 
@@ -84,6 +85,16 @@ This file is the working guide for coding agents contributing to the Identra web
 - Do not render the previous page again between the skeleton and the destination page.
 - When changing route transitions, verify direct entry, in-app navigation, repeated rapid clicks, and browser back/forward behavior.
 
+## Area-specific guides
+
+- For localization dictionaries, runtime language handling, translation quality, and i18n scanners, follow `docs/i18n-architecture.md`.
+- For locale-prefixed URLs, route helpers, language switching, and direct-entry behavior, follow `docs/routing-and-locales.md`.
+- For adding or updating public pages and reusable page patterns, follow `docs/page-implementation-patterns.md`.
+- For SEO metadata, canonical URLs, sitemap, robots, social previews, localized HTML, and structured data, follow `docs/seo-requirements.md`.
+- For the standalone Docs experience, including file naming, tab behavior, menus, article layout, and docs-specific content blocks, follow `docs/docs-page-architecture.md`.
+- For the interactive demo sandbox, scenario pages, flow graph, and summary modal, follow `docs/demo-sandbox-architecture.md`.
+- For repository scripts, scanners, generated assets, and script hygiene, follow `docs/scripts-and-scanners.md`.
+
 ## Code and data quality
 
 - Keep component props, state, route values, tabs, filters, and translation data explicitly typed. Use narrow unions and type guards instead of `as any`.
@@ -100,6 +111,7 @@ This file is the working guide for coding agents contributing to the Identra web
 - Put reusable scanners and maintenance scripts in `scripts/` and expose them through a clearly named `package.json` command.
 - Delete truly temporary scripts after use. Archive a script only when it has historical value and is not part of the active toolchain.
 - Do not hand-edit build output. Regenerate it with the project command when needed.
+- Put deferred implementation notes in `BACKLOG.md`. Do not mix product backlog items into this agent working guide.
 - Avoid dependency additions for behavior already covered by the platform or existing dependencies. If a dependency is necessary, explain its purpose and keep the lockfile consistent.
 
 ## Required verification
@@ -127,6 +139,8 @@ For routing changes, also run:
 npm.cmd run scan:routing-types
 ```
 
+For area-specific work such as SEO or the standalone Docs experience, also follow the verification notes in the relevant `docs/` guide.
+
 For brand or logo changes, also search the source tree and tracked project files:
 
 ```powershell
@@ -146,6 +160,7 @@ rg -n --hidden --glob '!node_modules/**' --glob '!dist/**' --glob '!build/**' --
 - No translated string is retained across a language change through state, caches, timers, or logs.
 - No old Persona branding or demo logo remains in the changed scope.
 - Route typing and lazy-loading behavior remain intact when routes are affected.
+- Area-specific guide requirements are satisfied when SEO, Docs, or another documented subsystem is affected.
 - Accessibility labels and non-happy-path UI states are covered.
 - Relevant scanners, TypeScript checking, and the production build pass.
 - The final handoff names any legitimate false positives, checks not run, and residual risks.

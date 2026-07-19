@@ -1,4 +1,4 @@
-import type { LocalizedDocsContent } from '../../components/docs/docsTypes';
+import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
 const createInquiryCode = `const response = await fetch('https://api.withidentra.com/v1/inquiries', {
   method: 'POST',

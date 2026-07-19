@@ -8,11 +8,11 @@ import {
   docsSdkVariants,
   type DocsSdkEnvironment,
   type DocsSdkVariantId
-} from './docsSdkCatalog';
-import { getDocsReferenceFileName, getDocsReferenceSnippet } from './docsSdkReferenceCatalog';
-import type { DocsReferenceCodeKey } from './docsTypes';
+} from './docsSdkFlowCatalog';
+import { getDocsReferenceFileName, getDocsReferenceSnippet } from './docsApiReferenceCatalog';
+import type { DocsReferenceCodeKey } from './docsModel';
 
-interface DocsSdkReferenceCodeProps {
+interface DocsApiReferenceCodeExplorerProps {
   codeKey: DocsReferenceCodeKey;
   variants: DocsSdkVariantId[];
 }
@@ -25,7 +25,7 @@ const environmentIcons: Record<DocsSdkEnvironment, typeof Monitor> = {
 
 const compactCodeMaxHeight = 'max-h-[34rem]';
 
-export default function DocsSdkReferenceCode({ codeKey, variants }: DocsSdkReferenceCodeProps) {
+export default function DocsApiReferenceCodeExplorer({ codeKey, variants }: DocsApiReferenceCodeExplorerProps) {
   const { language } = useLanguage();
   const copy = docsSdkExplorerCopy[language];
   const availableVariants = useMemo(

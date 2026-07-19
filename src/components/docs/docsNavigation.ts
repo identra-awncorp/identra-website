@@ -1,4 +1,4 @@
-import type { DocsTabId } from './docsTypes';
+import type { DocsTabId } from './docsModel';
 
 export const DOCS_TAB_SEQUENCE: DocsTabId[] = ['overview', 'inquiries', 'transactions', 'relay', 'api-ref', 'changelog'];
 

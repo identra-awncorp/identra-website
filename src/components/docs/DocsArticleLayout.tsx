@@ -12,10 +12,10 @@ import {
   ThumbsUp
 } from 'lucide-react';
 import CodeBlock from '../CodeBlock';
-import DocsSdkCodeExplorer from './DocsSdkCodeExplorer';
-import type { DocBlock, DocContent, DocSection, DocsContentPageProps, DocsDocumentUi } from './docsTypes';
+import DocsSdkFlowCodeExplorer from './DocsSdkFlowCodeExplorer';
+import type { DocBlock, DocContent, DocSection, DocsArticleLayoutUi, DocsContentPageProps } from './docsModel';
 
-interface DocsDocumentProps extends DocsContentPageProps {
+interface DocsArticleLayoutProps extends DocsContentPageProps {
   content: DocContent;
 }
 
@@ -25,7 +25,7 @@ interface DocTopic {
   blocks: DocBlock[];
 }
 
-const DocsSdkReferenceCode = React.lazy(() => import('./DocsSdkReferenceCode'));
+const DocsApiReferenceCodeExplorer = React.lazy(() => import('./DocsApiReferenceCodeExplorer'));
 
 const referenceActorStyles = {
   issuer: 'bg-[#5B6CFF]/10 text-[#5B6CFF] dark:text-[#7C8CFF]',
@@ -36,7 +36,7 @@ const referenceActorStyles = {
 const getTopicLabel = (
   block: Exclude<DocBlock, { type: 'subheading' }>,
   isFirstTextGroup: boolean,
-  labels: DocsDocumentUi['topicLabels']
+  labels: DocsArticleLayoutUi['topicLabels']
 ) => {
   switch (block.type) {
     case 'p':
@@ -60,7 +60,7 @@ const getTopicLabel = (
   }
 };
 
-const createTopics = (section: DocSection, labels: DocsDocumentUi['topicLabels']): DocTopic[] => {
+const createTopics = (section: DocSection, labels: DocsArticleLayoutUi['topicLabels']): DocTopic[] => {
   const topics: Array<DocTopic & { kind: DocBlock['type'] }> = [];
   const titleCounts = new Map<string, number>();
   let pendingTitle: string | null = null;
@@ -170,7 +170,7 @@ const renderBlock = (block: DocBlock, index: number) => {
   if (block.type === 'sdkExplorer') {
     return (
       <React.Fragment key={index}>
-        <DocsSdkCodeExplorer flow={block.flow} />
+        <DocsSdkFlowCodeExplorer flow={block.flow} />
       </React.Fragment>
     );
   }
@@ -239,7 +239,7 @@ const renderBlock = (block: DocBlock, index: number) => {
         </div>
 
         <React.Suspense fallback={<div className="h-40 bg-[#0D1220]" />}>
-          <DocsSdkReferenceCode codeKey={stage.codeKey} variants={stage.variants} />
+          <DocsApiReferenceCodeExplorer codeKey={stage.codeKey} variants={stage.variants} />
         </React.Suspense>
       </div>
     );
@@ -266,7 +266,7 @@ const renderBlock = (block: DocBlock, index: number) => {
   return null;
 };
 
-export default function DocsDocument({
+export default function DocsArticleLayout({
   content,
   categories,
   ui,
@@ -278,7 +278,7 @@ export default function DocsDocument({
   onFeedback,
   onNavigate,
   onBackToLanding
-}: DocsDocumentProps) {
+}: DocsArticleLayoutProps) {
   const [activeSectionId, setActiveSectionId] = useState(content.sections[0]?.id ?? '');
 
   useEffect(() => {

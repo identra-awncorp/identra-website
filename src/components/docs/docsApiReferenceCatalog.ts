@@ -5,8 +5,8 @@ import type {
   DocsReferenceCodeKey,
   DocsReferencePhase,
   DocsReferenceStage
-} from './docsTypes';
-import { docsSdkVariants, type DocsSdkVariant, type DocsSdkVariantId } from './docsSdkCatalog';
+} from './docsModel';
+import { docsSdkVariants, type DocsSdkVariant, type DocsSdkVariantId } from './docsSdkFlowCatalog';
 
 type LocalizedText = Record<Locale, string>;
 

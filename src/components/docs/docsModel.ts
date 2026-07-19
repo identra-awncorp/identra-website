@@ -1,5 +1,5 @@
 import type { Locale } from '../../types/routes';
-import type { DocsSdkVariantId } from './docsSdkCatalog';
+import type { DocsSdkVariantId } from './docsSdkFlowCatalog';
 
 export type DocBlock =
   | { type: 'p'; text: string }
@@ -83,7 +83,7 @@ export interface DocsNavigationItem {
   label: string;
 }
 
-export interface DocsDocumentUi {
+export interface DocsArticleLayoutUi {
   backToMain: string;
   copied: string;
   copyFailed: string;
@@ -114,7 +114,7 @@ export interface DocsDocumentUi {
 
 export interface DocsContentPageProps {
   categories: Record<string, string>;
-  ui: DocsDocumentUi;
+  ui: DocsArticleLayoutUi;
   copyStatus: 'idle' | 'success' | 'error';
   feedbackSubmitted: null | 'yes' | 'no';
   previousPage: DocsNavigationItem | null;

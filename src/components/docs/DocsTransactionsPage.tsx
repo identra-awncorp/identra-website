@@ -1,12 +1,12 @@
 import { useLanguage } from '../../context/LanguageContext';
 import { TRANSACTIONS_DOCS_TRANSLATIONS } from '../../translations/docs/TransactionsDocsTranslations';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
-import DocsDocument from './DocsDocument';
-import type { DocsContentPageProps } from './docsTypes';
+import DocsArticleLayout from './DocsArticleLayout';
+import type { DocsContentPageProps } from './docsModel';
 
-export default function TransactionsDocsPage(props: DocsContentPageProps) {
+export default function DocsTransactionsPage(props: DocsContentPageProps) {
   const { language } = useLanguage();
   const content = getLocalizedRecord(TRANSACTIONS_DOCS_TRANSLATIONS, language, 'TRANSACTIONS_DOCS_TRANSLATIONS');
 
-  return <DocsDocument {...props} content={content} />;
+  return <DocsArticleLayout {...props} content={content} />;
 }

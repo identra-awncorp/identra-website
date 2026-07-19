@@ -11,10 +11,10 @@ import {
   getSupportedDocsSdkVariants,
   type DocsSdkEnvironment,
   type DocsSdkVariantId
-} from './docsSdkCatalog';
-import type { DocsSdkFlow } from './docsTypes';
+} from './docsSdkFlowCatalog';
+import type { DocsSdkFlow } from './docsModel';
 
-interface DocsSdkCodeExplorerProps {
+interface DocsSdkFlowCodeExplorerProps {
   flow: DocsSdkFlow;
 }
 
@@ -26,7 +26,7 @@ const environmentIcons: Record<DocsSdkEnvironment, typeof Monitor> = {
 
 const compactCodeMaxHeight = 'max-h-[34rem]';
 
-export default function DocsSdkCodeExplorer({ flow }: DocsSdkCodeExplorerProps) {
+export default function DocsSdkFlowCodeExplorer({ flow }: DocsSdkFlowCodeExplorerProps) {
   const { language } = useLanguage();
   const copy = docsSdkExplorerCopy[language];
   const supportedVariants = useMemo(() => getSupportedDocsSdkVariants(flow), [flow]);

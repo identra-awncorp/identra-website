@@ -20,15 +20,15 @@ import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { DOCS_PAGE_TRANSLATIONS } from '../translations/DocsPageTranslations';
 import { copyTextToClipboard } from '../utils/clipboard';
 import identraLogo from '../assets/images/identra-logo.svg';
-import { DOCS_TAB_PAGE_IDS, DOCS_TAB_SEQUENCE, getTabIdForPage } from './docs/docsConfig';
-import type { DocPage, DocsContentPageProps, DocsTabId } from './docs/docsTypes';
+import { DOCS_TAB_PAGE_IDS, DOCS_TAB_SEQUENCE, getTabIdForPage } from './docs/docsNavigation';
+import type { DocPage, DocsContentPageProps, DocsTabId } from './docs/docsModel';
 
-const OverviewDocsPage = React.lazy(() => import('./docs/OverviewDocsPage'));
-const InquiriesDocsPage = React.lazy(() => import('./docs/InquiriesDocsPage'));
-const TransactionsDocsPage = React.lazy(() => import('./docs/TransactionsDocsPage'));
-const RelayDocsPage = React.lazy(() => import('./docs/RelayDocsPage'));
-const ApiReferenceDocsPage = React.lazy(() => import('./docs/ApiReferenceDocsPage'));
-const ChangelogDocsPage = React.lazy(() => import('./docs/ChangelogDocsPage'));
+const DocsOverviewPage = React.lazy(() => import('./docs/DocsOverviewPage'));
+const DocsInquiriesPage = React.lazy(() => import('./docs/DocsInquiriesPage'));
+const DocsTransactionsPage = React.lazy(() => import('./docs/DocsTransactionsPage'));
+const DocsRelayPage = React.lazy(() => import('./docs/DocsRelayPage'));
+const DocsApiReferencePage = React.lazy(() => import('./docs/DocsApiReferencePage'));
+const DocsChangelogPage = React.lazy(() => import('./docs/DocsChangelogPage'));
 
 interface DocsTabItem {
   id: DocsTabId;
@@ -40,12 +40,12 @@ const formatText = (template: string, values: Record<string, string | number>) =
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
 const DOCS_PAGE_COMPONENTS: Record<DocsTabId, React.ComponentType<DocsContentPageProps>> = {
-  overview: OverviewDocsPage,
-  inquiries: InquiriesDocsPage,
-  transactions: TransactionsDocsPage,
-  relay: RelayDocsPage,
-  'api-ref': ApiReferenceDocsPage,
-  changelog: ChangelogDocsPage
+  overview: DocsOverviewPage,
+  inquiries: DocsInquiriesPage,
+  transactions: DocsTransactionsPage,
+  relay: DocsRelayPage,
+  'api-ref': DocsApiReferencePage,
+  changelog: DocsChangelogPage
 };
 
 export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => void }) {

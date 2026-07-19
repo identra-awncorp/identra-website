@@ -1,5 +1,5 @@
 import type { Locale } from '../../types/routes';
-import type { DocsSdkFlow } from './docsTypes';
+import type { DocsSdkFlow } from './docsModel';
 
 export type DocsSdkEnvironment = 'web' | 'server' | 'mobile';
 export type DocsSdkSyntax = 'javascript' | 'typescript' | 'go' | 'java' | 'swift';

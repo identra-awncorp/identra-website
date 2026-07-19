@@ -1,4 +1,4 @@
-import type { LocalizedDocsContent } from '../../components/docs/docsTypes';
+import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
 const createTransactionCode = `const transaction = await fetch('https://api.withidentra.com/v1/transactions', {
   method: 'POST',

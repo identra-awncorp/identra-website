@@ -1,4 +1,4 @@
-import type { LocalizedDocsContent } from '../../components/docs/docsTypes';
+import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
 export const CHANGELOG_DOCS_TRANSLATIONS = {
   en: {

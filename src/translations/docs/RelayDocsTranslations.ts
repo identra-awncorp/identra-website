@@ -1,4 +1,4 @@
-import type { LocalizedDocsContent } from '../../components/docs/docsTypes';
+import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
 const relayConfigCode = `{
   "name": "approved-customer-profile",

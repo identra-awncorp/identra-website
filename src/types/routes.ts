@@ -69,7 +69,8 @@ export const APP_VIEWS = [
   'resource-center',
   'privacy-overview',
   'academy',
-  'demo'
+  'demo',
+  'white-paper'
 ] as const;
 
 export type AppView = typeof APP_VIEWS[number];

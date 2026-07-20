@@ -135,6 +135,7 @@ export const MENU_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'Security': 'Security',
 
     // Developers Column
+    'White Paper': 'White Paper',
     'Documentation': 'Documentation',
     'API reference': 'API reference',
     'Service status': 'Service status',
@@ -295,6 +296,7 @@ export const MENU_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'Security': 'Seguridad',
 
     // Developers Column
+    'White Paper': 'Libro Blanco',
     'Documentation': 'Documentación',
     'API reference': 'Referencia de API',
     'Service status': 'Estado del servicio',
@@ -454,6 +456,7 @@ export const MENU_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'Security': 'セキュリティ',
 
     // Developers Column
+    'White Paper': 'ホワイトペーパー',
     'Documentation': 'ドキュメント',
     'API reference': 'APIリファレンス',
     'Service status': '稼働ステータス',
@@ -613,6 +616,7 @@ export const MENU_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'Security': 'Sicherheit',
 
     // Developers Column
+    'White Paper': 'Whitepaper',
     'Documentation': 'Dokumentation',
     'API reference': 'API-Referenz',
     'Service status': 'Dienststatus',
@@ -772,6 +776,7 @@ export const MENU_TRANSLATIONS: Record<Language, Record<string, string>> = {
     'Security': 'An toàn bảo mật',
 
     // Developers Column
+    'White Paper': 'Sách trắng Identra',
     'Documentation': 'Tài liệu hướng dẫn',
     'API reference': 'Tài liệu API',
     'Service status': 'Trạng thái hoạt động',
@@ -810,6 +815,7 @@ export const HEADER_COPY_KEYS = {
   businessGoals: 'Business goals',
   learning: 'Learning',
   developers: 'Developers',
+  whitePaper: 'White Paper',
   useCases: 'Use cases',
   riskScreeningReports: 'Risk & screening reports',
   verifications: 'Verifications',

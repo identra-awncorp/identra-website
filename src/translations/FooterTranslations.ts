@@ -86,6 +86,7 @@ export type FooterTextKey =
   | 'security'
   | 'awards'
   | 'documentation'
+  | 'whitePaper'
   | 'apiReference'
   | 'serviceStatus'
   | 'websiteTerms'
@@ -183,6 +184,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     security: 'Security',
     awards: 'Awards',
     documentation: 'Documentation',
+    whitePaper: 'White Paper',
     apiReference: 'API reference',
     serviceStatus: 'Service status',
     websiteTerms: 'Website terms of service',
@@ -280,6 +282,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     security: 'Seguridad',
     awards: 'Premios',
     documentation: 'Documentación',
+    whitePaper: 'Libro Blanco',
     apiReference: 'Referencia de API',
     serviceStatus: 'Estado del servicio',
     websiteTerms: 'Términos de servicio del sitio web',
@@ -377,6 +380,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     security: 'セキュリティ',
     awards: '受賞歴',
     documentation: 'ドキュメント',
+    whitePaper: 'ホワイトペーパー',
     apiReference: 'APIリファレンス',
     serviceStatus: 'サービスステータス',
     websiteTerms: 'Webサイト利用規約',
@@ -474,6 +478,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     security: 'Sicherheit',
     awards: 'Auszeichnungen',
     documentation: 'Dokumentation',
+    whitePaper: 'Whitepaper',
     apiReference: 'API-Referenz',
     serviceStatus: 'Dienststatus',
     websiteTerms: 'Nutzungsbedingungen der Website',
@@ -571,6 +576,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     security: 'Bảo mật',
     awards: 'Giải thưởng',
     documentation: 'Tài liệu',
+    whitePaper: 'Sách trắng Identra',
     apiReference: 'Tài liệu tham chiếu API',
     serviceStatus: 'Trạng thái dịch vụ',
     websiteTerms: 'Điều khoản dịch vụ website',
@@ -674,6 +680,7 @@ export const FOOTER_SECTIONS = [
     titleKey: 'resources',
     links: [
       { key: 'blog', view: 'blog' },
+      { key: 'whitePaper', view: 'white-paper' },
       { key: 'ebooksReports', view: 'ebooks' },
       { key: 'research', view: 'research' },
       { key: 'webinarsVideos' },
@@ -704,6 +711,7 @@ export const FOOTER_SECTIONS = [
     compact: true,
     links: [
       { key: 'documentation', view: 'docs' },
+      { key: 'whitePaper', view: 'white-paper' },
       { key: 'apiReference' },
       { key: 'serviceStatus' }
     ]

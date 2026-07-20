@@ -15,7 +15,7 @@ import {
   ClipboardCheck, Share2, Briefcase, ShieldAlert, Calendar, ListChecks, 
   RefreshCw, Landmark, ShoppingBag, HeartPulse, CreditCard, Coins, 
   Building, Building2, BookOpen, GraduationCap, CheckCircle, HeartHandshake, Users,
-  Search, Video, HelpCircle, Lock, FileCode, Code, Gauge, Asterisk, Shapes, MessageSquare
+  Search, Video, HelpCircle, Lock, FileCode, Code, Gauge, Asterisk, Shapes, MessageSquare, FileText
 } from 'lucide-react';
 import { NavItem } from '../types';
 import { HEADER_COPY_KEYS, MENU_TRANSLATIONS } from '../translations/HeaderTranslations';
@@ -108,6 +108,7 @@ const COMPANY_MENU_ITEMS = [
 ];
 
 const COMPANY_DEVELOPERS_ITEMS = [
+  { label: HEADER_COPY_KEYS.whitePaper, icon: 'FileText', href: '#white-paper' },
   { label: HEADER_COPY_KEYS.documentation, icon: 'FileCode', href: '#' },
   { label: HEADER_COPY_KEYS.apiReference, icon: 'Code', href: '#' },
   { label: HEADER_COPY_KEYS.serviceStatus, icon: 'Gauge', href: '#' },
@@ -163,6 +164,7 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   FileCode,
   Code,
   Gauge,
+  FileText,
   Asterisk,
   Shapes,
   MessageSquare
@@ -348,7 +350,9 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
     }
 
     const lowercaseLabel = label.toLowerCase();
-    if (lowercaseLabel.includes('about') || href === '#about') {
+    if (lowercaseLabel.includes('white paper') || lowercaseLabel.includes('whitepaper') || lowercaseLabel.includes('sách trắng') || href === '#white-paper') {
+      onViewChange('white-paper');
+    } else if (lowercaseLabel.includes('about') || href === '#about') {
       onViewChange('about');
     } else if (lowercaseLabel.includes('career') || href === '#careers') {
       onViewChange('careers');
@@ -440,7 +444,12 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
   };
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string, href: string) => {
-    if (onViewChange && (label === 'About us' || label === HEADER_COPY_KEYS.about || href === '#about')) {
+    if (onViewChange && (label === HEADER_COPY_KEYS.whitePaper || label.toLowerCase().includes('white paper') || label.toLowerCase().includes('sách trắng') || href === '#white-paper')) {
+      e.preventDefault();
+      onViewChange('white-paper');
+      setActiveDropdown(null);
+      setMobileMenuOpen(false);
+    } else if (onViewChange && (label === 'About us' || label === HEADER_COPY_KEYS.about || href === '#about')) {
       e.preventDefault();
       onViewChange('about');
       setActiveDropdown(null);

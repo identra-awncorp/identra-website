@@ -98,6 +98,7 @@ const ResourceCenterPage = lazy(() => import('./components/ResourceCenterPage'))
 const PrivacyPage = lazy(() => import('./components/PrivacyPage'));
 const AcademyPage = lazy(() => import('./components/AcademyPage'));
 const DemoPage = lazy(() => import('./components/DemoPage'));
+const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 export default function App() {
@@ -656,6 +657,12 @@ export default function App() {
           />
         ) : currentView === 'higher-education' ? (
           <HigherEducationPage
+            onOpenSandbox={handleOpenSandbox}
+            onBackToLanding={() => handleBackNavigation('landing')}
+            onViewChange={handleViewChange}
+          />
+        ) : currentView === 'white-paper' ? (
+          <WhitePaperPage
             onOpenSandbox={handleOpenSandbox}
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}

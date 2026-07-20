@@ -12,6 +12,7 @@ export type SeoRouteGroup =
   | 'solution'
   | 'industry'
   | 'resource'
+  | 'whitePaper'
   | 'company'
   | 'developer'
   | 'legal'
@@ -85,6 +86,7 @@ export const SEO_ROUTE_GROUPS = {
   'privacy-overview': 'legal',
   academy: 'resource',
   demo: 'demo',
+  'white-paper': 'whitePaper',
 } as const satisfies Record<AppView, SeoRouteGroup>;
 
 type BlogSeoCopy = {
@@ -181,6 +183,7 @@ const en = {
     'privacy-overview': 'Privacy',
     academy: 'Academy',
     demo: 'Interactive demo',
+    'white-paper': 'White Paper',
   },
   descriptionTemplates: {
     landing: 'Identra helps teams verify real people and real businesses online with adaptive identity verification, fraud prevention, and risk automation.',
@@ -188,6 +191,7 @@ const en = {
     solution: 'See how Identra supports {page} with adaptive verification, fraud prevention, compliance automation, and a smoother user experience.',
     industry: 'Learn how Identra helps {page} teams verify real users and businesses, reduce fraud, and launch compliant onboarding at scale.',
     resource: 'Explore {page} from Identra for practical guidance on identity verification, risk, compliance, fraud prevention, and trust operations.',
+    whitePaper: 'Read the Identra White Paper on verifiable credentials, smart contracts, consent-based data sharing, enterprise trust infrastructure, and the product roadmap.',
     company: 'Explore {page} at Identra and learn how we build secure onboarding, fraud prevention, and trusted online experiences.',
     developer: 'Build with Identra using developer documentation for identity verification, risk workflows, APIs, SDKs, and integrations.',
     legal: 'Review how Identra approaches privacy, data protection, and responsible identity verification for modern digital teams.',
@@ -322,6 +326,7 @@ const es = {
     'privacy-overview': 'Privacidad',
     academy: 'Academia',
     demo: 'Demo interactiva',
+    'white-paper': 'Libro Blanco',
   },
   descriptionTemplates: {
     landing: 'Identra ayuda a verificar personas y empresas reales en línea con verificación adaptativa, prevención de fraude y automatización de riesgo.',
@@ -329,6 +334,7 @@ const es = {
     solution: 'Vea cómo Identra impulsa {page} con verificación adaptativa, prevención de fraude, automatización de cumplimiento y menos fricción.',
     industry: 'Conozca cómo Identra ayuda a equipos de {page} a verificar usuarios y empresas reales, reducir fraude y escalar onboarding conforme.',
     resource: 'Explore {page} de Identra con guías sobre verificación de identidad, riesgo, cumplimiento, prevención de fraude y confianza digital.',
+    whitePaper: 'Lea el Libro Blanco de Identra sobre credenciales verificables, contratos inteligentes, intercambio de datos con consentimiento, infraestructura de confianza empresarial y hoja de ruta del producto.',
     company: 'Descubra {page} en Identra y cómo creamos onboarding seguro, prevención de fraude y experiencias digitales confiables.',
     developer: 'Construya con Identra usando documentación para verificación de identidad, flujos de riesgo, APIs, SDKs e integraciones.',
     legal: 'Revise cómo Identra aborda privacidad, protección de datos y verificación de identidad responsable para equipos digitales modernos.',
@@ -463,6 +469,7 @@ const ja = {
     'privacy-overview': 'プライバシー',
     academy: 'アカデミー',
     demo: 'インタラクティブデモ',
+    'white-paper': 'ホワイトペーパー',
   },
   descriptionTemplates: {
     landing: 'Identraは、適応型本人確認、不正防止、リスク自動化により、オンラインで実在する人と企業を安全に確認します。',
@@ -470,6 +477,7 @@ const ja = {
     solution: 'Identraが{page}を、適応型確認、不正防止、コンプライアンス自動化、より滑らかなユーザー体験で支援する方法をご紹介します。',
     industry: 'Identraが{page}領域で、実在するユーザーと企業の確認、不正削減、コンプライアンス対応オンボーディングをどう支援するかをご覧ください。',
     resource: '{page}で、本人確認、リスク、コンプライアンス、不正防止、信頼運用に関するIdentraの実践的な情報をご覧ください。',
+    whitePaper: '検証可能な資格情報、スマートコントラクト、同意に基づくデータ共有、企業向けトラストインフラ、製品ロードマップに関するIdentraホワイトペーパーをお読みください。',
     company: '{page}を通じて、安全なオンボーディング、不正防止、信頼できるオンライン体験を支えるIdentraの取り組みをご覧ください。',
     developer: '本人確認、リスクワークフロー、API、SDK、連携に関する開発者ドキュメントを使ってIdentraを構築できます。',
     legal: 'Identraのプライバシー、データ保護、責任ある本人確認への取り組みをご確認ください。',
@@ -604,6 +612,7 @@ const de = {
     'privacy-overview': 'Datenschutz',
     academy: 'Akademie',
     demo: 'Interaktive Demo',
+    'white-paper': 'Whitepaper',
   },
   descriptionTemplates: {
     landing: 'Identra hilft Teams, echte Menschen und Unternehmen online mit adaptiver Identitätsprüfung, Betrugsprävention und Risikoautomatisierung zu verifizieren.',
@@ -611,6 +620,7 @@ const de = {
     solution: 'Erfahren Sie, wie Identra {page} mit adaptiver Prüfung, Betrugsprävention, Compliance-Automatisierung und weniger Nutzerreibung unterstützt.',
     industry: 'Erfahren Sie, wie Identra Teams im Bereich {page} dabei hilft, echte Nutzer und Unternehmen zu prüfen, Betrug zu reduzieren und konformes Onboarding zu skalieren.',
     resource: 'Entdecken Sie in {page} Identra-Inhalte zu Identitätsprüfung, Risiko, Compliance, Betrugsprävention und Trust Operations.',
+    whitePaper: 'Lesen Sie das Identra Whitepaper zu verifizierbaren Credentials, Smart Contracts, einwilligungsbasierter Datenfreigabe, Enterprise-Trust-Infrastruktur und Produkt-Roadmap.',
     company: 'Entdecken Sie {page} bei Identra und erfahren Sie mehr über sicheres Onboarding, Betrugsprävention und vertrauenswürdige digitale Erlebnisse.',
     developer: 'Bauen Sie mit Identra anhand der Entwicklerdokumentation für Identitätsprüfung, Risiko-Workflows, APIs, SDKs und Integrationen.',
     legal: 'Erfahren Sie, wie Identra Datenschutz, Datensicherheit und verantwortungsvolle Identitätsprüfung für moderne digitale Teams umsetzt.',
@@ -745,6 +755,7 @@ const vi = {
     'privacy-overview': 'Quyền riêng tư',
     academy: 'Học viện',
     demo: 'Demo tương tác',
+    'white-paper': 'Sách trắng Identra',
   },
   descriptionTemplates: {
     landing: 'Identra giúp đội ngũ xác minh người thật và doanh nghiệp thật trực tuyến bằng xác minh danh tính linh hoạt, chống gian lận và tự động hóa rủi ro.',
@@ -752,6 +763,7 @@ const vi = {
     solution: 'Tìm hiểu cách Identra hỗ trợ {page} bằng xác minh linh hoạt, chống gian lận, tự động hóa tuân thủ và trải nghiệm người dùng mượt mà hơn.',
     industry: 'Tìm hiểu cách Identra giúp đội ngũ trong lĩnh vực {page} xác minh người dùng và doanh nghiệp thật, giảm gian lận và mở rộng onboarding tuân thủ.',
     resource: 'Khám phá {page} của Identra với hướng dẫn về xác minh danh tính, rủi ro, tuân thủ, chống gian lận và vận hành niềm tin.',
+    whitePaper: 'Đọc Sách trắng Identra về thực chứng có thể kiểm chứng, hợp đồng thông minh, chia sẻ dữ liệu có đồng ý, hạ tầng niềm tin cho doanh nghiệp và lộ trình sản phẩm.',
     company: 'Khám phá {page} tại Identra và cách chúng tôi xây dựng onboarding an toàn, chống gian lận và trải nghiệm trực tuyến đáng tin cậy.',
     developer: 'Xây dựng với Identra bằng tài liệu dành cho nhà phát triển về xác minh danh tính, luồng rủi ro, API, SDK và tích hợp.',
     legal: 'Xem cách Identra tiếp cận quyền riêng tư, bảo vệ dữ liệu và xác minh danh tính có trách nhiệm cho các đội ngũ số hiện đại.',

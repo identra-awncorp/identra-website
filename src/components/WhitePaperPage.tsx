@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
   Award,
@@ -84,7 +84,7 @@ const getSectionSearchText = (section: WhitePaperSection) => {
     .toLowerCase();
 };
 
-function SectionContent({ section }: { section: WhitePaperSection }) {
+function SectionContent({ section }: { section: WhitePaperSection; key?: React.Key }) {
   const isConclusion = section.id === 'conclusion';
 
   return (
@@ -93,7 +93,7 @@ function SectionContent({ section }: { section: WhitePaperSection }) {
       className={[
         'scroll-mt-24 rounded-2xl p-5 sm:p-6 md:p-8 shadow-xs space-y-5',
         isConclusion
-          ? 'relative overflow-hidden bg-gradient-to-b from-[#1E43D8] to-[#142FA0] text-white'
+          ? 'relative overflow-hidden bg-gradient-to-r from-[#5B6DFF] to-[#475BE8] text-white'
           : 'bg-white border border-slate-100',
       ].join(' ')}
     >
@@ -346,7 +346,7 @@ export default function WhitePaperPage({
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 selection:bg-[#354CE1] selection:text-white font-sans antialiased">
       <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
-        <div className="relative mb-8 overflow-hidden rounded-2xl bg-gradient-to-b from-[#1E43D8] to-[#142FA0] p-6 text-white shadow-sm sm:p-8">
+        <div className="relative mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-[#5B6DFF] to-[#475BE8] p-6 text-white shadow-sm sm:p-8">
           <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#FFBF43]/10 blur-3xl" />
 
@@ -471,7 +471,7 @@ export default function WhitePaperPage({
         </div>
 
         <div className="relative grid grid-cols-1 items-start gap-8 md:grid-cols-12">
-          <aside className="hidden max-h-[calc(100vh-8rem)] space-y-4 overflow-y-auto pr-1 md:sticky md:top-24 md:col-span-3 md:block">
+          <aside className="hidden h-[calc(100vh-2rem)] space-y-4 overflow-y-auto pr-2 sidebar-scrollbar md:sticky md:top-4 md:col-span-3 md:block">
             <div>
               <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-900">
                 {copy.desktopTocTitle}

@@ -108,7 +108,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         <div className={isConclusion ? 'border-b border-white/20 pb-3' : 'border-b border-slate-100 pb-3'}>
           <span
             className={[
-              'mb-1 block text-xs font-semibold uppercase tracking-wide md:text-sm',
+              'font-mono mb-1 block text-xs font-semibold uppercase tracking-wide md:text-sm',
               isConclusion ? 'text-[#FFBF43]' : 'text-[#354CE1]',
             ].join(' ')}
           >
@@ -116,7 +116,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </span>
           <h2
             className={[
-              'text-left text-lg font-bold tracking-tight sm:text-xl md:text-2xl',
+              'font-display text-left text-lg font-bold tracking-tight sm:text-xl md:text-2xl',
               isConclusion ? 'text-white' : 'text-slate-900',
             ].join(' ')}
           >
@@ -346,20 +346,20 @@ export default function WhitePaperPage({
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 selection:bg-[#354CE1] selection:text-white font-sans antialiased">
       <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
-        <div className="relative mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-[#5B6DFF] to-[#475BE8] p-6 text-white shadow-sm sm:p-8">
+        <div className="relative mb-10 overflow-hidden rounded-3xl bg-gradient-to-r from-[#5B6DFF] to-[#475BE8] p-8 sm:p-10 md:p-12 lg:p-14 text-white shadow-lg">
           <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
           <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#FFBF43]/10 blur-3xl" />
 
-          <div className="relative z-10 mb-6 flex flex-wrap items-center justify-between gap-4 border-b border-white/20 pb-6">
+          <div className="relative z-10 mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-white/20 pb-6">
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={onBackToLanding || (() => onViewChange?.('landing'))}
-                className="flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-semibold text-white/95 transition hover:bg-white/25 hover:text-white md:text-sm"
+                className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-xs font-semibold text-white/95 transition hover:bg-white/25 hover:text-white md:text-sm cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>{copy.backToLanding}</span>
               </button>
-              <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
+              <span className="rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
                 {copy.versionBadge}
               </span>
               <span className="hidden text-xs font-medium text-white/80 md:inline md:text-sm">
@@ -370,16 +370,16 @@ export default function WhitePaperPage({
             <div className="flex items-center gap-2 md:gap-3">
               <button
                 onClick={handleCopyLink}
-                className="flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1.5 text-xs font-medium text-white transition hover:bg-white/25 md:text-sm"
+                className="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-xs font-medium text-white transition hover:bg-white/25 md:text-sm cursor-pointer"
                 title={copy.copyLinkTitle}
               >
-                {copied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
                 <span>{copied ? copy.copied : copy.copyLink}</span>
               </button>
 
               <button
                 onClick={handlePrint}
-                className="flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5 text-xs font-bold text-[#354CE1] shadow-xs transition hover:bg-slate-50 md:text-sm"
+                className="flex items-center gap-1.5 rounded-full bg-white px-4.5 py-2 text-xs font-bold text-[#354CE1] shadow-xs transition hover:bg-slate-50 md:text-sm cursor-pointer"
               >
                 <Printer className="h-4 w-4" />
                 <span>{copy.print}</span>
@@ -387,45 +387,45 @@ export default function WhitePaperPage({
             </div>
           </div>
 
-          <div className="relative z-10 max-w-4xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white md:text-sm">
+          <div className="relative z-10 max-w-4xl space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-semibold text-white md:text-sm">
               <Sparkles className="h-4 w-4 text-[#FFBF43]" />
               <span>{copy.heroBadge}</span>
             </div>
 
-            <h1 className="mb-2 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl">
+            <h1 className="font-display text-3xl font-extrabold leading-[1.18] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[46px]">
               {copy.heroTitle}
             </h1>
-            <p className="mb-6 text-base font-medium leading-relaxed text-white/85 sm:text-lg md:text-xl">
+            <p className="text-base font-medium leading-relaxed text-white/90 sm:text-lg md:text-xl">
               {copy.heroSubtitle}
             </p>
 
-            <div className="grid grid-cols-2 gap-4 border-t border-white/25 pt-4 text-xs sm:grid-cols-4 sm:text-sm">
+            <div className="grid grid-cols-2 gap-6 border-t border-white/25 pt-6 text-xs sm:grid-cols-4 sm:text-sm sm:gap-8">
               {copy.metadata.map((item) => (
-                <div key={item.title}>
-                  <span className="mb-0.5 block text-[11px] font-bold uppercase tracking-wider text-white/70">
+                <div key={item.title} className="space-y-1">
+                  <span className="font-mono block text-[11px] font-bold uppercase tracking-wider text-white/70">
                     {item.title}
                   </span>
-                  <span className="font-semibold text-white">{item.body}</span>
+                  <span className="font-semibold text-white block">{item.body}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-5 grid grid-cols-1 gap-3 text-xs sm:text-sm md:grid-cols-2">
+            <div className="pt-2 grid grid-cols-1 gap-4 text-xs sm:text-sm md:grid-cols-2">
               {copy.callouts.map((callout) => (
                 <div
                   key={callout.title}
-                  className="rounded-xl bg-white/15 p-3.5 leading-relaxed text-white backdrop-blur-sm"
+                  className="rounded-2xl bg-white/15 p-4 sm:p-5 leading-relaxed text-white backdrop-blur-md border border-white/15 space-y-1 text-justify"
                 >
                   <strong
                     className={[
-                      'mb-0.5 block text-left font-semibold',
-                      callout.tone === 'accent' ? 'text-[#FFBF43]' : 'text-emerald-500',
+                      'block text-left font-semibold text-sm md:text-base',
+                      callout.tone === 'accent' ? 'text-[#FFBF43]' : 'text-emerald-300',
                     ].join(' ')}
                   >
                     {callout.title}
                   </strong>
-                  {callout.body}
+                  <p>{callout.body}</p>
                 </div>
               ))}
             </div>

@@ -14,12 +14,12 @@ import {
   ChevronDown,
   Copy,
   Cpu,
+  Download,
   FileCode,
   FileText,
   Globe,
   Layers,
   Lock,
-  Printer,
   Search,
   Shield,
   ShieldCheck,
@@ -30,6 +30,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import {
   WHITE_PAPER_TRANSLATIONS,
+  type WhitePaperContentBlock,
   type WhitePaperSection,
   type WhitePaperSectionId,
 } from '../translations/WhitePaperPageTranslations';
@@ -61,15 +62,34 @@ const SECTION_ICONS: Record<WhitePaperSectionId, LucideIcon> = {
   'appendix-c': Globe,
 };
 
+const WHITE_PAPER_PDF_URL = '/white-paper/Identra-White-Paper-v1.0.pdf';
+const WHITE_PAPER_PDF_FILENAME = 'Identra-White-Paper-v1.0.pdf';
+
 const getSectionSearchText = (section: WhitePaperSection) => {
   const cardText = section.cards?.flatMap((card) => [card.title, card.body]) ?? [];
   const tableText = section.table?.rows.flatMap((row) => row) ?? [];
   const noteText = section.note ? [section.note.title, section.note.body] : [];
+  const blockText = section.blocks?.flatMap((block) => {
+    if (block.type === 'table') {
+      return [...block.headers, ...block.rows.flatMap((row) => row)];
+    }
+
+    if (block.type === 'unordered-list' || block.type === 'ordered-list') {
+      return block.items;
+    }
+
+    if (block.type === 'quote') {
+      return [block.title, block.body];
+    }
+
+    return [block.text];
+  }) ?? [];
 
   return [
     section.eyebrow,
     section.title,
     ...section.paragraphs,
+    ...blockText,
     ...cardText,
     section.bulletsTitle,
     ...(section.bullets ?? []),
@@ -84,8 +104,126 @@ const getSectionSearchText = (section: WhitePaperSection) => {
     .toLowerCase();
 };
 
+const renderInlineText = (text: string) =>
+  text.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={`${part}-${index}`}>{part.slice(2, -2)}</strong>;
+    }
+
+    return <React.Fragment key={`${part}-${index}`}>{part}</React.Fragment>;
+  });
+
+const renderContentBlock = (
+  block: WhitePaperContentBlock,
+  index: number,
+  isConclusion: boolean,
+) => {
+  if (block.type === 'heading') {
+    return (
+      <h3
+        key={`${block.text}-${index}`}
+        className={[
+          'pt-2 text-left text-base font-bold md:text-lg',
+          isConclusion ? 'text-white' : 'text-slate-900',
+        ].join(' ')}
+      >
+        {block.text}
+      </h3>
+    );
+  }
+
+  if (block.type === 'paragraph') {
+    return (
+      <p
+        key={`${block.text}-${index}`}
+        className={[
+          'text-sm leading-relaxed text-justify md:text-base',
+          isConclusion ? 'text-white/85' : 'text-slate-600',
+        ].join(' ')}
+      >
+        {renderInlineText(block.text)}
+      </p>
+    );
+  }
+
+  if (block.type === 'quote') {
+    return (
+      <div
+        key={`${block.body}-${index}`}
+        className={[
+          'rounded-xl border-l-4 p-4 text-sm leading-relaxed text-justify md:text-base',
+          isConclusion
+            ? 'border-[#FFBF43] bg-white/10 text-white'
+            : 'border-[#354CE1] bg-[#E2E6FF] text-slate-700',
+        ].join(' ')}
+      >
+        {block.title && (
+          <strong className={isConclusion ? 'text-[#FFBF43]' : 'text-[#0F1E36]'}>
+            {block.title}:{' '}
+          </strong>
+        )}
+        {renderInlineText(block.body)}
+      </div>
+    );
+  }
+
+  if (block.type === 'unordered-list' || block.type === 'ordered-list') {
+    const ListTag = block.type === 'ordered-list' ? 'ol' : 'ul';
+
+    return (
+      <ListTag
+        key={`${block.type}-${index}`}
+        className={[
+          block.type === 'ordered-list' ? 'list-decimal' : 'list-disc',
+          'space-y-2 pl-5 text-sm leading-relaxed text-justify md:text-base',
+          isConclusion ? 'text-white/85' : 'text-slate-600',
+        ].join(' ')}
+      >
+        {block.items.map((item) => (
+          <li key={item}>{renderInlineText(item)}</li>
+        ))}
+      </ListTag>
+    );
+  }
+
+  return (
+    <div key={`table-${index}`} className="overflow-x-auto rounded-xl border border-slate-100">
+      <table className="w-full border-collapse text-left text-sm md:text-base">
+        <thead>
+          <tr className="border-b border-slate-100 bg-slate-50">
+            {block.headers.map((header) => (
+              <th key={header} className="p-3.5 font-semibold text-slate-900">
+                {renderInlineText(header)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-100 bg-white text-slate-600">
+          {block.rows.map((row) => (
+            <tr key={row.join('-')}>
+              {row.map((cell, cellIndex) => (
+                <td
+                  key={`${cell}-${cellIndex}`}
+                  className={[
+                    'p-3.5 align-top',
+                    cellIndex === 0 ? 'font-semibold text-[#354CE1]' : '',
+                    cellIndex === 1 ? 'font-medium text-slate-900' : '',
+                  ].join(' ')}
+                >
+                  {renderInlineText(cell)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 function SectionContent({ section }: { section: WhitePaperSection; key?: React.Key }) {
   const isConclusion = section.id === 'conclusion';
+  const hasStructuredBlocks = Boolean(section.blocks?.length);
 
   return (
     <section
@@ -127,7 +265,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         {section.paragraphs.length > 0 && (
           <div
             className={[
-              'space-y-4 text-sm leading-relaxed md:text-base',
+              'space-y-4 text-sm leading-relaxed text-justify md:text-base',
               isConclusion ? 'text-white/85' : 'text-slate-600',
             ].join(' ')}
           >
@@ -137,7 +275,13 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </div>
         )}
 
-        {section.cards && (
+        {hasStructuredBlocks && (
+          <div className="space-y-4">
+            {section.blocks?.map((block, index) => renderContentBlock(block, index, isConclusion))}
+          </div>
+        )}
+
+        {!hasStructuredBlocks && section.cards && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {section.cards.map((card) => (
               <article
@@ -157,16 +301,16 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
                 >
                   {card.title}
                 </h3>
-                <p className="text-sm leading-relaxed md:text-base">{card.body}</p>
+                <p className="text-sm leading-relaxed text-justify md:text-base">{card.body}</p>
               </article>
             ))}
           </div>
         )}
 
-        {section.note && (
+        {!hasStructuredBlocks && section.note && (
           <div
             className={[
-              'rounded-xl p-4 text-sm leading-relaxed md:text-base',
+              'rounded-xl p-4 text-sm leading-relaxed text-justify md:text-base',
               isConclusion
                 ? 'bg-white/10 text-white ring-1 ring-white/15'
                 : 'bg-[#E2E6FF] text-slate-700 border border-[#354CE1]/15',
@@ -179,7 +323,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </div>
         )}
 
-        {section.bullets && (
+        {!hasStructuredBlocks && section.bullets && (
           <div className="space-y-3">
             {section.bulletsTitle && (
               <h3
@@ -193,7 +337,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
             )}
             <ul
               className={[
-                'list-disc space-y-2 pl-5 text-sm leading-relaxed md:text-base',
+                'list-disc space-y-2 pl-5 text-sm leading-relaxed text-justify md:text-base',
                 isConclusion ? 'text-white/85' : 'text-slate-600',
               ].join(' ')}
             >
@@ -204,7 +348,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </div>
         )}
 
-        {section.table && (
+        {!hasStructuredBlocks && section.table && (
           <div className="overflow-x-auto rounded-xl border border-slate-100">
             <table className="w-full border-collapse text-left text-sm md:text-base">
               <thead>
@@ -238,14 +382,14 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </div>
         )}
 
-        {section.ordered && (
+        {!hasStructuredBlocks && section.ordered && (
           <div className="rounded-xl bg-slate-50 p-5 text-sm md:text-base border border-slate-100">
             {section.orderedTitle && (
               <strong className="mb-2 block text-left text-base font-bold text-[#354CE1] md:text-lg">
                 {section.orderedTitle}
               </strong>
             )}
-            <ol className="list-decimal space-y-1.5 pl-5 text-slate-600">
+            <ol className="list-decimal space-y-1.5 pl-5 text-justify text-slate-600">
               {section.ordered.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -339,10 +483,6 @@ export default function WhitePaperPage({
     }
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 selection:bg-[#354CE1] selection:text-white font-sans antialiased">
       <div className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
@@ -377,13 +517,14 @@ export default function WhitePaperPage({
                 <span>{copied ? copy.copied : copy.copyLink}</span>
               </button>
 
-              <button
-                onClick={handlePrint}
+              <a
+                href={WHITE_PAPER_PDF_URL}
+                download={WHITE_PAPER_PDF_FILENAME}
                 className="flex items-center gap-1.5 rounded-full bg-white px-4.5 py-2 text-xs font-bold text-[#354CE1] shadow-xs transition hover:bg-slate-50 md:text-sm cursor-pointer"
               >
-                <Printer className="h-4 w-4" />
-                <span>{copy.print}</span>
-              </button>
+                <Download className="h-4 w-4" />
+                <span>{copy.downloadPdf}</span>
+              </a>
             </div>
           </div>
 
@@ -396,7 +537,7 @@ export default function WhitePaperPage({
             <h1 className="font-display text-3xl font-extrabold leading-[1.18] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[46px]">
               {copy.heroTitle}
             </h1>
-            <p className="text-base font-medium leading-relaxed text-white/90 sm:text-lg md:text-xl">
+            <p className="text-base font-medium leading-relaxed text-justify text-white/90 sm:text-lg md:text-xl">
               {copy.heroSubtitle}
             </p>
 
@@ -455,7 +596,7 @@ export default function WhitePaperPage({
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
                     className={[
-                      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium transition sm:text-sm',
+                      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium leading-snug transition sm:text-sm',
                       isActive
                         ? 'bg-[#E2E6FF] text-[#354CE1] font-semibold'
                         : 'text-slate-500 hover:bg-slate-100/50 hover:text-slate-900',
@@ -498,7 +639,7 @@ export default function WhitePaperPage({
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
                     className={[
-                      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium transition-all duration-150 sm:text-sm',
+                      'flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium leading-snug transition-all duration-150 sm:text-sm',
                       isActive
                         ? 'bg-[#E2E6FF] text-[#354CE1] font-semibold'
                         : 'text-slate-500 hover:bg-slate-100/50 hover:text-slate-900',

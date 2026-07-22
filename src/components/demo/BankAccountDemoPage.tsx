@@ -13,7 +13,10 @@ import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
-interface BankAccountApplicationFlowProps {
+type BankAccountType = 'checking' | 'savings' | 'business';
+type BankAccountOnboardingMethod = 'manual' | 'identra';
+
+interface BankAccountClientSimulatorProps {
   currentStepIdx: number;
   completedSteps: boolean[];
   isProcessingAction: boolean;
@@ -25,7 +28,7 @@ interface BankAccountApplicationFlowProps {
 }
 
 /**
- * QR code graphic used by the bank account application flow.
+ * QR code graphic used by the bank account client simulator.
  */
 function BankAccountQrCodeGraphic({ className = "w-44 h-44 text-[#0F1E36]" }: { className?: string }) {
   // Dense 21x21 QR Code matrix layout
@@ -73,7 +76,7 @@ function BankAccountQrCodeGraphic({ className = "w-44 h-44 text-[#0F1E36]" }: { 
   );
 }
 
-function BankAccountApplicationFlow({
+function BankAccountClientSimulator({
   currentStepIdx,
   completedSteps,
   isProcessingAction,
@@ -82,7 +85,7 @@ function BankAccountApplicationFlow({
   addLog,
   isSuccess,
   playTingTingSound
-}: BankAccountApplicationFlowProps) {
+}: BankAccountClientSimulatorProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
     BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS,
@@ -94,12 +97,15 @@ function BankAccountApplicationFlow({
   const uiT = translations.flowUi;
 
   // Scenario states
-  const [accountType, setAccountType] = useState<'checking' | 'savings' | 'business'>('checking');
+  const [accountType, setAccountType] = useState<BankAccountType>('checking');
+  const [onboardingMethod, setOnboardingMethod] = useState<BankAccountOnboardingMethod>('manual');
   const [bankName, setBankName] = useState('');
   const [bankSsn, setBankSsn] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [bankAddress, setBankAddress] = useState('');
+  const [businessLegalName, setBusinessLegalName] = useState('');
+  const [businessLicenseFileName, setBusinessLicenseFileName] = useState('');
   const [bankIdScanned, setBankIdScanned] = useState(false);
   const [bankLivenessScanned, setBankLivenessScanned] = useState(false);
   const [bankAmlCleared, setBankAmlCleared] = useState(false);
@@ -116,6 +122,9 @@ function BankAccountApplicationFlow({
   // Step 4 Server-side Automated AML states
   const [amlSeconds, setAmlSeconds] = useState(10);
   const [amlStatus, setAmlStatus] = useState<'idle' | 'running' | 'passed' | 'failed'>('idle');
+  const isBusinessAccount = accountType === 'business';
+  const isUsingIdentra = onboardingMethod === 'identra';
+  const isProfileVerifiedByIdentra = isUsingIdentra && isCryptographicallySecured;
 
   // Handle 5-second QR scanning countdown
   useEffect(() => {
@@ -128,6 +137,11 @@ function BankAccountApplicationFlow({
       setEmail(uiT.qrEmail);
       setPhone(uiT.qrPhone);
       setBankAddress(uiT.qrAddress);
+      if (accountType === 'business') {
+        setBusinessLegalName(uiT.qrBusinessName);
+        setBusinessLicenseFileName(uiT.qrBusinessLicenseName);
+        addLog(uiT.businessCredentialVerifiedLog, 'ok');
+      }
       setIsCryptographicallySecured(true);
       addLog(uiT.qrScanSuccessLog, 'ok');
       return;
@@ -138,7 +152,7 @@ function BankAccountApplicationFlow({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [isQrModalOpen, qrSeconds, addLog, uiT]);
+  }, [isQrModalOpen, qrSeconds, accountType, addLog, uiT]);
 
   // Handle 10-second Automated Government ID verification for Identra QR in Step 2
   useEffect(() => {
@@ -194,11 +208,14 @@ function BankAccountApplicationFlow({
   useEffect(() => {
     if (currentStepIdx === 0) {
       setAccountType('checking');
+      setOnboardingMethod('manual');
       setBankName('');
       setBankSsn('');
       setEmail('');
       setPhone('');
       setBankAddress('');
+      setBusinessLegalName('');
+      setBusinessLicenseFileName('');
       setBankIdScanned(false);
       setBankLivenessScanned(false);
       setBankAmlCleared(false);
@@ -214,12 +231,55 @@ function BankAccountApplicationFlow({
     }
   }, [currentStepIdx]);
 
+  const handleAccountTypeChange = (nextAccountType: BankAccountType) => {
+    setAccountType(nextAccountType);
+    setError(null);
+
+    if (nextAccountType !== 'business') {
+      setBusinessLegalName('');
+      setBusinessLicenseFileName('');
+      return;
+    }
+
+    if (isProfileVerifiedByIdentra) {
+      setBusinessLegalName(uiT.qrBusinessName);
+      setBusinessLicenseFileName(uiT.qrBusinessLicenseName);
+    }
+  };
+
+  const handleOnboardingMethodChange = (method: BankAccountOnboardingMethod) => {
+    if (method === onboardingMethod) {
+      setError(null);
+      return;
+    }
+
+    setOnboardingMethod(method);
+    setError(null);
+    setBankName('');
+    setBankSsn('');
+    setEmail('');
+    setPhone('');
+    setBankAddress('');
+    setBusinessLegalName('');
+    setBusinessLicenseFileName('');
+    setIsQrModalOpen(false);
+    setQrSeconds(5);
+    setIsCryptographicallySecured(false);
+  };
+
   const startQrScanModal = () => {
+    setOnboardingMethod('identra');
     setError(null);
     setQrSeconds(5);
     setIsQrModalOpen(true);
     addLog(uiT.qrScanStartedLog, 'action');
   };
+
+  const accountOptions: Array<{ id: BankAccountType; label: string; badge: string; requirement: string }> = [
+    { id: 'checking', label: t.checkingAccount, badge: t.popularBadge, requirement: t.checkingRequirement },
+    { id: 'savings', label: t.savingsAccount, badge: t.apyBadge, requirement: t.savingsRequirement },
+    { id: 'business', label: t.businessAccount, badge: t.proBadge, requirement: t.businessRequirement },
+  ];
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -272,15 +332,11 @@ function BankAccountApplicationFlow({
                 {t.selectAccountType}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                {[
-                  { id: 'checking', label: t.checkingAccount, badge: t.popularBadge },
-                  { id: 'savings', label: t.savingsAccount, badge: t.apyBadge },
-                  { id: 'business', label: t.businessAccount, badge: t.proBadge },
-                ].map((acc) => (
+                {accountOptions.map((acc) => (
                   <button
                     key={acc.id}
                     type="button"
-                    onClick={() => setAccountType(acc.id as any)}
+                    onClick={() => handleAccountTypeChange(acc.id)}
                     className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                       accountType === acc.id
                         ? 'border-[#354CE1] bg-[#354CE1]/5 text-[#354CE1] ring-1 ring-[#354CE1]'
@@ -289,42 +345,77 @@ function BankAccountApplicationFlow({
                   >
                     <span className="block text-xs font-bold">{acc.label}</span>
                     <span className="block text-[10px] text-slate-400 font-mono mt-0.5">{acc.badge}</span>
+                    <span className="block text-[10px] text-slate-500 leading-snug mt-1.5">{acc.requirement}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* QR Code Auto-fill with Identra Card */}
-            <div className="rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-[#E2E6FF] to-[#FAFBFD] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
-              <div className="flex items-center gap-3.5">
-                <div className="h-16 w-16 bg-white p-1.5 rounded-xl border border-indigo-100 shadow-xs shrink-0 flex items-center justify-center relative group">
-                  <BankAccountQrCodeGraphic className="h-12 w-12 text-[#354CE1]" />
-                  <div className="absolute inset-0 bg-[#354CE1]/5 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Sparkles className="h-5 w-5 text-[#354CE1] animate-spin" />
-                  </div>
-                </div>
-                <div className="space-y-1 text-center sm:text-left">
-                  <div className="flex items-center justify-center sm:justify-start gap-2">
-                    <span className="font-bold text-xs text-slate-900">{t.fillWithIdentra}</span>
-                    <span className="px-2 py-0.5 rounded-full bg-[#354CE1] text-[10px] font-bold text-white font-mono uppercase tracking-wider">
-                      {uiT.oneClickAutofillBadge}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    {t.qrAutofillDesc}
-                  </p>
-                </div>
+            {/* Onboarding Method Selection */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                {t.chooseOnboardingMethod}
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleOnboardingMethodChange('manual')}
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                    onboardingMethod === 'manual'
+                      ? 'border-[#354CE1] bg-[#354CE1]/5 text-[#354CE1] ring-1 ring-[#354CE1]'
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="block text-xs font-bold">{t.manualEntry}</span>
+                  <span className="block text-[11px] text-slate-500 leading-snug mt-1">{t.manualEntryDesc}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleOnboardingMethodChange('identra')}
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                    onboardingMethod === 'identra'
+                      ? 'border-[#354CE1] bg-[#354CE1]/5 text-[#354CE1] ring-1 ring-[#354CE1]'
+                      : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                  }`}
+                >
+                  <span className="block text-xs font-bold">{t.useIdentra}</span>
+                  <span className="block text-[11px] text-slate-500 leading-snug mt-1">{t.useIdentraDesc}</span>
+                </button>
               </div>
-
-              <button
-                type="button"
-                onClick={startQrScanModal}
-                className="px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 border border-[#354CE1]/30 text-[#354CE1] text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-[#354CE1] active:scale-[0.98]"
-              >
-                <BankAccountQrCodeGraphic className="h-3.5 w-3.5 text-[#354CE1]" />
-                <span>{t.scanQrButton}</span>
-              </button>
             </div>
+
+            {isUsingIdentra && (
+              <div className="rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-[#E2E6FF] to-[#FAFBFD] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
+                <div className="flex items-center gap-3.5">
+                  <div className="h-16 w-16 bg-white p-1.5 rounded-xl border border-indigo-100 shadow-xs shrink-0 flex items-center justify-center relative group">
+                    <BankAccountQrCodeGraphic className="h-12 w-12 text-[#354CE1]" />
+                    <div className="absolute inset-0 bg-[#354CE1]/5 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Sparkles className="h-5 w-5 text-[#354CE1] animate-spin" />
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-center sm:text-left">
+                    <div className="flex items-center justify-center sm:justify-start gap-2">
+                      <span className="font-bold text-xs text-slate-900">{t.fillWithIdentra}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-[#354CE1] text-[10px] font-bold text-white font-mono uppercase tracking-wider">
+                        {uiT.oneClickAutofillBadge}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 leading-relaxed">
+                      {t.qrAutofillDesc}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={startQrScanModal}
+                  className="px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 border border-[#354CE1]/30 text-[#354CE1] text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-[#354CE1] active:scale-[0.98]"
+                >
+                  <BankAccountQrCodeGraphic className="h-3.5 w-3.5 text-[#354CE1]" />
+                  <span>{t.scanQrButton}</span>
+                </button>
+              </div>
+            )}
 
             {error && (
               <div className="bg-rose-50 text-rose-600 border border-rose-100 p-3 rounded-xl text-xs font-semibold flex items-center gap-2">
@@ -334,7 +425,7 @@ function BankAccountApplicationFlow({
             )}
 
             {/* Cryptographically Secured Identity Banner */}
-            {isCryptographicallySecured && (
+            {isProfileVerifiedByIdentra && (
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -352,13 +443,13 @@ function BankAccountApplicationFlow({
 
             {/* Application Input Fields */}
             <div className={`space-y-4 rounded-2xl border bg-white p-4 sm:p-5 shadow-xs transition-all ${
-              isCryptographicallySecured ? 'border-emerald-300 ring-1 ring-emerald-300/40 bg-emerald-50/10' : 'border-slate-200/80'
+              isProfileVerifiedByIdentra ? 'border-emerald-300 ring-1 ring-emerald-300/40 bg-emerald-50/10' : 'border-slate-200/80'
             }`}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.fullName}</label>
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                         {t.cryptoVerifiedPill}
@@ -371,19 +462,19 @@ function BankAccountApplicationFlow({
                       type="text"
                       value={bankName}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) {
+                        if (!isUsingIdentra) {
                           setError(null);
                           setBankName(e.target.value);
                         }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isUsingIdentra}
                       disabled={isProcessingAction}
                       placeholder={t.fullNamePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                        error && !bankName.trim() ? 'border-rose-300 focus:ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        error && !bankName.trim() ? 'border-rose-300 focus:ring-rose-200' : isProfileVerifiedByIdentra ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : isUsingIdentra ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -392,7 +483,7 @@ function BankAccountApplicationFlow({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.identityNumberSsn}</label>
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                         {t.cryptoVerifiedPill}
@@ -405,19 +496,19 @@ function BankAccountApplicationFlow({
                       type="text"
                       value={bankSsn}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) {
+                        if (!isUsingIdentra) {
                           setError(null);
                           setBankSsn(e.target.value);
                         }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isUsingIdentra}
                       disabled={isProcessingAction}
                       placeholder={t.ssnPlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                        error && !bankSsn.trim() ? 'border-rose-300 focus:ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        error && !bankSsn.trim() ? 'border-rose-300 focus:ring-rose-200' : isProfileVerifiedByIdentra ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : isUsingIdentra ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -428,7 +519,7 @@ function BankAccountApplicationFlow({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.emailAddress}</label>
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                         {t.cryptoVerifiedPill}
@@ -441,16 +532,16 @@ function BankAccountApplicationFlow({
                       type="email"
                       value={email}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) setEmail(e.target.value);
+                        if (!isUsingIdentra) setEmail(e.target.value);
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isUsingIdentra}
                       disabled={isProcessingAction}
                       placeholder={t.emailPlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        isProfileVerifiedByIdentra ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : isUsingIdentra ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -459,7 +550,7 @@ function BankAccountApplicationFlow({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.phoneNumber}</label>
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                         {t.cryptoVerifiedPill}
@@ -472,16 +563,16 @@ function BankAccountApplicationFlow({
                       type="text"
                       value={phone}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) setPhone(e.target.value);
+                        if (!isUsingIdentra) setPhone(e.target.value);
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isUsingIdentra}
                       disabled={isProcessingAction}
                       placeholder={t.phonePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        isProfileVerifiedByIdentra ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : isUsingIdentra ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isProfileVerifiedByIdentra && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -491,7 +582,7 @@ function BankAccountApplicationFlow({
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.physicalAddress}</label>
-                  {isCryptographicallySecured && (
+                  {isProfileVerifiedByIdentra && (
                     <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                       <CheckCircle2 className="h-3 w-3 text-emerald-600" />
                       {t.cryptoVerifiedPill}
@@ -504,23 +595,119 @@ function BankAccountApplicationFlow({
                     type="text"
                     value={bankAddress}
                     onChange={(e) => {
-                      if (!isCryptographicallySecured) {
+                      if (!isUsingIdentra) {
                         setError(null);
                         setBankAddress(e.target.value);
                       }
                     }}
-                    readOnly={isCryptographicallySecured}
+                    readOnly={isUsingIdentra}
                     disabled={isProcessingAction}
                     placeholder={t.addressPlaceholder}
                     className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                      error && !bankAddress.trim() ? 'border-rose-300 focus:ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                      error && !bankAddress.trim() ? 'border-rose-300 focus:ring-rose-200' : isProfileVerifiedByIdentra ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : isUsingIdentra ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed' : 'border-slate-200'
                     }`}
                   />
-                  {isCryptographicallySecured && (
+                  {isProfileVerifiedByIdentra && (
                     <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                   )}
                 </div>
               </div>
+
+              {isBusinessAccount && (
+                <div className={`rounded-2xl border p-4 space-y-3 ${
+                  isProfileVerifiedByIdentra ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-200 bg-slate-50/70'
+                }`}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.businessDetailsTitle}</h4>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        {isUsingIdentra ? t.businessCredentialNotice : t.businessRequirement}
+                      </p>
+                    </div>
+                    {isProfileVerifiedByIdentra && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
+                        <ShieldCheck className="h-3 w-3" />
+                        {t.cryptoVerifiedPill}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.businessLegalName}</label>
+                      <div className="relative">
+                        <Landmark className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={businessLegalName}
+                          onChange={(e) => {
+                            if (!isUsingIdentra) {
+                              setError(null);
+                              setBusinessLegalName(e.target.value);
+                            }
+                          }}
+                          readOnly={isUsingIdentra}
+                          disabled={isProcessingAction}
+                          placeholder={t.businessLegalNamePlaceholder}
+                          className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
+                            error && !businessLegalName.trim()
+                              ? 'border-rose-300 focus:ring-rose-200'
+                              : isProfileVerifiedByIdentra
+                                ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed'
+                                : isUsingIdentra
+                                  ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed'
+                                  : 'border-slate-200'
+                          }`}
+                        />
+                        {isProfileVerifiedByIdentra && (
+                          <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                        )}
+                      </div>
+                    </div>
+
+                    {isUsingIdentra ? (
+                      <div className={`rounded-xl border p-3.5 flex items-center gap-3 ${
+                        isProfileVerifiedByIdentra ? 'border-emerald-200 bg-white text-emerald-900' : 'border-slate-200 bg-white text-slate-500'
+                      }`}>
+                        <Database className={`h-5 w-5 shrink-0 ${isProfileVerifiedByIdentra ? 'text-emerald-600' : 'text-slate-400'}`} />
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold truncate">
+                            {businessLicenseFileName || t.businessRegistrationLicense}
+                          </p>
+                          <p className="text-[11px] leading-relaxed">
+                            {isProfileVerifiedByIdentra ? t.businessLicenseUploaded : t.businessCredentialNotice}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <label className={`rounded-xl border p-3.5 flex items-center gap-3 bg-white transition cursor-pointer hover:border-[#354CE1]/50 ${
+                        error && !businessLicenseFileName ? 'border-rose-300 bg-rose-50/40' : 'border-slate-200'
+                      }`}>
+                        <Camera className="h-5 w-5 text-[#354CE1] shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-slate-900 truncate">
+                            {businessLicenseFileName || t.businessRegistrationLicense}
+                          </p>
+                          <p className="text-[11px] text-slate-500 leading-relaxed">
+                            {businessLicenseFileName ? t.businessLicenseUploaded : t.businessLicenseUploadHint}
+                          </p>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          disabled={isProcessingAction}
+                          onChange={(event) => {
+                            const fileName = event.target.files?.[0]?.name || '';
+                            setError(null);
+                            setBusinessLicenseFileName(fileName);
+                          }}
+                        />
+                      </label>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Identra Security Trust Guarantee Box */}
@@ -534,6 +721,10 @@ function BankAccountApplicationFlow({
 
             <button
               onClick={() => {
+                if (isUsingIdentra && !isProfileVerifiedByIdentra) {
+                  setError(t.identraScanRequiredError);
+                  return;
+                }
                 if (!bankName.trim()) {
                   setError(t.fullNameError);
                   return;
@@ -546,6 +737,14 @@ function BankAccountApplicationFlow({
                   setError(t.physicalAddressError);
                   return;
                 }
+                if (isBusinessAccount && !businessLegalName.trim()) {
+                  setError(t.businessLegalNameError);
+                  return;
+                }
+                if (isBusinessAccount && !isProfileVerifiedByIdentra && !businessLicenseFileName) {
+                  setError(t.businessLicenseError);
+                  return;
+                }
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.submittingProfile, { name: bankName }), 'action');
@@ -553,6 +752,13 @@ function BankAccountApplicationFlow({
                   setIsProcessingAction(false);
                   advanceStep([
                     formatText(logT.profileReceived, { name: bankName, ssn: bankSsn }),
+                    ...(isBusinessAccount
+                      ? [
+                        isProfileVerifiedByIdentra
+                          ? formatText(logT.businessCredentialResolved, { businessName: businessLegalName, fileName: businessLicenseFileName })
+                          : formatText(logT.businessLicenseSubmitted, { fileName: businessLicenseFileName }),
+                      ]
+                      : []),
                   ]);
                 }, 1200);
               }}
@@ -1249,7 +1455,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
 
         {/* Dynamic Sandbox Main Viewport */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* LEFT PANEL: The Interactive Demo App Mockup (7 different cases) */}
+          {/* LEFT PANEL: Interactive bank account client simulator */}
           <div className="lg:col-span-7 space-y-6">
             <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-xl overflow-hidden relative">
               {/* Device Header Bar */}
@@ -1266,9 +1472,9 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                 <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
               </div>
 
-              {/* Dynamic app content provided by the scenario page */}
+              {/* Client-side banking interface simulated inside the device frame */}
               <div className="p-6 md:p-8 min-h-[480px] bg-slate-50/50 flex flex-col justify-between">
-                <BankAccountApplicationFlow
+                <BankAccountClientSimulator
                   currentStepIdx={currentStepIdx}
                   completedSteps={completedSteps}
                   isProcessingAction={isProcessingAction}
@@ -1282,9 +1488,9 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
             </div>
           </div>
 
-          {/* RIGHT PANEL: Identity Flow Progress + Sandbox Transaction Console Ledger */}
+          {/* RIGHT PANEL: Account opening progress + sandbox transaction console ledger */}
           <div className="lg:col-span-5 space-y-6">
-            {/* 1. Identity Verification Flow Tracker */}
+            {/* 1. Bank account opening progress tracker */}
             <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-6 shadow-sm relative overflow-hidden">
               {/* Header section with badge */}
               <div className="flex items-center justify-between">
@@ -1326,7 +1532,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                 </div>
               </div>
 
-              {/* Graphical representation of the Verification sequence */}
+              {/* Graphical representation of the account opening sequence */}
               <IdentityFlowGraph
                 steps={scenario.steps}
                 currentStepIdx={currentStepIdx}
@@ -1391,7 +1597,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                         </p>
                       </div>
 
-                      {/* Micro-Verification Checks Sub-Checklist */}
+                      {/* Step detail checklist */}
                       {(isActive || isDone) && subChecks.length > 0 && (
                         <div className="pt-2 border-t border-slate-100/60 space-y-1.5">
                           <div className="text-[8px] font-bold uppercase tracking-wider text-slate-400 mb-1 font-mono">

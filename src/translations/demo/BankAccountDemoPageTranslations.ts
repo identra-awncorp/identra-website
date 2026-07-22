@@ -14,23 +14,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "The applicant passed document, biometric, and watchlist checks. The account can be opened with a verified identity certificate.",
       "steps": [
         {
-          "label": "Collect applicant profile",
-          "action": "Submit profile data",
-          "logText": "Profile attributes normalized and checked for synthetic identity risk."
+          "label": "Submit account application",
+          "action": "Choose account type and onboarding path",
+          "logText": "Account type, onboarding path, profile data, and required documents normalized."
         },
         {
-          "label": "Verify government ID",
-          "action": "Scan government ID",
-          "logText": "Document authenticity, MRZ, barcode, and expiration signals validated."
+          "label": "Verify ID credential",
+          "action": "Scan ID or validate Identra credential",
+          "logText": "Document authenticity or Identra credential claims validated."
         },
         {
-          "label": "Run biometric liveness",
-          "action": "Complete face check",
+          "label": "Complete liveness",
+          "action": "Run face liveness check",
           "logText": "3D liveness and face-to-document similarity checks passed."
         },
         {
-          "label": "Screen sanctions and PEP lists",
-          "action": "Run AML screening",
+          "label": "Run AML screening",
+          "action": "Screen watchlists and approve account",
           "logText": "OFAC, PEP, and adverse-risk registries returned no blocking matches."
         }
       ]
@@ -40,7 +40,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "liveBadge": "Live interactive demo page",
       "resetDemo": "Reset Demo",
       "clientEmulator": "Client interface emulator",
-      "flowTitle": "Identity Verification",
+      "flowTitle": "Bank Account Opening",
       "coreVersion": "CORE v2.8",
       "riskLevel": "Risk Level",
       "trustScore": "Trust Score",
@@ -52,7 +52,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "active": "Active",
       "pass": "Pass",
       "task": "Task: {action}",
-      "underlyingChecks": "Underlying system checks",
+      "underlyingChecks": "Step details",
       "transactionComplete": "TRANSACTION COMPLETE",
       "waitingInput": "WAITING FOR INPUT",
       "viewVerdict": "View Verdict",
@@ -61,35 +61,36 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "logs": {
         "launch": "[SYSTEM] Launched live interactive demo page: {title}",
         "environment": "[ENVIRONMENT] Provisioning active frontend sandbox context...",
-        "instruction": "[INSTRUCTION] Follow interactive tasks in the left panel to trigger identity verification.",
+        "instruction": "[INSTRUCTION] Follow interactive tasks in the left panel to complete bank account onboarding.",
         "reset": "[SYSTEM] Reset interactive demo page: {title}",
-        "resetInstruction": "[INSTRUCTION] Follow tasks in the left panel to trigger identity verification.",
-        "completedLayer": "Completed verification layer: {label}",
+        "resetInstruction": "[INSTRUCTION] Follow tasks in the left panel to restart account onboarding.",
+        "completedLayer": "Completed onboarding step: {label}",
         "nextTask": "Next task: {action}",
-        "allPassed": "All identity verification stages passed successfully!",
+        "allPassed": "All bank account onboarding stages passed successfully!",
         "sealed": "Cryptographic verification credentials signed and sealed."
       },
       "subChecks": {
         "bank-account": [
           [
-            "Profile Integrity Check",
-            "Synthetic Identity Sweep",
-            "Regional Credit Verification"
+            "Account type requirement selected",
+            "Manual or Identra onboarding path selected",
+            "Applicant profile fields validated",
+            "Business registration proof handled when required"
           ],
           [
-            "Cryptographic Watermark Audit",
-            "2D Barcode and MRZ Decoding",
-            "Document Expiry Analysis"
+            "Government ID capture or Identra credential available",
+            "Document authenticity or credential proof validated",
+            "Registry identity match accepted"
           ],
           [
-            "3D Depth Liveness Assessment",
-            "Passive Reflection Matcher",
-            "Face-to-ID Similarity Audit (99.8%)"
+            "Face positioned inside liveness frame",
+            "3D depth liveness assessed",
+            "Face-to-ID similarity audit completed"
           ],
           [
-            "OFAC Sanctions Registry Scan",
-            "PEP List Database Screening",
-            "Interpol Red Notices Query"
+            "OFAC sanctions registry scanned",
+            "Interpol red notices queried",
+            "PEP exposure screening completed"
           ]
         ]
       }
@@ -98,7 +99,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "AeroBank Digital Banking Setup",
       "securedByIdentra": "Secured by Identra",
       "digitalBankingPortal": "AeroBank Digital Banking",
-      "onlineApplicationSubtitle": "Online Checking & Savings Application • Step 1 of 4: Personal Profile",
+      "onlineApplicationSubtitle": "Online Bank Account Application • Step 1 of 4: Application Profile",
       "fillWithIdentra": "Autofill with Identra",
       "qrAutofillDesc": "Scan QR code with Identra app to instantly populate verified identity profile.",
       "scanQrButton": "Scan QR to Autofill",
@@ -110,6 +111,14 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "simulatingScan": "Simulating mobile scan verification...",
       "cancelButton": "Cancel",
       "selectAccountType": "Select Account Type",
+      "chooseOnboardingMethod": "Choose Onboarding Method",
+      "manualEntry": "Manual entry",
+      "manualEntryDesc": "Type applicant details and upload required documents.",
+      "useIdentra": "Use Identra",
+      "useIdentraDesc": "Scan once to provide verified identity and business credentials.",
+      "checkingRequirement": "Required: personal identity, SSN, address.",
+      "savingsRequirement": "Required: personal identity, SSN, address.",
+      "businessRequirement": "Required: authorized signer details and business registration license.",
       "checkingAccount": "Checking Account",
       "savingsAccount": "High-Yield Savings",
       "businessAccount": "Business Premier",
@@ -133,11 +142,21 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "fullName": "Full Name",
       "identityNumberSsn": "Identity Number / SSN",
       "physicalAddress": "Physical Address",
+      "businessDetailsTitle": "Business account requirements",
+      "businessLegalName": "Legal Business Name",
+      "businessLegalNamePlaceholder": "e.g. Aero Logistics LLC",
+      "businessRegistrationLicense": "Business Registration License",
+      "businessLicenseUploadHint": "Upload a photo of the registration license",
+      "businessLicenseUploaded": "Business registration credential attached",
+      "businessCredentialNotice": "Identra will provide a verified business registry credential after QR scan.",
       "fullNameError": "Please enter your full name!",
       "identityNumberError": "Please enter your identity number / SSN!",
       "physicalAddressError": "Please enter your physical address!",
+      "businessLegalNameError": "Please enter the legal business name.",
+      "businessLicenseError": "Please upload a business registration license image.",
+      "identraScanRequiredError": "Please scan with Identra before submitting this flow.",
       "submitRegistrationProfile": "Submit Registration Profile",
-      "step2Description": "Step 2: Scan your Government Passport or ID. Identra parses characters via OCR and analyzes optical security watermarks.",
+      "step2Description": "Step 2: Scan a government passport/ID manually, or let Identra validate the verified credential from the QR flow.",
       "scanIdDocumentNow": "Scan ID Document Now",
       "step3Description": "Step 3: Passive 3D Facial Liveness. Identra maps facial depth, active eye trackers, and screen reflections to block photos/deepfakes.",
       "analyzing3dBiometrics": "Analyzing 3D Biometrics...",
@@ -170,6 +189,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
     "logs": {
       "submittingProfile": "Submitting profile: \"{name}\"",
       "profileReceived": "Profile received: name=\"{name}\", ssn=\"{ssn}\". Validating registry signature...",
+      "businessLicenseSubmitted": "Business registration license image attached: {fileName}. Registry proof queued for review.",
+      "businessCredentialResolved": "Business registry credential resolved through Identra: {businessName}, license={fileName}.",
       "extractingGovernmentId": "Extracting Government ID certificate...",
       "documentOcrSuccessful": "Document OCR successful: passport_no=\"EX839121\", holder=\"{holder}\", birth_date=\"12/04/1990\", issuer=\"MINISTRY OF INTERIOR\", validation=\"PASSED\"",
       "initializingLiveness": "Initializing 3D facial liveness scan...",
@@ -185,8 +206,11 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "qrEmail": "alice.vance@identra.com",
       "qrPhone": "+1 (555) 234-5678",
       "qrAddress": "742 Evergreen Terrace, Springfield",
+      "qrBusinessName": "Aero Logistics LLC",
+      "qrBusinessLicenseName": "aero-logistics-registration.jpg",
       "qrScanStartedLog": "Starting Identra QR scan session on mobile device...",
       "qrScanSuccessLog": "Identra QR scan succeeded - personal data is protected by ZKP-ECDSA cryptographic proof.",
+      "businessCredentialVerifiedLog": "Identra business registration credential verified and linked to this application.",
       "govIdSuccessLog": "Government-issued ID verified successfully. (Identra National Registry Matching 100%)",
       "amlStartedLog": "Server automation started AML sanctions and PEP watchlist screening...",
       "amlFailedLog": "AML risk screening failed: high financial risk watchlist match detected (OFAC / PEP flagged).",
@@ -215,23 +239,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "El solicitante superó las comprobaciones de documento, biometría y listas de control. La cuenta puede abrirse con un certificado de identidad verificado.",
       "steps": [
         {
-          "label": "Recopilar perfil del solicitante",
-          "action": "Enviar datos del perfil",
-          "logText": "Los atributos del perfil se normalizaron y se revisó el riesgo de identidad sintética."
+          "label": "Enviar solicitud de cuenta",
+          "action": "Elegir tipo de cuenta y método de alta",
+          "logText": "Tipo de cuenta, método de alta, datos del perfil y documentos requeridos normalizados."
         },
         {
-          "label": "Verificar ID gubernamental",
-          "action": "Escanear ID gubernamental",
-          "logText": "Se validaron autenticidad del documento, MRZ, código de barras y vencimiento."
+          "label": "Verificar credencial de ID",
+          "action": "Escanear ID o validar credencial Identra",
+          "logText": "Autenticidad del documento o claims de credencial Identra validados."
         },
         {
-          "label": "Ejecutar prueba de vida biométrica",
-          "action": "Completar verificación facial",
+          "label": "Completar prueba de vida",
+          "action": "Ejecutar verificación facial de vida",
           "logText": "La prueba de vida 3D y la similitud rostro-documento fueron aprobadas."
         },
         {
-          "label": "Revisar sanciones y listas PEP",
-          "action": "Ejecutar filtrado AML",
+          "label": "Ejecutar filtrado AML",
+          "action": "Revisar watchlists y aprobar cuenta",
           "logText": "OFAC, PEP y registros de riesgo no devolvieron coincidencias bloqueantes."
         }
       ]
@@ -241,7 +265,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "liveBadge": "Página demo interactiva en vivo",
       "resetDemo": "Reiniciar demo",
       "clientEmulator": "Emulador de interfaz del cliente",
-      "flowTitle": "Verificación de identidad",
+      "flowTitle": "Apertura de cuenta",
       "coreVersion": "CORE v2.8",
       "riskLevel": "Nivel de riesgo",
       "trustScore": "Puntuación de confianza",
@@ -253,7 +277,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "active": "Activo",
       "pass": "Aprobado",
       "task": "Tarea: {action}",
-      "underlyingChecks": "Comprobaciones internas del sistema",
+      "underlyingChecks": "Detalles del paso",
       "transactionComplete": "TRANSACCIÓN COMPLETA",
       "waitingInput": "ESPERANDO ENTRADA",
       "viewVerdict": "Ver dictamen",
@@ -262,35 +286,36 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "logs": {
         "launch": "[SYSTEM] Página demo interactiva iniciada: {title}",
         "environment": "[ENVIRONMENT] Preparando el contexto activo de interfaz simulada...",
-        "instruction": "[INSTRUCTION] Sigue las tareas del panel izquierdo para activar la verificación de identidad.",
+        "instruction": "[INSTRUCTION] Sigue las tareas del panel izquierdo para completar el alta de la cuenta bancaria.",
         "reset": "[SYSTEM] Página demo interactiva reiniciada: {title}",
-        "resetInstruction": "[INSTRUCTION] Sigue las tareas del panel izquierdo para iniciar de nuevo la verificación.",
-        "completedLayer": "Capa de verificación completada: {label}",
+        "resetInstruction": "[INSTRUCTION] Sigue las tareas del panel izquierdo para reiniciar el alta de la cuenta.",
+        "completedLayer": "Paso de alta completado: {label}",
         "nextTask": "Siguiente tarea: {action}",
-        "allPassed": "Todas las etapas de verificación de identidad se aprobaron correctamente.",
+        "allPassed": "Todas las etapas de alta de cuenta bancaria se aprobaron correctamente.",
         "sealed": "Credenciales criptográficas de verificación firmadas y selladas."
       },
       "subChecks": {
         "bank-account": [
           [
-            "Comprobación de integridad del perfil",
-            "Barrido de identidad sintética",
-            "Verificación crediticia regional"
+            "Requisito del tipo de cuenta seleccionado",
+            "Ruta manual o Identra seleccionada",
+            "Campos del perfil del solicitante validados",
+            "Prueba de registro empresarial gestionada si aplica"
           ],
           [
-            "Auditoría de marca criptográfica",
-            "Decodificación de código 2D y MRZ",
-            "Análisis de vencimiento del documento"
+            "Captura de ID oficial o credencial Identra disponible",
+            "Autenticidad documental o prueba de credencial validada",
+            "Coincidencia de identidad en registro aceptada"
           ],
           [
-            "Evaluación de vida 3D",
-            "Comparador de reflexión pasiva",
-            "Auditoría de similitud rostro-ID (99,8%)"
+            "Rostro posicionado dentro del marco de vida",
+            "Prueba de vida 3D evaluada",
+            "Auditoría de similitud rostro-ID completada"
           ],
           [
-            "Escaneo del registro de sanciones OFAC",
-            "Filtrado de base de datos PEP",
-            "Consulta de alertas rojas de Interpol"
+            "Registro de sanciones OFAC escaneado",
+            "Alertas rojas de Interpol consultadas",
+            "Filtrado de exposición PEP completado"
           ]
         ]
       }
@@ -299,7 +324,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "Configuración de banca digital AeroBank",
       "securedByIdentra": "Protegido por Identra",
       "digitalBankingPortal": "Banca Digital AeroBank",
-      "onlineApplicationSubtitle": "Solicitud de cuenta en línea • Paso 1 de 4: Perfil personal",
+      "onlineApplicationSubtitle": "Solicitud de cuenta bancaria en línea • Paso 1 de 4: Perfil de solicitud",
       "fillWithIdentra": "Completar datos con Identra",
       "qrAutofillDesc": "Escanee el código QR con Identra para completar su perfil de identidad verificado.",
       "scanQrButton": "Escanear QR para auto-completar",
@@ -311,6 +336,14 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "simulatingScan": "Simulando verificación de escaneo móvil...",
       "cancelButton": "Cancelar",
       "selectAccountType": "Seleccionar tipo de cuenta",
+      "chooseOnboardingMethod": "Elegir método de alta",
+      "manualEntry": "Entrada manual",
+      "manualEntryDesc": "Escribe los datos del solicitante y sube los documentos requeridos.",
+      "useIdentra": "Usar Identra",
+      "useIdentraDesc": "Escanea una vez para aportar identidad y credenciales empresariales verificadas.",
+      "checkingRequirement": "Requiere: identidad personal, SSN y dirección.",
+      "savingsRequirement": "Requiere: identidad personal, SSN y dirección.",
+      "businessRequirement": "Requiere: datos del firmante autorizado y licencia de registro empresarial.",
       "checkingAccount": "Cuenta corriente",
       "savingsAccount": "Cuenta de ahorro",
       "businessAccount": "Cuenta empresarial",
@@ -332,13 +365,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "passedStatus": "APROBADO (0 Coincidencias)",
       "pendingStatus": "PENDIENTE",
       "fullName": "Nombre completo",
+      "businessDetailsTitle": "Requisitos de cuenta empresarial",
+      "businessLegalName": "Nombre legal de la empresa",
+      "businessLegalNamePlaceholder": "p. ej. Aero Logistics LLC",
+      "businessRegistrationLicense": "Licencia de registro empresarial",
+      "businessLicenseUploadHint": "Sube una foto de la licencia de registro",
+      "businessLicenseUploaded": "Credencial de registro empresarial adjunta",
+      "businessCredentialNotice": "Identra aportará una credencial verificada del registro empresarial después del escaneo QR.",
       "identityNumberSsn": "Número de identidad / SSN",
       "physicalAddress": "Dirección física",
       "fullNameError": "Introduce tu nombre completo.",
+      "businessLegalNameError": "Introduce el nombre legal de la empresa.",
+      "businessLicenseError": "Sube una imagen de la licencia de registro empresarial.",
+      "identraScanRequiredError": "Escanea con Identra antes de enviar este flujo.",
       "identityNumberError": "Introduce tu número de identidad / SSN.",
       "physicalAddressError": "Introduce tu dirección física.",
       "submitRegistrationProfile": "Enviar perfil de registro",
-      "step2Description": "Paso 2: Escanea tu pasaporte o documento oficial. Identra extrae caracteres por OCR y analiza marcas de seguridad óptica.",
+      "step2Description": "Paso 2: Escanea manualmente un pasaporte/ID oficial, o deja que Identra valide la credencial verificada del flujo QR.",
       "scanIdDocumentNow": "Escanear documento de identidad ahora",
       "step3Description": "Paso 3: Prueba pasiva de vida facial 3D. Identra mapea profundidad facial, seguimiento ocular y reflejos de pantalla para bloquear fotos o deepfakes.",
       "analyzing3dBiometrics": "Analizando biometría 3D...",
@@ -359,6 +402,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
     "logs": {
       "submittingProfile": "Enviando perfil: \"{name}\"",
       "profileReceived": "Perfil recibido: nombre=\"{name}\", SSN=\"{ssn}\". Validando firma del registro...",
+      "businessLicenseSubmitted": "Imagen de licencia de registro empresarial adjunta: {fileName}. Prueba de registro enviada a revisión.",
+      "businessCredentialResolved": "Credencial de registro empresarial resuelta mediante Identra: {businessName}, licencia={fileName}.",
       "extractingGovernmentId": "Extrayendo certificado de documento oficial...",
       "documentOcrSuccessful": "OCR del documento completado: passport_no=\"EX839121\", titular=\"{holder}\", birth_date=\"12/04/1990\", emisor=\"MINISTERIO DEL INTERIOR\", validación=\"APROBADA\"",
       "initializingLiveness": "Iniciando escaneo de prueba de vida facial 3D...",
@@ -374,8 +419,11 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "qrEmail": "alice.vance@identra.com",
       "qrPhone": "+1 (555) 234-5678",
       "qrAddress": "742 Evergreen Terrace, Springfield",
+      "qrBusinessName": "Aero Logistics LLC",
+      "qrBusinessLicenseName": "aero-logistics-registration.jpg",
       "qrScanStartedLog": "Iniciando sesión de escaneo QR Identra en el dispositivo móvil...",
       "qrScanSuccessLog": "Escaneo QR de Identra correcto - datos personales protegidos por prueba ZKP-ECDSA.",
+      "businessCredentialVerifiedLog": "Credencial de registro empresarial de Identra verificada y vinculada a esta solicitud.",
       "govIdSuccessLog": "Documento oficial verificado correctamente. (Identra National Registry Matching 100%)",
       "amlStartedLog": "El servidor inició revisión AML, sanciones y watchlist PEP...",
       "amlFailedLog": "Revisión AML fallida: coincidencia en lista de alto riesgo financiero (OFAC / PEP flagged).",
@@ -404,23 +452,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "申請者は書類、生体認証、ウォッチリスト確認に合格しました。確認済み本人証明で口座開設を進められます。",
       "steps": [
         {
-          "label": "申請者プロフィールを収集",
-          "action": "プロフィールデータを送信",
-          "logText": "プロフィール属性を正規化し、合成IDリスクを確認しました。"
+          "label": "口座申込を送信",
+          "action": "口座種別とオンボーディング方法を選択",
+          "logText": "口座種別、オンボーディング方法、プロフィール情報、必要書類を正規化しました。"
         },
         {
-          "label": "政府発行IDを検証",
-          "action": "政府発行IDをスキャン",
-          "logText": "書類真正性、MRZ、バーコード、有効期限シグナルを検証しました。"
+          "label": "ID認証情報を検証",
+          "action": "IDをスキャンまたはIdentra認証情報を検証",
+          "logText": "書類真正性またはIdentra認証情報のクレームを検証しました。"
         },
         {
-          "label": "生体ライブネスを実行",
-          "action": "顔チェックを完了",
+          "label": "ライブネス完了",
+          "action": "顔ライブネスチェックを実行",
           "logText": "3Dライブネスと顔・書類類似度チェックに合格しました。"
         },
         {
-          "label": "制裁・PEPリストを確認",
-          "action": "AMLスクリーニングを実行",
+          "label": "AML審査を実行",
+          "action": "ウォッチリスト審査と口座承認",
           "logText": "OFAC、PEP、リスクレジストリでブロック対象の一致はありませんでした。"
         }
       ]
@@ -430,7 +478,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "liveBadge": "ライブインタラクティブデモページ",
       "resetDemo": "デモをリセット",
       "clientEmulator": "クライアント画面エミュレーター",
-      "flowTitle": "本人確認",
+      "flowTitle": "口座開設フロー",
       "coreVersion": "CORE v2.8",
       "riskLevel": "リスクレベル",
       "trustScore": "信頼スコア",
@@ -442,7 +490,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "active": "実行中",
       "pass": "合格",
       "task": "タスク: {action}",
-      "underlyingChecks": "基盤システムチェック",
+      "underlyingChecks": "ステップ詳細",
       "transactionComplete": "取引完了",
       "waitingInput": "入力待機中",
       "viewVerdict": "判定を見る",
@@ -451,35 +499,36 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "logs": {
         "launch": "[SYSTEM] ライブインタラクティブデモを起動しました: {title}",
         "environment": "[ENVIRONMENT] アクティブなフロントエンドSandbox環境を準備中...",
-        "instruction": "[INSTRUCTION] 左側パネルのタスクを実行して本人確認を開始してください。",
+        "instruction": "[INSTRUCTION] 左側パネルのタスクを実行して銀行口座オンボーディングを完了してください。",
         "reset": "[SYSTEM] インタラクティブデモをリセットしました: {title}",
-        "resetInstruction": "[INSTRUCTION] 左側パネルのタスクを実行して本人確認を再開してください。",
-        "completedLayer": "検証レイヤー完了: {label}",
+        "resetInstruction": "[INSTRUCTION] 左側パネルのタスクを実行して口座オンボーディングを再開してください。",
+        "completedLayer": "オンボーディングステップ完了: {label}",
         "nextTask": "次のタスク: {action}",
-        "allPassed": "すべての本人確認ステージに合格しました。",
+        "allPassed": "銀行口座オンボーディングの全ステージに合格しました。",
         "sealed": "暗号化された検証資格情報が署名され、封印されました。"
       },
       "subChecks": {
         "bank-account": [
           [
-            "プロフィール整合性チェック",
-            "合成IDスイープ",
-            "地域信用確認"
+            "口座種別の要件を選択",
+            "手動またはIdentraのオンボーディング方法を選択",
+            "申請者プロフィール項目を検証",
+            "必要に応じて事業登録証明を処理"
           ],
           [
-            "暗号透かし監査",
-            "2DバーコードとMRZのデコード",
-            "書類有効期限分析"
+            "政府発行IDまたはIdentra認証情報を取得",
+            "書類真正性または認証情報証明を検証",
+            "レジストリ上の本人一致を承認"
           ],
           [
-            "3D深度ライブネス評価",
-            "受動反射マッチャー",
-            "顔とIDの類似度監査（99.8%）"
+            "顔をライブネス枠内に配置",
+            "3D深度ライブネスを評価",
+            "顔とIDの類似度監査を完了"
           ],
           [
-            "OFAC制裁レジストリスキャン",
-            "PEPリストデータベース審査",
-            "Interpol赤手配照会"
+            "OFAC制裁レジストリをスキャン",
+            "Interpol赤手配を照会",
+            "PEPエクスポージャー審査を完了"
           ]
         ]
       }
@@ -488,7 +537,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "AeroBank デジタル口座開設",
       "securedByIdentra": "Identraで保護済み",
       "digitalBankingPortal": "AeroBank デジタルバンキング",
-      "onlineApplicationSubtitle": "オンライン口座開設申込 • ステップ 1 / 4: 個人プロフィール",
+      "onlineApplicationSubtitle": "オンライン銀行口座申込 • ステップ 1 / 4: 申込プロフィール",
       "fillWithIdentra": "Identraで自動入力",
       "qrAutofillDesc": "IdentraアプリでQRコードをスキャンして検証済み身元情報を自動入力。",
       "scanQrButton": "QRスキャンで自動入力",
@@ -500,6 +549,14 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "simulatingScan": "モバイル受託スキャンを検証中...",
       "cancelButton": "キャンセル",
       "selectAccountType": "口座種別の選択",
+      "chooseOnboardingMethod": "オンボーディング方法を選択",
+      "manualEntry": "手動入力",
+      "manualEntryDesc": "申請者情報を入力し、必要書類をアップロードします。",
+      "useIdentra": "Identraを使用",
+      "useIdentraDesc": "1回のスキャンで検証済みの本人確認情報と事業者認証情報を提供します。",
+      "checkingRequirement": "必須: 本人確認、SSN、住所。",
+      "savingsRequirement": "必須: 本人確認、SSN、住所。",
+      "businessRequirement": "必須: 署名権限者の情報と事業登録証。",
       "checkingAccount": "普通預金口座",
       "savingsAccount": "高金利普通預金",
       "businessAccount": "法人口座",
@@ -521,13 +578,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "passedStatus": "合格 (該当0件)",
       "pendingStatus": "確認中",
       "fullName": "氏名",
+      "businessDetailsTitle": "事業用口座の要件",
+      "businessLegalName": "法人正式名称",
+      "businessLegalNamePlaceholder": "例: Aero Logistics LLC",
+      "businessRegistrationLicense": "事業登録証",
+      "businessLicenseUploadHint": "登録証の写真をアップロード",
+      "businessLicenseUploaded": "事業登録認証情報が添付されました",
+      "businessCredentialNotice": "QRスキャン後、Identraが検証済みの事業登録認証情報を提供します。",
       "identityNumberSsn": "ID番号 / SSN",
       "physicalAddress": "現住所",
       "fullNameError": "氏名を入力してください。",
+      "businessLegalNameError": "法人正式名称を入力してください。",
+      "businessLicenseError": "事業登録証の画像をアップロードしてください。",
+      "identraScanRequiredError": "このフローを送信する前にIdentraでスキャンしてください。",
       "identityNumberError": "ID番号 / SSNを入力してください。",
       "physicalAddressError": "現住所を入力してください。",
       "submitRegistrationProfile": "登録プロフィールを送信",
-      "step2Description": "ステップ2: 政府発行のパスポートまたはIDをスキャンします。IdentraがOCRで文字を解析し、光学的なセキュリティ要素を分析します。",
+      "step2Description": "ステップ2: 政府発行のパスポート/IDを手動でスキャンするか、QRフローの検証済み認証情報をIdentraに検証させます。",
       "scanIdDocumentNow": "ID書類を今すぐスキャン",
       "step3Description": "ステップ3: パッシブ3D顔ライブネス。Identraが顔の奥行き、目の動き、画面反射を分析して写真やディープフェイクを防ぎます。",
       "analyzing3dBiometrics": "3D生体認証を分析中...",
@@ -548,6 +615,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
     "logs": {
       "submittingProfile": "プロフィールを送信中: \"{name}\"",
       "profileReceived": "プロフィールを受信しました: name=\"{name}\", ssn=\"{ssn}\"。登録署名を検証中...",
+      "businessLicenseSubmitted": "事業登録証の画像を添付しました: {fileName}。登録証明はレビュー待ちです。",
+      "businessCredentialResolved": "Identraで事業登録認証情報を解決しました: {businessName}, license={fileName}.",
       "extractingGovernmentId": "政府発行ID証明書を抽出中...",
       "documentOcrSuccessful": "書類OCR成功: passport_no=\"EX839121\", holder=\"{holder}\", birth_date=\"12/04/1990\", issuer=\"内務省\", validation=\"合格\"",
       "initializingLiveness": "3D顔ライブネススキャンを開始中...",
@@ -563,8 +632,11 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "qrEmail": "alice.vance@identra.com",
       "qrPhone": "+1 (555) 234-5678",
       "qrAddress": "742 Evergreen Terrace, Springfield",
+      "qrBusinessName": "Aero Logistics LLC",
+      "qrBusinessLicenseName": "aero-logistics-registration.jpg",
       "qrScanStartedLog": "モバイル端末でIdentra QRスキャンセッションを開始しています...",
       "qrScanSuccessLog": "Identra QRスキャン成功 - 個人データはZKP-ECDSA暗号証明で保護されています。",
+      "businessCredentialVerifiedLog": "Identraの事業登録認証情報が検証され、この申請に紐付けられました。",
       "govIdSuccessLog": "政府発行IDの検証に成功しました。(Identra National Registry Matching 100%)",
       "amlStartedLog": "サーバーがAML制裁リストとPEPウォッチリスト審査を開始しました...",
       "amlFailedLog": "AMLリスク審査失敗: 高金融リスクウォッチリスト一致を検出 (OFAC / PEP flagged)。",
@@ -593,23 +665,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "Der Antragsteller hat Dokument-, Biometrie- und Watchlist-Prüfungen bestanden. Das Konto kann mit einem verifizierten Identitätszertifikat eröffnet werden.",
       "steps": [
         {
-          "label": "Antragstellerprofil erfassen",
-          "action": "Profildaten senden",
-          "logText": "Profilattribute wurden normalisiert und auf synthetische Identitätsrisiken geprüft."
+          "label": "Kontoantrag senden",
+          "action": "Kontoart und Onboarding-Pfad wählen",
+          "logText": "Kontoart, Onboarding-Pfad, Profildaten und erforderliche Dokumente wurden normalisiert."
         },
         {
-          "label": "Staatliche ID verifizieren",
-          "action": "Staatliche ID scannen",
-          "logText": "Dokumentenechtheit, MRZ, Barcode und Ablaufdatum wurden validiert."
+          "label": "ID-Nachweis verifizieren",
+          "action": "Ausweis scannen oder Identra-Nachweis validieren",
+          "logText": "Dokumentenechtheit oder Identra-Nachweis-Claims wurden validiert."
         },
         {
-          "label": "Biometrische Liveness ausführen",
-          "action": "Gesichtsprüfung abschließen",
+          "label": "Liveness abschließen",
+          "action": "Gesichts-Liveness-Prüfung ausführen",
           "logText": "3D-Liveness und Gesicht-zu-Dokument-Ähnlichkeit wurden bestanden."
         },
         {
-          "label": "Sanktionen und PEP-Listen prüfen",
-          "action": "AML-Prüfung ausführen",
+          "label": "AML-Prüfung ausführen",
+          "action": "Watchlists prüfen und Konto genehmigen",
           "logText": "OFAC-, PEP- und Risikoregister lieferten keine blockierenden Treffer."
         }
       ]
@@ -619,7 +691,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "liveBadge": "Live-interaktive Demo-Seite",
       "resetDemo": "Demo zurücksetzen",
       "clientEmulator": "Emulator der Kundenoberfläche",
-      "flowTitle": "Identitätsverifizierung",
+      "flowTitle": "Kontoeröffnung",
       "coreVersion": "CORE v2.8",
       "riskLevel": "Risikostufe",
       "trustScore": "Vertrauensscore",
@@ -631,7 +703,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "active": "Aktiv",
       "pass": "Bestanden",
       "task": "Aufgabe: {action}",
-      "underlyingChecks": "Interne Systemprüfungen",
+      "underlyingChecks": "Schrittdetails",
       "transactionComplete": "TRANSAKTION ABGESCHLOSSEN",
       "waitingInput": "WARTET AUF EINGABE",
       "viewVerdict": "Urteil ansehen",
@@ -640,35 +712,36 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "logs": {
         "launch": "[SYSTEM] Live-interaktive Demo-Seite gestartet: {title}",
         "environment": "[ENVIRONMENT] Aktiver Frontend-Sandbox-Kontext wird bereitgestellt...",
-        "instruction": "[INSTRUCTION] Folgen Sie den Aufgaben im linken Bereich, um die Identitätsverifizierung auszulösen.",
+        "instruction": "[INSTRUCTION] Folgen Sie den Aufgaben im linken Bereich, um das Bankkonto-Onboarding abzuschließen.",
         "reset": "[SYSTEM] Interaktive Demo-Seite zurückgesetzt: {title}",
-        "resetInstruction": "[INSTRUCTION] Folgen Sie den Aufgaben im linken Bereich, um die Verifizierung erneut zu starten.",
-        "completedLayer": "Verifizierungsebene abgeschlossen: {label}",
+        "resetInstruction": "[INSTRUCTION] Folgen Sie den Aufgaben im linken Bereich, um das Konto-Onboarding neu zu starten.",
+        "completedLayer": "Onboarding-Schritt abgeschlossen: {label}",
         "nextTask": "Nächste Aufgabe: {action}",
-        "allPassed": "Alle Phasen der Identitätsverifizierung wurden erfolgreich bestanden.",
+        "allPassed": "Alle Phasen des Bankkonto-Onboardings wurden erfolgreich bestanden.",
         "sealed": "Kryptografische Verifizierungsnachweise wurden signiert und versiegelt."
       },
       "subChecks": {
         "bank-account": [
           [
-            "Profilintegritätsprüfung",
-            "Prüfung auf synthetische Identität",
-            "Regionale Kreditverifizierung"
+            "Anforderung der Kontoart ausgewählt",
+            "Manueller oder Identra-Onboarding-Pfad ausgewählt",
+            "Profilfelder des Antragstellers validiert",
+            "Unternehmensregistrierungsnachweis bei Bedarf verarbeitet"
           ],
           [
-            "Kryptografische Wasserzeichenprüfung",
-            "2D-Barcode- und MRZ-Dekodierung",
-            "Analyse des Dokumentenablaufs"
+            "Amtlicher Ausweis oder Identra-Nachweis verfügbar",
+            "Dokumentenechtheit oder Nachweisprüfung validiert",
+            "Identitätsabgleich im Register akzeptiert"
           ],
           [
-            "3D-Tiefen-Liveness-Bewertung",
-            "Passiver Reflexionsabgleich",
-            "Gesicht-zu-ID-Ähnlichkeitsprüfung (99,8%)"
+            "Gesicht im Liveness-Rahmen positioniert",
+            "3D-Tiefen-Liveness bewertet",
+            "Gesicht-zu-ID-Ähnlichkeitsprüfung abgeschlossen"
           ],
           [
-            "OFAC-Sanktionsregisterscan",
-            "PEP-Listendatenbankprüfung",
-            "Interpol-Red-Notice-Abfrage"
+            "OFAC-Sanktionsregister gescannt",
+            "Interpol-Red-Notices abgefragt",
+            "PEP-Expositionsprüfung abgeschlossen"
           ]
         ]
       }
@@ -677,7 +750,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "AeroBank Digital-Konto-Einrichtung",
       "securedByIdentra": "Gesichert durch Identra",
       "digitalBankingPortal": "AeroBank Digital Banking",
-      "onlineApplicationSubtitle": "Online-Kontoantrag • Schritt 1 von 4: Persönliches Profil",
+      "onlineApplicationSubtitle": "Online-Bankkontoantrag • Schritt 1 von 4: Antragsprofil",
       "fillWithIdentra": "Mit Identra ausfüllen",
       "qrAutofillDesc": "QR-Code mit Identra-App scannen, um verifiziertes Profil sofort auszufüllen.",
       "scanQrButton": "QR scannen & ausfüllen",
@@ -689,6 +762,14 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "simulatingScan": "Simuliere mobile Scan-Verifizierung...",
       "cancelButton": "Abbrechen",
       "selectAccountType": "Kontoart auswählen",
+      "chooseOnboardingMethod": "Onboarding-Methode auswählen",
+      "manualEntry": "Manuelle Eingabe",
+      "manualEntryDesc": "Antragstellerdaten eingeben und erforderliche Dokumente hochladen.",
+      "useIdentra": "Identra verwenden",
+      "useIdentraDesc": "Einmal scannen, um verifizierte Identität und Unternehmensnachweise bereitzustellen.",
+      "checkingRequirement": "Erforderlich: persönliche Identität, SSN, Adresse.",
+      "savingsRequirement": "Erforderlich: persönliche Identität, SSN, Adresse.",
+      "businessRequirement": "Erforderlich: Daten des Zeichnungsberechtigten und Gewerberegistrierung.",
       "checkingAccount": "Girokonto",
       "savingsAccount": "Tagesgeldkonto",
       "businessAccount": "Geschäftskonto",
@@ -710,13 +791,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "passedStatus": "BESTANDEN (0 Treffer)",
       "pendingStatus": "AUSSTEHEND",
       "fullName": "Vollständiger Name",
+      "businessDetailsTitle": "Anforderungen für Geschäftskonten",
+      "businessLegalName": "Rechtlicher Firmenname",
+      "businessLegalNamePlaceholder": "z. B. Aero Logistics LLC",
+      "businessRegistrationLicense": "Gewerberegistrierung",
+      "businessLicenseUploadHint": "Foto der Registrierung hochladen",
+      "businessLicenseUploaded": "Unternehmensnachweis angehängt",
+      "businessCredentialNotice": "Identra stellt nach dem QR-Scan einen verifizierten Unternehmensregister-Nachweis bereit.",
       "identityNumberSsn": "Identitätsnummer / SSN",
       "physicalAddress": "Physische Adresse",
       "fullNameError": "Bitte geben Sie Ihren vollständigen Namen ein.",
+      "businessLegalNameError": "Bitte geben Sie den rechtlichen Firmennamen ein.",
+      "businessLicenseError": "Bitte laden Sie ein Bild der Gewerberegistrierung hoch.",
+      "identraScanRequiredError": "Bitte scannen Sie mit Identra, bevor Sie diesen Flow absenden.",
       "identityNumberError": "Bitte geben Sie Ihre Identitätsnummer / SSN ein.",
       "physicalAddressError": "Bitte geben Sie Ihre physische Adresse ein.",
       "submitRegistrationProfile": "Registrierungsprofil absenden",
-      "step2Description": "Schritt 2: Scannen Sie Ihren staatlichen Pass oder Ausweis. Identra liest Zeichen per OCR und analysiert optische Sicherheitsmerkmale.",
+      "step2Description": "Schritt 2: Scannen Sie einen staatlichen Pass/Ausweis manuell oder lassen Sie Identra den verifizierten Nachweis aus dem QR-Flow validieren.",
       "scanIdDocumentNow": "Ausweisdokument jetzt scannen",
       "step3Description": "Schritt 3: Passive 3D-Gesichts-Liveness. Identra kartiert Gesichtstiefe, Augenbewegungen und Bildschirmreflexionen, um Fotos und Deepfakes zu blockieren.",
       "analyzing3dBiometrics": "3D-Biometrie wird analysiert...",
@@ -737,6 +828,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
     "logs": {
       "submittingProfile": "Profil wird übermittelt: \"{name}\"",
       "profileReceived": "Profil empfangen: Name=\"{name}\", SSN=\"{ssn}\". Registersignatur wird validiert...",
+      "businessLicenseSubmitted": "Bild der Gewerberegistrierung angehängt: {fileName}. Registernachweis zur Prüfung vorgemerkt.",
+      "businessCredentialResolved": "Unternehmensregister-Nachweis über Identra aufgelöst: {businessName}, license={fileName}.",
       "extractingGovernmentId": "Zertifikat des amtlichen Ausweises wird extrahiert...",
       "documentOcrSuccessful": "Dokument-OCR erfolgreich: passport_no=\"EX839121\", holder=\"{holder}\", birth_date=\"12/04/1990\", issuer=\"INNENMINISTERIUM\", validation=\"BESTANDEN\"",
       "initializingLiveness": "3D-Gesichts-Liveness-Scan wird gestartet...",
@@ -752,8 +845,11 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "qrEmail": "alice.vance@identra.com",
       "qrPhone": "+1 (555) 234-5678",
       "qrAddress": "742 Evergreen Terrace, Springfield",
+      "qrBusinessName": "Aero Logistics GmbH",
+      "qrBusinessLicenseName": "aero-logistics-gewerbe.jpg",
       "qrScanStartedLog": "Identra QR-Scan-Sitzung auf Mobilgerät wird gestartet...",
       "qrScanSuccessLog": "Identra QR-Scan erfolgreich - personenbezogene Daten sind durch ZKP-ECDSA-Nachweis geschützt.",
+      "businessCredentialVerifiedLog": "Identra-Unternehmensregister-Nachweis verifiziert und mit diesem Antrag verknüpft.",
       "govIdSuccessLog": "Amtlicher Ausweis erfolgreich verifiziert. (Identra National Registry Matching 100%)",
       "amlStartedLog": "Serverautomatisierung startet AML-Sanktions- und PEP-Watchlist-Prüfung...",
       "amlFailedLog": "AML-Risikoprüfung fehlgeschlagen: Treffer in Hochrisiko-Finanzwatchlist erkannt (OFAC / PEP flagged).",
@@ -782,23 +878,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "Người đăng ký đã vượt qua kiểm tra giấy tờ, sinh trắc học và danh sách theo dõi. Tài khoản có thể được mở bằng chứng chỉ danh tính đã xác minh.",
       "steps": [
         {
-          "label": "Thu thập hồ sơ người đăng ký",
-          "action": "Gửi dữ liệu hồ sơ",
-          "logText": "Thuộc tính hồ sơ đã được chuẩn hóa và kiểm tra rủi ro danh tính tổng hợp."
+          "label": "Gửi hồ sơ mở tài khoản",
+          "action": "Chọn loại tài khoản và cách nộp hồ sơ",
+          "logText": "Loại tài khoản, cách nộp hồ sơ, dữ liệu hồ sơ và giấy tờ bắt buộc đã được chuẩn hóa."
         },
         {
-          "label": "Xác minh ID do chính phủ cấp",
-          "action": "Quét ID chính phủ",
-          "logText": "Đã xác thực tính thật của giấy tờ, MRZ, mã vạch và tín hiệu hết hạn."
+          "label": "Xác minh giấy tờ định danh",
+          "action": "Quét giấy tờ hoặc xác thực bằng Identra",
+          "logText": "Đã xác thực tính thật của giấy tờ hoặc các claim trong credential Identra."
         },
         {
-          "label": "Chạy kiểm tra sống sinh trắc học",
-          "action": "Hoàn tất kiểm tra khuôn mặt",
+          "label": "Hoàn tất kiểm tra sống",
+          "action": "Chạy kiểm tra sống khuôn mặt",
           "logText": "Kiểm tra sống 3D và độ tương đồng khuôn mặt với giấy tờ đã đạt."
         },
         {
-          "label": "Sàng lọc trừng phạt và PEP",
-          "action": "Chạy sàng lọc AML",
+          "label": "Chạy sàng lọc AML",
+          "action": "Rà soát watchlist và phê duyệt tài khoản",
           "logText": "OFAC, PEP và các sổ đăng ký rủi ro không trả về kết quả chặn."
         }
       ]
@@ -808,7 +904,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "liveBadge": "Trang demo tương tác trực tiếp",
       "resetDemo": "Đặt lại demo",
       "clientEmulator": "Mô phỏng giao diện khách hàng",
-      "flowTitle": "Xác minh danh tính",
+      "flowTitle": "Mở tài khoản ngân hàng",
       "coreVersion": "CORE v2.8",
       "riskLevel": "Mức rủi ro",
       "trustScore": "Điểm tin cậy",
@@ -820,7 +916,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "active": "Đang chạy",
       "pass": "Đạt",
       "task": "Nhiệm vụ: {action}",
-      "underlyingChecks": "Mô-đun kiểm tra chuyên sâu",
+      "underlyingChecks": "Chi tiết bước",
       "transactionComplete": "GIAO DỊCH HOÀN TẤT",
       "waitingInput": "ĐANG CHỜ TƯƠNG TÁC",
       "viewVerdict": "Xem kết luận",
@@ -829,35 +925,36 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "logs": {
         "launch": "[SYSTEM] Đã khởi chạy trang demo tương tác trực tiếp: {title}",
         "environment": "[ENVIRONMENT] Đang thiết lập ngữ cảnh giao diện mô phỏng...",
-        "instruction": "[INSTRUCTION] Thực hiện tác vụ ở khung bên trái để kích hoạt xác minh danh tính.",
+        "instruction": "[INSTRUCTION] Thực hiện tác vụ ở khung bên trái để hoàn tất luồng mở tài khoản ngân hàng.",
         "reset": "[SYSTEM] Đã đặt lại trang demo tương tác: {title}",
-        "resetInstruction": "[INSTRUCTION] Thực hiện tác vụ ở khung bên trái để bắt đầu lại.",
-        "completedLayer": "Hoàn tất lớp xác minh: {label}",
+        "resetInstruction": "[INSTRUCTION] Thực hiện tác vụ ở khung bên trái để bắt đầu lại luồng mở tài khoản.",
+        "completedLayer": "Hoàn tất bước onboarding: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
-        "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
+        "allPassed": "Tất cả các giai đoạn mở tài khoản ngân hàng đã được phê duyệt thành công.",
         "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
       },
       "subChecks": {
         "bank-account": [
           [
-            "Kiểm tra tính toàn vẹn hồ sơ",
-            "Quét danh tính tổng hợp",
-            "Xác minh tín dụng khu vực"
+            "Đã chọn yêu cầu theo loại tài khoản",
+            "Đã chọn luồng nhập thủ công hoặc Identra",
+            "Đã xác thực các trường hồ sơ người đăng ký",
+            "Đã xử lý giấy phép đăng ký kinh doanh khi cần"
           ],
           [
-            "Kiểm tra watermark mã hóa",
-            "Giải mã mã vạch 2D và MRZ",
-            "Phân tích hạn sử dụng giấy tờ"
+            "Đã có giấy tờ chính phủ hoặc credential Identra",
+            "Đã xác thực tính thật của giấy tờ hoặc bằng chứng credential",
+            "Đã chấp nhận đối chiếu danh tính trong sổ đăng ký"
           ],
           [
-            "Đánh giá kiểm tra sống độ sâu 3D",
-            "Đối chiếu phản xạ thụ động",
-            "Kiểm định độ giống khuôn mặt với ID (99,8%)"
+            "Khuôn mặt đã nằm trong khung kiểm tra sống",
+            "Đã đánh giá kiểm tra sống độ sâu 3D",
+            "Đã hoàn tất kiểm định độ giống khuôn mặt với ID"
           ],
           [
-            "Quét sổ đăng ký trừng phạt OFAC",
-            "Sàng lọc cơ sở dữ liệu PEP",
-            "Truy vấn cảnh báo đỏ Interpol"
+            "Đã quét sổ đăng ký trừng phạt OFAC",
+            "Đã truy vấn cảnh báo đỏ Interpol",
+            "Đã hoàn tất sàng lọc rủi ro PEP"
           ]
         ]
       }
@@ -866,7 +963,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "Cổng mở tài khoản AeroBank",
       "securedByIdentra": "Được Identra bảo vệ",
       "digitalBankingPortal": "Ngân hàng số AeroBank",
-      "onlineApplicationSubtitle": "Đăng ký mở tài khoản ngân hàng số • Bước 1/4: Hồ sơ cá nhân",
+      "onlineApplicationSubtitle": "Đăng ký mở tài khoản ngân hàng số • Bước 1/4: Hồ sơ đăng ký",
       "fillWithIdentra": "Điền thông tin với Identra",
       "qrAutofillDesc": "Quét mã QR bằng ứng dụng Identra để tự động điền hồ sơ định danh đã xác minh.",
       "scanQrButton": "Quét mã điền tự động",
@@ -878,6 +975,14 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "simulatingScan": "Đang mô phỏng xác thực quét từ điện thoại...",
       "cancelButton": "Hủy bỏ",
       "selectAccountType": "Chọn loại tài khoản",
+      "chooseOnboardingMethod": "Chọn cách nộp hồ sơ",
+      "manualEntry": "Nhập thủ công",
+      "manualEntryDesc": "Tự nhập thông tin và tải lên giấy tờ bắt buộc.",
+      "useIdentra": "Sử dụng Identra",
+      "useIdentraDesc": "Quét một lần để cung cấp định danh và thông tin doanh nghiệp đã xác minh.",
+      "checkingRequirement": "Bắt buộc: định danh cá nhân, số định danh/SSN, địa chỉ.",
+      "savingsRequirement": "Bắt buộc: định danh cá nhân, số định danh/SSN, địa chỉ.",
+      "businessRequirement": "Bắt buộc: thông tin người đại diện và giấy phép đăng ký kinh doanh.",
       "checkingAccount": "Tài khoản thanh toán",
       "savingsAccount": "Tiết kiệm lãi suất cao",
       "businessAccount": "Tài khoản doanh nghiệp",
@@ -899,13 +1004,23 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "passedStatus": "ĐẠT (0 Trùng khớp)",
       "pendingStatus": "ĐANG RÀ SOÁT",
       "fullName": "Họ và tên",
+      "businessDetailsTitle": "Yêu cầu cho tài khoản doanh nghiệp",
+      "businessLegalName": "Tên pháp lý doanh nghiệp",
+      "businessLegalNamePlaceholder": "Ví dụ: Công ty TNHH Aero Logistics",
+      "businessRegistrationLicense": "Giấy phép đăng ký kinh doanh",
+      "businessLicenseUploadHint": "Tải lên ảnh chụp giấy phép đăng ký",
+      "businessLicenseUploaded": "Đã đính kèm thông tin đăng ký kinh doanh",
+      "businessCredentialNotice": "Identra sẽ cung cấp thông tin đăng ký doanh nghiệp đã xác minh sau khi quét QR.",
       "identityNumberSsn": "Số định danh / SSN",
       "physicalAddress": "Địa chỉ thường trú",
       "fullNameError": "Vui lòng nhập họ và tên của bạn.",
+      "businessLegalNameError": "Vui lòng nhập tên pháp lý của doanh nghiệp.",
+      "businessLicenseError": "Vui lòng tải lên ảnh giấy phép đăng ký kinh doanh.",
+      "identraScanRequiredError": "Vui lòng quét bằng Identra trước khi gửi hồ sơ theo luồng này.",
       "identityNumberError": "Vui lòng nhập số định danh / SSN.",
       "physicalAddressError": "Vui lòng nhập địa chỉ thường trú.",
       "submitRegistrationProfile": "Gửi hồ sơ đăng ký",
-      "step2Description": "Bước 2: Quét hộ chiếu hoặc giấy tờ tùy thân do chính phủ cấp. Identra đọc ký tự bằng OCR và phân tích các dấu bảo mật quang học.",
+      "step2Description": "Bước 2: Quét thủ công hộ chiếu/giấy tờ tùy thân do chính phủ cấp, hoặc để Identra xác thực credential đã xác minh từ luồng QR.",
       "scanIdDocumentNow": "Quét giấy tờ tùy thân ngay",
       "step3Description": "Bước 3: Kiểm tra hiện diện khuôn mặt 3D thụ động. Identra phân tích độ sâu khuôn mặt, chuyển động mắt và phản chiếu màn hình để chặn ảnh chụp/deepfake.",
       "analyzing3dBiometrics": "Đang phân tích sinh trắc học 3D...",
@@ -938,6 +1053,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
     "logs": {
       "submittingProfile": "Đang gửi hồ sơ: \"{name}\"",
       "profileReceived": "Đã nhận hồ sơ: tên=\"{name}\", SSN=\"{ssn}\". Đang xác thực chữ ký sổ đăng ký...",
+      "businessLicenseSubmitted": "Đã đính kèm ảnh giấy phép đăng ký kinh doanh: {fileName}. Bằng chứng đăng ký được đưa vào hàng đợi kiểm tra.",
+      "businessCredentialResolved": "Đã xác thực thông tin đăng ký doanh nghiệp qua Identra: {businessName}, license={fileName}.",
       "extractingGovernmentId": "Đang trích xuất chứng chỉ giấy tờ chính phủ...",
       "documentOcrSuccessful": "OCR tài liệu thành công: passport_no=\"EX839121\", holder=\"{holder}\", birth_date=\"12/04/1990\", issuer=\"BỘ NỘI VỤ\", validation=\"ĐẠT\"",
       "initializingLiveness": "Đang khởi chạy quét tính sống khuôn mặt 3D...",
@@ -953,8 +1070,11 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "qrEmail": "nguyenvanan@identra.vn",
       "qrPhone": "0988 123 456",
       "qrAddress": "123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh",
+      "qrBusinessName": "Công ty TNHH Aero Logistics",
+      "qrBusinessLicenseName": "giay-phep-aero-logistics.jpg",
       "qrScanStartedLog": "Khởi tạo phiên quét mã QR Identra trên thiết bị di động...",
       "qrScanSuccessLog": "Quét QR Identra thành công - dữ liệu cá nhân được bảo đảm bằng bằng chứng mật mã ZKP-ECDSA.",
+      "businessCredentialVerifiedLog": "Thông tin đăng ký doanh nghiệp từ Identra đã được xác minh và liên kết với hồ sơ này.",
       "govIdSuccessLog": "Xác minh ID do chính phủ cấp thành công. (Identra National Registry Matching 100%)",
       "amlStartedLog": "Hệ thống máy chủ tự động khởi tạo rà soát danh sách trừng phạt AML & PEP...",
       "amlFailedLog": "Rà soát rủi ro AML thất bại: phát hiện trùng khớp trong danh sách cảnh báo rủi ro tài chính cao (OFAC / PEP flagged).",

@@ -27,7 +27,7 @@ This file is the working guide for coding agents contributing to the Identra web
 ## Localization requirements
 
 - Every user-visible static string in a component must come from localization. This includes headings, body copy, links, buttons, form labels, placeholders, validation messages, tooltips, modal copy, toasts, table labels, empty states, loading text, image `alt` text, `aria-label`, and screen-reader-only text.
-- Put UI copy in a dedicated `src/translations/*Translations.ts` file. Do not place translation dictionaries, multilingual mock articles, or locale-specific labels inside component logic.
+- Put UI copy in a dedicated `src/translations/*Translations.ts` file that mirrors the matching component path. Do not place translation dictionaries, multilingual mock articles, or locale-specific labels inside component logic.
 - Components should select the active dictionary with `useLanguage` and `getLocalizedRecord`. Use `getLocalizedValue` when a dynamic key needs a runtime missing-value guard.
 - Add all five locales in the same change. A locale dictionary must be fully materialized; do not build it as a partial override of another language.
 - Vietnamese copy must use correct diacritics and natural phrasing. Non-English locales should not retain English except for approved brand names, API or SDK names, standards, code literals, and genuinely necessary technical terms.
@@ -66,6 +66,7 @@ This file is the working guide for coding agents contributing to the Identra web
 ## Components and visual behavior
 
 - Preserve the established visual language of the page being changed, including borders, colors, spacing, cards, shadows, responsive behavior, and interaction states.
+- Name files after their real role, such as `Page`, `Modal`, or a specific shared component noun, so nearby pages and overlays cannot be confused.
 - Do not turn an operational or product page into a demo-style landing page unless the request explicitly calls for a redesign.
 - Avoid nested cards, unnecessary decorative blobs, and excessive visual wrappers.
 - Use icons from `lucide-react` when an appropriate icon exists. Icon-only controls need a localized accessible name and a tooltip when their meaning is not obvious.

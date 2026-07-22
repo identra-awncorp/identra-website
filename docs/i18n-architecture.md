@@ -11,6 +11,17 @@ This document describes how localization is organized across the Identra website
 - User-visible UI copy lives in `src/translations/*Translations.ts`.
 - Docs article content lives in `src/translations/docs/`.
 
+## Translation File Layout
+
+- `src/translations/` must mirror `src/components/`.
+- A component at `src/components/Foo.tsx` must use `src/translations/FooTranslations.ts`.
+- A component at `src/components/demo/Foo.tsx` must use `src/translations/demo/FooTranslations.ts`.
+- Create a translation subdirectory only when the matching component subdirectory exists.
+- Do not create translation directories that do not mirror component directories, such as scenario-only or data-only folders.
+- Do not create helper files inside `src/translations/` that do not map to a component. Shared runtime guards belong in `src/utils/i18nRuntime.ts`; tiny formatting helpers should stay inside the owning component or translation module.
+- Do not create aggregate dictionaries named by technical concern or domain grouping when no matching component exists, such as `DemoComponentTranslations`, `DemoFlowLogTranslations`, or `DemoFlowUiTranslations`.
+- A translation file may include all user-visible copy owned by its matching component, including labels, logs, modal copy, scenario display data, and localized structured content.
+
 ## Dictionary Rules
 
 - Every user-visible static string must come from a translation file.

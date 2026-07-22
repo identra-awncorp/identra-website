@@ -5,7 +5,7 @@ This document describes the normal path for adding or updating public pages in t
 ## Page Sources
 
 - Page components live in `src/components/`.
-- Page translation dictionaries live in `src/translations/*PageTranslations.ts`.
+- Page translation dictionaries live in the matching mirrored path under `src/translations/`.
 - Shared route definitions live in `src/types/routes.ts`.
 - SEO metadata and route grouping live in `src/translations/SeoTranslations.ts`.
 - Shared shell behavior lives in `src/App.tsx`, Header, Footer, and common layout components.
@@ -13,13 +13,22 @@ This document describes the normal path for adding or updating public pages in t
 ## Adding A Page
 
 1. Add the page component under `src/components/`.
-2. Add a dedicated translation file under `src/translations/`.
+2. Add a dedicated translation file under the mirrored `src/translations/` path.
 3. Add the route value to `APP_VIEWS` in `src/types/routes.ts`.
 4. Add or update path handling only through the typed route helpers.
 5. Add a lazy import and route mapping in `src/App.tsx`.
 6. Add navigation links only where the page should be discoverable.
 7. Add localized SEO metadata according to `docs/seo-requirements.md`.
 8. Add localized image `alt`, accessibility labels, empty states, and loading text.
+
+## Naming And Ownership
+
+- File names must describe the real role of the module, not just the feature area.
+- Use `Page` for route-level pages, `Modal` for modal overlays, and specific nouns for shared components.
+- Avoid names that can be confused with nearby pages or scenario implementations.
+- The matching translation file should follow the component name exactly: `Foo.tsx` -> `FooTranslations.ts`.
+- Keep page-specific copy in the matching page translation file. Do not move it into a broad feature-level dictionary.
+- Add abstractions only when the abstraction itself is a real shared component or behavior. Do not introduce shell, runner, or factory files just to force unrelated pages into one flow.
 
 ## Updating A Page
 

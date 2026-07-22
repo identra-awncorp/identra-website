@@ -1122,7 +1122,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
                                   onClick={() => setExpandedCompanySubMenus(prev => ({ ...prev, company: !prev.company }))}
                                   className="w-full flex items-center justify-between px-2 py-1 text-xs font-bold text-slate-400 hover:text-[#354CE1] uppercase tracking-wider text-left cursor-pointer group"
                                 >
-                                  <span>{tm(HEADER_COPY_KEYS.company)}</span>
+                                  <span>{tm(HEADER_COPY_KEYS.aboutIdentra)}</span>
                                   <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-150 group-hover:text-slate-600 ${expandedCompanySubMenus.company ? 'rotate-180 text-[#354CE1]' : ''}`} />
                                 </button>
                                 {expandedCompanySubMenus.company && (
@@ -1600,7 +1600,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
               {/* Company Column (span 3 of 12) */}
               <div className="col-span-1 lg:col-span-3 flex flex-col h-full lg:border-r border-slate-100 lg:pr-4">
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 block">
-                  {tm(HEADER_COPY_KEYS.company)}
+                  {tm(HEADER_COPY_KEYS.aboutIdentra)}
                 </span>
                 <div className="grid grid-cols-1 gap-1 overflow-y-auto max-h-[400px] pr-2 scrollbar-none">
                   {COMPANY_MENU_ITEMS.map((item, idx) => {

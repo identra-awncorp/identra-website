@@ -5,9 +5,9 @@
 
 export const HERO_TRANSLATIONS = {
   en: {
-    keeping: 'Keeping the',
-    internetHuman: 'internet human',
-    heroDesc: 'Identra is the most flexible and secure way to verify real people and real businesses online.',
+    keeping: 'Where trust',
+    internetHuman: 'becomes action',
+    heroDesc: 'Built to connect people, organizations, data, and services through cryptography; and automate processes and transactions with smart contracts.',
     getDemo: 'Get a demo',
     seePlatform: 'See our full platform',
     soc2: 'SOC2 Certified',
@@ -32,9 +32,9 @@ export const HERO_TRANSLATIONS = {
     slideAltConsole: 'Identra identity operations console'
   },
   es: {
-    keeping: 'Manteniendo el',
-    internetHuman: 'internet humano',
-    heroDesc: 'Identra es la forma más flexible y segura de verificar personas y empresas reales en línea.',
+    keeping: 'Donde la confianza',
+    internetHuman: 'se convierte en acción',
+    heroDesc: 'Diseñado para conectar personas, organizaciones, datos y servicios mediante criptografía, y automatizar procesos y transacciones con contratos inteligentes.',
     getDemo: 'Solicitar una demo',
     seePlatform: 'Ver nuestra plataforma completa',
     soc2: 'Certificado SOC2',
@@ -59,9 +59,9 @@ export const HERO_TRANSLATIONS = {
     slideAltConsole: 'Consola de operaciones de identidad de Identra'
   },
   ja: {
-    keeping: '人と人をつなぐ',
-    internetHuman: '温もりのあるインターネット',
-    heroDesc: 'Identraは、オンラインで実在する個人や本物の企業を最も柔軟かつ安全に検証するための手段です。',
+    keeping: '信頼が',
+    internetHuman: '行動に変わる場所',
+    heroDesc: '暗号技術を通じて人、組織、データ、サービスをつなぎ、スマートコントラクトでプロセスと取引を自動化するために構築されています。',
     getDemo: 'デモを依頼',
     seePlatform: 'プラットフォーム全体を見る',
     soc2: 'SOC2認証済み',
@@ -86,9 +86,9 @@ export const HERO_TRANSLATIONS = {
     slideAltConsole: 'Identra のID運用コンソール'
   },
   de: {
-    keeping: 'Das Internet',
-    internetHuman: 'menschlich halten',
-    heroDesc: 'Identra ist der flexibelste und sicherste Weg, um echte Menschen und echte Unternehmen online zu verifizieren.',
+    keeping: 'Wo Vertrauen',
+    internetHuman: 'zu Handeln wird',
+    heroDesc: 'Entwickelt, um Menschen, Organisationen, Daten und Dienste durch Kryptografie zu verbinden und Prozesse sowie Transaktionen mit Smart Contracts zu automatisieren.',
     getDemo: 'Demo anfragen',
     seePlatform: 'Unsere gesamte Plattform ansehen',
     soc2: 'SOC2-zertifiziert',
@@ -113,9 +113,9 @@ export const HERO_TRANSLATIONS = {
     slideAltConsole: 'Identra-Konsole für Identitätsprozesse'
   },
   vi: {
-    keeping: 'Giữ cho',
-    internetHuman: 'mạng internet nhân văn',
-    heroDesc: 'Identra là phương thức linh hoạt và an toàn nhất để xác minh người dùng thực và doanh nghiệp thực trực tuyến.',
+    keeping: 'Nơi niềm tin',
+    internetHuman: 'trở thành hành động',
+    heroDesc: 'Được xây dựng để kết nối con người, tổ chức, dữ liệu và dịch vụ bằng công nghệ mật mã; tự động hóa quy trình và giao dịch thông qua hợp đồng thông minh.',
     getDemo: 'Nhận bản demo',
     seePlatform: 'Xem toàn bộ nền tảng',
     soc2: 'Đạt chứng nhận SOC2',

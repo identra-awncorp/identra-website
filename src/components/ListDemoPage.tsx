@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo, useState, type ComponentType } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -16,33 +16,32 @@ import {
   Ticket
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { demoScenarioPath, type AppView, type DemoScenarioId, type Locale } from '../types/routes';
+import { demoScenarioPath, type DemoScenarioId, type Locale } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
 
 interface ListDemoPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
-  onViewChange?: (view: AppView) => void;
 }
 
-interface ScenarioStepCopy {
+interface DemoListScenarioStep {
   label: string;
   action: string;
   logText: string;
 }
 
-interface ScenarioCopy {
+interface DemoListScenario {
   id: DemoScenarioId;
   tag: string;
   title: string;
   desc: string;
   security: string;
   successResult: string;
-  steps: ScenarioStepCopy[];
+  steps: DemoListScenarioStep[];
 }
 
-const SCENARIO_ICONS: Record<DemoScenarioId, React.ComponentType<any>> = {
+const SCENARIO_ICONS: Record<DemoScenarioId, ComponentType<any>> = {
   'bank-account': Landmark,
   'apply-job': Briefcase,
   'ticket-booking': Ticket,
@@ -57,11 +56,11 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
   const navigate = useNavigate();
   const { language } = useLanguage();
   const t = getLocalizedRecord(LIST_DEMO_PAGE_TRANSLATIONS, language as keyof typeof LIST_DEMO_PAGE_TRANSLATIONS, 'LIST_DEMO_PAGE_TRANSLATIONS');
-  const [activeTab, setActiveTab] = React.useState<'scenarios' | 'trends'>('scenarios');
+  const [activeTab, setActiveTab] = useState<'scenarios' | 'trends'>('scenarios');
   const routeLocale = language as Locale;
 
   const demoScenarios = useMemo(
-    () => t.scenarios.map((scenario: ScenarioCopy) => ({
+    () => t.scenarios.map((scenario: DemoListScenario) => ({
       ...scenario,
       icon: SCENARIO_ICONS[scenario.id] || ShieldCheck
     })),
@@ -172,7 +171,7 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {demoScenarios.map((scenario: ScenarioCopy & { icon: React.ComponentType<any> }) => {
+                {demoScenarios.map((scenario: DemoListScenario & { icon: ComponentType<any> }) => {
                   const Icon = scenario.icon;
                   return (
                     <div

@@ -5,13 +5,13 @@ import { useLanguage } from '../../context/LanguageContext';
 import { IDENTITY_FLOW_GRAPH_TRANSLATIONS } from '../../translations/demo/IdentityFlowGraphTranslations';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 
-interface ScenarioStep {
+interface IdentityFlowGraphStep {
   label: string;
   action: string;
 }
 
 interface IdentityFlowGraphProps {
-  steps: ScenarioStep[];
+  steps: IdentityFlowGraphStep[];
   currentStepIdx: number;
   completedSteps: boolean[];
   isSuccess: boolean;

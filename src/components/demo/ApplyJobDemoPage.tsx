@@ -13,7 +13,7 @@ import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
-interface DemoApplyJobProps {
+interface ApplyJobApplicationFlowProps {
   currentStepIdx: number;
   completedSteps: boolean[];
   isProcessingAction: boolean;
@@ -32,9 +32,9 @@ interface CandidateCert {
 }
 
 /**
- * Realistic 2D Matrix QR Code SVG Component
+ * QR code graphic used by the job application flow.
  */
-function RealQrCode({ className = "w-44 h-44 text-[#0F1E36]" }: { className?: string }) {
+function ApplyJobQrCodeGraphic({ className = "w-44 h-44 text-[#0F1E36]" }: { className?: string }) {
   const grid = [
     [1,1,1,1,1,1,1,0,1,0,1,1,0,1,0,1,1,1,1,1,1,1],
     [1,0,0,0,0,0,1,0,0,1,1,0,1,0,0,1,0,0,0,0,0,1],
@@ -79,7 +79,7 @@ function RealQrCode({ className = "w-44 h-44 text-[#0F1E36]" }: { className?: st
   );
 }
 
-function DemoApplyJob({
+function ApplyJobApplicationFlow({
   currentStepIdx,
   completedSteps,
   isProcessingAction,
@@ -90,7 +90,7 @@ function DemoApplyJob({
   playTingTingSound,
   onServerProgressChange,
   onSsiModeChange
-}: DemoApplyJobProps) {
+}: ApplyJobApplicationFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
     APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
@@ -342,7 +342,7 @@ function DemoApplyJob({
             <div className="rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-[#E2E6FF] to-[#FAFBFD] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
               <div className="flex items-center gap-3.5">
                 <div className="h-14 w-14 bg-white p-1.5 rounded-xl border border-indigo-100 shadow-xs shrink-0 flex items-center justify-center relative group">
-                  <RealQrCode className="h-10 w-10 text-[#354CE1]" />
+                  <ApplyJobQrCodeGraphic className="h-10 w-10 text-[#354CE1]" />
                   <div className="absolute inset-0 bg-[#354CE1]/5 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Sparkles className="h-4 w-4 text-[#354CE1] animate-spin" />
                   </div>
@@ -365,7 +365,7 @@ function DemoApplyJob({
                 onClick={startQrScanModal}
                 className="px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 border border-[#354CE1]/30 text-[#354CE1] text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-[#354CE1] active:scale-[0.98]"
               >
-                <RealQrCode className="h-3.5 w-3.5 text-[#354CE1]" />
+                <ApplyJobQrCodeGraphic className="h-3.5 w-3.5 text-[#354CE1]" />
                 <span>{uiT.scanQrAutofill}</span>
               </button>
             </div>
@@ -1163,7 +1163,7 @@ function DemoApplyJob({
 
                   {/* Crisp Clean QR Graphic */}
                   <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs">
-                    <RealQrCode className="h-48 w-48 text-[#0F1E36]" />
+                    <ApplyJobQrCodeGraphic className="h-48 w-48 text-[#0F1E36]" />
                   </div>
                 </div>
 
@@ -1196,34 +1196,34 @@ function DemoApplyJob({
   );
 }
 
-interface DemoScenarioPageProps {
+interface ApplyJobDemoPageProps {
   onBackToList: () => void;
 }
 
-interface ScenarioStep {
+interface ApplyJobDemoStep {
   label: string;
   action: string;
   logText: string;
 }
 
-interface ScenarioCopy {
+interface ApplyJobDemoCopy {
   id: DemoScenarioId;
   tag: string;
   title: string;
   desc: string;
   security: string;
   successResult: string;
-  steps: ScenarioStep[];
+  steps: ApplyJobDemoStep[];
 }
 
-interface Scenario extends ScenarioCopy {
+interface ApplyJobDemoScenario extends ApplyJobDemoCopy {
   icon: React.ComponentType<any>;
 }
 
 const formatText = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
-export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps) {
+export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
     APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
@@ -1231,7 +1231,7 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
     'APPLY_JOB_DEMO_PAGE_TRANSLATIONS',
   );
   const t = translations.page;
-  const scenario = useMemo<Scenario>(() => ({
+  const scenario = useMemo<ApplyJobDemoScenario>(() => ({
     ...translations.meta,
     id: 'apply-job',
     icon: Briefcase,
@@ -1279,10 +1279,8 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
-  const [applyJobProgress, setApplyJobProgress] = useState<number>(0);
-  const [applyJobIsSsiMode, setApplyJobIsSsiMode] = useState<boolean>(false);
-  const isApplyJobScenario = scenario.id === 'apply-job';
-  const isApplyJobSsiMode = isApplyJobScenario && applyJobIsSsiMode;
+  const [serverVerificationProgress, setServerVerificationProgress] = useState<number>(0);
+  const [isSsiCredentialMode, setIsSsiCredentialMode] = useState<boolean>(false);
 
   // Initialize terminal logs
   useEffect(() => {
@@ -1292,8 +1290,8 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setApplyJobProgress(0);
-    setApplyJobIsSsiMode(false);
+    setServerVerificationProgress(0);
+    setIsSsiCredentialMode(false);
     setSimulationLogs([
       formatText(t.logs.launch, { title }),
       t.logs.environment,
@@ -1358,8 +1356,8 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setApplyJobProgress(0);
-    setApplyJobIsSsiMode(false);
+    setServerVerificationProgress(0);
+    setIsSsiCredentialMode(false);
     setSimulationLogs([
       formatText(t.logs.reset, { title: scenario.title }),
       t.logs.resetInstruction
@@ -1439,7 +1437,7 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
 
               {/* Dynamic app content provided by the scenario page */}
               <div className="p-6 md:p-8 min-h-[480px] bg-slate-50/50 flex flex-col justify-between">
-                <DemoApplyJob
+                <ApplyJobApplicationFlow
                   currentStepIdx={currentStepIdx}
                   completedSteps={completedSteps}
                   isProcessingAction={isProcessingAction}
@@ -1448,8 +1446,8 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
-                    onServerProgressChange={setApplyJobProgress}
-                    onSsiModeChange={setApplyJobIsSsiMode}
+                  onServerProgressChange={setServerVerificationProgress}
+                  onSsiModeChange={setIsSsiCredentialMode}
                 />
               </div>
             </div>
@@ -1480,33 +1478,17 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
                 <div>
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.riskLevel}</span>
                   <span className={`font-bold text-[10px] ${
-                    isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? 'text-emerald-600'
-                        : 'text-amber-600 font-bold'
-                      : isSuccess ? 'text-emerald-600' : currentStepIdx > 1 ? 'text-emerald-500' : 'text-amber-500 animate-pulse'
+                    isSsiCredentialMode ? 'text-emerald-600' : 'text-amber-600 font-bold'
                   }`}>
-                    {isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? t.applyJobRiskTrusted
-                        : t.applyJobRiskNeedsReview
-                      : isSuccess ? t.safeLow : t.evaluating}
+                    {isSsiCredentialMode ? t.ssiRiskTrusted : t.manualRiskNeedsReview}
                   </span>
                 </div>
                 <div className="border-x border-slate-200">
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.trustScore}</span>
                   <span className={`font-extrabold text-[11px] ${
-                    isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? 'text-emerald-600 font-mono'
-                        : 'text-amber-600 font-mono'
-                      : 'text-[#354CE1]'
+                    isSsiCredentialMode ? 'text-emerald-600 font-mono' : 'text-amber-600 font-mono'
                   }`}>
-                    {isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? '100%'
-                        : '76.5%'
-                      : isSuccess ? '99.9%' : `${88 + currentStepIdx * 4}%`}
+                    {isSsiCredentialMode ? '100%' : '76.5%'}
                   </span>
                 </div>
                 <div>
@@ -1530,60 +1512,28 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
                 {scenario.steps.map((st, sIdx) => {
                   let isActive = currentStepIdx === sIdx && !isSuccess;
                   let isDone = completedSteps[sIdx] || isSuccess;
-                  let subChecks: string[] = [];
-                  // For apply-job: 3 steps run sequentially during Step 2 server execution
-                  if (scenario.id === 'apply-job') {
-                    if (currentStepIdx === 0) { // Step 1: Candidate Form Entry
-                      if (sIdx === 0) {
-                        isActive = true;
-                        isDone = false;
-                      } else {
-                        isActive = false;
-                        isDone = false;
-                      }
-                    } else if (currentStepIdx === 1) { // Step 2: Server Verification Engine Running
-                      if (sIdx === 0) { // Section 1: Legal Identity
-                        if (applyJobProgress >= 30) {
-                          isActive = false;
-                          isDone = true;
-                        } else {
-                          isActive = true;
-                          isDone = false;
-                        }
-                      } else if (sIdx === 1) { // Section 2: Degree & Credentials
-                        if (applyJobProgress >= 70) {
-                          isActive = false;
-                          isDone = true;
-                        } else if (applyJobProgress >= 30) {
-                          isActive = true;
-                          isDone = false;
-                        } else {
-                          isActive = false;
-                          isDone = false;
-                        }
-                      } else if (sIdx === 2) { // Section 3: Background Check
-                        if (applyJobProgress >= 100) {
-                          isActive = false;
-                          isDone = true;
-                        } else if (applyJobProgress >= 70) {
-                          isActive = true;
-                          isDone = false;
-                        } else {
-                          isActive = false;
-                          isDone = false;
-                        }
-                      }
-                    } else if (isSuccess) {
-                      isDone = true;
-                      isActive = false;
-                    } else if (currentStepIdx === 2) {
-                      isDone = sIdx < 2;
-                      isActive = sIdx === 2;
-                    }
+                  const subChecks: string[] = t.subChecks[scenario.id]?.[sIdx] || [];
 
-                    subChecks = t.subChecks[scenario.id]?.[sIdx] || [];
-                  } else {
-                    subChecks = t.subChecks[scenario.id]?.[sIdx] || [];
+                  if (currentStepIdx === 0) {
+                    isActive = sIdx === 0;
+                    isDone = false;
+                  } else if (currentStepIdx === 1) {
+                    if (sIdx === 0) {
+                      isActive = serverVerificationProgress < 30;
+                      isDone = serverVerificationProgress >= 30;
+                    } else if (sIdx === 1) {
+                      isActive = serverVerificationProgress >= 30 && serverVerificationProgress < 70;
+                      isDone = serverVerificationProgress >= 70;
+                    } else if (sIdx === 2) {
+                      isActive = serverVerificationProgress >= 70 && serverVerificationProgress < 100;
+                      isDone = serverVerificationProgress >= 100;
+                    }
+                  } else if (isSuccess) {
+                    isDone = true;
+                    isActive = false;
+                  } else if (currentStepIdx === 2) {
+                    isDone = sIdx < 2;
+                    isActive = sIdx === 2;
                   }
 
                   return (
@@ -1644,25 +1594,25 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
                           </div>
                           <div className="grid grid-cols-1 gap-1">
                             {subChecks.map((label: string, cIdx: number) => {
-                              // Compute real-time sub-check progress matching applyJobProgress
+                              // Step 2 streams server checks across the three timeline rows.
                               let checkStatus: 'pending' | 'active' | 'done' = 'pending';
                               if (isDone) {
                                 checkStatus = 'done';
-                              } else if (scenario.id === 'apply-job' && currentStepIdx === 1) {
+                              } else if (currentStepIdx === 1) {
                                  if (sIdx === 0) {
                                   const target = (cIdx + 1) * 10;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= target - 10) checkStatus = 'active';
+                                  if (serverVerificationProgress >= target) checkStatus = 'done';
+                                  else if (serverVerificationProgress >= target - 10) checkStatus = 'active';
                                   else checkStatus = 'pending';
                                 } else if (sIdx === 1) {
                                   const target = cIdx === 0 ? 45 : cIdx === 1 ? 55 : 70;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= (cIdx === 0 ? 30 : cIdx === 1 ? 45 : 55)) checkStatus = 'active';
+                                  if (serverVerificationProgress >= target) checkStatus = 'done';
+                                  else if (serverVerificationProgress >= (cIdx === 0 ? 30 : cIdx === 1 ? 45 : 55)) checkStatus = 'active';
                                   else checkStatus = 'pending';
                                 } else if (sIdx === 2) {
                                   const target = 70 + (cIdx + 1) * 10;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= target - 10) checkStatus = 'active';
+                                  if (serverVerificationProgress >= target) checkStatus = 'done';
+                                  else if (serverVerificationProgress >= target - 10) checkStatus = 'active';
                                   else checkStatus = 'pending';
                                 }
                               } else if (isActive) {
@@ -1787,7 +1737,7 @@ export default function ApplyJobDemoPage({ onBackToList }: DemoScenarioPageProps
             scenarioId={scenario.id}
             scenarioTitle={scenario.title}
             steps={scenario.steps}
-            isSsiMode={isApplyJobSsiMode}
+            isSsiMode={isSsiCredentialMode}
           />
         )}
       </AnimatePresence>

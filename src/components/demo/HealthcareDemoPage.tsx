@@ -13,7 +13,7 @@ import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
-interface DemoHealthcareProps {
+interface HealthcarePatientIntakeFlowProps {
   currentStepIdx: number;
   completedSteps: boolean[];
   isProcessingAction: boolean;
@@ -24,7 +24,7 @@ interface DemoHealthcareProps {
   playTingTingSound: () => void;
 }
 
-function DemoHealthcare({
+function HealthcarePatientIntakeFlow({
   currentStepIdx,
   completedSteps,
   isProcessingAction,
@@ -32,7 +32,7 @@ function DemoHealthcare({
   advanceStep,
   addLog,
   isSuccess
-}: DemoHealthcareProps) {
+}: HealthcarePatientIntakeFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
     HEALTHCARE_DEMO_PAGE_TRANSLATIONS,
@@ -45,8 +45,8 @@ function DemoHealthcare({
   // Scenario states
   const [patientName, setPatientName] = useState('John Doe');
   const [healthInsuranceScanned, setHealthInsuranceScanned] = useState(false);
-  const [healthInsNum] = useState('BCX-4921-98A');
-  const [healthInsGroup] = useState('GR-8491');
+  const healthInsNum = 'BCX-4921-98A';
+  const healthInsGroup = 'GR-8491';
   const [healthHipaaSigned, setHealthHipaaSigned] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -283,34 +283,34 @@ function DemoHealthcare({
   );
 }
 
-interface DemoScenarioPageProps {
+interface HealthcareDemoPageProps {
   onBackToList: () => void;
 }
 
-interface ScenarioStep {
+interface HealthcareDemoStep {
   label: string;
   action: string;
   logText: string;
 }
 
-interface ScenarioCopy {
+interface HealthcareDemoCopy {
   id: DemoScenarioId;
   tag: string;
   title: string;
   desc: string;
   security: string;
   successResult: string;
-  steps: ScenarioStep[];
+  steps: HealthcareDemoStep[];
 }
 
-interface Scenario extends ScenarioCopy {
+interface HealthcareDemoScenario extends HealthcareDemoCopy {
   icon: React.ComponentType<any>;
 }
 
 const formatText = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
-export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPageProps) {
+export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
     HEALTHCARE_DEMO_PAGE_TRANSLATIONS,
@@ -318,7 +318,7 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
     'HEALTHCARE_DEMO_PAGE_TRANSLATIONS',
   );
   const t = translations.page;
-  const scenario = useMemo<Scenario>(() => ({
+  const scenario = useMemo<HealthcareDemoScenario>(() => ({
     ...translations.meta,
     id: 'healthcare',
     icon: HeartPulse,
@@ -366,10 +366,6 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
-  const [applyJobProgress, setApplyJobProgress] = useState<number>(0);
-  const [applyJobIsSsiMode, setApplyJobIsSsiMode] = useState<boolean>(false);
-  const isApplyJobScenario = scenario.id === 'apply-job';
-  const isApplyJobSsiMode = isApplyJobScenario && applyJobIsSsiMode;
 
   // Initialize terminal logs
   useEffect(() => {
@@ -379,8 +375,6 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setApplyJobProgress(0);
-    setApplyJobIsSsiMode(false);
     setSimulationLogs([
       formatText(t.logs.launch, { title }),
       t.logs.environment,
@@ -445,8 +439,6 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setApplyJobProgress(0);
-    setApplyJobIsSsiMode(false);
     setSimulationLogs([
       formatText(t.logs.reset, { title: scenario.title }),
       t.logs.resetInstruction
@@ -526,7 +518,7 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
 
               {/* Dynamic app content provided by the scenario page */}
               <div className="p-6 md:p-8 min-h-[480px] bg-slate-50/50 flex flex-col justify-between">
-                <DemoHealthcare
+                <HealthcarePatientIntakeFlow
                   currentStepIdx={currentStepIdx}
                   completedSteps={completedSteps}
                   isProcessingAction={isProcessingAction}
@@ -565,33 +557,15 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
                 <div>
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.riskLevel}</span>
                   <span className={`font-bold text-[10px] ${
-                    isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? 'text-emerald-600'
-                        : 'text-amber-600 font-bold'
-                      : isSuccess ? 'text-emerald-600' : currentStepIdx > 1 ? 'text-emerald-500' : 'text-amber-500 animate-pulse'
+                    isSuccess ? 'text-emerald-600' : currentStepIdx > 1 ? 'text-emerald-500' : 'text-amber-500 animate-pulse'
                   }`}>
-                    {isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? t.applyJobRiskTrusted
-                        : t.applyJobRiskNeedsReview
-                      : isSuccess ? t.safeLow : t.evaluating}
+                    {isSuccess ? t.safeLow : t.evaluating}
                   </span>
                 </div>
                 <div className="border-x border-slate-200">
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.trustScore}</span>
-                  <span className={`font-extrabold text-[11px] ${
-                    isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? 'text-emerald-600 font-mono'
-                        : 'text-amber-600 font-mono'
-                      : 'text-[#354CE1]'
-                  }`}>
-                    {isApplyJobScenario
-                      ? isApplyJobSsiMode
-                        ? '100%'
-                        : '76.5%'
-                      : isSuccess ? '99.9%' : `${88 + currentStepIdx * 4}%`}
+                  <span className="font-extrabold text-[11px] text-[#354CE1]">
+                    {isSuccess ? '99.9%' : `${88 + currentStepIdx * 4}%`}
                   </span>
                 </div>
                 <div>
@@ -613,63 +587,9 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
               {/* Steps with connected timeline */}
               <div className="space-y-4 relative pl-3.5 border-l border-slate-100">
                 {scenario.steps.map((st, sIdx) => {
-                  let isActive = currentStepIdx === sIdx && !isSuccess;
-                  let isDone = completedSteps[sIdx] || isSuccess;
-                  let subChecks: string[] = [];
-                  // For apply-job: 3 steps run sequentially during Step 2 server execution
-                  if (scenario.id === 'apply-job') {
-                    if (currentStepIdx === 0) { // Step 1: Candidate Form Entry
-                      if (sIdx === 0) {
-                        isActive = true;
-                        isDone = false;
-                      } else {
-                        isActive = false;
-                        isDone = false;
-                      }
-                    } else if (currentStepIdx === 1) { // Step 2: Server Verification Engine Running
-                      if (sIdx === 0) { // Section 1: Legal Identity
-                        if (applyJobProgress >= 30) {
-                          isActive = false;
-                          isDone = true;
-                        } else {
-                          isActive = true;
-                          isDone = false;
-                        }
-                      } else if (sIdx === 1) { // Section 2: Degree & Credentials
-                        if (applyJobProgress >= 70) {
-                          isActive = false;
-                          isDone = true;
-                        } else if (applyJobProgress >= 30) {
-                          isActive = true;
-                          isDone = false;
-                        } else {
-                          isActive = false;
-                          isDone = false;
-                        }
-                      } else if (sIdx === 2) { // Section 3: Background Check
-                        if (applyJobProgress >= 100) {
-                          isActive = false;
-                          isDone = true;
-                        } else if (applyJobProgress >= 70) {
-                          isActive = true;
-                          isDone = false;
-                        } else {
-                          isActive = false;
-                          isDone = false;
-                        }
-                      }
-                    } else if (isSuccess) {
-                      isDone = true;
-                      isActive = false;
-                    } else if (currentStepIdx === 2) {
-                      isDone = sIdx < 2;
-                      isActive = sIdx === 2;
-                    }
-
-                    subChecks = t.subChecks[scenario.id]?.[sIdx] || [];
-                  } else {
-                    subChecks = t.subChecks[scenario.id]?.[sIdx] || [];
-                  }
+                  const isActive = currentStepIdx === sIdx && !isSuccess;
+                  const isDone = completedSteps[sIdx] || isSuccess;
+                  const subChecks: string[] = t.subChecks[scenario.id]?.[sIdx] || [];
 
                   return (
                     <div
@@ -729,27 +649,9 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
                           </div>
                           <div className="grid grid-cols-1 gap-1">
                             {subChecks.map((label: string, cIdx: number) => {
-                              // Compute real-time sub-check progress matching applyJobProgress
                               let checkStatus: 'pending' | 'active' | 'done' = 'pending';
                               if (isDone) {
                                 checkStatus = 'done';
-                              } else if (scenario.id === 'apply-job' && currentStepIdx === 1) {
-                                 if (sIdx === 0) {
-                                  const target = (cIdx + 1) * 10;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= target - 10) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                } else if (sIdx === 1) {
-                                  const target = cIdx === 0 ? 45 : cIdx === 1 ? 55 : 70;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= (cIdx === 0 ? 30 : cIdx === 1 ? 45 : 55)) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                } else if (sIdx === 2) {
-                                  const target = 70 + (cIdx + 1) * 10;
-                                  if (applyJobProgress >= target) checkStatus = 'done';
-                                  else if (applyJobProgress >= target - 10) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                }
                               } else if (isActive) {
                                 const loggedIndexes = subChecks.map((stepText: string) => {
                                   const keyword = stepText.slice(0, 10);
@@ -872,7 +774,6 @@ export default function HealthcareDemoPage({ onBackToList }: DemoScenarioPagePro
             scenarioId={scenario.id}
             scenarioTitle={scenario.title}
             steps={scenario.steps}
-            isSsiMode={isApplyJobSsiMode}
           />
         )}
       </AnimatePresence>

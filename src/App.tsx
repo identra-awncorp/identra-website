@@ -423,7 +423,6 @@ export default function App() {
             <ListDemoPage
               onBackToLanding={() => handleBackNavigation('landing')}
               onOpenSandbox={handleOpenSandbox}
-              onViewChange={handleViewChange}
             />
           )
         ) : currentView === 'academy' ? (

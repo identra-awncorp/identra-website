@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle, Lock, Smile, Fingerprint } from 'lucide-react';
+import { ArrowRight, CheckCircle, Lock } from 'lucide-react';
 import TechGridBg from './TechGridBg';
 import { HERO_TRANSLATIONS } from '../translations/HeroTranslations';
 
@@ -37,7 +37,7 @@ function FlippingLogo({
   }, [isFlipped, index]);
 
   return (
-    <div className="relative w-full h-16 flex items-center justify-center [perspective:1000px] select-none">
+    <div className="relative w-full h-20 flex items-center justify-center [perspective:1000px] select-none">
       <motion.div
         className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]"
         animate={{ rotateX: localFlipped ? 180 : 0 }}
@@ -53,6 +53,34 @@ function FlippingLogo({
           {back}
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+const FRONT_PARTNER_LOGOS = [
+  { id: 'vingroup', name: 'Vingroup' },
+  { id: 'vietcombank', name: 'Vietcombank' },
+  { id: 'viettel', name: 'Viettel' },
+  { id: 'vpbank', name: 'VPBank' },
+  { id: 'mbbank', name: 'MBBank' },
+  { id: 'hoaphat', name: 'Hoa Phat' }
+] as const;
+
+const BACK_PARTNER_LOGOS = [
+  { id: 'vietjet', name: 'VIETJET' },
+  { id: 'masan', name: 'Masan' },
+  { id: 'fpt', name: 'FPT' },
+  { id: 'cellphones', name: 'CellphoneS' },
+  { id: 'vinamilk', name: 'Vinamilk' },
+  { id: 'vccorp', name: 'VCCorp' }
+] as const;
+
+function PartnerLogo({ name }: { name: string }) {
+  return (
+    <div className="flex h-20 w-full items-center justify-center px-1 text-slate-400 transition-colors hover:text-slate-600">
+      <span className="block whitespace-nowrap text-center font-sans text-base font-extrabold leading-none text-current sm:text-lg lg:text-xl">
+        {name}
+      </span>
     </div>
   );
 }
@@ -90,126 +118,6 @@ export default function Hero({ onOpenSandbox }: HeroProps) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Front logos (Increased Size & Scales)
-  const frontLogos = [
-    {
-      id: 'hershey',
-      content: (
-        <div className="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <svg className="w-5.5 h-5.5 shrink-0 text-slate-400" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M2,18 C3,16 6,15 12,15 C18,15 21,16 22,18 L22,20 L2,20 Z M12,4 C10,4 9,6 9,8 C9,11 12,13 12,14 C12,13 15,11 15,8 C15,6 14,4 12,4 Z" />
-          </svg>
-          <span className="font-serif font-black tracking-widest text-[12px]">{t.logos.hershey}</span>
-        </div>
-      )
-    },
-    {
-      id: 'dott',
-      content: (
-        <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <span className="font-display font-black text-xl sm:text-2xl tracking-tighter lowercase">{t.logos.dott}</span>
-        </div>
-      )
-    },
-    {
-      id: 'cmb',
-      content: (
-        <div className="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
-          </svg>
-          <span className="font-sans font-bold text-[11px] tracking-tight">{t.logos.coffeeMeetsBagel}</span>
-        </div>
-      )
-    },
-    {
-      id: 'square',
-      content: (
-        <div className="flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <div className="w-4 h-4 border-2 border-slate-400 rounded flex items-center justify-center">
-            <div className="w-2 h-2 bg-slate-400 rounded-xs" />
-          </div>
-          <span className="font-sans font-semibold text-sm tracking-tight">{t.logos.square}</span>
-        </div>
-      )
-    },
-    {
-      id: 'linkedin',
-      content: (
-        <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <span className="font-sans font-extrabold text-sm sm:text-base">{t.logos.linked}</span>
-          <span className="bg-slate-400 text-white font-sans font-extrabold text-[10px] px-1 rounded-xs leading-none">{t.logos.linkedIn}</span>
-        </div>
-      )
-    },
-    {
-      id: 'openai',
-      content: (
-        <div className="flex items-center gap-1.5 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 12h8M12 8v8" />
-          </svg>
-          <span className="font-sans font-medium text-sm tracking-tight">{t.logos.openai}</span>
-        </div>
-      )
-    }
-  ];
-
-  // Back logos (Increased Size & Scales)
-  const backLogos = [
-    {
-      id: 'branch',
-      content: (
-        <div className="flex items-center gap-1 text-[#354CE1]/70 hover:text-[#354CE1] transition-colors scale-115 sm:scale-120">
-          <span className="font-sans font-black text-sm sm:text-base lowercase">{t.logos.branch}</span>
-        </div>
-      )
-    },
-    {
-      id: 'uphold',
-      content: (
-        <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <span className="font-mono font-bold text-sm sm:text-base tracking-widest uppercase">{t.logos.uphold}</span>
-        </div>
-      )
-    },
-    {
-      id: 'rippling',
-      content: (
-        <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <span className="font-sans font-bold text-sm sm:text-base italic tracking-tight">{t.logos.rippling}</span>
-        </div>
-      )
-    },
-    {
-      id: 'gusto',
-      content: (
-        <div className="flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors scale-115 sm:scale-120">
-          <span className="font-sans font-semibold text-sm sm:text-base">{t.logos.gusto}</span>
-        </div>
-      )
-    },
-    {
-      id: 'coinbase',
-      content: (
-        <div className="flex items-center gap-1.5 text-[#354CE1]/70 hover:text-[#354CE1] transition-colors scale-115 sm:scale-120">
-          <div className="w-3.5 h-3.5 bg-[#354CE1]/70 rounded-full shrink-0" />
-          <span className="font-sans font-bold text-sm sm:text-base">{t.logos.coinbase}</span>
-        </div>
-      )
-    },
-    {
-      id: 'robinhood',
-      content: (
-        <div className="flex items-center gap-1 text-[#00D4B2]/80 hover:text-[#00D4B2] transition-colors scale-115 sm:scale-120">
-          <span className="font-sans font-extrabold text-sm sm:text-base tracking-tight">{t.logos.robinhood}</span>
-        </div>
-      )
-    }
-  ];
 
   // Slide content setups
   const slides = [
@@ -318,14 +226,14 @@ export default function Hero({ onOpenSandbox }: HeroProps) {
         {/* Trust Banner Logos with vertical flip effect */}
         <div className="max-w-5xl mx-auto mb-0 mt-16 md:mt-24">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-y-4 md:gap-y-6 py-4 md:py-6">
-            {frontLogos.map((logo, idx) => (
+            {FRONT_PARTNER_LOGOS.map((logo, idx) => (
               <div 
                 key={logo.id} 
                 className="w-full px-2 flex items-center justify-center"
               >
                 <FlippingLogo 
-                  front={logo.content} 
-                  back={backLogos[idx].content} 
+                  front={<PartnerLogo name={logo.name} />}
+                  back={<PartnerLogo name={BACK_PARTNER_LOGOS[idx].name} />}
                   isFlipped={isFlipped} 
                   index={idx} 
                 />

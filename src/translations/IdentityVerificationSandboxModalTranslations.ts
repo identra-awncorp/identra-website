@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const DEMO_SANDBOX_TRANSLATIONS: any = {
+export const IDENTITY_VERIFICATION_SANDBOX_MODAL_TRANSLATIONS: any = {
   en: {
     productTitle: 'Identra ID Flow',
     environment: 'Sandbox dev environment',

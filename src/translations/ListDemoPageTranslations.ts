@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const DEMO_PAGE_TRANSLATIONS: any = {
+export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
   en: {
     backToHome: 'Back to Home',
     labStatus: 'Sandbox Lab Platform',
@@ -600,11 +600,11 @@ export const DEMO_PAGE_TRANSLATIONS: any = {
   }
 };
 
-DEMO_PAGE_TRANSLATIONS.es.scenarios.forEach((scenario: any, index: number) => {
-  const de = DEMO_PAGE_TRANSLATIONS.de.scenarios[index];
-  const ja = DEMO_PAGE_TRANSLATIONS.ja.scenarios[index];
-  const vi = DEMO_PAGE_TRANSLATIONS.vi.scenarios[index];
+LIST_DEMO_PAGE_TRANSLATIONS.es.scenarios.forEach((scenario: any, index: number) => {
+  const de = LIST_DEMO_PAGE_TRANSLATIONS.de.scenarios[index];
+  const ja = LIST_DEMO_PAGE_TRANSLATIONS.ja.scenarios[index];
+  const vi = LIST_DEMO_PAGE_TRANSLATIONS.vi.scenarios[index];
   if (!de || !ja || !vi || scenario.id !== de.id || scenario.id !== ja.id || scenario.id !== vi.id) {
-    throw new Error('DemoPageTranslations scenario ordering mismatch');
+    throw new Error('ListDemoPageTranslations scenario ordering mismatch');
   }
 });

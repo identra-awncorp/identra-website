@@ -13,9 +13,11 @@ import {
   blogDetailPath,
   DEFAULT_BLOG_DETAIL_ID,
   DEFAULT_LOCALE,
+  demoScenarioPath,
   SUPPORTED_LOCALES,
   type AppView,
   type BlogDetailId,
+  type DemoScenarioId,
   type Locale,
   viewToPath,
 } from '../types/routes';
@@ -51,6 +53,7 @@ const HREFLANG_CODES: Record<Locale, string> = {
 interface SeoMetadataProps {
   currentView: AppView;
   blogId?: BlogDetailId;
+  demoScenarioId?: DemoScenarioId;
   isNotFound?: boolean;
 }
 
@@ -127,6 +130,7 @@ const removeLocalizedLinks = () => {
 export default function SeoMetadata({
   currentView,
   blogId,
+  demoScenarioId,
   isNotFound = false,
 }: SeoMetadataProps) {
   const { language } = useLanguage();
@@ -146,7 +150,9 @@ export default function SeoMetadata({
     const routePathForLocale = (locale: Locale) =>
       currentView === 'blog-detail'
         ? blogDetailPath(blogId ?? DEFAULT_BLOG_DETAIL_ID, locale)
-        : viewToPath(currentView, locale);
+        : currentView === 'demo' && demoScenarioId
+          ? demoScenarioPath(demoScenarioId, locale)
+          : viewToPath(currentView, locale);
     const canonicalUrl = isNotFound
       ? null
       : absoluteUrl(routePathForLocale(language), siteUrl);
@@ -194,7 +200,7 @@ export default function SeoMetadata({
       siteUrl,
       title,
     };
-  }, [blogId, currentView, isNotFound, language, seo]);
+  }, [blogId, currentView, demoScenarioId, isNotFound, language, seo]);
 
   useEffect(() => {
     document.documentElement.lang = metadata.localeMeta.htmlLang;

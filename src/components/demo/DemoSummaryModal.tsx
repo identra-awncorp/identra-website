@@ -5,16 +5,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  X, ShieldCheck, Cpu, CheckCircle2, AlertTriangle, 
+import {
+  X, ShieldCheck, Cpu, CheckCircle2, AlertTriangle,
   TrendingUp, ArrowRight, Lock, Shield, Sparkles, Check,
   Clock, Database, Activity, Eye, Info, Fingerprint, Terminal,
   Copy, Download, QrCode, FileText, BadgeCheck, ShieldAlert, Award
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { DEMO_COMPONENT_TRANSLATIONS } from '../../translations/DemoComponentTranslations';
-import { getDemoSummaryDecisionData, getDemoSummaryStepEvidence } from '../../translations/DemoSummaryModalData';
+import { DEMO_SUMMARY_MODAL_TRANSLATIONS, getDemoSummaryDecisionData, getDemoSummaryStepEvidence } from '../../translations/demo/DemoSummaryModalTranslations';
 import { copyTextToClipboard } from '../../utils/clipboard';
+import { getLocalizedRecord } from '../../utils/i18nRuntime';
 
 interface DemoSummaryModalProps {
   isOpen: boolean;
@@ -22,6 +22,7 @@ interface DemoSummaryModalProps {
   scenarioId: string;
   scenarioTitle: string;
   steps: { label: string }[];
+  isSsiMode?: boolean;
 }
 
 export default function DemoSummaryModal({
@@ -29,12 +30,17 @@ export default function DemoSummaryModal({
   onClose,
   scenarioId,
   scenarioTitle,
-  steps
+  steps,
+  isSsiMode = false
 }: DemoSummaryModalProps) {
   const { language } = useLanguage();
-  const t = DEMO_COMPONENT_TRANSLATIONS[language].summaryModal;
+  const t = getLocalizedRecord(
+    DEMO_SUMMARY_MODAL_TRANSLATIONS,
+    language as keyof typeof DEMO_SUMMARY_MODAL_TRANSLATIONS,
+    'DEMO_SUMMARY_MODAL_TRANSLATIONS',
+  );
 
-  const data = getDemoSummaryDecisionData(scenarioId, language);
+  const data = getDemoSummaryDecisionData(scenarioId, language, isSsiMode);
   const riskIndex = data.overallRisk;
   const confidenceScore = data.overallConfidence;
   const credentialHash = `0x7f9a8b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a-${scenarioId}`;
@@ -105,7 +111,7 @@ export default function DemoSummaryModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden select-none" id="decision-logic-modal">
       {/* Backdrop */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -114,7 +120,7 @@ export default function DemoSummaryModal({
       />
 
       {/* Modal Container */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 15 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 15 }}
@@ -122,7 +128,7 @@ export default function DemoSummaryModal({
         className="bg-white rounded-[32px] border border-slate-200/80 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10 flex flex-col"
       >
         {/* Close Button */}
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-full transition border border-slate-100 cursor-pointer z-30"
           id="close-modal-button"
@@ -160,7 +166,7 @@ export default function DemoSummaryModal({
             <Activity className="w-4 h-4" />
             <span>{t.verdictProgression}</span>
             {activeTab === 'verdict' && (
-              <motion.div 
+              <motion.div
                 layoutId="activeModalTab"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]"
               />
@@ -177,7 +183,7 @@ export default function DemoSummaryModal({
             <Fingerprint className="w-4 h-4" />
             <span>{t.evidenceRules}</span>
             {activeTab === 'evidence' && (
-              <motion.div 
+              <motion.div
                 layoutId="activeModalTab"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]"
               />
@@ -194,7 +200,7 @@ export default function DemoSummaryModal({
             <Award className="w-4 h-4" />
             <span>{t.digitalPassTab}</span>
             {activeTab === 'certificate' && (
-              <motion.div 
+              <motion.div
                 layoutId="activeModalTab"
                 className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]"
               />
@@ -219,25 +225,24 @@ export default function DemoSummaryModal({
                   {/* Circular Gauge */}
                   <div className="md:col-span-4 bg-[#FAFBFD] border border-slate-200/60 rounded-[24px] p-5 flex flex-col justify-between items-center text-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-[#354CE1]/5 rounded-bl-full pointer-events-none" />
-                    
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
                       {t.systemVerdict}
                     </p>
 
                     <div className="relative w-32 h-32 flex items-center justify-center">
                       <svg className="w-full h-full -rotate-90">
-                        <circle 
-                          cx="64" 
-                          cy="64" 
-                          r="52" 
-                          className="stroke-slate-100 fill-none" 
+                        <circle
+                          cx="64"
+                          cy="64"
+                          r="52"
+                          className="stroke-slate-100 fill-none"
                           strokeWidth="8"
                         />
-                        <motion.circle 
-                          cx="64" 
-                          cy="64" 
-                          r="52" 
-                          className="stroke-[#354CE1] fill-none" 
+                        <motion.circle
+                          cx="64"
+                          cy="64"
+                          r="52"
+                          className="stroke-[#354CE1] fill-none"
                           strokeWidth="8"
                           strokeDasharray={2 * Math.PI * 52}
                           initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
@@ -287,13 +292,13 @@ export default function DemoSummaryModal({
                             </span>
                           </div>
                           <div className="h-2 bg-slate-100 rounded-full overflow-hidden relative border border-slate-200/10">
-                            <motion.div 
+                            <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${dim.score}%` }}
                               transition={{ duration: 0.8, ease: 'easeOut', delay: idx * 0.1 }}
                               className={`h-full rounded-full ${
-                                dim.score > 25 
-                                  ? 'bg-gradient-to-r from-amber-400 to-amber-500' 
+                                dim.score > 25
+                                  ? 'bg-gradient-to-r from-amber-400 to-amber-500'
                                   : 'bg-gradient-to-r from-indigo-500 to-[#354CE1]'
                               }`}
                             />
@@ -333,9 +338,8 @@ export default function DemoSummaryModal({
                   {/* SVG Canvas */}
                   <div className="w-full relative bg-white border border-slate-200/60 rounded-2xl overflow-hidden pt-6 pb-2 px-4 shadow-sm">
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(53,76,225,0.015),transparent_70%)] pointer-events-none" />
-                    
-                    <svg 
-                      viewBox={`0 0 ${width} ${height}`} 
+                    <svg
+                      viewBox={`0 0 ${width} ${height}`}
                       className="w-full h-auto overflow-visible"
                     >
                       <defs>
@@ -352,8 +356,8 @@ export default function DemoSummaryModal({
 
                       {/* Area path */}
                       {fillD && (
-                        <motion.path 
-                          d={fillD} 
+                        <motion.path
+                          d={fillD}
                           fill="url(#chart-area-grad)"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -363,9 +367,9 @@ export default function DemoSummaryModal({
 
                       {/* Line path */}
                       {pathD && (
-                        <motion.path 
-                          d={pathD} 
-                          className="stroke-[#354CE1] fill-none" 
+                        <motion.path
+                          d={pathD}
+                          className="stroke-[#354CE1] fill-none"
                           strokeWidth="3.5"
                           strokeLinecap="round"
                           initial={{ pathLength: 0 }}
@@ -380,10 +384,10 @@ export default function DemoSummaryModal({
                         return (
                           <g key={index} className="cursor-pointer group">
                             {isActive && (
-                              <motion.circle 
-                                cx={point.x} 
-                                cy={point.y} 
-                                r="14" 
+                              <motion.circle
+                                cx={point.x}
+                                cy={point.y}
+                                r="14"
                                 className="fill-none stroke-[#354CE1] stroke-[2]"
                                 initial={{ scale: 0.8, opacity: 0.6 }}
                                 animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0.2, 0.6] }}
@@ -391,27 +395,27 @@ export default function DemoSummaryModal({
                               />
                             )}
 
-                            <motion.circle 
-                              cx={point.x} 
-                              cy={point.y} 
-                              r={isActive ? "10" : "8"} 
+                            <motion.circle
+                              cx={point.x}
+                              cy={point.y}
+                              r={isActive ? "10" : "8"}
                               className={`${isActive ? 'fill-[#354CE1]/20 stroke-[#354CE1]/30' : 'fill-indigo-100 stroke-indigo-500/20 group-hover:stroke-indigo-400 group-hover:fill-indigo-50'} transition-all duration-200`}
                               initial={{ scale: 0 }}
                               animate={{ scale: 1 }}
                               transition={{ delay: 0.5 + index * 0.15, type: 'spring' }}
                             />
 
-                            <circle 
-                              cx={point.x} 
-                              cy={point.y} 
-                              r={isActive ? "5.5" : "4"} 
-                              className={`${isActive ? 'fill-[#354CE1]' : 'fill-[#354CE1]/70 group-hover:fill-[#354CE1]'} transition-all duration-200`} 
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r={isActive ? "5.5" : "4"}
+                              className={`${isActive ? 'fill-[#354CE1]' : 'fill-[#354CE1]/70 group-hover:fill-[#354CE1]'} transition-all duration-200`}
                             />
 
-                            <motion.text 
-                              x={point.x} 
-                              y={point.y - 14} 
-                              textAnchor="middle" 
+                            <motion.text
+                              x={point.x}
+                              y={point.y - 14}
+                              textAnchor="middle"
                               className={`font-mono text-[9px] font-extrabold ${isActive ? 'fill-[#354CE1] text-[10px]' : 'fill-slate-800'}`}
                               initial={{ opacity: 0, y: point.y - 5 }}
                               animate={{ opacity: 1, y: point.y - 14 }}
@@ -419,20 +423,19 @@ export default function DemoSummaryModal({
                             >
                               {point.value}%
                             </motion.text>
-                            
-                            <text 
-                              x={point.x} 
-                              y={height - 8} 
-                              textAnchor="middle" 
+                            <text
+                              x={point.x}
+                              y={height - 8}
+                              textAnchor="middle"
                               className={`font-sans font-bold text-[8px] tracking-wider uppercase ${isActive ? 'fill-[#354CE1] font-extrabold' : 'fill-slate-400'}`}
                             >
                               {t.stepLabel.replace('{index}', String(index + 1))}
                             </text>
 
-                            <circle 
-                              cx={point.x} 
-                              cy={point.y} 
-                              r="24" 
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="24"
                               className="fill-transparent stroke-none cursor-pointer"
                               onClick={() => {
                                 setActiveNodeIdx(index);
@@ -466,12 +469,12 @@ export default function DemoSummaryModal({
                     const stepObj = steps[index] || { label: t.layerLabel.replace('{index}', String(index + 1)) };
                     const isActive = index === activeNodeIdx;
                     return (
-                      <button 
-                        key={index} 
+                      <button
+                        key={index}
                         onClick={() => setActiveNodeIdx(index)}
                         className={`flex-1 min-w-[120px] text-left p-3 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden ${
-                          isActive 
-                            ? 'bg-indigo-50/40 border-[#354CE1] shadow-md ring-2 ring-indigo-100/30 scale-[1.015]' 
+                          isActive
+                            ? 'bg-indigo-50/40 border-[#354CE1] shadow-md ring-2 ring-indigo-100/30 scale-[1.015]'
                             : 'bg-white border-slate-200/60 hover:border-slate-300 hover:bg-slate-50/50'
                         }`}
                       >
@@ -495,18 +498,17 @@ export default function DemoSummaryModal({
 
                 {/* Evidence vault panel */}
                 {(() => {
-                  const evidenceList = getDemoSummaryStepEvidence(scenarioId, language);
+                  const evidenceList = getDemoSummaryStepEvidence(scenarioId, language, isSsiMode);
                   const evidence = evidenceList[activeNodeIdx] || evidenceList[evidenceList.length - 1];
                   const currentStepLabel = steps[activeNodeIdx] || { label: t.layerLabel.replace('{index}', String(activeNodeIdx + 1)) };
 
                   return (
                     <div className="bg-slate-900 text-slate-100 rounded-3xl p-5 md:p-6 space-y-4 relative overflow-hidden shadow-xl shadow-slate-900/10 border border-slate-800">
-                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(0,212,178,0.03),transparent_60%)] pointer-events-none" />
-                      
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(16,185,129,0.03),transparent_60%)] pointer-events-none" />
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3.5">
                         <div className="flex items-center gap-2">
-                          <Terminal className="w-4 h-4 text-[#00D4B2]" />
-                          <span className="text-[10px] font-mono font-bold tracking-widest text-[#00D4B2] uppercase">
+                          <Terminal className="w-4 h-4 text-emerald-400" />
+                          <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
                             {t.evidenceVaultTitle.replace('{index}', String(activeNodeIdx + 1))}
                           </span>
                         </div>
@@ -539,7 +541,7 @@ export default function DemoSummaryModal({
                           <div className="bg-slate-950/40 rounded-xl p-3 border border-slate-800 space-y-2.5 mt-2">
                             <div className="flex items-center justify-between text-[11px] font-mono">
                               <span className="text-slate-400">{t.totalTrustGained}</span>
-                              <span className="font-bold text-[#00D4B2]">+{evidence.confidenceAchieved}%</span>
+                              <span className="font-bold text-emerald-400">+{evidence.confidenceAchieved}%</span>
                             </div>
                             <div className="flex items-center justify-between text-[11px] font-mono">
                               <span className="text-slate-400">{t.threatDeflected}</span>
@@ -564,7 +566,7 @@ export default function DemoSummaryModal({
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2 font-mono text-[10px]">
-                                  <span className="text-[#00D4B2] font-semibold">
+                                  <span className="text-emerald-400 font-semibold">
                                     {sig.value}
                                   </span>
                                   <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase">
@@ -602,11 +604,11 @@ export default function DemoSummaryModal({
                     {data.rules.map((rule, index) => {
                       const isRuleActive = index === activeNodeIdx;
                       return (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className={`p-4 flex items-center justify-between gap-4 transition duration-150 ${
-                            isRuleActive 
-                              ? 'bg-indigo-50/40 border-l-4 border-l-[#354CE1]' 
+                            isRuleActive
+                              ? 'bg-indigo-50/40 border-l-4 border-l-[#354CE1]'
                               : 'bg-white hover:bg-slate-50/50'
                           }`}
                         >
@@ -666,8 +668,7 @@ export default function DemoSummaryModal({
                 <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-[32px] p-6 md:p-8 shadow-2xl relative overflow-hidden border border-slate-800">
                   {/* Decorative circular meshes */}
                   <div className="absolute top-0 right-0 w-80 h-80 bg-radial-gradient from-indigo-500/10 to-transparent blur-2xl rounded-full -translate-y-12 translate-x-12 pointer-events-none" />
-                  <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-[#00D4B2]/5 blur-3xl rounded-full pointer-events-none" />
-                  
+                  <div className="absolute -bottom-10 -left-10 w-60 h-60 bg-emerald-500/5 blur-3xl rounded-full pointer-events-none" />
                   {/* Stamp Seal Logo Placeholder */}
                   <div className="absolute top-8 right-8 text-emerald-500/25 opacity-70 pointer-events-none">
                     <BadgeCheck className="w-24 h-24 stroke-[1]" />
@@ -712,7 +713,7 @@ export default function DemoSummaryModal({
                       </div>
                       <div>
                         <span className="block text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">{t.issuingAuthority}</span>
-                        <span className="text-[#00D4B2] font-semibold text-[11px]">{t.secureCoreVersion}</span>
+                        <span className="text-emerald-400 font-semibold text-[11px]">{t.secureCoreVersion}</span>
                       </div>
                       <div>
                         <span className="block text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-1">{t.attestationWeight}</span>
@@ -728,7 +729,7 @@ export default function DemoSummaryModal({
                     <div className="bg-slate-950/40 p-3 rounded-xl border border-slate-800/60 flex items-center justify-between gap-4">
                       <div className="space-y-0.5 truncate">
                         <span className="block text-[8px] font-mono font-bold text-slate-500 uppercase tracking-widest">{t.digitalCredentialSha256Signature}</span>
-                        <span className="font-mono text-[10px] text-[#00D4B2] truncate block">
+                        <span className="font-mono text-[10px] text-emerald-400 truncate block">
                           {credentialHash}
                         </span>
                       </div>
@@ -736,7 +737,7 @@ export default function DemoSummaryModal({
                         onClick={handleCopyHash}
                         className={`p-2 rounded-lg cursor-pointer transition shrink-0 ${
                           copyStatus === 'success'
-                            ? 'bg-emerald-500 text-white' 
+                            ? 'bg-emerald-500 text-white'
                             : copyStatus === 'error'
                               ? 'bg-rose-500 text-white'
                               : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white'
@@ -759,17 +760,16 @@ export default function DemoSummaryModal({
                         <Clock className="w-3.5 h-3.5 text-slate-500" />
                         <span>{t.officiallyCertified}</span>
                       </div>
-                      
                       {/* Interactive Buttons */}
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button
                           onClick={handleExportReport}
                           disabled={exporting}
-                          className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-xs rounded-xl transition shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                          className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-emerald-500 to-[#354CE1] hover:from-emerald-600 hover:to-[#2539BE] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                         >
                           {exporting ? (
                             <>
-                              <motion.span 
+                              <motion.span
                                 className="h-3 w-3 border-2 border-white border-t-transparent rounded-full block animate-spin"
                               />
                               <span>{t.exporting}</span>

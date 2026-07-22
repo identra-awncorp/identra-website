@@ -1,5 +1,5 @@
-import type { AppView } from '../types/routes';
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,11 +16,11 @@ import {
   Ticket
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { demoScenarioPath, type AppView, type DemoScenarioId, type Locale } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
-import DemoScenarioActionPage from './DemoScenarioActionPage';
-import { DEMO_PAGE_TRANSLATIONS } from '../translations/DemoPageTranslations';
+import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
 
-interface DemoPageProps {
+interface ListDemoPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
   onViewChange?: (view: AppView) => void;
@@ -33,7 +33,7 @@ interface ScenarioStepCopy {
 }
 
 interface ScenarioCopy {
-  id: string;
+  id: DemoScenarioId;
   tag: string;
   title: string;
   desc: string;
@@ -42,11 +42,7 @@ interface ScenarioCopy {
   steps: ScenarioStepCopy[];
 }
 
-interface ActionScenario extends ScenarioCopy {
-  icon: React.ComponentType<any>;
-}
-
-const SCENARIO_ICONS: Record<string, React.ComponentType<any>> = {
+const SCENARIO_ICONS: Record<DemoScenarioId, React.ComponentType<any>> = {
   'bank-account': Landmark,
   'apply-job': Briefcase,
   'ticket-booking': Ticket,
@@ -57,11 +53,12 @@ const SCENARIO_ICONS: Record<string, React.ComponentType<any>> = {
 };
 
 
-export default function DemoPage({ onOpenSandbox, onBackToLanding }: DemoPageProps) {
+export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDemoPageProps) {
+  const navigate = useNavigate();
   const { language } = useLanguage();
-  const t = getLocalizedRecord(DEMO_PAGE_TRANSLATIONS, language as keyof typeof DEMO_PAGE_TRANSLATIONS, 'DEMO_PAGE_TRANSLATIONS');
-  const [selectedScenarioId, setSelectedScenarioId] = React.useState<string | null>(null);
+  const t = getLocalizedRecord(LIST_DEMO_PAGE_TRANSLATIONS, language as keyof typeof LIST_DEMO_PAGE_TRANSLATIONS, 'LIST_DEMO_PAGE_TRANSLATIONS');
   const [activeTab, setActiveTab] = React.useState<'scenarios' | 'trends'>('scenarios');
+  const routeLocale = language as Locale;
 
   const demoScenarios = useMemo(
     () => t.scenarios.map((scenario: ScenarioCopy) => ({
@@ -71,61 +68,9 @@ export default function DemoPage({ onOpenSandbox, onBackToLanding }: DemoPagePro
     [t]
   );
 
-  const selectedActionScenario = useMemo<ActionScenario | null>(() => {
-    if (!selectedScenarioId) return null;
-
-    const current = t.scenarios.find((scenario: ScenarioCopy) => scenario.id === selectedScenarioId);
-    if (!current) return null;
-
-    return {
-      ...current,
-      icon: SCENARIO_ICONS[selectedScenarioId] || ShieldCheck
-    };
-  }, [selectedScenarioId, t]);
-
-  const playTingTingSound = () => {
-    try {
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioContextClass) return;
-      const ctx = new AudioContextClass();
-
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(1046.50, ctx.currentTime);
-      gain1.gain.setValueAtTime(0.12, ctx.currentTime);
-      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start();
-      osc1.stop(ctx.currentTime + 0.35);
-
-      const delay = 0.12;
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(1318.51, ctx.currentTime + delay);
-      gain2.gain.setValueAtTime(0, ctx.currentTime);
-      gain2.gain.setValueAtTime(0.12, ctx.currentTime + delay);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.4);
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(ctx.currentTime + delay);
-      osc2.stop(ctx.currentTime + delay + 0.4);
-    } catch (error) {
-      console.warn(error);
-    }
+  const handleOpenScenario = (scenarioId: DemoScenarioId) => {
+    navigate(demoScenarioPath(scenarioId, routeLocale));
   };
-
-  if (selectedActionScenario) {
-    return (
-      <DemoScenarioActionPage
-        scenario={selectedActionScenario}
-        onExit={() => setSelectedScenarioId(null)}
-        playTingTingSound={playTingTingSound}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 font-sans pb-24 relative overflow-hidden">
@@ -261,7 +206,7 @@ export default function DemoPage({ onOpenSandbox, onBackToLanding }: DemoPagePro
                         </div>
 
                         <button
-                          onClick={() => setSelectedScenarioId(scenario.id)}
+                          onClick={() => handleOpenScenario(scenario.id)}
                           className="w-full inline-flex items-center justify-center gap-2 font-bold text-xs md:text-sm text-slate-800 hover:text-white bg-slate-50 hover:bg-[#354CE1] border border-slate-200/80 hover:border-[#354CE1] px-4 py-2.5 rounded-xl transition cursor-pointer select-none active:scale-[0.98]"
                         >
                           <Play className="h-3.5 w-3.5 fill-current" />

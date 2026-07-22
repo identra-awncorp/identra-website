@@ -3522,6 +3522,391 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://identra.com/en/demo/bank-account</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/bank-account" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/bank-account</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/bank-account" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/bank-account</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/bank-account" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/bank-account</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/bank-account" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/bank-account</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/bank-account" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/bank-account" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/apply-job</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/apply-job" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/apply-job</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/apply-job" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/apply-job</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/apply-job" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/apply-job</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/apply-job" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/apply-job</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/apply-job" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/apply-job" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/ticket-booking</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-booking" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/ticket-booking</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-booking" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/ticket-booking</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-booking" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/ticket-booking</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-booking" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/ticket-booking</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-booking" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-booking" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/airlines-hotels</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/airlines-hotels" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/airlines-hotels</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/airlines-hotels" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/airlines-hotels</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/airlines-hotels" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/airlines-hotels</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/airlines-hotels" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/airlines-hotels</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/airlines-hotels" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/airlines-hotels" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/government-services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/government-services" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/government-services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/government-services" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/government-services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/government-services" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/government-services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/government-services" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/government-services</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/government-services" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/government-services" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/healthcare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/healthcare" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/healthcare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/healthcare" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/healthcare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/healthcare" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/healthcare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/healthcare" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/healthcare</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/healthcare" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/healthcare" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/en/demo/ticket-transfer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-transfer" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/es/demo/ticket-transfer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-transfer" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/ja/demo/ticket-transfer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-transfer" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/de/demo/ticket-transfer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-transfer" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.com/vi/demo/ticket-transfer</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/demo/ticket-transfer" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/demo/ticket-transfer" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://identra.com/en/blog-detail/blog-1</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/blog-detail/blog-1" />
     <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/blog-detail/blog-1" />

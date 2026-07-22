@@ -94,8 +94,21 @@ export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
 
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'blog-1';
 
+export const DEMO_SCENARIO_IDS = [
+  'bank-account',
+  'apply-job',
+  'ticket-booking',
+  'airlines-hotels',
+  'government-services',
+  'healthcare',
+  'ticket-transfer',
+] as const;
+
+export type DemoScenarioId = typeof DEMO_SCENARIO_IDS[number];
+
 export const VALID_VIEWS = new Set<AppView>(APP_VIEWS);
 export const VALID_BLOG_DETAIL_IDS = new Set<BlogDetailId>(BLOG_DETAIL_IDS);
+export const VALID_DEMO_SCENARIO_IDS = new Set<DemoScenarioId>(DEMO_SCENARIO_IDS);
 export const VALID_LOCALES = new Set<Locale>(SUPPORTED_LOCALES);
 
 export const isAppView = (value: string): value is AppView =>
@@ -103,6 +116,9 @@ export const isAppView = (value: string): value is AppView =>
 
 export const isBlogDetailId = (value: string): value is BlogDetailId =>
   VALID_BLOG_DETAIL_IDS.has(value as BlogDetailId);
+
+export const isDemoScenarioId = (value: string): value is DemoScenarioId =>
+  VALID_DEMO_SCENARIO_IDS.has(value as DemoScenarioId);
 
 export const isLocale = (value: string): value is Locale =>
   VALID_LOCALES.has(value as Locale);
@@ -132,6 +148,18 @@ export const pathToView = (pathname: string): AppView | null => {
   const [viewSegment, ...extraSegments] = cleanPath.split('/');
   if (!isAppView(viewSegment)) return null;
 
+  if (viewSegment === 'demo') {
+    if (extraSegments.length === 0) return viewSegment;
+    if (extraSegments.length > 1) return null;
+
+    try {
+      const decodedScenarioId = decodeURIComponent(extraSegments[0]);
+      return isDemoScenarioId(decodedScenarioId) ? viewSegment : null;
+    } catch {
+      return null;
+    }
+  }
+
   if (viewSegment !== 'blog-detail' && extraSegments.length > 0) return null;
 
   return viewSegment;
@@ -153,6 +181,22 @@ export const pathToBlogDetailId = (pathname: string): BlogDetailId | null => {
 export const blogDetailPath = (id: BlogDetailId, locale: Locale) =>
   `/${locale}/blog-detail/${encodeURIComponent(id)}`;
 
+export const pathToDemoScenarioId = (pathname: string): DemoScenarioId | null => {
+  const cleanPath = stripLocaleFromPath(pathname).replace(/^\/+/, '').replace(/\/+$/, '');
+  const [viewSegment, scenarioId, ...extraSegments] = cleanPath.split('/');
+  if (viewSegment !== 'demo' || !scenarioId || extraSegments.length > 0) return null;
+
+  try {
+    const decodedScenarioId = decodeURIComponent(scenarioId);
+    return isDemoScenarioId(decodedScenarioId) ? decodedScenarioId : null;
+  } catch {
+    return null;
+  }
+};
+
+export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
+  `/${locale}/demo/${encodeURIComponent(id)}`;
+
 export const viewToPath = (view: AppView, locale: Locale) => {
   if (view === 'landing') return `/${locale}`;
   if (view === 'blog-detail') return blogDetailPath(DEFAULT_BLOG_DETAIL_ID, locale);
@@ -167,6 +211,11 @@ export const localizePath = (pathname: string, locale: Locale): string | null =>
   if (view === 'blog-detail') {
     const blogId = pathToBlogDetailId(pathname);
     return blogId ? blogDetailPath(blogId, locale) : null;
+  }
+
+  if (view === 'demo') {
+    const scenarioId = pathToDemoScenarioId(pathname);
+    return scenarioId ? demoScenarioPath(scenarioId, locale) : viewToPath(view, locale);
   }
 
   return viewToPath(view, locale);

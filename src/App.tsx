@@ -3,15 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type ComponentType, type LazyExoticComponent } from 'react';
 import { useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import { useLanguage } from './context/LanguageContext';
 import SkeletonLoader from './components/SkeletonLoader';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SeoMetadata from './components/SeoMetadata';
-import type { AppView, BlogDetailId } from './types/routes';
-import { blogDetailPath, localizePath, pathToBlogDetailId, pathToView, viewToPath } from './types/routes';
+import type { AppView, BlogDetailId, DemoScenarioId } from './types/routes';
+import { blogDetailPath, localizePath, pathToBlogDetailId, pathToDemoScenarioId, pathToView, viewToPath } from './types/routes';
+
+type DemoScenarioPageProps = {
+  onBackToList: () => void;
+};
 
 function InitialLoadMarker({ onReady }: { onReady: () => void }) {
   useEffect(() => {
@@ -33,7 +37,7 @@ const RelayTransactions = lazy(() => import('./components/RelayTransactions'));
 const BuildingBlocks = lazy(() => import('./components/BuildingBlocks'));
 const PrivacyPortal = lazy(() => import('./components/PrivacyPortal'));
 const SecurityCertifications = lazy(() => import('./components/SecurityCertifications'));
-const DemoSandbox = lazy(() => import('./components/DemoSandbox'));
+const IdentityVerificationSandboxModal = lazy(() => import('./components/IdentityVerificationSandboxModal'));
 const GovernmentIdPage = lazy(() => import('./components/GovernmentIdPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
@@ -97,9 +101,26 @@ const GlobalExpansionPage = lazy(() => import('./components/GlobalExpansionPage'
 const ResourceCenterPage = lazy(() => import('./components/ResourceCenterPage'));
 const PrivacyPage = lazy(() => import('./components/PrivacyPage'));
 const AcademyPage = lazy(() => import('./components/AcademyPage'));
-const DemoPage = lazy(() => import('./components/DemoPage'));
+const ListDemoPage = lazy(() => import('./components/ListDemoPage'));
+const BankAccountDemoPage = lazy(() => import('./components/demo/BankAccountDemoPage'));
+const ApplyJobDemoPage = lazy(() => import('./components/demo/ApplyJobDemoPage'));
+const TicketBookingDemoPage = lazy(() => import('./components/demo/TicketBookingDemoPage'));
+const AirlinesHotelsDemoPage = lazy(() => import('./components/demo/AirlinesHotelsDemoPage'));
+const GovernmentServicesDemoPage = lazy(() => import('./components/demo/GovernmentServicesDemoPage'));
+const HealthcareDemoPage = lazy(() => import('./components/demo/HealthcareDemoPage'));
+const TicketTransferDemoPage = lazy(() => import('./components/demo/TicketTransferDemoPage'));
 const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
+
+const DEMO_SCENARIO_PAGE_COMPONENTS: Record<DemoScenarioId, LazyExoticComponent<ComponentType<DemoScenarioPageProps>>> = {
+  'bank-account': BankAccountDemoPage,
+  'apply-job': ApplyJobDemoPage,
+  'ticket-booking': TicketBookingDemoPage,
+  'airlines-hotels': AirlinesHotelsDemoPage,
+  'government-services': GovernmentServicesDemoPage,
+  healthcare: HealthcareDemoPage,
+  'ticket-transfer': TicketTransferDemoPage,
+};
 
 export default function App() {
   const navigate = useNavigate();
@@ -114,6 +135,9 @@ export default function App() {
   const resolvedView = pathToView(location.pathname);
   const resolvedBlogId = resolvedView === 'blog-detail'
     ? pathToBlogDetailId(location.pathname)
+    : null;
+  const resolvedDemoScenarioId = resolvedView === 'demo'
+    ? pathToDemoScenarioId(location.pathname)
     : null;
   const isNotFound = resolvedView === null
     || (resolvedView === 'blog-detail' && resolvedBlogId === null);
@@ -209,10 +233,11 @@ export default function App() {
   };
 
   const handleViewChange = (view: AppView) => {
-    if (!isNotFound && view === currentView) return;
+    const targetPath = viewToPath(view, language);
+    if (!isNotFound && view === currentView && location.pathname === targetPath) return;
 
     saveCurrentScrollPosition();
-    navigate(viewToPath(view, language), { state: IN_APP_NAVIGATION_STATE });
+    navigate(targetPath, { state: IN_APP_NAVIGATION_STATE });
   };
 
   const handleBlogDetailChange = (id: BlogDetailId) => {
@@ -238,6 +263,9 @@ export default function App() {
   const headerView = activeView === 'blog-detail' ? 'blog' : activeView;
   const isStandaloneView = activeView === 'login' || activeView === 'docs';
   const markInitialLoadComplete = () => setHasCompletedInitialLoad(true);
+  const DemoScenarioPage = resolvedDemoScenarioId
+    ? DEMO_SCENARIO_PAGE_COMPONENTS[resolvedDemoScenarioId]
+    : null;
   const pageSkeleton = <SkeletonLoader view={activeView} />;
   const layoutSkeleton = (
     <div className="min-h-screen bg-[#FAFBFD] font-sans text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1] scroll-smooth">
@@ -253,6 +281,7 @@ export default function App() {
       <SeoMetadata
         currentView={currentView}
         blogId={resolvedBlogId ?? undefined}
+        demoScenarioId={resolvedDemoScenarioId ?? undefined}
         isNotFound={isNotFound}
       />
       <Suspense fallback={suspenseFallback}>
@@ -388,11 +417,15 @@ export default function App() {
             onViewChange={handleViewChange}
           />
         ) : currentView === 'demo' ? (
-          <DemoPage
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onOpenSandbox={handleOpenSandbox}
-            onViewChange={handleViewChange}
-          />
+          DemoScenarioPage ? (
+            <DemoScenarioPage onBackToList={() => handleViewChange('demo')} />
+          ) : (
+            <ListDemoPage
+              onBackToLanding={() => handleBackNavigation('landing')}
+              onOpenSandbox={handleOpenSandbox}
+              onViewChange={handleViewChange}
+            />
+          )
         ) : currentView === 'academy' ? (
           <AcademyPage
             onBackToLanding={() => handleBackNavigation('landing')}
@@ -681,7 +714,7 @@ export default function App() {
       {/* Interactive IDV Workflow Sandbox Dialog Modal */}
       {isSandboxOpen && (
         <Suspense fallback={null}>
-          <DemoSandbox isOpen={isSandboxOpen} onClose={handleCloseSandbox} />
+          <IdentityVerificationSandboxModal isOpen={isSandboxOpen} onClose={handleCloseSandbox} />
         </Suspense>
       )}
           </div>

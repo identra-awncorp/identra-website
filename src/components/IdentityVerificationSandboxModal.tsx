@@ -12,9 +12,9 @@ import {
 import { SandboxStep, SandboxUserData, VerificationLog } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
-import { DEMO_SANDBOX_TRANSLATIONS } from '../translations/DemoSandboxTranslations';
+import { IDENTITY_VERIFICATION_SANDBOX_MODAL_TRANSLATIONS } from '../translations/IdentityVerificationSandboxModalTranslations';
 
-interface DemoSandboxProps {
+interface IdentityVerificationSandboxModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -39,9 +39,13 @@ const MOCK_DOCS = [
 const formatText = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
-export default function DemoSandbox({ isOpen, onClose }: DemoSandboxProps) {
+export default function IdentityVerificationSandboxModal({ isOpen, onClose }: IdentityVerificationSandboxModalProps) {
   const { language } = useLanguage();
-  const t = getLocalizedRecord(DEMO_SANDBOX_TRANSLATIONS, language as keyof typeof DEMO_SANDBOX_TRANSLATIONS, 'DEMO_SANDBOX_TRANSLATIONS');
+  const t = getLocalizedRecord(
+    IDENTITY_VERIFICATION_SANDBOX_MODAL_TRANSLATIONS,
+    language as keyof typeof IDENTITY_VERIFICATION_SANDBOX_MODAL_TRANSLATIONS,
+    'IDENTITY_VERIFICATION_SANDBOX_MODAL_TRANSLATIONS',
+  );
   const [step, setStep] = useState<SandboxStep>('welcome');
   const [userData, setUserData] = useState<SandboxUserData>({
     firstName: '',

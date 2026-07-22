@@ -18,9 +18,12 @@ import {
   blogDetailPath,
   DEFAULT_BLOG_DETAIL_ID,
   DEFAULT_LOCALE,
+  DEMO_SCENARIO_IDS,
+  demoScenarioPath,
   SUPPORTED_LOCALES,
   type AppView,
   type BlogDetailId,
+  type DemoScenarioId,
   type Locale,
   viewToPath,
 } from '../src/types/routes';
@@ -49,6 +52,7 @@ const LANGUAGE_META: Record<Locale, { htmlLang: string; ogLocale: string }> = {
 type LocalizedRoute = {
   view: AppView;
   blogId?: BlogDetailId;
+  demoScenarioId?: DemoScenarioId;
 };
 
 const normalizeSiteUrl = (siteUrl: string | undefined): string => {
@@ -72,7 +76,9 @@ const absoluteUrl = (path: string, siteUrl: string): string =>
 const routePath = (route: LocalizedRoute, locale: Locale): string =>
   route.view === 'blog-detail'
     ? blogDetailPath(route.blogId ?? DEFAULT_BLOG_DETAIL_ID, locale)
-    : viewToPath(route.view, locale);
+    : route.view === 'demo' && route.demoScenarioId
+      ? demoScenarioPath(route.demoScenarioId, locale)
+      : viewToPath(route.view, locale);
 
 const renderSeoFallback = (headline: string, description: string): string =>
   `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main></div>`;
@@ -283,6 +289,10 @@ const routes: LocalizedRoute[] = [
   ...APP_VIEWS
     .filter((view) => view !== 'blog-detail')
     .map((view) => ({ view })),
+  ...DEMO_SCENARIO_IDS.map((demoScenarioId) => ({
+    view: 'demo' as const,
+    demoScenarioId,
+  })),
   ...BLOG_DETAIL_IDS.map((blogId) => ({
     view: 'blog-detail' as const,
     blogId,

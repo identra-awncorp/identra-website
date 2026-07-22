@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Check } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { DEMO_COMPONENT_TRANSLATIONS } from '../../translations/DemoComponentTranslations';
+import { IDENTITY_FLOW_GRAPH_TRANSLATIONS } from '../../translations/demo/IdentityFlowGraphTranslations';
+import { getLocalizedRecord } from '../../utils/i18nRuntime';
 
 interface ScenarioStep {
   label: string;
@@ -23,7 +24,11 @@ export const IdentityFlowGraph: React.FC<IdentityFlowGraphProps> = ({
   isSuccess,
 }) => {
   const { language } = useLanguage();
-  const t = DEMO_COMPONENT_TRANSLATIONS[language].identityFlowGraph;
+  const t = getLocalizedRecord(
+    IDENTITY_FLOW_GRAPH_TRANSLATIONS,
+    language as keyof typeof IDENTITY_FLOW_GRAPH_TRANSLATIONS,
+    'IDENTITY_FLOW_GRAPH_TRANSLATIONS',
+  );
 
   if (!steps || steps.length === 0) return null;
 

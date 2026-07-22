@@ -12,6 +12,8 @@ import {
   BLOG_DETAIL_IDS,
   blogDetailPath,
   DEFAULT_LOCALE,
+  DEMO_SCENARIO_IDS,
+  demoScenarioPath,
   stripLocaleFromPath,
   SUPPORTED_LOCALES,
   type Locale,
@@ -51,12 +53,17 @@ const blogDetailRoutes = BLOG_DETAIL_IDS.map((id) => ({
   basePath: stripLocaleFromPath(blogDetailPath(id, DEFAULT_LOCALE)),
   pathForLocale: (locale: Locale) => blogDetailPath(id, locale),
 }));
-const routes = [...staticRoutes, ...blogDetailRoutes];
+const demoScenarioRoutes = DEMO_SCENARIO_IDS.map((id) => ({
+  basePath: stripLocaleFromPath(demoScenarioPath(id, DEFAULT_LOCALE)),
+  pathForLocale: (locale: Locale) => demoScenarioPath(id, locale),
+}));
+const routes = [...staticRoutes, ...demoScenarioRoutes, ...blogDetailRoutes];
 
 const priorityForPath = (path: string) => {
   if (path === '/') return '1.0';
   if (path === '/platform') return '0.9';
   if (path === '/pricing' || path === '/contact' || path === '/demo') return '0.8';
+  if (path.startsWith('/demo/')) return '0.7';
   if (path.startsWith('/blog-detail/')) return '0.6';
 
   return '0.7';

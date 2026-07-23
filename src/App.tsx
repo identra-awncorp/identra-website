@@ -263,7 +263,7 @@ export default function App() {
   const pageSkeleton = <SkeletonLoader view={activeView} />;
   const layoutSkeleton = (
     <div className="min-h-screen bg-[#FAFBFD] font-sans text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1] scroll-smooth">
-      <Header onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} currentView={headerView} />
+      <Header onViewChange={handleViewChange} currentView={headerView} />
       <main>{pageSkeleton}</main>
       <Footer onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} />
     </div>
@@ -302,7 +302,7 @@ export default function App() {
           <div className="min-h-screen bg-[#FAFBFD] font-sans text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1] scroll-smooth">
       {!hasCompletedInitialLoad && <InitialLoadMarker onReady={markInitialLoadComplete} />}
       {/* Navigation Header */}
-      <Header onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} currentView={headerView} />
+      <Header onViewChange={handleViewChange} currentView={headerView} />
 
       {/* Main Content Sections */}
       <main>

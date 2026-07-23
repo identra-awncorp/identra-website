@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { SUPPORTED_LOCALES, type AppView } from '../types/routes';
+import { SUPPORTED_LOCALES, type AppView, type Locale } from '../types/routes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
@@ -170,8 +170,15 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   MessageSquare
 };
 
+const LANGUAGE_NAME_KEYS: Record<Locale, string> = {
+  en: HEADER_COPY_KEYS.languageEnglish,
+  es: HEADER_COPY_KEYS.languageSpanish,
+  ja: HEADER_COPY_KEYS.languageJapanese,
+  de: HEADER_COPY_KEYS.languageGerman,
+  vi: HEADER_COPY_KEYS.languageVietnamese,
+};
+
 interface HeaderProps {
-  onOpenSandbox: () => void;
   onViewChange?: (view: AppView) => void;
   currentView?: AppView;
 }
@@ -220,8 +227,8 @@ const NAVIGATION_ITEMS: NavItem[] = [
   }
 ];
 
-export default function Header({ onOpenSandbox, onViewChange, currentView }: HeaderProps) {
-  const { language, setLanguage, t } = useLanguage();
+export default function Header({ onViewChange, currentView }: HeaderProps) {
+  const { language, setLanguage } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
@@ -261,6 +268,18 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
     setActiveDropdown(null);
     setMobileMenuOpen(false);
     showUnavailableNotice();
+  };
+
+  const handleGettingStartedClick = () => {
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+
+    if (onViewChange) {
+      onViewChange('docs');
+      return;
+    }
+
+    handleUnavailableNavigation();
   };
 
   const handleSolutionsItemClick = (e: React.MouseEvent, type: 'useCase' | 'industry' | 'goal', label: string, href: string) => {
@@ -768,7 +787,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
         onClick={(e) => { e.preventDefault(); showUnavailableNotice(); }}
         className="w-full bg-[#E5E9FF] hover:bg-[#D9E0FF] py-2 px-4 flex items-center justify-center gap-2 text-xs text-[#06184C] font-semibold tracking-wide transition text-center"
       >
-        <span>{t('shippedBanner')}</span>
+        <span>{tm(HEADER_COPY_KEYS.shippedBanner)}</span>
         <ArrowRight className="w-3.5 h-3.5 animate-pulse" />
       </a>
 
@@ -859,7 +878,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
               id="lang_switcher_desktop"
             >
               <Globe className="w-3.5 h-3.5 text-[#354CE1] shrink-0" />
-              <span className="text-[11px] font-semibold text-slate-700 font-sans tracking-wide">{t(`${language}Name` as any)}</span>
+              <span className="text-[11px] font-semibold text-slate-700 font-sans tracking-wide">{tm(LANGUAGE_NAME_KEYS[language])}</span>
               <ChevronDown className="w-2.5 h-2.5 text-slate-400 shrink-0 ml-0.5" />
             </button>
 
@@ -880,7 +899,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
                           : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                       }`}
                     >
-                      <span>{t(`${lang}Name` as any)}</span>
+                      <span>{tm(LANGUAGE_NAME_KEYS[lang])}</span>
                       {language === lang && (
                         <CheckCircle className="w-3 h-3 text-[#354CE1]" />
                       )}
@@ -892,10 +911,10 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
           </div>
 
           <button 
-            onClick={onOpenSandbox}
+            onClick={handleGettingStartedClick}
             className="text-xs font-semibold text-white bg-black hover:bg-slate-850 px-5 py-2.5 rounded-full flex items-center gap-1.5 shadow transition cursor-pointer"
           >
-            {t('tryDemo')}
+            {tm(HEADER_COPY_KEYS.gettingStarted)}
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -1199,16 +1218,16 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
 
             <div className="flex flex-col gap-2 pt-2">
               <button 
-                onClick={() => { setMobileMenuOpen(false); onOpenSandbox(); }}
+                onClick={handleGettingStartedClick}
                 className="w-full bg-slate-900 hover:bg-slate-850 text-white font-semibold py-2.5 rounded-full text-sm transition text-center cursor-pointer"
               >
-                {t('tryDemo')}
+                {tm(HEADER_COPY_KEYS.gettingStarted)}
               </button>
               <button 
                 onClick={() => { setMobileMenuOpen(false); onViewChange?.('login'); }}
                 className="w-full border border-slate-200 text-slate-700 font-semibold py-2.5 rounded-full text-sm transition hover:bg-slate-50 cursor-pointer"
               >
-                {t('login')}
+                {tm(HEADER_COPY_KEYS.login)}
               </button>
 
               {/* Mobile Language Selector */}

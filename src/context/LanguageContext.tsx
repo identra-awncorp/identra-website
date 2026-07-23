@@ -5,7 +5,6 @@
 
 import React, { createContext, useCallback, useContext, useEffect, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { translations } from '../translations/LanguageContextTranslations';
 import {
   DEFAULT_LOCALE,
   isLocale,
@@ -13,14 +12,12 @@ import {
   replacePathLocale,
   type Locale,
 } from '../types/routes';
-import { getLocalizedValue } from '../utils/i18nRuntime';
 
 export type Language = Locale;
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: keyof typeof translations['en']) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -83,12 +80,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     );
   }, [location.hash, location.pathname, location.search, navigate]);
 
-  const t = (key: keyof typeof translations['en']): string => {
-    return getLocalizedValue(translations[language], key, language, 'LanguageContextTranslations');
-  };
-
   return (
-    <LanguageContext.Provider key={language} value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider key={language} value={{ language, setLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

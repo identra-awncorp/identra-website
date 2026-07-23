@@ -17,7 +17,7 @@ interface BuildingBlocksProps {
 }
 
 export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const buildingBlocksT = BUILDING_BLOCKS_TRANSLATIONS[language];
   const [activeTab, setActiveTab] = useState<ProductId>('verifications');
   
@@ -46,13 +46,13 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
         {/* Header */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <span className="text-xs font-semibold uppercase tracking-wider text-[#354CE1] bg-[#E2E6FF] px-3.5 py-1.5 rounded-full">
-            {t('blocksBadge')}
+            {buildingBlocksT.blocksBadge}
           </span>
           <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight">
-            {t('blocksTitle')}
+            {buildingBlocksT.blocksTitle}
           </h2>
           <p className="text-slate-600 text-sm md:text-base leading-relaxed">
-            {t('blocksDesc')}
+            {buildingBlocksT.blocksDesc}
           </p>
 
           <div>
@@ -60,7 +60,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
               onClick={onOpenSandbox}
               className="inline-flex items-center gap-1.5 bg-black hover:bg-slate-850 text-white text-xs font-semibold px-5 py-2.5 rounded-full shadow transition cursor-pointer"
             >
-              {t('seeFullPlatform')}
+              {buildingBlocksT.seeFullPlatform}
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -69,11 +69,11 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
         {/* Dynamic tabs selector for Mobile (or responsive layout toggle) */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 border-b border-slate-200 pb-3">
           {[
-            { id: 'verifications', label: t('tabVerifications') },
-            { id: 'flow', label: t('tabFlow') },
-            { id: 'workflows', label: t('tabWorkflows') },
-            { id: 'graph', label: t('tabGraph') },
-            { id: 'cases', label: t('tabCases') }
+            { id: 'verifications', label: buildingBlocksT.tabVerifications },
+            { id: 'flow', label: buildingBlocksT.tabFlow },
+            { id: 'workflows', label: buildingBlocksT.tabWorkflows },
+            { id: 'graph', label: buildingBlocksT.tabGraph },
+            { id: 'cases', label: buildingBlocksT.tabCases }
           ].map(tab => (
             <button
               key={tab.id}
@@ -96,19 +96,19 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
           <div className="lg:col-span-5 space-y-6">
             {activeTab === 'verifications' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-[#354CE1] bg-[#E2E6FF] px-2.5 py-1 rounded-full font-mono uppercase">{t('badgeVerifyClients')}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{t('verifyClientsTitle')}</h3>
+                <span className="text-[10px] font-bold text-[#354CE1] bg-[#E2E6FF] px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeVerifyClients}</span>
+                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.verifyClientsTitle}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  {t('verifyClientsDesc')}
+                  {buildingBlocksT.verifyClientsDesc}
                 </p>
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-[#354CE1]" />
-                    <span>{t('verifyCheck1')}</span>
+                    <span>{buildingBlocksT.verifyCheck1}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-[#354CE1]" />
-                    <span>{t('verifyCheck2')}</span>
+                    <span>{buildingBlocksT.verifyCheck2}</span>
                   </div>
                 </div>
               </div>
@@ -116,13 +116,13 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'flow' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full font-mono uppercase">{t('badgeDynamicUi')}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{t('dynamicFlowTitle')}</h3>
+                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeDynamicUi}</span>
+                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.dynamicFlowTitle}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  {t('dynamicFlowDesc')}
+                  {buildingBlocksT.dynamicFlowDesc}
                 </p>
                 <div className="space-y-3 pt-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <p className="text-xs font-semibold text-slate-700">{t('interactiveSetRisk')}</p>
+                  <p className="text-xs font-semibold text-slate-700">{buildingBlocksT.interactiveSetRisk}</p>
                   <div className="flex gap-2">
                     <button 
                       onClick={() => setFlowRiskRule('low')}
@@ -130,7 +130,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                         flowRiskRule === 'low' ? 'bg-white border-slate-900 text-slate-900 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-800'
                       }`}
                     >
-                      {t('lowRiskClientBtn')}
+                      {buildingBlocksT.lowRiskClientBtn}
                     </button>
                     <button 
                       onClick={() => setFlowRiskRule('high')}
@@ -138,7 +138,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                         flowRiskRule === 'high' ? 'bg-white border-rose-400 text-rose-600 shadow-sm' : 'bg-transparent text-slate-500 hover:text-slate-800'
                       }`}
                     >
-                      {t('suspiciousSignalBtn')}
+                      {buildingBlocksT.suspiciousSignalBtn}
                     </button>
                   </div>
                 </div>
@@ -147,13 +147,13 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'workflows' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full font-mono uppercase">{t('badgeOrchestrate')}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{t('workflowsTitle')}</h3>
+                <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeOrchestrate}</span>
+                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.workflowsTitle}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  {t('workflowsDesc')}
+                  {buildingBlocksT.workflowsDesc}
                 </p>
                 <div className="space-y-3 pt-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <p className="text-xs font-semibold text-slate-700 font-mono">{t('simulateKycRouting')}</p>
+                  <p className="text-xs font-semibold text-slate-700 font-mono">{buildingBlocksT.simulateKycRouting}</p>
                   <div className="flex gap-1.5">
                     {['US', 'EU', 'HIGH_RISK'].map(country => (
                       <button
@@ -175,19 +175,19 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'graph' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full font-mono uppercase">{t('badgeFraudDiscovery')}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{t('graphTitle')}</h3>
+                <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeFraudDiscovery}</span>
+                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.graphTitle}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  {t('graphDesc')}
+                  {buildingBlocksT.graphDesc}
                 </p>
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-purple-600" />
-                    <span>{t('graphCheck1')}</span>
+                    <span>{buildingBlocksT.graphCheck1}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-purple-600" />
-                    <span>{t('graphCheck2')}</span>
+                    <span>{buildingBlocksT.graphCheck2}</span>
                   </div>
                 </div>
               </div>
@@ -195,13 +195,13 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'cases' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-mono uppercase">{t('badgeManualReview')}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{t('casesTitle')}</h3>
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeManualReview}</span>
+                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.casesTitle}</h3>
                 <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                  {t('casesDesc')}
+                  {buildingBlocksT.casesDesc}
                 </p>
                 <p className="text-xs text-slate-400 leading-normal italic">
-                  {t('casesInboxDesc')}
+                  {buildingBlocksT.casesInboxDesc}
                 </p>
               </div>
             )}
@@ -210,7 +210,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
               onClick={onOpenSandbox}
               className="text-xs font-bold text-[#354CE1] hover:text-[#2539BE] flex items-center gap-1.5 pt-2 hover:underline"
             >
-              {t('launchSandboxDemo')}
+              {buildingBlocksT.launchSandboxDemo}
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -226,17 +226,17 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <Smartphone className="w-4.5 h-4.5 text-[#354CE1]" />
-                    <span className="text-xs font-semibold text-slate-800">{t('verificationsDesk')}</span>
+                    <span className="text-xs font-semibold text-slate-800">{buildingBlocksT.verificationsDesk}</span>
                   </div>
-                  <span className="text-[9px] font-bold font-mono text-slate-400 uppercase tracking-widest">{t('signalEngine')}</span>
+                  <span className="text-[9px] font-bold font-mono text-slate-400 uppercase tracking-widest">{buildingBlocksT.signalEngine}</span>
                 </div>
 
                 <div className="space-y-2">
                   {[
-                    { label: t('govtIdAuth'), status: 'PASS', score: '99.2%', color: 'text-emerald-600 bg-emerald-50' },
-                    { label: t('biometricLiveness'), status: 'PASS', score: '98.4%', color: 'text-emerald-600 bg-emerald-50' },
-                    { label: t('watchlistPep'), status: 'CLEAR', score: '0 hits', color: 'text-[#354CE1] bg-[#E2E6FF]' },
-                    { label: t('nfcChipCheck'), status: 'SKIPPED', score: 'No chip', color: 'text-slate-400 bg-slate-50' }
+                    { label: buildingBlocksT.govtIdAuth, status: 'PASS', score: '99.2%', color: 'text-emerald-600 bg-emerald-50' },
+                    { label: buildingBlocksT.biometricLiveness, status: 'PASS', score: '98.4%', color: 'text-emerald-600 bg-emerald-50' },
+                    { label: buildingBlocksT.watchlistPep, status: 'CLEAR', score: '0 hits', color: 'text-[#354CE1] bg-[#E2E6FF]' },
+                    { label: buildingBlocksT.nfcChipCheck, status: 'SKIPPED', score: 'No chip', color: 'text-slate-400 bg-slate-50' }
                   ].map((chk, i) => (
                     <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-white hover:border-slate-200 transition">
                       <div className="flex items-center gap-2">
@@ -257,32 +257,32 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
             {activeTab === 'flow' && (
               <div className="w-full max-w-sm space-y-4 animate-in fade-in duration-300">
                 <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-md text-center">
-                  <p className="text-[10px] font-bold text-slate-400 font-mono">{t('dynamicRoutingPreview')}</p>
+                  <p className="text-[10px] font-bold text-slate-400 font-mono">{buildingBlocksT.dynamicRoutingPreview}</p>
                   <p className="text-sm font-semibold text-slate-800 mt-1">
-                    {t('clientFlowSequencing')}
+                    {buildingBlocksT.clientFlowSequencing}
                   </p>
                 </div>
 
                 <div className="flex flex-col items-center gap-3 relative">
                   <div className="w-48 bg-[#354CE1] text-white p-3 rounded-xl shadow text-xs font-semibold text-center">
-                    {t('documentUploadStep')}
+                    {buildingBlocksT.documentUploadStep}
                   </div>
                   <div className="w-0.5 h-6 bg-slate-300" />
                   
                   {flowRiskRule === 'low' ? (
                     <div className="bg-emerald-50 text-emerald-800 p-3 rounded-xl shadow border border-emerald-200 text-xs text-center w-56 animate-in zoom-in-95 duration-200">
-                      <p className="font-bold">{t('lowRiskPath')}</p>
-                      <p className="text-[10px] text-emerald-600 mt-0.5">{t('allowInstantBank')}</p>
+                      <p className="font-bold">{buildingBlocksT.lowRiskPath}</p>
+                      <p className="text-[10px] text-emerald-600 mt-0.5">{buildingBlocksT.allowInstantBank}</p>
                     </div>
                   ) : (
                     <div className="space-y-3 w-64 animate-in zoom-in-95 duration-200 flex flex-col items-center">
                       <div className="bg-amber-50 text-amber-800 border border-amber-200 p-3 rounded-xl text-xs text-center w-full">
-                        <p className="font-bold">{t('suspiciousDeviceSig')}</p>
-                        <p className="text-[10px] text-amber-600 mt-0.5">{t('routeToExtra')}</p>
+                        <p className="font-bold">{buildingBlocksT.suspiciousDeviceSig}</p>
+                        <p className="text-[10px] text-amber-600 mt-0.5">{buildingBlocksT.routeToExtra}</p>
                       </div>
                       <div className="w-0.5 h-4 bg-slate-300" />
                       <div className="w-48 bg-purple-600 text-white p-2.5 rounded-xl text-xs font-semibold text-center shadow">
-                        {t('liveSelfieChallenge')}
+                        {buildingBlocksT.liveSelfieChallenge}
                       </div>
                     </div>
                   )}
@@ -293,36 +293,36 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
             {/* 3. Workflows Mock */}
             {activeTab === 'workflows' && (
               <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 p-5 shadow-lg space-y-3 animate-in fade-in duration-300">
-                <p className="text-[10px] font-bold text-indigo-600 font-mono">{t('routingEngineConfig')}</p>
+                <p className="text-[10px] font-bold text-indigo-600 font-mono">{buildingBlocksT.routingEngineConfig}</p>
                 
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 font-mono text-xs text-slate-700 space-y-1">
-                  <p className="text-slate-400">{t('workflowRulesConfig')}</p>
+                  <p className="text-slate-400">{buildingBlocksT.workflowRulesConfig}</p>
                   <p><span className="text-purple-600">IF</span> {buildingBlocksT.countryEquals} <span className="text-emerald-600">&quot;{workflowCountry}&quot;</span></p>
                   {workflowCountry === 'US' && (
                     <>
-                      <p className="pl-4"><span className="text-indigo-600">REQUIRE</span> {t('driversLicense')}</p>
-                      <p className="pl-4"><span className="text-indigo-600">TRIGGER</span> {t('ssnMatchCheck')}</p>
+                      <p className="pl-4"><span className="text-indigo-600">REQUIRE</span> {buildingBlocksT.driversLicense}</p>
+                      <p className="pl-4"><span className="text-indigo-600">TRIGGER</span> {buildingBlocksT.ssnMatchCheck}</p>
                     </>
                   )}
                   {workflowCountry === 'EU' && (
                     <>
-                      <p className="pl-4"><span className="text-indigo-600">REQUIRE</span> {t('nationalPassport')}</p>
-                      <p className="pl-4"><span className="text-indigo-600">TRIGGER</span> {t('gdprPrivacyPortal')}</p>
+                      <p className="pl-4"><span className="text-indigo-600">REQUIRE</span> {buildingBlocksT.nationalPassport}</p>
+                      <p className="pl-4"><span className="text-indigo-600">TRIGGER</span> {buildingBlocksT.gdprPrivacyPortal}</p>
                     </>
                   )}
                   {workflowCountry === 'HIGH_RISK' && (
                     <>
-                      <p className="pl-4"><span className="text-rose-600 font-bold">{t('requireMultiFactor')}</span></p>
-                      <p className="pl-8">1. {t('govPhotoId')}</p>
-                      <p className="pl-8">2. {t('liveFacialSelfie')}</p>
-                      <p className="pl-8">3. {t('activeWatchlistDb')}</p>
+                      <p className="pl-4"><span className="text-rose-600 font-bold">{buildingBlocksT.requireMultiFactor}</span></p>
+                      <p className="pl-8">1. {buildingBlocksT.govPhotoId}</p>
+                      <p className="pl-8">2. {buildingBlocksT.liveFacialSelfie}</p>
+                      <p className="pl-8">3. {buildingBlocksT.activeWatchlistDb}</p>
                     </>
                   )}
                 </div>
 
                 <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                   <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500" />
-                  <span>{t('verifiedRoutingStatus')}</span>
+                  <span>{buildingBlocksT.verifiedRoutingStatus}</span>
                 </div>
               </div>
             )}
@@ -336,21 +336,21 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                     <div className="w-10 h-10 bg-indigo-600 rounded-full text-white flex items-center justify-center border-2 border-white shadow">
                       <Users className="w-5 h-5" />
                     </div>
-                    <span className="text-[9px] font-bold text-slate-800 mt-1">{t('userCluster')}</span>
+                    <span className="text-[9px] font-bold text-slate-800 mt-1">{buildingBlocksT.userCluster}</span>
                   </div>
 
                   <div className="absolute top-6 left-12 flex flex-col items-center">
                     <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center border border-purple-200">
                       <span className="text-[10px] font-mono">IP</span>
                     </div>
-                    <span className="text-[8px] text-slate-400 mt-0.5">{t('sharedIpAddress')}</span>
+                    <span className="text-[8px] text-slate-400 mt-0.5">{buildingBlocksT.sharedIpAddress}</span>
                   </div>
 
                   <div className="absolute bottom-6 right-12 flex flex-col items-center">
                     <div className="w-8 h-8 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center border border-rose-200">
                       <span className="text-[10px] font-mono">DEV</span>
                     </div>
-                    <span className="text-[8px] text-slate-400 mt-0.5">{t('duplicateDevice')}</span>
+                    <span className="text-[8px] text-slate-400 mt-0.5">{buildingBlocksT.duplicateDevice}</span>
                   </div>
 
                   <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
@@ -360,7 +360,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
                   {/* alert header */}
                   <div className="absolute top-2.5 right-2.5 bg-amber-50 border border-amber-200 text-amber-700 py-0.5 px-2 rounded-full text-[9px] font-bold font-mono">
-                    {t('probableSyndicate')}
+                    {buildingBlocksT.probableSyndicate}
                   </div>
                 </div>
               </div>
@@ -372,9 +372,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                 <div className="flex items-center justify-between pb-2 border-b border-slate-100">
                   <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-emerald-600" />
-                    {t('reviewInvestigatorInbox')}
+                    {buildingBlocksT.reviewInvestigatorInbox}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-400 font-bold">{t('activeAssignments')}</span>
+                  <span className="text-[10px] font-mono text-slate-400 font-bold">{buildingBlocksT.activeAssignments}</span>
                 </div>
 
                 <div className="space-y-2">
@@ -383,10 +383,10 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                       <div>
                         <p className="font-semibold text-slate-800">{c.name}</p>
                         <p className="text-[10px] text-slate-500">
-                          {c.risk === 'Suspicious IP Location' ? t('suspiciousIpLocation') :
-                           c.risk === 'Document Expiry Date mismatch' ? t('docExpiryMismatch') :
-                           t('nameTypoPassport')}
-                          &bull; <span className="font-semibold text-rose-600">{c.flag === 'High' ? t('relayRiskHigh') : c.flag === 'Medium' ? t('relayRiskMedium') : t('relayRiskLow')}</span>
+                          {c.risk === 'Suspicious IP Location' ? buildingBlocksT.suspiciousIpLocation :
+                           c.risk === 'Document Expiry Date mismatch' ? buildingBlocksT.docExpiryMismatch :
+                           buildingBlocksT.nameTypoPassport}
+                          &bull; <span className="font-semibold text-rose-600">{c.flag === 'High' ? buildingBlocksT.relayRiskHigh : c.flag === 'Medium' ? buildingBlocksT.relayRiskMedium : buildingBlocksT.relayRiskLow}</span>
                         </p>
                       </div>
 
@@ -396,14 +396,14 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                             <button
                               onClick={() => handleResolveCase(c.id, 'Approved')}
                               className="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-1.5 rounded-lg transition"
-                              title={t('approveUser')}
+                              title={buildingBlocksT.approveUser}
                             >
                               <Check className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleResolveCase(c.id, 'Rejected')}
                               className="bg-rose-50 hover:bg-rose-100 text-rose-700 p-1.5 rounded-lg transition"
-                              title={t('rejectUser')}
+                              title={buildingBlocksT.rejectUser}
                             >
                               <X className="w-4 h-4" />
                             </button>
@@ -412,7 +412,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                           <span className={`text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded ${
                             c.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                           }`}>
-                            {c.status === 'Approved' ? t('caseApproved') : t('caseRejected')}
+                            {c.status === 'Approved' ? buildingBlocksT.caseApproved : buildingBlocksT.caseRejected}
                           </span>
                         )}
                       </div>

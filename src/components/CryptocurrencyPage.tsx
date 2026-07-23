@@ -154,7 +154,7 @@ export default function CryptocurrencyPage({ onOpenSandbox, onBackToLanding, onV
                   onClick={onOpenSandbox}
                   className="bg-white hover:bg-emerald-50 text-[#0F2256] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-blue-950/20"
                 >
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-4 h-4 text-[#0F2256]" />
                 </button>
                 <button
@@ -739,7 +739,7 @@ export default function CryptocurrencyPage({ onOpenSandbox, onBackToLanding, onV
               onClick={onOpenSandbox}
               className="w-full sm:w-auto bg-slate-950 text-white hover:bg-slate-900 font-semibold text-sm px-8 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg"
             >
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-4 h-4 text-white" />
             </button>
             <button

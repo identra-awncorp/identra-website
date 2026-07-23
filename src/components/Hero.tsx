@@ -10,9 +10,11 @@ import { motion } from 'motion/react';
 import { ArrowRight, CheckCircle, Lock } from 'lucide-react';
 import TechGridBg from './TechGridBg';
 import { HERO_TRANSLATIONS } from '../translations/HeroTranslations';
+import type { AppView } from '../types/routes';
 
 interface HeroProps {
   onOpenSandbox: () => void;
+  onViewChange?: (view: AppView) => void;
 }
 
 // 3D Flipping Logo Card Component
@@ -85,7 +87,7 @@ function PartnerLogo({ name }: { name: string }) {
   );
 }
 
-export default function Hero({ onOpenSandbox }: HeroProps) {
+export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(HERO_TRANSLATIONS, language as keyof typeof HERO_TRANSLATIONS, 'HERO_TRANSLATIONS');
   const [isFlipped, setIsFlipped] = useState(false);
@@ -194,14 +196,15 @@ export default function Hero({ onOpenSandbox }: HeroProps) {
         
         {/* Title */}
         <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#0F1E36] leading-[1.08] max-w-5xl lg:max-w-none mx-auto">
-          {t.keeping}{' '}
+          {t.keeping ? `${t.keeping} ` : ''}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#354CE1] via-[#5F3CF3] to-[#00D4B2]">
             {t.internetHuman}
           </span>
+          {t.titleAfter ? ` ${t.titleAfter}` : ''}
         </h1>
 
         {/* Description */}
-        <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-sans">
+        <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-sans">
           {t.heroDesc}
         </p>
 
@@ -211,16 +214,17 @@ export default function Hero({ onOpenSandbox }: HeroProps) {
             onClick={onOpenSandbox}
             className="bg-[#04081E] hover:bg-slate-900 text-white font-semibold text-xs px-6 py-3.5 rounded-full flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-indigo-100/50 cursor-pointer"
           >
-            {t.getDemo}
+            {t.tryDemo}
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
-          <a
-            href="#platform-solution"
+          <button
+            type="button"
+            onClick={() => onViewChange?.('white-paper')}
             className="text-[#04081E]/70 hover:text-[#04081E] font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
           >
-            {t.seePlatform}
+            {t.seeWhitePaper}
             <ArrowRight className="w-3 h-3 text-slate-400" />
-          </a>
+          </button>
         </div>
 
         {/* Trust Banner Logos with vertical flip effect */}

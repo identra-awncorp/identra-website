@@ -135,7 +135,7 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
               id="btn-get-started"
               onClick={onOpenSandbox}
               className="bg-[#354CE1] hover:bg-[#2539BE] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm transition"
-            >{t.copy.getADemo}</button>
+            >{t.copy.tryTheDemo}</button>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ export type FooterLanguage = 'en' | 'es' | 'ja' | 'de' | 'vi';
 export type FooterTextKey =
   | 'readyToStart'
   | 'readyToStartDesc'
-  | 'getDemo'
+  | 'tryDemo'
   | 'tryItNow'
   | 'platform'
   | 'verifications'
@@ -106,7 +106,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
   en: {
     readyToStart: 'Ready to get started?',
     readyToStartDesc: "Let's build a safer, more human internet together.",
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     tryItNow: 'Try it now',
     platform: 'Platform',
     verifications: 'Verifications',
@@ -204,7 +204,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
   es: {
     readyToStart: '¿Listo para comenzar?',
     readyToStartDesc: 'Construyamos juntos un internet más seguro y más humano.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     tryItNow: 'Probar ahora',
     platform: 'Plataforma',
     verifications: 'Verificaciones',
@@ -302,7 +302,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
   ja: {
     readyToStart: '始める準備はできましたか？',
     readyToStartDesc: 'より安全で、より人間らしいインターネットを一緒につくりましょう。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     tryItNow: '今すぐ試す',
     platform: 'プラットフォーム',
     verifications: '本人確認',
@@ -400,7 +400,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
   de: {
     readyToStart: 'Bereit loszulegen?',
     readyToStartDesc: 'Lassen Sie uns gemeinsam ein sichereres und menschlicheres Internet schaffen.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     tryItNow: 'Jetzt ausprobieren',
     platform: 'Plattform',
     verifications: 'Verifizierungen',
@@ -498,7 +498,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
   vi: {
     readyToStart: 'Sẵn sàng bắt đầu?',
     readyToStartDesc: 'Hãy cùng xây dựng một internet an toàn hơn và nhân văn hơn.',
-    getDemo: 'Yêu cầu demo',
+    tryDemo: 'Trải nghiệm demo',
     tryItNow: 'Thử ngay',
     platform: 'Nền tảng',
     verifications: 'Xác minh',

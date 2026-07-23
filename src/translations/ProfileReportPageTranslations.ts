@@ -10,7 +10,7 @@ export const PROFILE_REPORT_TRANSLATIONS: any = {
     profileReport: 'PROFILE REPORT',
     heroTitle: "Onboard users faster with profile reports. Use partial PII to view users' full identity records so you can assess risk without hurting conversions.",
     heroDesc: 'Unlock instant access to extensive, verified records based on basic inputs. Gain full-spectrum transparency with minimal user friction.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     pillars: [
       { title: 'Increase conversion rates', desc: 'Prevent user errors from affecting conversions by using full identity records to distinguish between typos and fraud.' },
       { title: 'Expand platform access', desc: 'Verify individuals even if they have limited government-issued documentation or transaction history.' },
@@ -103,7 +103,7 @@ export const PROFILE_REPORT_TRANSLATIONS: any = {
     profileReport: 'REPORTE DE PERFIL',
     heroTitle: 'Incorpora usuarios más rápido con reportes de perfil. Usa PII parcial para ver registros completos de identidad y evaluar riesgo sin perjudicar la conversión.',
     heroDesc: 'Accede al instante a registros amplios y verificados a partir de datos básicos. Obtén transparencia completa con mínima fricción para el usuario.',
-    getDemo: 'Solicitar demo',
+    tryDemo: 'Probar la demo',
     pillars: [
       { title: 'Aumentar tasas de conversión', desc: 'Evita que errores de usuario afecten la conversión usando registros completos para distinguir errores tipográficos de fraude.' },
       { title: 'Ampliar el acceso a la plataforma', desc: 'Verifica personas aunque tengan documentación gubernamental o historial transaccional limitado.' },
@@ -196,7 +196,7 @@ export const PROFILE_REPORT_TRANSLATIONS: any = {
     profileReport: 'プロフィールレポート',
     heroTitle: 'プロフィールレポートでユーザー登録を高速化。部分的な PII から完全な本人確認レコードを参照し、コンバージョンを損なわずにリスクを評価できます。',
     heroDesc: '基本情報だけで、広範で検証済みのレコードに即時アクセス。少ない摩擦で全体像を把握できます。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     pillars: [
       { title: 'コンバージョン率を向上', desc: '完全な本人確認レコードを使い、入力ミスと不正を区別してコンバージョン低下を防ぎます。' },
       { title: 'プラットフォーム利用範囲を拡大', desc: '政府発行書類や取引履歴が限られる個人も確認できます。' },
@@ -289,7 +289,7 @@ export const PROFILE_REPORT_TRANSLATIONS: any = {
     profileReport: 'PROFILBERICHT',
     heroTitle: 'Nutzer schneller onboarden mit Profilberichten. Nutzen Sie teilweise PII, um vollständige Identitätsdatensätze zu sehen und Risiken ohne Conversion-Verlust zu bewerten.',
     heroDesc: 'Sofortiger Zugriff auf umfangreiche, verifizierte Datensätze auf Basis einfacher Eingaben. Vollständige Transparenz bei minimaler Nutzerreibung.',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     pillars: [
       { title: 'Conversion-Raten erhöhen', desc: 'Verhindern Sie, dass Eingabefehler Conversion kosten, indem vollständige Identitätsdaten Tippfehler von Betrug unterscheiden.' },
       { title: 'Plattformzugang erweitern', desc: 'Verifizieren Sie Personen auch bei begrenzten amtlichen Dokumenten oder Transaktionshistorien.' },
@@ -382,7 +382,7 @@ export const PROFILE_REPORT_TRANSLATIONS: any = {
     profileReport: 'BÁO CÁO HỒ SƠ',
     heroTitle: 'Đưa người dùng vào hệ thống nhanh hơn bằng báo cáo hồ sơ. Dùng PII một phần để xem hồ sơ danh tính đầy đủ, giúp đánh giá rủi ro mà không làm giảm chuyển đổi.',
     heroDesc: 'Truy cập tức thì các hồ sơ rộng, đã xác minh dựa trên dữ liệu đầu vào cơ bản. Có cái nhìn minh bạch toàn diện với ít ma sát cho người dùng.',
-    getDemo: 'Nhận demo',
+    tryDemo: 'Trải nghiệm demo',
     pillars: [
       { title: 'Tăng tỷ lệ chuyển đổi', desc: 'Ngăn lỗi nhập liệu của người dùng ảnh hưởng đến chuyển đổi bằng cách dùng hồ sơ danh tính đầy đủ để phân biệt lỗi gõ và gian lận.' },
       { title: 'Mở rộng quyền truy cập nền tảng', desc: 'Xác minh cá nhân ngay cả khi họ có ít giấy tờ do chính phủ cấp hoặc lịch sử giao dịch hạn chế.' },

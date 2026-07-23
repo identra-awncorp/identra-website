@@ -1143,7 +1143,7 @@ export default function CandidateVerificationPage({ onOpenSandbox, onBackToLandi
               onClick={onOpenSandbox}
               className="bg-[#354CE1] hover:bg-[#2F44D1] text-white font-semibold text-base px-8 py-4 rounded-full shadow-lg transition duration-200 cursor-pointer"
             >
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button 
               onClick={onOpenSandbox}

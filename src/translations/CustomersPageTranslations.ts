@@ -45,7 +45,7 @@ export const CUSTOMERS_TRANSLATIONS = {
     next: 'Next',
     readyToGetStarted: 'Ready to get started?',
     getInTouch: 'Get in touch or start exploring Identra today',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     tryItNow: 'Try it now',
 
     // Industries
@@ -101,7 +101,7 @@ export const CUSTOMERS_TRANSLATIONS = {
     next: 'Siguiente',
     readyToGetStarted: '¿Listo para comenzar?',
     getInTouch: 'Ponte en contacto o comienza a explorar Identra hoy mismo',
-    getDemo: 'Solicitar demostración',
+    tryDemo: 'Probar la demo',
     tryItNow: 'Probar ahora',
 
     // Industries
@@ -157,7 +157,7 @@ export const CUSTOMERS_TRANSLATIONS = {
     next: '次へ',
     readyToGetStarted: '始める準備はできていますか？',
     getInTouch: '今すぐお問い合わせいただくか、Identraの探索を開始してください。',
-    getDemo: 'デモを依頼する',
+    tryDemo: 'デモを試す',
     tryItNow: '今すぐ試す',
 
     // Industries
@@ -213,7 +213,7 @@ export const CUSTOMERS_TRANSLATIONS = {
     next: 'Weiter',
     readyToGetStarted: 'Bereit, loszulegen?',
     getInTouch: 'Nehmen Sie Kontakt auf oder erkunden Sie Identra noch heute',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     tryItNow: 'Jetzt ausprobieren',
 
     // Industries
@@ -269,7 +269,7 @@ export const CUSTOMERS_TRANSLATIONS = {
     next: 'Sau',
     readyToGetStarted: 'Sẵn sàng để bắt đầu?',
     getInTouch: 'Liên hệ với chúng tôi hoặc bắt đầu khám phá Identra ngay hôm nay',
-    getDemo: 'Nhận demo',
+    tryDemo: 'Trải nghiệm demo',
     tryItNow: 'Thử ngay',
 
     // Industries

@@ -129,7 +129,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                   className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-xl transition-all duration-200 shadow-lg shadow-blue-900/30 hover:shadow-blue-900/40 transform hover:-translate-y-0.5 active:translate-y-0"
                   id="bf-demo-btn"
                 >
-                  <span>{t.getDemo}</span>
+                  <span>{t.tryDemo}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -886,7 +886,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
               className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-sm font-bold text-white rounded-xl shadow-lg shadow-blue-950/40 hover:shadow-blue-950/60 transition-all duration-200"
               id="bf-cta-demo"
             >
-              <span>{t.getDemo}</span>
+              <span>{t.tryDemo}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button 

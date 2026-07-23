@@ -188,7 +188,7 @@ export default function ProfileReportPage({ onOpenSandbox, onBackToLanding, onVi
                   className="bg-white hover:bg-amber-50 text-[#F2A122] font-semibold px-6 py-3.5 rounded-full text-sm shadow-md transition flex items-center gap-2 group"
                   id="profile-report-demo-btn"
                 >
-                  <span>{t.getDemo}</span>
+                  <span>{t.tryDemo}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
                 </button>
               </div>
@@ -746,7 +746,7 @@ export default function ProfileReportPage({ onOpenSandbox, onBackToLanding, onVi
               onClick={onOpenSandbox}
               className="bg-slate-950 hover:bg-black text-white font-semibold px-8 py-3.5 rounded-full text-sm shadow-md transition w-full sm:w-auto"
             >
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button
               onClick={onOpenSandbox}

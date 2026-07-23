@@ -444,7 +444,7 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
               onClick={onOpenSandbox}
               className="bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs px-6 py-3.5 rounded-full shadow-md transition flex items-center gap-1.5"
             >
-              <span>{t.copy.getADemo}</span>
+              <span>{t.copy.tryTheDemo}</span>
               <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
             </button>
             <button 

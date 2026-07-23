@@ -89,7 +89,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
               onClick={onOpenSandbox}
               className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow transition"
             >
-              {translate('getDemo')}
+              {translate('tryDemo')}
             </button>
             <button
               onClick={onOpenSandbox}

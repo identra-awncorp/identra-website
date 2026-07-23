@@ -652,7 +652,7 @@ export default function CustomersPage({ onOpenSandbox, onBackToLanding, onViewCh
                   className="inline-flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-slate-50 text-indigo-600 font-bold rounded-full text-sm shadow-md transition-all hover:shadow-lg"
                   id="customers_cta_demo_btn"
                 >
-                  <span>{t.getDemo}</span>
+                  <span>{t.tryDemo}</span>
                   <ArrowRight className="w-4 h-4 text-indigo-600" />
                 </button>
                 <button 

@@ -744,7 +744,7 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
               onClick={onOpenSandbox}
               className="w-full sm:w-auto bg-slate-950 text-white hover:bg-slate-900 font-semibold text-sm px-8 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg"
             >
-              {t.demoCta}
+              {t.tryDemoCta}
               <ArrowRight className="w-4 h-4 text-white" />
             </button>
             <button

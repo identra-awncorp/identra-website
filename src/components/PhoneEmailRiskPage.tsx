@@ -265,7 +265,7 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
                 className="bg-[#111625] hover:bg-[#1f293d] text-white font-medium px-7 py-4 rounded-full text-sm shadow-lg transition flex items-center gap-2.5 group"
                 id="phone-email-demo-cta"
               >
-                <span>{t.getDemo}</span>
+                <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4.5 h-4.5 group-hover:translate-x-1 transition" />
               </button>
             </div>

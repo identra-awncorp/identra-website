@@ -363,7 +363,7 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
                   onClick={onOpenSandbox}
                   className="px-8 py-4 bg-[#FFBF43] hover:bg-[#FFBF43]/90 text-[#0F1E36] font-bold rounded-full transition shadow-xl shadow-black/5 text-sm text-center flex items-center justify-center gap-1.5"
                 >
-                  {t.getDemoBtn}
+                  {t.tryDemoBtn}
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <a
@@ -1347,7 +1347,7 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
               onClick={onOpenSandbox}
               className="w-full sm:w-auto px-8 py-4 bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold rounded-full shadow-xl transition text-sm"
             >
-              {t.ctaDemoBtn}
+              {t.ctaTryDemoBtn}
             </button>
             <button
               onClick={onOpenSandbox}

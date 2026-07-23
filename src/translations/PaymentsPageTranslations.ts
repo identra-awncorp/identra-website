@@ -9,7 +9,7 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     badge: 'Solutions - Payments',
     heroTitle: 'Frictionless compliance for global payments.',
     heroDesc: 'Embed flexible KYB/KYC and AML flows into your product to accelerate growth while maintaining robust cross-border compliance.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try identity sandbox',
     heroBenefits: [
       {
@@ -243,7 +243,7 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     finalCta: {
       title: 'Want to move money and not get bottlenecked?',
       desc: 'See how Identra helps global payments companies streamline compliance without sacrificing speed.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now'
     }
   },
@@ -252,7 +252,7 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     badge: 'Soluciones - Pagos',
     heroTitle: 'Cumplimiento sin fricción para pagos globales.',
     heroDesc: 'Integra flujos flexibles de KYB/KYC y AML en tu producto para acelerar el crecimiento mientras mantienes un cumplimiento transfronterizo sólido.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox de identidad',
     heroBenefits: [
       { title: 'Verifica globalmente sin complejidad', desc: 'Verifica personas y empresas en más de 200 países y territorios con soporte para documentos locales, bases de datos y regulaciones de cumplimiento.' },
@@ -334,14 +334,14 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     help: { title: 'Cómo puede ayudar Identra', desc: 'Simplifica el cumplimiento global con soluciones rápidas y escalables.', cards: [{ title: 'Cumplimiento en remesas', desc: 'Verifica remitentes y destinatarios en tiempo real, filtra sanciones y cumple AML transfronterizo sin fricción innecesaria.' }, { title: 'POS y pagos presenciales', desc: 'Onboarding rápido y conforme para comercios físicos con documentos flexibles y consulta registral instantánea.' }, { title: 'Pagos B2B y plataformas', desc: 'Verifica estructuras corporativas, UBOs y declaraciones fiscales para flujos de alto valor.' }] },
     testimonial: { quote: '"Queremos automatizar el proceso de decisión tanto como sea posible durante KYB y KYC. Identra nos permite hacerlo, nos ahorra tiempo y nos da flexibilidad para cambiar workflows y reglas cuando descubrimos nuevos grupos de fraude."', name: 'Amanda Hodgetts-Martin', title: 'Directora de gestión de riesgo en Branch', cta: 'Leer caso de estudio' },
     explore: { title: 'Explora más de la plataforma de identidad de Identra', cards: [{ view: 'platform', title: 'Expándete globalmente con KYB/KYC internacional.' }, { view: 'kyb', title: 'Verifica cualquier empresa y las personas detrás de ella con KYB-KYC integrado.' }] },
-    finalCta: { title: '¿Quieres mover dinero sin cuellos de botella?', desc: 'Descubre cómo Identra ayuda a empresas de pagos globales a simplificar cumplimiento sin sacrificar velocidad.', primary: 'Solicitar una demo', secondary: 'Pruébalo ahora' }
+    finalCta: { title: '¿Quieres mover dinero sin cuellos de botella?', desc: 'Descubre cómo Identra ayuda a empresas de pagos globales a simplificar cumplimiento sin sacrificar velocidad.', primary: 'Probar la demo', secondary: 'Pruébalo ahora' }
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
     badge: 'ソリューション - 決済',
     heroTitle: 'グローバル決済のための摩擦のないコンプライアンス。',
     heroDesc: '柔軟な KYB/KYC と AML フローを製品に組み込み、強固な越境コンプライアンスを保ちながら成長を加速します。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     trySandbox: '本人確認サンドボックスを試す',
     heroBenefits: [
       { title: '複雑さなしにグローバル検証', desc: '200 以上の国と地域で、現地書類、データベース、規制に対応しながら個人と事業者を検証します。' },
@@ -387,7 +387,7 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     help: { title: 'Identra でできること', desc: '高速で拡張可能なソリューションによりグローバルコンプライアンスを簡素化します。', cards: [{ title: '送金コンプライアンス', desc: '送金者と受取人をリアルタイムで検証し、制裁チェックを行います。' }, { title: 'POS と対面決済', desc: '実店舗加盟店の迅速で準拠したオンボーディングを実現します。' }, { title: 'B2B 決済とプラットフォーム', desc: '複雑な法人構造、UBO、税務申告を検証します。' }] },
     testimonial: { quote: '「KYB と KYC の意思決定をできる限り自動化したいと考えています。Identra はそれを実現して時間を節約するだけでなく、新しい不正リングを発見したときにワークフローやルールを柔軟に変更できます。」', name: 'Amanda Hodgetts-Martin', title: 'Branch リスク管理ディレクター', cta: '事例を読む' },
     explore: { title: 'Identra の本人確認プラットフォームをさらに見る', cards: [{ view: 'platform', title: '国際 KYB/KYC でグローバルに拡大。' }, { view: 'kyb', title: '統合 KYB-KYC であらゆる事業と関係者を検証。' }] },
-    finalCta: { title: '資金移動を滞らせたくありませんか？', desc: 'Identra がグローバル決済企業のコンプライアンスを速度を犠牲にせず効率化する方法をご覧ください。', primary: 'デモを依頼', secondary: '今すぐ試す' }
+    finalCta: { title: '資金移動を滞らせたくありませんか？', desc: 'Identra がグローバル決済企業のコンプライアンスを速度を犠牲にせず効率化する方法をご覧ください。', primary: 'デモを試す', secondary: '今すぐ試す' }
   },
   de: {} as any,
   vi: {} as any
@@ -399,7 +399,7 @@ PAYMENTS_PAGE_TRANSLATIONS.de = {
   badge: 'Lösungen - Zahlungen',
   heroTitle: 'Reibungslose Compliance für globale Zahlungen.',
   heroDesc: 'Binden Sie flexible KYB/KYC- und AML-Abläufe in Ihr Produkt ein, um Wachstum zu beschleunigen und zugleich robuste grenzüberschreitende Compliance zu wahren.',
-  getDemo: 'Demo anfragen',
+  tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Identity-Sandbox testen',
   heroBenefits: [
     { title: 'Weltweit verifizieren, ohne Komplexität', desc: 'Verifizieren Sie Personen und Unternehmen in mehr als 200 Ländern und Regionen mit Unterstützung für lokale Dokumente, Datenbanken und Compliance-Vorgaben.' },
@@ -584,7 +584,7 @@ PAYMENTS_PAGE_TRANSLATIONS.de = {
     cta: 'Fallstudie lesen'
   },
   explore: { title: 'Mehr von Identras Identitätsplattform entdecken', cards: [{ view: 'platform', title: 'Global expandieren mit internationalem KYB/KYC.' }, { view: 'kyb', title: 'Jedes Unternehmen und die Menschen dahinter mit integriertem KYB-KYC verifizieren.' }] },
-  finalCta: { title: 'Geld bewegen, ohne ausgebremst zu werden?', desc: 'Erfahren Sie, wie Identra globalen Zahlungsunternehmen hilft, Compliance zu vereinfachen, ohne Geschwindigkeit zu opfern.', primary: 'Demo anfragen', secondary: 'Jetzt ausprobieren' }
+  finalCta: { title: 'Geld bewegen, ohne ausgebremst zu werden?', desc: 'Erfahren Sie, wie Identra globalen Zahlungsunternehmen hilft, Compliance zu vereinfachen, ohne Geschwindigkeit zu opfern.', primary: 'Demo testen', secondary: 'Jetzt ausprobieren' }
 } as any;
 
 PAYMENTS_PAGE_TRANSLATIONS.vi = {
@@ -592,7 +592,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
   badge: 'Giải pháp - Thanh toán',
   heroTitle: 'Tuân thủ không ma sát cho thanh toán toàn cầu.',
   heroDesc: 'Nhúng các luồng KYB/KYC và AML linh hoạt vào sản phẩm để tăng trưởng nhanh hơn mà vẫn duy trì tuân thủ xuyên biên giới vững chắc.',
-  getDemo: 'Nhận bản demo',
+  tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Dùng thử sandbox định danh',
   heroBenefits: [
     { title: 'Xác minh toàn cầu mà không phức tạp', desc: 'Xác minh cá nhân và doanh nghiệp tại hơn 200 quốc gia và vùng lãnh thổ với hỗ trợ cho giấy tờ, cơ sở dữ liệu và quy định tuân thủ tại địa phương.' },
@@ -777,5 +777,5 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
     cta: 'Đọc nghiên cứu điển hình'
   },
   explore: { title: 'Khám phá thêm nền tảng định danh của Identra', cards: [{ view: 'platform', title: 'Mở rộng toàn cầu với KYB/KYC quốc tế.' }, { view: 'kyb', title: 'Xác minh mọi doanh nghiệp và những người đứng sau họ bằng KYB-KYC tích hợp.' }] },
-  finalCta: { title: 'Bạn muốn chuyển tiền mà không bị nghẽn quy trình?', desc: 'Xem cách Identra giúp các công ty thanh toán toàn cầu tinh gọn tuân thủ mà không đánh đổi tốc độ.', primary: 'Nhận bản demo', secondary: 'Dùng thử ngay' }
+  finalCta: { title: 'Bạn muốn chuyển tiền mà không bị nghẽn quy trình?', desc: 'Xem cách Identra giúp các công ty thanh toán toàn cầu tinh gọn tuân thủ mà không đánh đổi tốc độ.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' }
 } as any;

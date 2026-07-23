@@ -144,7 +144,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                 className="inline-flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-teal-50 text-[#354CE1] font-bold rounded-full text-sm shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
                 id="nfc_hero_demo_btn"
               >
-                <span>{t.getDemo}</span>
+                <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4 h-4 text-[#354CE1]" />
               </button>
             </div>

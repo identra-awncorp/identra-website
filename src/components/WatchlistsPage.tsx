@@ -232,7 +232,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
                   onClick={onOpenSandbox}
                   className="bg-white hover:bg-amber-50 text-[#C97E00] font-semibold px-6 py-3.5 rounded-full text-sm shadow-md transition flex items-center gap-2 group"
                 >
-                  <span>{t.getDemo}</span>
+                  <span>{t.tryDemo}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
                 </button>
                 <button 

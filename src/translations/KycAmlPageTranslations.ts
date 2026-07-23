@@ -9,7 +9,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     badge: 'AML/KYC COMPLIANCE',
     heroTitle: 'AML/KYC compliance customized to your business needs.',
     heroDesc: 'Tailor Know Your Customer (KYC) and Anti-Money Laundering (AML) processes to meet global regulations your way - both now and in the future.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try sandbox',
     heroMockup: {
       engine: 'AML_ENGINE_V3 // ACTIVE',
@@ -240,7 +240,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     cta: {
       title: 'Ready to get started?',
       desc: "Discover how Identra's customizable AML/KYC orchestration platform keeps your business compliant, secure, and growing.",
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now'
     }
   },
@@ -249,7 +249,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     badge: 'CUMPLIMIENTO AML/KYC',
     heroTitle: 'Cumplimiento AML/KYC adaptado a las necesidades de tu negocio.',
     heroDesc: 'Adapta los procesos Know Your Customer (KYC) y Anti-Money Laundering (AML) a las regulaciones globales a tu manera, ahora y en el futuro.',
-    getDemo: 'Solicitar demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox',
     heroMockup: {
       engine: 'AML_ENGINE_V3 // ACTIVO',
@@ -362,14 +362,14 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       { label: 'VISTA DE PRODUCTO', title: 'Verifica documentos oficiales globalmente.', desc: 'Implementa verificación documental segura para más de 200 países con biometría facial avanzada.', cta: 'Explorar Government ID' },
       { label: 'VISTA DE REPORTES', title: 'Revisa sanciones globales y listas PEP.', desc: 'Ejecuta coincidencias de listas, revisiones PEP y alertas de medios adversos al instante.', cta: 'Explorar reportes de listas' }
     ],
-    cta: { title: '¿Listo para empezar?', desc: 'Descubre cómo la plataforma AML/KYC configurable de Identra mantiene tu negocio conforme, seguro y en crecimiento.', primary: 'Solicitar demo', secondary: 'Probar ahora' }
+    cta: { title: '¿Listo para empezar?', desc: 'Descubre cómo la plataforma AML/KYC configurable de Identra mantiene tu negocio conforme, seguro y en crecimiento.', primary: 'Probar la demo', secondary: 'Probar ahora' }
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
     badge: 'AML/KYC コンプライアンス',
     heroTitle: '事業要件に合わせて設計できる AML/KYC コンプライアンス。',
     heroDesc: 'Know Your Customer (KYC) と Anti-Money Laundering (AML) のプロセスを、現在と将来のグローバル規制に合わせて柔軟に調整できます。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     trySandbox: 'サンドボックスを試す',
     heroMockup: {
       engine: 'AML_ENGINE_V3 // 稼働中',
@@ -439,14 +439,14 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     resources: [{ meta: '動画 - 56分', title: 'グローバル成長を実現: 国際市場でのコンプライアンスと信頼', desc: 'コンプライアンス専門家から、国際展開、規制差異、不正防止の実践を学びます。', cta: '動画を見る' }, { meta: 'ガイド - 25分', title: '本人確認担当者のための規制遵守ガイド', desc: 'AML 要件、KYC、KYB、UBO、SAR タイムラインを整理した包括的なプレイブックです。', cta: 'ガイドを読む' }, { meta: 'ブログ - 7分', title: '自動 KYC 検証: コンプライアンス責任者向けガイド', desc: '本人確認における自動判定が精度を高め、手動レビューを減らす仕組みを解説します。', cta: 'ブログを読む' }],
     exploreTitle: 'Identra の本人確認プラットフォームをさらに見る',
     exploreCards: [{ label: '製品ビュー', title: '世界中の公的身分証を検証。', desc: '200以上の国に対応する安全な書類検証と高度な顔生体認証を導入できます。', cta: 'Government ID を見る' }, { label: 'レポートビュー', title: 'グローバル制裁と PEP リストを照合。', desc: 'ウォッチリスト一致、PEP 確認、ネガティブニュースアラートを即時実行します。', cta: 'ウォッチリストレポートを見る' }],
-    cta: { title: '始める準備はできていますか？', desc: 'Identra のカスタマイズ可能な AML/KYC 統制基盤が、事業のコンプライアンス、安全性、成長を支えます。', primary: 'デモを依頼', secondary: '今すぐ試す' }
+    cta: { title: '始める準備はできていますか？', desc: 'Identra のカスタマイズ可能な AML/KYC 統制基盤が、事業のコンプライアンス、安全性、成長を支えます。', primary: 'デモを試す', secondary: '今すぐ試す' }
   },
   de: {
     backToPlatform: 'Zurück zur Plattform',
     badge: 'AML/KYC-COMPLIANCE',
     heroTitle: 'AML/KYC-Compliance, angepasst an Ihre Geschäftsanforderungen.',
     heroDesc: 'Passen Sie Know Your Customer (KYC) und Anti-Money Laundering (AML) an globale Vorschriften an, heute und in Zukunft.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     trySandbox: 'Sandbox testen',
     heroMockup: {
       engine: 'AML_ENGINE_V3 // AKTIV',
@@ -516,14 +516,14 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     resources: [{ meta: 'Video - 56 Min.', title: 'Globales Wachstum: Compliance und Vertrauen in internationalen Märkten', desc: 'Compliance-Fachleute teilen Ansätze für Expansion, regulatorische Nuancen und Betrugsprävention.', cta: 'Video ansehen' }, { meta: 'Leitfaden - 25 Min.', title: 'Der Leitfaden für Identitätsprofis zur regulatorischen Compliance', desc: 'Ein Playbook zu AML-Anforderungen, KYC, KYB, UBO-Abfragen und SAR-Fristen.', cta: 'Leitfaden lesen' }, { meta: 'Blog - 7 Min.', title: 'Automatisierte KYC-Verifizierung für Compliance-Verantwortliche', desc: 'Wie automatische Entscheidungen die Präzision erhöhen und manuelle Prüfqueues reduzieren.', cta: 'Blog lesen' }],
     exploreTitle: 'Mehr von Identras Identitätsplattform entdecken',
     exploreCards: [{ label: 'PRODUKTANSICHT', title: 'Ausweisdokumente weltweit verifizieren.', desc: 'Sichere Dokumentenprüfung für 200+ Länder mit fortschrittlicher Gesichtsbiometrie bereitstellen.', cta: 'Government ID entdecken' }, { label: 'REPORTING-ANSICHT', title: 'Globale Sanktionen und PEP-Listen prüfen.', desc: 'Watchlist-Treffer, PEP-Prüfungen und negative News Alerts sofort ausführen.', cta: 'Watchlist Reports entdecken' }],
-    cta: { title: 'Bereit loszulegen?', desc: 'Erfahren Sie, wie Identras anpassbare AML/KYC-Orchestrierungsplattform Ihr Unternehmen compliant, sicher und wachstumsfähig hält.', primary: 'Demo anfordern', secondary: 'Jetzt testen' }
+    cta: { title: 'Bereit loszulegen?', desc: 'Erfahren Sie, wie Identras anpassbare AML/KYC-Orchestrierungsplattform Ihr Unternehmen compliant, sicher und wachstumsfähig hält.', primary: 'Demo testen', secondary: 'Jetzt testen' }
   },
   vi: {
     backToPlatform: 'Quay lại nền tảng',
     badge: 'TUÂN THỦ AML/KYC',
     heroTitle: 'Tuân thủ AML/KYC được tùy chỉnh theo nhu cầu doanh nghiệp.',
     heroDesc: 'Điều chỉnh quy trình Know Your Customer (KYC) và Anti-Money Laundering (AML) để đáp ứng quy định toàn cầu theo cách của bạn, cả hiện tại lẫn tương lai.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     trySandbox: 'Thử môi trường kiểm thử',
     heroMockup: {
       engine: 'AML_ENGINE_V3 // ĐANG HOẠT ĐỘNG',
@@ -593,6 +593,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     resources: [{ meta: 'Video - 56 phút', title: 'Mở khóa tăng trưởng toàn cầu: đảm bảo tuân thủ và niềm tin trên thị trường quốc tế', desc: 'Học từ các chuyên gia tuân thủ về mở rộng quốc gia, sắc thái quy định và phương pháp chống gian lận.', cta: 'Xem video' }, { meta: 'Hướng dẫn - 25 phút', title: 'Hướng dẫn cho chuyên gia danh tính để đạt và duy trì tuân thủ quy định', desc: 'Tài liệu thực hành toàn diện về yêu cầu AML, xác minh KYC, tra cứu chủ sở hữu KYB và mốc thời gian SAR.', cta: 'Đọc hướng dẫn' }, { meta: 'Blog - 7 phút', title: 'Xác minh KYC tự động: hướng dẫn cho quản lý tuân thủ và lãnh đạo', desc: 'Cách quyết định tự động hoạt động trong xác minh danh tính để nâng độ chính xác và giảm hàng đợi rà soát thủ công.', cta: 'Đọc bài viết' }],
     exploreTitle: 'Khám phá thêm nền tảng danh tính của Identra',
     exploreCards: [{ label: 'GÓC NHÌN SẢN PHẨM', title: 'Xác minh giấy tờ tùy thân toàn cầu.', desc: 'Triển khai xác minh tài liệu an toàn cho hơn 200 quốc gia với sinh trắc học khuôn mặt nâng cao.', cta: 'Khám phá Government ID' }, { label: 'GÓC NHÌN BÁO CÁO', title: 'Sàng lọc cấm vận toàn cầu và danh sách PEP.', desc: 'Thực thi khớp danh sách theo dõi, kiểm tra PEP và cảnh báo tin tức bất lợi ngay lập tức.', cta: 'Khám phá báo cáo danh sách theo dõi' }],
-    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Khám phá cách nền tảng điều phối AML/KYC tùy chỉnh của Identra giúp doanh nghiệp luôn tuân thủ, an toàn và tăng trưởng.', primary: 'Nhận bản demo', secondary: 'Thử ngay' }
+    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Khám phá cách nền tảng điều phối AML/KYC tùy chỉnh của Identra giúp doanh nghiệp luôn tuân thủ, an toàn và tăng trưởng.', primary: 'Trải nghiệm demo', secondary: 'Thử ngay' }
   }
 } as const;

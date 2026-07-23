@@ -188,7 +188,7 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
               onClick={onOpenSandbox}
               className="px-8 py-4 bg-white text-[#5254FF] font-semibold rounded-full hover:bg-slate-50 transition-all flex items-center gap-2.5 shadow-lg shadow-black/10 text-base"
             >
-              <span>{t.getDemo}</span>
+              <span>{t.tryDemo}</span>
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>
@@ -941,7 +941,7 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
               onClick={onOpenSandbox}
               className="px-8 py-3.5 bg-white text-slate-950 font-semibold rounded-full hover:bg-slate-50 transition-all"
             >
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button 
               onClick={onOpenSandbox}

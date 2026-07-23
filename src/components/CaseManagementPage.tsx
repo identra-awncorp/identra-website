@@ -386,7 +386,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                   onClick={onOpenSandbox}
                   className="w-full sm:w-auto bg-black hover:bg-slate-800 text-white font-semibold text-xs py-3 px-6 rounded-full flex items-center justify-center gap-2 shadow-md transition"
                 >
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button 
@@ -1284,7 +1284,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
               onClick={onOpenSandbox}
               className="w-full sm:w-auto bg-black hover:bg-slate-800 text-white font-semibold text-xs py-3 px-6 rounded-full flex items-center justify-center gap-1.5 shadow transition"
             >
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button 

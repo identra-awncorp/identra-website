@@ -11,7 +11,7 @@ export const caseTranslations = {
     heroTitle: 'Streamlined case management ',
     heroTitleAccent: 'for any use case.',
     heroDesc: 'Reduce operational burden with drag-and-drop modules and AI-powered decisioning. Consolidate risk signals from active, passive, and external sources into a single, unified reviewer console.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     startExploring: 'Start exploring',
     
     identityCheck: 'Identity Check',
@@ -152,7 +152,7 @@ export const caseTranslations = {
     heroTitle: 'Gestión de casos simplificada',
     heroTitleAccent: 'para cualquier caso de uso.',
     heroDesc: 'Reduzca la carga operativa con módulos de arrastrar y soltar y toma de decisiones impulsadas por IA. Consolide señales de riesgo de fuentes activas, pasivas y externas en una única consola de revisión unificada.',
-    getDemo: 'Obtenga una demostración',
+    tryDemo: 'Probar la demo',
     startExploring: 'Empezar a explorar',
     
     identityCheck: 'Verificación de identidad',
@@ -293,7 +293,7 @@ export const caseTranslations = {
     heroTitle: '合理化されたケース管理',
     heroTitleAccent: 'あらゆるユースケースに対応します。',
     heroDesc: 'ドラッグ アンド ドロップ モジュールと AI を活用した意思決定により、運用の負担を軽減します。アクティブ、パッシブ、および外部ソースからのリスク シグナルを単一の統合レビュー担当者コンソールに統合します。',
-    getDemo: 'デモを入手する',
+    tryDemo: 'デモを試す',
     startExploring: '探索を開始する',
     
     identityCheck: '本人確認',
@@ -434,7 +434,7 @@ export const caseTranslations = {
     heroTitle: 'Optimiertes Fallmanagement',
     heroTitleAccent: 'für jeden Anwendungsfall.',
     heroDesc: 'Reduzieren Sie den Betriebsaufwand mit Drag-and-Drop-Modulen und KI-gestützter Entscheidungsfindung. Konsolidieren Sie Risikosignale aus aktiven, passiven und externen Quellen in einer einzigen, einheitlichen Prüferkonsole.',
-    getDemo: 'Holen Sie sich eine Demo',
+    tryDemo: 'Demo testen',
     startExploring: 'Beginnen Sie mit der Erkundung',
     
     identityCheck: 'Identitätsprüfung',
@@ -574,7 +574,7 @@ export const caseTranslations = {
     heroTitle: 'Quản lý hồ sơ tinh gọn ',
     heroTitleAccent: 'cho mọi trường hợp sử dụng.',
     heroDesc: 'Giảm bớt gánh nặng vận hành với các mô-đun kéo thả và ra quyết định bằng AI. Hợp nhất các tín hiệu rủi ro từ các nguồn chủ động, thụ động và bên ngoài vào một bảng điều khiển đánh giá duy nhất.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     startExploring: 'Bắt đầu khám phá',
     
     identityCheck: 'Kiểm tra danh tính',

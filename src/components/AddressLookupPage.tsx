@@ -279,7 +279,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
                 className="bg-[#111625] hover:bg-[#1f293d] text-white font-medium px-7 py-4 rounded-full text-sm shadow-lg transition flex items-center gap-2.5 group"
                 id="address-demo-cta"
               >
-                <span>{t.getDemo}</span>
+                <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4.5 h-4.5 group-hover:translate-x-1 transition" />
               </button>
             </div>
@@ -888,7 +888,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
                 onClick={onOpenSandbox}
                 className="bg-[#354CE1] hover:bg-indigo-700 text-white font-semibold px-7 py-3.5 rounded-full text-sm shadow-md transition"
               >
-                {t.getDemo}
+                {t.tryDemo}
               </button>
               <button 
                 onClick={onOpenSandbox}

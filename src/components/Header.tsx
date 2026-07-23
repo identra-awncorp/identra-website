@@ -895,7 +895,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
             onClick={onOpenSandbox}
             className="text-xs font-semibold text-white bg-black hover:bg-slate-850 px-5 py-2.5 rounded-full flex items-center gap-1.5 shadow transition cursor-pointer"
           >
-            {t('getDemo')}
+            {t('tryDemo')}
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -1202,7 +1202,7 @@ export default function Header({ onOpenSandbox, onViewChange, currentView }: Hea
                 onClick={() => { setMobileMenuOpen(false); onOpenSandbox(); }}
                 className="w-full bg-slate-900 hover:bg-slate-850 text-white font-semibold py-2.5 rounded-full text-sm transition text-center cursor-pointer"
               >
-                {t('getDemo')}
+                {t('tryDemo')}
               </button>
               <button 
                 onClick={() => { setMobileMenuOpen(false); onViewChange?.('login'); }}

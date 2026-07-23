@@ -10,7 +10,7 @@ export const passiveSignalsTranslations = {
     passiveSignals: 'Passive Signals',
     heroHeading: 'Detect more fraud with passive signals. Collect behavioral, device, and network signals to catch more bad actors without adding friction.',
     heroDesc: 'Equip your organization with real-time telemetries that stream silently in the background of your existing identity flows to identify and isolate threat vectors before they execute.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     catchRealTimeTitle: 'Catch fraud in real time',
     catchRealTimeDesc: 'Silently collect behavioral and device signals and automatically deny fraudsters or add friction for users with risky signals.',
     detectRepeatTitle: 'Easily detect repeat fraudsters',
@@ -106,7 +106,7 @@ export const passiveSignalsTranslations = {
     passiveSignals: 'Señales pasivas',
     heroHeading: 'Detecte más fraude con señales pasivas. Recopile señales de comportamiento, dispositivos y redes para detectar más actores maliciosos sin agregar fricción.',
     heroDesc: 'Equipe a su organización con telemetrías en tiempo real que se transmiten silenciosamente en segundo plano de sus flujos de identidad existentes para identificar y aislar vectores de amenazas antes de que se ejecuten.',
-    getDemo: 'Obtenga una demostración',
+    tryDemo: 'Probar la demo',
     catchRealTimeTitle: 'Detecte el fraude en tiempo real',
     catchRealTimeDesc: 'Recopile silenciosamente señales de comportamiento y de dispositivos y rechace automáticamente a los estafadores o agregue fricción a los usuarios con señales de riesgo.',
     detectRepeatTitle: 'Detecte fácilmente a los estafadores reincidentes',
@@ -202,7 +202,7 @@ export const passiveSignalsTranslations = {
     passiveSignals: 'パッシブ信号',
     heroHeading: 'パッシブシグナルでより多くの不正行為を検出します。行動、デバイス、ネットワークのシグナルを収集し、摩擦を加えることなくより多くの悪意のある行為者を捕らえます。',
     heroDesc: '既存の ID フローのバックグラウンドでサイレントにストリーミングするリアルタイム テレメトリを組織に装備し、脅威ベクトルが実行される前に特定して隔離します。',
-    getDemo: 'デモを入手する',
+    tryDemo: 'デモを試す',
     catchRealTimeTitle: 'リアルタイムで詐欺を捕まえる',
     catchRealTimeDesc: '行動やデバイスの信号をサイレントに収集し、詐欺師を自動的に拒否したり、危険な信号を持つユーザーに摩擦を与えたりします。',
     detectRepeatTitle: '繰り返しの詐欺師を簡単に検出',
@@ -298,7 +298,7 @@ export const passiveSignalsTranslations = {
     passiveSignals: 'Passive Signale',
     heroHeading: 'Erkennen Sie mehr Betrug mit passiven Signalen. Sammeln Sie Verhaltens-, Geräte- und Netzwerksignale, um mehr böswillige Akteure zu fangen, ohne zusätzliche Reibungsverluste zu verursachen.',
     heroDesc: 'Statten Sie Ihr Unternehmen mit Echtzeit-Telemetriedaten aus, die unbemerkt im Hintergrund Ihrer bestehenden Identitätsflüsse übertragen werden, um Bedrohungsvektoren zu identifizieren und zu isolieren, bevor sie ausgeführt werden.',
-    getDemo: 'Holen Sie sich eine Demo',
+    tryDemo: 'Demo testen',
     catchRealTimeTitle: 'Erkennen Sie Betrug in Echtzeit',
     catchRealTimeDesc: 'Sammeln Sie stillschweigend Verhaltens- und Gerätesignale und weisen Sie Betrüger automatisch zurück oder sorgen Sie mit riskanten Signalen für mehr Ärger für Benutzer.',
     detectRepeatTitle: 'Erkennen Sie leicht wiederholte Betrüger',
@@ -393,7 +393,7 @@ export const passiveSignalsTranslations = {
     passiveSignals: 'Tín hiệu Thụ động',
     heroHeading: 'Phát hiện thêm gian lận bằng các tín hiệu thụ động. Thu thập các tín hiệu hành vi, thiết bị và mạng để phát hiện thêm kẻ xấu mà không gây cản trở cho người dùng.',
     heroDesc: 'Trang bị cho tổ chức của bạn các phép đo từ xa theo thời gian thực chạy ngầm trong các luồng định danh hiện có của bạn để nhận diện và cô lập các mối đe dọa trước khi chúng diễn ra.',
-    getDemo: 'Xem bản thử nghiệm',
+    tryDemo: 'Trải nghiệm demo',
     catchRealTimeTitle: 'Phát hiện gian lận theo thời gian thực',
     catchRealTimeDesc: 'Thu thập ngầm các tín hiệu hành vi cũng như thiết bị, đồng thời tự động từ chối kẻ gian lận hoặc yêu cầu xác minh bổ sung đối với người dùng có tín hiệu rủi ro.',
     detectRepeatTitle: 'Dễ dàng phát hiện kẻ gian lận lặp lại',
@@ -744,11 +744,11 @@ export const inlineTranslations: Record<string, Record<string, string>> = {
     ja: "パートナー",
     de: "Partner"
   },
-  "Get a demo": {
-    vi: "Nhận bản demo",
-    es: "Obtenga una demostración",
-    ja: "デモを入手する",
-    de: "Holen Sie sich eine Demo"
+  "Try the demo": {
+    vi: "Trải nghiệm demo",
+    es: "Probar la demo",
+    ja: "デモを試す",
+    de: "Demo testen"
   },
   "Hesitation or distraction events (focus lost, timing anomalies)": {
     vi: "Sự ngập ngừng hoặc phân tâm (mất tập trung, bất thường về thời gian)",
@@ -1458,12 +1458,12 @@ export const passiveSignalsInlineCopy = {
     de: 'Partner',
     vi: 'Đối tác',
   },
-  get_a_demo: {
-    en: 'Get a demo',
-    es: 'Obtenga una demostración',
-    ja: 'デモを入手する',
-    de: 'Holen Sie sich eine Demo',
-    vi: 'Nhận bản demo',
+  try_the_demo: {
+    en: 'Try the demo',
+    es: 'Probar la demo',
+    ja: 'デモを試す',
+    de: 'Demo testen',
+    vi: 'Trải nghiệm demo',
   },
 } as const;
 

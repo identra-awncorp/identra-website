@@ -305,7 +305,7 @@ export default function DatabaseChecksPage({ onOpenSandbox, onBackToLanding, onV
               onClick={onOpenSandbox}
               className="bg-white hover:bg-emerald-50 text-slate-950 font-bold px-8 py-4 rounded-full shadow-lg transition flex items-center gap-2 group text-sm animate-fade-in"
             >
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
             <a
@@ -919,7 +919,7 @@ export default function DatabaseChecksPage({ onOpenSandbox, onBackToLanding, onV
           <p className="text-sm md:text-base text-indigo-100 relative z-10 max-w-md">{t.readyDesc}</p>
           <div className="flex flex-wrap gap-4 justify-center relative z-10">
             <button onClick={onOpenSandbox} className="bg-white hover:bg-indigo-50 text-[#5B6DFF] font-bold px-8 py-3 rounded-full shadow-md transition text-xs">
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button onClick={onOpenSandbox} className="border border-white hover:bg-white/10 text-white font-bold px-8 py-3 rounded-full transition text-xs flex items-center gap-2">
               {t.tryItNow}

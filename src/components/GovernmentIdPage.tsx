@@ -180,7 +180,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                   onClick={onOpenSandbox}
                   className="bg-white hover:bg-teal-50 text-[#354CE1] font-bold text-sm px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl transition flex items-center gap-2 cursor-pointer"
                 >
-                  {t.getDemo}
+                  {t.tryDemo}
                 </button>
                 <button 
                   onClick={onOpenSandbox}
@@ -1182,7 +1182,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
               onClick={onOpenSandbox}
               className="bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold text-sm px-8 py-3.5 rounded-full shadow-lg transition cursor-pointer"
             >
-              {t.demoGetDemo}
+              {t.demoTryDemo}
             </button>
             <button 
               onClick={onOpenSandbox}

@@ -180,7 +180,7 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
                   onClick={() => document.getElementById('demo-form-section')?.scrollIntoView({ behavior: 'smooth' })}
                   className="px-6 py-3 rounded-full bg-white text-[#142FA0] font-semibold text-sm hover:bg-blue-50 transition flex items-center gap-2 shadow-lg"
                 >
-                  <span>{t('getDemo')}</span>
+                  <span>{t('tryDemo')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button onClick={onOpenSandbox} className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition">
@@ -559,7 +559,7 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
             <p className="text-slate-600 text-sm max-w-md font-medium">{t('readyDesc')}</p>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-4 relative z-10 w-full sm:w-auto">
-            <button onClick={onOpenSandbox} className="w-full sm:w-auto px-6 py-3 bg-white text-[#354CE1] hover:bg-slate-50 font-bold text-xs uppercase tracking-wider rounded-full shadow transition">{t('getDemo')}</button>
+            <button onClick={onOpenSandbox} className="w-full sm:w-auto px-6 py-3 bg-white text-[#354CE1] hover:bg-slate-50 font-bold text-xs uppercase tracking-wider rounded-full shadow transition">{t('tryDemo')}</button>
             <button onClick={onOpenSandbox} className="w-full sm:w-auto px-6 py-3 border border-[#354CE1] text-[#354CE1] hover:bg-[#354CE1]/5 font-bold text-xs uppercase tracking-wider rounded-full transition flex items-center justify-center gap-1.5">
               <span>{t('tryItNow')}</span>
               <ArrowRight className="w-4 h-4" />

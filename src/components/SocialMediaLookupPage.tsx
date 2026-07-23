@@ -260,7 +260,7 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
                 className="bg-[#111625] hover:bg-[#1f293d] text-white font-medium px-8 py-4 rounded-full text-sm shadow-lg transition flex items-center gap-2.5 group"
                 id="social-demo-cta"
               >
-                <span>{t.getDemo}</span>
+                <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4.5 h-4.5 group-hover:translate-x-1 transition" />
               </button>
             </div>
@@ -752,7 +752,7 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
             <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-slate-900">{t.readyTitle}</h2>
             <p className="text-slate-600 text-sm leading-relaxed">{t.readyDesc}</p>
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button onClick={onOpenSandbox} className="bg-[#354CE1] hover:bg-indigo-700 text-white font-semibold px-7 py-3.5 rounded-full text-sm shadow-md transition">{t.getDemo}</button>
+              <button onClick={onOpenSandbox} className="bg-[#354CE1] hover:bg-indigo-700 text-white font-semibold px-7 py-3.5 rounded-full text-sm shadow-md transition">{t.tryDemo}</button>
               <button onClick={onOpenSandbox} className="text-[#354CE1] font-bold text-sm hover:text-indigo-800 transition flex items-center gap-1 group">
                 <span>{t.tryItNow}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />

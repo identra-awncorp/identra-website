@@ -945,7 +945,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               onClick={() => onOpenSandbox()}
               className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-extrabold text-xs px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 group"
             >
-              <span>{text('getDemo')}</span>
+              <span>{text('tryDemo')}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </button>
             <button

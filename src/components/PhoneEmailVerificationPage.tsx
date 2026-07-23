@@ -211,7 +211,7 @@ export default function PhoneEmailVerificationPage({ onOpenSandbox, onBackToLand
             <p className="mt-6 max-w-2xl text-base sm:text-lg text-emerald-50 leading-relaxed">{t.heroDesc}</p>
             <div className="mt-8 flex flex-wrap gap-4">
               <button onClick={onOpenSandbox} className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-emerald-700 shadow-md hover:bg-emerald-50 transition">
-                {t.getDemo}
+                {t.tryDemo}
                 <ArrowRight className="h-4 w-4" />
               </button>
               <button onClick={onOpenSandbox} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition">

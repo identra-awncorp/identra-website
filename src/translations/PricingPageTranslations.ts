@@ -86,7 +86,7 @@ export const PRICING_TRANSLATIONS: any = {
     faqA5: 'Yes. Identra supports localized data storage architectures, including EU hosting options for GDPR and strict residency requirements.',
     readyToGet: 'Ready to get started?',
     bottomDesc: 'Get in touch or start exploring Identra today. Join thousands of high-trust organizations building beautiful, friction-free identity workflows.',
-    getDemo: 'Get a demo'
+    tryDemo: 'Try the demo'
   },
   es: {
     badge: 'Estructuras flexibles para cualquier escala',
@@ -175,7 +175,7 @@ export const PRICING_TRANSLATIONS: any = {
     faqA5: 'Sí. Identra admite almacenamiento localizado, incluidas opciones de hosting en la UE para GDPR y requisitos de residencia.',
     readyToGet: '¿Listo para empezar?',
     bottomDesc: 'Ponte en contacto o explora Identra hoy. Únete a organizaciones que construyen flujos de identidad confiables y sin fricción.',
-    getDemo: 'Solicitar demo'
+    tryDemo: 'Probar la demo'
   },
   ja: {
     badge: 'あらゆる規模に対応する柔軟な構成',
@@ -264,7 +264,7 @@ export const PRICING_TRANSLATIONS: any = {
     faqA5: 'はい。GDPR やデータ所在地要件に対応するため、EU ホスティングを含むローカル保存に対応しています。',
     readyToGet: '始める準備はできましたか？',
     bottomDesc: 'Identra を今すぐ試し、信頼性が高く摩擦の少ない本人確認フローを構築しましょう。',
-    getDemo: 'デモを依頼'
+    tryDemo: 'デモを試す'
   },
   de: {
     badge: 'Flexible Strukturen für jede Skalierung',
@@ -353,7 +353,7 @@ export const PRICING_TRANSLATIONS: any = {
     faqA5: 'Ja. Identra unterstützt lokalisierte Speicherung, einschließlich EU-Hosting für GDPR und strenge Residency-Anforderungen.',
     readyToGet: 'Bereit loszulegen?',
     bottomDesc: 'Kontaktieren Sie uns oder erkunden Sie Identra noch heute. Entwickeln Sie vertrauenswürdige, reibungsarme Identitätsworkflows.',
-    getDemo: 'Demo anfragen'
+    tryDemo: 'Demo testen'
   },
   vi: {
     badge: 'Cấu trúc linh hoạt cho mọi quy mô',
@@ -442,7 +442,7 @@ export const PRICING_TRANSLATIONS: any = {
     faqA5: 'Có. Identra hỗ trợ kiến trúc lưu trữ dữ liệu bản địa hóa, gồm tùy chọn hosting tại EU cho GDPR và yêu cầu lưu trú dữ liệu.',
     readyToGet: 'Sẵn sàng bắt đầu?',
     bottomDesc: 'Liên hệ hoặc bắt đầu khám phá Identra hôm nay. Tham gia cùng các tổ chức xây dựng workflow định danh đáng tin cậy, ít ma sát.',
-    getDemo: 'Nhận bản demo'
+    tryDemo: 'Trải nghiệm demo'
   }
 };
 

@@ -51,7 +51,7 @@ type FintechTranslations = {
   badge: string;
   heroTitle: string;
   heroDesc: string;
-  getDemo: string;
+  tryDemo: string;
   trySandbox: string;
   terminalName: string;
   activeMatch: string;
@@ -115,7 +115,7 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     badge: 'Solutions • Fintech',
     heroTitle: 'Financial access for good users, not fraudsters.',
     heroDesc: "Fight fraud and convert users, whether you're processing loans, issuing credit cards, automating account openings, or any other use case.",
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try identity sandbox',
     terminalName: 'FINTECH_DECISION_ENGINE_v2.1',
     activeMatch: 'ACTIVE MATCH',
@@ -289,7 +289,7 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     badge: 'Soluciones • Fintech',
     heroTitle: 'Acceso financiero para usuarios legítimos, no para defraudadores.',
     heroDesc: 'Combata el fraude y convierta más usuarios, ya sea que procese préstamos, emita tarjetas de crédito, automatice aperturas de cuentas o cubra cualquier otro caso de uso.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox de identidad',
     terminalName: 'FINTECH_DECISION_ENGINE_v2.1',
     activeMatch: 'COINCIDENCIA ACTIVA',
@@ -463,7 +463,7 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     badge: 'ソリューション • フィンテック',
     heroTitle: '不正利用者ではなく、正当なユーザーに金融アクセスを。',
     heroDesc: 'ローン審査、クレジットカード発行、口座開設の自動化など、あらゆるユースケースで不正を防ぎながらユーザー転換を高めます。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     trySandbox: '本人確認サンドボックスを試す',
     terminalName: 'FINTECH_DECISION_ENGINE_v2.1',
     activeMatch: '照合中',
@@ -637,7 +637,7 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     badge: 'Lösungen • Fintech',
     heroTitle: 'Finanzzugang für legitime Nutzer, nicht für Betrüger.',
     heroDesc: 'Bekämpfen Sie Betrug und gewinnen Sie Nutzer, ob Sie Kredite bearbeiten, Kreditkarten ausgeben, Kontoeröffnungen automatisieren oder andere Anwendungsfälle abdecken.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     trySandbox: 'Identitäts-Sandbox testen',
     terminalName: 'FINTECH_DECISION_ENGINE_v2.1',
     activeMatch: 'AKTIVER ABGLEICH',
@@ -811,7 +811,7 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     badge: 'Giải pháp • Công nghệ tài chính',
     heroTitle: 'Mở quyền tiếp cận tài chính cho người dùng hợp lệ, không phải kẻ gian.',
     heroDesc: 'Chống gian lận và tăng chuyển đổi người dùng, dù bạn đang xử lý khoản vay, phát hành thẻ tín dụng, tự động mở tài khoản hay triển khai bất kỳ trường hợp sử dụng nào khác.',
-    getDemo: 'Yêu cầu demo',
+    tryDemo: 'Trải nghiệm demo',
     trySandbox: 'Thử sandbox danh tính',
     terminalName: 'FINTECH_DECISION_ENGINE_v2.1',
     activeMatch: 'ĐANG ĐỐI CHIẾU',

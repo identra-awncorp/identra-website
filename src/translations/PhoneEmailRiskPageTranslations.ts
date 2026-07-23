@@ -10,7 +10,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     heroTitleBefore: 'Evaluate phone numbers and ',
     heroTitleHighlight: 'emails for potential risk.',
     heroTitleAfter: ' Detect and prevent fraud by assessing the reputation of phone numbers and email addresses used to create accounts on your platform.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     howTitle: 'How it works',
     howDesc: 'Incorporate reputation checks seamlessly into your existing workflows to block bad actors instantly before they cause damage.',
     howSteps: [
@@ -123,7 +123,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     finalCta: {
       title: 'Ready to get started?',
       desc: 'Get in touch with our identity experts or start exploring our automated verification tools today.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now'
     }
   },
@@ -133,7 +133,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     heroTitleBefore: 'Evalúa números de teléfono y ',
     heroTitleHighlight: 'emails para detectar riesgo potencial.',
     heroTitleAfter: ' Detecta y previene fraude evaluando la reputación de los teléfonos y emails usados para crear cuentas en tu plataforma.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     howTitle: 'Cómo funciona',
     howDesc: 'Incorpora verificaciones de reputación en tus workflows existentes para bloquear actores maliciosos antes de que causen daño.',
     howSteps: [
@@ -214,7 +214,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
       { title: 'Verificación fluida de usuarios por teléfono/email.', desc: 'Integra verificaciones 2FA y de posesión de teléfono rápidas y seguras.', cta: 'Explorar verificación de teléfono y email' },
       { title: 'Automatiza todos tus procesos de identidad.', desc: 'Define workflows personalizados para orquestar, analizar y mitigar riesgos de identidad.', cta: 'Explorar workflows automatizados' }
     ],
-    finalCta: { title: '¿Listo para empezar?', desc: 'Contacta con nuestros expertos en identidad o empieza a explorar hoy nuestras herramientas automatizadas de verificación.', primary: 'Solicitar una demo', secondary: 'Probar ahora' }
+    finalCta: { title: '¿Listo para empezar?', desc: 'Contacta con nuestros expertos en identidad o empieza a explorar hoy nuestras herramientas automatizadas de verificación.', primary: 'Probar la demo', secondary: 'Probar ahora' }
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
@@ -222,7 +222,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     heroTitleBefore: '電話番号と',
     heroTitleHighlight: 'メールの潜在リスクを評価。',
     heroTitleAfter: ' アカウント作成に使われる電話番号とメールアドレスの評判を評価し、不正を検知・防止します。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     howTitle: '仕組み',
     howDesc: '既存のワークフローに評判チェックを自然に組み込み、被害が出る前に悪質な利用者を即座にブロックします。',
     howSteps: [
@@ -303,7 +303,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
       { title: '電話番号/メールによるスムーズなユーザー検証。', desc: '高速で安全な 2FA と電話番号所有確認を自然に統合します。', cta: '電話・メール検証を見る' },
       { title: 'すべての本人確認プロセスを自動化。', desc: 'カスタムワークフローで本人確認リスクを制御、分析、軽減します。', cta: '自動ワークフローを見る' }
     ],
-    finalCta: { title: '始める準備はできましたか？', desc: '本人確認の専門家に相談するか、自動検証ツールを今すぐ試してみましょう。', primary: 'デモを依頼', secondary: '今すぐ試す' }
+    finalCta: { title: '始める準備はできましたか？', desc: '本人確認の専門家に相談するか、自動検証ツールを今すぐ試してみましょう。', primary: 'デモを試す', secondary: '今すぐ試す' }
   },
   de: {
     backToPlatform: 'Zurück zur Plattform',
@@ -311,7 +311,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     heroTitleBefore: 'Telefonnummern und ',
     heroTitleHighlight: 'E-Mails auf potenzielle Risiken prüfen.',
     heroTitleAfter: ' Erkennen und verhindern Sie Betrug, indem Sie die Reputation der Telefonnummern und E-Mail-Adressen bewerten, die zur Kontoerstellung auf Ihrer Plattform genutzt werden.',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     howTitle: 'So funktioniert es',
     howDesc: 'Binden Sie Reputationsprüfungen nahtlos in bestehende Workflows ein, um böswillige Akteure sofort zu blockieren, bevor Schaden entsteht.',
     howSteps: [
@@ -392,7 +392,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
       { title: 'Nahtlose Nutzerverifizierung per Telefon/E-Mail.', desc: 'Integrieren Sie schnelle, sichere 2FA- und Telefonbesitzprüfungen.', cta: 'Telefon- und E-Mail-Verifizierung entdecken' },
       { title: 'Alle Identitätsprozesse automatisieren.', desc: 'Legen Sie individuelle Workflows fest, um Identitätsrisiken zu orchestrieren, zu analysieren und zu mindern.', cta: 'Automatisierte Workflows entdecken' }
     ],
-    finalCta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie unsere Identitätsexperten oder erkunden Sie noch heute unsere automatisierten Verifizierungstools.', primary: 'Demo anfragen', secondary: 'Jetzt ausprobieren' }
+    finalCta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie unsere Identitätsexperten oder erkunden Sie noch heute unsere automatisierten Verifizierungstools.', primary: 'Demo testen', secondary: 'Jetzt ausprobieren' }
   },
   vi: {
     backToPlatform: 'Quay lại nền tảng',
@@ -400,7 +400,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     heroTitleBefore: 'Đánh giá số điện thoại và ',
     heroTitleHighlight: 'email để phát hiện rủi ro tiềm ẩn.',
     heroTitleAfter: ' Phát hiện và ngăn gian lận bằng cách đánh giá uy tín của số điện thoại và địa chỉ email được dùng để tạo tài khoản trên nền tảng của bạn.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     howTitle: 'Cách hoạt động',
     howDesc: 'Tích hợp kiểm tra uy tín vào workflow hiện có để chặn tác nhân xấu ngay lập tức trước khi họ gây thiệt hại.',
     howSteps: [
@@ -481,6 +481,6 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
       { title: 'Xác minh người dùng liền mạch qua điện thoại/email.', desc: 'Tích hợp nhanh chóng các bước xác minh 2FA bảo mật và quyền sở hữu số điện thoại.', cta: 'Khám phá xác minh điện thoại và email' },
       { title: 'Tự động hóa toàn bộ quy trình định danh.', desc: 'Thiết lập workflow tùy chỉnh để điều phối, phân tích và giảm thiểu rủi ro định danh.', cta: 'Khám phá workflow tự động' }
     ],
-    finalCta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ với chuyên gia định danh của chúng tôi hoặc bắt đầu khám phá các công cụ xác minh tự động ngay hôm nay.', primary: 'Nhận bản demo', secondary: 'Dùng thử ngay' }
+    finalCta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ với chuyên gia định danh của chúng tôi hoặc bắt đầu khám phá các công cụ xác minh tự động ngay hôm nay.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' }
   }
 };

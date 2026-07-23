@@ -10,7 +10,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     heroTitleStart: 'Verify student, faculty, and alumni identities. Prevent student aid',
     heroFraud: 'fraud',
     heroTitleEnd: 'and secure account access more efficiently with an automated, NIST IAL2-compliant identity verification solution.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     pillars: [
       {
         title: 'Reduce manual burden on IT and admissions',
@@ -187,7 +187,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     heroTitleStart: 'Verifique identidades de estudiantes, docentes y egresados. Prevenga el',
     heroFraud: 'fraude',
     heroTitleEnd: 'en ayuda estudiantil y proteja el acceso a cuentas con mayor eficiencia mediante una solución automatizada de verificación de identidad compatible con NIST IAL2.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     pillars: [
       { title: 'Reduzca la carga manual de TI y admisiones', desc: 'Elimine intercambios lentos y apoye a estudiantes a escala con recopilación, verificación y decisiones automatizadas.' },
       { title: 'Gestione identidades con confianza y seguridad', desc: 'Elija entre métodos como documento oficial, selfie, documentos y 2FA. Cumpla NIST IAL2 sin afectar la experiencia.' },
@@ -292,7 +292,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     heroTitleStart: '学生、教職員、卒業生の本人確認を行い、学生支援金の',
     heroFraud: '不正',
     heroTitleEnd: 'を防ぎます。NIST IAL2 に準拠した自動本人確認で、アカウントアクセスをより効率的に保護します。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     pillars: [
       { title: 'IT と入学事務の手作業を削減', desc: '情報収集、確認、判定を自動化し、学生を大規模に支援します。' },
       { title: 'ID を安全かつ確実に管理', desc: '政府ID、selfie、書類、2FA などを選択できます。体験を損なわず NIST IAL2 に準拠します。' },
@@ -397,7 +397,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     heroTitleStart: 'Verifizieren Sie Identitäten von Studierenden, Lehrkräften und Alumni. Verhindern Sie',
     heroFraud: 'Betrug',
     heroTitleEnd: 'bei Studienförderung und schützen Sie Kontozugriff effizienter mit einer automatisierten, NIST-IAL2-konformen Identitätsprüfung.',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     pillars: [
       { title: 'Manuelle Arbeit für IT und Zulassung reduzieren', desc: 'Vermeiden Sie zeitaufwendige Abstimmungen und unterstützen Sie Studierende skalierbar mit automatisierter Datenerfassung, Prüfung und Entscheidung.' },
       { title: 'Identitäten sicher verwalten', desc: 'Wählen Sie aus Methoden wie behördlichem Ausweis, selfie, Dokument und 2FA. Bleiben Sie NIST-IAL2-konform ohne Reibung.' },
@@ -502,7 +502,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     heroTitleStart: 'Xác minh danh tính sinh viên, giảng viên và cựu sinh viên. Ngăn chặn',
     heroFraud: 'gian lận',
     heroTitleEnd: 'trong hỗ trợ sinh viên và bảo vệ quyền truy cập tài khoản hiệu quả hơn bằng giải pháp xác minh danh tính tự động, tuân thủ NIST IAL2.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     pillars: [
       { title: 'Giảm gánh nặng thủ công cho CNTT và tuyển sinh', desc: 'Loại bỏ trao đổi qua lại tốn thời gian và hỗ trợ sinh viên ở quy mô lớn bằng thu thập thông tin, xác minh và ra quyết định tự động.' },
       { title: 'Quản lý danh tính tự tin và an toàn', desc: 'Chọn nhiều phương thức xác minh như giấy tờ tùy thân, selfie, tài liệu và 2FA. Tuân thủ NIST IAL2 mà không làm gián đoạn trải nghiệm.' },

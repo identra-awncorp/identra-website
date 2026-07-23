@@ -108,7 +108,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                   onClick={onOpenSandbox}
                   className="bg-white hover:bg-indigo-50 text-[#1e3dc5] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/20"
                 >
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button

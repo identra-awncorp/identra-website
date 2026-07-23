@@ -199,11 +199,11 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
                 <span className="text-blue-100">{t.copy.givePatientsSeamlessOnboardingExperiencesWhileOrchestratingHipaa}</span>
               </h1>
 
-              {/* Get a demo button */}
+              {/* Try the demo button */}
               <a 
                 href="#demo-form"
                 className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-full text-base font-semibold transition shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95"
-              >{t.copy.getADemo}<ArrowRight className="w-5 h-5" />
+              >{t.copy.tryTheDemo}<ArrowRight className="w-5 h-5" />
               </a>
 
               {/* Divider */}

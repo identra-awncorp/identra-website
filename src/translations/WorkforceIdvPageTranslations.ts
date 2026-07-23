@@ -248,7 +248,7 @@ export const WORKFORCE_IDV_PAGE_TRANSLATIONS: any = {
     securityCertsCta: "Explore security certifications",
     readyTitle: "Ready to get started?",
     readyDesc: "Get in touch or start exploring Identra today. Set up custom biometric workflows tailored specifically for your workforce operations.",
-    getDemo: "Get a demo",
+    tryDemo: "Try the demo",
     explorePlatform: "Explore Platform"
   },
   es: {},
@@ -392,7 +392,7 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.es = {
   securityCertsCta: "Explorar certificaciones de seguridad",
   readyTitle: "¿Listo para empezar?",
   readyDesc: "Ponte en contacto o explora Identra hoy. Configura workflows biométricos personalizados para tus operaciones de workforce.",
-  getDemo: "Solicitar una demo",
+  tryDemo: "Trải nghiệm demo",
   explorePlatform: "Explorar plataforma"
 };
 
@@ -531,7 +531,7 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.vi = {
   securityCertsCta: "Khám phá chứng nhận bảo mật",
   readyTitle: "Sẵn sàng bắt đầu?",
   readyDesc: "Liên hệ hoặc bắt đầu khám phá Identra hôm nay. Thiết lập workflow sinh trắc học tùy chỉnh dành riêng cho vận hành workforce của bạn.",
-  getDemo: "Nhận bản demo",
+  tryDemo: "Trải nghiệm demo",
   explorePlatform: "Khám phá nền tảng"
 };
 
@@ -670,7 +670,7 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.ja = {
   securityCertsCta: "セキュリティ認証を見る",
   readyTitle: "始める準備はできましたか？",
   readyDesc: "お問い合わせ、または今すぐIdentraをお試しください。従業員運用に合わせたカスタム生体認証ワークフローを設定できます。",
-  getDemo: "デモを依頼",
+  tryDemo: "Trải nghiệm demo",
   explorePlatform: "プラットフォームを見る"
 };
 
@@ -809,6 +809,6 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.de = {
   securityCertsCta: "Sicherheitszertifizierungen entdecken",
   readyTitle: "Bereit loszulegen?",
   readyDesc: "Kontaktieren Sie uns oder erkunden Sie Identra noch heute. Richten Sie individuelle biometrische Workflows speziell für Ihre Workforce-Prozesse ein.",
-  getDemo: "Demo anfragen",
+  tryDemo: "Trải nghiệm demo",
   explorePlatform: "Plattform entdecken"
 };

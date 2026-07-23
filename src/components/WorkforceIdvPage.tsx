@@ -1065,7 +1065,7 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
               onClick={onOpenSandbox}
               className="px-8 py-4 bg-[#FFBF43] hover:bg-[#FFBF43]/90 text-[#0F1E36] font-bold rounded-full transition shadow-xl shadow-black/10 text-sm"
             >
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button
               onClick={onBackToLanding}

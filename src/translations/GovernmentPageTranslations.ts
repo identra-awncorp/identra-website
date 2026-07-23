@@ -165,7 +165,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
     requiredFieldsAlert: 'Please fill out all required fields.',
     readyTitle: 'Ready to get started?',
     readyDesc: 'Get in touch or start exploring Identra today.',
-    demoCta: 'Get a demo',
+    tryDemoCta: 'Try the demo',
     tryNow: 'Try it now →'
   },
   es: {
@@ -275,7 +275,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
     requiredFieldsAlert: 'Complete todos los campos obligatorios.',
     readyTitle: '¿Listo para empezar?',
     readyDesc: 'Póngase en contacto o empiece a explorar Identra hoy.',
-    demoCta: 'Solicitar una demo',
+    tryDemoCta: 'Probar la demo',
     tryNow: 'Probar ahora →'
   },
   ja: {
@@ -377,7 +377,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
     requiredFieldsAlert: '必須項目をすべて入力してください。',
     readyTitle: '始める準備はできましたか？',
     readyDesc: 'お問い合わせいただくか、今すぐ Identra をご覧ください。',
-    demoCta: 'デモを依頼',
+    tryDemoCta: 'デモを試す',
     tryNow: '今すぐ試す →'
   },
   de: {
@@ -479,7 +479,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
     requiredFieldsAlert: 'Bitte füllen Sie alle Pflichtfelder aus.',
     readyTitle: 'Bereit loszulegen?',
     readyDesc: 'Nehmen Sie Kontakt auf oder erkunden Sie Identra noch heute.',
-    demoCta: 'Demo anfragen',
+    tryDemoCta: 'Demo testen',
     tryNow: 'Jetzt testen →'
   },
   vi: {
@@ -581,7 +581,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
     requiredFieldsAlert: 'Vui lòng điền tất cả các trường bắt buộc.',
     readyTitle: 'Bạn đã sẵn sàng bắt đầu?',
     readyDesc: 'Liên hệ với chúng tôi hoặc bắt đầu khám phá Identra ngay hôm nay.',
-    demoCta: 'Nhận bản demo',
+    tryDemoCta: 'Trải nghiệm demo',
     tryNow: 'Dùng thử ngay →'
   }
 } as const;

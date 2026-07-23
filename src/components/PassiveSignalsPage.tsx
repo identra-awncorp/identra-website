@@ -234,7 +234,7 @@ export default function PassiveSignalsPage({ onOpenSandbox, onBackToLanding, onV
                 onClick={onOpenSandbox}
                 className="bg-white text-[#354CE1] hover:bg-indigo-50 transition px-6 py-3.5 rounded-full font-bold text-sm shadow-md flex items-center gap-2"
               >
-                <span>{pt('getDemo')}</span>
+                <span>{pt('tryDemo')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -1086,7 +1086,7 @@ export default function PassiveSignalsPage({ onOpenSandbox, onBackToLanding, onV
               onClick={onOpenSandbox}
               className="bg-[#354CE1] text-white hover:bg-[#354CE1]/90 transition px-6 py-3.5 rounded-full font-bold text-xs shadow-md flex items-center gap-1.5"
             >
-              <span>{ti('get_a_demo')}</span>
+              <span>{ti('try_the_demo')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button 

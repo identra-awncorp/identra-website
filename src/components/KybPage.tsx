@@ -131,7 +131,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                 <button
                   onClick={onOpenSandbox}
                   className="bg-white hover:bg-teal-50 text-[#354CE1] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-blue-950/20"
-                >{t.copy.getADemo}<ArrowRight className="w-4 h-4" />
+                >{t.copy.tryTheDemo}<ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={onOpenSandbox}
@@ -811,7 +811,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
             <button
               onClick={onOpenSandbox}
               className="bg-white hover:bg-blue-50 text-[#354CE1] font-bold text-xs px-6 py-3.5 rounded-full transition shadow"
-            >{t.copy.getADemo}</button>
+            >{t.copy.tryTheDemo}</button>
             <button
               onClick={onOpenSandbox}
               className="border border-white/20 hover:bg-white/10 text-white font-bold text-xs px-6 py-3.5 rounded-full transition"

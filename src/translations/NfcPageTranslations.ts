@@ -8,7 +8,7 @@ export const NFC_PAGE_TRANSLATIONS = {
     backToPlatform: 'Back to Platform Overview',
     badge: 'NFC VERIFICATION',
     heroTitle: 'Catch passport and ID fraud with a tap. Verify passports and ID cards with NFC to increase security and prevent fraud without adding friction.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     heroBenefits: [
       {
         title: 'Catch forged or digitally altered passports',
@@ -222,7 +222,7 @@ Achieving the right equilibrium requires context-aware friction:
     cta: {
       title: 'Ready to get started?',
       desc: 'Get in touch or start exploring the comprehensive identity infrastructure sandbox. Set up and begin making test credentials within minutes.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now'
     },
     modal: {
@@ -235,7 +235,7 @@ Achieving the right equilibrium requires context-aware friction:
     backToPlatform: 'Volver al resumen de la plataforma',
     badge: 'VERIFICACIÓN NFC',
     heroTitle: 'Detecta fraude en pasaportes e identificaciones con un toque. Verifica pasaportes y tarjetas de identidad con NFC para aumentar la seguridad y prevenir fraude sin añadir fricción.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     heroBenefits: [
       { title: 'Detecta pasaportes falsificados o alterados digitalmente', desc: 'Escanea el chip RFID seguro de un pasaporte o tarjeta de identidad para ir más allá de las señales visuales y detectar pasaportes fraudulentos con mayor rapidez.' },
       { title: 'Reduce la revisión manual de pasaportes', desc: 'Usa NFC para automatizar el proceso de verificación de pasaportes y dedica más tiempo a investigar fraude complejo.' },
@@ -338,14 +338,14 @@ Achieving the right equilibrium requires context-aware friction:
         { title: 'Verifica IDs gubernamentales globalmente.', desc: 'Verifica licencias locales, pasaportes regionales y tarjetas nacionales de identidad de más de 200 países con extracción OCR inteligente y comparación biométrica.' }
       ]
     },
-    cta: { title: '¿Listo para empezar?', desc: 'Ponte en contacto o empieza a explorar el sandbox integral de infraestructura de identidad. Configura y crea credenciales de prueba en minutos.', primary: 'Solicitar una demo', secondary: 'Pruébalo ahora' },
+    cta: { title: '¿Listo para empezar?', desc: 'Ponte en contacto o empieza a explorar el sandbox integral de infraestructura de identidad. Configura y crea credenciales de prueba en minutos.', primary: 'Probar la demo', secondary: 'Pruébalo ahora' },
     modal: { separator: '-', close: 'Cerrar', goBack: 'Volver' }
   },
   ja: {
     backToPlatform: 'プラットフォーム概要に戻る',
     badge: 'NFC 検証',
     heroTitle: 'タップでパスポートと ID の不正を検出。NFC でパスポートや ID カードを検証し、摩擦を増やさずにセキュリティを高めて不正を防ぎます。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     heroBenefits: [
       { title: '偽造またはデジタル改ざんされたパスポートを検出', desc: 'パスポートや ID カード内の安全な RFID チップを読み取り、視覚情報だけでは見抜けない不正パスポートをより早く検出します。' },
       { title: 'パスポートの手動レビューを削減', desc: 'NFC でパスポート検証を自動化し、複雑な不正調査に時間を使えます。' },
@@ -386,14 +386,14 @@ Achieving the right equilibrium requires context-aware friction:
       { id: 3, title: 'リスクとコンバージョンを両立する戦略ガイド', banner: 'コンバージョンの最適化', category: 'ガイド', readTime: '12 分', content: 'セキュリティチームは不正ゼロを望み、成長チームは摩擦ゼロを望みます。適切な均衡には文脈に応じた摩擦が必要です。\n\nリスク別に分け、段階的な開示を行い、必要な場合だけ NFC を起動します。NFC を使うときは、センサー位置を視覚的に案内して離脱を防ぎます。' }
     ],
     explore: { title: 'Identra の本人確認プラットフォームをさらに見る', learnMore: '詳しく見る', cards: [{ title: 'mDL 検証で摩擦を削減。', desc: 'ISO 18013-5 に準拠した公式州発行のモバイル運転免許証 (mDL) で、適格な顧客をスムーズにオンボードします。' }, { title: '世界中の公的 ID を検証。', desc: '200 か国以上の地域免許証、パスポート、国民 ID カードを、インテリジェントな OCR 抽出と生体照合で検証します。' }] },
-    cta: { title: '始める準備はできましたか？', desc: '包括的な本人確認基盤サンドボックスについて問い合わせるか、今すぐ探索を始めましょう。数分で設定し、テスト用資格情報を作成できます。', primary: 'デモを依頼', secondary: '今すぐ試す' },
+    cta: { title: '始める準備はできましたか？', desc: '包括的な本人確認基盤サンドボックスについて問い合わせるか、今すぐ探索を始めましょう。数分で設定し、テスト用資格情報を作成できます。', primary: 'デモを試す', secondary: '今すぐ試す' },
     modal: { separator: '-', close: '閉じる', goBack: '戻る' }
   },
   de: {
     backToPlatform: 'Zur Plattformübersicht',
     badge: 'NFC-VERIFIZIERUNG',
     heroTitle: 'Erkennen Sie Pass- und ID-Betrug mit einem Tippen. Verifizieren Sie Pässe und Ausweise mit NFC, um Sicherheit zu erhöhen und Betrug ohne zusätzliche Reibung zu verhindern.',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     heroBenefits: [
       { title: 'Gefälschte oder digital veränderte Pässe erkennen', desc: 'Scannen Sie den sicheren RFID-Chip in einem Pass oder Ausweis, um über visuelle Hinweise hinauszugehen und betrügerische Pässe schneller zu erkennen.' },
       { title: 'Manuelle Passprüfung reduzieren', desc: 'Nutzen Sie NFC, um die Passverifizierung zu automatisieren, und investieren Sie die Zeit stattdessen in komplexe Betrugsermittlungen.' },
@@ -428,14 +428,14 @@ Achieving the right equilibrium requires context-aware friction:
       { id: 3, title: 'Der strategische Leitfaden zum Ausgleich von Risiko und Konversion', banner: 'Konversion ausbalancieren', category: 'Leitfaden', readTime: '12 Min.', content: 'Sicherheitsteams wollen null Betrug, Wachstumsteams null Reibung. Das richtige Gleichgewicht erfordert kontextabhängige Reibung.\n\nSegmentieren Sie nach Risiko, nutzen Sie progressive Offenlegung und aktivieren Sie NFC nur, wenn Hinweise dies rechtfertigen. Wenn NFC aktiv ist, führen Sie Nutzer visuell und erklären Sie die Sensorposition.' }
     ],
     explore: { title: 'Mehr von Identras Identitätsplattform entdecken', learnMore: 'Mehr erfahren', cards: [{ title: 'Reibung mit mDL-Verifizierungen reduzieren.', desc: 'Onboarden Sie qualifizierte Kunden nahtlos mit offiziellen staatlichen mobilen Führerscheinen (mDLs), die ISO 18013-5 erfüllen.' }, { title: 'Amtliche IDs weltweit verifizieren.', desc: 'Verifizieren Sie lokale Führerscheine, regionale Pässe und nationale Ausweise aus über 200 Ländern mit intelligenter OCR-Extraktion und biometrischem Abgleich.' }] },
-    cta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie uns oder erkunden Sie die umfassende Sandbox für Identitätsinfrastruktur. Richten Sie sie ein und erstellen Sie innerhalb weniger Minuten Test-Credentials.', primary: 'Demo anfragen', secondary: 'Jetzt ausprobieren' },
+    cta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie uns oder erkunden Sie die umfassende Sandbox für Identitätsinfrastruktur. Richten Sie sie ein und erstellen Sie innerhalb weniger Minuten Test-Credentials.', primary: 'Demo testen', secondary: 'Jetzt ausprobieren' },
     modal: { separator: '-', close: 'Schließen', goBack: 'Zurück' }
   },
   vi: {
     backToPlatform: 'Quay lại tổng quan nền tảng',
     badge: 'XÁC MINH NFC',
     heroTitle: 'Phát hiện gian lận hộ chiếu và ID chỉ bằng một lần chạm. Xác minh hộ chiếu và thẻ ID bằng NFC để tăng bảo mật, ngăn gian lận mà không tạo thêm ma sát.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     heroBenefits: [
       { title: 'Phát hiện hộ chiếu giả hoặc bị chỉnh sửa số', desc: 'Quét chip RFID bảo mật trong hộ chiếu hoặc thẻ ID để vượt qua các dấu hiệu trực quan và phát hiện hộ chiếu gian lận nhanh hơn.' },
       { title: 'Giảm xét duyệt thủ công hộ chiếu', desc: 'Dùng NFC để tự động hóa quy trình xác minh hộ chiếu, dành thời gian cho các cuộc điều tra gian lận phức tạp hơn.' },
@@ -476,7 +476,7 @@ Achieving the right equilibrium requires context-aware friction:
       { id: 3, title: 'Hướng dẫn chiến lược để cân bằng rủi ro và chuyển đổi', banner: 'Cân bằng chuyển đổi', category: 'Hướng dẫn', readTime: '12 phút', content: 'Đội bảo mật muốn không có gian lận, còn đội tăng trưởng muốn không có ma sát. Điểm cân bằng cần ma sát theo ngữ cảnh.\n\nHãy phân tầng theo rủi ro, dùng tiết lộ lũy tiến và chỉ kích hoạt NFC khi tín hiệu đáng ngờ thật sự cần bước bổ sung. Khi NFC được bật, hãy hướng dẫn trực quan vị trí cảm biến trên thiết bị.' }
     ],
     explore: { title: 'Khám phá thêm nền tảng định danh của Identra', learnMore: 'Tìm hiểu thêm', cards: [{ title: 'Giảm ma sát với xác minh mDL.', desc: 'Tiếp nhận khách hàng đủ điều kiện liền mạch bằng giấy phép lái xe di động (mDL) chính thức do bang cấp, tuân thủ ISO 18013-5.' }, { title: 'Xác minh ID chính phủ trên toàn cầu.', desc: 'Xác minh giấy phép địa phương, hộ chiếu khu vực và thẻ ID quốc gia từ hơn 200 quốc gia bằng trích xuất OCR thông minh và đối chiếu sinh trắc học.' }] },
-    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá sandbox hạ tầng định danh toàn diện. Thiết lập và tạo thông tin xác thực thử nghiệm chỉ trong vài phút.', primary: 'Nhận bản demo', secondary: 'Dùng thử ngay' },
+    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá sandbox hạ tầng định danh toàn diện. Thiết lập và tạo thông tin xác thực thử nghiệm chỉ trong vài phút.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' },
     modal: { separator: '-', close: 'Đóng', goBack: 'Quay lại' }
   }
 } as const;

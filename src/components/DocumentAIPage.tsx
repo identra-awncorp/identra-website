@@ -233,7 +233,7 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
               onClick={onOpenSandbox}
               className="bg-white hover:bg-emerald-50 text-slate-950 font-semibold px-8 py-4 rounded-full shadow-lg transition flex items-center gap-2 group text-sm"
             >
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
             <a
@@ -882,7 +882,7 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
               onClick={onOpenSandbox}
               className="bg-white hover:bg-indigo-50 text-slate-950 font-bold px-8 py-3.5 rounded-full shadow-md transition"
             >
-              {t.getDemo}
+              {t.tryDemo}
             </button>
             <button
               onClick={onOpenSandbox}

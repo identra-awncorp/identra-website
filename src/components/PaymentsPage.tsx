@@ -137,7 +137,7 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
               <p className="text-lg sm:text-xl text-blue-100 max-w-3xl leading-relaxed">{t.heroDesc}</p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <a href="#payments-demo" className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-full text-sm font-bold transition shadow-md hover:shadow-lg">
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-4 h-4 text-blue-600" />
                 </a>
                 <button onClick={onOpenSandbox} className="inline-flex items-center justify-center gap-2 border border-white/30 hover:bg-white/10 text-white px-8 py-4 rounded-full text-sm font-bold transition">

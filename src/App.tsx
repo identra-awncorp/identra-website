@@ -37,7 +37,6 @@ const RelayTransactions = lazy(() => import('./components/RelayTransactions'));
 const BuildingBlocks = lazy(() => import('./components/BuildingBlocks'));
 const PrivacyPortal = lazy(() => import('./components/PrivacyPortal'));
 const SecurityCertifications = lazy(() => import('./components/SecurityCertifications'));
-const IdentityVerificationSandboxModal = lazy(() => import('./components/IdentityVerificationSandboxModal'));
 const GovernmentIdPage = lazy(() => import('./components/GovernmentIdPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
@@ -128,7 +127,6 @@ export default function App() {
   const navigationType = useNavigationType();
   const { language } = useLanguage();
 
-  const [isSandboxOpen, setIsSandboxOpen] = useState(false);
   const [hasCompletedInitialLoad, setHasCompletedInitialLoad] = useState(false);
   const scrollPositionsRef = useRef<Map<string, number>>(new Map());
   const scrollRestoreVersionRef = useRef(0);
@@ -225,11 +223,7 @@ export default function App() {
   }, [language, location.hash, location.pathname, location.search, location.state, navigate]);
 
   const handleOpenSandbox = () => {
-    setIsSandboxOpen(true);
-  };
-
-  const handleCloseSandbox = () => {
-    setIsSandboxOpen(false);
+    handleViewChange('demo');
   };
 
   const handleViewChange = (view: AppView) => {
@@ -317,7 +311,7 @@ export default function App() {
         ) : currentView === 'landing' ? (
           <>
             {/* Hero Section */}
-            <Hero onOpenSandbox={handleOpenSandbox} />
+            <Hero onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} />
 
             {/* Relay Section (Trust & Privacy) */}
             <RelaySection onOpenSandbox={handleOpenSandbox} />
@@ -710,12 +704,6 @@ export default function App() {
       {/* Corporate Detailed Footer */}
       <Footer onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} />
 
-      {/* Interactive IDV Workflow Sandbox Dialog Modal */}
-      {isSandboxOpen && (
-        <Suspense fallback={null}>
-          <IdentityVerificationSandboxModal isOpen={isSandboxOpen} onClose={handleCloseSandbox} />
-        </Suspense>
-      )}
           </div>
         );
       })()}

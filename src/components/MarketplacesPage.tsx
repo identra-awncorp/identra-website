@@ -132,7 +132,7 @@ export default function MarketplacesPage({ onOpenSandbox, onBackToLanding, onVie
               <p className="text-base sm:text-lg text-blue-100/90 max-w-xl font-normal leading-relaxed">{t.heroDesc}</p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                 <button onClick={onOpenSandbox} className="bg-white hover:bg-teal-50 text-[#0F2256] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-blue-950/20" id="marketplace-hero-demo-btn">
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-4 h-4 text-[#0F2256]" />
                 </button>
                 <button onClick={onOpenSandbox} className="border border-white/20 hover:bg-white/10 text-white font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-1" id="marketplace-hero-sandbox-btn">

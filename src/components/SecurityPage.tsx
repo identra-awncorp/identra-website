@@ -176,7 +176,7 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
                 onClick={onOpenSandbox}
                 className="bg-black hover:bg-slate-900 text-white font-semibold text-sm px-6 py-3 rounded-full transition shadow-lg shadow-indigo-950/20"
               >
-                {text('getDemo')}
+                {text('tryDemo')}
               </button>
               <button
                 onClick={() => onViewChange?.('contact')}
@@ -720,7 +720,7 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
               onClick={onOpenSandbox}
               className="bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-8 py-3.5 rounded-full transition shadow-lg shadow-indigo-950/10 cursor-pointer"
             >
-              {text('getDemo')}
+              {text('tryDemo')}
             </button>
             <button
               onClick={() => onViewChange?.('contact')}

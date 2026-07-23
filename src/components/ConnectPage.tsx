@@ -133,7 +133,7 @@ export default function ConnectPage({ onOpenSandbox, onBackToLanding, onViewChan
                   className="bg-white hover:bg-teal-50 text-[#354CE1] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/20 cursor-pointer"
                   id="get-demo-hero-btn"
                 >
-                  {t.getDemo}
+                  {t.tryDemo}
                   <ArrowRight className="w-4 h-4 text-[#354CE1]" />
                 </button>
                 <button

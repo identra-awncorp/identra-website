@@ -716,7 +716,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
               onClick={onOpenSandbox}
               className="w-full sm:w-auto bg-white hover:bg-indigo-50 text-[#354CE1] font-bold text-xs px-8 py-4 rounded-full shadow-md transition flex items-center justify-center gap-1.5"
             >
-              <span>{t.getDemo}</span>
+              <span>{t.tryDemo}</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#354CE1]" />
             </button>
             <button

@@ -20,40 +20,6 @@ export interface ProductFeature {
   color: string;
 }
 
-export interface VerificationLog {
-  timestamp: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  message: string;
-}
-
-export type SandboxStep = 
-  | 'welcome' 
-  | 'info-entry' 
-  | 'doc-select' 
-  | 'doc-upload' 
-  | 'selfie-check' 
-  | 'processing' 
-  | 'results'
-  | 'dashboard-analytics';
-
-export interface SandboxUserData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  birthDate: string;
-  documentType: 'drivers_license' | 'passport' | 'national_id';
-  documentImage: string | null;
-  selfieImage: string | null;
-  ocrExtracted: {
-    nameMatch: boolean;
-    dobMatch: boolean;
-    expiryOk: boolean;
-    documentNumber: string;
-    extractedDob: string;
-    extractedName: string;
-  };
-}
-
 export interface PrivacyRequest {
   id: string;
   type: 'access' | 'delete' | 'correct';

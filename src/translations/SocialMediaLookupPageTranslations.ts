@@ -9,7 +9,7 @@ export const SOCIAL_MEDIA_LOOKUP_TRANSLATIONS: any = {
     heroLine5: "of",
     heroLine6: "users' potential risk by factoring",
     heroLine7: "in their social media profiles.",
-    getDemo: "Get a demo",
+    tryDemo: "Try the demo",
     heroFeatures: [
       {
         title: "Get up-to-date information about users' social media profiles",
@@ -216,7 +216,7 @@ export const SOCIAL_MEDIA_LOOKUP_TRANSLATIONS: any = {
     heroLine5: "de",
     heroLine6: "el riesgo potencial de los usuarios al incorporar",
     heroLine7: "sus perfiles sociales.",
-    getDemo: "Solicitar una demo",
+    tryDemo: "Probar la demo",
     heroFeatures: [
       { title: "Obtén información actualizada de perfiles sociales", desc: "Ejecuta una debida diligencia con más confianza usando detalles activos de nodos sociales clave." },
       { title: "Agrega datos de múltiples fuentes", desc: "Obtén una imagen más completa con datos propios y externos reunidos en un solo lugar." },
@@ -335,7 +335,7 @@ export const SOCIAL_MEDIA_LOOKUP_TRANSLATIONS: any = {
     heroLine5: "を",
     heroLine6: "ソーシャルプロフィールも含めて",
     heroLine7: "確認できます。",
-    getDemo: "デモを依頼",
+    tryDemo: "デモを試す",
     heroFeatures: [
       { title: "ユーザーのソーシャルプロフィール情報を最新化", desc: "主要なソーシャルノードから有効な詳細を取得し、より確信のあるデューデリジェンスを実行します。" },
       { title: "複数ソースのデータを集約", desc: "ファーストパーティとサードパーティのデータを一カ所に集約し、ユーザー像をより包括的に把握します。" },
@@ -450,7 +450,7 @@ export const SOCIAL_MEDIA_LOOKUP_TRANSLATIONS: any = {
     heroLine5: "vom",
     heroLine6: "potenziellen Risiko der Nutzer durch Einbezug",
     heroLine7: "ihrer Social-Media-Profile.",
-    getDemo: "Demo anfragen",
+    tryDemo: "Demo testen",
     heroFeatures: [
       { title: "Aktuelle Informationen zu Social-Media-Profilen", desc: "Führen Sie Due Diligence sicherer aus, indem Sie aktive Details aus wichtigen sozialen Knoten abrufen." },
       { title: "Daten aus mehreren Quellen bündeln", desc: "Erhalten Sie ein vollständigeres Nutzerbild mit gebündelten First-Party- und Third-Party-Daten an einem Ort." },
@@ -565,7 +565,7 @@ export const SOCIAL_MEDIA_LOOKUP_TRANSLATIONS: any = {
     heroLine5: "về",
     heroLine6: "rủi ro tiềm ẩn của người dùng bằng cách xét đến",
     heroLine7: "hồ sơ mạng xã hội của họ.",
-    getDemo: "Nhận bản demo",
+    tryDemo: "Trải nghiệm demo",
     heroFeatures: [
       { title: "Lấy thông tin mới nhất về hồ sơ mạng xã hội", desc: "Thực hiện thẩm định tự tin hơn nhờ chi tiết đang hoạt động từ các nút mạng xã hội quan trọng." },
       { title: "Tổng hợp dữ liệu từ nhiều nguồn", desc: "Có được bức tranh toàn diện hơn về người dùng bằng cách gom dữ liệu bên thứ nhất và bên thứ ba vào một nơi." },

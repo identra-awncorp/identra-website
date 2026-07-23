@@ -234,7 +234,7 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
           <p className="text-white/80 text-lg md:text-xl max-w-2xl mt-6 leading-relaxed">{t.heroDesc}</p>
           <div className="flex flex-wrap items-center gap-4 mt-8">
             <button onClick={onOpenSandbox} className="rounded-full bg-white hover:bg-slate-50 text-[#142FA0] font-bold py-3.5 px-8 transition inline-flex items-center gap-2 group text-sm shadow-lg hover:shadow-xl">
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#142FA0]" />
             </button>
             <button onClick={onOpenSandbox} className="rounded-full bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-3.5 px-8 transition text-sm">
@@ -519,7 +519,7 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
         <div className="bg-[#E2E6FF]/50 border border-[#354CE1]/10 rounded-[2.5rem] p-10 md:p-16 text-center space-y-6 relative overflow-hidden">
           <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-[#0F1E36] relative z-10">{t.readyTitle}</h2>
           <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto relative z-10">{t.readyDesc}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10"><button onClick={onOpenSandbox} className="rounded-full bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold py-3.5 px-8 transition text-sm flex items-center gap-2 group">{t.getDemo}<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></button><button onClick={onOpenSandbox} className="rounded-full bg-transparent border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-8 transition text-sm">{t.tryItNow}</button></div>
+          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10"><button onClick={onOpenSandbox} className="rounded-full bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold py-3.5 px-8 transition text-sm flex items-center gap-2 group">{t.tryDemo}<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></button><button onClick={onOpenSandbox} className="rounded-full bg-transparent border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-8 transition text-sm">{t.tryItNow}</button></div>
         </div>
       </section>
     </div>

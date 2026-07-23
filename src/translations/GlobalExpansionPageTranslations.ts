@@ -13,7 +13,7 @@ export type GlobalExpansionTextKey =
   | 'heroBadge'
   | 'heroTitle'
   | 'heroDesc'
-  | 'getDemo'
+  | 'tryDemo'
   | 'exploreSandbox'
   | 'hubMonitor'
   | 'registryLatency'
@@ -152,7 +152,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     heroBadge: 'Global expansion',
     heroTitle: 'Verify internationally while building trust locally. Onboard and verify customers anywhere with cross-border KYB-KYC designed for local compliance.',
     heroDesc: 'Scale seamlessly across borders. Instantly evaluate business structures and consumer credentials against official country registries, and adapt verification gates dynamically with real-time risk profiles.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     exploreSandbox: 'Explore demo sandbox',
     hubMonitor: 'Global Hub Status Monitor',
     registryLatency: 'Registry latency',
@@ -272,7 +272,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     heroBadge: 'Expansión global',
     heroTitle: 'Verifique internacionalmente mientras genera confianza local. Incorpore y verifique clientes en cualquier lugar con KYB-KYC transfronterizo diseñado para el cumplimiento local.',
     heroDesc: 'Escala sin fricción entre países. Evalúe al instante estructuras empresariales y credenciales de consumidores contra registros oficiales, y adapte las puertas de verificación con perfiles de riesgo en tiempo real.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     exploreSandbox: 'Explorar sandbox de demo',
     hubMonitor: 'Monitor de estado de hubs globales',
     registryLatency: 'Latencia del registro',
@@ -377,7 +377,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     heroBadge: 'グローバル展開',
     heroTitle: '各地域で信頼を築きながら、国際的に本人確認を。地域の規制に合わせた越境KYB-KYCで、どこでも顧客をオンボーディングして確認できます。',
     heroDesc: '国境を越えてスムーズに拡大できます。公式登録簿に照らして法人構造と顧客情報を即時評価し、リアルタイムのリスクプロファイルで確認ゲートを動的に調整します。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     exploreSandbox: 'デモサンドボックスを試す',
     hubMonitor: 'グローバルハブ状態モニター',
     registryLatency: '登録簿レイテンシ',
@@ -482,7 +482,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     heroBadge: 'Globale Expansion',
     heroTitle: 'International verifizieren und lokal Vertrauen aufbauen. Onboarden und verifizieren Sie Kunden überall mit grenzüberschreitendem KYB-KYC für lokale Compliance.',
     heroDesc: 'Skalieren Sie nahtlos über Grenzen hinweg. Bewerten Sie Unternehmensstrukturen und Kundendaten sofort gegen offizielle Register und passen Sie Verifizierungsschritte mit Echtzeit-Risikoprofilen dynamisch an.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     exploreSandbox: 'Demo-Sandbox erkunden',
     hubMonitor: 'Globaler Hub-Statusmonitor',
     registryLatency: 'Registerlatenz',
@@ -587,7 +587,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     heroBadge: 'Mở rộng toàn cầu',
     heroTitle: 'Xác minh quốc tế trong khi xây dựng niềm tin tại địa phương. Đăng ký và xác minh khách hàng ở mọi nơi với KYB-KYC xuyên biên giới được thiết kế cho tuân thủ địa phương.',
     heroDesc: 'Mở rộng liền mạch qua biên giới. Đánh giá ngay cấu trúc doanh nghiệp và thông tin người dùng với sổ đăng ký chính thức của từng quốc gia, đồng thời điều chỉnh cổng xác minh động theo hồ sơ rủi ro thời gian thực.',
-    getDemo: 'Yêu cầu demo',
+    tryDemo: 'Trải nghiệm demo',
     exploreSandbox: 'Khám phá sandbox demo',
     hubMonitor: 'Bảng theo dõi trạng thái hub toàn cầu',
     registryLatency: 'Độ trễ sổ đăng ký',

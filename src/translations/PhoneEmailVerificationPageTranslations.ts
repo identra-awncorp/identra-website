@@ -9,7 +9,7 @@ export const PHONE_EMAIL_VERIFICATION_TRANSLATIONS: any = {
     badge: 'Phone & email verification',
     heroTitle: 'Verify phone numbers and emails without adding unnecessary friction.',
     heroDesc: 'Confirm that users control the contact details they submit, strengthen account security, and route suspicious activity into the right verification step.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     tryNow: 'Try it now',
     benefits: [
       { title: 'Secure accounts', desc: 'Verify contact ownership before account recovery, payout changes, or high-risk actions.' },
@@ -201,7 +201,7 @@ export const PHONE_EMAIL_VERIFICATION_TRANSLATIONS: any = {
     finalCta: {
       title: 'Ready to get started?',
       desc: 'Get in touch or start exploring Identra today. Build high-assurance workflows that scale beautifully.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now'
     }
   },
@@ -210,7 +210,7 @@ export const PHONE_EMAIL_VERIFICATION_TRANSLATIONS: any = {
     badge: 'Verificación de teléfono y email',
     heroTitle: 'Verifica teléfonos y emails sin añadir fricción innecesaria.',
     heroDesc: 'Confirma que los usuarios controlan los datos de contacto que envían, refuerza la seguridad de las cuentas y dirige la actividad sospechosa al paso correcto.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     tryNow: 'Probar ahora',
     benefits: [
       { title: 'Protege cuentas', desc: 'Verifica la propiedad del contacto antes de recuperaciones, cambios de pago o acciones de alto riesgo.' },
@@ -552,14 +552,14 @@ PHONE_EMAIL_VERIFICATION_TRANSLATIONS.ja = {
   badge: '電話番号・メール認証',
   heroTitle: '不要な摩擦を増やさずに電話番号とメールを確認。',
   heroDesc: 'ユーザーが提出した連絡先を本人が管理していることを確認し、アカウント保護を強化し、疑わしい操作を適切な検証ステップへ送ります。',
-  getDemo: 'デモを依頼',
+  tryDemo: 'Trải nghiệm demo',
   tryNow: '今すぐ試す',
   benefits: [
     { title: 'アカウントを保護', desc: '復旧、支払い先変更、高リスク操作の前に連絡先の所有を確認します。' },
     { title: 'ユーザーにやさしい認証', desc: 'SMS、メール、通信事業者チェックをオンボーディングに自然に組み込みます。' },
     { title: '完了率を向上', desc: '初回で所有を証明できない場合に代替手段を提供します。' }
   ],
-  finalCta: { title: '始める準備はできましたか？', desc: 'Identra を今すぐ試し、高保証のワークフローを美しく拡張しましょう。', primary: 'デモを依頼', secondary: '今すぐ試す' }
+  finalCta: { title: '始める準備はできましたか？', desc: 'Identra を今すぐ試し、高保証のワークフローを美しく拡張しましょう。', primary: 'デモを試す', secondary: '今すぐ試す' }
 };
 
 PHONE_EMAIL_VERIFICATION_TRANSLATIONS.de = {
@@ -869,14 +869,14 @@ PHONE_EMAIL_VERIFICATION_TRANSLATIONS.de = {
   badge: 'Telefon- und E-Mail-Verifizierung',
   heroTitle: 'Telefonnummern und E-Mails verifizieren, ohne unnötige Reibung zu erzeugen.',
   heroDesc: 'Bestätigen Sie, dass Nutzer die angegebenen Kontaktdaten kontrollieren, stärken Sie die Kontosicherheit und leiten Sie verdächtige Aktivitäten in den passenden Verifizierungsschritt.',
-  getDemo: 'Demo anfragen',
+  tryDemo: 'Trải nghiệm demo',
   tryNow: 'Jetzt ausprobieren',
   benefits: [
     { title: 'Konten schützen', desc: 'Prüfen Sie Kontaktbesitz vor Kontowiederherstellung, Auszahlungsänderungen oder riskanten Aktionen.' },
     { title: 'Verifizierung einfach machen', desc: 'Nutzen Sie SMS, E-Mail und Carrier-Prüfungen, die sich nativ in Ihr Onboarding einfügen.' },
     { title: 'Abschlussraten erhöhen', desc: 'Bieten Sie Fallback-Methoden an, wenn Nutzer Besitz nicht beim ersten Versuch nachweisen können.' }
   ],
-  finalCta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie Identra oder erkunden Sie heute unsere Verifizierungstools. Erstellen Sie hochsichere Workflows, die elegant skalieren.', primary: 'Demo anfragen', secondary: 'Jetzt ausprobieren' }
+  finalCta: { title: 'Bereit loszulegen?', desc: 'Kontaktieren Sie Identra oder erkunden Sie heute unsere Verifizierungstools. Erstellen Sie hochsichere Workflows, die elegant skalieren.', primary: 'Demo testen', secondary: 'Jetzt ausprobieren' }
 };
 
 PHONE_EMAIL_VERIFICATION_TRANSLATIONS.vi = {
@@ -1160,7 +1160,7 @@ PHONE_EMAIL_VERIFICATION_TRANSLATIONS.vi = {
   badge: 'Xác minh điện thoại và email',
   heroTitle: 'Xác minh số điện thoại và email mà không tạo thêm ma sát không cần thiết.',
   heroDesc: 'Xác nhận người dùng kiểm soát thông tin liên hệ họ gửi, tăng cường bảo mật tài khoản và chuyển hoạt động đáng ngờ đến đúng bước xác minh.',
-  getDemo: 'Nhận bản demo',
+  tryDemo: 'Trải nghiệm demo',
   tryNow: 'Dùng thử ngay',
   benefits: [
     { title: 'Bảo vệ tài khoản', desc: 'Xác minh quyền sở hữu thông tin liên hệ trước khi khôi phục tài khoản, đổi thông tin nhận tiền hoặc thực hiện hành động rủi ro cao.' },
@@ -1176,7 +1176,7 @@ PHONE_EMAIL_VERIFICATION_TRANSLATIONS.vi = {
     tabs: [{ id: 'otp-sms', label: 'OTP qua SMS' }, { id: 'otp-email', label: 'OTP qua email' }, { id: 'carrier-db', label: 'Tra cứu nhà mạng' }, { id: 'risk-score', label: 'Sàng lọc rủi ro' }],
     response: 'Phản hồi: 200 OK'
   },
-  finalCta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay. Xây dựng workflow độ tin cậy cao có thể mở rộng mượt mà.', primary: 'Nhận bản demo', secondary: 'Dùng thử ngay' }
+  finalCta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay. Xây dựng workflow độ tin cậy cao có thể mở rộng mượt mà.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' }
 };
 
 Object.assign(PHONE_EMAIL_VERIFICATION_TRANSLATIONS.es, {
@@ -1206,7 +1206,7 @@ Object.assign(PHONE_EMAIL_VERIFICATION_TRANSLATIONS.es, {
   signals: { title: 'Prevén fraude con señales de riesgo adicionales', cards: [{ title: 'Autenticación de dos factores', desc: 'Protege cuentas enviando un código criptográfico al teléfono o email y validando propiedad.' }, { title: 'Prevención de toma de cuenta', desc: 'Detén secuestros revisando SIM swaps recientes, portabilidades sospechosas o buzones temporales.' }, { title: 'Evaluación de riesgo', desc: 'Analiza reputación durante onboarding e intercepta dominios temporales, líneas VoIP y registros de spam.' }] },
   learning: { title: 'Sigue aprendiendo', articles: [{ meta: 'Blog - 6 min', title: 'Verificación telefónica: parte clave de identidad y prevención de fraude', alt: 'Ideas sobre verificación telefónica' }, { meta: 'Blog - 7 min', title: '3 consejos para gestionar riesgo sin sacrificar experiencia de usuario', alt: 'Estrategias de gestión de riesgo' }, { meta: 'Guía - 12 min', title: 'Guía estratégica para equilibrar riesgo y conversión', alt: 'Guía de conversión y riesgo' }] },
   explore: { title: 'Explora más de la plataforma de identidad de Identra', cards: [{ eyebrow: 'Flujos de identidad', title: 'Crea mejores flujos de identidad', desc: 'Diseña flujos dinámicos que activan consultas o capturas biométricas según los datos del usuario.', cta: 'Explorar Workflows' }, { eyebrow: 'Comprobaciones enriquecidas', title: 'Evalúa teléfonos y emails por riesgo', desc: 'Incorpora bases de datos, listas antifraude y coincidencia de licencias en tus registros.', cta: 'Explorar Database Checks' }] },
-  finalCta: { title: '¿Listo para empezar?', desc: 'Contacta con Identra o empieza a explorar hoy. Crea workflows de alta confianza que escalan con elegancia.', primary: 'Solicitar una demo', secondary: 'Probar ahora' }
+  finalCta: { title: '¿Listo para empezar?', desc: 'Contacta con Identra o empieza a explorar hoy. Crea workflows de alta confianza que escalan con elegancia.', primary: 'Probar la demo', secondary: 'Probar ahora' }
 });
 
 Object.assign(PHONE_EMAIL_VERIFICATION_TRANSLATIONS.ja, {

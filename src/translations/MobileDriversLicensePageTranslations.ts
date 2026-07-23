@@ -8,7 +8,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     backToHome: 'Back to home',
     badge: "Mobile driver's license",
     heroTitle: "Verify users instantly and securely. Verify mobile driver's licenses (mDLs) from industry-leading digital wallet providers to reduce user friction.",
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     pillars: [
       {
         title: 'Increased completion rates',
@@ -193,7 +193,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     cta: {
       title: 'Ready to get started?',
       desc: 'Get in touch or start exploring Identra today.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now ->'
     }
   },
@@ -201,7 +201,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     backToHome: 'Volver al inicio',
     badge: 'Licencia de conducir móvil',
     heroTitle: 'Verifica usuarios al instante y de forma segura. Verifica licencias de conducir móviles (mDL) de proveedores líderes de billeteras digitales para reducir la fricción del usuario.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     pillars: [
       {
         title: 'Mayores tasas de finalización',
@@ -386,7 +386,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     cta: {
       title: '¿Listo para empezar?',
       desc: 'Ponte en contacto o empieza a explorar Identra hoy.',
-      primary: 'Solicitar una demo',
+      primary: 'Probar la demo',
       secondary: 'Pruébalo ahora ->'
     }
   },
@@ -394,7 +394,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     backToHome: 'ホームに戻る',
     badge: 'モバイル運転免許証',
     heroTitle: 'ユーザーを即時かつ安全に確認。主要なデジタルウォレット事業者のモバイル運転免許証 (mDL) を検証し、ユーザーの手間を減らします。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     pillars: [
       {
         title: '完了率の向上',
@@ -579,7 +579,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     cta: {
       title: '始める準備はできましたか？',
       desc: 'Identra について問い合わせるか、今すぐ探索を始めましょう。',
-      primary: 'デモを依頼',
+      primary: 'デモを試す',
       secondary: '今すぐ試す ->'
     }
   },
@@ -587,7 +587,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     backToHome: 'Zur Startseite',
     badge: 'Mobiler Führerschein',
     heroTitle: 'Verifizieren Sie Nutzer sofort und sicher. Prüfen Sie mobile Führerscheine (mDLs) führender Anbieter digitaler Wallets und reduzieren Sie Reibung für Nutzer.',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     pillars: [
       {
         title: 'Höhere Abschlussraten',
@@ -772,7 +772,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     cta: {
       title: 'Bereit loszulegen?',
       desc: 'Kontaktieren Sie uns oder erkunden Sie Identra noch heute.',
-      primary: 'Demo anfragen',
+      primary: 'Demo testen',
       secondary: 'Jetzt ausprobieren ->'
     }
   },
@@ -780,7 +780,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     backToHome: 'Quay lại trang chủ',
     badge: 'Giấy phép lái xe di động',
     heroTitle: 'Xác minh người dùng tức thì và an toàn. Xác minh giấy phép lái xe di động (mDL) từ các nhà cung cấp ví số hàng đầu để giảm ma sát cho người dùng.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     pillars: [
       {
         title: 'Tăng tỷ lệ hoàn tất',
@@ -965,7 +965,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     cta: {
       title: 'Sẵn sàng bắt đầu?',
       desc: 'Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay.',
-      primary: 'Nhận bản demo',
+      primary: 'Trải nghiệm demo',
       secondary: 'Dùng thử ngay ->'
     }
   }

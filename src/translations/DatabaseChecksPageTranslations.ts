@@ -9,7 +9,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     heroBadge: 'Product Verifications',
     heroTitle: 'Verify users globally across authoritative and issuing sources.',
     heroDesc: 'Increase assurance and meet regulations anywhere with configurable matching logic and robust global coverage. Validate identity data in real time.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try the database matcher sandbox',
     pillars: [
       {
@@ -258,7 +258,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     heroBadge: 'Verificaciones de producto',
     heroTitle: 'Verifica usuarios en todo el mundo con fuentes oficiales y emisoras.',
     heroDesc: 'Aumenta la confianza y cumple regulaciones en cualquier mercado con lógica de coincidencia configurable y cobertura global sólida. Valida datos de identidad en tiempo real.',
-    getDemo: 'Solicitar una demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar el entorno de pruebas de coincidencia de bases de datos',
     pillars: [
       {
@@ -507,7 +507,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     heroBadge: 'プロダクト検証',
     heroTitle: '公的情報源と発行元データで、世界中のユーザーを検証。',
     heroDesc: '設定可能な照合ロジックと強力なグローバルカバレッジで、どの市場でも信頼性を高め、規制に対応します。本人確認データをリアルタイムで検証できます。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     trySandbox: 'データベース照合の検証環境を試す',
     pillars: [
       {
@@ -756,7 +756,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     heroBadge: 'Produktverifizierungen',
     heroTitle: 'Verifizieren Sie Nutzer weltweit mit amtlichen und ausstellenden Quellen.',
     heroDesc: 'Erhöhen Sie Sicherheit und erfüllen Sie Vorschriften überall mit konfigurierbarer Abgleichlogik und starker globaler Abdeckung. Validieren Sie Identitätsdaten in Echtzeit.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     trySandbox: 'Testumgebung für Datenbankabgleich testen',
     pillars: [
       {
@@ -1005,7 +1005,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     heroBadge: 'Xác minh sản phẩm',
     heroTitle: 'Xác minh người dùng trên toàn cầu bằng nguồn dữ liệu chính thức và nguồn phát hành.',
     heroDesc: 'Tăng mức độ tin cậy và đáp ứng quy định ở mọi thị trường với logic đối chiếu có thể cấu hình và độ phủ toàn cầu mạnh mẽ. Xác thực dữ liệu danh tính theo thời gian thực.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     trySandbox: 'Thử môi trường đối chiếu cơ sở dữ liệu',
     pillars: [
       {

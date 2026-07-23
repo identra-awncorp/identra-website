@@ -118,7 +118,7 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
               className="inline-flex items-center gap-2 bg-white text-blue-600 hover:bg-slate-50 font-medium px-6 py-3.5 rounded-full transition shadow-md hover:shadow-lg active:scale-95 duration-200"
               id="higher_education_hero_cta"
             >
-              {t.getDemo}
+              {t.tryDemo}
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

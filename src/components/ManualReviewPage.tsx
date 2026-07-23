@@ -107,7 +107,7 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
               <p className="text-base sm:text-lg text-white/85 max-w-xl font-normal leading-relaxed">{t.hero.desc}</p>
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
                 <button id="hero-get-demo-btn" onClick={onOpenSandbox} className="w-full sm:w-auto bg-white hover:bg-slate-50 text-[#354CE1] font-semibold text-sm py-3.5 px-7 rounded-full flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">
-                  {t.hero.getDemo}
+                  {t.hero.tryDemo}
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <button id="hero-back-landing-btn" onClick={onBackToLanding} className="w-full sm:w-auto bg-white/10 hover:bg-white/20 border border-white/35 text-white font-semibold text-sm py-3.5 px-6 rounded-full transition">
@@ -411,7 +411,7 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
             </div>
             <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
               <button id="cta-get-demo-btn" onClick={onOpenSandbox} className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-xs py-3 px-6 rounded-full shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
-                {t.cta.getDemo}
+                {t.cta.tryDemo}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <button id="cta-try-now-btn" onClick={onOpenSandbox} className="w-full sm:w-auto bg-transparent hover:bg-slate-100/40 text-slate-700 font-semibold text-xs py-3 px-6 rounded-full transition border border-slate-300">

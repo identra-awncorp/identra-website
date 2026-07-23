@@ -121,7 +121,7 @@ export default function MarketplacePage({ onOpenSandbox, onViewChange }: Marketp
                 onClick={onOpenSandbox}
                 className="bg-white hover:bg-slate-50 active:scale-95 text-[#2F44D4] font-semibold px-6 py-3.5 rounded-xl shadow-md transition-all flex items-center space-x-2 text-sm"
               >
-                <span>{t.getDemo}</span>
+                <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               

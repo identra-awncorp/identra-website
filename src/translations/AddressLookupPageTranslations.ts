@@ -10,7 +10,7 @@ export const ADDRESS_LOOKUP_TRANSLATIONS = {
     heroTitleBefore: 'Make better decisions by assessing ',
     heroTitleHighlighted: 'address risk.',
     heroTitleAfter: ' Reduce risk by analyzing information about US addresses, including deliverability, address type, and more.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     
     // Feature Grid
     feat1Title: 'Up-to-date data',
@@ -147,7 +147,7 @@ export const ADDRESS_LOOKUP_TRANSLATIONS = {
     heroTitleBefore: 'Tome mejores decisiones evaluando el ',
     heroTitleHighlighted: 'riesgo de dirección.',
     heroTitleAfter: ' Reduzca el riesgo analizando información sobre direcciones de EE. UU., incluyendo la capacidad de entrega, el tipo de dirección y más.',
-    getDemo: 'Obtener demo',
+    tryDemo: 'Probar la demo',
     
     // Feature Grid
     feat1Title: 'Datos actualizados',
@@ -284,7 +284,7 @@ export const ADDRESS_LOOKUP_TRANSLATIONS = {
     heroTitleBefore: '住所のリスクを評価して、より',
     heroTitleHighlighted: '適切な意思決定を。',
     heroTitleAfter: ' 配達可能性や住所の種類など、米国の住所に関する情報を分析してリスクを軽減します。',
-    getDemo: 'デモを申し込む',
+    tryDemo: 'デモを試す',
     
     // Feature Grid
     feat1Title: '最新のデータ',
@@ -421,7 +421,7 @@ export const ADDRESS_LOOKUP_TRANSLATIONS = {
     heroTitleBefore: 'Treffen Sie bessere Entscheidungen durch die Bewertung des ',
     heroTitleHighlighted: 'Adressrisikos.',
     heroTitleAfter: ' Reduzieren Sie Risiken durch die Analyse von Informationen zu US-Adressen, einschließlich Zustellbarkeit, Adresstyp und mehr.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     
     // Feature Grid
     feat1Title: 'Aktuelle Daten',
@@ -558,7 +558,7 @@ export const ADDRESS_LOOKUP_TRANSLATIONS = {
     heroTitleBefore: 'Đưa ra quyết định tốt hơn bằng cách đánh giá ',
     heroTitleHighlighted: 'rủi ro địa chỉ.',
     heroTitleAfter: ' Giảm thiểu rủi ro bằng cách phân tích thông tin về các địa chỉ tại Hoa Kỳ, bao gồm khả năng giao hàng, loại địa chỉ và nhiều thông tin khác.',
-    getDemo: 'Yêu cầu bản demo',
+    tryDemo: 'Trải nghiệm demo',
     
     // Feature Grid
     feat1Title: 'Dữ liệu cập nhật liên tục',

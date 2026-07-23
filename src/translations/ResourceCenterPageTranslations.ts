@@ -74,7 +74,7 @@ export const resourceCenterPageTranslations = {
     identraBrand: 'identra',
     learnMoreTitle: 'Want to learn more about Identra?',
     learnMoreDesc: 'Get in touch or start exploring today',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     tryItNow: 'Try it now',
     resources: {
       identity101: [
@@ -192,7 +192,7 @@ export const resourceCenterPageTranslations = {
     identraBrand: 'identra',
     learnMoreTitle: '¿Quieres saber más sobre Identra?',
     learnMoreDesc: 'Ponte en contacto o empieza a explorar hoy',
-    getDemo: 'Solicitar demo',
+    tryDemo: 'Probar la demo',
     tryItNow: 'Probar ahora',
     resources: {
       identity101: [
@@ -310,7 +310,7 @@ export const resourceCenterPageTranslations = {
     identraBrand: 'identra',
     learnMoreTitle: 'Identraについてもっと知りたいですか？',
     learnMoreDesc: 'お問い合わせいただくか、今すぐ探索を始めましょう',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     tryItNow: '今すぐ試す',
     resources: {
       identity101: [
@@ -428,7 +428,7 @@ export const resourceCenterPageTranslations = {
     identraBrand: 'identra',
     learnMoreTitle: 'Möchtest du mehr über Identra erfahren?',
     learnMoreDesc: 'Nimm Kontakt auf oder beginne noch heute mit der Erkundung',
-    getDemo: 'Demo anfragen',
+    tryDemo: 'Demo testen',
     tryItNow: 'Jetzt testen',
     resources: {
       identity101: [
@@ -546,7 +546,7 @@ export const resourceCenterPageTranslations = {
     identraBrand: 'identra',
     learnMoreTitle: 'Bạn muốn tìm hiểu thêm về Identra?',
     learnMoreDesc: 'Liên hệ với chúng tôi hoặc bắt đầu khám phá ngay hôm nay',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     tryItNow: 'Thử ngay',
     resources: {
       identity101: [

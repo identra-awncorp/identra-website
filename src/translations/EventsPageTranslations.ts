@@ -40,7 +40,7 @@ export const EVENTS_PAGE_TRANSLATIONS = {
       "submitAnotherRequest": "Submit another request",
       "readyToGetStarted": "Ready to get started?",
       "getInTouchOrStartExploringIdentraToday": "Get in touch or start exploring Identra today.",
-      "getADemo": "Get a demo",
+      "tryTheDemo": "Try the demo",
       "tryItNow": "Try it now &rarr;",
     },
     "events": {
@@ -93,7 +93,7 @@ export const EVENTS_PAGE_TRANSLATIONS = {
       "submitAnotherRequest": "Enviar otra solicitud",
       "readyToGetStarted": "¿Listo para empezar?",
       "getInTouchOrStartExploringIdentraToday": "Contacte o empiece a explorar Identra hoy.",
-      "getADemo": "Solicitar una demo",
+      "tryTheDemo": "Probar la demo",
       "tryItNow": "Pruébelo ahora →",
     },
     "events": {
@@ -146,7 +146,7 @@ export const EVENTS_PAGE_TRANSLATIONS = {
       "submitAnotherRequest": "別のリクエストを送信",
       "readyToGetStarted": "始める準備はできましたか？",
       "getInTouchOrStartExploringIdentraToday": "お問い合わせ、またはIdentraを今すぐお試しください。",
-      "getADemo": "デモを依頼",
+      "tryTheDemo": "デモを試す",
       "tryItNow": "今すぐ試す →",
     },
     "events": {
@@ -199,7 +199,7 @@ export const EVENTS_PAGE_TRANSLATIONS = {
       "submitAnotherRequest": "Weitere Anfrage senden",
       "readyToGetStarted": "Bereit loszulegen?",
       "getInTouchOrStartExploringIdentraToday": "Kontakt aufnehmen oder Identra heute erkunden.",
-      "getADemo": "Demo anfragen",
+      "tryTheDemo": "Demo testen",
       "tryItNow": "Jetzt testen →",
     },
     "events": {
@@ -252,7 +252,7 @@ export const EVENTS_PAGE_TRANSLATIONS = {
       "submitAnotherRequest": "Gửi yêu cầu khác",
       "readyToGetStarted": "Sẵn sàng bắt đầu?",
       "getInTouchOrStartExploringIdentraToday": "Liên hệ hoặc bắt đầu khám phá Identra hôm nay.",
-      "getADemo": "Nhận bản demo",
+      "tryTheDemo": "Trải nghiệm demo",
       "tryItNow": "Thử ngay →",
     },
     "events": {

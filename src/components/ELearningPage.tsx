@@ -142,7 +142,7 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
                   onClick={onOpenSandbox}
                   className="px-8 py-4 bg-white text-[#2563EB] font-bold rounded-xl shadow-lg hover:bg-blue-50 transition duration-300 flex items-center justify-center gap-2 group"
                 >
-                  <span>{t('getDemo')}</span>
+                  <span>{t('tryDemo')}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -744,7 +744,7 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
               onClick={onOpenSandbox}
               className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-sm tracking-wide transition shadow-md flex items-center justify-center gap-2 group"
             >
-              <span>{t('getDemo')}</span>
+              <span>{t('tryDemo')}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
             <button 

@@ -15,14 +15,14 @@ export const translations = {
     company: 'Company',
     verifyMe: 'Verify me',
     login: 'Login',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     shippedBanner: 'Everything Identra shipped in H1, in one place.',
     
     // Hero
     keeping: 'Keeping the',
     internetHuman: 'internet human',
     heroDesc: 'Identra is the most flexible and secure way to verify real people and real businesses online.',
-    seePlatform: 'See our full platform',
+    seeWhitePaper: 'See our white paper',
     soc2: 'SOC2 Certified',
     gdpr: 'GDPR & CCPA Ready',
 
@@ -254,13 +254,13 @@ export const translations = {
     company: 'Compañía',
     verifyMe: 'Verifícame',
     login: 'Iniciar sesión',
-    getDemo: 'Solicitar demo',
+    tryDemo: 'Probar la demo',
     shippedBanner: 'Todo lo que Identra lanzó en el H1, en un solo lugar.',
     
     keeping: 'Manteniendo el',
     internetHuman: 'internet humano',
     heroDesc: 'Identra es la forma más flexible y segura de verificar personas y empresas reales en línea.',
-    seePlatform: 'Ver nuestra plataforma completa',
+    seeWhitePaper: 'Ver nuestro libro blanco',
     soc2: 'Certificado SOC2',
     gdpr: 'Listo para GDPR y CCPA',
 
@@ -485,13 +485,13 @@ export const translations = {
     company: '企業情報',
     verifyMe: '本人確認を試す',
     login: 'ログイン',
-    getDemo: 'デモを予約',
+    tryDemo: 'デモを試す',
     shippedBanner: 'H1にリリースされたIdentraのすべての機能を一箇所に。',
     
     keeping: '人と人をつなぐ',
     internetHuman: '温もりのあるインターネット',
     heroDesc: 'Identraは、オンラインで実在する個人や本物の企業を最も柔軟かつ安全に検証するための手段です。',
-    seePlatform: 'プラットフォーム全体を見る',
+    seeWhitePaper: 'ホワイトペーパーを見る',
     soc2: 'SOC2認証済み',
     gdpr: 'GDPR・CCPA準拠',
 
@@ -716,13 +716,13 @@ export const translations = {
     company: 'Unternehmen',
     verifyMe: 'Verifizieren',
     login: 'Anmelden',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     shippedBanner: 'Alles, was Identra im ersten Halbjahr veröffentlicht hat, an einem Ort.',
     
     keeping: 'Das Internet',
     internetHuman: 'menschlich halten',
     heroDesc: 'Identra ist der flexibelste und sicherste Weg, um echte Menschen und echte Unternehmen online zu verifizieren.',
-    seePlatform: 'Unsere gesamte Plattform ansehen',
+    seeWhitePaper: 'Unser Whitepaper ansehen',
     soc2: 'SOC2-zertifiziert',
     gdpr: 'GDPR- und CCPA-konform',
 
@@ -947,13 +947,13 @@ export const translations = {
     company: 'Công ty',
     verifyMe: 'Xác minh tôi',
     login: 'Đăng nhập',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     shippedBanner: 'Tất cả những gì Identra đã phát hành trong nửa đầu năm ở một nơi.',
     
     keeping: 'Giữ cho',
     internetHuman: 'mạng internet nhân văn',
     heroDesc: 'Identra là phương thức linh hoạt và an toàn nhất để xác minh người dùng thực và doanh nghiệp thực trực tuyến.',
-    seePlatform: 'Xem toàn bộ nền tảng',
+    seeWhitePaper: 'Tìm hiểu về Identra',
     soc2: 'Đạt chứng nhận SOC2',
     gdpr: 'Sẵn sàng cho GDPR & CCPA',
 

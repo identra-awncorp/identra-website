@@ -241,7 +241,7 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
                 onClick={onOpenSandbox}
                 className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-100 text-slate-950 font-bold rounded-full shadow-lg transition duration-300 text-sm flex items-center justify-center gap-2 group"
               >
-                <span>{text('getDemo')}</span>
+                <span>{text('tryDemo')}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               
@@ -1146,7 +1146,7 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
               onClick={onOpenSandbox}
               className="w-full sm:w-auto px-8 py-4 bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold rounded-full shadow-xl transition text-sm"
             >
-              {text('getDemo')}
+              {text('tryDemo')}
             </button>
             <button
               onClick={onOpenSandbox}

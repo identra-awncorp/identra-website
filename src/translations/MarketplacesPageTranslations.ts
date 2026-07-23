@@ -9,7 +9,7 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     badge: 'Solutions • Marketplaces',
     heroTitle: 'Balance conversion and risk for every side of your marketplace.',
     heroDesc: "Build trust and protect your marketplace with identity verification that's tough on fraudsters but easy on your users, sellers, and couriers.",
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try identity sandbox',
     terminal: {
       engine: 'MARKETPLACE_TRUST_ENGINE_v1.0',
@@ -195,7 +195,7 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     cta: {
       title: 'Ready to get started?',
       desc: 'Build bulletproof marketplace trust and compliant partner onboarding.',
-      primary: 'Get a demo',
+      primary: 'Try the demo',
       secondary: 'Try it now →'
     }
   },
@@ -204,7 +204,7 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     badge: 'Soluciones • Marketplaces',
     heroTitle: 'Equilibra conversión y riesgo en cada lado de tu marketplace.',
     heroDesc: 'Genera confianza y protege tu marketplace con verificación de identidad estricta contra defraudadores y sencilla para usuarios, vendedores y repartidores.',
-    getDemo: 'Solicitar demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox de identidad',
     terminal: {
       engine: 'MARKETPLACE_TRUST_ENGINE_v1.0',
@@ -236,14 +236,14 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     demo: { visualBadge: 'Flujo KYB-KYC', visualTitle: 'Protocolo de vendedor Etsy', visualRows: [{ label: 'Estado EIN empresarial', value: 'Coincide' }, { label: 'Verificación IRS', value: 'Aprobada' }, { label: 'Registro INFORM Act', value: 'Creado' }], visualHeading: 'Automatiza cumplimiento dinámicamente', visualDesc: 'Implementa listas de políticas listas para usar para regulaciones locales, estatales e internacionales.', title: 'Inicia tu demo personalizada para marketplace', desc: 'Cuéntanos sobre tu plataforma y configuraremos un sandbox ajustado a tu modelo de negocio.', requiredAlert: 'Completa todos los campos obligatorios.', successTitle: 'Demo personalizada solicitada', successPrefix: 'Gracias,', successMiddle: 'Tu sandbox de identidad para marketplace está listo. Revisa tu correo en', successSuffix: 'para ver las guías de integración.', requestAnother: 'Solicitar otra demo sandbox', fields: { firstName: 'Nombre*', lastName: 'Apellido*', workEmail: 'Correo laboral*', platformUrl: 'URL del marketplace*', companyName: 'Empresa*', jobTitle: 'Cargo' }, placeholders: { firstName: 'Sarah', lastName: 'Jenkins', workEmail: 'sjenkins@marketplace.io', platformUrl: 'https://marketplace.io', companyName: 'CraftSpace Ltd', jobTitle: 'Head of Trust & Safety' }, submit: 'Ver demo personalizada' },
     checklist: [{ title: 'Know Your Seller (KYS)', desc: 'Recopila, verifica y monitorea entidades comerciales y datos de vendedores para legitimar la plataforma.' }, { title: 'Cumplimiento INFORM Act', desc: 'Automatiza requisitos para vendedores externos de alto volumen en marketplaces minoristas y P2P.' }, { title: 'Cumplimiento DAC7 y DSA', desc: 'Alinea la recopilación fiscal europea y los reportes de proveedores de servicios digitales.' }, { title: 'Verificación IRS 1099', desc: 'Comprueba W-9 e identificación fiscal contra registros oficiales del gobierno.' }, { title: 'Derecho a trabajar', desc: 'Realiza controles laborales y documentales locales para repartidores bajo demanda y trabajadores gig.' }, { title: 'Capas de confianza multisided', desc: 'Protege compradores contra estafas y permite retiros seguros para comercios de alto volumen.' }],
     explore: { title: 'Explora más de la plataforma de identidad de Identra', cards: [{ title: 'Verifica comercios y sus vendedores con KYB-KYC integrado.', cta: 'Conocer soluciones KYB-KYC' }, { title: 'Crea flujos dinámicos de garantía de edad.', cta: 'Conocer verificación de edad' }] },
-    cta: { title: '¿Listo para empezar?', desc: 'Construye confianza sólida en tu marketplace y onboarding de socios conforme.', primary: 'Solicitar demo', secondary: 'Probar ahora →' }
+    cta: { title: '¿Listo para empezar?', desc: 'Construye confianza sólida en tu marketplace y onboarding de socios conforme.', primary: 'Probar la demo', secondary: 'Probar ahora →' }
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
     badge: 'ソリューション • マーケットプレイス',
     heroTitle: 'マーケットプレイスのあらゆる側面で、転換率とリスクのバランスを取る。',
     heroDesc: '不正利用者には厳しく、ユーザー、販売者、配送担当者には使いやすい本人確認で、信頼を築きマーケットプレイスを守ります。',
-    getDemo: 'デモを依頼',
+    tryDemo: 'デモを試す',
     trySandbox: '本人確認サンドボックスを試す',
     terminal: {
       engine: 'MARKETPLACE_TRUST_ENGINE_v1.0',
@@ -275,14 +275,14 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     demo: { visualBadge: 'KYB-KYC フロー', visualTitle: 'Etsy 販売者プロトコル', visualRows: [{ label: 'EIN 事業状態', value: '一致' }, { label: 'IRS 検証', value: '合格' }, { label: 'INFORM Act ログ', value: '作成済み' }], visualHeading: 'コンプライアンスを動的に自動化', visualDesc: '地域、州、国際規制に対応するすぐに使えるポリシーチェックリストを導入できます。', title: 'カスタムマーケットプレイスデモを開始', desc: 'マーケットプレイスについて教えてください。事業モデルに合わせたサンドボックスワークフローを構成します。', requiredAlert: '必須項目をすべて入力してください。', successTitle: 'カスタムデモをリクエストしました', successPrefix: 'ありがとうございます、', successMiddle: 'カスタム本人確認サンドボックスの準備ができました。統合ガイドは', successSuffix: 'の受信トレイをご確認ください。', requestAnother: '別のサンドボックスデモをリクエスト', fields: { firstName: '名*', lastName: '姓*', workEmail: '勤務先メール*', platformUrl: 'マーケットプレイス URL*', companyName: '会社名*', jobTitle: '役職' }, placeholders: { firstName: 'Sarah', lastName: 'Jenkins', workEmail: 'sjenkins@marketplace.io', platformUrl: 'https://marketplace.io', companyName: 'CraftSpace Ltd', jobTitle: 'Trust & Safety 責任者' }, submit: 'カスタムデモを見る' },
     checklist: [{ title: 'Know Your Seller (KYS)', desc: '事業者と個人販売者データを収集、検証、監視し、プラットフォームの正当性を確立します。' }, { title: 'INFORM Act 対応', desc: '小売および P2P マーケットプレイスの大量販売者に対する要件を自動化します。' }, { title: 'DAC7 と DSA 対応', desc: '欧州の税務データ収集ルールとデジタルサービス法の報告要件に対応します。' }, { title: 'IRS 1099 検証', desc: 'W-9 と納税者番号情報を政府の公式登録リストで直接確認します。' }, { title: '就労資格チェック', desc: 'オンデマンド配送担当者やギグワーカー向けに地域別の雇用・書類検証を迅速に実行します。' }, { title: '多面型の信頼レイヤー', desc: '購入者を詐欺から守りつつ、大量販売者が低摩擦で安全に資金を引き出せるようにします。' }],
     explore: { title: 'Identra の本人確認プラットフォームをさらに見る', cards: [{ title: '統合 KYB-KYC で販売者とその背後の事業者を検証。', cta: 'KYB-KYC ソリューションを見る' }, { title: '動的な年齢保証フローを構築。', cta: '年齢確認を見る' }] },
-    cta: { title: '始める準備はできていますか？', desc: '堅牢なマーケットプレイス信頼基盤と準拠したパートナーオンボーディングを構築しましょう。', primary: 'デモを依頼', secondary: '今すぐ試す →' }
+    cta: { title: '始める準備はできていますか？', desc: '堅牢なマーケットプレイス信頼基盤と準拠したパートナーオンボーディングを構築しましょう。', primary: 'デモを試す', secondary: '今すぐ試す →' }
   },
   de: {
     backToPlatform: 'Zurück zur Plattform',
     badge: 'Lösungen • Marktplätze',
     heroTitle: 'Conversion und Risiko für jede Seite Ihres Marktplatzes ausbalancieren.',
     heroDesc: 'Schaffen Sie Vertrauen und schützen Sie Ihren Marktplatz mit Identitätsprüfung, die Betrügern standhält und für Nutzer, Verkäufer und Kuriere einfach bleibt.',
-    getDemo: 'Demo anfordern',
+    tryDemo: 'Demo testen',
     trySandbox: 'Identitäts-Sandbox testen',
     terminal: {
       engine: 'MARKETPLACE_TRUST_ENGINE_v1.0',
@@ -314,14 +314,14 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     demo: { visualBadge: 'KYB-KYC-Flow', visualTitle: 'Etsy-Verkäuferprotokoll', visualRows: [{ label: 'EIN-Unternehmensstatus', value: 'Treffer' }, { label: 'IRS-Prüfung', value: 'Bestanden' }, { label: 'INFORM-Act-Log', value: 'Erstellt' }], visualHeading: 'Compliance dynamisch automatisieren', visualDesc: 'Implementieren Sie sofort nutzbare Policy-Checklisten für lokale, staatliche und internationale Vorschriften.', title: 'Starten Sie Ihre individuelle Marktplatz-Demo', desc: 'Erzählen Sie uns von Ihrer Plattform, und wir konfigurieren einen Sandbox-Workflow für Ihr Geschäftsmodell.', requiredAlert: 'Bitte füllen Sie alle Pflichtfelder aus.', successTitle: 'Individuelle Demo angefragt', successPrefix: 'Danke,', successMiddle: 'Ihre individuelle Marktplatz-Identitäts-Sandbox ist bereit. Prüfen Sie Ihren Posteingang unter', successSuffix: 'für Integrationsleitfäden.', requestAnother: 'Weitere Sandbox-Demo anfragen', fields: { firstName: 'Vorname*', lastName: 'Nachname*', workEmail: 'Geschäftliche E-Mail*', platformUrl: 'Marktplatz-URL*', companyName: 'Unternehmensname*', jobTitle: 'Position' }, placeholders: { firstName: 'Sarah', lastName: 'Jenkins', workEmail: 'sjenkins@marketplace.io', platformUrl: 'https://marketplace.io', companyName: 'CraftSpace Ltd', jobTitle: 'Head of Trust & Safety' }, submit: 'Individuelle Demo ansehen' },
     checklist: [{ title: 'Know Your Seller (KYS)', desc: 'Sammeln, prüfen und überwachen Sie Unternehmens- und Händlerdaten, um Plattformlegitimität herzustellen.' }, { title: 'INFORM-Act-Compliance', desc: 'Automatisieren Sie Anforderungen für volumenstarke Drittverkäufer auf Retail- und P2P-Marktplätzen.' }, { title: 'DAC7- und DSA-Compliance', desc: 'Erfüllen Sie europäische Steuerdatenerfassung und Berichtspflichten des Digital Services Act.' }, { title: 'IRS-1099-Prüfung', desc: 'Prüfen Sie W-9- und Steuer-ID-Informationen direkt gegen offizielle Regierungsregister.' }, { title: 'Right-to-work-Prüfungen', desc: 'Führen Sie schnelle lokale Beschäftigungs- und Dokumentprüfungen für Kuriere und Gig-Worker durch.' }, { title: 'Mehrseitige Vertrauensebenen', desc: 'Schützen Sie Käufer vor Betrug und ermöglichen Sie Händlern sichere Auszahlungen ohne hohe Reibung.' }],
     explore: { title: 'Mehr von Identras Identitätsplattform entdecken', cards: [{ title: 'Prüfen Sie Händler und Verkäufer dahinter mit integriertem KYB-KYC.', cta: 'KYB-KYC-Lösungen ansehen' }, { title: 'Erstellen Sie dynamische Age-Assurance-Flows.', cta: 'Altersprüfung ansehen' }] },
-    cta: { title: 'Bereit loszulegen?', desc: 'Bauen Sie belastbares Marktplatzvertrauen und compliant Partner-Onboarding auf.', primary: 'Demo anfordern', secondary: 'Jetzt testen →' }
+    cta: { title: 'Bereit loszulegen?', desc: 'Bauen Sie belastbares Marktplatzvertrauen und compliant Partner-Onboarding auf.', primary: 'Demo testen', secondary: 'Jetzt testen →' }
   },
   vi: {
     backToPlatform: 'Quay lại nền tảng',
     badge: 'Giải pháp • Marketplace',
     heroTitle: 'Cân bằng chuyển đổi và rủi ro cho mọi phía trong marketplace của bạn.',
     heroDesc: 'Xây dựng niềm tin và bảo vệ marketplace bằng xác minh danh tính đủ mạnh với kẻ gian nhưng vẫn dễ dùng cho người mua, người bán và tài xế giao nhận.',
-    getDemo: 'Nhận bản demo',
+    tryDemo: 'Trải nghiệm demo',
     trySandbox: 'Thử môi trường kiểm thử danh tính',
     terminal: {
       engine: 'MARKETPLACE_TRUST_ENGINE_v1.0',
@@ -353,6 +353,6 @@ export const MARKETPLACES_PAGE_TRANSLATIONS = {
     demo: { visualBadge: 'Luồng KYB-KYC', visualTitle: 'Giao thức người bán Etsy', visualRows: [{ label: 'Trạng thái EIN doanh nghiệp', value: 'Đã khớp' }, { label: 'Xác minh IRS', value: 'Đạt' }, { label: 'Nhật ký INFORM Act', value: 'Đã tạo' }], visualHeading: 'Tự động hóa tuân thủ linh hoạt', visualDesc: 'Triển khai danh sách kiểm tra chính sách sẵn dùng cho quy định địa phương, cấp bang và quốc tế.', title: 'Bắt đầu bản demo marketplace tùy chỉnh', desc: 'Cho chúng tôi biết về nền tảng marketplace của bạn, chúng tôi sẽ cấu hình quy trình kiểm thử phù hợp với mô hình kinh doanh cụ thể.', requiredAlert: 'Vui lòng điền tất cả trường bắt buộc.', successTitle: 'Đã yêu cầu demo tùy chỉnh', successPrefix: 'Cảm ơn,', successMiddle: 'Môi trường kiểm thử danh tính marketplace tùy chỉnh của bạn đã sẵn sàng. Hãy kiểm tra hộp thư tại', successSuffix: 'để xem hướng dẫn tích hợp.', requestAnother: 'Yêu cầu demo kiểm thử khác', fields: { firstName: 'Tên*', lastName: 'Họ*', workEmail: 'Email công việc*', platformUrl: 'URL nền tảng marketplace*', companyName: 'Tên công ty*', jobTitle: 'Chức danh' }, placeholders: { firstName: 'Sarah', lastName: 'Jenkins', workEmail: 'sjenkins@marketplace.io', platformUrl: 'https://marketplace.io', companyName: 'CraftSpace Ltd', jobTitle: 'Trưởng bộ phận Tin cậy & An toàn' }, submit: 'Xem demo tùy chỉnh' },
     checklist: [{ title: 'Know Your Seller (KYS)', desc: 'Thu thập, xác minh và giám sát liền mạch dữ liệu doanh nghiệp và người bán cá nhân để thiết lập tính chính danh của nền tảng.' }, { title: 'Tuân thủ INFORM Act', desc: 'Tự động hóa yêu cầu tuân thủ cho người bán bên thứ ba khối lượng cao trên marketplace bán lẻ và ngang hàng.' }, { title: 'Tuân thủ DAC7 và DSA', desc: 'Đảm bảo phù hợp với quy tắc thu thập dữ liệu thuế châu Âu và yêu cầu báo cáo của nhà cung cấp dịch vụ số.' }, { title: 'Xác minh IRS 1099', desc: 'Kiểm tra trực tiếp thông tin W-9 và mã số thuế với danh sách đăng ký chính phủ chính thức.' }, { title: 'Kiểm tra quyền làm việc', desc: 'Thực hiện sàng lọc việc làm và tài liệu theo địa phương cho tài xế theo nhu cầu và lao động thời vụ.' }, { title: 'Lớp tin cậy đa phía', desc: 'Bảo vệ người mua khỏi lừa đảo, đồng thời cho phép người bán khối lượng cao rút tiền an toàn với ít ma sát.' }],
     explore: { title: 'Khám phá thêm nền tảng danh tính của Identra', cards: [{ title: 'Xác minh thương nhân và người bán phía sau họ bằng KYB-KYC tích hợp.', cta: 'Tìm hiểu giải pháp KYB-KYC' }, { title: 'Xây dựng luồng bảo đảm độ tuổi động.', cta: 'Tìm hiểu xác minh độ tuổi' }] },
-    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Xây dựng niềm tin marketplace vững chắc và quy trình tiếp nhận đối tác tuân thủ.', primary: 'Nhận bản demo', secondary: 'Thử ngay →' }
+    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Xây dựng niềm tin marketplace vững chắc và quy trình tiếp nhận đối tác tuân thủ.', primary: 'Trải nghiệm demo', secondary: 'Thử ngay →' }
   }
 } as const;

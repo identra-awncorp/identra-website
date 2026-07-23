@@ -10,7 +10,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     heroTitle: "Onboard earners, couriers, and drivers ",
     heroTitleHighlight: "faster.",
     heroDesc: "Ensure users onboard seamlessly onto your platform with integrated background checks and identity verification. Reduce dropoff while maintaining perfect regulatory compliance.",
-    getDemoBtn: "Get a demo",
+    tryDemoBtn: "Try the demo",
     launchSimBtn: "Launch Simulator",
 
     // Simulated device mockup
@@ -180,7 +180,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     // Bottom CTA
     ctaTitle: "Ready to get started?",
     ctaDesc: "Get in touch or start exploring Identra today. Experience identity trust instantly.",
-    ctaDemoBtn: "Get a demo",
+    ctaTryDemoBtn: "Try the demo",
     ctaTryNowBtn: "Try it now",
 
     // Candidates Data Translations
@@ -217,7 +217,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     heroTitle: "Incorpore trabajadores, mensajeros y conductores más ",
     heroTitleHighlight: "rápido.",
     heroDesc: "Asegure una incorporación fluida en su plataforma con verificaciones de antecedentes integradas y verificación de identidad. Reduzca el abandono manteniendo un cumplimiento normativo perfecto.",
-    getDemoBtn: "Obtener demo",
+    tryDemoBtn: "Probar la demo",
     launchSimBtn: "Iniciar simulador",
 
     driverIdv: "IDV de conductor de viaje compartido",
@@ -371,7 +371,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     ctaTitle: "¿Listo para comenzar?",
     ctaDesc: "Póngase en contacto o comience a explorar Identra hoy mismo. Experimente la confianza de identidad al instante.",
-    ctaDemoBtn: "Obtener demo",
+    ctaTryDemoBtn: "Probar la demo",
     ctaTryNowBtn: "Pruébelo ahora",
 
     cand1Name: "Marcus Chen",
@@ -406,7 +406,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     heroTitle: "ギグワーカー、配送員、ドライバーをより",
     heroTitleHighlight: "迅速にオンボード。",
     heroDesc: "統合された背景調査と身元確認により、ユーザーをプラットフォームへシームレスにオンボードします。完全な規制準拠を維持しながら、ドロップオフを削減します。",
-    getDemoBtn: "デモを依頼する",
+    tryDemoBtn: "デモを試す",
     launchSimBtn: "シミュレーターを起動",
 
     driverIdv: "配車ドライバーIDV",
@@ -560,7 +560,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     ctaTitle: "始める準備はできましたか？",
     ctaDesc: "Identraのエキスパートにお問い合わせいただくか、自動検証ツールの探索を今すぐ開始してください。",
-    ctaDemoBtn: "デモを依頼する",
+    ctaTryDemoBtn: "デモを試す",
     ctaTryNowBtn: "今すぐ試す",
 
     cand1Name: "マーカス・チェン",
@@ -595,7 +595,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     heroTitle: "Bringen Sie Dienstleister, Kuriere und Fahrer ",
     heroTitleHighlight: "schneller an Bord.",
     heroDesc: "Sorgen Sie für eine nahtlose Integration von Benutzern auf Ihrer Plattform mit integrierten Hintergrundüberprüfungen und Identitätsnachweisen. Reduzieren Sie Drop-offs bei perfekter regulatorischer Compliance.",
-    getDemoBtn: "Demo anfordern",
+    tryDemoBtn: "Demo testen",
     launchSimBtn: "Simulator starten",
 
     driverIdv: "IDV für Ride-Share-Fahrer",
@@ -749,7 +749,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     ctaTitle: "Bereit zum Starten?",
     ctaDesc: "Kontaktieren Sie unsere Experten oder erkunden Sie noch heute unsere automatisierten Tools.",
-    ctaDemoBtn: "Demo anfordern",
+    ctaTryDemoBtn: "Demo testen",
     ctaTryNowBtn: "Jetzt ausprobieren",
 
     cand1Name: "Marcus Chen",
@@ -784,7 +784,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     heroTitle: "Onboard đối tác, người giao hàng và tài xế ",
     heroTitleHighlight: "nhanh hơn.",
     heroDesc: "Đảm bảo người dùng onboard liền mạch vào nền tảng của bạn nhờ quy trình xác minh lý lịch và danh tính tích hợp. Giảm tỷ lệ bỏ dở trong khi vẫn duy trì tuân thủ quy định hoàn hảo.",
-    getDemoBtn: "Nhận bản demo",
+    tryDemoBtn: "Trải nghiệm demo",
     launchSimBtn: "Kích hoạt giả lập",
 
     driverIdv: "Xác minh ID Tài xế Công nghệ",
@@ -893,7 +893,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     acc3Text1: "Hợp nhất toàn bộ hoạt động quản lý ứng viên và nhân sự vào một bảng điều khiển an toàn, duy nhất. Theo dõi các trạng thái xác minh, tiền án và lái xe trong thời gian thực.",
     acc3Text2: "Với việc ghi nhật ký tập trung và kích hoạt webhook, bạn có thể đẩy cập nhật trạng thái trực tiếp tới CRM hoặc hệ thống nhân sự tức thì.",
 
-    customDemoTitle: "Bắt đầu trải nghiệm demo tùy biến",
+    customDemoTitle: "Bắt đầu Trải nghiệm demo tùy biến",
     customDemoDesc: "Chia sẻ một chút thông tin để chúng tôi cá nhân hóa trải nghiệm của bạn mà không cần cuộc gọi chào hàng nào.",
     formPreparedTitle: "Môi trường giả lập cá nhân hóa đã sẵn sàng!",
     formPreparedDescBeforeFirst: "Cảm ơn sự quan tâm của bạn, ",
@@ -938,7 +938,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     ctaTitle: "Sẵn sàng bắt đầu chưa?",
     ctaDesc: "Liên hệ với chuyên gia của chúng tôi hoặc tự mình trải nghiệm các công cụ tự động ngay hôm nay.",
-    ctaDemoBtn: "Nhận bản demo",
+    ctaTryDemoBtn: "Trải nghiệm demo",
     ctaTryNowBtn: "Thử ngay",
 
     cand1Name: "Marcus Chen",

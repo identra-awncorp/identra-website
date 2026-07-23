@@ -9,7 +9,7 @@ export const CONNECT_TRANSLATIONS: any = {
     badge: 'Reusable Identity Solution',
     heroTitle: 'Identra Connect: The seamless, 1-tap reusable KYC experience.',
     heroDesc: 'Allow customers to verify their identities once and securely reuse their credentials to instantly onboard across your entire product ecosystem and partner network in under 3 seconds.',
-    getDemo: 'Get a demo',
+    tryDemo: 'Try the demo',
     trySandbox: 'Try live sandbox',
     metrics: [
       { value: '93%', label: 'Onboarding rate' },
@@ -141,7 +141,7 @@ export const CONNECT_TRANSLATIONS: any = {
     badge: 'Solución de identidad reutilizable',
     heroTitle: 'Identra Connect: experiencia KYC reutilizable, fluida y de 1 toque.',
     heroDesc: 'Permite que los clientes verifiquen su identidad una vez y reutilicen sus credenciales de forma segura para incorporarse al instante en todo tu ecosistema de productos y red de socios en menos de 3 segundos.',
-    getDemo: 'Obtén una demo',
+    tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox en vivo',
     metrics: [
       { value: '93%', label: 'Tasa de incorporación' },
@@ -287,7 +287,7 @@ CONNECT_TRANSLATIONS.ja = {
   badge: '再利用可能な本人確認ソリューション',
   heroTitle: 'Identra Connect: シームレスな 1 タップ再利用 KYC 体験。',
   heroDesc: '顧客は一度だけ本人確認を行い、その認証済み資格情報を安全に再利用して、製品エコシステムやパートナーネットワークへ 3 秒未満で即時オンボーディングできます。',
-  getDemo: 'デモを見る',
+  tryDemo: 'Trải nghiệm demo',
   trySandbox: 'ライブサンドボックスを試す',
   metrics: [
     { value: '93%', label: 'オンボーディング率' },
@@ -420,7 +420,7 @@ CONNECT_TRANSLATIONS.de = {
   badge: 'Wiederverwendbare Identitätslösung',
   heroTitle: 'Identra Connect: Nahtlose, wiederverwendbare KYC-Erfahrung mit 1 Tap.',
   heroDesc: 'Kunden verifizieren ihre Identität einmal und verwenden ihre Zugangsdaten sicher wieder, um in Ihrem gesamten Produktökosystem und Partnernetzwerk in unter 3 Sekunden sofort einzusteigen.',
-  getDemo: 'Demo erhalten',
+  tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Live-Sandbox testen',
   metrics: [
     { value: '93%', label: 'Onboarding-Rate' },
@@ -553,7 +553,7 @@ CONNECT_TRANSLATIONS.vi = {
   badge: 'Giải pháp danh tính tái sử dụng',
   heroTitle: 'Identra Connect: trải nghiệm KYC tái sử dụng, liền mạch chỉ với 1 lần chạm.',
   heroDesc: 'Cho phép khách hàng xác minh danh tính một lần rồi tái sử dụng thông tin xác thực an toàn để đăng ký tức thì trên toàn bộ hệ sinh thái sản phẩm và mạng lưới đối tác của bạn trong dưới 3 giây.',
-  getDemo: 'Nhận bản demo',
+  tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Thử sandbox trực tiếp',
   metrics: [
     { value: '93%', label: 'Tỷ lệ đăng ký' },

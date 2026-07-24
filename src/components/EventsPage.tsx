@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { EVENTS_PAGE_TRANSLATIONS } from '../translations/EventsPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
+import eventNetworkingImage from '../assets/images/identra_event_networking_1783338372214.jpg';
 
 interface EventsPageProps {
   onOpenSandbox: () => void;
@@ -23,6 +24,14 @@ interface EventItem {
   id: EventId;
   type: 'in-person' | 'webinar';
   url?: string;
+}
+
+interface EventCopy {
+  title: string;
+  date: string;
+  description: string;
+  location?: string;
+  saveSpotText?: string;
 }
 
 const EVENTS_DATA: EventItem[] = [
@@ -111,7 +120,7 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
           {/* Hero Banner Image */}
           <div className="w-full rounded-3xl overflow-hidden shadow-2xl aspect-[16/9] border-4 border-white bg-slate-100 max-w-5xl">
             <img 
-              src="/src/assets/images/identra_event_networking_1783338372214.jpg" 
+              src={eventNetworkingImage}
               alt={t.copy.identraNetworkingConferenceEvent} 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
@@ -179,7 +188,7 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
           <AnimatePresence mode="popLayout">
             {filteredEvents.length > 0 ? (
               filteredEvents.map((event, idx) => {
-                const eventCopy = t.events[event.id];
+                const eventCopy: EventCopy = t.events[event.id];
                 return (
                 <motion.div
                   key={event.id}
@@ -447,10 +456,7 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
               <span>{t.copy.tryTheDemo}</span>
               <ArrowRight className="w-3.5 h-3.5 text-slate-600" />
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="text-indigo-900 hover:text-[#2539BE] font-bold text-xs px-5 py-3.5 rounded-full bg-white/20 hover:bg-white/30 transition border border-indigo-200/50"
-            >{t.copy.tryItNow}</button>
+
           </div>
         </div>
       </div>

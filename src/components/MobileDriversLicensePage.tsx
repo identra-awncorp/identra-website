@@ -588,12 +588,7 @@ export default function MobileDriversLicensePage({ onOpenSandbox, onBackToLandin
             >
               {t.cta.primary}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="border border-white hover:bg-white/10 text-white font-bold px-8 py-3 rounded-full transition text-xs"
-            >
-              {t.cta.secondary}
-            </button>
+
           </div>
         </div>
       </div>

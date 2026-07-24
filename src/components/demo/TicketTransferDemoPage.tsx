@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { ArrowLeft, ArrowRightLeft, Check, CheckCircle2, ShieldCheck, Smartphone, Sparkles, Terminal, Ticket } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/TicketTransferDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -22,6 +23,7 @@ interface TicketTransferOwnershipFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 function TicketTransferOwnershipFlow({
@@ -31,7 +33,8 @@ function TicketTransferOwnershipFlow({
   setIsProcessingAction,
   advanceStep,
   addLog,
-  isSuccess
+  isSuccess,
+  scheduleTimeout
 }: TicketTransferOwnershipFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -96,7 +99,7 @@ function TicketTransferOwnershipFlow({
                 setTransferOwnerVerified(true);
                 setIsProcessingAction(true);
                 addLog(logT.decryptingTicket, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.ownerVerified]);
                 }, 1200);
@@ -150,7 +153,7 @@ function TicketTransferOwnershipFlow({
                 setTransferEscrowLocked(true);
                 setIsProcessingAction(true);
                 addLog(logT.lockingEscrow, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.escrowSealed]);
                 }, 1800);
@@ -192,7 +195,7 @@ function TicketTransferOwnershipFlow({
               onClick={() => {
                 setIsProcessingAction(true);
                 addLog(logT.executingSwap, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.transferComplete]);
                 }, 1500);
@@ -293,6 +296,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
     icon: ArrowRightLeft,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -338,6 +342,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -349,7 +354,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -403,6 +408,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -496,6 +502,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

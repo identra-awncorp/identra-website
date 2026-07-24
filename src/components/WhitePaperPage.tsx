@@ -27,7 +27,6 @@ import {
   Zap,
   type LucideIcon,
 } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
 import {
   WHITE_PAPER_TRANSLATIONS,
   type WhitePaperContentBlock,
@@ -79,10 +78,10 @@ const getSectionSearchText = (section: WhitePaperSection) => {
     }
 
     if (block.type === 'quote') {
-      return [block.title, block.body];
+      return [block.title, block.body].filter((value): value is string => typeof value === 'string');
     }
 
-    return [block.text];
+    return block.text ? [block.text] : [];
   }) ?? [];
 
   return [
@@ -406,10 +405,9 @@ export default function WhitePaperPage({
   onBackToLanding,
   onViewChange,
 }: WhitePaperPageProps) {
-  const { language } = useLanguage();
   const copy = getLocalizedRecord(
     WHITE_PAPER_TRANSLATIONS,
-    language,
+    'vi',
     'WHITE_PAPER_TRANSLATIONS',
   );
   const [activeSection, setActiveSection] = useState<WhitePaperSectionId>('foundational-concepts');

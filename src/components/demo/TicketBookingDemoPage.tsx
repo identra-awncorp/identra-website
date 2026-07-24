@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, Check, CheckCircle2, Phone, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Terminal, Ticket } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/TicketBookingDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -22,6 +23,7 @@ interface TicketBookingCheckoutFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 function TicketBookingCheckoutFlow({
@@ -31,7 +33,8 @@ function TicketBookingCheckoutFlow({
   setIsProcessingAction,
   advanceStep,
   addLog,
-  isSuccess
+  isSuccess,
+  scheduleTimeout
 }: TicketBookingCheckoutFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -133,7 +136,7 @@ function TicketBookingCheckoutFlow({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.holdingSeats, { seats: bookingSeats.join(', ') }), 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.seatsLocked]);
                 }, 1200);
@@ -186,7 +189,7 @@ function TicketBookingCheckoutFlow({
               onClick={() => {
                 setIsProcessingAction(true);
                 addLog(logT.runningTelemetry, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.telemetryPassed]);
                 }, 1800);
@@ -304,7 +307,7 @@ function TicketBookingCheckoutFlow({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(logT.verifyingOtp, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   setShowOtpBanner(false);
                   advanceStep([logT.otpVerified]);
@@ -417,6 +420,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
     icon: ShoppingBag,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -462,6 +466,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -473,7 +478,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -527,6 +532,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -620,6 +626,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

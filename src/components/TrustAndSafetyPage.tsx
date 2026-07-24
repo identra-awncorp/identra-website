@@ -237,9 +237,7 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
               {t.tryDemo}
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#142FA0]" />
             </button>
-            <button onClick={onOpenSandbox} className="rounded-full bg-transparent border border-white/30 text-white hover:bg-white/10 font-bold py-3.5 px-8 transition text-sm">
-              {t.exploreSandboxApi}
-            </button>
+
           </div>
 
           <div className="mt-16 relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-[#0F1E36]/90 p-8 md:p-12">
@@ -491,13 +489,13 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
               const Icon = feat.icon;
               const copy = t.features[feat.id];
               return (
-                <div key={feat.id} onClick={() => { if (onViewChange && feat.targetView) onViewChange(feat.targetView); }} className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                <button type="button" key={feat.id} onClick={() => { if (onViewChange && feat.targetView) onViewChange(feat.targetView); }} className="bg-white rounded-2xl p-6 border border-slate-200/60 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
                   <div className="space-y-4">
                     <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-[#354CE1]/10 group-hover:text-[#354CE1] transition shrink-0"><Icon className="w-5 h-5" /></div>
                     <div className="space-y-2"><h3 className="text-sm font-bold text-slate-800 group-hover:text-[#354CE1] transition flex items-center gap-1.5">{copy.title}<ChevronRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" /></h3><p className="text-xs text-slate-500 leading-relaxed">{copy.description}</p></div>
                   </div>
                   <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold text-slate-400 group-hover:text-[#354CE1] transition"><span>{t.exploreIntegration}</span><ArrowRight className="w-3 h-3 translate-x-0 group-hover:translate-x-1 transition-transform" /></div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -512,14 +510,14 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
       </section>
 
       <section className="py-20 px-6 bg-slate-50">
-        <div className="max-w-7xl mx-auto space-y-10"><h2 className="text-2xl font-display font-semibold tracking-tight text-[#0F1E36] text-center">{t.exploreMoreTitle}</h2><div className="grid grid-cols-1 md:grid-cols-2 gap-8">{t.exploreCards.map((card: any, index: number) => <div key={card.title} onClick={() => onViewChange && onViewChange(index === 0 ? 'business-fraud' : 'dynamic-flow')} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xs hover:shadow-lg transition cursor-pointer group"><div className={['w-12 h-12 rounded-full flex items-center justify-center transition duration-300', index === 0 ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white'].join(' ')}>{index === 0 ? <Lock className="w-6 h-6" /> : <Sliders className="w-6 h-6" />}</div><h3 className="text-lg font-bold text-slate-800 mt-6 group-hover:text-indigo-600 transition">{card.title}</h3><p className="text-xs text-slate-500 mt-2">{card.desc}</p></div>)}</div></div>
+        <div className="max-w-7xl mx-auto space-y-10"><h2 className="text-2xl font-display font-semibold tracking-tight text-[#0F1E36] text-center">{t.exploreMoreTitle}</h2><div className="grid grid-cols-1 md:grid-cols-2 gap-8">{t.exploreCards.map((card: any, index: number) => <button type="button" key={card.title} onClick={() => onViewChange && onViewChange(index === 0 ? 'business-fraud' : 'dynamic-flow')} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xs hover:shadow-lg transition cursor-pointer group"><div className={['w-12 h-12 rounded-full flex items-center justify-center transition duration-300', index === 0 ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white' : 'bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white'].join(' ')}>{index === 0 ? <Lock className="w-6 h-6" /> : <Sliders className="w-6 h-6" />}</div><h3 className="text-lg font-bold text-slate-800 mt-6 group-hover:text-indigo-600 transition">{card.title}</h3><p className="text-xs text-slate-500 mt-2">{card.desc}</p></button>)}</div></div>
       </section>
 
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="bg-[#E2E6FF]/50 border border-[#354CE1]/10 rounded-[2.5rem] p-10 md:p-16 text-center space-y-6 relative overflow-hidden">
           <h2 className="text-3xl md:text-4xl font-display font-semibold tracking-tight text-[#0F1E36] relative z-10">{t.readyTitle}</h2>
           <p className="text-slate-600 text-sm md:text-base max-w-xl mx-auto relative z-10">{t.readyDesc}</p>
-          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10"><button onClick={onOpenSandbox} className="rounded-full bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold py-3.5 px-8 transition text-sm flex items-center gap-2 group">{t.tryDemo}<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></button><button onClick={onOpenSandbox} className="rounded-full bg-transparent border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3.5 px-8 transition text-sm">{t.tryItNow}</button></div>
+          <div className="flex flex-wrap items-center justify-center gap-4 relative z-10"><button onClick={onOpenSandbox} className="rounded-full bg-[#354CE1] hover:bg-[#2539BE] text-white font-bold py-3.5 px-8 transition text-sm flex items-center gap-2 group">{t.tryDemo}<ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></button></div>
         </div>
       </section>
     </div>

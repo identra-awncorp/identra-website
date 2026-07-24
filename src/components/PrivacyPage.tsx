@@ -76,7 +76,7 @@ export default function PrivacyPage({ onBackToLanding, onOpenSandbox, onViewChan
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string, ref: React.RefObject<HTMLElement>) => {
+  const scrollToSection = (id: string, ref: React.RefObject<HTMLElement | null>) => {
     setActiveSection(id);
     if (ref.current) {
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -84,7 +84,7 @@ export default function PrivacyPage({ onBackToLanding, onOpenSandbox, onViewChan
   };
 
   const activeNotice = t.notices.find((notice: any) => notice.id === activeNoticeDoc);
-  const sidebarRefs: Record<string, React.RefObject<HTMLElement>> = {
+  const sidebarRefs: Record<string, React.RefObject<HTMLElement | null>> = {
     'verify-identity': verifyIdentityRef,
     'privacy-by-default': privacyByDefaultRef,
     safeguard: safeguardRef,

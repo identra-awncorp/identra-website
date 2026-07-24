@@ -20,6 +20,9 @@ import {
 import { NavItem } from '../types';
 import { HEADER_COPY_KEYS, MENU_TRANSLATIONS } from '../translations/HeaderTranslations';
 import identraLogo from '../assets/images/identra-logo.svg';
+import careersTeamImage from '../assets/images/identra_careers_team_1783338578864.jpg';
+import eventNetworkingImage from '../assets/images/identra_event_networking_1783338372214.jpg';
+import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 const PLATFORM_ITEMS = [
   { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#flow' },
@@ -794,7 +797,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       {/* Main Header */}
       <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between border-b border-slate-100 relative">
         {/* Logo */}
-        <div 
+        <button type="button"
           onClick={() => onViewChange?.('landing')}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
@@ -802,7 +805,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
           <span className="font-display font-bold text-xl tracking-tight text-slate-900">
             {tm(HEADER_COPY_KEYS.identra)}
           </span>
-        </div>
+        </button>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-1.5">
@@ -1278,7 +1281,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                 {/* Middle graphic block */}
                 <div className="my-4 relative rounded-xl overflow-hidden aspect-[4/3] bg-gradient-to-tr from-indigo-100 to-purple-100 flex items-center justify-center p-2 border border-slate-200/50">
                   <img 
-                    src="/src/assets/images/identra_identity_illustration_1783335932193.jpg" 
+                    src={identityIllustrationImage}
                     alt={tm(HEADER_COPY_KEYS.builtByIdentra)} 
                     className="w-full h-full object-cover rounded-lg"
                     referrerPolicy="no-referrer"
@@ -1288,10 +1291,10 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                   </div>
                 </div>
                 
-                <p className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1 cursor-pointer" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('docs'); }}>
+                <button type="button" className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('docs'); }}>
                   <span>{tm(HEADER_COPY_KEYS.exploreBuiltAdapt)}</span>
                   <ArrowRight className="w-3 h-3" />
-                </p>
+                </button>
               </div>
 
               {/* Platform Column (span 3 of 12) */}
@@ -1405,7 +1408,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                 {/* Middle graphic block */}
                 <div className="my-4 relative rounded-xl overflow-hidden aspect-[4/3] bg-gradient-to-tr from-indigo-100 to-purple-100 flex items-center justify-center p-2 border border-slate-200/50">
                   <img 
-                    src="/src/assets/images/identra_event_networking_1783338372214.jpg" 
+                    src={eventNetworkingImage}
                     alt={tm(HEADER_COPY_KEYS.identraSolutions)} 
                     className="w-full h-full object-cover rounded-lg"
                     referrerPolicy="no-referrer"
@@ -1415,10 +1418,10 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                   </div>
                 </div>
                 
-                <p className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1 cursor-pointer" onClick={handleUnavailableNavigation}>
+                <button type="button" className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1" onClick={handleUnavailableNavigation}>
                   <span>{tm(HEADER_COPY_KEYS.helpOrganizationsAdapt)}</span>
                   <ArrowRight className="w-3 h-3" />
-                </p>
+                </button>
               </div>
 
               {/* Use cases Column (span 3 of 12) */}
@@ -1570,7 +1573,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                 {/* Middle graphic block */}
                 <div className="my-4 relative rounded-xl overflow-hidden aspect-[4/3] bg-gradient-to-tr from-indigo-100 to-purple-100 flex items-center justify-center p-2 border border-slate-200/50">
                   <img 
-                    src="/src/assets/images/identra_careers_team_1783338578864.jpg" 
+                    src={careersTeamImage}
                     alt={tm(HEADER_COPY_KEYS.identraCareersTeam)} 
                     className="w-full h-full object-cover rounded-lg"
                     referrerPolicy="no-referrer"
@@ -1580,10 +1583,10 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                   </div>
                 </div>
                 
-                <p className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1 cursor-pointer" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('careers'); }}>
+                <button type="button" className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('careers'); }}>
                   <span>{tm(HEADER_COPY_KEYS.careersCulture)}</span>
                   <ArrowRight className="w-3 h-3" />
-                </p>
+                </button>
               </div>
 
               {/* Learning Column (span 3 of 12) */}

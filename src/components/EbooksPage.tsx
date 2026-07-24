@@ -29,6 +29,13 @@ interface Ebook {
   illustration: 'shield' | 'chart' | 'users' | 'fingerprint' | 'globe' | 'face' | 'link' | 'lock' | 'document' | 'alert';
 }
 
+interface EbookCopy {
+  title: string;
+  type: string;
+  description: string;
+  duration?: string;
+}
+
 interface EbooksPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
@@ -358,7 +365,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
   const { language } = useLanguage();
 
   const t = EBOOKS_PAGE_TRANSLATIONS[language];
-  const ebookCopy = (ebook: Ebook) => t.ebooks[ebook.id];
+  const ebookCopy = (ebook: Ebook): EbookCopy => t.ebooks[ebook.id];
 
   const [selectedTopic, setSelectedTopic] = useState<TopicId>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');
@@ -516,7 +523,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left featured large card: Gartner Quadrant */}
-            <div 
+            <button type="button"
               onClick={() => openEbookModal(EBOOKS_DATA[12])} // Gartner Ebook is index 12
               className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden"
             >
@@ -584,12 +591,12 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Right featured sidebar: 3 small items */}
             <div className="lg:col-span-5 flex flex-col justify-between gap-4">
               {[EBOOKS_DATA[1], EBOOKS_DATA[0], EBOOKS_DATA[21]].map((item, index) => (
-                <div 
+                <button type="button"
                   key={index}
                   onClick={() => openEbookModal(item)}
                   className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200"
@@ -611,7 +618,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                   <div className="w-8 h-8 rounded-full bg-[#182559] group-hover:bg-[#354CE1] flex items-center justify-center shrink-0 transition">
                     <ArrowRight className="w-3.5 h-3.5 text-[#4F6CFF] group-hover:text-white transition" />
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -623,7 +630,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
         <div className="sticky top-0 z-30 -mx-6 mb-8 bg-[#FAFBFD]/95 px-6 py-4 backdrop-blur-md border-b border-slate-100/80">
           {/* Breadcrumbs */}
           <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2">
-            <span className="hover:text-[#354CE1] cursor-pointer" onClick={onBackToLanding}>{t.copy.resourceCenter}</span>
+            <button type="button" className="hover:text-[#354CE1]" onClick={onBackToLanding}>{t.copy.resourceCenter}</button>
             <span>&gt;</span>
             <span className="font-semibold text-slate-600">{t.copy.ebooks}</span>
           </div>
@@ -753,7 +760,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                   className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
                 >
                   {filteredEbooks.map((ebook) => (
-                    <div
+                    <button type="button"
                       key={ebook.id}
                       onClick={() => openEbookModal(ebook)}
                       className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full"
@@ -806,7 +813,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                           {ebookCopy(ebook).description}
                         </p>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </motion.div>
               </AnimatePresence>
@@ -1179,7 +1186,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                           {/* Interactive Checklist Cards */}
                           <div className="space-y-3.5 mt-4">
                             {t.readerChecklist.map((rule) => (
-                              <div 
+                              <button type="button"
                                 key={rule.key} 
                                 onClick={() => setCheckedRules(prev => ({ ...prev, [rule.key]: !prev[rule.key] }))}
                                 className={`p-3.5 border rounded-xl flex items-start gap-3 cursor-pointer transition-all ${
@@ -1197,7 +1204,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                                   <h4 className="text-xs font-bold text-slate-900 leading-none">{rule.title}</h4>
                                   <p className="text-[10px] text-slate-400 mt-1 leading-normal font-normal">{rule.desc}</p>
                                 </div>
-                              </div>
+                              </button>
                             ))}
                           </div>
                         </div>

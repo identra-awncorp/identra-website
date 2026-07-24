@@ -188,7 +188,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
   };
 
   // Filtered FAQs
-  const filteredFaqs = t.faqs.filter((faq: any) => {
+  const filteredFaqs: Array<{ question: string; answer: string }> = t.faqs.filter((faq: { question: string; answer: string }) => {
     const query = faqSearch.toLowerCase();
     return faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query);
   });

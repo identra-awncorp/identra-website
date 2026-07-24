@@ -381,7 +381,7 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
           <h3 className="text-xl font-display font-bold text-slate-900 text-center lg:text-left">{t.explore.title}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {t.explore.cards.map((card, index) => (
-              <div key={card.title} id={index === 0 ? 'explore-case-management-card' : 'explore-workflows-card'} onClick={() => onViewChange?.(index === 0 ? 'case-management' : 'workflows')} className={`group p-8 rounded-2xl border border-slate-200/40 shadow-sm cursor-pointer transition transform hover:-translate-y-0.5 flex flex-col justify-between h-48 ${index === 0 ? 'bg-[#EBF0FF] hover:bg-[#E2E8FF]' : 'bg-[#ECE7FF] hover:bg-[#E3DCFF]'}`}>
+              <button type="button" key={card.title} id={index === 0 ? 'explore-case-management-card' : 'explore-workflows-card'} onClick={() => onViewChange?.(index === 0 ? 'case-management' : 'workflows')} className={`group p-8 rounded-2xl border border-slate-200/40 shadow-sm cursor-pointer transition transform hover:-translate-y-0.5 flex flex-col justify-between h-48 ${index === 0 ? 'bg-[#EBF0FF] hover:bg-[#E2E8FF]' : 'bg-[#ECE7FF] hover:bg-[#E3DCFF]'}`}>
                 <div className="space-y-2">
                   <h4 className="text-lg font-bold text-slate-950">{card.title}</h4>
                   <p className="text-xs text-slate-600">{card.desc}</p>
@@ -395,7 +395,7 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition" />
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -414,9 +414,7 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
                 {t.cta.tryDemo}
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
-              <button id="cta-try-now-btn" onClick={onOpenSandbox} className="w-full sm:w-auto bg-transparent hover:bg-slate-100/40 text-slate-700 font-semibold text-xs py-3 px-6 rounded-full transition border border-slate-300">
-                {t.cta.tryNow}
-              </button>
+
             </div>
           </div>
         </div>

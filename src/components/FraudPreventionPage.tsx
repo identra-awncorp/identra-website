@@ -536,10 +536,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.automaticallySlideVerificationHurdlesUpOrDownBased}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('dynamic-flow')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('dynamic-flow')}>
                   <span>{t.copy.exploreFlowEditor}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 
@@ -553,10 +553,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.sniffOutVpnsSyntheticIpRoutingEmulatorsBotnets}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('passive-signals')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('passive-signals')}>
                   <span>{t.copy.viewPassiveSignals}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 
@@ -570,10 +570,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.crossmatchSsnBirthdateAndBusinessRegistryEntriesAgainst}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('database-checks')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('database-checks')}>
                   <span>{t.copy.exploreDatabaseChecks}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 
@@ -587,10 +587,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.uncoverProfessionalRingsTryingToSpawnMultipleSynthetic}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('graph')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('graph')}>
                   <span>{t.copy.exploreGraph}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 
@@ -604,10 +604,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.defineYourExactSecurityParametersWithoutTypingCode}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('workflows')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('workflows')}>
                   <span>{t.copy.exploreWorkflows}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 
@@ -621,10 +621,10 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.provideYourComplianceOrTrustAndSafetyTeams}</p>
               </div>
               <div className="pt-6">
-                <span className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1 cursor-pointer" onClick={() => onViewChange?.('case-management')}>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('case-management')}>
                   <span>{t.copy.exploreCases}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
-                </span>
+                </button>
               </div>
             </div>
 

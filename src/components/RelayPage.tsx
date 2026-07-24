@@ -111,7 +111,7 @@ export default function RelayPage({ onOpenSandbox, onBackToLanding, onViewChange
     title: t('defaultStartTitle'),
     buttonText: t('defaultStartButton'),
     brandColor: '#354CE1',
-    borderRadius: 'rounded-xl',
+    borderRadius: 'rounded',
     showLogo: true
   });
 
@@ -192,7 +192,7 @@ export default function RelayPage({ onOpenSandbox, onBackToLanding, onViewChange
         title: t('presetFintechStartTitle'),
         buttonText: t('presetFintechButton'),
         brandColor: '#10B981', // emerald-500
-        borderRadius: 'rounded-xl',
+        borderRadius: 'rounded',
         showLogo: true
       });
       setIdVerifyConfig({
@@ -222,7 +222,7 @@ export default function RelayPage({ onOpenSandbox, onBackToLanding, onViewChange
         title: t('presetGigStartTitle'),
         buttonText: t('presetGigButton'),
         brandColor: '#F59E0B', // amber-500
-        borderRadius: 'rounded-full',
+        borderRadius: 'pill',
         showLogo: false
       });
       setIdVerifyConfig({
@@ -252,7 +252,7 @@ export default function RelayPage({ onOpenSandbox, onBackToLanding, onViewChange
         title: t('presetAgeStartTitle'),
         buttonText: t('presetAgeButton'),
         brandColor: '#3B82F6', // blue-500
-        borderRadius: 'rounded-none',
+        borderRadius: 'sharp',
         showLogo: true
       });
       setIdVerifyConfig({
@@ -522,7 +522,7 @@ async function configureInquiryFlow() {
 </script>`;
     }
     return `curl -X POST https://api.withidentra.com/v1/inquiry-templates \\
-  -H "Authorization: Bearer \$IDENTRA_API_KEY" \\
+  -H "Authorization: Bearer $IDENTRA_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
     "data": {
@@ -754,7 +754,7 @@ async function configureInquiryFlow() {
                   <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">{t('flowPathSteps')}</span>
                   
                   {/* 1. Start Screen Node */}
-                  <div 
+                  <button type="button"
                     onClick={() => setActiveNode('start')}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                       activeNode === 'start' 
@@ -774,10 +774,10 @@ async function configureInquiryFlow() {
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-mono bg-emerald-950 text-emerald-400 px-2 py-0.5 border border-emerald-900/30 rounded">{t('required')}</span>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 2. Gov ID Node */}
-                  <div 
+                  <button type="button"
                     onClick={() => setActiveNode('id_verify')}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                       activeNode === 'id_verify' 
@@ -802,10 +802,10 @@ async function configureInquiryFlow() {
                         {idVerifyConfig.skip ? t('disabled') : t('active')}
                       </span>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 3. Selfie Match Node */}
-                  <div 
+                  <button type="button"
                     onClick={() => setActiveNode('selfie_check')}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                       activeNode === 'selfie_check' 
@@ -830,10 +830,10 @@ async function configureInquiryFlow() {
                         {selfieConfig.skip ? t('disabled') : t('active')}
                       </span>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 4. DB Screening Node */}
-                  <div 
+                  <button type="button"
                     onClick={() => setActiveNode('db_screen')}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                       activeNode === 'db_screen' 
@@ -858,10 +858,10 @@ async function configureInquiryFlow() {
                         {dbScreenConfig.skip ? t('disabled') : t('active')}
                       </span>
                     </div>
-                  </div>
+                  </button>
 
                   {/* 5. Outcome Node */}
-                  <div 
+                  <button type="button"
                     onClick={() => setActiveNode('outcome')}
                     className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
                       activeNode === 'outcome' 
@@ -881,7 +881,7 @@ async function configureInquiryFlow() {
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-mono bg-[#354CE1]/10 text-[#7185FF] border border-[#354CE1]/20 px-2 py-0.5 rounded">{t('outcome')}</span>
                     </div>
-                  </div>
+                  </button>
 
                 </div>
               </div>
@@ -1698,7 +1698,7 @@ async function configureInquiryFlow() {
 
               <div className="relative z-10 pt-4 border-t border-slate-800 text-[10px] text-slate-500 font-mono flex items-center justify-between">
                 <span>{t('configureStepsNotice')}</span>
-                <span className="text-indigo-400 hover:underline cursor-pointer" onClick={onOpenSandbox}>{t('openCoreSdkDoc')}</span>
+                <button type="button" className="text-indigo-400 hover:underline" onClick={onOpenSandbox}>{t('openCoreSdkDoc')}</button>
               </div>
             </div>
 
@@ -1952,7 +1952,7 @@ async function configureInquiryFlow() {
               {/* Notice text */}
               <div className="pt-4 border-t border-slate-800 text-[10px] text-slate-500 leading-normal flex items-center justify-between">
                 <span>{t('snippetNotice')}</span>
-                <span className="text-slate-400 hover:text-white underline cursor-pointer" onClick={onOpenSandbox}>{t('readSdkApiDoc')}</span>
+                <button type="button" className="text-slate-400 hover:text-white underline" onClick={onOpenSandbox}>{t('readSdkApiDoc')}</button>
               </div>
 
             </div>

@@ -20,6 +20,11 @@ import {
   type ELearningTranslationKey
 } from '../translations/ELearningPageTranslations';
 
+type ELearningTextKey = {
+  [Key in ELearningTranslationKey]:
+    typeof E_LEARNING_TRANSLATIONS.en[Key] extends string ? Key : never;
+}[ELearningTranslationKey];
+
 interface ELearningPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
@@ -35,7 +40,7 @@ const SCENARIO_SCORES: Record<ELearningScenarioKey, number> = {
 export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewChange }: ELearningPageProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(E_LEARNING_TRANSLATIONS, language as keyof typeof E_LEARNING_TRANSLATIONS, 'E_LEARNING_TRANSLATIONS');
-  const t = (key: ELearningTranslationKey) => translations[key];
+  const t = (key: ELearningTextKey): string => translations[key] as string;
   const scenarios = translations.scenarios;
 
   // Use case accordion state
@@ -747,12 +752,7 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
               <span>{t('tryDemo')}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto px-8 py-3.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-sm tracking-wide transition"
-            >
-              {t('tryItNow')}
-            </button>
+
           </div>
         </div>
       </section>

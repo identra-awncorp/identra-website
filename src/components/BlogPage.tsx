@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -278,7 +278,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left featured large card: Gartner Quadrant */}
-            <div 
+            <button type="button"
               onClick={() => openBlogDetail(BLOG_POSTS_DATA[0])}
               className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden"
             >
@@ -347,12 +347,12 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Right featured sidebar: 3 small items */}
             <div className="lg:col-span-5 flex flex-col justify-between gap-4">
               {[BLOG_POSTS_DATA[1], BLOG_POSTS_DATA[2], BLOG_POSTS_DATA[3]].map((item, index) => (
-                <div 
+                <button type="button"
                   key={index}
                   onClick={() => openBlogDetail(item)}
                   className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200"
@@ -377,7 +377,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   <div className="w-8 h-8 rounded-full bg-[#182559] group-hover:bg-[#354CE1] flex items-center justify-center shrink-0 transition">
                     <ArrowRight className="w-3.5 h-3.5 text-[#4F6CFF] group-hover:text-white transition" />
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -389,7 +389,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
         <div className="sticky top-0 z-30 -mx-6 mb-8 bg-[#FAFBFD]/95 px-6 py-4 backdrop-blur-md border-b border-slate-100/80">
           {/* Breadcrumbs */}
           <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2">
-            <span className="hover:text-[#354CE1] cursor-pointer" onClick={onBackToLanding}>{t.copy.resourceCenter}</span>
+            <button type="button" className="hover:text-[#354CE1]" onClick={onBackToLanding}>{t.copy.resourceCenter}</button>
             <span>&gt;</span>
             <span className="font-semibold text-slate-600">{t.copy.blog}</span>
           </div>
@@ -519,7 +519,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
                 >
                   {filteredBlogPosts.map((post) => (
-                    <div
+                    <button type="button"
                       key={post.id}
                       onClick={() => openBlogDetail(post)}
                       className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full"
@@ -572,7 +572,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                           {postCopy(post).description}
                         </p>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </motion.div>
               </AnimatePresence>

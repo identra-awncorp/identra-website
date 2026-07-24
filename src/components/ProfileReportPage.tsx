@@ -748,13 +748,7 @@ export default function ProfileReportPage({ onOpenSandbox, onBackToLanding, onVi
             >
               {t.tryDemo}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="text-[#6E85F7] hover:text-[#5068de] font-bold text-sm px-6 py-3 rounded-full transition w-full sm:w-auto flex items-center justify-center gap-1.5"
-            >
-              <span>{t.tryItNow}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

@@ -840,7 +840,7 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Card 1: KYB-KYC */}
-          <div className="bg-[#4285f4] text-white p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-transform cursor-pointer" onClick={() => onViewChange?.('kyb')}>
+          <button type="button" className="bg-[#4285f4] text-white p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-transform cursor-pointer" onClick={() => onViewChange?.('kyb')}>
             <div>
               <h3 className="text-xl md:text-2xl font-display font-bold leading-tight mb-2">
                 {t.kybKyc}
@@ -850,10 +850,10 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
               <span>{t.exploreKyb}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
 
           {/* Card 2: Sanctions screening */}
-          <div className="bg-[#ffbb00] text-slate-950 p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-transform cursor-pointer" onClick={() => onViewChange?.('business-fraud')}>
+          <button type="button" className="bg-[#ffbb00] text-slate-950 p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-transform cursor-pointer" onClick={() => onViewChange?.('business-fraud')}>
             <div>
               <h3 className="text-xl md:text-2xl font-display font-bold leading-tight mb-2">
                 {t.sanctions}
@@ -863,7 +863,7 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
               <span>{t.exploreSanctions}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -884,13 +884,7 @@ export default function DocumentAIPage({ onOpenSandbox, onBackToLanding, onViewC
             >
               {t.tryDemo}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="text-white hover:text-indigo-100 font-bold flex items-center gap-1 transition"
-            >
-              <span>{t.tryItNow}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

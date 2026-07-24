@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { Activity, AlertCircle, ArrowLeft, Check, CheckCircle2, HeartPulse, ShieldCheck, Smartphone, Sparkles, Terminal } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { HEALTHCARE_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/HealthcareDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -22,6 +23,7 @@ interface HealthcarePatientIntakeFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 function HealthcarePatientIntakeFlow({
@@ -31,7 +33,8 @@ function HealthcarePatientIntakeFlow({
   setIsProcessingAction,
   advanceStep,
   addLog,
-  isSuccess
+  isSuccess,
+  scheduleTimeout
 }: HealthcarePatientIntakeFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -124,7 +127,7 @@ function HealthcarePatientIntakeFlow({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.vettingClinicalRecords, { name: patientName }), 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([
                     formatText(logT.patientRegistryClear, { name: patientName }),
@@ -176,7 +179,7 @@ function HealthcarePatientIntakeFlow({
                 setHealthInsuranceScanned(true);
                 setIsProcessingAction(true);
                 addLog(logT.runningInsuranceOcr, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   setHealthInsuranceScanned(false);
                   advanceStep([
@@ -230,7 +233,7 @@ function HealthcarePatientIntakeFlow({
                 }
                 setIsProcessingAction(true);
                 addLog(logT.submittingHipaaAgreement, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.hipaaAgreementVerified]);
                 }, 1500);
@@ -324,6 +327,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
     icon: HeartPulse,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -369,6 +373,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -380,7 +385,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -434,6 +439,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -527,6 +533,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

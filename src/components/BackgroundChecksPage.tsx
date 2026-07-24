@@ -1290,7 +1290,7 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('marketplace')}
               className="group p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#4E89FF] to-[#1E56C8] text-white flex flex-col justify-between h-80 cursor-pointer shadow-xl shadow-blue-900/10 hover:shadow-2xl hover:scale-[1.01] transition duration-300"
             >
@@ -1306,9 +1306,9 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
               <span className="inline-flex items-center gap-1 text-xs font-bold font-mono group-hover:translate-x-1 transition-transform">
                 {t.card1Btn} <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
 
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('government-id')}
               className="group p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#4CE1A6] to-[#0AA074] text-white flex flex-col justify-between h-80 cursor-pointer shadow-xl shadow-emerald-900/10 hover:shadow-2xl hover:scale-[1.01] transition duration-300"
             >
@@ -1324,7 +1324,7 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
               <span className="inline-flex items-center gap-1 text-xs font-bold font-mono group-hover:translate-x-1 transition-transform">
                 {t.card2Btn} <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -1349,13 +1349,7 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
             >
               {t.ctaTryDemoBtn}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto px-8 py-4 border border-[#0F1E36]/20 hover:bg-white/10 text-[#0F1E36] font-bold rounded-full transition text-sm flex items-center justify-center gap-1.5"
-            >
-              <span>{t.ctaTryNowBtn}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

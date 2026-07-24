@@ -39,6 +39,21 @@ interface Publication {
   visualType: 'grid' | 'space' | 'network' | 'portraits' | 'nodes' | 'sphere' | 'rings';
 }
 
+type PublicationCopy = Pick<Publication, 'id' | 'title' | 'description' | 'abstract' | 'keyTakeaways'>;
+type PublicationMetadata = Omit<Publication, keyof PublicationCopy | 'category'> & {
+  categoryId: Publication['category'];
+};
+
+const PUBLICATION_METADATA: Record<string, PublicationMetadata> = {
+  'pub-1': { categoryId: 'Fraud intelligence', date: '2026-06-18', authors: 'Identra Research', pages: 18, readTime: '9 min', visualType: 'grid' },
+  'pub-2': { categoryId: 'Data privacy', date: '2026-05-30', authors: 'Identra Privacy Lab', pages: 22, readTime: '11 min', visualType: 'space' },
+  'pub-3': { categoryId: 'Fraud intelligence', date: '2026-05-12', authors: 'Identra Fraud Intelligence', pages: 16, readTime: '8 min', visualType: 'rings' },
+  'pub-4': { categoryId: 'Fraud intelligence', date: '2026-04-24', authors: 'Identra Research', pages: 20, readTime: '10 min', visualType: 'portraits' },
+  'pub-5': { categoryId: 'Fraud intelligence', date: '2026-04-03', authors: 'Identra Business Identity Lab', pages: 15, readTime: '8 min', visualType: 'nodes' },
+  'pub-6': { categoryId: 'Accessible identity', date: '2026-03-16', authors: 'Identra Identity Lab', pages: 24, readTime: '12 min', visualType: 'network' },
+  'pub-7': { categoryId: 'Online safety', date: '2026-02-27', authors: 'Identra Trust Research', pages: 19, readTime: '10 min', visualType: 'sphere' },
+};
+
 // ATLAS GLOBAL REGULATION TRACKER DATA
 interface AgeRegulation {
   country: string;
@@ -71,7 +86,16 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
     return t.regions[region as keyof typeof t.regions] || region;
   };
 
-  const publications = useMemo(() => getLocalizedPublications(language), [language]);
+  const publications = useMemo<Publication[]>(() => (
+    getLocalizedPublications(language).map((copy: PublicationCopy) => {
+      const metadata = PUBLICATION_METADATA[copy.id];
+      if (!metadata) {
+        throw new Error(`Missing publication metadata for ${copy.id}`);
+      }
+      const { categoryId, ...details } = metadata;
+      return { ...copy, ...details, category: categoryId };
+    })
+  ), [language]);
   const regulations = useMemo(() => getLocalizedRegulations(language), [language]);
   const readingList = useMemo(() => getLocalizedReadingList(language), [language]);
 
@@ -1027,7 +1051,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <div className="flex-1 overflow-y-auto divide-y divide-slate-150">
                   {filteredAtlasRegs.length > 0 ? (
                     filteredAtlasRegs.map((law, idx) => (
-                      <div
+                      <button type="button"
                         key={idx}
                         onClick={() => setSelectedAtlasLaw(law)}
                         className={`p-4 cursor-pointer hover:bg-white transition text-left flex flex-col gap-1 ${
@@ -1057,7 +1081,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                             </span>
                           </span>
                         </div>
-                      </div>
+                      </button>
                     ))
                   ) : (
                     <div className="p-12 text-center text-slate-400">

@@ -182,13 +182,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                 >
                   {t.tryDemo}
                 </button>
-                <button 
-                  onClick={onOpenSandbox}
-                  className="inline-flex items-center gap-1.5 text-sm text-white hover:text-teal-100 font-bold tracking-wide transition group cursor-pointer"
-                >
-                  <span>{t.tryItNow}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+
               </div>
             </div>
 
@@ -1075,7 +1069,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {ARTICLES.map(article => (
-              <div 
+              <button type="button"
                 key={article.id}
                 onClick={() => setActiveArticleId(article.id)}
                 className="bg-white border border-slate-200/60 rounded-3xl p-6 space-y-4 hover:shadow-md hover:border-slate-350 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
@@ -1100,7 +1094,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                   <span>{t.readArticle}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -1120,7 +1114,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Platform block 1 */}
-            <div 
+            <button type="button"
               onClick={onOpenSandbox}
               className="bg-slate-50 border border-slate-150 p-8 rounded-3xl space-y-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 cursor-pointer group text-left flex flex-col justify-between min-h-[160px]"
             >
@@ -1140,10 +1134,10 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                 <span>{t.learnAboutMdl}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
               </div>
-            </div>
+            </button>
 
             {/* Platform block 2 */}
-            <div 
+            <button type="button"
               onClick={onOpenSandbox}
               className="bg-slate-50 border border-slate-150 p-8 rounded-3xl space-y-4 hover:shadow-md hover:border-slate-300 transition-all duration-200 cursor-pointer group text-left flex flex-col justify-between min-h-[160px]"
             >
@@ -1163,7 +1157,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                 <span>{t.learnAboutSelfie}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition" />
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -1184,13 +1178,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
             >
               {t.demoTryDemo}
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm px-8 py-3.5 rounded-full transition flex items-center justify-center gap-1.5 cursor-pointer shadow"
-            >
-              <span>{t.tryItNow}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

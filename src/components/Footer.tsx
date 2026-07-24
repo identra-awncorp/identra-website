@@ -91,13 +91,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
             >
               {translate('tryDemo')}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-sm px-6 py-3.5 rounded-full transition flex items-center justify-center gap-1"
-            >
-              {translate('tryItNow')}
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
 

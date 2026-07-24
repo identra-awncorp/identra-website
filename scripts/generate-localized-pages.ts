@@ -20,6 +20,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getViewLocales,
   SUPPORTED_LOCALES,
   type AppView,
   type BlogDetailId,
@@ -126,11 +127,15 @@ const renderLocalizedHtml = (
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
   const imageUrl = absoluteUrl(PUBLIC_SOCIAL_IMAGE_PATH, siteUrl);
   const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
-  const alternateLinks = SUPPORTED_LOCALES.map((alternateLocale) => {
+  const routeLocales = getViewLocales(route.view);
+  const alternateLinks = routeLocales.map((alternateLocale) => {
     const href = absoluteUrl(routePath(route, alternateLocale), siteUrl);
     return `    <link rel="alternate" hreflang="${alternateLocale}" href="${escapeHtml(href)}" />`;
   });
-  const defaultUrl = absoluteUrl(routePath(route, DEFAULT_LOCALE), siteUrl);
+  const defaultLocale = routeLocales.includes(DEFAULT_LOCALE)
+    ? DEFAULT_LOCALE
+    : routeLocales[0];
+  const defaultUrl = absoluteUrl(routePath(route, defaultLocale), siteUrl);
   alternateLinks.push(
     `    <link rel="alternate" hreflang="x-default" href="${escapeHtml(defaultUrl)}" />`,
   );
@@ -300,7 +305,7 @@ const routes: LocalizedRoute[] = [
 ];
 
 for (const route of routes) {
-  for (const locale of SUPPORTED_LOCALES) {
+  for (const locale of getViewLocales(route.view)) {
     const outputPath = resolve(
       distDir,
       routePath(route, locale).replace(/^\/+/, ''),
@@ -340,4 +345,8 @@ rootHtml = replaceMeta(rootHtml, 'name', 'robots', 'noindex, nofollow');
 
 writeFileSync(resolve(distDir, 'index.html'), rootHtml, 'utf8');
 
-console.log(`Generated ${routes.length * SUPPORTED_LOCALES.length} localized HTML entry points and ${SUPPORTED_LOCALES.length} localized 404 pages`);
+const localizedRouteCount = routes.reduce(
+  (count, route) => count + getViewLocales(route.view).length,
+  0,
+);
+console.log(`Generated ${localizedRouteCount} localized HTML entry points and ${SUPPORTED_LOCALES.length} localized 404 pages`);

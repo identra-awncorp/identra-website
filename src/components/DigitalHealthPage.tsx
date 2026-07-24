@@ -669,7 +669,7 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Card 1: Build a safer platform */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange && onViewChange('platform')}
               className="bg-blue-600 hover:bg-blue-700 transition cursor-pointer text-white p-8 md:p-12 rounded-[2rem] shadow-xl relative overflow-hidden group"
             >
@@ -682,10 +682,10 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">{t.copy.buildASaferMoreTrustedPlatform}</h3>
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Card 2: Verify with AI */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange && onViewChange('document-ai')}
               className="bg-emerald-500 hover:bg-emerald-600 transition cursor-pointer text-white p-8 md:p-12 rounded-[2rem] shadow-xl relative overflow-hidden group"
             >
@@ -698,7 +698,7 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
                   <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">{t.copy.verifyDocumentsConfidentlyWithAi}</h3>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>

@@ -408,7 +408,7 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
         <h3 className="text-xl md:text-2xl font-semibold text-slate-900 text-center mb-8">{t.exploreTitle}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {t.exploreCards.map((card, index) => (
-            <div
+            <button type="button"
               key={card.title}
               onClick={index === 0 ? onOpenSandbox : () => onViewChange?.('e-learning')}
               className={`${index === 0 ? 'bg-indigo-600' : 'bg-blue-500'} text-white p-8 rounded-3xl cursor-pointer hover:shadow-lg hover:-translate-y-1 transition duration-300 flex flex-col justify-between min-h-[160px] group`}
@@ -418,7 +418,7 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
                 <span>{card.cta}</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>

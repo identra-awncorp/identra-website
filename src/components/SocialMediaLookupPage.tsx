@@ -722,7 +722,7 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
           <h2 className="text-2xl md:text-3xl font-display font-bold text-[#111625] tracking-tight">{t.exploreTitle}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-indigo-50 border border-indigo-100 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#354CE1]/60 transition" onClick={() => onViewChange?.('phone-email-risk')}>
+          <button type="button" className="bg-indigo-50 border border-indigo-100 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#354CE1]/60 transition" onClick={() => onViewChange?.('phone-email-risk')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-[#354CE1] text-white rounded-xl flex items-center justify-center font-bold"><FileText className="w-5 h-5" /></div>
               <h3 className="text-2xl font-display font-bold text-slate-900 leading-tight">{t.exploreCards[0].title}</h3>
@@ -731,8 +731,8 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
               <span>{t.exploreCards[0].link}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
-          <div className="bg-amber-100/60 border border-amber-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-amber-400 transition" onClick={() => onViewChange?.('adverse-media')}>
+          </button>
+          <button type="button" className="bg-amber-100/60 border border-amber-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-amber-400 transition" onClick={() => onViewChange?.('adverse-media')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center font-bold"><Newspaper className="w-5 h-5" /></div>
               <h3 className="text-2xl font-display font-bold text-slate-900 leading-tight">{t.exploreCards[1].title}</h3>
@@ -741,7 +741,7 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
               <span>{t.exploreCards[1].link}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -753,10 +753,7 @@ export default function SocialMediaLookupPage({ onOpenSandbox, onBackToLanding, 
             <p className="text-slate-600 text-sm leading-relaxed">{t.readyDesc}</p>
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button onClick={onOpenSandbox} className="bg-[#354CE1] hover:bg-indigo-700 text-white font-semibold px-7 py-3.5 rounded-full text-sm shadow-md transition">{t.tryDemo}</button>
-              <button onClick={onOpenSandbox} className="text-[#354CE1] font-bold text-sm hover:text-indigo-800 transition flex items-center gap-1 group">
-                <span>{t.tryItNow}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-              </button>
+
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ import {
   DEFAULT_BLOG_DETAIL_ID,
   DEFAULT_LOCALE,
   demoScenarioPath,
+  getViewLocales,
   SUPPORTED_LOCALES,
   type AppView,
   type BlogDetailId,
@@ -132,7 +133,7 @@ export default function SeoMetadata({
   blogId,
   demoScenarioId,
   isNotFound = false,
-}: SeoMetadataProps) {
+}: SeoMetadataProps): null {
   const { language } = useLanguage();
   const seo = getLocalizedRecord(
     SEO_TRANSLATIONS,
@@ -158,7 +159,7 @@ export default function SeoMetadata({
       : absoluteUrl(routePathForLocale(language), siteUrl);
     const alternateUrls = isNotFound
       ? []
-      : SUPPORTED_LOCALES.map((locale) => ({
+      : getViewLocales(currentView).map((locale) => ({
           href: absoluteUrl(routePathForLocale(locale), siteUrl),
           hrefLang: HREFLANG_CODES[locale],
           locale,
@@ -215,7 +216,7 @@ export default function SeoMetadata({
     });
     const defaultAlternate = metadata.alternateUrls.find(
       ({ locale }) => locale === DEFAULT_LOCALE,
-    );
+    ) ?? metadata.alternateUrls[0];
     if (defaultAlternate) {
       upsertAlternateLink('x-default', defaultAlternate.href);
     }

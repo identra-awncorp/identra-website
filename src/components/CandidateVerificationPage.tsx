@@ -106,24 +106,28 @@ export default function CandidateVerificationPage({ onOpenSandbox, onBackToLandi
       name: t.cand1Name,
       role: t.cand1Role,
       fraudDetails: t.cand1Details,
+      telemetryLogs: [t.cand1Log1, t.cand1Log2, t.cand1Log3, t.cand1Log4],
       },
     {
       ...CANDIDATE_PROFILES[1],
       name: t.cand2Name,
       role: t.cand2Role,
       fraudDetails: t.cand2Details,
+      telemetryLogs: [t.cand2Log1, t.cand2Log2, t.cand2Log3],
       },
     {
       ...CANDIDATE_PROFILES[2],
       name: t.cand3Name,
       role: t.cand3Role,
       fraudDetails: t.cand3Details,
+      telemetryLogs: [t.cand3Log1, t.cand3Log2, t.cand3Log3],
       },
     {
       ...CANDIDATE_PROFILES[3],
       name: t.cand4Name,
       role: t.cand4Role,
       fraudDetails: t.cand4Details,
+      telemetryLogs: [t.cand4Log1, t.cand4Log2],
       },
   ], [t]);
 
@@ -1111,20 +1115,20 @@ export default function CandidateVerificationPage({ onOpenSandbox, onBackToLandi
       <section className="px-6 py-12 max-w-7xl mx-auto space-y-6">
         <h3 className="text-xl font-bold text-slate-900">{t.exploreTitle}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div 
+          <button type="button"
             onClick={() => onViewChange && onViewChange('age-assurance')}
             className="p-8 rounded-3xl bg-indigo-50/50 hover:bg-indigo-50 border border-indigo-100 transition duration-200 cursor-pointer space-y-3"
           >
             <h4 className="font-bold text-indigo-900 text-lg">{t.exploreCard1Title}</h4>
             <p className="text-xs text-indigo-700">{t.exploreCard1Desc}</p>
-          </div>
-          <div 
+          </button>
+          <button type="button"
             onClick={() => onViewChange && onViewChange('database-checks')}
             className="p-8 rounded-3xl bg-blue-50/50 hover:bg-blue-50 border border-blue-100 transition duration-200 cursor-pointer space-y-3"
           >
             <h4 className="font-bold text-blue-900 text-lg">{t.exploreCard2Title}</h4>
             <p className="text-xs text-blue-700">{t.exploreCard2Desc}</p>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -1145,12 +1149,7 @@ export default function CandidateVerificationPage({ onOpenSandbox, onBackToLandi
             >
               {t.tryDemo}
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="border border-indigo-200 hover:border-indigo-400 bg-white text-slate-800 font-semibold text-base px-8 py-4 rounded-full transition duration-200 cursor-pointer"
-            >
-              {t.tryItNow}
-            </button>
+
           </div>
         </div>
       </section>

@@ -128,7 +128,7 @@ export default function LoginPage({ onBackToLanding }: LoginPageProps) {
         
         {/* Top Navigation Row (Floating) */}
         <div className="absolute top-8 left-6 sm:left-12 md:left-20 lg:left-16 xl:left-28 flex items-center justify-between right-6 sm:right-12 md:right-20 lg:right-16">
-          <div 
+          <button type="button"
             onClick={onBackToLanding}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
@@ -136,7 +136,7 @@ export default function LoginPage({ onBackToLanding }: LoginPageProps) {
             <span className="font-sans font-bold text-lg tracking-tight text-slate-900">
               {t.brand}
             </span>
-          </div>
+          </button>
 
           {/* Optional Back to Site Link */}
           <button 

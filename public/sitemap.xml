@@ -3467,57 +3467,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://identra.com/en/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/white-paper" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/white-paper" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/white-paper" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/white-paper" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/white-paper" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://identra.com/es/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/white-paper" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/white-paper" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/white-paper" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/white-paper" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/white-paper" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://identra.com/ja/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/white-paper" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/white-paper" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/white-paper" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/white-paper" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/white-paper" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://identra.com/de/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/white-paper" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/white-paper" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/white-paper" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/white-paper" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/white-paper" />
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://identra.com/vi/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.com/en/white-paper" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.com/es/white-paper" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.com/ja/white-paper" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.com/de/white-paper" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://identra.com/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/en/white-paper" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.com/vi/white-paper" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

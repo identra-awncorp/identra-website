@@ -133,10 +133,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                   className="bg-white hover:bg-teal-50 text-[#354CE1] font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-2 shadow-lg shadow-blue-950/20"
                 >{t.copy.tryTheDemo}<ArrowRight className="w-4 h-4" />
                 </button>
-                <button
-                  onClick={onOpenSandbox}
-                  className="border border-white/20 hover:bg-white/10 text-white font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-1"
-                >{t.copy.trySandbox}</button>
+
               </div>
             </div>
 
@@ -171,7 +168,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                     
                     <div className="space-y-2 max-h-48 overflow-y-auto">
                       {businesses.filter(b => b.name.toLowerCase().includes(searchQuery.toLowerCase())).map((biz, idx) => (
-                        <div 
+                        <button type="button"
                           key={idx}
                           onClick={() => startKybSimulation(biz)}
                           className="p-3 bg-slate-950/40 hover:bg-slate-800 border border-slate-800 rounded-xl transition cursor-pointer flex items-center justify-between"
@@ -182,7 +179,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                           </div>
                           <div className="flex items-center gap-1.5 text-[10px] font-semibold text-[#354CE1] bg-[#354CE1]/10 px-2 py-0.5 rounded-md border border-[#354CE1]/20 font-sans">
                             <Play className="w-2.5 h-2.5 fill-[#354CE1]" />{t.copy.runKyb}</div>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -812,10 +809,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
               onClick={onOpenSandbox}
               className="bg-white hover:bg-blue-50 text-[#354CE1] font-bold text-xs px-6 py-3.5 rounded-full transition shadow"
             >{t.copy.tryTheDemo}</button>
-            <button
-              onClick={onOpenSandbox}
-              className="border border-white/20 hover:bg-white/10 text-white font-bold text-xs px-6 py-3.5 rounded-full transition"
-            >{t.copy.accessSandbox}</button>
+
           </div>
         </div>
       </section>

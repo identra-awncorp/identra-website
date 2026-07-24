@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
 import { securityPageTranslations } from '../translations/SecurityPageTranslations';
+import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 interface SecurityPageProps {
   onOpenSandbox: () => void;
@@ -48,12 +49,15 @@ const INITIAL_SERVICES: SecurityService[] = [
 
 const BADGE_ICONS = [ShieldCheck, Award, UserCheck, Globe, Shield, Landmark, ShieldAlert, BookOpen, CheckCircle2, FileCheck2, Cpu];
 const SECURITY_FEATURE_ICONS = [Server, Cpu, Search, Lock, BookOpen, Users, Key, ShieldCheck];
-const PRIVACY_FEATURE_META = [
-  { icon: Globe, action: undefined },
+const PRIVACY_FEATURE_META: ReadonlyArray<{
+  icon: React.ComponentType<{ className?: string }>;
+  action?: AppView;
+}> = [
+  { icon: Globe },
   { icon: Lock, action: 'privacy-overview' },
-  { icon: Shield, action: undefined },
-  { icon: FileCheck2, action: undefined }
-] as const;
+  { icon: Shield },
+  { icon: FileCheck2 }
+];
 const FEDRAMP_FEATURE_ICONS = [UserCheck, ShieldAlert, Landmark, RefreshCw];
 
 export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewChange }: SecurityPageProps) {
@@ -251,7 +255,7 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
 
               <div className="relative mt-8 rounded-xl overflow-hidden aspect-[16/9] border border-slate-150 bg-gradient-to-tr from-indigo-100 to-purple-50 flex items-center justify-center p-2">
                 <img 
-                  src="/src/assets/images/identra_identity_illustration_1783335932193.jpg" 
+                  src={identityIllustrationImage}
                   alt={text('visualAlt')} 
                   className="w-full h-full object-cover rounded-lg"
                   referrerPolicy="no-referrer"
@@ -317,6 +321,7 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
           {copy.privacyFeatures.map((feat, idx) => {
             const meta = PRIVACY_FEATURE_META[idx];
             const Icon = meta.icon;
+            const linkText = 'linkText' in feat ? feat.linkText : '';
             return (
               <div 
                 key={idx} 
@@ -331,10 +336,14 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
                 </div>
                 {meta.action && onViewChange && (
                   <button 
-                    onClick={() => onViewChange(meta.action)}
+                    onClick={() => {
+                      if (meta.action) {
+                        onViewChange(meta.action);
+                      }
+                    }}
                     className="mt-6 inline-flex items-center gap-1.5 text-xs font-semibold text-[#354CE1] hover:text-[#2539BE] transition"
                   >
-                    <span>{feat.linkText}</span>
+                    <span>{linkText}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 )}

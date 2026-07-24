@@ -563,7 +563,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {t.articles.map((art) => (
-            <div
+            <button type="button"
               key={art.id}
               onClick={() => setActiveArticleId(art.id)}
               className="bg-white border border-slate-200/80 hover:border-[#10B981]/40 rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition-all group flex flex-col justify-between p-6"
@@ -601,7 +601,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                 <span>{t.readArticle}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -616,7 +616,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
             {t.explore.cards.map((card, index) => {
               const ExploreIcon = exploreIcons[index];
               return (
-                <div
+                <button type="button"
                   key={card.title}
                   onClick={() => onViewChange?.('government-id')}
                   className="bg-white hover:bg-slate-50/60 rounded-2xl p-8 border border-slate-200 shadow-sm cursor-pointer group flex items-start gap-4 transition-all"
@@ -633,7 +633,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                       {t.explore.learnMore} <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -656,13 +656,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                 <span>{t.cta.primary}</span>
                 <ArrowRight className="w-4 h-4 text-indigo-600" />
               </button>
-              <button
-                onClick={onOpenSandbox}
-                className="inline-flex items-center gap-1.5 px-6 py-3.5 text-white hover:text-indigo-100 font-bold text-sm transition"
-              >
-                <span>{t.cta.secondary}</span>
-                <ArrowUpRight className="w-4 h-4 text-white" />
-              </button>
+
             </div>
           </div>
         </div>

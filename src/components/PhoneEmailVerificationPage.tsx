@@ -152,7 +152,7 @@ export default function PhoneEmailVerificationPage({ onOpenSandbox, onBackToLand
     setRiskAnalysisStatus('analyzing');
     setTimeout(() => {
       let score = 15;
-      const details = [];
+      const details: string[] = [];
       if (riskFlags.voipLine) {
         score += 25;
         details.push(t.risk.details.voip);
@@ -214,9 +214,7 @@ export default function PhoneEmailVerificationPage({ onOpenSandbox, onBackToLand
                 {t.tryDemo}
                 <ArrowRight className="h-4 w-4" />
               </button>
-              <button onClick={onOpenSandbox} className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition">
-                {t.tryNow}
-              </button>
+
             </div>
             <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
               {t.benefits.map((benefit: any) => (
@@ -536,10 +534,7 @@ export default function PhoneEmailVerificationPage({ onOpenSandbox, onBackToLand
           <p className="mx-auto max-w-2xl text-base sm:text-lg text-indigo-100 leading-relaxed">{t.finalCta.desc}</p>
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <button onClick={onOpenSandbox} className="rounded-full bg-white px-6 py-3.5 text-sm sm:text-base font-medium text-indigo-600 shadow-md hover:bg-slate-50 transition-all">{t.finalCta.primary}</button>
-            <button onClick={onOpenSandbox} className="group inline-flex items-center gap-1 rounded-full border border-indigo-300 bg-indigo-600/35 px-6 py-3.5 text-sm sm:text-base font-semibold text-white hover:bg-indigo-600/50 transition-all">
-              <span>{t.finalCta.secondary}</span>
-              <ArrowRight className="h-4 w-4 transform transition-transform group-hover:translate-x-1" />
-            </button>
+
           </div>
         </div>
       </section>

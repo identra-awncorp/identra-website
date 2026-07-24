@@ -78,7 +78,7 @@ export default function ConnectPage({ onOpenSandbox, onBackToLanding, onViewChan
     setOtpError(false);
   };
 
-  const faqs = t.faqs;
+  const faqs: ReadonlyArray<{ id: string; q: string; a: string }> = t.faqs;
 
   const frequencyLabel = {
     always: t.alwaysAsk,
@@ -136,13 +136,7 @@ export default function ConnectPage({ onOpenSandbox, onBackToLanding, onViewChan
                   {t.tryDemo}
                   <ArrowRight className="w-4 h-4 text-[#354CE1]" />
                 </button>
-                <button
-                  onClick={onOpenSandbox}
-                  className="border border-white/20 hover:bg-white/10 text-white font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-1 cursor-pointer"
-                  id="try-sandbox-hero-btn"
-                >
-                  {t.trySandbox}
-                </button>
+
               </div>
 
               {/* Conversion and Trust Metrics */}
@@ -853,13 +847,7 @@ export default function ConnectPage({ onOpenSandbox, onBackToLanding, onViewChan
             >
               {t.ctaSandbox}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto border border-white/20 hover:bg-white/10 text-white font-bold text-sm px-8 py-4 rounded-full transition"
-              id="cta-demo-btn"
-            >
-              {t.ctaExpert}
-            </button>
+
           </div>
         </div>
       </section>

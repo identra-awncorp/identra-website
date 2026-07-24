@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import {
   DEFAULT_LOCALE,
   isLocale,
+  localizePath,
   pathToLocale,
   replacePathLocale,
   type Locale,
@@ -73,7 +74,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     navigate(
       {
-        pathname: replacePathLocale(location.pathname, lang),
+        pathname: localizePath(location.pathname, lang)
+          ?? replacePathLocale(location.pathname, lang),
         search: location.search,
         hash: location.hash,
       },

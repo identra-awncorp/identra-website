@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, ArrowRight, Award, Briefcase, Building2, Check, CheckCircle2, Code2, ExternalLink, FileCode, Globe, GraduationCap, Loader2, Lock, Mail, MapPin, Phone, Plus, QrCode, Server, ShieldCheck, Smartphone, Sparkles, Terminal, Trash2, User, UserCheck, X } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { APPLY_JOB_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/ApplyJobDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -24,6 +25,7 @@ interface ApplyJobApplicationFlowProps {
   playTingTingSound?: () => void;
   onServerProgressChange?: (progress: number) => void;
   onSsiModeChange?: (isSsiMode: boolean) => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 interface CandidateCert {
@@ -89,7 +91,8 @@ function ApplyJobApplicationFlow({
   isSuccess,
   playTingTingSound,
   onServerProgressChange,
-  onSsiModeChange
+  onSsiModeChange,
+  scheduleTimeout
 }: ApplyJobApplicationFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -760,7 +763,7 @@ function ApplyJobApplicationFlow({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.vettingSocialSecurity, { name: jobName.trim() }), 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([
                     formatText(logT.identityDatabaseComplete, { name: jobName.trim() }),
@@ -1237,6 +1240,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
     icon: Briefcase,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -1284,6 +1288,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -1297,7 +1302,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -1351,6 +1356,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -1448,6 +1454,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   playTingTingSound={playTingTingSound}
                   onServerProgressChange={setServerVerificationProgress}
                   onSsiModeChange={setIsSsiCredentialMode}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

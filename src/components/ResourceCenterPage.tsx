@@ -217,7 +217,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Main Hero Card (Large - 7/12 width) */}
-          <div className="lg:col-span-7 group cursor-pointer" onClick={() => onOpenSandbox()}>
+          <button type="button" className="lg:col-span-7 group cursor-pointer" onClick={() => onOpenSandbox()}>
             <div className="rounded-[2rem] overflow-hidden bg-gradient-to-br from-slate-950 via-[#121B3A] to-indigo-950 aspect-[16/10] relative p-8 flex flex-col justify-between border border-slate-850 shadow-xl group-hover:shadow-2xl transition duration-300">
               
               {/* Animated Deepfake Illustration */}
@@ -306,13 +306,13 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               </div>
 
             </div>
-          </div>
+          </button>
 
           {/* Right Stack Cards (Two smaller cards - 5/12 width) */}
           <div className="lg:col-span-5 flex flex-col gap-6">
             
             {/* Stack Card 1: Shop like a pro */}
-            <div 
+            <button type="button"
               className="bg-white rounded-[2rem] border border-slate-150 p-6 flex flex-col md:flex-row gap-6 cursor-pointer hover:border-[#354CE1] hover:shadow-lg transition duration-300 group"
               onClick={() => onOpenSandbox()}
             >
@@ -351,10 +351,10 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                   </span>
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* Stack Card 2: Gartner Leader */}
-            <div 
+            <button type="button"
               className="bg-white rounded-[2rem] border border-slate-150 p-6 flex flex-col md:flex-row gap-6 cursor-pointer hover:border-[#354CE1] hover:shadow-lg transition duration-300 group"
               onClick={() => onOpenSandbox()}
             >
@@ -397,7 +397,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                   </span>
                 </div>
               </div>
-            </div>
+            </button>
 
           </div>
 
@@ -421,7 +421,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             
             {/* Trend Card 1 */}
-            <div className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Fingerprint className="w-5 h-5" />
@@ -436,10 +436,10 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               <span className="text-[#354CE1] font-semibold text-xs flex items-center gap-1 mt-6">
                 <span>{text('trend1Cta')}</span> <ArrowRight className="w-3.5 h-3.5" />
               </span>
-            </div>
+            </button>
 
             {/* Trend Card 2 */}
-            <div className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Globe className="w-5 h-5" />
@@ -454,10 +454,10 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               <span className="text-[#354CE1] font-semibold text-xs flex items-center gap-1 mt-6">
                 <span>{text('trend2Cta')}</span> <ArrowRight className="w-3.5 h-3.5" />
               </span>
-            </div>
+            </button>
 
             {/* Trend Card 3 */}
-            <div className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Lock className="w-5 h-5" />
@@ -472,7 +472,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               <span className="text-[#354CE1] font-semibold text-xs flex items-center gap-1 mt-6">
                 <span>{text('trend3Cta')}</span> <ArrowRight className="w-3.5 h-3.5" />
               </span>
-            </div>
+            </button>
 
           </div>
         </div>
@@ -518,7 +518,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             {identity101Resources.map((item) => {
               const IconComp = item.icon;
               return (
-                <div 
+                <button type="button"
                   key={item.id}
                   onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
                   className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-indigo-300 transition duration-300 cursor-pointer group"
@@ -545,7 +545,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                       </span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -582,7 +582,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             {complianceResources.map((item) => {
               const IconComp = item.icon;
               return (
-                <div 
+                <button type="button"
                   key={item.id}
                   onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
                   className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-rose-300 transition duration-300 cursor-pointer group"
@@ -609,7 +609,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                       </span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -646,7 +646,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             {lifecycleResources.map((item) => {
               const IconComp = item.icon;
               return (
-                <div 
+                <button type="button"
                   key={item.id}
                   onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
                   className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-amber-300 transition duration-300 cursor-pointer group"
@@ -673,7 +673,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                       </span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>

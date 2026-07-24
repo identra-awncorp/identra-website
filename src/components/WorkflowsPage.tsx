@@ -874,7 +874,7 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Catch more fraud with passive signals */}
-            <div 
+            <button type="button"
               onClick={() => {
                 if (onViewChange) onViewChange('passive-signals');
               }}
@@ -895,10 +895,10 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
                 <span>{t.explorePassiveSignals}</span>
                 <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
 
             {/* Build your ideal case management process */}
-            <div 
+            <button type="button"
               onClick={() => {
                 if (onViewChange) onViewChange('case-management');
               }}
@@ -919,7 +919,7 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
                 <span>{t.exploreCaseManagement}</span>
                 <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -943,12 +943,7 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
             >
               {t.tryDemo}
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="px-8 py-3.5 bg-slate-800 text-white font-semibold rounded-full hover:bg-slate-700 transition-all border border-slate-700"
-            >
-              {t.tryItNow}
-            </button>
+
           </div>
         </div>
       </section>

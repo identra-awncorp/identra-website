@@ -287,7 +287,7 @@ CONNECT_TRANSLATIONS.ja = {
   badge: '再利用可能な本人確認ソリューション',
   heroTitle: 'Identra Connect: シームレスな 1 タップ再利用 KYC 体験。',
   heroDesc: '顧客は一度だけ本人確認を行い、その認証済み資格情報を安全に再利用して、製品エコシステムやパートナーネットワークへ 3 秒未満で即時オンボーディングできます。',
-  tryDemo: 'Trải nghiệm demo',
+  tryDemo: 'デモを試す',
   trySandbox: 'ライブサンドボックスを試す',
   metrics: [
     { value: '93%', label: 'オンボーディング率' },
@@ -420,7 +420,7 @@ CONNECT_TRANSLATIONS.de = {
   badge: 'Wiederverwendbare Identitätslösung',
   heroTitle: 'Identra Connect: Nahtlose, wiederverwendbare KYC-Erfahrung mit 1 Tap.',
   heroDesc: 'Kunden verifizieren ihre Identität einmal und verwenden ihre Zugangsdaten sicher wieder, um in Ihrem gesamten Produktökosystem und Partnernetzwerk in unter 3 Sekunden sofort einzusteigen.',
-  tryDemo: 'Trải nghiệm demo',
+  tryDemo: 'Demo testen',
   trySandbox: 'Live-Sandbox testen',
   metrics: [
     { value: '93%', label: 'Onboarding-Rate' },

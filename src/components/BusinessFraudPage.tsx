@@ -524,7 +524,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     <span className="text-[10px] font-semibold text-slate-500 block mb-1 uppercase tracking-widest">{t.connectedSignals}</span>
                     <div className="space-y-1.5" id="bf-connected-nodes-list">
                       {connectedNodes.map((node) => (
-                        <div 
+                        <button type="button"
                           key={node.id} 
                           onClick={() => setSelectedNodeId(node.id)}
                           className="flex items-center gap-2 text-xs text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 px-3 py-2 rounded-lg border border-slate-800 cursor-pointer transition-colors"
@@ -536,7 +536,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                           {node.type === 'business' && <Building2 className="w-3 h-3 text-slate-400" />}
                           <span className="truncate flex-1">{node.label}</span>
                           <span className="text-[9px] opacity-60 font-mono uppercase tracking-wider shrink-0">{t[node.type as keyof typeof t] || node.type}</span>
-                        </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -575,7 +575,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                   {/* Nodes Overlay */}
                   <div className="relative w-full h-full">
                     {/* B1: Alpha Solutions */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('b1')}
                       className={`absolute left-[15%] top-[15%] p-3.5 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'b1' 
@@ -585,10 +585,10 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Building2 className="w-5 h-5 text-amber-400 mb-1" />
                       <div className="text-[10px] font-bold text-slate-200">Alpha Solutions</div>
-                    </div>
+                    </button>
 
                     {/* B2: Beta Consulting */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('b2')}
                       className={`absolute left-[40%] top-[40%] p-4 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'b2' 
@@ -598,10 +598,10 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Building2 className="w-6 h-6 text-rose-500 mb-1" />
                       <div className="text-xs font-black text-white">Beta Consulting</div>
-                    </div>
+                    </button>
 
                     {/* B3: Delta Trade */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('b3')}
                       className={`absolute right-[15%] top-[15%] p-3.5 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'b3' 
@@ -611,10 +611,10 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Building2 className="w-5 h-5 text-emerald-400 mb-1" />
                       <div className="text-[10px] font-bold text-slate-200">Delta Trade</div>
-                    </div>
+                    </button>
 
                     {/* IP1: Shared IP */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('ip1')}
                       className={`absolute left-[15%] bottom-[15%] p-3 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'ip1' 
@@ -624,10 +624,10 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Zap className="w-4 h-4 text-rose-400 mb-1" />
                       <div className="text-[10px] font-mono text-slate-300">IP: 198.51...</div>
-                    </div>
+                    </button>
 
                     {/* DEV1: Device Fingerprint */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('dev1')}
                       className={`absolute right-[15%] bottom-[15%] p-3 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'dev1' 
@@ -637,10 +637,10 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Tablet className="w-4 h-4 text-rose-400 mb-1" />
                       <div className="text-[10px] font-bold text-slate-300">{t.ipadProId}</div>
-                    </div>
+                    </button>
 
                     {/* OWN1: Owner Johnathan R. */}
-                    <div 
+                    <button type="button"
                       onClick={() => setSelectedNodeId('own1')}
                       className={`absolute left-[40%] bottom-[10%] p-3 rounded-xl border cursor-pointer transition-all ${
                         selectedNodeId === 'own1' 
@@ -650,7 +650,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     >
                       <Users className="w-4 h-4 text-rose-400 mb-1" />
                       <div className="text-[10px] font-bold text-slate-300">Johnathan R.</div>
-                    </div>
+                    </button>
                   </div>
                 </div>
 
@@ -889,13 +889,7 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
               <span>{t.tryDemo}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-sm font-bold text-slate-300 hover:text-white rounded-xl border border-slate-700 transition-colors"
-              id="bf-cta-sandbox"
-            >
-              <span>{t.trySandbox}</span>
-            </button>
+
           </div>
         </div>
       </section>

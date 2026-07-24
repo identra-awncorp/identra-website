@@ -41,7 +41,7 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
   const [hasStartedSimulation, setHasStartedSimulation] = useState<boolean>(false);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [currentSimulatorStep, setCurrentSimulatorStep] = useState<number>(0);
-  const simulationLogs = hasStartedSimulation
+  const simulationLogs: string[] = hasStartedSimulation
     ? t.logs[activeStage].slice(0, currentSimulatorStep + 1)
     : [t.initialLog];
 
@@ -334,7 +334,7 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
               
               {/* Step 1: Hiring */}
-              <div 
+              <button type="button"
                 onClick={() => triggerSimulation('hiring')}
                 className={`p-6 rounded-2xl border transition duration-200 cursor-pointer relative group ${
                   activeStage === 'hiring' 
@@ -355,10 +355,10 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                 {activeStage === 'hiring' && (
                   <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#354CE1] rotate-45 rounded-sm hidden lg:block" />
                 )}
-              </div>
+              </button>
 
               {/* Step 2: Onboarding */}
-              <div 
+              <button type="button"
                 onClick={() => triggerSimulation('onboarding')}
                 className={`p-6 rounded-2xl border transition duration-200 cursor-pointer relative group ${
                   activeStage === 'onboarding' 
@@ -379,10 +379,10 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                 {activeStage === 'onboarding' && (
                   <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FFBF43] rotate-45 rounded-sm hidden lg:block" />
                 )}
-              </div>
+              </button>
 
               {/* Step 3: Employment */}
-              <div 
+              <button type="button"
                 onClick={() => triggerSimulation('employment')}
                 className={`p-6 rounded-2xl border transition duration-200 cursor-pointer relative group ${
                   activeStage === 'employment' 
@@ -403,7 +403,7 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                 {activeStage === 'employment' && (
                   <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#10B981] rotate-45 rounded-sm hidden lg:block" />
                 )}
-              </div>
+              </button>
             </div>
 
             {/* Simulated Live Console */}
@@ -741,7 +741,7 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
             {/* Integrations Grid */}
             <div className="grid grid-cols-2 gap-3 pt-2">
               {t.integrations.map((prov: any) => (
-                <div 
+                <button type="button"
                   key={prov.name}
                   onClick={() => {
                     setActiveIntegration(prov.name);
@@ -758,15 +758,15 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                     <span className={`w-2 h-2 rounded-full ${activeIntegration === prov.name ? 'bg-[#10B981]' : 'bg-slate-300'}`} />
                   </div>
                   <span className="text-[10px] text-slate-400 block font-sans">{prov.provider}</span>
-                </div>
+                </button>
               ))}
             </div>
 
             <div className="pt-2">
-              <p className="text-[#354CE1] text-xs font-bold flex items-center gap-1 cursor-pointer hover:underline" onClick={onOpenSandbox}>
+              <button type="button" className="text-[#354CE1] text-xs font-bold flex items-center gap-1 hover:underline" onClick={onOpenSandbox}>
                 <span>{t.exploreIntegrations}</span>
                 <ArrowRight className="w-3 h-3" />
-              </p>
+              </button>
             </div>
           </div>
 

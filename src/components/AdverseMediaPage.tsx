@@ -689,12 +689,7 @@ export default function AdverseMediaPage({ onOpenSandbox, onBackToLanding, onVie
                 <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4 h-4 text-[#F2A122]" />
               </button>
-              <button 
-                onClick={onOpenSandbox}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3.5 rounded-full text-sm shadow-sm transition"
-              >
-                <span>{t.tryItNow} →</span>
-              </button>
+
             </div>
           </div>
         </div>

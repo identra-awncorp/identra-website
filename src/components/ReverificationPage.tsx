@@ -1087,7 +1087,7 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             
             {/* Bento Card 1 */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('compliance')}
               className="group p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#4D86F7] to-[#3874E6] text-white flex flex-col justify-between h-80 cursor-pointer shadow-xl hover:shadow-2xl hover:scale-[1.01] transition duration-300"
             >
@@ -1103,10 +1103,10 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
               <span className="inline-flex items-center gap-1 text-xs font-bold font-mono group-hover:translate-x-1 transition-transform">
                 {text('exploreCompliance')} <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
 
             {/* Bento Card 2 */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('workflows')}
               className="group p-8 md:p-12 rounded-[2rem] bg-gradient-to-br from-[#7E57C2] to-[#512DA8] text-white flex flex-col justify-between h-80 cursor-pointer shadow-xl hover:shadow-2xl hover:scale-[1.01] transition duration-300"
             >
@@ -1122,7 +1122,7 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
               <span className="inline-flex items-center gap-1 text-xs font-bold font-mono group-hover:translate-x-1 transition-transform">
                 {text('exploreWorkflows')} <ArrowRight className="w-4 h-4" />
               </span>
-            </div>
+            </button>
 
           </div>
         </div>
@@ -1148,13 +1148,7 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
             >
               {text('tryDemo')}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto px-8 py-4 border border-[#0F1E36]/20 hover:bg-white/10 text-[#0F1E36] font-bold rounded-full transition text-sm flex items-center justify-center gap-1.5"
-            >
-              <span>{text('tryItNow')}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

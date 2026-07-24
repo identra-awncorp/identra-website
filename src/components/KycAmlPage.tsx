@@ -111,12 +111,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                   {t.tryDemo}
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <button
-                  onClick={onOpenSandbox}
-                  className="border border-white/20 hover:bg-white/10 text-white font-semibold text-sm px-7 py-3.5 rounded-full transition flex items-center justify-center gap-1"
-                >
-                  {t.trySandbox}
-                </button>
+
               </div>
             </div>
 
@@ -498,7 +493,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
               const IndIcon = industryIcons[industry.id as keyof typeof industryIcons];
               const isActive = activeIndustry === industry.id;
               return (
-                <div
+                <button type="button"
                   key={industry.id}
                   onClick={() => setActiveIndustry(industry.id)}
                   className={`p-5 rounded-2xl border transition cursor-pointer flex items-start gap-4 ${isActive ? 'bg-white border-[#354CE1] shadow-md shadow-indigo-100/40' : 'bg-white/50 hover:bg-white border-slate-200 hover:border-slate-300'}`}
@@ -513,7 +508,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed">{industry.desc}</p>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -595,7 +590,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
           <h3 className="text-xs font-mono uppercase tracking-widest text-slate-400 text-center mb-8">{t.exploreTitle}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {t.exploreCards.map((card, index) => (
-              <div
+              <button type="button"
                 key={card.title}
                 onClick={() => index === 0 ? onViewChange?.('government-id') : onOpenSandbox()}
                 className={`p-8 rounded-3xl text-white cursor-pointer transition shadow-lg relative overflow-hidden group min-h-[160px] flex flex-col justify-between ${index === 0 ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-amber-600 hover:bg-amber-700'}`}
@@ -609,7 +604,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                   <span className="text-xs font-bold border-b border-white pb-0.5">{card.cta}</span>
                   <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -628,10 +623,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                 <button onClick={onOpenSandbox} className="w-full sm:w-auto bg-white hover:bg-indigo-50 text-[#112690] font-bold text-sm px-8 py-4 rounded-full transition shadow-lg">
                   {t.cta.primary}
                 </button>
-                <button onClick={onOpenSandbox} className="w-full sm:w-auto border border-white/20 hover:bg-white/10 text-white font-bold text-sm px-8 py-4 rounded-full transition flex items-center justify-center gap-1">
-                  {t.cta.secondary}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+
               </div>
             </div>
           </div>

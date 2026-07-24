@@ -46,7 +46,7 @@ export default function SkeletonLoader({ view }: SkeletonLoaderProps) {
   // Common pulsing shimmer effect using framer-motion for smooth, predictable rendering
   const pulseProps = {
     animate: { opacity: [0.4, 0.75, 0.4] },
-    transition: { repeat: Infinity, duration: 1.6, ease: "easeInOut" }
+    transition: { repeat: Infinity, duration: 1.6, ease: "easeInOut" as const }
   };
 
   const renderShimmerBlock = (className: string, delay: number = 0) => (

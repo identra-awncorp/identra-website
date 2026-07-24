@@ -549,7 +549,7 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
           <h2 className="text-2xl font-bold tracking-tight text-slate-900 mb-12 text-center font-sans">{t.explore.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {t.explore.cards.map((card: any, index: number) => (
-              <div key={card.title} onClick={() => onViewChange?.(card.view)} className={`${index === 0 ? 'bg-blue-600 hover:bg-blue-700' : 'bg-emerald-500 hover:bg-emerald-600'} transition cursor-pointer text-white p-8 md:p-12 rounded-[2rem] shadow-xl relative overflow-hidden group`}>
+              <button type="button" key={card.title} onClick={() => onViewChange?.(card.view)} className={`${index === 0 ? 'bg-blue-600 hover:bg-blue-700' : 'bg-emerald-500 hover:bg-emerald-600'} transition cursor-pointer text-white p-8 md:p-12 rounded-[2rem] shadow-xl relative overflow-hidden group`}>
                 <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full filter blur-xl transform translate-x-12 -translate-y-12" />
                 <div className="relative z-10 flex flex-col justify-between h-full min-h-[140px]">
                   <div>
@@ -559,7 +559,7 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight leading-tight">{card.title}</h3>
                   </div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -572,7 +572,7 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
           <p className="text-slate-400 text-sm max-w-2xl mx-auto leading-relaxed">{t.finalCta.desc}</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <button onClick={onOpenSandbox} className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-8 py-4 rounded-full transition shadow-md w-full sm:w-auto">{t.finalCta.primary}</button>
-            <button onClick={onOpenSandbox} className="border border-white/20 hover:bg-white/10 text-white font-bold text-xs px-8 py-4 rounded-full transition w-full sm:w-auto">{t.finalCta.secondary}</button>
+
           </div>
         </div>
       </section>

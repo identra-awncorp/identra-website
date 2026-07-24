@@ -756,7 +756,7 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Card 1: Teal */}
-          <div className="bg-[#4CD4A6]/20 border border-[#4CD4A6]/40 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#4CD4A6]/80 transition"
+          <button type="button" className="bg-[#4CD4A6]/20 border border-[#4CD4A6]/40 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#4CD4A6]/80 transition"
                onClick={() => onViewChange?.('phone-email')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-[#4CD4A6] text-[#111625] rounded-xl flex items-center justify-center font-bold">
@@ -773,10 +773,10 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
               <span>{t.exploreCards[0].cta}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
 
           {/* Card 2: Lavender / Slate Blue */}
-          <div className="bg-indigo-100/60 border border-indigo-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-indigo-400/80 transition"
+          <button type="button" className="bg-indigo-100/60 border border-indigo-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-indigo-400/80 transition"
                onClick={() => onViewChange?.('relay')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-[#354CE1] text-white rounded-xl flex items-center justify-center font-bold">
@@ -793,7 +793,7 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
               <span>{t.exploreCards[1].cta}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -814,13 +814,7 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
               >
                 {t.finalCta.primary}
               </button>
-              <button 
-                onClick={onOpenSandbox}
-                className="text-[#354CE1] font-bold text-sm hover:text-indigo-800 transition flex items-center gap-1 group"
-              >
-                <span>{t.finalCta.secondary}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-              </button>
+
             </div>
           </div>
         </div>

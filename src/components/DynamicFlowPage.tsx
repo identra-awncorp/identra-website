@@ -876,14 +876,7 @@ export default function DynamicFlowPage({ onOpenSandbox, onBackToLanding, onView
                   <span>{ft('btnRequestApiKey')}</span>
                   <ArrowRight className="w-4 h-4 text-indigo-600" />
                 </button>
-                <button 
-                  onClick={onOpenSandbox}
-                  className="inline-flex items-center gap-1.5 px-6 py-3.5 text-white hover:text-indigo-100 font-bold text-sm transition"
-                  id="flow_cta_sandbox_btn"
-                >
-                  <span>{ft('btnExploreDocs')}</span>
-                  <ArrowUpRight className="w-4 h-4 text-white" />
-                </button>
+
               </div>
             </div>
           </div>

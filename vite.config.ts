@@ -136,10 +136,6 @@ export default defineConfig(() => {
               return 'vendor-icons';
             }
 
-            if (normalizedId.includes('/recharts/')) {
-              return 'vendor-charts';
-            }
-
             if (normalizedId.includes('/prismjs/')) {
               return 'vendor-prism';
             }

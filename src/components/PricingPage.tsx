@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Check, 
   Plus, 
@@ -719,12 +719,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
               <span>{t.tryDemo}</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#354CE1]" />
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto border border-white/25 hover:bg-white/10 text-white font-bold text-xs px-8 py-4 rounded-full transition"
-            >
-              {t.tryNow} &rarr;
-            </button>
+
           </div>
         </div>
       </section>

@@ -14,6 +14,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getViewLocales,
   stripLocaleFromPath,
   SUPPORTED_LOCALES,
   type Locale,
@@ -47,14 +48,17 @@ const staticRoutes = APP_VIEWS
   .filter((view) => view !== 'blog-detail' && view !== 'login')
   .map((view) => ({
     basePath: stripLocaleFromPath(viewToPath(view, DEFAULT_LOCALE)),
+    locales: getViewLocales(view),
     pathForLocale: (locale: Locale) => viewToPath(view, locale),
   }));
 const blogDetailRoutes = BLOG_DETAIL_IDS.map((id) => ({
   basePath: stripLocaleFromPath(blogDetailPath(id, DEFAULT_LOCALE)),
+  locales: SUPPORTED_LOCALES,
   pathForLocale: (locale: Locale) => blogDetailPath(id, locale),
 }));
 const demoScenarioRoutes = DEMO_SCENARIO_IDS.map((id) => ({
   basePath: stripLocaleFromPath(demoScenarioPath(id, DEFAULT_LOCALE)),
+  locales: SUPPORTED_LOCALES,
   pathForLocale: (locale: Locale) => demoScenarioPath(id, locale),
 }));
 const routes = [...staticRoutes, ...demoScenarioRoutes, ...blogDetailRoutes];
@@ -80,18 +84,19 @@ const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${routes
-  .flatMap(({ basePath, pathForLocale }) => {
-    const alternateLinks = SUPPORTED_LOCALES.map((locale) => {
+  .flatMap(({ basePath, locales, pathForLocale }) => {
+    const alternateLinks = locales.map((locale) => {
       const alternateUrl = new URL(pathForLocale(locale), `${siteUrl}/`).toString();
 
       return `    <xhtml:link rel="alternate" hreflang="${locale}" href="${escapeXml(alternateUrl)}" />`;
     });
-    const defaultUrl = new URL(pathForLocale(DEFAULT_LOCALE), `${siteUrl}/`).toString();
+    const defaultLocale = locales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : locales[0];
+    const defaultUrl = new URL(pathForLocale(defaultLocale), `${siteUrl}/`).toString();
     alternateLinks.push(
       `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(defaultUrl)}" />`,
     );
 
-    return SUPPORTED_LOCALES.map((locale) => {
+    return locales.map((locale) => {
       const url = new URL(pathForLocale(locale), `${siteUrl}/`).toString();
 
       return `  <url>
@@ -128,4 +133,5 @@ copyFileSync(
   resolve(socialDir, 'identra-og.jpg'),
 );
 
-console.log(`Generated SEO assets for ${routes.length * SUPPORTED_LOCALES.length} routes at ${siteUrl}`);
+const generatedRouteCount = routes.reduce((count, route) => count + route.locales.length, 0);
+console.log(`Generated SEO assets for ${generatedRouteCount} routes at ${siteUrl}`);

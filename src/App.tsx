@@ -17,7 +17,7 @@ type DemoScenarioPageProps = {
   onBackToList: () => void;
 };
 
-function InitialLoadMarker({ onReady }: { onReady: () => void }) {
+function InitialLoadMarker({ onReady }: { onReady: () => void }): null {
   useEffect(() => {
     onReady();
   }, [onReady]);

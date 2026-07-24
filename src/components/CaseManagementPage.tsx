@@ -26,6 +26,8 @@ import {
   USE_CASES_TRANS,
   BLOG_TRANS
 } from '../translations/CaseManagementPageTranslations';
+import careersTeamImage from '../assets/images/identra_careers_team_1783338578864.jpg';
+import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 interface CaseManagementPageProps {
   onOpenSandbox: () => void;
@@ -338,9 +340,9 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
 
   const blogText = getLocalizedRecord(BLOG_TRANS, language as keyof typeof BLOG_TRANS, 'BLOG_TRANS');
   const localizedBlogs = [
-    { ...blogText[0], image: '/src/assets/images/identra_identity_illustration_1783335932193.jpg' },
-    { ...blogText[1], image: '/src/assets/images/identra_careers_team_1783338578864.jpg' },
-    { ...blogText[2], image: '/src/assets/images/identra_identity_illustration_1783335932193.jpg' }
+    { ...blogText[0], image: identityIllustrationImage },
+    { ...blogText[1], image: careersTeamImage },
+    { ...blogText[2], image: identityIllustrationImage }
   ];
 
   return (
@@ -389,12 +391,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                   {t.tryDemo}
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
-                <button 
-                  onClick={onOpenSandbox}
-                  className="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-semibold text-xs py-3 px-6 rounded-full transition shadow-xs"
-                >
-                  {t.startExploring}
-                </button>
+
               </div>
             </div>
 
@@ -1230,7 +1227,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('platform')}
               className="bg-white p-8 rounded-3xl border border-slate-150 hover:border-[#354CE1]/15 shadow-xs hover:shadow-md transition duration-300 text-left flex flex-col justify-between min-h-[180px] cursor-pointer group"
             >
@@ -1246,9 +1243,9 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                 <span>{t.upsell1Link}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </button>
 
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('platform')}
               className="bg-white p-8 rounded-3xl border border-slate-150 hover:border-[#354CE1]/15 shadow-xs hover:shadow-md transition duration-300 text-left flex flex-col justify-between min-h-[180px] cursor-pointer group"
             >
@@ -1264,7 +1261,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                 <span>{t.upsell2Link}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -1287,13 +1284,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
               {t.tryDemo}
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto text-[#354CE1] hover:text-[#2539BE] font-bold text-xs py-3 px-6 rounded-full flex items-center justify-center gap-1 transition"
-            >
-              <span>{t.tryItNow}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+
           </div>
         </div>
       </section>

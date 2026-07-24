@@ -12,6 +12,7 @@ import {
   Copy, Download, QrCode, FileText, BadgeCheck, ShieldAlert, Award
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts } from '../../hooks/useManagedTimeouts';
 import { DEMO_SUMMARY_MODAL_TRANSLATIONS, getDemoSummaryDecisionData, getDemoSummaryStepEvidence } from '../../translations/demo/DemoSummaryModalTranslations';
 import { copyTextToClipboard } from '../../utils/clipboard';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -54,11 +55,21 @@ export default function DemoSummaryModal({
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [exporting, setExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   // Sync activeNodeIdx to the last element of the new trend when scenario shifts
   useEffect(() => {
     setActiveNodeIdx(pointsCount - 1);
   }, [scenarioId, pointsCount]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      clearTimeouts();
+      setCopyStatus('idle');
+      setExporting(false);
+      setExportSuccess(false);
+    }
+  }, [isOpen, clearTimeouts]);
 
   if (!isOpen) return null;
 
@@ -96,15 +107,15 @@ export default function DemoSummaryModal({
     const mockHash = `0x7f9a8b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a-${scenarioId}`;
     const copied = await copyTextToClipboard(mockHash);
     setCopyStatus(copied ? 'success' : 'error');
-    setTimeout(() => setCopyStatus('idle'), 2000);
+    scheduleTimeout(() => setCopyStatus('idle'), 2000);
   };
 
   const handleExportReport = () => {
     setExporting(true);
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setExporting(false);
       setExportSuccess(true);
-      setTimeout(() => setExportSuccess(false), 3000);
+      scheduleTimeout(() => setExportSuccess(false), 3000);
     }, 1500);
   };
 

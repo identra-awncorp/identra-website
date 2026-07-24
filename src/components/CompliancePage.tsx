@@ -491,7 +491,7 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
               const Icon = [Layers, RefreshCw, Workflow][idx];
               const isActive = activePillar === idx;
               return (
-                <div
+                <button type="button"
                   key={idx}
                   onClick={() => setActivePillar(idx)}
                   className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${
@@ -511,7 +511,7 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
                       <p className="text-xs text-slate-500 font-medium mt-1">{p.subtitle}</p>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -722,7 +722,7 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
                 {rules.map((rule) => {
                   const localizedRule = ruleText[rule.id as keyof typeof ruleText];
                   return (
-                    <div 
+                    <button type="button"
                       key={rule.id}
                       onClick={() => toggleRule(rule.id)}
                       className="flex items-start justify-between p-3 bg-slate-950 rounded-xl border border-slate-800/60 hover:border-slate-700 cursor-pointer transition select-none"
@@ -739,7 +739,7 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
                           rule.enabled ? 'translate-x-3.5' : 'translate-x-0'
                         }`} />
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>

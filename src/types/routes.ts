@@ -75,6 +75,18 @@ export const APP_VIEWS = [
 
 export type AppView = typeof APP_VIEWS[number];
 
+const VIEW_LOCALE_OVERRIDES: Partial<Record<AppView, readonly Locale[]>> = {
+  'white-paper': ['vi'],
+};
+
+export const getViewLocales = (view: AppView): readonly Locale[] =>
+  VIEW_LOCALE_OVERRIDES[view] ?? SUPPORTED_LOCALES;
+
+export const resolveViewLocale = (view: AppView, locale: Locale): Locale => {
+  const supportedLocales = getViewLocales(view);
+  return supportedLocales.includes(locale) ? locale : supportedLocales[0] ?? DEFAULT_LOCALE;
+};
+
 export const BLOG_DETAIL_IDS = [
   'blog-1',
   'blog-2',
@@ -198,10 +210,11 @@ export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
   `/${locale}/demo/${encodeURIComponent(id)}`;
 
 export const viewToPath = (view: AppView, locale: Locale) => {
-  if (view === 'landing') return `/${locale}`;
-  if (view === 'blog-detail') return blogDetailPath(DEFAULT_BLOG_DETAIL_ID, locale);
+  const resolvedLocale = resolveViewLocale(view, locale);
+  if (view === 'landing') return `/${resolvedLocale}`;
+  if (view === 'blog-detail') return blogDetailPath(DEFAULT_BLOG_DETAIL_ID, resolvedLocale);
 
-  return `/${locale}/${view}`;
+  return `/${resolvedLocale}/${view}`;
 };
 
 export const localizePath = (pathname: string, locale: Locale): string | null => {

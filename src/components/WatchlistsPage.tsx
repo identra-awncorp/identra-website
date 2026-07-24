@@ -14,11 +14,33 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { WATCHLISTS_PAGE_TRANSLATIONS } from '../translations/WatchlistsPageTranslations';
+import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 interface WatchlistsPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
   onViewChange?: (view: AppView) => void;
+}
+
+interface WatchlistSource {
+  name: string;
+  region: string;
+  desc: string;
+  type: 'sanctions' | 'warning' | 'pep';
+}
+
+interface WatchlistUseCase {
+  tag: string;
+  title: string;
+  desc: string;
+  benefits: string[];
+}
+
+interface WatchlistAccordionCopy {
+  id: string;
+  title: string;
+  short: string;
+  [key: string]: string;
 }
 
 export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewChange }: WatchlistsPageProps) {
@@ -36,6 +58,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
   // Interactive state for Step 2: Decide
   const [decideResolution, setDecideResolution] = useState<'pending' | 'approved' | 'declined'>('pending');
   const [decidePortraitMatch, setDecidePortraitMatch] = useState<boolean>(false);
+  const [heroMatchResolved, setHeroMatchResolved] = useState<boolean>(false);
 
   // Search filter for Lists Section
   const [sanctionsSearch, setSanctionsSearch] = useState<string>('');
@@ -47,7 +70,8 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
   // Keep learning modal
   const [readingArticle, setReadingArticle] = useState<{title: string, content: string} | null>(null);
 
-  const LIST_SOURCES = t.listSources;
+  const LIST_SOURCES: WatchlistSource[] = t.listSources;
+  const useCases: WatchlistUseCase[] = t.useCases;
 
   const filteredSources = LIST_SOURCES.filter(source => {
     const matchesSearch = source.name.toLowerCase().includes(sanctionsSearch.toLowerCase()) || 
@@ -82,7 +106,8 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
 
   const metrics = calculateSimulatedMetrics();
 
-  const ACCORDION_ITEMS = t.accordion.map((item: any, idx: number) => {
+  const accordionCopy: WatchlistAccordionCopy[] = t.accordion;
+  const ACCORDION_ITEMS = accordionCopy.map((item, idx) => {
     const content = [
       (
         <div className="space-y-4">
@@ -116,7 +141,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
           <div className="bg-[#FAFBFD] p-3 rounded-xl border border-slate-100 space-y-2 font-sans text-xs">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-indigo-100 rounded-full overflow-hidden flex items-center justify-center shrink-0 border border-slate-200">
-                <img src="/src/assets/images/identra_identity_illustration_1783335932193.jpg" alt={item.selfieAlt} className="w-full h-full object-cover" />
+                <img src={identityIllustrationImage} alt={item.selfieAlt} className="w-full h-full object-cover" />
               </div>
               <div className="flex-1 space-y-1">
                 <div className="flex justify-between text-[11px] font-bold text-slate-700">
@@ -235,12 +260,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
                   <span>{t.tryDemo}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
                 </button>
-                <button 
-                  onClick={onOpenSandbox}
-                  className="border border-white/40 hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-full text-sm transition"
-                >
-                  <span>{t.exploreSandbox}</span>
-                </button>
+
               </div>
             </div>
 
@@ -293,16 +313,19 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
                 {/* Resolution buttons */}
                 <div className="border-t border-slate-100 pt-3 flex gap-2">
                   <button 
+                    type="button"
                     onClick={onOpenSandbox} 
                     className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-[11px] transition text-center"
                   >
                     {t.investigateCase}
                   </button>
                   <button 
-                    onClick={onOpenSandbox} 
-                    className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-lg text-[11px] transition text-center"
+                    type="button"
+                    onClick={() => setHeroMatchResolved(true)}
+                    disabled={heroMatchResolved}
+                    className="flex-1 bg-slate-100 hover:bg-slate-200 disabled:bg-emerald-50 disabled:text-emerald-700 text-slate-700 font-semibold py-2 rounded-lg text-[11px] transition text-center"
                   >
-                    {t.falsePositive}
+                    {heroMatchResolved ? t.statusLabels.approved : t.falsePositive}
                   </button>
                 </div>
               </div>
@@ -779,7 +802,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.useCases.map((useCase: any, idx: number) => (
+            {useCases.map((useCase, idx) => (
               <div key={idx} className="bg-slate-850 p-6 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-6 hover:border-slate-750 transition group">
                 <div className="space-y-4">
                   <div className="space-y-1.5">
@@ -835,7 +858,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
               <div>
                 <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
                   <img 
-                    src="/src/assets/images/identra_identity_illustration_1783335932193.jpg" 
+                    src={identityIllustrationImage}
                     alt={blog.title} 
                     className="w-full h-full object-cover transition duration-300 hover:scale-105" 
                     referrerPolicy="no-referrer"
@@ -877,7 +900,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Link card 1: Government IDs */}
-            <div 
+            <button type="button"
               onClick={() => { if (onViewChange) onViewChange('government-id'); }}
               className="bg-white border border-slate-150 rounded-[2rem] p-8 hover:shadow-xl hover:border-emerald-300 transition duration-300 cursor-pointer flex flex-col justify-between group min-h-[220px]"
             >
@@ -896,10 +919,10 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
                 <span>{t.exploreCards[0].cta}</span>
                 <ArrowRight className="w-4 h-4" />
               </p>
-            </div>
+            </button>
 
             {/* Link card 2: Phone & Email */}
-            <div 
+            <button type="button"
               onClick={() => { if (onViewChange) onViewChange('phone-email'); }}
               className="bg-white border border-slate-150 rounded-[2rem] p-8 hover:shadow-xl hover:border-amber-300 transition duration-300 cursor-pointer flex flex-col justify-between group min-h-[220px]"
             >
@@ -918,7 +941,7 @@ export default function WatchlistsPage({ onOpenSandbox, onBackToLanding, onViewC
                 <span>{t.exploreCards[1].cta}</span>
                 <ArrowRight className="w-4 h-4" />
               </p>
-            </div>
+            </button>
           </div>
         </div>
       </section>

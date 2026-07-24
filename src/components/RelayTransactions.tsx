@@ -338,7 +338,6 @@ export default function RelayTransactions() {
                       ) : (
                         <button
                           onClick={handleDepositTicket}
-                          disabled={txStatus === 'executing' || txStatus === 'completed'}
                           className="w-full bg-[#354CE1] hover:bg-[#2539BE] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold py-2 px-3 rounded-xl transition active:scale-98 cursor-pointer shadow-sm"
                         >
                           {t('txDepositAsset')}
@@ -383,7 +382,6 @@ export default function RelayTransactions() {
                       ) : (
                         <button
                           onClick={handleDepositPayment}
-                          disabled={txStatus === 'executing' || txStatus === 'completed'}
                           className="w-full bg-[#354CE1] hover:bg-[#2539BE] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold py-2 px-3 rounded-xl transition active:scale-98 cursor-pointer shadow-sm"
                         >
                           {t('txDepositPayment')}

@@ -18,6 +18,7 @@ import {
   CAREERS_JOB_TRANSLATIONS,
   CAREERS_TRANSLATIONS
 } from '../translations/CareersPageTranslations';
+import careersTeamImage from '../assets/images/identra_careers_team_1783338578864.jpg';
 
 interface CareersPageProps {
   onOpenSandbox: () => void;
@@ -293,7 +294,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
             <div className="lg:col-span-5">
               <div className="h-full border-4 border-white rounded-3xl overflow-hidden bg-white shadow-2xl">
                 <img 
-                  src="/src/assets/images/identra_careers_team_1783338578864.jpg" 
+                  src={careersTeamImage}
                   alt={t.teamImageAlt} 
                   className="w-full h-56 md:h-72 object-cover"
                   referrerPolicy="no-referrer"

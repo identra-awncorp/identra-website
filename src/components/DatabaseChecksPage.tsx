@@ -921,10 +921,7 @@ export default function DatabaseChecksPage({ onOpenSandbox, onBackToLanding, onV
             <button onClick={onOpenSandbox} className="bg-white hover:bg-indigo-50 text-[#5B6DFF] font-bold px-8 py-3 rounded-full shadow-md transition text-xs">
               {t.tryDemo}
             </button>
-            <button onClick={onOpenSandbox} className="border border-white hover:bg-white/10 text-white font-bold px-8 py-3 rounded-full transition text-xs flex items-center gap-2">
-              {t.tryItNow}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+
           </div>
         </div>
       </div>

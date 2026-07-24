@@ -536,7 +536,7 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
         <h3 className="text-lg font-bold text-slate-900 tracking-tight">{t('exploreTitle')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {translations.exploreCards.map((card, index) => (
-            <div key={card.title} onClick={() => openView(card.view)} className={`group ${index === 0 ? 'bg-[#4C82FF] hover:bg-[#3B71EE] text-white' : 'bg-[#00D4B2] hover:bg-[#00C2A3] text-slate-950'} p-8 rounded-3xl cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden`}>
+            <button type="button" key={card.title} onClick={() => openView(card.view)} className={`group ${index === 0 ? 'bg-[#4C82FF] hover:bg-[#3B71EE] text-white' : 'bg-[#00D4B2] hover:bg-[#00C2A3] text-slate-950'} p-8 rounded-3xl cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col justify-between h-64 relative overflow-hidden`}>
               <div className={`absolute top-0 right-0 w-48 h-48 ${index === 0 ? 'bg-white/5' : 'bg-black/5'} rounded-full translate-x-12 -translate-y-12 pointer-events-none`} />
               <div className="space-y-2">
                 <span className={`text-[10px] font-mono uppercase tracking-widest ${index === 0 ? 'text-blue-100' : 'text-emerald-950'} font-bold`}>{card.eyebrow}</span>
@@ -546,7 +546,7 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
                 <span>{card.cta}</span>
                 <ArrowRight className={`w-4 h-4 ${index === 0 ? '' : 'text-emerald-950'}`} />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -560,10 +560,7 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-4 relative z-10 w-full sm:w-auto">
             <button onClick={onOpenSandbox} className="w-full sm:w-auto px-6 py-3 bg-white text-[#354CE1] hover:bg-slate-50 font-bold text-xs uppercase tracking-wider rounded-full shadow transition">{t('tryDemo')}</button>
-            <button onClick={onOpenSandbox} className="w-full sm:w-auto px-6 py-3 border border-[#354CE1] text-[#354CE1] hover:bg-[#354CE1]/5 font-bold text-xs uppercase tracking-wider rounded-full transition flex items-center justify-center gap-1.5">
-              <span>{t('tryItNow')}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

@@ -198,7 +198,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                     {fieldsList.map((field) => {
                       const isSelected = selectedFields[field.id];
                       return (
-                        <div 
+                        <button type="button"
                           key={field.id}
                           onClick={() => toggleField(field.id)}
                           className={`group flex items-center justify-between p-3 rounded-xl border transition-all duration-200 cursor-pointer select-none ${
@@ -244,7 +244,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                               <EyeOff className="w-3.5 h-3.5 text-slate-600" />
                             )}
                           </div>
-                        </div>
+                        </button>
                       );
                     })}
                   </div>

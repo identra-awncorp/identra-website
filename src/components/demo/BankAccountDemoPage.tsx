@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, ArrowRight, Camera, Check, CheckCircle2, CreditCard, Database, Fingerprint, Globe, Landmark, Lock, Mail, MapPin, Phone, QrCode, RefreshCw, ShieldAlert, ShieldCheck, Smartphone, Sparkles, Terminal, Truck, User, X } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/BankAccountDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -25,6 +26,7 @@ interface BankAccountClientSimulatorProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 /**
@@ -84,7 +86,8 @@ function BankAccountClientSimulator({
   advanceStep,
   addLog,
   isSuccess,
-  playTingTingSound
+  playTingTingSound,
+  scheduleTimeout
 }: BankAccountClientSimulatorProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -748,7 +751,7 @@ function BankAccountClientSimulator({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.submittingProfile, { name: bankName }), 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([
                     formatText(logT.profileReceived, { name: bankName, ssn: bankSsn }),
@@ -874,7 +877,7 @@ function BankAccountClientSimulator({
                     setBankIdScanned(true);
                     setIsProcessingAction(true);
                     addLog(logT.extractingGovernmentId, 'action');
-                    setTimeout(() => {
+                    scheduleTimeout(() => {
                       setIsProcessingAction(false);
                       setBankIdScanned(false);
                       advanceStep([
@@ -937,7 +940,7 @@ function BankAccountClientSimulator({
                 setBankLivenessScanned(true);
                 setIsProcessingAction(true);
                 addLog(logT.initializingLiveness, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   setBankLivenessScanned(false);
                   advanceStep([t.livenessVerifiedSuccess]);
@@ -1280,6 +1283,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
     icon: Landmark,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -1325,6 +1329,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -1336,7 +1341,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -1390,6 +1395,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -1483,6 +1489,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

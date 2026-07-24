@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, Building, Check, CheckCircle2, MapPin, ShieldCheck, Smartphone, Sparkles, Terminal } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { GOVERNMENT_SERVICES_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/GovernmentServicesDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
@@ -22,6 +23,7 @@ interface GovernmentServicesApplicationFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 function GovernmentServicesApplicationFlow({
@@ -31,7 +33,8 @@ function GovernmentServicesApplicationFlow({
   setIsProcessingAction,
   advanceStep,
   addLog,
-  isSuccess
+  isSuccess,
+  scheduleTimeout
 }: GovernmentServicesApplicationFlowProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -102,7 +105,7 @@ function GovernmentServicesApplicationFlow({
               onClick={() => {
                 setIsProcessingAction(true);
                 addLog(logT.lookingUpCivilRegistry, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.citizenRecordsVerified]);
                 }, 1200);
@@ -154,7 +157,7 @@ function GovernmentServicesApplicationFlow({
                 setGovAddressValid(true);
                 setIsProcessingAction(true);
                 addLog(logT.validatingPostalCoordinates, 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([logT.postcodeMatchComplete]);
                 }, 1800);
@@ -218,7 +221,7 @@ function GovernmentServicesApplicationFlow({
                 setError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.sealingWithSignature, { signature: govSignature }), 'action');
-                setTimeout(() => {
+                scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([
                     formatText(logT.formDigitallySigned, { signature: govSignature.toUpperCase() }),
@@ -318,6 +321,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
     icon: Building,
   }), [translations.meta]);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
+  const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   const playTingTingSound = useCallback(() => {
     try {
@@ -363,6 +367,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
 
   // Initialize terminal logs
   useEffect(() => {
+    clearTimeouts();
     const title = scenario.title;
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
@@ -374,7 +379,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
       t.logs.environment,
       t.logs.instruction
     ]);
-  }, [scenario, language, t]);
+  }, [scenario, language, t, clearTimeouts]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -428,6 +433,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
 
   // Reset helper
   const handleReset = () => {
+    clearTimeouts();
     setCurrentStepIdx(0);
     setCompletedSteps(new Array(scenario.steps.length).fill(false));
     setIsSuccess(false);
@@ -521,6 +527,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  scheduleTimeout={scheduleTimeout}
                 />
               </div>
             </div>

@@ -722,7 +722,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {articles.map((art: any) => (
-            <div 
+            <button type="button"
               key={art.id} 
               onClick={() => setActiveArticle(art)}
               className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col justify-between hover:scale-[1.02] transition-transform duration-300 cursor-pointer min-h-[360px]"
@@ -751,7 +751,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
                 <span className="font-semibold uppercase tracking-wider">{art.type}</span>
                 <span>{art.meta.split('•')[1] || art.meta}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </section>
@@ -766,7 +766,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Card 1: Dynamic Flow */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('dynamic-flow')}
               className="bg-gradient-to-br from-[#4285f4] to-[#2b6cb0] text-white p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-all cursor-pointer group"
             >
@@ -783,10 +783,10 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
                 <span>{t.exploreCard1Link}</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </div>
+            </button>
 
             {/* Card 2: Face recognition */}
-            <div 
+            <button type="button"
               onClick={() => onViewChange?.('government-id')}
               className="bg-gradient-to-br from-[#1cb080] to-[#0c7553] text-white p-8 rounded-3xl flex flex-col justify-between min-h-[220px] shadow-md hover:scale-[1.01] transition-all cursor-pointer group"
             >
@@ -803,7 +803,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
                 <span>{t.exploreCard2Link}</span>
                 <ArrowRight className="w-4 h-4" />
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -825,13 +825,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
             >
               {t.tryDemo}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="text-white hover:text-indigo-100 font-bold flex items-center gap-1 transition text-xs uppercase tracking-wide"
-            >
-              <span>{t.tryItNow}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -243,13 +243,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                   {t('btnConfigure')}
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <button 
-                  id="platform-sandbox-btn"
-                  onClick={onOpenSandbox}
-                  className="w-full sm:w-auto text-sm font-semibold text-[#354CE1] hover:text-[#2539BE] bg-[#F2F4FF] hover:bg-[#E2E6FF] px-8 py-4 rounded-full transition text-center"
-                >
-                  {t('btnSandbox')}
-                </button>
+
               </div>
 
               {/* Trust Badge Grid */}

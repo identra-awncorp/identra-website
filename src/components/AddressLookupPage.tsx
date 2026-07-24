@@ -63,7 +63,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
   const evalSteps = React.useMemo(() => [t.step1, t.step2, t.step3, t.step4], [t]);
   const evalStep = evalStepIndex === null ? '' : evalSteps[evalStepIndex];
 
-  const translatedPresets = React.useMemo(() => [
+  const translatedPresets = React.useMemo<AddressPreset[]>(() => [
     {
       id: '1',
       label: t.preset1Label,
@@ -832,7 +832,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Card 1: Slate Blue */}
-          <div className="bg-indigo-100/60 border border-indigo-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#354CE1]/60 transition"
+          <button type="button" className="bg-indigo-100/60 border border-indigo-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-[#354CE1]/60 transition"
                onClick={() => onViewChange?.('workflows')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-[#354CE1] text-white rounded-xl flex items-center justify-center font-bold">
@@ -849,10 +849,10 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
               <span>{t.explore1Link}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
 
           {/* Card 2: Teal-Green */}
-          <div className="bg-teal-50 border border-teal-100 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-teal-400 transition"
+          <button type="button" className="bg-teal-50 border border-teal-100 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-teal-400 transition"
                onClick={() => onViewChange?.('case-management')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-teal-500 text-white rounded-xl flex items-center justify-center font-bold">
@@ -869,7 +869,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
               <span>{t.explore2Link}</span>
               <ArrowRight className="w-4 h-4" />
             </div>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -890,13 +890,7 @@ export default function AddressLookupPage({ onOpenSandbox, onBackToLanding, onVi
               >
                 {t.tryDemo}
               </button>
-              <button 
-                onClick={onOpenSandbox}
-                className="text-[#354CE1] font-bold text-sm hover:text-indigo-800 transition flex items-center gap-1 group"
-              >
-                <span>{t.tryItNow}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition" />
-              </button>
+
             </div>
           </div>
         </div>

@@ -710,12 +710,7 @@ export default function SelfieRecognitionPage({ onOpenSandbox, onBackToLanding, 
             >
               {t.tryDemo}
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3.5 rounded-full text-xs transition"
-            >
-              {t.tryItNow}
-            </button>
+
           </div>
         </div>
       </div>

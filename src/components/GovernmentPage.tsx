@@ -49,6 +49,8 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
   const [formSubmitted, setFormSubmitted] = useState(false);
   const scenarioKeys: Array<'citizen' | 'benefits' | 'employees'> = ['citizen', 'benefits', 'employees'];
   const activeScenario = t.scenarios[activeTab];
+  const activeScenarioAlertTitle = 'alertTitle' in activeScenario ? activeScenario.alertTitle : '';
+  const activeScenarioAlertDesc = 'alertDesc' in activeScenario ? activeScenario.alertDesc : '';
   const selectedAgencyLabel = t.agencyOptions.find((option) => option.value === agencyType)?.label || t.defaultAgencySector;
 
   const toggleAccordion = (key: string) => {
@@ -460,8 +462,8 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
                           <Shield className="w-4 h-4" />
                         </div>
                         <div>
-                          <h4 className="text-xs font-bold text-red-900">{activeScenario.alertTitle}</h4>
-                          <p className="text-[11px] text-red-700 mt-0.5">{activeScenario.alertDesc}</p>
+                          <h4 className="text-xs font-bold text-red-900">{activeScenarioAlertTitle}</h4>
+                          <p className="text-[11px] text-red-700 mt-0.5">{activeScenarioAlertDesc}</p>
                         </div>
                       </div>
                     ) : (
@@ -470,8 +472,8 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
                           <Lock className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="text-xs font-bold text-slate-800">{activeScenario.alertTitle}</h4>
-                          <p className="text-[11px] text-slate-500">{activeScenario.alertDesc}</p>
+                          <h4 className="text-xs font-bold text-slate-800">{activeScenarioAlertTitle}</h4>
+                          <p className="text-[11px] text-slate-500">{activeScenarioAlertDesc}</p>
                         </div>
                       </div>
                     )}
@@ -747,12 +749,7 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
               {t.tryDemoCta}
               <ArrowRight className="w-4 h-4 text-white" />
             </button>
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto border border-slate-950/20 hover:bg-slate-950/5 text-[#0C1E4F] font-semibold text-sm px-8 py-3.5 rounded-full transition"
-            >
-              {t.tryNow}
-            </button>
+
           </div>
         </div>
       </section>

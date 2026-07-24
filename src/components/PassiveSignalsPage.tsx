@@ -1089,13 +1089,7 @@ export default function PassiveSignalsPage({ onOpenSandbox, onBackToLanding, onV
               <span>{ti('try_the_demo')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
-            <button 
-              onClick={onOpenSandbox}
-              className="bg-white text-slate-800 hover:bg-slate-50 transition px-6 py-3.5 rounded-full font-bold text-xs border border-slate-200 flex items-center gap-1.5"
-            >
-              <span>{pt('tryItNowBtn')}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+
           </div>
         </div>
       </section>

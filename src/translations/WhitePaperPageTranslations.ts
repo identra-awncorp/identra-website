@@ -1744,9 +1744,5 @@ const createWhitePaperCopy = (uiCopy: WhitePaperUiCopy): WhitePaperCopy => ({
 });
 
 export const WHITE_PAPER_TRANSLATIONS = {
-  en: createWhitePaperCopy(WHITE_PAPER_UI_COPY.en),
-  es: createWhitePaperCopy(WHITE_PAPER_UI_COPY.es),
-  ja: createWhitePaperCopy(WHITE_PAPER_UI_COPY.ja),
-  de: createWhitePaperCopy(WHITE_PAPER_UI_COPY.de),
   vi: createWhitePaperCopy(WHITE_PAPER_UI_COPY.vi),
-} satisfies Record<Language, WhitePaperCopy>;
+} satisfies Record<'vi', WhitePaperCopy>;

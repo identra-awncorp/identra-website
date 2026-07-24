@@ -7,11 +7,11 @@ export const TICKET_BOOKING_STAGE_IDS = [
   'seat-reservation',
   'anti-bot-check',
   'phone-verification',
+  'ticket-issuance',
 ] as const;
 
 export const TICKET_BOOKING_INITIAL_SEATS = ['A-12', 'A-13'] as const;
 export const TICKET_BOOKING_INITIAL_PHONE = '+1 (555) 234-5678';
-export const TICKET_BOOKING_OTP = '4920';
 export const TICKET_BOOKING_HUMAN_SCORE = 99.8;
 
 export type TicketBookingStageId = typeof TICKET_BOOKING_STAGE_IDS[number];
@@ -19,8 +19,13 @@ export type TicketBookingRunStatus = 'active' | 'complete';
 export type TicketBookingValidationError =
   | 'seat-required'
   | 'phone-required'
+  | 'otp-not-sent'
   | 'otp-required'
   | 'otp-incorrect';
+
+export const generateTicketBookingOtp = (
+  random: () => number = Math.random,
+): string => String(Math.floor(random() * 10_000)).padStart(4, '0');
 
 export interface TicketBookingProgress {
   completedSteps: boolean[];
@@ -97,9 +102,11 @@ export const validateTicketBookingPhone = (
 export const validateTicketBookingOtp = (
   phone: string,
   otp: string,
+  expectedOtp: string | null,
 ): TicketBookingValidationError | null => {
   if (!phone.trim()) return 'phone-required';
+  if (!expectedOtp) return 'otp-not-sent';
   if (!otp.trim()) return 'otp-required';
-  if (otp !== TICKET_BOOKING_OTP) return 'otp-incorrect';
+  if (otp !== expectedOtp) return 'otp-incorrect';
   return null;
 };

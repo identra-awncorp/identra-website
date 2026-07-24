@@ -5,7 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { AlertCircle, ArrowLeft, Check, CheckCircle2, Phone, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Terminal, Ticket } from 'lucide-react';
+import { AlertCircle, ArrowLeft, CalendarDays, Check, CheckCircle2, Clock3, MapPin, Phone, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Terminal, Ticket } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/TicketBookingDemoPageTranslations';
@@ -16,11 +16,10 @@ import IdentityFlowGraph from './IdentityFlowGraph';
 import {
   advanceTicketBookingProgress,
   createTicketBookingProgress,
+  generateTicketBookingOtp,
   resetTicketBookingProgress,
-  TICKET_BOOKING_HUMAN_SCORE,
   TICKET_BOOKING_INITIAL_PHONE,
   TICKET_BOOKING_INITIAL_SEATS,
-  TICKET_BOOKING_OTP,
   toggleTicketBookingSeat,
   validateTicketBookingOtp,
   validateTicketBookingPhone,
@@ -37,7 +36,40 @@ interface TicketBookingCheckoutFlowProps {
   isSuccess: boolean;
   playTingTingSound: () => void;
   resetKey: number;
+  antiBotCompletedDetailCount: number;
+  setAntiBotCompletedDetailCount: (count: number) => void;
+  issuanceCompletedDetailCount: number;
+  setIssuanceCompletedDetailCount: (count: number) => void;
   scheduleTimeout: ManagedTimeoutScheduler;
+}
+
+function TicketBookingQrCodeGraphic({ className = 'h-40 w-40 text-[#0F1E36]' }: { className?: string }) {
+  const grid = [
+    '111111101011011111111', '100000100110010000001', '101110101001010111101',
+    '101110100111010111101', '101110101001010111101', '100000100101010000001',
+    '111111101010111111111', '000000001101000000000', '110010110101011011011',
+    '010101001011000100100', '101100110101010110111', '001011001010101001000',
+    '110100101110101011011', '000000001011010000000', '111111101101011010111',
+    '100000100110001010001', '101110101001010111101', '101110100110101011101',
+    '101110101001010111101', '100000100110100000001', '111111101011011111111',
+  ];
+
+  return (
+    <svg viewBox="0 0 21 21" className={className} fill="currentColor" aria-label="QR">
+      {grid.flatMap((row, rowIndex) => [...row].map((cell, columnIndex) => (
+        cell === '1' ? (
+          <rect
+            key={`${rowIndex}-${columnIndex}`}
+            x={columnIndex}
+            y={rowIndex}
+            width="1"
+            height="1"
+            rx="0.1"
+          />
+        ) : null
+      )))}
+    </svg>
+  );
 }
 
 function TicketBookingCheckoutFlow({
@@ -49,6 +81,10 @@ function TicketBookingCheckoutFlow({
   addLog,
   isSuccess,
   resetKey,
+  antiBotCompletedDetailCount,
+  setAntiBotCompletedDetailCount,
+  issuanceCompletedDetailCount,
+  setIssuanceCompletedDetailCount,
   scheduleTimeout
 }: TicketBookingCheckoutFlowProps) {
   const { language } = useLanguage();
@@ -64,10 +100,13 @@ function TicketBookingCheckoutFlow({
   const [bookingSeats, setBookingSeats] = useState<string[]>(() => [...TICKET_BOOKING_INITIAL_SEATS]);
   const [bookingPhone, setBookingPhone] = useState(TICKET_BOOKING_INITIAL_PHONE);
   const [bookingOtp, setBookingOtp] = useState('');
-  const receivedOtp = TICKET_BOOKING_OTP;
+  const [receivedOtp, setReceivedOtp] = useState<string | null>(null);
+  const [resendSeconds, setResendSeconds] = useState(0);
   const [showOtpBanner, setShowOtpBanner] = useState(false);
-  const botScore = TICKET_BOOKING_HUMAN_SCORE;
   const [error, setError] = useState<string | null>(null);
+  const antiBotRunKeyRef = useRef<number | null>(null);
+  const issuanceRunKeyRef = useRef<number | null>(null);
+  const antiBotDetails: string[] = translations.page.subChecks['ticket-booking'][1];
 
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
@@ -75,12 +114,84 @@ function TicketBookingCheckoutFlow({
       setBookingSeats([...TICKET_BOOKING_INITIAL_SEATS]);
       setBookingPhone(TICKET_BOOKING_INITIAL_PHONE);
       setBookingOtp('');
+      setReceivedOtp(null);
+      setResendSeconds(0);
       setShowOtpBanner(false);
       setError(null);
     } else {
       setError(null);
     }
   }, [currentStepIdx, resetKey]);
+
+  useEffect(() => {
+    if (resendSeconds <= 0) return;
+    const timer = window.setTimeout(() => {
+      setResendSeconds((seconds) => Math.max(seconds - 1, 0));
+    }, 1000);
+    return () => window.clearTimeout(timer);
+  }, [resendSeconds]);
+
+  useEffect(() => {
+    if (currentStepIdx !== 1 || isSuccess || antiBotRunKeyRef.current === resetKey) return;
+
+    antiBotRunKeyRef.current = resetKey;
+    setIsProcessingAction(true);
+    setAntiBotCompletedDetailCount(0);
+    addLog(logT.runningTelemetry, 'processing');
+
+    antiBotDetails.forEach((detail, index) => {
+      scheduleTimeout(() => {
+        setAntiBotCompletedDetailCount(index + 1);
+        addLog(detail, 'processing');
+      }, (index + 1) * 1500);
+    });
+
+    scheduleTimeout(() => {
+      setIsProcessingAction(false);
+      advanceStep([logT.telemetryPassed]);
+    }, antiBotDetails.length * 1500 + 500);
+  }, [
+    addLog,
+    advanceStep,
+    antiBotDetails,
+    currentStepIdx,
+    isSuccess,
+    logT,
+    resetKey,
+    scheduleTimeout,
+    setAntiBotCompletedDetailCount,
+    setIsProcessingAction,
+  ]);
+
+  useEffect(() => {
+    if (currentStepIdx !== 3 || isSuccess || issuanceRunKeyRef.current === resetKey) return;
+
+    issuanceRunKeyRef.current = resetKey;
+    setIsProcessingAction(true);
+    setIssuanceCompletedDetailCount(0);
+    addLog(logT.encryptingUserMetadata, 'processing');
+
+    scheduleTimeout(() => {
+      setIssuanceCompletedDetailCount(1);
+      addLog(logT.issuingCredentialTicket, 'processing');
+    }, 900);
+
+    scheduleTimeout(() => {
+      setIssuanceCompletedDetailCount(2);
+      setIsProcessingAction(false);
+      advanceStep([logT.ticketCredentialIssued]);
+    }, 1800);
+  }, [
+    addLog,
+    advanceStep,
+    currentStepIdx,
+    isSuccess,
+    logT,
+    resetKey,
+    scheduleTimeout,
+    setIsProcessingAction,
+    setIssuanceCompletedDetailCount,
+  ]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -97,8 +208,35 @@ function TicketBookingCheckoutFlow({
       <AnimatePresence mode="wait">
         {currentStepIdx === 0 && !completedSteps[0] && (
           <motion.div key="ticket-seats" className="space-y-4">
-            <div className="bg-[#354CE1]/5 p-4 rounded-2xl border border-indigo-100/40 text-xs text-indigo-950">
-              {t.step1Description}
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+              <div className="border-b border-slate-200 bg-[#F7F8FC] p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <span className="mb-1 block text-[10px] font-bold uppercase text-[#354CE1]">
+                      {t.featuredEvent}
+                    </span>
+                    <h3 className="truncate text-base font-bold text-slate-900">{t.eventName}</h3>
+                    <p className="mt-1 text-xs text-slate-500">{t.eventSubtitle}</p>
+                  </div>
+                  <span className="shrink-0 rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-[10px] font-bold text-rose-700">
+                    {t.highDemand}
+                  </span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 gap-2 p-4 text-xs text-slate-600 sm:grid-cols-3">
+                <div className="flex items-center gap-2">
+                  <CalendarDays className="h-4 w-4 text-[#354CE1]" />
+                  <span>{t.eventDate}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock3 className="h-4 w-4 text-[#354CE1]" />
+                  <span>{t.eventTime}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-[#354CE1]" />
+                  <span>{t.eventVenue}</span>
+                </div>
+              </div>
             </div>
 
             {error && (
@@ -108,9 +246,18 @@ function TicketBookingCheckoutFlow({
               </div>
             )}
 
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-slate-500 block uppercase tracking-wider">{t.seatingMapSelect}</label>
-              <div className="grid grid-cols-6 gap-2 bg-slate-900 p-4 rounded-2xl">
+            <div className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700">{t.seatingMapSelect}</label>
+                  <span className="text-[10px] text-slate-500">{t.ticketTier}</span>
+                </div>
+                <span className="text-xs font-bold text-slate-900">{t.ticketPrice}</span>
+              </div>
+              <div className="mx-auto w-4/5 rounded-b-3xl border-t-4 border-[#354CE1] bg-indigo-50 py-2 text-center text-[9px] font-bold uppercase text-[#354CE1] shadow-sm">
+                {t.stage}
+              </div>
+              <div className="grid grid-cols-4 gap-2 rounded-xl bg-slate-50 p-3">
                 {['A-11', 'A-12', 'A-13', 'A-14', 'B-11', 'B-12', 'B-13', 'B-14', 'C-11', 'C-12', 'C-13', 'C-14'].map((seat) => {
                   const isSelected = bookingSeats.includes(seat);
                   return (
@@ -121,10 +268,11 @@ function TicketBookingCheckoutFlow({
                         setError(null);
                         setBookingSeats(toggleTicketBookingSeat(bookingSeats, seat));
                       }}
-                      className={`py-2 text-[10px] font-bold rounded-lg font-mono transition-all border ${
+                      aria-pressed={isSelected}
+                      className={`h-9 text-[10px] font-bold rounded-lg font-mono transition-all border ${
                         isSelected 
-                          ? 'bg-yellow-400 border-yellow-500 text-slate-950 shadow-md shadow-yellow-400/20 font-bold' 
-                          : 'bg-slate-800 border-slate-700 text-slate-400 hover:border-slate-500'
+                          ? 'bg-[#354CE1] border-[#354CE1] text-white shadow-sm font-bold' 
+                          : 'bg-white border-slate-300 text-slate-600 hover:border-[#354CE1] hover:text-[#354CE1]'
                       } ${isProcessingAction ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
                       {seat}
@@ -132,9 +280,27 @@ function TicketBookingCheckoutFlow({
                   );
                 })}
               </div>
-              <span className="text-[10px] text-slate-500 block text-center font-mono">
-                {bookingSeats.length > 0 ? t.selectedSeats.replace('{seats}', bookingSeats.join(', ')) : t.noSeatsSelected}
-              </span>
+              <div className="flex flex-wrap items-center justify-center gap-4 text-[10px] text-slate-500">
+                <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded border border-slate-300 bg-white" />{t.availableSeat}</span>
+                <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded bg-[#354CE1]" />{t.selectedSeat}</span>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-slate-400">{t.selectedSeatsLabel}</span>
+                  <span className="mt-1 block text-xs font-bold text-slate-800">
+                    {bookingSeats.length > 0 ? bookingSeats.join(', ') : t.noSeatsSelected}
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="block text-[10px] font-bold uppercase text-slate-400">{t.estimatedTotal}</span>
+                  <span className="mt-1 block text-sm font-bold text-[#354CE1]">
+                    {formatText(t.totalPrice, { count: bookingSeats.length })}
+                  </span>
+                </div>
+              </div>
             </div>
 
             <button
@@ -174,50 +340,30 @@ function TicketBookingCheckoutFlow({
               {t.step2Description}
             </div>
 
-            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-4">
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-slate-400 font-mono">{t.humanOperatorMetric}</span>
-                <span className="text-[#00D4B2] font-mono font-bold">{t.confidenceLabel.replace('{score}', botScore.toString())}</span>
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs font-mono font-bold text-slate-500">{t.verificationProgress}</span>
+                <span className="text-xs font-mono font-bold text-[#354CE1]">
+                  {Math.round((antiBotCompletedDetailCount / antiBotDetails.length) * 100)}%
+                </span>
               </div>
-              
-              <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                <div className="bg-[#00D4B2] h-2 rounded-full" style={{ width: `${botScore}%` }} />
+              <div
+                role="progressbar"
+                aria-label={t.verificationProgress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round((antiBotCompletedDetailCount / antiBotDetails.length) * 100)}
+                className="h-2 overflow-hidden rounded-full bg-slate-100"
+              >
+                <motion.div
+                  className="h-full rounded-full bg-[#354CE1]"
+                  animate={{ width: `${(antiBotCompletedDetailCount / antiBotDetails.length) * 100}%` }}
+                />
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px] font-mono text-slate-400">
-                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-850">
-                  <span className="block text-slate-500 uppercase">{t.fingerprintIp}</span>
-                  <span className="text-emerald-400 font-bold font-mono">LEGITIMATE</span>
-                </div>
-                <div className="bg-slate-900/60 p-2.5 rounded-lg border border-slate-850">
-                  <span className="block text-slate-500 uppercase">{t.latencyVector}</span>
-                  <span className="text-emerald-400 font-bold font-mono">HUMANIZED</span>
-                </div>
-              </div>
+              <p role="status" className="min-h-5 text-xs font-medium text-slate-600">
+                {antiBotDetails[Math.min(antiBotCompletedDetailCount, antiBotDetails.length - 1)]}
+              </p>
             </div>
-
-            <button
-              onClick={() => {
-                setIsProcessingAction(true);
-                addLog(logT.runningTelemetry, 'action');
-                scheduleTimeout(() => {
-                  setIsProcessingAction(false);
-                  advanceStep([logT.telemetryPassed]);
-                }, 1800);
-              }}
-              disabled={isProcessingAction}
-              className={`w-full py-3.5 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 ${
-                isProcessingAction 
-                  ? 'opacity-60 cursor-not-allowed bg-slate-800' 
-                  : 'bg-slate-900 hover:bg-slate-800 cursor-pointer shadow-lg shadow-slate-900/10 active:scale-[0.99]'
-              }`}
-            >
-              {isProcessingAction ? (
-                <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <span>{t.runAntiBotTelemetry}</span>
-              )}
-            </button>
           </motion.div>
         )}
 
@@ -243,7 +389,7 @@ function TicketBookingCheckoutFlow({
                 <Phone className="w-5 h-5 text-yellow-300 shrink-0" />
                 <div className="text-left text-xs">
                   <span className="font-bold text-yellow-300 block">{t.smsOtpTitle}</span>
-                  <span>{t.secureBookingCode} <strong className="font-mono text-yellow-300 tracking-wider">4920</strong></span>
+                  <span>{t.secureBookingCode} <strong className="font-mono text-yellow-300 tracking-wider">{receivedOtp}</strong></span>
                 </div>
               </motion.div>
             )}
@@ -258,6 +404,10 @@ function TicketBookingCheckoutFlow({
                     onChange={(e) => {
                       setError(null);
                       setBookingPhone(e.target.value);
+                      setReceivedOtp(null);
+                      setBookingOtp('');
+                      setShowOtpBanner(false);
+                      setResendSeconds(0);
                     }}
                     disabled={isProcessingAction}
                     className={`flex-1 bg-white border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 focus:border-[#354CE1] disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
@@ -270,14 +420,20 @@ function TicketBookingCheckoutFlow({
                         setError(t.validPhoneError);
                         return;
                       }
+                      const nextOtp = generateTicketBookingOtp();
                       setError(null);
+                      setReceivedOtp(nextOtp);
+                      setBookingOtp('');
                       setShowOtpBanner(true);
+                      setResendSeconds(60);
                       addLog(formatText(logT.sentOtp, { phone: bookingPhone }), 'action');
                     }}
-                    disabled={isProcessingAction}
+                    disabled={isProcessingAction || resendSeconds > 0}
                     className="px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer hover:bg-slate-200 active:scale-[0.98] transition-all"
                   >
-                    {t.sendCode}
+                    {resendSeconds > 0
+                      ? formatText(t.resendCountdown, { seconds: resendSeconds })
+                      : receivedOtp ? t.resendCode : t.sendCode}
                   </button>
                 </div>
               </div>
@@ -286,6 +442,8 @@ function TicketBookingCheckoutFlow({
                 <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.verificationCodeOtp}</label>
                 <input 
                   type="text"
+                  inputMode="numeric"
+                  maxLength={4}
                   placeholder={t.otpPlaceholder}
                   value={bookingOtp}
                   onChange={(e) => {
@@ -302,10 +460,12 @@ function TicketBookingCheckoutFlow({
 
             <button
               onClick={() => {
-                const validationError = validateTicketBookingOtp(bookingPhone, bookingOtp);
+                const validationError = validateTicketBookingOtp(bookingPhone, bookingOtp, receivedOtp);
                 if (validationError) {
                   if (validationError === 'phone-required') {
                     setError(t.phoneAndOtpFirstError);
+                  } else if (validationError === 'otp-not-sent') {
+                    setError(t.sendOtpFirstError);
                   } else if (validationError === 'otp-required') {
                     setError(t.enterOtpError);
                   } else {
@@ -339,43 +499,49 @@ function TicketBookingCheckoutFlow({
           </motion.div>
         )}
 
+        {currentStepIdx === 3 && !completedSteps[3] && (
+          <motion.div key="ticket-issuance" className="space-y-5 text-center py-6">
+            <div className="mx-auto h-14 w-14 rounded-full bg-indigo-100 text-[#354CE1] flex items-center justify-center">
+              <Ticket className="h-7 w-7" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-slate-900">{t.issuingTicketTitle}</h3>
+              <p className="text-xs text-slate-600">{t.issuingTicketDescription}</p>
+            </div>
+            <div className="space-y-2 text-left">
+              {[t.encryptUserMetadata, t.issueTicketAsCredential].map((label, index) => {
+                const isDone = issuanceCompletedDetailCount > index;
+                const isActive = issuanceCompletedDetailCount === index;
+                return (
+                  <div key={label} className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+                    {isDone ? (
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                    ) : (
+                      <span className={`h-4 w-4 rounded-full border-2 ${isActive ? 'border-[#354CE1] border-t-transparent animate-spin' : 'border-slate-200'}`} />
+                    )}
+                    <span className={`text-xs font-semibold ${isDone || isActive ? 'text-slate-800' : 'text-slate-400'}`}>
+                      {label}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
         {isSuccess && (
           <motion.div key="ticket-success" className="space-y-5 text-center flex flex-col items-center justify-center py-6">
             <div className="h-14 w-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-md animate-bounce">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div className="space-y-2 max-w-sm">
-              <h3 className="text-lg font-bold text-slate-900">{t.ticketPurchaseSealed}</h3>
+              <h3 className="text-lg font-bold text-slate-900">{t.ticketPurchaseSuccessful}</h3>
               <p className="text-xs text-slate-600 font-sans">
-                {t.successDescription}
+                {t.credentialTicketDescription}
               </p>
             </div>
-            
-            {/* Ticket design */}
-            <div className="bg-slate-900 text-white rounded-2xl border border-slate-800 p-4 w-72 flex flex-col justify-between space-y-4 shadow-xl">
-              <div className="flex justify-between items-center text-[10px] font-mono text-slate-500">
-                <span>{t.arenaEntry}</span>
-                <span className="text-yellow-400">{t.secureTicket}</span>
-              </div>
-              <div className="flex gap-3 text-left">
-                <div className="h-12 w-12 bg-yellow-400/10 rounded-xl flex items-center justify-center text-yellow-400 shrink-0 border border-yellow-400/20">
-                  <Ticket className="w-6 h-6 animate-pulse" />
-                </div>
-                <div className="space-y-1">
-                  <h4 className="font-bold text-xs font-sans">ERAS WORLD TOUR 2026</h4>
-                  <span className="text-[10px] text-slate-400 font-mono block">{t.seatsLabel} {bookingSeats.join(', ')}</span>
-                  <span className="text-[9px] text-emerald-400 font-mono block">{t.verifiedFanOnly}</span>
-                </div>
-              </div>
-              <div className="border-t border-dashed border-slate-800 pt-3 flex flex-col items-center">
-                <div className="bg-white p-2 rounded-xl">
-                  <div className="h-20 w-20 bg-slate-900 flex items-center justify-center text-slate-400 text-[10px] font-mono">
-                    <div className="p-1 border border-dashed border-[#00D4B2] rounded">
-                      <span className="text-[#00D4B2] font-bold tracking-widest text-[8px] font-mono">QR LIVE</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+              <TicketBookingQrCodeGraphic className="h-40 w-40 text-[#0F1E36]" />
             </div>
           </motion.div>
         )}
@@ -471,6 +637,8 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const [antiBotCompletedDetailCount, setAntiBotCompletedDetailCount] = useState(0);
+  const [issuanceCompletedDetailCount, setIssuanceCompletedDetailCount] = useState(0);
   const {
     completedSteps,
     currentStepIndex: currentStepIdx,
@@ -486,6 +654,8 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
     setProgress(resetTicketBookingProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
+    setAntiBotCompletedDetailCount(0);
+    setIssuanceCompletedDetailCount(0);
     setSimulationLogs([
       formatText(t.logs.launch, { title }),
       t.logs.environment,
@@ -546,6 +716,8 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
     setProgress(resetTicketBookingProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
+    setAntiBotCompletedDetailCount(0);
+    setIssuanceCompletedDetailCount(0);
     setSimulationLogs([
       formatText(t.logs.reset, { title: scenario.title }),
       t.logs.resetInstruction
@@ -635,6 +807,10 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
                   resetKey={resetKey}
+                  antiBotCompletedDetailCount={antiBotCompletedDetailCount}
+                  setAntiBotCompletedDetailCount={setAntiBotCompletedDetailCount}
+                  issuanceCompletedDetailCount={issuanceCompletedDetailCount}
+                  setIssuanceCompletedDetailCount={setIssuanceCompletedDetailCount}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>
@@ -674,7 +850,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                 <div className="border-x border-slate-200">
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.trustScore}</span>
                   <span className="font-extrabold text-[11px] text-[#354CE1]">
-                    {isSuccess ? '99.9%' : `${88 + currentStepIdx * 4}%`}
+                    {isSuccess ? '99.9%' : '---'}
                   </span>
                 </div>
                 <div>
@@ -762,6 +938,19 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                               if (isDone) {
                                 checkStatus = 'done';
                               } else if (isActive) {
+                                if (sIdx === 1) {
+                                  checkStatus = cIdx < antiBotCompletedDetailCount
+                                    ? 'done'
+                                    : cIdx === antiBotCompletedDetailCount
+                                      ? 'active'
+                                      : 'pending';
+                                } else if (sIdx === 3) {
+                                  checkStatus = cIdx < issuanceCompletedDetailCount
+                                    ? 'done'
+                                    : cIdx === issuanceCompletedDetailCount
+                                      ? 'active'
+                                      : 'pending';
+                                } else {
                                 const loggedIndexes = subChecks.map((stepText: string) => {
                                   const keyword = stepText.slice(0, 10);
                                   return simulationLogs.some(log => log.includes(keyword));
@@ -778,6 +967,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                                   }
                                 } else {
                                   checkStatus = cIdx === 0 ? 'active' : 'pending';
+                                }
                                 }
                               }
 

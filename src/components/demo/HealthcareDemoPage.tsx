@@ -583,7 +583,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
                 <div className="border-x border-slate-200">
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.trustScore}</span>
                   <span className="font-extrabold text-[11px] text-[#354CE1]">
-                    {isSuccess ? '99.9%' : `${88 + currentStepIdx * 4}%`}
+                    {isSuccess ? '99.9%' : '---'}
                   </span>
                 </div>
                 <div>

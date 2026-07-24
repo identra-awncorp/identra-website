@@ -14,6 +14,11 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "The booking was confirmed for a verified fan. Bot risk was low and the ticket was cryptographically bound.",
       "steps": [
         {
+          "label": "Reserve seats",
+          "action": "Hold selected seats",
+          "logText": "The selected seats were held for the active checkout session."
+        },
+        {
           "label": "Analyze device risk",
           "action": "Check device signal",
           "logText": "Browser fingerprint, automation signals, and behavioral entropy were assessed."
@@ -24,7 +29,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "Carrier, SIM, and OTP checks confirmed reachable non-VoIP ownership."
         },
         {
-          "label": "Bind ticket credential",
+          "label": "Issue ticket",
           "action": "Issue verified ticket",
           "logText": "Ticket metadata was sealed with a non-transferability control and QR signature."
         }
@@ -67,6 +72,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "subChecks": {
         "ticket-booking": [
           [
+            "Validate selected seats",
+            "Hold seats for checkout"
+          ],
+          [
             "WebGL Canvas Fingerprint",
             "Mouse Motion Entropy Matcher",
             "Headless Browser Detector"
@@ -77,9 +86,8 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
             "OTP Verification Code Match"
           ],
           [
-            "Fan Metadata Encryption",
-            "Non-transferability Lock Seal",
-            "Cryptographic QR Signature Stamp"
+            "Encrypt user metadata",
+            "Issue ticket as a verifiable credential"
           ]
         ]
       }
@@ -88,6 +96,21 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "VibePass Arena Checkout",
       "badge": "Anti-Bot Secure",
       "step1Description": "Step 1: Choose your seats in the arena to hold booking. The security system will scan browser headers.",
+      "featuredEvent": "Featured event",
+      "eventName": "ERAS WORLD TOUR 2026",
+      "eventSubtitle": "The global stadium experience",
+      "highDemand": "High demand",
+      "eventDate": "Saturday, Aug 22",
+      "eventTime": "19:30",
+      "eventVenue": "VibePass Arena",
+      "ticketTier": "Premium seating",
+      "ticketPrice": "$120 / ticket",
+      "stage": "Stage",
+      "availableSeat": "Available",
+      "selectedSeat": "Selected",
+      "selectedSeatsLabel": "Your seats",
+      "estimatedTotal": "Estimated total",
+      "totalPrice": "{count} × $120",
       "seatingMapSelect": "Seating Map Select",
       "selectedSeats": "Selected: {seats}",
       "noSeatsSelected": "Selected: No seats selected",
@@ -99,19 +122,29 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "fingerprintIp": "Fingerprint IP",
       "latencyVector": "Latency Vector",
       "runAntiBotTelemetry": "Run Anti-Bot Telemetry Verification",
+      "verificationProgress": "Verification progress",
       "step3Description": "Step 3: Phone SMS OTP check. Verifies the phone belongs to a physical SIM card, preventing virtual VoIP abuse.",
       "smsOtpTitle": "VibePass SMS OTP",
       "secureBookingCode": "Your secure booking code is",
       "mobilePhoneNumber": "Mobile Phone Number",
       "validPhoneError": "Please enter a valid phone number!",
       "sendCode": "Send Code",
+      "resendCode": "Resend code",
+      "resendCountdown": "Resend in {seconds}s",
       "verificationCodeOtp": "Verification Code (OTP)",
-      "otpPlaceholder": "e.g. 4920",
+      "otpPlaceholder": "Enter 4-digit code",
       "phoneAndOtpFirstError": "Please enter phone number and get OTP first!",
+      "sendOtpFirstError": "Send a verification code before continuing.",
       "enterOtpError": "Please enter the OTP code!",
       "incorrectOtpError": "Incorrect verification OTP code!",
       "confirmPurchaseTickets": "Confirm & Purchase Tickets",
       "ticketPurchaseSealed": "Ticket Purchase Sealed!",
+      "issuingTicketTitle": "Issuing your ticket",
+      "issuingTicketDescription": "Identra is preparing a cryptographically verifiable ticket.",
+      "encryptUserMetadata": "Encrypt user metadata",
+      "issueTicketAsCredential": "Issue ticket as a verifiable credential",
+      "ticketPurchaseSuccessful": "Ticket purchase successful",
+      "credentialTicketDescription": "Your ticket has been issued as a verifiable credential. Scan the QR code below and save it for later use or transfer.",
       "successDescription": "The Identra security perimeter has successfully locked your ticket, protecting it against scalpers and secondary market abuse.",
       "arenaEntry": "VibePass Arena Entry",
       "secureTicket": "Secure Ticket",
@@ -128,7 +161,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "sentOtp": "Sent SMS OTP request to: {phone}",
       "incorrectOtp": "Incorrect OTP entered: {otp}",
       "verifyingOtp": "Verifying SMS OTP token...",
-      "otpVerified": "OTP code verified. SIM carrier details match physical contract, registered to active subscriber."
+      "otpVerified": "OTP code verified. SIM carrier details match physical contract, registered to active subscriber.",
+      "encryptingUserMetadata": "Encrypting user metadata...",
+      "issuingCredentialTicket": "Issuing the ticket as a verifiable credential...",
+      "ticketCredentialIssued": "The ticket was issued as a verifiable credential."
     }
   },
   "es": {
@@ -141,6 +177,11 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "La reserva se confirmó para un fan verificado. El riesgo de bot fue bajo y la entrada quedó vinculada criptográficamente.",
       "steps": [
         {
+          "label": "Reservar asientos",
+          "action": "Retener los asientos seleccionados",
+          "logText": "Los asientos seleccionados quedaron retenidos para la sesión de compra activa."
+        },
+        {
           "label": "Analizar riesgo del dispositivo",
           "action": "Revisar señal del dispositivo",
           "logText": "Se evaluaron huella del navegador, automatización y entropía de comportamiento."
@@ -151,7 +192,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "Operador, SIM y OTP confirmaron propiedad alcanzable no VoIP."
         },
         {
-          "label": "Vincular credencial de entrada",
+          "label": "Emitir entrada",
           "action": "Emitir entrada verificada",
           "logText": "Los metadatos de la entrada se sellaron con control de no transferencia y firma QR."
         }
@@ -194,6 +235,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "subChecks": {
         "ticket-booking": [
           [
+            "Validar asientos seleccionados",
+            "Retener asientos para la compra"
+          ],
+          [
             "Huella WebGL Canvas",
             "Comparador de entropía del movimiento del mouse",
             "Detector de navegador sin interfaz"
@@ -204,9 +249,8 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
             "Coincidencia de código OTP"
           ],
           [
-            "Cifrado de metadatos del fan",
-            "Sello de bloqueo contra transferencia",
-            "Sello de firma QR criptográfica"
+            "Cifrar metadatos del usuario",
+            "Emitir la entrada como credencial verificable"
           ]
         ]
       }
@@ -215,6 +259,21 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "Pago de arena VibePass",
       "badge": "Seguro anti-bots",
       "step1Description": "Paso 1: Elige tus asientos en la arena para retener la reserva. El sistema de seguridad revisará los encabezados del navegador.",
+      "featuredEvent": "Evento destacado",
+      "eventName": "ERAS WORLD TOUR 2026",
+      "eventSubtitle": "La experiencia mundial en estadios",
+      "highDemand": "Alta demanda",
+      "eventDate": "Sábado, 22 de agosto",
+      "eventTime": "19:30",
+      "eventVenue": "VibePass Arena",
+      "ticketTier": "Asientos premium",
+      "ticketPrice": "120 € / entrada",
+      "stage": "Escenario",
+      "availableSeat": "Disponible",
+      "selectedSeat": "Seleccionado",
+      "selectedSeatsLabel": "Tus asientos",
+      "estimatedTotal": "Total estimado",
+      "totalPrice": "{count} × 120 €",
       "seatingMapSelect": "Selección del mapa de asientos",
       "selectedSeats": "Seleccionado: {seats}",
       "noSeatsSelected": "Seleccionado: ningún asiento",
@@ -226,19 +285,29 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "fingerprintIp": "Huella de IP",
       "latencyVector": "Vector de latencia",
       "runAntiBotTelemetry": "Ejecutar verificación telemétrica anti-bots",
+      "verificationProgress": "Progreso de verificación",
       "step3Description": "Paso 3: Verificación OTP por SMS. Confirma que el teléfono pertenece a una SIM física y evita el abuso de VoIP virtual.",
       "smsOtpTitle": "OTP SMS de VibePass",
       "secureBookingCode": "Tu código seguro de reserva es",
       "mobilePhoneNumber": "Número de teléfono móvil",
       "validPhoneError": "Introduce un número de teléfono válido.",
       "sendCode": "Enviar código",
+      "resendCode": "Reenviar código",
+      "resendCountdown": "Reenviar en {seconds}s",
       "verificationCodeOtp": "Código de verificación (OTP)",
-      "otpPlaceholder": "p. ej. 4920",
+      "otpPlaceholder": "Introduce el código de 4 dígitos",
       "phoneAndOtpFirstError": "Introduce el teléfono y solicita el OTP primero.",
+      "sendOtpFirstError": "Envía un código de verificación antes de continuar.",
       "enterOtpError": "Introduce el código OTP.",
       "incorrectOtpError": "Código OTP incorrecto.",
       "confirmPurchaseTickets": "Confirmar y comprar entradas",
       "ticketPurchaseSealed": "Compra de entradas sellada.",
+      "issuingTicketTitle": "Emitiendo tu entrada",
+      "issuingTicketDescription": "Identra está preparando una entrada verificable criptográficamente.",
+      "encryptUserMetadata": "Cifrar metadatos del usuario",
+      "issueTicketAsCredential": "Emitir la entrada como credencial verificable",
+      "ticketPurchaseSuccessful": "Compra de entrada completada",
+      "credentialTicketDescription": "Tu entrada se emitió como credencial verificable. Escanea el código QR y guárdala para usarla o transferirla más adelante.",
       "successDescription": "El perímetro de seguridad de Identra bloqueó correctamente tu entrada y la protegió contra revendedores y abusos del mercado secundario.",
       "arenaEntry": "Entrada Arena VibePass",
       "secureTicket": "Entrada segura",
@@ -255,7 +324,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "sentOtp": "Solicitud SMS OTP enviada a: {phone}",
       "incorrectOtp": "OTP incorrecto ingresado: {otp}",
       "verifyingOtp": "Verificando token SMS OTP...",
-      "otpVerified": "Código OTP verificado. Los datos del operador SIM coinciden con un contrato físico de suscriptor activo."
+      "otpVerified": "Código OTP verificado. Los datos del operador SIM coinciden con un contrato físico de suscriptor activo.",
+      "encryptingUserMetadata": "Cifrando metadatos del usuario...",
+      "issuingCredentialTicket": "Emitiendo la entrada como credencial verificable...",
+      "ticketCredentialIssued": "La entrada se emitió como credencial verificable."
     }
   },
   "ja": {
@@ -268,6 +340,11 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "検証済みファンの予約が確認されました。ボットリスクは低く、チケットは暗号的に結び付けられました。",
       "steps": [
         {
+          "label": "座席を予約",
+          "action": "選択した座席を確保",
+          "logText": "選択した座席を購入セッション用に確保しました。"
+        },
+        {
           "label": "デバイスリスクを分析",
           "action": "デバイスシグナルを確認",
           "logText": "ブラウザ指紋、自動化シグナル、行動エントロピーを評価しました。"
@@ -278,7 +355,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "通信事業者、SIM、OTPにより、到達可能な非VoIP所有を確認しました。"
         },
         {
-          "label": "チケット資格情報を結合",
+          "label": "チケットを発行",
           "action": "検証済みチケットを発行",
           "logText": "チケットメタデータを譲渡制御とQR署名で封印しました。"
         }
@@ -321,6 +398,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "subChecks": {
         "ticket-booking": [
           [
+            "選択した座席を検証",
+            "購入用に座席を確保"
+          ],
+          [
             "WebGL Canvas指紋",
             "マウス動作エントロピーマッチャー",
             "ヘッドレスブラウザ検出"
@@ -331,9 +412,8 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
             "OTP確認コード照合"
           ],
           [
-            "ファンメタデータ暗号化",
-            "譲渡不可ロックシール",
-            "暗号QR署名スタンプ"
+            "ユーザーメタデータを暗号化",
+            "検証可能な資格情報としてチケットを発行"
           ]
         ]
       }
@@ -342,6 +422,21 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "VibePassアリーナ決済",
       "badge": "ボット対策保護",
       "step1Description": "ステップ1: アリーナの座席を選択して予約を一時確保します。セキュリティシステムがブラウザーのヘッダーを確認します。",
+      "featuredEvent": "注目イベント",
+      "eventName": "ERAS WORLD TOUR 2026",
+      "eventSubtitle": "世界規模のスタジアム体験",
+      "highDemand": "人気公演",
+      "eventDate": "8月22日（土）",
+      "eventTime": "19:30",
+      "eventVenue": "VibePass Arena",
+      "ticketTier": "プレミアム席",
+      "ticketPrice": "18,000円 / 枚",
+      "stage": "ステージ",
+      "availableSeat": "空席",
+      "selectedSeat": "選択済み",
+      "selectedSeatsLabel": "選択した座席",
+      "estimatedTotal": "合計見込み",
+      "totalPrice": "{count} × 18,000円",
       "seatingMapSelect": "座席マップ選択",
       "selectedSeats": "選択済み: {seats}",
       "noSeatsSelected": "選択済み: 座席未選択",
@@ -353,19 +448,29 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "fingerprintIp": "IPフィンガープリント",
       "latencyVector": "遅延ベクトル",
       "runAntiBotTelemetry": "ボット対策テレメトリー検証を実行",
+      "verificationProgress": "検証の進捗",
       "step3Description": "ステップ3: SMS OTPによる電話確認。電話番号が物理SIMに紐づくことを確認し、仮想VoIPの悪用を防ぎます。",
       "smsOtpTitle": "VibePass SMS OTP",
       "secureBookingCode": "安全な予約コード:",
       "mobilePhoneNumber": "携帯電話番号",
       "validPhoneError": "有効な電話番号を入力してください。",
       "sendCode": "コードを送信",
+      "resendCode": "コードを再送信",
+      "resendCountdown": "{seconds}秒後に再送信",
       "verificationCodeOtp": "確認コード (OTP)",
-      "otpPlaceholder": "例: 4920",
+      "otpPlaceholder": "4桁のコードを入力",
       "phoneAndOtpFirstError": "先に電話番号を入力してOTPを取得してください。",
+      "sendOtpFirstError": "続行する前に確認コードを送信してください。",
       "enterOtpError": "OTPコードを入力してください。",
       "incorrectOtpError": "OTP確認コードが正しくありません。",
       "confirmPurchaseTickets": "確認してチケットを購入",
       "ticketPurchaseSealed": "チケット購入が保護されました。",
+      "issuingTicketTitle": "チケットを発行しています",
+      "issuingTicketDescription": "Identraが暗号学的に検証可能なチケットを準備しています。",
+      "encryptUserMetadata": "ユーザーメタデータを暗号化",
+      "issueTicketAsCredential": "検証可能な資格情報としてチケットを発行",
+      "ticketPurchaseSuccessful": "チケット購入が完了しました",
+      "credentialTicketDescription": "チケットは検証可能な資格情報として発行されました。QRコードを読み取り、後で利用または譲渡できるよう保存してください。",
       "successDescription": "Identraのセキュリティ境界がチケットを正常にロックし、転売業者や二次市場の悪用から保護しました。",
       "arenaEntry": "VibePassアリーナ入場",
       "secureTicket": "安全なチケット",
@@ -382,7 +487,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "sentOtp": "SMS OTPリクエストを送信しました: {phone}",
       "incorrectOtp": "入力されたOTPが正しくありません: {otp}",
       "verifyingOtp": "SMS OTPトークンを検証中...",
-      "otpVerified": "OTPコードを検証しました。SIM事業者情報は有効な契約中の加入者と一致します。"
+      "otpVerified": "OTPコードを検証しました。SIM事業者情報は有効な契約中の加入者と一致します。",
+      "encryptingUserMetadata": "ユーザーメタデータを暗号化しています...",
+      "issuingCredentialTicket": "検証可能な資格情報としてチケットを発行しています...",
+      "ticketCredentialIssued": "チケットを検証可能な資格情報として発行しました。"
     }
   },
   "de": {
@@ -395,6 +503,11 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "Die Buchung wurde für einen verifizierten Fan bestätigt. Das Bot-Risiko war niedrig und das Ticket wurde kryptografisch gebunden.",
       "steps": [
         {
+          "label": "Sitze reservieren",
+          "action": "Ausgewählte Sitze halten",
+          "logText": "Die ausgewählten Sitze wurden für die aktive Kaufsitzung gehalten."
+        },
+        {
           "label": "Geräterisiko analysieren",
           "action": "Gerätesignal prüfen",
           "logText": "Browser-Fingerprint, Automatisierungssignale und Verhaltensentropie wurden bewertet."
@@ -405,7 +518,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "Mobilfunkanbieter, SIM und OTP bestätigten erreichbaren Nicht-VoIP-Besitz."
         },
         {
-          "label": "Ticketnachweis binden",
+          "label": "Ticket ausstellen",
           "action": "Verifiziertes Ticket ausstellen",
           "logText": "Ticketmetadaten wurden mit Nichtübertragbarkeitskontrolle und QR-Signatur versiegelt."
         }
@@ -448,6 +561,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "subChecks": {
         "ticket-booking": [
           [
+            "Ausgewählte Sitze prüfen",
+            "Sitze für den Kauf halten"
+          ],
+          [
             "WebGL-Canvas-Fingerprint",
             "Mausbewegungs-Entropieabgleich",
             "Headless-Browser-Erkennung"
@@ -458,9 +575,8 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
             "OTP-Verifizierungscode-Abgleich"
           ],
           [
-            "Verschlüsselung von Fan-Metadaten",
-            "Nichtübertragbarkeits-Locksiegel",
-            "Kryptografischer QR-Signaturstempel"
+            "Benutzermetadaten verschlüsseln",
+            "Ticket als verifizierbaren Nachweis ausstellen"
           ]
         ]
       }
@@ -469,6 +585,21 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "VibePass Arena-Checkout",
       "badge": "Anti-Bot-geschützt",
       "step1Description": "Schritt 1: Wählen Sie Ihre Sitzplätze in der Arena aus, um die Buchung zu reservieren. Das Sicherheitssystem prüft die Browser-Header.",
+      "featuredEvent": "Event-Highlight",
+      "eventName": "ERAS WORLD TOUR 2026",
+      "eventSubtitle": "Das globale Stadionerlebnis",
+      "highDemand": "Hohe Nachfrage",
+      "eventDate": "Samstag, 22. August",
+      "eventTime": "19:30",
+      "eventVenue": "VibePass Arena",
+      "ticketTier": "Premium-Sitzplätze",
+      "ticketPrice": "120 € / Ticket",
+      "stage": "Bühne",
+      "availableSeat": "Verfügbar",
+      "selectedSeat": "Ausgewählt",
+      "selectedSeatsLabel": "Ihre Sitze",
+      "estimatedTotal": "Voraussichtliche Summe",
+      "totalPrice": "{count} × 120 €",
       "seatingMapSelect": "Sitzplan auswählen",
       "selectedSeats": "Ausgewählt: {seats}",
       "noSeatsSelected": "Ausgewählt: keine Sitzplätze",
@@ -480,19 +611,29 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "fingerprintIp": "IP-Fingerprint",
       "latencyVector": "Latenzvektor",
       "runAntiBotTelemetry": "Anti-Bot-Telemetrieprüfung ausführen",
+      "verificationProgress": "Verifizierungsfortschritt",
       "step3Description": "Schritt 3: Telefonprüfung per SMS-OTP. Bestätigt, dass das Telefon zu einer physischen SIM-Karte gehört, und verhindert Missbrauch durch virtuelles VoIP.",
       "smsOtpTitle": "VibePass SMS-OTP",
       "secureBookingCode": "Ihr sicherer Buchungscode lautet",
       "mobilePhoneNumber": "Mobiltelefonnummer",
       "validPhoneError": "Bitte geben Sie eine gültige Telefonnummer ein.",
       "sendCode": "Code senden",
+      "resendCode": "Code erneut senden",
+      "resendCountdown": "Erneut senden in {seconds}s",
       "verificationCodeOtp": "Verifizierungscode (OTP)",
-      "otpPlaceholder": "z. B. 4920",
+      "otpPlaceholder": "4-stelligen Code eingeben",
       "phoneAndOtpFirstError": "Bitte geben Sie zuerst die Telefonnummer ein und fordern Sie das OTP an.",
+      "sendOtpFirstError": "Senden Sie vor dem Fortfahren einen Verifizierungscode.",
       "enterOtpError": "Bitte geben Sie den OTP-Code ein.",
       "incorrectOtpError": "Der OTP-Code ist falsch.",
       "confirmPurchaseTickets": "Tickets bestätigen und kaufen",
       "ticketPurchaseSealed": "Ticketkauf versiegelt!",
+      "issuingTicketTitle": "Ticket wird ausgestellt",
+      "issuingTicketDescription": "Identra bereitet ein kryptografisch verifizierbares Ticket vor.",
+      "encryptUserMetadata": "Benutzermetadaten verschlüsseln",
+      "issueTicketAsCredential": "Ticket als verifizierbaren Nachweis ausstellen",
+      "ticketPurchaseSuccessful": "Ticketkauf erfolgreich",
+      "credentialTicketDescription": "Das Ticket wurde als verifizierbarer Nachweis ausgestellt. Scannen Sie den QR-Code und speichern Sie es zur späteren Nutzung oder Übertragung.",
       "successDescription": "Der Sicherheitsbereich von Identra hat Ihr Ticket erfolgreich gesperrt und vor Wiederverkäufern sowie Missbrauch auf dem Zweitmarkt geschützt.",
       "arenaEntry": "VibePass Arena-Einlass",
       "secureTicket": "Sicheres Ticket",
@@ -509,7 +650,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "sentOtp": "SMS-OTP-Anfrage gesendet an: {phone}",
       "incorrectOtp": "Falscher OTP eingegeben: {otp}",
       "verifyingOtp": "SMS-OTP-Token wird verifiziert...",
-      "otpVerified": "OTP-Code verifiziert. SIM-Anbieterdetails entsprechen einem physischen Vertrag eines aktiven Teilnehmers."
+      "otpVerified": "OTP-Code verifiziert. SIM-Anbieterdetails entsprechen einem physischen Vertrag eines aktiven Teilnehmers.",
+      "encryptingUserMetadata": "Benutzermetadaten werden verschlüsselt...",
+      "issuingCredentialTicket": "Ticket wird als verifizierbarer Nachweis ausgestellt...",
+      "ticketCredentialIssued": "Das Ticket wurde als verifizierbarer Nachweis ausgestellt."
     }
   },
   "vi": {
@@ -522,6 +666,11 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "successResult": "Lượt đặt vé đã được xác nhận cho người hâm mộ đã xác minh. Rủi ro bot thấp và vé đã được gắn bằng mã hóa.",
       "steps": [
         {
+          "label": "Giữ ghế",
+          "action": "Giữ các ghế đã chọn",
+          "logText": "Các ghế đã chọn được giữ cho phiên mua vé hiện tại."
+        },
+        {
           "label": "Phân tích rủi ro thiết bị",
           "action": "Kiểm tra tín hiệu thiết bị",
           "logText": "Dấu vân tay trình duyệt, tín hiệu tự động hóa và hành vi đã được đánh giá."
@@ -532,7 +681,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "Nhà mạng, SIM và OTP xác nhận quyền sở hữu có thể liên hệ, không phải VoIP."
         },
         {
-          "label": "Gắn thông tin xác thực vé",
+          "label": "Phát hành vé",
           "action": "Phát hành vé đã xác minh",
           "logText": "Siêu dữ liệu vé đã được niêm phong bằng kiểm soát chống chuyển nhượng và chữ ký QR."
         }
@@ -575,6 +724,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "subChecks": {
         "ticket-booking": [
           [
+            "Kiểm tra các ghế đã chọn",
+            "Giữ ghế cho phiên mua vé"
+          ],
+          [
             "Dấu vân tay WebGL Canvas",
             "Đối chiếu độ nhiễu chuyển động chuột",
             "Phát hiện trình duyệt headless"
@@ -585,9 +738,8 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
             "Khớp mã xác minh OTP"
           ],
           [
-            "Mã hóa siêu dữ liệu người hâm mộ",
-            "Niêm phong khóa chống chuyển nhượng",
-            "Đóng dấu chữ ký QR mã hóa"
+            "Mã hóa siêu dữ liệu người dùng",
+            "Phát hành vé dưới dạng thực chứng"
           ]
         ]
       }
@@ -596,6 +748,21 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "headerTitle": "Thanh toán vé VibePass Arena",
       "badge": "Bảo mật chống bot",
       "step1Description": "Bước 1: Chọn ghế trong sân vận động để giữ chỗ. Hệ thống bảo mật sẽ kiểm tra header của trình duyệt.",
+      "featuredEvent": "Sự kiện nổi bật",
+      "eventName": "ERAS WORLD TOUR 2026",
+      "eventSubtitle": "Đêm nhạc sân vận động được mong đợi nhất",
+      "highDemand": "Sắp hết vé",
+      "eventDate": "Thứ Bảy, 22/08",
+      "eventTime": "19:30",
+      "eventVenue": "VibePass Arena",
+      "ticketTier": "Hạng ghế Premium",
+      "ticketPrice": "2.890.000 đ / vé",
+      "stage": "Sân khấu",
+      "availableSeat": "Còn trống",
+      "selectedSeat": "Đã chọn",
+      "selectedSeatsLabel": "Ghế của bạn",
+      "estimatedTotal": "Tạm tính",
+      "totalPrice": "{count} × 2.890.000 đ",
       "seatingMapSelect": "Chọn ghế trên sơ đồ",
       "selectedSeats": "Đã chọn: {seats}",
       "noSeatsSelected": "Đã chọn: chưa chọn ghế",
@@ -607,25 +774,35 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "fingerprintIp": "Dấu vân tay IP",
       "latencyVector": "Vector độ trễ",
       "runAntiBotTelemetry": "Chạy xác minh telemetry chống bot",
+      "verificationProgress": "Tiến trình xác minh",
       "step3Description": "Bước 3: Kiểm tra OTP qua SMS. Xác minh số điện thoại thuộc SIM vật lý để ngăn lạm dụng VoIP ảo.",
       "smsOtpTitle": "OTP SMS VibePass",
       "secureBookingCode": "Mã đặt chỗ bảo mật của bạn là",
       "mobilePhoneNumber": "Số điện thoại di động",
       "validPhoneError": "Vui lòng nhập số điện thoại hợp lệ.",
       "sendCode": "Gửi mã",
+      "resendCode": "Gửi lại mã",
+      "resendCountdown": "Gửi lại sau {seconds} giây",
       "verificationCodeOtp": "Mã xác minh (OTP)",
-      "otpPlaceholder": "ví dụ: 4920",
+      "otpPlaceholder": "Nhập mã gồm 4 chữ số",
       "phoneAndOtpFirstError": "Vui lòng nhập số điện thoại và nhận OTP trước.",
+      "sendOtpFirstError": "Vui lòng gửi mã xác minh trước khi tiếp tục.",
       "enterOtpError": "Vui lòng nhập mã OTP.",
       "incorrectOtpError": "Mã OTP xác minh không chính xác.",
       "confirmPurchaseTickets": "Xác nhận và mua vé",
       "ticketPurchaseSealed": "Giao dịch mua vé đã được niêm phong!",
+      "issuingTicketTitle": "Đang phát hành vé",
+      "issuingTicketDescription": "Identra đang chuẩn bị vé dưới dạng thực chứng có thể xác minh bằng mật mã.",
+      "encryptUserMetadata": "Mã hóa siêu dữ liệu người dùng",
+      "issueTicketAsCredential": "Phát hành vé dưới dạng thực chứng",
+      "ticketPurchaseSuccessful": "Giao dịch mua vé thành công",
+      "credentialTicketDescription": "Vé đã được phát hành dưới dạng thực chứng, bạn cần quét mã QR bên dưới và lưu lại vé này để sử dụng hoặc chuyển nhượng sau này.",
       "successDescription": "Vành đai bảo mật của Identra đã khóa vé thành công, bảo vệ vé khỏi phe vé và lạm dụng trên thị trường thứ cấp.",
       "arenaEntry": "Vé vào VibePass Arena",
       "secureTicket": "Vé bảo mật",
       "seatsLabel": "Ghế:",
       "verifiedFanOnly": "Chỉ dành cho người hâm mộ đã xác minh",
-      "footer": "Hệ thống bảo vệ vé chống phe vé"
+      "footer": "Vé của bạn được đảm bảo bằng mật mã học"
     },
     "logs": {
       "validationNoSeats": "Xác thực thất bại: chưa chọn ghế.",
@@ -636,7 +813,10 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
       "sentOtp": "Đã gửi yêu cầu SMS OTP tới: {phone}",
       "incorrectOtp": "Mã OTP nhập không chính xác: {otp}",
       "verifyingOtp": "Đang xác minh mã SMS OTP...",
-      "otpVerified": "Mã OTP đã xác minh. Thông tin nhà mạng SIM khớp hợp đồng vật lý của thuê bao đang hoạt động."
+      "otpVerified": "Mã OTP đã xác minh. Thông tin nhà mạng SIM khớp hợp đồng vật lý của thuê bao đang hoạt động.",
+      "encryptingUserMetadata": "Đang mã hóa siêu dữ liệu người dùng...",
+      "issuingCredentialTicket": "Đang phát hành vé dưới dạng thực chứng...",
+      "ticketCredentialIssued": "Vé đã được phát hành dưới dạng thực chứng."
     }
   }
 } as const;

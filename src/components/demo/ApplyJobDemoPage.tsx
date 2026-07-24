@@ -1668,7 +1668,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   <span className={`font-extrabold text-[11px] ${
                     verificationOutcome === 'verified' ? 'text-emerald-600' : 'text-amber-600'
                   }`}>
-                    {currentStepIdx === 0 ? t.notEvaluated : evidenceStatus}
+                    {isSuccess ? evidenceStatus : '---'}
                   </span>
                 </div>
                 <div>

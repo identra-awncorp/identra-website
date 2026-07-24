@@ -12,6 +12,7 @@ import { APPLY_JOB_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/ApplyJ
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import {
+  APPLY_JOB_IDENTRA_IDENTITY_NUMBER,
   getApplyJobFieldProvenance,
   getApplyJobVerificationOutcome,
   getApplyJobVerificationPlan,
@@ -20,7 +21,9 @@ import {
   validateApplyJobApplication,
   type ApplyJobFieldId,
   type ApplyJobMode,
+  type ApplyJobStageId,
   type ApplyJobValidationError,
+  type ApplyJobVerificationDetailId,
   type ApplyJobVerificationOutcome,
   type ApplyJobVerificationRunStatus,
   type ApplyJobVerificationSnapshot,
@@ -57,6 +60,7 @@ interface ApplyJobApplicationFlowProps {
   isSuccess: boolean;
   onOpenSummary: () => void;
   onVerificationSnapshotChange?: (snapshot: ApplyJobVerificationSnapshot) => void;
+  onCertificateTitlesChange?: (titles: string[]) => void;
   onSsiModeChange?: (isSsiMode: boolean) => void;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
@@ -124,6 +128,7 @@ function ApplyJobApplicationFlow({
   isSuccess,
   onOpenSummary,
   onVerificationSnapshotChange,
+  onCertificateTitlesChange,
   onSsiModeChange,
   scheduleTimeout
 }: ApplyJobApplicationFlowProps) {
@@ -167,7 +172,7 @@ function ApplyJobApplicationFlow({
   const mode: ApplyJobMode = isCryptographicallySecured ? 'identra' : 'manual';
   const verificationOutcome = getApplyJobVerificationOutcome(mode);
   const verificationPlan = useMemo(
-    () => getApplyJobVerificationPlan(mode, jobCerts.length > 0),
+    () => getApplyJobVerificationPlan(mode, jobCerts.length),
     [jobCerts.length, mode],
   );
   const verificationSnapshot = useMemo(
@@ -182,10 +187,33 @@ function ApplyJobApplicationFlow({
     () => verificationPlan.flatMap((stage) => stage.detailIds),
     [verificationPlan],
   );
-  const activeVerificationDetail = verificationSnapshot.activeDetailId
-    ? uiT[verificationSnapshot.activeDetailId]
-    : null;
+  const getVerificationDetailLabel = useCallback((
+    detailId: ApplyJobVerificationDetailId,
+    detailIndex: number,
+    stageId: ApplyJobStageId,
+  ) => {
+    if (
+      mode === 'identra'
+      && stageId === 'credentials'
+      && detailId === 'identraCredentialProofValidation'
+    ) {
+      return formatText(uiT.identraCertificateVerification, {
+        certificate: jobCerts[Math.max(detailIndex - 1, 0)]?.title ?? '',
+      });
+    }
+    return uiT[detailId];
+  }, [jobCerts, mode, uiT]);
   const activeVerificationStage = verificationSnapshot.stages.find((stage) => stage.status === 'active');
+  const activeVerificationDetailIndex = activeVerificationStage?.detailStatuses.findIndex(
+    (status) => status === 'active',
+  ) ?? -1;
+  const activeVerificationDetail = verificationSnapshot.activeDetailId && activeVerificationStage
+    ? getVerificationDetailLabel(
+        verificationSnapshot.activeDetailId,
+        activeVerificationDetailIndex,
+        activeVerificationStage.id,
+      )
+    : null;
   const verificationStageLabels = {
     identity: uiT.legalIdentitySectionTitle,
     credentials: uiT.credentialSectionTitle,
@@ -223,10 +251,8 @@ function ApplyJobApplicationFlow({
     const provenanceLabels: Record<typeof provenanceKey, ApplyJobFlowUiKey> = {
       'self-declared': 'selfDeclaredPill',
       'identity-vc': 'identityVcPill',
-      'contact-vc': 'contactVcPill',
       'education-vc': 'educationVcPill',
-      'employment-vc': 'employmentVcPill',
-      'work-eligibility-proof': 'workEligibilityProofPill',
+      'certificate-vc': 'certificateVcPill',
     };
     return uiT[provenanceLabels[provenanceKey]];
   }, [mode, uiT]);
@@ -234,6 +260,10 @@ function ApplyJobApplicationFlow({
   useEffect(() => {
     onVerificationSnapshotChange?.(verificationSnapshot);
   }, [onVerificationSnapshotChange, verificationSnapshot]);
+
+  useEffect(() => {
+    onCertificateTitlesChange?.(jobCerts.map((certificate) => certificate.title));
+  }, [jobCerts, onCertificateTitlesChange]);
 
   // Start the deterministic verification plan once the application has been submitted.
   useEffect(() => {
@@ -338,7 +368,7 @@ function ApplyJobApplicationFlow({
       setJobName(uiT.qrName);
       setJobEmail(uiT.qrEmail);
       setJobPhone(uiT.qrPhone);
-      setJobSsn(uiT.workEligibilityProofValue);
+      setJobSsn(APPLY_JOB_IDENTRA_IDENTITY_NUMBER);
       setJobDegree(uiT.qrDegree);
       setJobCerts([
         { title: 'Certified Kubernetes Administrator (CKA)', url: 'https://credly.com/org/cncf/badge/cka-9481' },
@@ -370,17 +400,13 @@ function ApplyJobApplicationFlow({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [closeQrScanModal, isQrModalOpen]);
 
-  // Keep localized mock credential values current without restarting the flow.
+  // Keep the localized mock education credential current without restarting the flow.
   useEffect(() => {
     if (!isCryptographicallySecured) return;
-    setJobSsn(uiT.workEligibilityProofValue);
     setJobDegree(uiT.qrDegree);
-    setJobExp(uiT.qrExperience);
   }, [
     isCryptographicallySecured,
     uiT.qrDegree,
-    uiT.qrExperience,
-    uiT.workEligibilityProofValue,
   ]);
 
   // Reset internal states when currentStepIdx is reset
@@ -568,7 +594,7 @@ function ApplyJobApplicationFlow({
                       htmlFor={mode === 'manual' ? 'apply-job-identity' : undefined}
                       className="text-xs font-bold text-slate-600 uppercase tracking-wider"
                     >
-                      {mode === 'identra' ? uiT.workEligibilityProofLabel : t.workingIdentityNumber}
+                      {mode === 'identra' ? uiT.personalIdentityNumberLabel : t.workingIdentityNumber}
                     </label>
                     {isVerifiedField('identity') && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
@@ -619,9 +645,8 @@ function ApplyJobApplicationFlow({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label htmlFor="apply-job-email" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidateEmail}</label>
-                    {isVerifiedField('email') && (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                    {mode === 'identra' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-slate-600 font-mono font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                         {getFieldSourceLabel('email')}
                       </span>
                     )}
@@ -634,30 +659,23 @@ function ApplyJobApplicationFlow({
                       autoComplete="email"
                       value={jobEmail}
                       onChange={(e) => {
-                        if (!isVerifiedField('email')) {
-                          setValidationError(null);
-                          setJobEmail(e.target.value);
-                        }
+                        setValidationError(null);
+                        setJobEmail(e.target.value);
                       }}
-                      readOnly={isVerifiedField('email')}
                       disabled={isProcessingAction}
                       placeholder={uiT.candidateEmailPlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        validationError === 'email' ? 'border-rose-300 focus:ring-rose-200' : isVerifiedField('email') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'email' ? 'border-rose-300 focus:ring-rose-200' : 'border-slate-200'
                       }`}
                     />
-                    {isVerifiedField('email') && (
-                      <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
-                    )}
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label htmlFor="apply-job-phone" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidatePhone}</label>
-                    {isVerifiedField('phone') && (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                    {mode === 'identra' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-slate-600 font-mono font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                         {getFieldSourceLabel('phone')}
                       </span>
                     )}
@@ -670,21 +688,15 @@ function ApplyJobApplicationFlow({
                       autoComplete="tel"
                       value={jobPhone}
                       onChange={(e) => {
-                        if (!isVerifiedField('phone')) {
-                          setValidationError(null);
-                          setJobPhone(e.target.value);
-                        }
+                        setValidationError(null);
+                        setJobPhone(e.target.value);
                       }}
-                      readOnly={isVerifiedField('phone')}
                       disabled={isProcessingAction}
                       placeholder={uiT.candidatePhonePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        validationError === 'phone' ? 'border-rose-300 focus:ring-rose-200' : isVerifiedField('phone') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'phone' ? 'border-rose-300 focus:ring-rose-200' : 'border-slate-200'
                       }`}
                     />
-                    {isVerifiedField('phone') && (
-                      <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
-                    )}
                   </div>
                 </div>
               </div>
@@ -848,9 +860,8 @@ function ApplyJobApplicationFlow({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label htmlFor="apply-job-experience" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.golangExperience}</label>
-                    {isVerifiedField('experience') && (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                    {mode === 'identra' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-slate-600 font-mono font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                         {getFieldSourceLabel('experience')}
                       </span>
                     )}
@@ -859,24 +870,22 @@ function ApplyJobApplicationFlow({
                     <FileCode className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
                       id="apply-job-experience"
-                      type="text"
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      max={60}
+                      step={1}
                       value={jobExp}
                       onChange={(e) => {
-                        if (!isVerifiedField('experience')) {
-                          setValidationError(null);
-                          setJobExp(e.target.value);
-                        }
+                        setValidationError(null);
+                        setJobExp(e.target.value);
                       }}
-                      readOnly={isVerifiedField('experience')}
                       disabled={isProcessingAction}
                       placeholder={uiT.experiencePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        validationError === 'experience' ? 'border-rose-300 ring-2 ring-rose-200' : isVerifiedField('experience') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'experience' ? 'border-rose-300 ring-2 ring-rose-200' : 'border-slate-200'
                       }`}
                     />
-                    {isVerifiedField('experience') && (
-                      <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
-                    )}
                   </div>
                 </div>
 
@@ -989,32 +998,34 @@ function ApplyJobApplicationFlow({
 
             <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm space-y-5">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
-                  <span className={`h-2.5 w-2.5 rounded-full ${
-                    verificationRunStatus === 'complete'
-                      ? 'bg-emerald-500'
-                      : `bg-[#354CE1] ${shouldReduceMotion ? '' : 'animate-ping'}`
-                  }`} />
-                  <span className="text-xs font-bold text-slate-900">
-                    {activeVerificationStageLabel}
-                  </span>
-                </div>
-                <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 font-mono text-[11px] font-bold flex items-center gap-1.5">
-                  <Sparkles className={`h-3 w-3 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
-                  <span>{step2Seconds}s</span>
-                </div>
+                <span className="text-xs font-mono font-bold text-slate-500">
+                  {uiT.serverProgressLabel}
+                </span>
+                <span className="text-xs font-mono font-bold text-[#354CE1]">
+                  {verificationSnapshot.progressPercent}%
+                </span>
               </div>
 
               <div className="space-y-2">
-                <div className="flex justify-between text-xs font-mono text-slate-500 font-bold">
-                  <span>
-                    {formatText(uiT.serverProgressLabel, { mode: isCryptographicallySecured ? uiT.ssiProtocol : uiT.restApi })}
-                  </span>
-                  <span className="text-[#354CE1]">{verificationSnapshot.progressPercent}%</span>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className={`h-2.5 w-2.5 rounded-full ${
+                      verificationRunStatus === 'complete'
+                        ? 'bg-emerald-500'
+                        : `bg-[#354CE1] ${shouldReduceMotion ? '' : 'animate-ping'}`
+                    }`} />
+                    <span className="text-xs font-bold text-slate-900">
+                      {activeVerificationStageLabel}
+                    </span>
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 font-mono text-[11px] font-bold flex items-center gap-1.5">
+                    <Sparkles className={`h-3 w-3 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
+                    <span>{step2Seconds}s</span>
+                  </div>
                 </div>
                 <div
                   role="progressbar"
-                  aria-label={formatText(uiT.serverProgressLabel, { mode: isCryptographicallySecured ? uiT.ssiProtocol : uiT.restApi })}
+                  aria-label={uiT.serverProgressLabel}
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-valuenow={verificationSnapshot.progressPercent}
@@ -1436,9 +1447,26 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
   const [verificationSnapshot, setVerificationSnapshot] = useState<ApplyJobVerificationSnapshot>(
     createIdleApplyJobVerificationSnapshot,
   );
+  const [certificateTitles, setCertificateTitles] = useState<string[]>([]);
   const verificationOutcome: ApplyJobVerificationOutcome = getApplyJobVerificationOutcome(
     isSsiCredentialMode ? 'identra' : 'manual',
   );
+  const getTrackerDetailLabel = useCallback((
+    detailId: ApplyJobVerificationDetailId,
+    detailIndex: number,
+    stageId: ApplyJobStageId,
+  ) => {
+    if (
+      isSsiCredentialMode
+      && stageId === 'credentials'
+      && detailId === 'identraCredentialProofValidation'
+    ) {
+      return formatText(flowT.identraCertificateVerification, {
+        certificate: certificateTitles[Math.max(detailIndex - 1, 0)] ?? '',
+      });
+    }
+    return flowT[detailId];
+  }, [certificateTitles, flowT, isSsiCredentialMode]);
 
   // Scroll terminal logs
   useEffect(() => {
@@ -1572,14 +1600,14 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
           <div className="lg:col-span-7 space-y-6">
             <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-xl overflow-hidden relative">
               {/* Device Header Bar */}
-              <div className="bg-slate-900 text-slate-400 px-6 py-4 flex items-center justify-between border-b border-slate-800">
+              <div className="bg-[#F7F8FC] text-slate-500 px-6 py-4 flex items-center justify-between border-b border-slate-200">
                 <div aria-hidden="true" className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500" />
                   <span className="w-3 h-3 rounded-full bg-amber-500" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500" />
                 </div>
-                <div className="text-[11px] font-mono tracking-wider font-semibold bg-slate-800 text-slate-300 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 text-emerald-500" />
+                <div className="text-[11px] font-mono tracking-wider font-semibold bg-white text-slate-700 px-3 py-1 rounded-full border border-slate-200 flex items-center gap-1.5 shadow-2xs">
+                  <Smartphone className="w-3.5 h-3.5 text-[#354CE1]" />
                   <span>{t.clientEmulator}</span>
                 </div>
                 <div aria-hidden="true" className={`h-2 w-2 rounded-full bg-emerald-500 ${shouldReduceMotion ? '' : 'animate-ping'}`} />
@@ -1597,6 +1625,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   isSuccess={isSuccess}
                   onOpenSummary={() => setIsSummaryModalOpen(true)}
                   onVerificationSnapshotChange={setVerificationSnapshot}
+                  onCertificateTitlesChange={setCertificateTitles}
                   onSsiModeChange={setIsSsiCredentialMode}
                   scheduleTimeout={scheduleTimeout}
                 />
@@ -1666,7 +1695,9 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   const stageSnapshot = verificationSnapshot.stages[sIdx];
                   const isActive = stageSnapshot?.status === 'active';
                   const isDone = stageSnapshot?.status === 'done';
-                  const subChecks = stageSnapshot?.detailIds.map((detailId) => flowT[detailId]) ?? [];
+                  const subChecks = stageSnapshot?.detailIds.map((detailId, detailIndex) => (
+                    getTrackerDetailLabel(detailId, detailIndex, stageSnapshot.id)
+                  )) ?? [];
 
                   return (
                     <div

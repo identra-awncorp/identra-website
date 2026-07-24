@@ -60,10 +60,10 @@ export type ApplyJobFieldId =
 export type ApplyJobFieldProvenance =
   | 'self-declared'
   | 'identity-vc'
-  | 'contact-vc'
   | 'education-vc'
-  | 'employment-vc'
-  | 'work-eligibility-proof';
+  | 'certificate-vc';
+
+export const APPLY_JOB_IDENTRA_IDENTITY_NUMBER = '079204012345';
 
 export interface ApplyJobCertificateInput {
   title: string;
@@ -100,12 +100,11 @@ const BACKGROUND_DETAILS: ApplyJobVerificationDetailId[] = [
   'backgroundWatchlistCheck',
 ];
 
-const IDENTRA_PLAN: ApplyJobVerificationStage[] = [
+const getIdentraPlan = (certificateCount: number): ApplyJobVerificationStage[] => [
   {
     id: 'identity',
     detailIds: [
       'identraIdentityPresentation',
-      'identraIdentityDidResolution',
       'identraIdentityProofValidation',
     ],
   },
@@ -113,8 +112,10 @@ const IDENTRA_PLAN: ApplyJobVerificationStage[] = [
     id: 'credentials',
     detailIds: [
       'identraCredentialPresentation',
-      'identraCredentialIssuerDidResolution',
-      'identraCredentialProofValidation',
+      ...Array.from(
+        { length: certificateCount },
+        () => 'identraCredentialProofValidation' as const,
+      ),
     ],
   },
   {
@@ -148,9 +149,14 @@ const MANUAL_PLAN_WITH_CERTIFICATES: ApplyJobVerificationStage[] = [
 
 export const getApplyJobVerificationPlan = (
   mode: ApplyJobMode,
-  hasCertificates: boolean,
+  certificateCountOrPresence: number | boolean,
 ): ApplyJobVerificationStage[] => {
-  if (mode === 'identra') return IDENTRA_PLAN;
+  const certificateCount = typeof certificateCountOrPresence === 'number'
+    ? certificateCountOrPresence
+    : certificateCountOrPresence ? 1 : 0;
+  const hasCertificates = certificateCount > 0;
+
+  if (mode === 'identra') return getIdentraPlan(certificateCount);
   if (hasCertificates) return MANUAL_PLAN_WITH_CERTIFICATES;
 
   return MANUAL_PLAN_WITH_CERTIFICATES.map((stage) => (
@@ -231,12 +237,12 @@ export const getApplyJobFieldProvenance = (
 
   const identraProvenance: Record<ApplyJobFieldId, ApplyJobFieldProvenance> = {
     name: 'identity-vc',
-    identity: 'work-eligibility-proof',
-    email: 'contact-vc',
-    phone: 'contact-vc',
+    identity: 'identity-vc',
+    email: 'self-declared',
+    phone: 'self-declared',
     degree: 'education-vc',
-    certificates: 'education-vc',
-    experience: 'employment-vc',
+    certificates: 'certificate-vc',
+    experience: 'self-declared',
     github: 'self-declared',
   };
 
@@ -272,7 +278,15 @@ export const validateApplyJobApplication = (
   }
 
   if (!input.degree.trim()) return 'degree';
-  if (!input.experience.trim()) return 'experience';
+  const experienceYears = Number(input.experience.trim());
+  if (
+    !input.experience.trim()
+    || !Number.isInteger(experienceYears)
+    || experienceYears < 0
+    || experienceYears > 60
+  ) {
+    return 'experience';
+  }
   if (!input.githubUrl.trim() || !isValidWebUrl(input.githubUrl.trim())) return 'github-url';
 
   const hasPendingCertificateValue = Boolean(

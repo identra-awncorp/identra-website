@@ -560,7 +560,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.es = {
 };
 
 WATCHLISTS_PAGE_TRANSLATIONS.vi = {
-  watchlists: "WATCHLISTS",
+  watchlists: "DANH SÁCH CẢNH BÁO",
   customerName: "Alexander V. Petrov",
   heroMatchSourceName: "US OFAC Sanctions SDN",
   heroAliasName: "Aleksandr Petrov",
@@ -593,7 +593,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   heroDesc: "Tận dụng trí tuệ đa phương thức để tăng độ chính xác khi đối chiếu với danh sách cấm vận toàn cầu, cảnh báo thực thi pháp luật và danh sách người có ảnh hưởng chính trị (PEP).",
   tryDemo: "Trải nghiệm demo",
   exploreSandbox: "Khám phá Sandbox",
-  matcherTitle: "Trình đối chiếu watchlist tức thì",
+  matcherTitle: "Trình đối chiếu danh sách cảnh báo tức thời",
   matcherSubtitle: "Đang xác minh khách hàng theo thời gian thực",
   liveActive: "Đang hoạt động",
   customerProfile: "Hồ sơ khách hàng",
@@ -613,9 +613,9 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   ],
   workflowLabel: "Quy trình tuân thủ",
   howItWorks: "Cách hoạt động",
-  workflowDesc: "Cấu hình, xử lý, tự động hóa và giám sát watchlist liền mạch trong một nền tảng định danh tích hợp.",
+  workflowDesc: "Cấu hình, xử lý, tự động hóa và giám sát danh sách cảnh báo trong một nền tảng định danh tích hợp.",
   workflowSteps: [
-    { num: 1, title: "Cấu hình", desc: "Xác định quy tắc tiêu chí khớp, loại trừ và chọn đúng cơ sở dữ liệu watchlist." },
+    { num: 1, title: "Cấu hình", desc: "Xác định tiêu chí trùng khớp, quy tắc loại trừ và cơ sở dữ liệu cảnh báo cần sử dụng." },
     { num: 2, title: "Quyết định", desc: "Xử lý cảnh báo bằng hồ sơ ngữ cảnh, độ tương đồng chân dung và hàng đợi thủ công." },
     { num: 3, title: "Điều phối", desc: "Tự động hóa nhánh điều kiện: tự duyệt hồ sơ sạch, gắn cờ hồ sơ trùng khớp." },
     { num: 4, title: "Giám sát", desc: "Tái sàng lọc liên tục chạy âm thầm trong nền khi danh sách toàn cầu được làm mới." }
@@ -648,9 +648,9 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   biometricMatchEnabled: "✓ Đã bật khớp sinh trắc học",
   runPortraitMatch: "➔ Chạy đối chiếu chân dung",
   facialAi: "AI khuôn mặt",
-  watchlistDossier: "Hồ sơ watchlist",
+  watchlistDossier: "Hồ sơ danh sách cảnh báo",
   dossierDob: "Ngày sinh: không rõ | Quốc tịch: Iraq / Syria",
-  faceMismatch: "✓ Khuôn mặt không khớp: ảnh watchlist chỉ khớp sinh trắc học 12%. Có thể giải phóng an toàn.",
+  faceMismatch: "✓ Khuôn mặt không khớp: ảnh trong danh sách cảnh báo chỉ đạt 12% tương đồng sinh trắc học. Có thể bỏ chặn an toàn.",
   cautionCommonName: "⚠ Thận trọng: tên phổ biến cần xác thực thêm siêu dữ liệu.",
   clearProfile: "Giải phóng hồ sơ (không khớp)",
   declineProfile: "Từ chối hồ sơ (khớp thật)",
@@ -659,7 +659,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   step3Title: "Điều phối hành động tự động",
   step3Desc: "Không cần xây logic mã cứng nhắc. Thiết kế tuyến động để người khớp tiêu chí đi thẳng vào xem xét ưu tiên, còn người dùng sạch được thông qua tức thì.",
   userSignsUp: "Người dùng đăng ký",
-  checkWatchlists: "Kiểm tra watchlist",
+  checkWatchlists: "Kiểm tra danh sách cảnh báo",
   ifClear: "Nếu sạch",
   autoApprove: "Tự động duyệt",
   seconds: "Thời gian: 0,8 giây",
@@ -692,7 +692,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   featureDesc: "Mỗi doanh nghiệp có ngưỡng tuân thủ khác nhau. Tinh chỉnh quy tắc để không làm nghẽn khách hàng sạch trong khi vẫn bảo vệ rủi ro AML chắc chắn.",
   readDocs: "Đọc tài liệu kỹ thuật chi tiết",
   useCasesLabel: "Trường hợp sử dụng vận hành",
-  useCasesTitle: "Cách đội ngũ sử dụng watchlist",
+  useCasesTitle: "Cách đội ngũ sử dụng danh sách cảnh báo",
   useCasesDesc: "Triển khai quy trình kiểm tra tuân thủ trơn tru cho hoạt động tùy chỉnh trong toàn bộ hệ sinh thái doanh nghiệp.",
   configureWorkflow: "Cấu hình workflow",
   resourcesLabel: "Tài nguyên tuân thủ",
@@ -706,22 +706,22 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
   exploreDesc: "Kết hợp cơ sở dữ liệu báo cáo với các hệ thống xác minh định danh tiên tiến để tạo vòng tin cậy vững chắc.",
   accordion: [
     { id: "name-settings", title: "Thiết lập khớp tên tùy chỉnh", short: "Tinh chỉnh kiểm tra tên để giảm tỷ lệ cảnh báo giả", body: "Cấu hình mức độ chặt hoặc lỏng khi đối chiếu tên với bí danh, tên đã chuẩn hóa văn bản, lỗi chính tả phổ biến hoặc hoán vị ký tự.", sandboxTitle: "Mô phỏng quy tắc Sandbox", inputtedName: "Tên nhập vào:", target: "Mục tiêu khớp:", matchedNickname: "Đã khớp (quy tắc biệt danh)", matchedFuzzy: "Đã khớp (quy tắc mờ 85%)", ignoredThreshold: "Bỏ qua (dưới ngưỡng)" },
-    { id: "portrait-match", title: "Đối chiếu chân dung & xác thực sinh trắc học", short: "Tự động xác minh ảnh khuôn mặt trực tiếp từ hồ sơ cấm vận", body: "Dùng so sánh sinh trắc học khuôn mặt để đối chiếu selfie của người dùng với ảnh hồ sơ watchlist chính thức, giảm mạnh tồn đọng xem xét.", selfieAlt: "Selfie", biometricSimilarity: "Điểm tương đồng sinh trắc học", matchLabel: "Khớp 94,8%", result: "Kết quả: xác minh chân dung xác nhận danh tính khác biệt, tránh khóa tuân thủ thủ công." },
+    { id: "portrait-match", title: "Đối chiếu chân dung và xác minh sinh trắc học", short: "Tự động xác minh ảnh khuôn mặt từ hồ sơ trừng phạt", body: "Dùng sinh trắc học khuôn mặt để đối chiếu selfie của người dùng với ảnh hồ sơ chính thức trong danh sách cảnh báo, qua đó giảm đáng kể hồ sơ phải duyệt.", selfieAlt: "Selfie", biometricSimilarity: "Điểm tương đồng sinh trắc học", matchLabel: "Khớp 94,8%", result: "Kết quả: xác minh chân dung cho thấy đây là hai người khác nhau, nhờ đó tránh chặn nhầm hồ sơ." },
     { id: "country-match", title: "Thiết lập khớp quốc gia và làm giàu", short: "Cô lập hoặc thu hẹp kết quả theo khu vực pháp lý", body: "Lọc kết quả bằng cách xác thực điểm dữ liệu bổ sung như quốc gia sinh, quốc tịch hoặc địa chỉ để tự xử lý tên giống nhau từ vùng khác.", codeComment: "// Logic công cụ khớp địa lý", codeNote: "Phát hiện quốc tịch khác nhau" },
-    { id: "passport-enrichment", title: "Làm giàu hộ chiếu và giấy tờ", short: "Tự động trích xuất và đối chiếu số hộ chiếu với danh sách", body: "Tăng cường kiểm tra bằng cách trích xuất số căn cước và hộ chiếu trực tiếp từ luồng Government ID rồi đối chiếu với cấm vận toàn cầu.", passportOcr: "Đã trích xuất OCR hộ chiếu", docId: "ID giấy tờ: P849******", noWatchlistMatch: "Không khớp watchlist" },
+    { id: "passport-enrichment", title: "Bổ sung dữ liệu hộ chiếu và giấy tờ", short: "Tự động trích xuất và đối chiếu số hộ chiếu với danh sách", body: "Tăng cường kiểm tra bằng cách trích xuất số căn cước và hộ chiếu từ luồng xác minh giấy tờ rồi đối chiếu với danh sách trừng phạt toàn cầu.", passportOcr: "Đã trích xuất OCR hộ chiếu", docId: "Mã giấy tờ: P849******", noWatchlistMatch: "Không trùng khớp với danh sách cảnh báo" },
     { id: "sanctions-info", title: "Danh sách cấm vận chi tiết", short: "Truy cập hồ sơ quy định và tòa án phía sau chỉ định", body: "Mỗi kết quả trúng sàng lọc được hỗ trợ bằng chi tiết thời gian thực trực tiếp từ OFAC, HMT, EU, UN và cơ sở quốc gia, gồm lý do, bí danh, nơi sinh và căn cứ pháp lý.", reference: "Tham chiếu chỉ định UN 1205:", quote: "\"Được liệt kê theo đoạn 14 của nghị quyết 1844 (2008) vì tham gia các hành vi đe dọa hòa bình, an ninh hoặc ổn định của Somalia...\"" },
     { id: "pep-categorization", title: "Phân loại PEP chi tiết", short: "Phân loại người có ảnh hưởng chính trị vào lớp rủi ro cụ thể", body: "Tổ chức PEP thành Lớp I, II, III và IV để cấu hình tuyến xử lý rủi ro phù hợp.", classI: "Lớp I: rủi ro cao nhất", classII: "Lớp II: rủi ro tăng cao" },
     { id: "monitoring", title: "Giám sát liên tục có thể cấu hình", short: "Liên tục sàng lọc người dùng khi cơ sở dữ liệu cập nhật", body: "Không chỉ sàng lọc một lần. Identra liên tục giám sát cá nhân đã ghi danh với cơ sở dữ liệu mới làm mới và gửi cảnh báo webhook tức thì nếu hồ sơ rủi ro thay đổi.", activeMonitoring: "Đã bật giám sát hoạt động cho 142.841 hồ sơ" }
   ],
   useCases: [
-    { title: "Onboarding KYC/AML", tag: "Xác minh định danh B2C", desc: "Dùng khớp chân dung hoặc văn bản để sàng lọc cá nhân và doanh nghiệp với watchlist nhằm tuân thủ quy định KYC/AML khu vực.", benefits: ["Sàng lọc OFAC tự động", "Khớp logic mờ", "Sinh trắc học selfie tức thì"] },
+    { title: "Tiếp nhận khách hàng KYC/AML", tag: "Xác minh định danh B2C", desc: "Dùng đối chiếu chân dung hoặc văn bản để sàng lọc cá nhân và doanh nghiệp theo danh sách cảnh báo, đáp ứng quy định KYC/AML tại từng khu vực.", benefits: ["Sàng lọc OFAC tự động", "Đối chiếu mờ", "Sinh trắc học selfie tức thì"] },
     { title: "Onboarding UBO", tag: "Kiểm tra doanh nghiệp B2B", desc: "Sàng lọc chủ sở hữu hưởng lợi cuối cùng (UBO) trong quy trình onboarding KYB, xử lý sớm rủi ro lớn.", benefits: ["Chủ sở hữu hưởng lợi cuối cùng", "Danh sách hội đồng công ty", "Lọc theo khu vực pháp lý"] },
     { title: "Giám sát liên tục", tag: "Lá chắn rủi ro liên tục", desc: "Thiết lập sàng lọc định kỳ tự động để giám sát cá nhân với cấm vận và nguồn cảnh báo luôn thay đổi.", benefits: ["Kiểm tra đồng bộ tăng dần", "Cảnh báo webhook âm thầm", "Nhật ký rủi ro lịch sử"] }
   ],
   learningCards: [
-    { tag: "Blog • 8 phút", title: "Sàng lọc AML: vì sao quan trọng và cách hoạt động", desc: "Tìm hiểu yêu cầu pháp lý chi phối sàng lọc watchlist, phân loại PEP và chế tài khi không duy trì kiểm tra tuân thủ.", detailed: "Sàng lọc watchlist là nền tảng của tuân thủ AML. Cơ quan quản lý yêu cầu tổ chức sàng lọc khách hàng trước khi cung cấp sản phẩm và liên tục đánh giá lại trong vòng đời khách hàng. Bài viết này trình bày cơ sở pháp lý OFAC và FATF, tham số khớp mờ và chi phí khi vi phạm tuân thủ." },
+    { tag: "Blog • 8 phút", title: "Sàng lọc AML: vì sao quan trọng và cách hoạt động", desc: "Tìm hiểu yêu cầu pháp lý đối với sàng lọc danh sách cảnh báo, phân loại PEP và chế tài khi không duy trì kiểm tra tuân thủ.", detailed: "Sàng lọc danh sách cảnh báo là nền tảng của tuân thủ AML. Cơ quan quản lý yêu cầu tổ chức sàng lọc khách hàng trước khi cung cấp sản phẩm và liên tục đánh giá lại trong suốt vòng đời khách hàng. Bài viết trình bày cơ sở pháp lý OFAC và FATF, tham số đối chiếu mờ và chi phí của hành vi vi phạm." },
     { tag: "Blog • 9 phút", title: "Cách yêu cầu khớp giúp tinh chỉnh quy trình IDV", desc: "Tìm hiểu cách điều chỉnh dung sai tìm kiếm, soundex và chuẩn hóa tên giúp tối ưu ma sát vận hành cho người dùng bình thường.", detailed: "Tối ưu xác minh là cân bằng giữa độ chính xác và nhiễu. Khớp chặt giúp tự giải phóng nhiều khách hàng hơn nhưng có thể bỏ sót bí danh hoặc lỗi chính tả. Soundex và từ điển biệt danh giúp thu hẹp khoảng cách đó." },
-    { tag: "Hướng dẫn • 5 phút", title: "Hơn 50 tín hiệu rủi ro gian lận", desc: "Khám phá đầy đủ tín hiệu hành vi, mạng, thiết bị, giấy tờ và cơ sở dữ liệu bảo vệ tổ chức số tăng trưởng nhanh.", detailed: "Kẻ gian lợi dụng khoảng trống trong dữ liệu rời rạc. Bằng cách kết hợp watchlist với tín hiệu thụ động thời gian thực như phát hiện VPN, dấu vân tay trình duyệt và điểm rủi ro điện thoại, đội ngũ hiện đại có thể xây lá chắn bảo mật nhiều lớp." }
+    { tag: "Hướng dẫn • 5 phút", title: "Hơn 50 tín hiệu rủi ro gian lận", desc: "Khám phá các tín hiệu hành vi, mạng, thiết bị, giấy tờ và cơ sở dữ liệu giúp bảo vệ tổ chức số đang tăng trưởng nhanh.", detailed: "Kẻ gian lợi dụng khoảng trống giữa các nguồn dữ liệu rời rạc. Bằng cách kết hợp danh sách cảnh báo với tín hiệu thụ động theo thời gian thực như VPN, dấu vân tay trình duyệt và điểm rủi ro điện thoại, đội ngũ có thể xây dựng lớp bảo vệ nhiều tầng." }
   ],
   exploreCards: [
     { title: "Xác minh giấy tờ chính phủ toàn cầu.", desc: "Trích xuất thông tin tức thì và xác minh giấy tờ chính phủ từ hơn 150 quốc gia bằng OCR nâng cao.", cta: "Xem trang Government ID" },

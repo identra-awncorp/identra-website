@@ -732,7 +732,7 @@ export const E_LEARNING_TRANSLATIONS = {
     },
     accordions: [
       { id: 'learner', icon: '🎓', title: 'Đăng ký học viên', desc: 'Đảm bảo chỉ học viên đã xác minh mới có thể truy cập cộng đồng trực tuyến. Bảo vệ diễn đàn, trò chuyện nhóm trực tiếp và lớp học ảo khỏi người dùng xấu, spam bot và tác nhân chưa xác minh.' },
-      { id: 'instructor', icon: '👨‍🏫', title: 'Sàng lọc giảng viên', desc: 'Sàng lọc kỹ gia sư chuyên nghiệp, nhà giáo dục tự do và người tạo khóa học. Xác thực giấy phép học thuật, bằng cấp, chứng nhận giảng dạy, hồ sơ lý lịch và watchlist toàn cầu để bảo vệ uy tín trường học.' },
+      { id: 'instructor', icon: '👨‍🏫', title: 'Sàng lọc giảng viên', desc: 'Sàng lọc kỹ gia sư chuyên nghiệp, nhà giáo dục tự do và người tạo khóa học. Xác minh giấy phép học thuật, bằng cấp, chứng nhận giảng dạy, hồ sơ lý lịch và danh sách cảnh báo toàn cầu để bảo vệ uy tín nhà trường.' },
       { id: 'certificate', icon: '📜', title: 'Trước khi cấp chứng chỉ', desc: 'Xác nhận danh tính thật của người nhận trước khi cấp bằng, chứng chỉ hoặc tín chỉ đắt giá. Ngăn người thi hộ và giả mạo chứng chỉ bằng đối khớp khuôn mặt selfie an toàn trong 3 giây.' },
       { id: 'behavior', icon: '📡', title: 'Phát hiện hành vi bất thường', desc: 'Giám sát đăng nhập để tìm dấu hiệu rủi ro cao như nhảy vị trí bất thường, nhóm chia sẻ thông tin đăng nhập và mẫu bot cào dữ liệu. Gắn cờ phiên đáng ngờ ngay nếu cùng một hồ sơ học viên đăng nhập vào nhiều trung tâm thi cùng lúc.' },
       { id: 'recovery', icon: '🔑', title: 'Khi khôi phục tài khoản', desc: 'Chặn hành vi chiếm đoạt tài khoản. Ngăn tác nhân xấu tiếp quản tài khoản bằng cách xác thực yêu cầu đặt lại mật khẩu với selfie khuôn mặt nhanh được đối khớp với ID ghi danh của học viên.' }

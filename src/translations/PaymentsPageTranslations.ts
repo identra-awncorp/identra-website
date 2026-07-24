@@ -607,7 +607,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
     body: 'Thu thập và xác minh giấy tờ định danh, tài liệu ở nhiều khu vực, đối chiếu với nguồn có thẩm quyền và sàng lọc lệnh trừng phạt trên một nền tảng duy nhất.',
     bullets: [
       { title: 'Hơn 150 cơ sở dữ liệu đăng ký toàn cầu', desc: 'Xác minh đăng ký doanh nghiệp tức thì trên nhiều khu vực pháp lý.' },
-      { title: 'Đối chiếu watchlist cho UBO', desc: 'Tự động sàng lọc lệnh trừng phạt, PEP và danh sách pháp lý địa phương đang hiệu lực.' }
+      { title: 'Đối chiếu danh sách cảnh báo cho UBO', desc: 'Tự động sàng lọc lệnh trừng phạt, PEP và danh sách pháp lý địa phương đang hiệu lực.' }
     ]
   },
   simulator: {
@@ -619,7 +619,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
       soleProp: {
         merchantName: 'Alex Mercer (Mercer Organics LLC)',
         buttonTitle: 'Alex Mercer (chủ hộ kinh doanh lý tưởng)',
-        buttonMeta: 'TIN khớp - watchlist sạch - tự động xác minh',
+        buttonMeta: 'TIN khớp - danh sách cảnh báo sạch - tự động xác minh',
         businessType: 'Bán lẻ nông sản hữu cơ',
         country: 'Hoa Kỳ',
         kybStatus: 'Verified',
@@ -635,7 +635,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
       crossBorder: {
         merchantName: 'Sato Precision Ltd (Hiroshi Sato)',
         buttonTitle: 'Sato Precision Ltd (Nhật Bản, xuyên biên giới)',
-        buttonMeta: 'Đăng ký còn hiệu lực - khớp watchlist một phần - xét duyệt thủ công',
+        buttonMeta: 'Đăng ký còn hiệu lực - trùng khớp một phần với danh sách cảnh báo - xét duyệt thủ công',
         businessType: 'Nhà xuất khẩu linh kiện tùy chỉnh',
         country: 'Nhật Bản',
         kybStatus: 'Review',
@@ -673,7 +673,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
       active: 'ĐANG HOẠT ĐỘNG',
       failed: 'THẤT BẠI / đã giải thể',
       step3: '[3/4] Đang sàng lọc lệnh trừng phạt và PEP cho Ultimate Beneficial Owners (UBOs)...',
-      watchlist: '[Lớp bảo vệ tuân thủ] Trạng thái kiểm tra watchlist: {status}.',
+      watchlist: '[LỚP BẢO VỆ TUÂN THỦ] Trạng thái kiểm tra danh sách cảnh báo: {status}.',
       step4: '[4/4] Đang đánh giá tín hiệu mạng và rủi ro giao dịch...',
       decision: '[Bộ máy quyết định rủi ro] Điểm rủi ro đã tính: {score}/100. Kết quả: {resolution}.'
     },
@@ -709,7 +709,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
     automated: 'TỰ ĐỘNG',
     flowActive: 'LUỒNG ĐANG HOẠT ĐỘNG',
     rows: [
-      { title: 'Quét watchlist định kỳ', desc: 'Quét hơn 4.500 cơ sở dữ liệu lệnh trừng phạt mỗi ngày', status: 'automated' },
+      { title: 'Sàng lọc danh sách cảnh báo định kỳ', desc: 'Đối chiếu hơn 4.500 cơ sở dữ liệu lệnh trừng phạt mỗi ngày', status: 'automated' },
       { title: 'Điều chỉnh hồ sơ rủi ro', desc: 'Phát hiện thay đổi trong phân loại pháp nhân của merchant', status: 'automated' },
       { title: 'Kích hoạt xác minh lại', desc: 'Buộc làm mới khi đăng ký doanh nghiệp hết hiệu lực', status: 'flow' }
     ]
@@ -734,7 +734,7 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
       { title: 'Xác minh TIN và VAT', desc: 'Xác minh mã số thuế tại Hoa Kỳ và toàn cầu bằng mạng lưới có thẩm quyền tức thì.' },
       { title: 'Phân loại ngành nghề', desc: 'Đánh giá rủi ro doanh nghiệp bằng chỉ mục phân loại NAICS và MCC tự động để ngăn gian lận merchant.' },
       { title: 'Dữ liệu tài chính', desc: 'Đánh giá sức khỏe tài chính của công ty bằng cách kiểm tra quyền lưu giữ, phán quyết hoặc làm giàu dữ liệu qua tích hợp Identra Marketplace.' },
-      { title: 'Sàng lọc chủ sở hữu doanh nghiệp', desc: 'Chọn nhiều phương thức xác minh để sàng lọc UBO với watchlist, adverse media và các nguồn khác.' },
+      { title: 'Sàng lọc chủ sở hữu doanh nghiệp', desc: 'Chọn nhiều phương thức xác minh để sàng lọc UBO theo danh sách cảnh báo, nguồn tin bất lợi và các nguồn khác.' },
       { title: 'Workflow tùy chỉnh', desc: 'Tạo tự động hóa và điều chỉnh mọi phần của quy trình KYB, bao gồm tích hợp với Salesforce và Zendesk.' },
       { title: 'Nhật ký kiểm toán tự động', desc: 'Lưu nhật ký tất cả kiểm tra KYB/KYC và quyết định tại một nơi để tạo dấu vết kiểm toán mà không cần lưu PII trong hệ thống của bạn.' }
     ]

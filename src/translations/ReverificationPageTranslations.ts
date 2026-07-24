@@ -759,7 +759,7 @@ export const reverificationPageTranslations = {
     operationsAuditLog: 'Nhật ký kiểm toán vận hành hợp nhất',
     auditLog1: '09:12:04 [CORE_ROUTING] Phát hiện sự kiện thay đổi tài khoản.',
     auditLog2: '09:12:05 [POLICY_TRIGGER] Đã gửi thử thách: khớp sinh trắc học 3D.',
-    auditLog3: '09:12:11 [LIVENESS] Đã nhận selfie. Trạng thái kiểm tra giả mạo: ĐẠT.',
+    auditLog3: '09:12:11 [XÁC MINH HIỆN DIỆN] Đã nhận selfie. Trạng thái kiểm tra giả mạo: ĐẠT.',
     auditLog4: '09:12:12 [MATCH] Điểm 99,42% vượt mức tối thiểu của chính sách. Đã xác minh.',
     auditLog5: '09:12:13 [ACTION] Đã kích hoạt webhook bên ngoài: mở khóa thanh toán Stripe.',
     platformTitle: 'Một nền tảng danh tính toàn diện',

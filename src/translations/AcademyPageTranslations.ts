@@ -465,11 +465,11 @@ export const ACADEMY_UI_TRANSLATIONS = {
     instructorLabel: 'Giảng viên',
     lastUpdated: 'Cập nhật lần cuối tháng 7 năm 2026',
     languagesLabel: 'Tiếng Anh • Phụ đề tiếng Anh',
-    reviewLabel: '??nh gi?',
+    reviewLabel: 'Đánh giá',
     dateLocale: 'vi-VN',
-    durationHoursMinutes: '{hours} gi? {minutes} ph?t',
-    durationHours: '{hours} gi?',
-    durationMinutes: '{minutes} ph?t',
+    durationHoursMinutes: '{hours} giờ {minutes} phút',
+    durationHours: '{hours} giờ',
+    durationMinutes: '{minutes} phút',
     levelLabel: 'Cấp độ: {level}',
     enrollmentStatus: 'Trạng thái Đăng ký',
     courseComplete: 'Đã hoàn thành Khóa học',
@@ -526,7 +526,7 @@ export const ACADEMY_UI_TRANSLATIONS = {
     statusLabel: 'TRẠNG THÁI',
     verifiedLedger: 'SỔ CÁI ĐÃ XÁC MINH',
     certifiesThat: 'Chứng chỉ này chứng nhận rằng',
-    certSyllabusBody: 'đã hoàn thành xuất sắc chương trình giảng dạy kiểm toán danh tính trực tuyến, thể hiện năng lực cốt lõi trong các khuôn khổ tuân thủ (KYC/AML), các phương pháp heuristic chiều sâu sinh trắc học (liveness 3D chủ động & thụ động), phân tích tài liệu pháp lý bằng thị giác máy tính và cấu trúc phân cấp KYB doanh nghiệp.',
+    certSyllabusBody: 'đã hoàn thành xuất sắc chương trình kiểm toán danh tính trực tuyến, thể hiện năng lực cốt lõi về tuân thủ KYC/AML, xác minh hiện diện 3D chủ động và thụ động, phân tích tài liệu bằng thị giác máy tính và cấu trúc KYB doanh nghiệp.',
     idSignatureLabel: 'Mã số & Chữ ký Xác minh',
     dateOfIssue: 'Ngày cấp:',
     authorizedSignature: 'Chữ ký Ủy quyền',
@@ -534,7 +534,7 @@ export const ACADEMY_UI_TRANSLATIONS = {
     downloadPdf: 'Tải xuống tệp PDF Chứng chỉ',
     compilingPdf: 'Đang kết xuất bản sao PDF...',
     shareCredentialId: 'Chia sẻ Mã chứng chỉ',
-    shareCredentialText: 'T?i ?? v??t qua b?i ??nh gi? ch?ng ch? Identra Identity Champion. M? h?c vi?n: {certId}',
+    shareCredentialText: 'Tôi đã vượt qua bài đánh giá chứng chỉ Identra Identity Champion. Mã học viên: {certId}',
     savedToastTitle: 'Đã lưu bản sao Chứng chỉ!',
     savedToastDesc: 'Dán văn bản này ở bất cứ đâu để chia sẻ chứng nhận vận hành chuyên nghiệp của bạn.',
     copyFailedToastTitle: 'Không thể sao chép chứng chỉ',
@@ -1453,55 +1453,55 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
   },
   vi: {
     levels: {
-      beginner: 'C? b?n',
-      intermediate: 'Trung c?p',
-      advanced: 'N?ng cao',
-      allLevels: 'M?i c?p ??',
+      beginner: 'Cơ bản',
+      intermediate: 'Trung cấp',
+      advanced: 'Nâng cao',
+      allLevels: 'Mọi cấp độ',
       Beginner: 'Sơ cấp',
       Intermediate: 'Trung cấp',
       Advanced: 'Cao cấp',
       'All Levels': 'Mọi cấp độ',
     },
     categories: {
-      fundamentals: 'N?n t?ng',
-      biometrics: 'Sinh tr?c h?c',
-      fraud: 'Gian l?n',
-      compliance: 'Tu?n th?',
+      fundamentals: 'Nền tảng',
+      biometrics: 'Sinh trắc học',
+      fraud: 'Gian lận',
+      compliance: 'Tuân thủ',
     },
     'course-kyc-aml': {
       title: 'Khái niệm cơ bản về tuân thủ KYC & AML',
       shortDesc: 'Thành thạo các hướng dẫn danh tính toàn cầu, danh sách PEP và các khuôn khổ rà soát lệnh trừng phạt.',
-      longDesc: 'Tìm hiểu các nguyên tắc chính chi phối bảo mật tài chính toàn cầu và mạng lưới tin cậy kỹ thuật số. Chương trình toàn diện này bao gồm Thẩm định Khách hàng tiêu chuẩn (CDD), rà soát AML tự động, danh sách PEP và thiết kế quy trình onboarding động dựa trên rủi ro.',
+      longDesc: 'Tìm hiểu các nguyên tắc chính chi phối bảo mật tài chính toàn cầu và mạng lưới tin cậy số. Chương trình bao gồm thẩm định khách hàng (CDD), sàng lọc AML tự động, danh sách PEP và thiết kế quy trình tiếp nhận dựa trên rủi ro.',
       instructorRole: 'Phó chủ tịch Tiêu chuẩn Tuân thủ Toàn cầu',
       whatYouWillLearn: [
         'Hiểu các nghĩa vụ pháp lý theo cấu trúc tuân thủ của BSA, FinCEN và khu vực.',
         'Phân biệt giữa Thẩm định Khách hàng (CDD) đơn giản, tiêu chuẩn và tăng cường.',
         'Tận dụng công nghệ so khớp mờ để thực hiện xác thực chính xác các lệnh trừng phạt và PEP.',
-        'Thiết kế mô hình onboarding có độ tin cậy và khả năng chống chịu cao bằng cách sử dụng sàng lọc động dựa trên rủi ro.'
+        'Thiết kế mô hình tiếp nhận có độ tin cậy cao bằng phương thức sàng lọc động dựa trên rủi ro.'
       ],
       chapters: [
         {
           title: 'Mô-đun 1: Kiến trúc pháp lý của niềm tin kỹ thuật số',
-          description: 'Đi sâu vào các chỉ thị phòng chống rửa tiền (AML), các quy định khu vực (FinCEN, MiCA, GDPR) và cách chúng quản lý quá trình onboarding dịch vụ tài chính.'
+          description: 'Tìm hiểu chuyên sâu các chỉ thị phòng, chống rửa tiền (AML), quy định khu vực (FinCEN, MiCA, GDPR) và cách áp dụng trong quy trình tiếp nhận khách hàng tài chính.'
         },
         {
           title: 'Mô-đun 2: Các lệnh trừng phạt, PEP và đối khớp cơ sở dữ liệu danh sách theo dõi',
           description: 'Giải mã việc tra cứu dữ liệu. Tìm hiểu cách logic mờ đánh giá bí danh, lỗi chính tả và chữ viết phi Latinh so với các sổ đăng ký của cơ quan thực thi pháp luật thực tế.'
         },
         {
-          title: 'Mô-đun 3: Thiết kế quy trình onboarding động dựa trên rủi ro',
+          title: 'Mô-đun 3: Thiết kế quy trình tiếp nhận động dựa trên rủi ro',
           description: 'Chiến lược áp dụng kiểm tra thụ động không ma sát (IP, dấu vân tay thiết bị) cho người dùng rủi ro thấp và nâng cấp lên IDV cứng khi các cảnh báo rủi ro được kích hoạt.'
         }
       ]
     },
     'course-biometrics': {
-      title: 'Sinh trắc học & Phân tích pháp lý liveness 3D',
+      title: 'Sinh trắc học và xác minh hiện diện 3D',
       shortDesc: 'Khám phá khoa học đằng sau việc so khớp khuôn mặt và phát hiện deepfake tạo sinh.',
-      longDesc: 'Đi sâu vào các mạng thần kinh nhân tạo phân tích cấu trúc khuôn mặt động. Tìm hiểu sự khác biệt về mặt vật lý, sinh lý và kỹ thuật số giữa so khớp khuôn mặt thông thường và phát hiện liveness sinh trắc học 3D để ngăn chặn giả mạo tổng hợp.',
+      longDesc: 'Tìm hiểu cách mạng nơ-ron phân tích cấu trúc khuôn mặt động, đồng thời phân biệt đối chiếu khuôn mặt thông thường với xác minh hiện diện sinh trắc học 3D để ngăn chặn giả mạo tổng hợp.',
       instructorRole: 'Nhà khoa học Thị giác Máy tính Chủ chốt',
       whatYouWillLearn: [
         'Thành thạo toán học đằng sau ánh xạ tọa độ khuôn mặt 3D và tính toán điểm so khớp khoảng cách vectơ.',
-        'Phân biệt giữa Liveness chủ động (yêu cầu người dùng hành động) và Liveness thụ động (hoạt động im lặng trong nền).',
+        'Phân biệt xác minh hiện diện chủ động (yêu cầu người dùng thao tác) và thụ động (tự động phân tích trong nền).',
         'Phân tích các hình thức tấn công tiêm nhiễm và trình bày như ảnh in, mặt nạ silicon chất lượng cao và vòng lặp thiết bị.',
         'Xác định phương tiện tổng hợp do AI điều khiển và deepfake thông qua phân tích tì vết thời gian và hồ sơ nhiễu cảm biến.'
       ],
@@ -1645,8 +1645,8 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
           description: 'Phát hiện toán học các mô hình Mạng Đối địch Tạo sinh (GAN), lưới pixel và các tì vết làm mịn cạnh khuôn mặt.'
         },
         {
-          title: 'Mô-đun 3: Thiết kế các thử thách Liveness chủ động',
-          description: 'Tạo các thử thách liveness ngẫu nhiên động (phản xạ màu sắc, gợi ý từ ngữ) không thể ghi hình trước.'
+          title: 'Mô-đun 3: Thiết kế thử thách xác minh hiện diện chủ động',
+          description: 'Tạo các thử thách ngẫu nhiên như phản xạ màu sắc hoặc đọc từ khóa để ngăn việc sử dụng video quay sẵn.'
         }
       ]
     },
@@ -1819,14 +1819,14 @@ export const ACADEMY_QUIZ_TRANSLATIONS = {
   vi: {
     questions: [
       {
-        question: 'Mục tiêu chính của xác thực liveness sinh trắc học thụ động là gì?',
+        question: 'Mục tiêu chính của xác minh hiện diện sinh trắc học thụ động là gì?',
         options: [
           'Kiểm tra xem mã vạch quang học ở mặt sau tài liệu có khớp với ảnh mặt trước hay không.',
           'Phân tích độ sâu bề mặt, cấu trúc da và phản xạ ánh sáng trên một ảnh tự chụp duy nhất để chứng minh sự hiện diện vật lý của con người một cách im lặng.',
           'Hướng dẫn người dùng gật đầu, nháy mắt và quay đầu theo nhiều hướng khác nhau.',
           'Băm tên người dùng đối chiếu với cơ sở danh bạ của văn phòng tín dụng.'
         ],
-        explanation: 'Kiểm tra liveness thụ động xác nhận sự hiện diện của con người mà không yêu cầu người dùng thực hiện các thao tác phức tạp, bằng cách sử dụng phản xạ ánh sáng tinh tế, vectơ độ sâu và phân tích kết cấu.'
+        explanation: 'Xác minh hiện diện thụ động xác nhận người thật đang ở trước camera mà không yêu cầu thao tác phức tạp, thông qua phản xạ ánh sáng, vectơ độ sâu và phân tích kết cấu.'
       },
       {
         question: 'Làm thế nào các khuôn khổ thị giác máy tính tự động phát hiện ngày sinh bị chỉnh sửa trên ảnh hộ chiếu?',

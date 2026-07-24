@@ -552,7 +552,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "waitingInput": "ĐANG CHỜ TƯƠNG TÁC",
       "viewVerdict": "Xem kết luận",
       "runAgain": "Chạy lại",
-      "ledgerTitle": "Giao dịch nhật ký sandbox bảo mật",
+      "ledgerTitle": "Nhật ký phiên mô phỏng được bảo mật",
       "logs": {
         "launch": "[SYSTEM] Đã khởi chạy trang demo tương tác trực tiếp: {title}",
         "environment": "[ENVIRONMENT] Đang thiết lập ngữ cảnh giao diện mô phỏng...",

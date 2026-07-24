@@ -934,7 +934,7 @@ export const CANDIDATE_VERIFICATION_TRANSLATIONS = {
     exploreCard1Title: 'Xác minh danh tính nhân viên và người lao động.',
     exploreCard1Desc: 'Đáp ứng hướng dẫn xác minh nghiêm ngặt bằng nền tảng xác minh mạnh mẽ của chúng tôi. Khám phá Age Assurance ->',
     exploreCard2Title: 'Onboard nhanh hơn với kiểm tra lý lịch.',
-    exploreCard2Desc: 'Đánh giá ứng viên qua kiểm tra thông tin lý lịch và watchlist. Khám phá Database checks ->',
+    exploreCard2Desc: 'Đánh giá ứng viên qua kiểm tra lý lịch và danh sách cảnh báo. Khám phá tính năng kiểm tra cơ sở dữ liệu ->',
     ctaTitle: 'Sẵn sàng bắt đầu?',
     ctaDesc: 'Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay.',
     tryDemo: 'Trải nghiệm demo',

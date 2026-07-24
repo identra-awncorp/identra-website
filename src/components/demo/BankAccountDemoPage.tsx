@@ -5,7 +5,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { AlertCircle, ArrowLeft, ArrowRight, Camera, Check, CheckCircle2, CreditCard, Database, Fingerprint, Globe, Landmark, Lock, Mail, MapPin, Phone, QrCode, RefreshCw, ShieldAlert, ShieldCheck, Smartphone, Sparkles, Terminal, Truck, User, X } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, Camera, Check, CheckCircle2, CreditCard, Database, Fingerprint, Landmark, Lock, Mail, MapPin, Phone, QrCode, RefreshCw, ShieldAlert, ShieldCheck, Smartphone, Sparkles, Terminal, Truck, User, X } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/BankAccountDemoPageTranslations';
@@ -16,6 +16,27 @@ import IdentityFlowGraph from './IdentityFlowGraph';
 
 type BankAccountType = 'checking' | 'savings' | 'business';
 type BankAccountOnboardingMethod = 'manual' | 'identra';
+type VerificationRunStatus = 'idle' | 'running' | 'passed';
+
+interface VerificationProgressStep {
+  label: string;
+  details: string[];
+  startIndex: number;
+}
+
+interface VerificationProgressState {
+  steps: VerificationProgressStep[];
+  detailCount: number;
+  totalDetails: number;
+  status: VerificationRunStatus;
+}
+
+const EMPTY_VERIFICATION_PROGRESS: VerificationProgressState = {
+  steps: [],
+  detailCount: 0,
+  totalDetails: 0,
+  status: 'idle',
+};
 
 interface BankAccountClientSimulatorProps {
   currentStepIdx: number;
@@ -25,8 +46,8 @@ interface BankAccountClientSimulatorProps {
   advanceStep: (stepLogs: string[]) => void;
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
-  playTingTingSound: () => void;
   scheduleTimeout: ManagedTimeoutScheduler;
+  onVerificationProgressChange: (progress: VerificationProgressState) => void;
 }
 
 /**
@@ -86,8 +107,8 @@ function BankAccountClientSimulator({
   advanceStep,
   addLog,
   isSuccess,
-  playTingTingSound,
-  scheduleTimeout
+  scheduleTimeout,
+  onVerificationProgressChange,
 }: BankAccountClientSimulatorProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -108,8 +129,9 @@ function BankAccountClientSimulator({
   const [phone, setPhone] = useState('');
   const [bankAddress, setBankAddress] = useState('');
   const [businessLegalName, setBusinessLegalName] = useState('');
+  const [businessRegistrationNumber, setBusinessRegistrationNumber] = useState('');
+  const [businessOwnerIdentityNumber, setBusinessOwnerIdentityNumber] = useState('');
   const [businessLicenseFileName, setBusinessLicenseFileName] = useState('');
-  const [bankIdScanned, setBankIdScanned] = useState(false);
   const [bankLivenessScanned, setBankLivenessScanned] = useState(false);
   const [bankAmlCleared, setBankAmlCleared] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -119,8 +141,9 @@ function BankAccountClientSimulator({
   const [qrSeconds, setQrSeconds] = useState(5);
   const [isCryptographicallySecured, setIsCryptographicallySecured] = useState(false);
 
-  // Step 2 Automated Gov ID timer state (for Identra QR)
-  const [govIdSeconds, setGovIdSeconds] = useState(10);
+  // Step 2 verification state shared by every account and onboarding flow.
+  const [verificationDetailCount, setVerificationDetailCount] = useState(0);
+  const [verificationStatus, setVerificationStatus] = useState<VerificationRunStatus>('idle');
 
   // Step 4 Server-side Automated AML states
   const [amlSeconds, setAmlSeconds] = useState(10);
@@ -128,6 +151,55 @@ function BankAccountClientSimulator({
   const isBusinessAccount = accountType === 'business';
   const isUsingIdentra = onboardingMethod === 'identra';
   const isProfileVerifiedByIdentra = isUsingIdentra && isCryptographicallySecured;
+  const isBusinessOwnershipMatched = Boolean(
+    isBusinessAccount
+    && businessRegistrationNumber.trim()
+    && businessOwnerIdentityNumber.trim()
+    && bankSsn.trim()
+    && businessOwnerIdentityNumber === bankSsn,
+  );
+  const verificationSteps = useMemo<VerificationProgressStep[]>(() => {
+    let startIndex = 0;
+    const applicableSteps = isBusinessAccount
+      ? (t.businessVerificationSteps || [])
+      : (t.businessVerificationSteps || []).slice(0, 1);
+
+    return applicableSteps.map((step: {
+      label: string;
+      identraDetails: string[];
+      manualDetails: string[];
+    }) => {
+      const details = isUsingIdentra ? step.identraDetails : step.manualDetails;
+      const normalizedStep = { label: step.label, details, startIndex };
+      startIndex += details.length;
+      return normalizedStep;
+    });
+  }, [isBusinessAccount, isUsingIdentra, t.businessVerificationSteps]);
+  const verificationEvents = useMemo(
+    () => verificationSteps.flatMap((step, stepIndex) =>
+      step.details.map((detail, detailIndex) => ({
+        detail,
+        isLastInStep: detailIndex === step.details.length - 1,
+        stepIndex,
+      }))),
+    [verificationSteps],
+  );
+  const verificationProgress = useMemo<VerificationProgressState>(() => ({
+    steps: verificationSteps,
+    detailCount: verificationDetailCount,
+    totalDetails: verificationEvents.length,
+    status: verificationStatus,
+  }), [verificationDetailCount, verificationEvents.length, verificationStatus, verificationSteps]);
+  const verificationPercent = Math.round(
+    (verificationDetailCount / Math.max(1, verificationEvents.length)) * 100,
+  );
+  const activeVerificationDetail = verificationStatus === 'running'
+    ? verificationEvents[verificationDetailCount]?.detail
+    : null;
+
+  useEffect(() => {
+    onVerificationProgressChange(verificationProgress);
+  }, [currentStepIdx, onVerificationProgressChange, verificationProgress]);
 
   // Handle 5-second QR scanning countdown
   useEffect(() => {
@@ -142,7 +214,8 @@ function BankAccountClientSimulator({
       setBankAddress(uiT.qrAddress);
       if (accountType === 'business') {
         setBusinessLegalName(uiT.qrBusinessName);
-        setBusinessLicenseFileName(uiT.qrBusinessLicenseName);
+        setBusinessRegistrationNumber(uiT.qrBusinessRegistrationNumber);
+        setBusinessOwnerIdentityNumber(uiT.qrBusinessOwnerIdentityNumber);
         addLog(uiT.businessCredentialVerifiedLog, 'ok');
       }
       setIsCryptographicallySecured(true);
@@ -157,22 +230,53 @@ function BankAccountClientSimulator({
     return () => clearTimeout(timer);
   }, [isQrModalOpen, qrSeconds, accountType, addLog, uiT]);
 
-  // Handle 10-second Automated Government ID verification for Identra QR in Step 2
+  // Run the input-dependent verification sequence in Step 2.
   useEffect(() => {
-    if (currentStepIdx !== 1 || !isCryptographicallySecured || completedSteps[1]) return;
+    if (currentStepIdx !== 1 || completedSteps[1] || verificationEvents.length === 0) return;
 
-    if (govIdSeconds <= 0) {
-      addLog(uiT.govIdSuccessLog, 'ok');
-      advanceStep([t.govIdVerifiedSuccess]);
+    if (verificationStatus === 'idle') {
+      setVerificationDetailCount(0);
+      setVerificationStatus('running');
+      addLog(
+        isBusinessAccount ? t.businessVerificationStartedLog : verificationSteps[0].label,
+        'processing',
+      );
+      return;
+    }
+
+    if (verificationStatus !== 'running') return;
+
+    if (verificationDetailCount >= verificationEvents.length) {
+      setVerificationStatus('passed');
+      setIsProcessingAction(false);
+      advanceStep([
+        isBusinessAccount ? t.businessVerificationSuccess : t.govIdVerifiedSuccess,
+      ]);
       return;
     }
 
     const timer = setTimeout(() => {
-      setGovIdSeconds((prev) => prev - 1);
-    }, 1000);
+      const event = verificationEvents[verificationDetailCount];
+      addLog(event.detail, event.isLastInStep ? 'ok' : 'processing');
+      setVerificationDetailCount((count) => count + 1);
+    }, 1100);
 
     return () => clearTimeout(timer);
-  }, [currentStepIdx, isCryptographicallySecured, govIdSeconds, completedSteps, advanceStep, addLog, t, uiT]);
+  }, [
+    addLog,
+    advanceStep,
+    completedSteps,
+    currentStepIdx,
+    isBusinessAccount,
+    isUsingIdentra,
+    t.businessVerificationStartedLog,
+    t.businessVerificationSuccess,
+    t.govIdVerifiedSuccess,
+    verificationDetailCount,
+    verificationEvents,
+    verificationStatus,
+    verificationSteps,
+  ]);
 
   // Handle 10-second Server-side Automated AML screening for Step 4
   useEffect(() => {
@@ -218,15 +322,17 @@ function BankAccountClientSimulator({
       setPhone('');
       setBankAddress('');
       setBusinessLegalName('');
+      setBusinessRegistrationNumber('');
+      setBusinessOwnerIdentityNumber('');
       setBusinessLicenseFileName('');
-      setBankIdScanned(false);
       setBankLivenessScanned(false);
       setBankAmlCleared(false);
       setError(null);
       setIsQrModalOpen(false);
       setQrSeconds(5);
       setIsCryptographicallySecured(false);
-      setGovIdSeconds(10);
+      setVerificationDetailCount(0);
+      setVerificationStatus('idle');
       setAmlSeconds(10);
       setAmlStatus('idle');
     } else {
@@ -235,18 +341,37 @@ function BankAccountClientSimulator({
   }, [currentStepIdx]);
 
   const handleAccountTypeChange = (nextAccountType: BankAccountType) => {
-    setAccountType(nextAccountType);
-    setError(null);
-
-    if (nextAccountType !== 'business') {
-      setBusinessLegalName('');
-      setBusinessLicenseFileName('');
+    if (nextAccountType === accountType) {
+      setError(null);
       return;
     }
 
-    if (isProfileVerifiedByIdentra) {
-      setBusinessLegalName(uiT.qrBusinessName);
-      setBusinessLicenseFileName(uiT.qrBusinessLicenseName);
+    setAccountType(nextAccountType);
+    setError(null);
+
+    if (isUsingIdentra) {
+      setBankName('');
+      setBankSsn('');
+      setEmail('');
+      setPhone('');
+      setBankAddress('');
+      setBusinessLegalName('');
+      setBusinessRegistrationNumber('');
+      setBusinessOwnerIdentityNumber('');
+      setBusinessLicenseFileName('');
+      setIsQrModalOpen(false);
+      setQrSeconds(5);
+      setIsCryptographicallySecured(false);
+      setVerificationDetailCount(0);
+      setVerificationStatus('idle');
+      return;
+    }
+
+    if (nextAccountType !== 'business') {
+      setBusinessLegalName('');
+      setBusinessRegistrationNumber('');
+      setBusinessOwnerIdentityNumber('');
+      setBusinessLicenseFileName('');
     }
   };
 
@@ -264,10 +389,14 @@ function BankAccountClientSimulator({
     setPhone('');
     setBankAddress('');
     setBusinessLegalName('');
+    setBusinessRegistrationNumber('');
+    setBusinessOwnerIdentityNumber('');
     setBusinessLicenseFileName('');
     setIsQrModalOpen(false);
     setQrSeconds(5);
     setIsCryptographicallySecured(false);
+    setVerificationDetailCount(0);
+    setVerificationStatus('idle');
   };
 
   const startQrScanModal = () => {
@@ -278,10 +407,10 @@ function BankAccountClientSimulator({
     addLog(uiT.qrScanStartedLog, 'action');
   };
 
-  const accountOptions: Array<{ id: BankAccountType; label: string; badge: string; requirement: string }> = [
-    { id: 'checking', label: t.checkingAccount, badge: t.popularBadge, requirement: t.checkingRequirement },
-    { id: 'savings', label: t.savingsAccount, badge: t.apyBadge, requirement: t.savingsRequirement },
-    { id: 'business', label: t.businessAccount, badge: t.proBadge, requirement: t.businessRequirement },
+  const accountOptions: Array<{ id: BankAccountType; label: string; badge: string }> = [
+    { id: 'checking', label: t.checkingAccount, badge: t.popularBadge },
+    { id: 'savings', label: t.savingsAccount, badge: t.apyBadge },
+    { id: 'business', label: t.businessAccount, badge: t.proBadge },
   ];
 
   return (
@@ -348,7 +477,6 @@ function BankAccountClientSimulator({
                   >
                     <span className="block text-xs font-bold">{acc.label}</span>
                     <span className="block text-[10px] text-slate-400 font-mono mt-0.5">{acc.badge}</span>
-                    <span className="block text-[10px] text-slate-500 leading-snug mt-1.5">{acc.requirement}</span>
                   </button>
                 ))}
               </div>
@@ -623,20 +751,22 @@ function BankAccountClientSimulator({
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.businessDetailsTitle}</h4>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        {isUsingIdentra ? t.businessCredentialNotice : t.businessRequirement}
-                      </p>
+                      {isUsingIdentra && (
+                        <p className="text-[11px] text-slate-500 leading-relaxed">
+                          {t.businessCredentialNotice}
+                        </p>
+                      )}
                     </div>
                     {isProfileVerifiedByIdentra && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
                         <ShieldCheck className="h-3 w-3" />
-                        {t.cryptoVerifiedPill}
+                        {isBusinessOwnershipMatched ? t.businessOwnershipMatched : t.cryptoVerifiedPill}
                       </span>
                     )}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5 md:col-span-2">
                       <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.businessLegalName}</label>
                       <div className="relative">
                         <Landmark className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -668,24 +798,78 @@ function BankAccountClientSimulator({
                       </div>
                     </div>
 
-                    {isUsingIdentra ? (
-                      <div className={`rounded-xl border p-3.5 flex items-center gap-3 ${
-                        isProfileVerifiedByIdentra ? 'border-emerald-200 bg-white text-emerald-900' : 'border-slate-200 bg-white text-slate-500'
-                      }`}>
-                        <Database className={`h-5 w-5 shrink-0 ${isProfileVerifiedByIdentra ? 'text-emerald-600' : 'text-slate-400'}`} />
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold truncate">
-                            {businessLicenseFileName || t.businessRegistrationLicense}
-                          </p>
-                          <p className="text-[11px] leading-relaxed">
-                            {isProfileVerifiedByIdentra ? t.businessLicenseUploaded : t.businessCredentialNotice}
-                          </p>
-                        </div>
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+                        {t.businessRegistrationNumber}
+                      </label>
+                      <div className="relative">
+                        <Database className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={businessRegistrationNumber}
+                          onChange={(event) => {
+                            if (!isUsingIdentra) {
+                              setError(null);
+                              setBusinessRegistrationNumber(event.target.value);
+                            }
+                          }}
+                          readOnly={isUsingIdentra}
+                          disabled={isProcessingAction}
+                          placeholder={isUsingIdentra ? t.identraVerifiedFieldPlaceholder : t.businessRegistrationNumberPlaceholder}
+                          className={`w-full border rounded-xl pl-10 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 disabled:opacity-60 disabled:bg-slate-50 transition-all ${
+                            error && !businessRegistrationNumber.trim()
+                              ? 'border-rose-300 focus:ring-rose-200'
+                              : isProfileVerifiedByIdentra
+                                ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed'
+                                : isUsingIdentra
+                                  ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed'
+                                  : 'bg-white border-slate-200'
+                          }`}
+                        />
+                        {isProfileVerifiedByIdentra && (
+                          <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                        )}
                       </div>
-                    ) : (
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">
+                        {t.businessOwnerIdentityNumber}
+                      </label>
+                      <div className="relative">
+                        <Fingerprint className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={businessOwnerIdentityNumber}
+                          onChange={(event) => {
+                            if (!isUsingIdentra) {
+                              setError(null);
+                              setBusinessOwnerIdentityNumber(event.target.value);
+                            }
+                          }}
+                          readOnly={isUsingIdentra}
+                          disabled={isProcessingAction}
+                          placeholder={isUsingIdentra ? t.identraVerifiedFieldPlaceholder : t.businessOwnerIdentityNumberPlaceholder}
+                          className={`w-full border rounded-xl pl-10 pr-10 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 disabled:opacity-60 disabled:bg-slate-50 transition-all ${
+                            error && (!businessOwnerIdentityNumber.trim() || businessOwnerIdentityNumber !== bankSsn)
+                              ? 'border-rose-300 focus:ring-rose-200'
+                              : isProfileVerifiedByIdentra
+                                ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed'
+                                : isUsingIdentra
+                                  ? 'border-slate-200 bg-slate-50 text-slate-400 cursor-not-allowed'
+                                  : 'bg-white border-slate-200'
+                          }`}
+                        />
+                        {isProfileVerifiedByIdentra && (
+                          <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
+                        )}
+                      </div>
+                    </div>
+
+                    {!isUsingIdentra && (
                       <label className={`rounded-xl border p-3.5 flex items-center gap-3 bg-white transition cursor-pointer hover:border-[#354CE1]/50 ${
                         error && !businessLicenseFileName ? 'border-rose-300 bg-rose-50/40' : 'border-slate-200'
-                      }`}>
+                      } md:col-span-2`}>
                         <Camera className="h-5 w-5 text-[#354CE1] shrink-0" />
                         <div className="min-w-0">
                           <p className="text-xs font-bold text-slate-900 truncate">
@@ -744,6 +928,18 @@ function BankAccountClientSimulator({
                   setError(t.businessLegalNameError);
                   return;
                 }
+                if (isBusinessAccount && !businessRegistrationNumber.trim()) {
+                  setError(t.businessRegistrationNumberError);
+                  return;
+                }
+                if (isBusinessAccount && !businessOwnerIdentityNumber.trim()) {
+                  setError(t.businessOwnerIdentityNumberError);
+                  return;
+                }
+                if (isBusinessAccount && !isBusinessOwnershipMatched) {
+                  setError(t.businessOwnershipMismatchError);
+                  return;
+                }
                 if (isBusinessAccount && !isProfileVerifiedByIdentra && !businessLicenseFileName) {
                   setError(t.businessLicenseError);
                   return;
@@ -758,8 +954,14 @@ function BankAccountClientSimulator({
                     ...(isBusinessAccount
                       ? [
                         isProfileVerifiedByIdentra
-                          ? formatText(logT.businessCredentialResolved, { businessName: businessLegalName, fileName: businessLicenseFileName })
-                          : formatText(logT.businessLicenseSubmitted, { fileName: businessLicenseFileName }),
+                          ? formatText(logT.businessCredentialResolved, {
+                            businessName: businessLegalName,
+                            registrationNumber: businessRegistrationNumber,
+                          })
+                          : formatText(logT.businessLicenseSubmitted, {
+                            fileName: businessLicenseFileName,
+                            registrationNumber: businessRegistrationNumber,
+                          }),
                       ]
                       : []),
                   ]);
@@ -795,108 +997,56 @@ function BankAccountClientSimulator({
             className="space-y-5"
           >
             <div className="bg-[#354CE1]/5 p-4 rounded-2xl border border-indigo-100/40 text-xs text-indigo-950">
-              {t.step2Description}
+              {isBusinessAccount
+                ? (isUsingIdentra ? t.businessVerificationIdentraDescription : t.businessVerificationManualDescription)
+                : t.step2Description}
             </div>
 
-            {/* If filled via Identra QR: Automated 10s Verification */}
-            {isCryptographicallySecured ? (
-              <div className="bg-[#FAFBFD] p-6 rounded-3xl border border-indigo-100 shadow-xs flex flex-col items-center justify-center text-center space-y-4">
-                <div className="relative h-20 w-20 flex items-center justify-center">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
-                    className="absolute inset-0 rounded-full border-4 border-[#354CE1]/20 border-t-[#354CE1]"
-                  />
-                  <ShieldCheck className="h-10 w-10 text-[#354CE1]" />
-                </div>
-
-                <div className="space-y-1">
-                  <h4 className="font-bold text-slate-900 text-sm sm:text-base">
-                    {t.verifyingGovIdTitle}
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900">
+                    {isBusinessAccount ? t.businessVerificationTitle : verificationSteps[0]?.label}
                   </h4>
-                  <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                    {t.verifyingGovIdDesc}
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    {isUsingIdentra ? t.businessVerificationIdentraFlow : t.businessVerificationManualFlow}
                   </p>
                 </div>
-
-                {/* Progress pill & countdown */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#354CE1]/10 text-[#354CE1] text-xs font-mono font-bold">
-                  <Sparkles className="h-3.5 w-3.5 animate-spin" />
-                  <span>
-                    {formatText(uiT.verifyingProgressLabel, {
-                      seconds: govIdSeconds,
-                      percent: Math.round(((10 - govIdSeconds) / 10) * 100),
-                    })}
-                  </span>
-                </div>
-
-                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-[#354CE1] to-emerald-500"
-                    style={{ width: `${((10 - govIdSeconds) / 10) * 100}%` }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#354CE1]/20 bg-[#354CE1]/5 px-3 py-1 text-[10px] font-mono font-bold text-[#354CE1]">
+                  <Sparkles className="h-3 w-3 animate-spin" />
+                  {verificationPercent}%
+                </span>
               </div>
-            ) : (
-              /* If manual entry: Manual ID document scan button */
-              <>
-                <div className="bg-slate-50 aspect-video rounded-2xl border border-slate-200 relative overflow-hidden flex flex-col items-center justify-center text-slate-600 shadow-inner">
-                  {/* Scanning Laser Line */}
-                  {bankIdScanned && (
-                    <div className="absolute inset-x-0 h-1 bg-[#354CE1] shadow-[0_0_15px_#354CE1] animate-[bounce_2s_infinite] z-20" />
-                  )}
-                  {/* Passport graphic */}
-                  <div className="relative z-10 w-64 bg-white rounded-xl border border-slate-200 p-4 space-y-3 shadow-md">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                      <div className="flex items-center gap-1.5 text-[#354CE1]">
-                        <Globe className="w-4 h-4" />
-                        <span className="text-[9px] font-mono font-bold tracking-widest uppercase">{t.passportTag}</span>
-                      </div>
-                      <div className="h-2 w-5 bg-[#354CE1]/20 rounded" />
-                    </div>
-                    <div className="flex gap-3">
-                      <div className="w-16 h-20 bg-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
-                        <User className="w-8 h-8 text-slate-400" />
-                      </div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-2 bg-slate-200 rounded w-5/6" />
-                        <div className="h-2 bg-slate-200 rounded w-1/2" />
-                        <div className="h-2 bg-slate-200 rounded w-2/3" />
-                        <div className="h-2.5 bg-[#354CE1]/10 border border-[#354CE1]/20 rounded font-mono text-[8px] text-[#354CE1] px-1.5 py-0.5 mt-2 flex items-center gap-1">
-                          <ShieldCheck className="w-2.5 h-2.5" />
-                          <span>{t.rfidActiveTag}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <button
-                  onClick={() => {
-                    setBankIdScanned(true);
-                    setIsProcessingAction(true);
-                    addLog(logT.extractingGovernmentId, 'action');
-                    scheduleTimeout(() => {
-                      setIsProcessingAction(false);
-                      setBankIdScanned(false);
-                      advanceStep([
-                        formatText(logT.documentOcrSuccessful, { holder: (bankName || uiT.defaultHolderName).toUpperCase() }),
-                      ]);
-                    }, 2500);
+              <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-[#354CE1] to-emerald-500"
+                  animate={{
+                    width: `${verificationPercent}%`,
                   }}
-                  disabled={isProcessingAction}
-                  className={`w-full py-3.5 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 ${
-                    isProcessingAction
-                      ? 'bg-slate-400 opacity-60 cursor-not-allowed'
-                      : 'bg-[#354CE1] hover:bg-[#2539BE] cursor-pointer shadow-lg shadow-[#354CE1]/20'
-                  }`}
-                >
-                  <Camera className="w-4 h-4 text-[#FFBF43]" />
-                  <span>{t.scanIdDocumentNow}</span>
-                </button>
-              </>
-            )}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+
+              <div className="min-h-12">
+                <AnimatePresence mode="wait">
+                  {activeVerificationDetail && (
+                    <motion.div
+                      key={activeVerificationDetail}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      className="flex min-h-12 items-center gap-3 rounded-xl border border-[#354CE1]/20 bg-[#354CE1]/5 px-4 py-3"
+                    >
+                      <span className="h-2 w-2 shrink-0 animate-ping rounded-full bg-[#354CE1]" />
+                      <p className="text-[11px] font-semibold leading-relaxed text-[#354CE1]">
+                        {activeVerificationDetail}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
           </motion.div>
         )}
 
@@ -1326,6 +1476,10 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const [verificationProgress, setVerificationProgress] = useState<VerificationProgressState>(EMPTY_VERIFICATION_PROGRESS);
+  const handleVerificationProgressChange = useCallback((progress: VerificationProgressState) => {
+    setVerificationProgress(progress);
+  }, []);
 
   // Initialize terminal logs
   useEffect(() => {
@@ -1336,6 +1490,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
+    setVerificationProgress(EMPTY_VERIFICATION_PROGRESS);
     setSimulationLogs([
       formatText(t.logs.launch, { title }),
       t.logs.environment,
@@ -1401,6 +1556,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
+    setVerificationProgress(EMPTY_VERIFICATION_PROGRESS);
     setSimulationLogs([
       formatText(t.logs.reset, { title: scenario.title }),
       t.logs.resetInstruction
@@ -1465,14 +1621,14 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
           <div className="lg:col-span-7 space-y-6">
             <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-xl overflow-hidden relative">
               {/* Device Header Bar */}
-              <div className="bg-slate-900 text-slate-400 px-6 py-4 flex items-center justify-between border-b border-slate-800">
+              <div className="bg-[#F7F8FC] text-slate-500 px-6 py-4 flex items-center justify-between border-b border-slate-200">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500" />
                   <span className="w-3 h-3 rounded-full bg-amber-500" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500" />
                 </div>
-                <div className="text-[11px] font-mono tracking-wider font-semibold bg-slate-800 text-slate-300 px-3 py-1 rounded-full flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 text-emerald-500" />
+                <div className="text-[11px] font-mono tracking-wider font-semibold bg-white text-slate-700 px-3 py-1 rounded-full border border-slate-200 flex items-center gap-1.5 shadow-2xs">
+                  <Smartphone className="w-3.5 h-3.5 text-[#354CE1]" />
                   <span>{t.clientEmulator}</span>
                 </div>
                 <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
@@ -1488,8 +1644,8 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                   advanceStep={advanceStep}
                   addLog={addLog}
                   isSuccess={isSuccess}
-                  playTingTingSound={playTingTingSound}
                   scheduleTimeout={scheduleTimeout}
+                  onVerificationProgressChange={handleVerificationProgressChange}
                 />
               </div>
             </div>
@@ -1552,7 +1708,38 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                 {scenario.steps.map((st, sIdx) => {
                   const isActive = currentStepIdx === sIdx && !isSuccess;
                   const isDone = completedSteps[sIdx] || isSuccess;
-                  const subChecks: string[] = t.subChecks[scenario.id]?.[sIdx] || [];
+                  const staticSubChecks: string[] = t.subChecks[scenario.id]?.[sIdx] || [];
+                  const verificationCheckRows: Array<{
+                    label: string;
+                    status: 'pending' | 'active' | 'done';
+                  }> = verificationProgress.steps.length > 1
+                    ? verificationProgress.steps.map((step) => {
+                      const stepEndIndex = step.startIndex + step.details.length;
+                      const isStepDone = verificationProgress.detailCount >= stepEndIndex;
+                      const isStepActive = verificationProgress.status === 'running'
+                        && verificationProgress.detailCount >= step.startIndex
+                        && verificationProgress.detailCount < stepEndIndex;
+                      const activeDetailIndex = verificationProgress.detailCount - step.startIndex;
+
+                      return {
+                        label: isStepActive
+                          ? (step.details[activeDetailIndex] || step.label)
+                          : step.label,
+                        status: isStepDone ? 'done' : isStepActive ? 'active' : 'pending',
+                      };
+                    })
+                    : (verificationProgress.steps[0]?.details || []).map((detail, detailIndex) => ({
+                      label: detail,
+                      status: detailIndex < verificationProgress.detailCount
+                        ? 'done'
+                        : detailIndex === verificationProgress.detailCount
+                          && verificationProgress.status === 'running'
+                          ? 'active'
+                          : 'pending',
+                    }));
+                  const subChecks = sIdx === 1 && verificationProgress.steps.length > 0
+                    ? verificationCheckRows.map((row) => row.label)
+                    : staticSubChecks;
 
                   return (
                     <div
@@ -1616,22 +1803,24 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                               if (isDone) {
                                 checkStatus = 'done';
                               } else if (isActive) {
-                                const loggedIndexes = subChecks.map((stepText: string) => {
-                                  const keyword = stepText.slice(0, 10);
-                                  return simulationLogs.some(log => log.includes(keyword));
-                                });
-                                const lastLoggedIdx = loggedIndexes.lastIndexOf(true);
-
-                                if (lastLoggedIdx >= 0) {
-                                  if (cIdx < lastLoggedIdx) {
-                                    checkStatus = 'done';
-                                  } else if (cIdx === lastLoggedIdx) {
-                                    checkStatus = 'active';
-                                  } else {
-                                    checkStatus = 'pending';
-                                  }
+                                if (sIdx === 1) {
+                                  checkStatus = verificationCheckRows[cIdx]?.status || 'pending';
                                 } else {
-                                  checkStatus = cIdx === 0 ? 'active' : 'pending';
+                                  const loggedIndexes = subChecks.map((stepText: string) => {
+                                    const keyword = stepText.slice(0, 10);
+                                    return simulationLogs.some(log => log.includes(keyword));
+                                  });
+                                  const lastLoggedIdx = loggedIndexes.lastIndexOf(true);
+
+                                  if (lastLoggedIdx >= 0) {
+                                    if (cIdx < lastLoggedIdx) {
+                                      checkStatus = 'done';
+                                    } else if (cIdx === lastLoggedIdx) {
+                                      checkStatus = 'active';
+                                    }
+                                  } else {
+                                    checkStatus = cIdx === 0 ? 'active' : 'pending';
+                                  }
                                 }
                               }
 

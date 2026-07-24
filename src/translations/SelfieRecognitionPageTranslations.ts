@@ -846,15 +846,15 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceTitle: "Hiệu năng hàng đầu ngành mà không phải đánh đổi",
     performanceDesc: "Xác minh người thật chỉ trong vài giây. Duy trì tuân thủ quy định đồng thời cung cấp luồng xác minh ít ma sát.",
     thirdPartyTitle: "Được kiểm thử và chứng nhận rộng rãi bởi phòng thí nghiệm độc lập",
-    thirdPartyDesc: "Nhận diện selfie của Identra đạt kết quả vượt trội trong đối chiếu khuôn mặt, liveness và bảo đảm độ tuổi.",
+    thirdPartyDesc: "Nhận diện selfie của Identra đạt kết quả vượt trội trong đối chiếu khuôn mặt, xác minh hiện diện và bảo đảm độ tuổi.",
     interactiveLabel: "Trải nghiệm tương tác",
-    simulatorTitle: "Sandbox đối chiếu selfie và liveness",
+    simulatorTitle: "Môi trường thử nghiệm đối chiếu selfie và xác minh hiện diện",
     simulatorDesc: "Kiểm thử cách hệ thống Identra xử lý khớp danh tính, sai lệch danh tính, ảnh in và phát lại màn hình theo thời gian thực. Bật tắt tham số để thấy tác động.",
     selectScenario: "Chọn kịch bản mô phỏng",
     systemParameters: "Tham số hệ thống",
     thresholdLabel: "Ngưỡng tương đồng khi đối chiếu",
     thresholdDesc: "Điểm tin cậy tối thiểu cần có để phê duyệt kết quả so sánh. Khuyến nghị tiêu chuẩn là 80%.",
-    strictLivenessLabel: "Yêu cầu kiểm tra liveness nghiêm ngặt",
+    strictLivenessLabel: "Yêu cầu xác minh hiện diện nghiêm ngặt",
     strictLivenessDesc: "Chặn ảnh in và phát lại màn hình ngay cả khi khuôn mặt trông giống hệt nhau.",
     meshLabel: "Hiển thị lưới điểm mốc sinh trắc học",
     meshDesc: "Vẽ các đường hình học khuôn mặt và ghi nhận cấu trúc tọa độ.",
@@ -873,7 +873,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     selfieAlt: "Selfie",
     recording: "ĐANG GHI",
     captured: "ĐÃ CHỤP",
-    livenessTypeLabel: "Loại liveness:",
+    livenessTypeLabel: "Phương thức xác minh hiện diện:",
     scanResultLabel: "Kết quả quét:",
     landmarksVerified: "Đã xác minh điểm mốc ({count} điểm)",
     facialSimilarityScore: "Điểm tương đồng khuôn mặt",
@@ -885,10 +885,10 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     exploreMoreTitle: "Khám phá thêm nền tảng định danh của Identra",
     faqTitle: "Câu hỏi thường gặp",
     readyTitle: "Sẵn sàng bắt đầu?",
-    readyDesc: "Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay. Chúng tôi giúp bạn thiết kế quy trình định danh phù hợp để mở rộng onboarding một cách an toàn.",
+    readyDesc: "Liên hệ hoặc bắt đầu khám phá Identra ngay hôm nay. Chúng tôi giúp bạn thiết kế quy trình định danh phù hợp để mở rộng hoạt động tiếp nhận người dùng một cách an toàn.",
     tryItNow: "Thử ngay",
     decisionAnalyzing: "Đang quét sinh trắc học...",
-    decisionLivenessFailed: "Xác minh liveness thất bại ({type})",
+    decisionLivenessFailed: "Không thể xác minh sự hiện diện ({type})",
     decisionMismatch: "Danh tính không khớp ({score}% < ngưỡng {threshold}%)",
     decisionMismatchReason: "Khoảng cách toán học giữa các điểm mốc khuôn mặt vượt quá ngưỡng tin cậy cho phép.",
     decisionApproved: "Danh tính đã được xác minh đầy đủ",
@@ -928,7 +928,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       },
       {
         title: "Chống deepfake và tấn công injection",
-        desc: "Bảo vệ giao dịch của người thật bằng phát hiện liveness selfie của Identra. Chủ động quét phản chiếu màn hình, mẫu Moire và cấu hình chiều sâu phẳng."
+        desc: "Bảo vệ giao dịch của người thật bằng công nghệ xác minh hiện diện qua selfie của Identra. Hệ thống chủ động quét phản chiếu màn hình, mẫu Moire và cấu hình chiều sâu phẳng."
       },
       {
         title: "Tùy chỉnh nhận diện khuôn mặt",
@@ -1016,7 +1016,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       },
       {
         title: "Tăng cường bảo mật lực lượng lao động toàn cầu",
-        desc: "Bảo đảm nhân viên đúng là người họ khai báo trong onboarding, khi truy cập hệ thống doanh nghiệp nhạy cảm và tại các điểm quan trọng khác trong vòng đời làm việc."
+        desc: "Bảo đảm nhân viên đúng là người họ khai báo trong quá trình tiếp nhận, khi truy cập hệ thống doanh nghiệp nhạy cảm và tại các điểm quan trọng khác trong vòng đời làm việc."
       }
     ],
     exploreCards: [
@@ -1031,8 +1031,8 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     ],
     faqs: [
       {
-        q: "Selfie Recognition khác gì so với kiểm tra Selfie Liveness?",
-        a: "Selfie Recognition đối chiếu hai vector sinh trắc học khuôn mặt để xác định chúng có thuộc cùng một người hay không, ví dụ so sánh selfie trực tiếp với ảnh trên hộ chiếu. Selfie Liveness kiểm tra nguồn selfie có phải người thật đang ở trước camera hay không, thay vì ảnh in, mặt nạ hoặc tấn công phát lại trên màn hình."
+        q: "Nhận diện selfie khác gì với xác minh hiện diện qua selfie?",
+        a: "Nhận diện selfie đối chiếu hai vectơ sinh trắc học khuôn mặt để xác định chúng có thuộc cùng một người hay không, chẳng hạn so sánh selfie trực tiếp với ảnh trên hộ chiếu. Xác minh hiện diện kiểm tra xem người thật có đang ở trước camera hay không, thay vì ảnh in, mặt nạ hoặc nội dung phát lại trên màn hình."
       },
       {
         q: "Các hệ thống đối chiếu khuôn mặt của Identra đã đạt chứng nhận nào?",

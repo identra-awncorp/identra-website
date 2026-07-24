@@ -158,15 +158,15 @@ const comments: Record<Locale, DocsSdkComments> = {
     requiredClaims: 'Fordern Sie nur notwendige Attribute an, damit der Inhaber weniger Daten offenlegt.'
   },
   vi: {
-    mock: 'SDK minh họa, chưa dùng cho production.',
-    issuer: 'Chạy ở phía bên phát hành: web, server hoặc ứng dụng nội bộ.',
-    holder: 'Chỉ chạy trên điện thoại. VC không được export lên web hoặc thiết bị thứ hai.',
-    verifier: 'Chạy ở phía bên xác minh: web, server hoặc ứng dụng.',
-    registry: 'DID Document có thể publish lên nhiều registry; CertNet chỉ là provider mặc định trong sandbox.',
-    holderDid: 'Holder DID được lấy sau khi thiết lập kết nối hoặc tra từ hệ thống nghiệp vụ.',
-    qrCredential: 'Credential không đi qua QR; QR chỉ dùng để bootstrap kết nối DIDComm.',
-    resolve: 'SDK resolve DID Document từ registry provider tương ứng.',
-    requiredClaims: 'Chỉ yêu cầu những claim cần thiết để giảm dữ liệu holder phải chia sẻ.'
+    mock: 'SDK minh họa, chưa dùng trong môi trường thực tế.',
+    issuer: 'Chạy ở phía bên phát hành: web, máy chủ hoặc ứng dụng nội bộ.',
+    holder: 'Chỉ chạy trên điện thoại. Không được xuất VC lên web hoặc thiết bị thứ hai.',
+    verifier: 'Chạy ở phía bên xác minh: web, máy chủ hoặc ứng dụng.',
+    registry: 'Tài liệu DID có thể được công bố lên nhiều sổ đăng ký; CertNet chỉ là nhà cung cấp mặc định trong môi trường thử nghiệm.',
+    holderDid: 'DID của bên nắm giữ được lấy sau khi thiết lập kết nối hoặc tra cứu từ hệ thống nghiệp vụ.',
+    qrCredential: 'Thực chứng không đi qua mã QR; mã QR chỉ dùng để khởi tạo kết nối DIDComm.',
+    resolve: 'SDK phân giải tài liệu DID từ nhà cung cấp sổ đăng ký tương ứng.',
+    requiredClaims: 'Chỉ yêu cầu những thuộc tính cần thiết để giảm lượng dữ liệu bên nắm giữ phải chia sẻ.'
   }
 };
 

@@ -726,7 +726,7 @@ const vi = {
     'database-checks': 'Đối soát cơ sở dữ liệu',
     'phone-email': 'Xác minh điện thoại và email',
     'mobile-drivers-license': 'Giấy phép lái xe di động',
-    watchlists: 'Danh sách theo dõi',
+    watchlists: 'Danh sách cảnh báo',
     'adverse-media': 'Truyền thông bất lợi',
     'profile-report': 'Báo cáo hồ sơ',
     'phone-email-risk': 'Rủi ro điện thoại và email',
@@ -774,7 +774,7 @@ const vi = {
   blogPosts: {
     'blog-1': {
       title: 'Xác minh danh tính linh hoạt: giảm gian lận mà không làm khó người dùng',
-      description: 'Góc nhìn thực tế về cách kết hợp kiểm tra giấy tờ, liveness, tín hiệu thiết bị và quy trình xét duyệt thành một chiến lược danh tính linh hoạt.',
+      description: 'Góc nhìn thực tế về cách kết hợp kiểm tra giấy tờ, xác minh hiện diện, tín hiệu thiết bị và quy trình xét duyệt thành một chiến lược danh tính linh hoạt.',
     },
     'blog-2': {
       title: 'Tín hiệu thụ động cho biết gì trước khi người dùng gửi giấy tờ',

@@ -485,115 +485,115 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     ]
   },
   vi: {
-    backToHome: 'Quay lại trang chủ',
-    labStatus: 'Sandbox sẵn sàng',
-    badge: 'Thư viện demo',
-    heroTitle: 'Chọn một kịch bản và chạy thử từng bước để thấy Identra xác minh danh tính, giảm gian lận và rút ngắn quy trình tiếp nhận trong các tình huống thực tế.',
+    backToHome: 'Về trang chủ',
+    labStatus: 'Sandbox đang hoạt động',
+    badge: 'Trải nghiệm Identra',
+    heroTitle: 'Khám phá cách Identra xác minh danh tính trong thực tế',
     openSandbox: 'Mở Sandbox',
     benefits: [
-      { title: 'Kịch bản gần với thực tế', desc: 'Tương tác với các luồng thường gặp trong ngân hàng, tuyển dụng, y tế, du lịch và bán vé.' },
-      { title: 'Thấy rõ từng bước xác minh', desc: 'Theo dõi cách OCR giấy tờ, liveness 3D và sàng lọc AML phối hợp trong cùng một quy trình.' },
-      { title: 'An toàn nhưng không làm chậm người dùng', desc: 'Xem cách Identra tăng mức độ tin cậy mà vẫn giữ trải nghiệm đăng ký gọn nhẹ.' }
+      { title: 'Mô phỏng sát thực tế', desc: 'Trực tiếp trải nghiệm các quy trình thường gặp trong ngân hàng, tuyển dụng, y tế, du lịch và bán vé.' },
+      { title: 'Hiểu rõ luồng xác minh', desc: 'Quan sát cách đọc giấy tờ bằng OCR, kiểm tra người thật 3D và sàng lọc AML phối hợp trong cùng một quy trình.' },
+      { title: 'Bảo mật mà vẫn liền mạch', desc: 'Khám phá cách Identra tăng độ tin cậy mà không khiến hành trình đăng ký trở nên rườm rà.' }
     ],
-    tabs: { scenarios: 'Các kịch bản xác minh (7)', trends: 'Xu hướng & số liệu toàn cầu' },
-    scenarioHeading: 'Chọn kịch bản demo',
+    tabs: { scenarios: 'Kịch bản xác minh (7)', trends: 'Xu hướng và số liệu toàn cầu' },
+    scenarioHeading: 'Bạn muốn thử tình huống nào?',
     availableScenarios: 'kịch bản',
-    startDemo: 'Chạy demo',
-    customFlowTitle: 'Muốn tự dựng luồng riêng?',
-    customFlowDesc: 'Mở Sandbox tổng hợp để cấu hình các bước xác minh, tải dữ liệu định danh thử nghiệm và chạy kiểm thử API theo nhu cầu.',
-    openComprehensiveSandbox: 'Mở Sandbox tổng hợp',
+    startDemo: 'Bắt đầu demo',
+    customFlowTitle: 'Bạn cần một quy trình riêng?',
+    customFlowDesc: 'Vào Sandbox để tự cấu hình các bước xác minh, tải lên dữ liệu định danh mẫu và thử nghiệm API theo nhu cầu.',
+    openComprehensiveSandbox: 'Mở Sandbox đầy đủ',
     comingSoon: 'Sắp ra mắt',
     scenarios: [
       {
         id: 'bank-account',
         tag: 'Ngân hàng',
         title: 'Mở tài khoản ngân hàng',
-        desc: 'Kiểm tra danh tính, sàng lọc AML và phê duyệt khách hàng rủi ro thấp trước khi mở tài khoản.',
-        security: 'KYC + AML + liveness',
-        successResult: 'Hồ sơ vượt qua kiểm tra giấy tờ, sinh trắc học và danh sách theo dõi. Có thể mở tài khoản với chứng nhận danh tính đã xác minh.',
+        desc: 'Xác minh danh tính, sàng lọc danh sách cấm vận và đánh giá rủi ro trước khi duyệt mở tài khoản.',
+        security: 'KYC + AML + kiểm tra người thật',
+        successResult: 'Khách hàng đã vượt qua các bước kiểm tra giấy tờ, sinh trắc học và danh sách theo dõi. Tài khoản có thể được mở bằng danh tính đã xác minh.',
         steps: [
-          { label: 'Nhận thông tin khách hàng', action: 'Gửi thông tin đăng ký', logText: 'Hồ sơ được chuẩn hóa và kiểm tra nguy cơ danh tính giả mạo.' },
-          { label: 'Xác thực giấy tờ tùy thân', action: 'Quét giấy tờ', logText: 'Độ thật của giấy tờ, MRZ, mã vạch và hạn sử dụng đều được kiểm tra.' },
-          { label: 'Kiểm tra khuôn mặt sống', action: 'Hoàn tất xác thực khuôn mặt', logText: 'Liveness 3D và đối chiếu khuôn mặt với giấy tờ đều đạt.' },
-          { label: 'Rà soát AML', action: 'Sàng lọc AML', logText: 'Không có kết quả chặn từ OFAC, PEP hoặc nguồn rủi ro bất lợi.' }
+          { label: 'Thu thập hồ sơ khách hàng', action: 'Gửi thông tin đăng ký', logText: 'Thông tin được chuẩn hóa, đồng thời đối chiếu các dấu hiệu của danh tính tổng hợp.' },
+          { label: 'Xác minh giấy tờ tùy thân', action: 'Quét giấy tờ tùy thân', logText: 'Hệ thống kiểm tra tính xác thực, vùng MRZ, mã vạch và hạn sử dụng của giấy tờ.' },
+          { label: 'Xác minh người thật', action: 'Quét khuôn mặt', logText: 'Kết quả kiểm tra người thật 3D và đối chiếu ảnh chân dung trên giấy tờ đều đạt yêu cầu.' },
+          { label: 'Sàng lọc AML', action: 'Kiểm tra AML', logText: 'Không phát hiện kết quả trùng khớp cần chặn trên danh sách OFAC, PEP hoặc các nguồn tin bất lợi.' }
         ]
       },
       {
         id: 'apply-job',
         tag: 'Tuyển dụng',
-        title: 'Ứng tuyển vị trí cần kiểm tra nghiêm ngặt',
-        desc: 'Xác minh quyền làm việc, bằng cấp và rủi ro lý lịch trước khi đưa ứng viên vào vòng tiếp theo.',
-        security: 'Xác minh nhân sự + kiểm tra bằng cấp',
-        successResult: 'Danh tính, bằng cấp và các tín hiệu lý lịch đã được xác nhận. Quy trình tuyển dụng có thể tiếp tục.',
+        title: 'Ứng tuyển vào vị trí cần kiểm tra hồ sơ',
+        desc: 'Xác minh quyền làm việc, bằng cấp và thông tin lý lịch trước khi chuyển ứng viên sang vòng tiếp theo.',
+        security: 'Xác minh danh tính và hồ sơ ứng viên',
+        successResult: 'Danh tính, bằng cấp và thông tin lý lịch của ứng viên đều đã được xác minh. Quy trình tuyển dụng có thể tiếp tục.',
         steps: [
-          { label: 'Xác nhận danh tính pháp lý', action: 'Xác minh ứng viên', logText: 'Thông tin định danh và quyền làm việc cho kết quả nhất quán.' },
-          { label: 'Kiểm tra bằng cấp', action: 'Đối chiếu hồ sơ học vấn', logText: 'Học vấn, chứng chỉ và giấy phép hành nghề được đối chiếu với nguồn tin cậy.' },
-          { label: 'Rà soát lý lịch', action: 'Chạy kiểm tra lý lịch', logText: 'Dữ liệu tòa án, sổ đăng ký và nguồn rủi ro đều nằm trong ngưỡng chính sách.' }
+          { label: 'Xác minh danh tính', action: 'Xác minh ứng viên', logText: 'Thông tin định danh và giấy phép lao động cho kết quả nhất quán.' },
+          { label: 'Đối chiếu bằng cấp', action: 'Kiểm tra hồ sơ học vấn', logText: 'Bằng cấp, chứng nhận kiểm định và giấy phép hành nghề được đối chiếu với các nguồn chính thống.' },
+          { label: 'Kiểm tra lý lịch', action: 'Tra cứu lý lịch', logText: 'Kết quả tra cứu tại tòa án, cơ quan đăng ký và cơ sở dữ liệu rủi ro đều nằm trong ngưỡng cho phép.' }
         ]
       },
       {
         id: 'ticket-booking',
-        tag: 'Vé sự kiện',
-        title: 'Đặt vé cho sự kiện có nhu cầu cao',
-        desc: 'Phát hiện bot, xác minh số điện thoại và gắn vé với hồ sơ người mua đã xác thực.',
-        security: 'Tín hiệu thiết bị + rủi ro số điện thoại',
-        successResult: 'Lượt đặt vé được xác nhận cho người mua thật. Rủi ro bot thấp và vé được gắn với danh tính qua bằng chứng mật mã.',
+        tag: 'Bán vé',
+        title: 'Đặt vé cho sự kiện được săn đón',
+        desc: 'Phát hiện bot, xác minh người sở hữu số điện thoại và gắn vé với hồ sơ người mua đã được xác thực.',
+        security: 'Phân tích thiết bị và rủi ro số điện thoại',
+        successResult: 'Giao dịch đặt vé đã được xác nhận cho người mua thật. Nguy cơ bot ở mức thấp và vé đã được liên kết an toàn với danh tính người mua.',
         steps: [
-          { label: 'Đánh giá thiết bị', action: 'Kiểm tra thiết bị', logText: 'Dấu hiệu nhận dạng trình duyệt, tín hiệu tự động hóa và hành vi phiên truy cập đã được phân tích.' },
-          { label: 'Xác minh số điện thoại', action: 'Xác minh số điện thoại', logText: 'Nhà mạng, SIM và OTP cho thấy số điện thoại hợp lệ, không phải VoIP.' },
-          { label: 'Gắn định danh cho vé', action: 'Phát hành vé đã xác thực', logText: 'Dữ liệu vé được niêm phong với kiểm soát chống chuyển nhượng và chữ ký QR.' }
+          { label: 'Phân tích rủi ro thiết bị', action: 'Kiểm tra thiết bị', logText: 'Hệ thống đánh giá dấu vân tay trình duyệt, tín hiệu tự động hóa và hành vi trong phiên truy cập.' },
+          { label: 'Xác minh chủ thuê bao', action: 'Xác minh số điện thoại', logText: 'Thông tin nhà mạng, SIM và mã OTP xác nhận số điện thoại đang hoạt động, thuộc quyền kiểm soát của người dùng và không phải số VoIP.' },
+          { label: 'Gắn vé với danh tính', action: 'Phát hành vé xác thực', logText: 'Thông tin vé được ký số bằng mã QR và áp dụng điều kiện hạn chế chuyển nhượng.' }
         ]
       },
       {
         id: 'airlines-hotels',
         tag: 'Du lịch',
-        title: 'Check-in chuyến bay và khách sạn',
-        desc: 'Dùng chip NFC hộ chiếu, đối chiếu selfie và thông tin đặt chỗ để giảm rủi ro khi check-in.',
-        security: 'Hộ chiếu NFC + đối chiếu khuôn mặt',
-        successResult: 'Hành khách vượt qua kiểm tra hộ chiếu NFC, selfie và đặt chỗ. Quy trình check-in có thể tiếp tục.',
+        title: 'Làm thủ tục chuyến bay và nhận phòng khách sạn',
+        desc: 'Đọc chip NFC trên hộ chiếu, đối chiếu ảnh selfie và kiểm tra thông tin đặt chỗ để giảm rủi ro khi làm thủ tục.',
+        security: 'Hộ chiếu NFC và đối chiếu khuôn mặt',
+        successResult: 'Hộ chiếu, ảnh selfie và thông tin đặt chỗ của hành khách đều đã được xác minh. Hành khách có thể tiếp tục làm thủ tục.',
         steps: [
-          { label: 'Đọc chip NFC hộ chiếu', action: 'Quét chip hộ chiếu', logText: 'Chứng thư phát hành và dữ liệu hộ chiếu mã hóa được xác thực.' },
-          { label: 'Đối chiếu selfie', action: 'Hoàn tất đối chiếu selfie', logText: 'Selfie trực tiếp khớp với ảnh trong chip hộ chiếu với độ tin cậy cao.' },
-          { label: 'Kiểm tra thông tin đặt chỗ', action: 'Xác minh đặt chỗ', logText: 'Thông tin chuyến bay, khách sạn và điều kiện độ tuổi đã được đồng bộ.' }
+          { label: 'Đọc chip NFC trên hộ chiếu', action: 'Quét chip hộ chiếu', logText: 'Chứng thư số của cơ quan cấp và dữ liệu mã hóa trong hộ chiếu đều hợp lệ.' },
+          { label: 'Đối chiếu khuôn mặt', action: 'Chụp ảnh selfie', logText: 'Ảnh selfie trực tiếp khớp với ảnh lưu trong chip hộ chiếu với độ tin cậy cao.' },
+          { label: 'Kiểm tra đặt chỗ', action: 'Xác minh thông tin đặt chỗ', logText: 'Thông tin chuyến bay, khách sạn và xác nhận độ tuổi được đối chiếu và cho kết quả nhất quán.' }
         ]
       },
       {
         id: 'government-services',
         tag: 'Dịch vụ công',
-        title: 'Sử dụng dịch vụ công trực tuyến',
-        desc: 'Xác minh danh tính công dân, nơi cư trú và điều kiện giấy tờ trước khi xử lý yêu cầu.',
-        security: 'Dữ liệu dân cư + xác minh cư trú',
-        successResult: 'Danh tính và nơi cư trú đã được xác minh. Yêu cầu dịch vụ có thể được xử lý an toàn.',
+        title: 'Thực hiện thủ tục hành chính trực tuyến',
+        desc: 'Xác minh danh tính, nơi cư trú và điều kiện hồ sơ trước khi tiếp nhận yêu cầu trực tuyến.',
+        security: 'Đối chiếu dữ liệu dân cư và nơi cư trú',
+        successResult: 'Danh tính và thông tin cư trú đã được xác minh. Hồ sơ có thể được tiếp nhận và xử lý an toàn.',
         steps: [
-          { label: 'Đối chiếu dữ liệu dân cư', action: 'Kiểm tra hồ sơ công dân', logText: 'Dữ liệu dân cư và khai sinh trả về hồ sơ nhất quán.' },
-          { label: 'Xác minh nơi cư trú', action: 'Kiểm tra bằng chứng cư trú', logText: 'Tín hiệu từ địa chỉ, hóa đơn dịch vụ và vị trí địa lý xác nhận nơi cư trú.' },
-          { label: 'Cấp chứng nhận số', action: 'Tạo chứng nhận số', logText: 'Chứng nhận dùng một lần được gắn với hồ sơ và niêm phong bằng mật mã.' }
+          { label: 'Tra cứu dữ liệu dân cư', action: 'Đối chiếu hồ sơ công dân', logText: 'Thông tin từ cơ sở dữ liệu dân cư và khai sinh cho kết quả nhất quán.' },
+          { label: 'Xác minh nơi cư trú', action: 'Kiểm tra giấy tờ cư trú', logText: 'Địa chỉ bưu chính, hóa đơn tiện ích và dữ liệu vị trí cùng xác nhận nơi cư trú.' },
+          { label: 'Cấp chứng thư số', action: 'Tạo chứng thư số', logText: 'Chứng thư dùng một lần được liên kết với hồ sơ và ký số để chống chỉnh sửa.' }
         ]
       },
       {
         id: 'healthcare',
         tag: 'Y tế',
-        title: 'Đăng ký sử dụng dịch vụ y tế',
-        desc: 'Xác minh danh tính bệnh nhân, bảo hiểm và đồng ý xử lý dữ liệu trước khi tiếp nhận.',
-        security: 'Kiểm soát danh tính theo chuẩn HIPAA',
-        successResult: 'Danh tính, bảo hiểm và đồng ý xử lý dữ liệu đều hợp lệ. Quy trình tiếp nhận có thể tiếp tục với dữ liệu được bảo vệ.',
+        title: 'Đăng ký khám chữa bệnh',
+        desc: 'Xác minh danh tính, quyền lợi bảo hiểm và sự đồng ý của bệnh nhân trước khi tiếp nhận.',
+        security: 'Kiểm soát danh tính đáp ứng HIPAA',
+        successResult: 'Danh tính, bảo hiểm và sự đồng ý của bệnh nhân đều đã được xác minh. Cơ sở y tế có thể tiếp nhận bệnh nhân mà vẫn bảo vệ dữ liệu.',
         steps: [
-          { label: 'Xác minh bệnh nhân', action: 'Kiểm tra giấy tờ bệnh nhân', logText: 'Giấy tờ tùy thân và kiểm tra trùng lặp nhân khẩu học khớp với hồ sơ bệnh nhân.' },
-          { label: 'Kiểm tra bảo hiểm', action: 'Quét thẻ bảo hiểm', logText: 'Tình trạng hợp đồng, nhà bảo hiểm và mã nhóm được xác minh theo thời gian thực.' },
-          { label: 'Ghi nhận đồng ý', action: 'Ký biểu mẫu đồng ý', logText: 'Biểu mẫu đồng ý được ký, băm và lưu theo kiểm soát quyền riêng tư y tế.' }
+          { label: 'Xác minh danh tính bệnh nhân', action: 'Kiểm tra giấy tờ', logText: 'Thông tin trên giấy tờ tùy thân trùng khớp với hồ sơ bệnh nhân và không phát hiện hồ sơ nhân khẩu học trùng lặp.' },
+          { label: 'Kiểm tra quyền lợi bảo hiểm', action: 'Quét thẻ bảo hiểm', logText: 'Hiệu lực hợp đồng, nhà bảo hiểm và mã nhóm được xác minh theo thời gian thực.' },
+          { label: 'Ghi nhận sự đồng ý', action: 'Ký phiếu đồng ý', logText: 'Phiếu đồng ý được ký, tạo mã băm và lưu trữ theo các yêu cầu bảo vệ dữ liệu y tế.' }
         ]
       },
       {
         id: 'ticket-transfer',
         tag: 'Relay',
         title: 'Chuyển nhượng vé đã xác thực',
-        desc: 'Chứng minh chủ sở hữu ban đầu, khóa điều kiện ký quỹ và chuyển vé an toàn cho người mua.',
-        security: 'Relay + ký quỹ thông minh',
-        successResult: 'Quyền sở hữu vé được chuyển trong một giao dịch trọn vẹn. Người mua nhận vé đã xác thực và khoản ký quỹ được giải phóng.',
+        desc: 'Xác minh chủ sở hữu hiện tại, khóa tiền trong ký quỹ và chuyển vé an toàn cho người mua.',
+        security: 'Relay và ký quỹ thông minh',
+        successResult: 'Vé và tiền ký quỹ được chuyển giao trong cùng một giao dịch: người mua nhận vé đã xác thực, còn tiền chỉ được giải ngân khi hoàn tất.',
         steps: [
-          { label: 'Xác minh chủ sở hữu ban đầu', action: 'Kiểm tra chủ vé', logText: 'Khóa mua ban đầu và chữ ký bên phát hành xác nhận quyền sở hữu hợp lệ.' },
-          { label: 'Khóa điều kiện ký quỹ', action: 'Khởi tạo ký quỹ', logText: 'Smart contract của Relay khóa tiền và ngăn nguy cơ chi tiêu hai lần.' },
-          { label: 'Hoàn tất chuyển nhượng', action: 'Chuyển vé', logText: 'Quyền sở hữu vé chuyển sang ví người mua và khoản ký quỹ được giải phóng.' }
+          { label: 'Xác minh quyền sở hữu', action: 'Kiểm tra chủ vé', logText: 'Mã giao dịch mua ban đầu và chữ ký của đơn vị phát hành xác nhận người bán là chủ sở hữu hợp lệ.' },
+          { label: 'Khóa tiền ký quỹ', action: 'Tạo giao dịch ký quỹ', logText: 'Hợp đồng thông minh Relay khóa tiền cho đến khi chuyển vé hoàn tất, đồng thời ngăn một vé bị bán hai lần.' },
+          { label: 'Hoàn tất chuyển nhượng', action: 'Chuyển vé', logText: 'Quyền sở hữu vé được cập nhật sang ví của người mua và tiền ký quỹ được giải ngân cho người bán.' }
         ]
       }
     ]

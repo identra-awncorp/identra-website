@@ -1060,7 +1060,7 @@ export const FRAUD_PREVENTION_PAGE_TRANSLATIONS = {
       "stepUp": {
         "label": "TĂNG CƯỜNG",
         "action": "Kích hoạt sinh trắc selfie động",
-        "details": "Có cảnh báo mức trung bình. Tự động khởi chạy kiểm tra selfie liveness và đối chiếu OCR.",
+        "details": "Có cảnh báo mức trung bình. Tự động xác minh sự hiện diện qua selfie và đối chiếu OCR.",
       },
       "flag": {
         "label": "GẮN CỜ",

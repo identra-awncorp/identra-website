@@ -402,11 +402,11 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'Môi trường SSI',
         blocks: [
           { type: 'p', text: 'Hướng dẫn SSI theo vai trò. Đi từng bước qua ba vai trò, xem ranh giới dữ liệu và so sánh ví dụ giữa các SDK web, server và mobile.' },
-          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo Thực chứng có thể xác minh (VC), Người nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn Bên xác minh yêu cầu và kiểm tra Bản trình bày có thể xác minh (VP).' },
-          { type: 'callout', text: '[Bên phát hành kiểm tra và ký VC] -> [Người nắm giữ lưu VC trên thiết bị di động] -> [Người dùng đồng ý và tạo VP] -> [Bên xác minh kiểm tra VP]' },
+          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo thực chứng (VC), bên nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn bên xác minh yêu cầu và kiểm tra bản trình xuất (VP).' },
+          { type: 'callout', text: '[Bên phát hành kiểm tra và ký VC] -> [Bên nắm giữ lưu VC trên thiết bị di động] -> [Người dùng đồng ý và tạo VP] -> [Bên xác minh kiểm tra VP]' },
           { type: 'cards', cards: [
             { title: 'Bên phát hành', text: 'Kiểm tra dữ liệu nguồn, ký thực chứng và gửi đề nghị nhận VC qua DIDComm.' },
-            { title: 'Người nắm giữ', text: 'Lưu thực chứng trong một kho bảo mật duy nhất trên điện thoại và quyết định khi nào chia sẻ thuộc tính.' },
+            { title: 'Bên nắm giữ', text: 'Lưu thực chứng trong một kho bảo mật duy nhất trên điện thoại và quyết định khi nào chia sẻ thuộc tính.' },
             { title: 'Bên xác minh', text: 'Chỉ yêu cầu những thuộc tính cần thiết rồi kiểm tra chữ ký, giá trị thử thách và trạng thái thực chứng.' },
             { title: 'Sổ đăng ký DID', text: 'Đăng tải và phân giải tài liệu DID qua CertNet, did:web, ION hoặc sổ đăng ký nội bộ.' }
           ] }
@@ -416,12 +416,12 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         id: 'data-boundaries',
         title: 'Ranh giới thực chứng',
         blocks: [
-          { type: 'p', text: 'Identra phân tách rõ trách nhiệm: Bên phát hành tạo VC, điện thoại của Người nắm giữ là kho duy nhất, còn Bên xác minh chỉ yêu cầu và xác minh VP.' },
+          { type: 'p', text: 'Identra phân tách rõ trách nhiệm: bên phát hành tạo VC, điện thoại của bên nắm giữ là kho duy nhất, còn bên xác minh chỉ yêu cầu và xác minh VP.' },
           { type: 'subheading', text: 'Quy tắc quan trọng nhất' },
-          { type: 'callout', text: 'Web và server không bao giờ nhận SDK nắm giữ. Chúng không được import, export hoặc sao lưu VC của người dùng.' },
-          { type: 'subheading', text: 'DID registry không bị khóa vào CertNet' },
-          { type: 'p', text: 'CertNet là provider mặc định trong sandbox. Cùng SDK có thể publish và resolve DID Document trên CertNet, did:web, ION hoặc registry nội bộ tùy chính sách triển khai.' },
-          { type: 'callout', text: 'SDK minh họa, chưa dùng cho production. Tên package và contract trong Overview này là tài liệu mẫu.' }
+          { type: 'callout', text: 'Nền tảng web và máy chủ không bao giờ nhận SDK dành cho bên nắm giữ. Các môi trường này không được nhập, xuất hoặc sao lưu VC của người dùng.' },
+          { type: 'subheading', text: 'Sổ đăng ký DID không bị giới hạn ở CertNet' },
+          { type: 'p', text: 'CertNet là nhà cung cấp mặc định trong môi trường thử nghiệm. Cùng một SDK có thể công bố và phân giải tài liệu DID trên CertNet, did:web, ION hoặc sổ đăng ký nội bộ tùy chính sách triển khai.' },
+          { type: 'callout', text: 'SDK minh họa, chưa dùng trong môi trường thực tế. Tên gói và giao diện trong phần Tổng quan này chỉ là tài liệu mẫu.' }
         ]
       },
       {
@@ -431,9 +431,9 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
           { type: 'subheading', text: 'Bên phát hành' },
           { type: 'p', text: 'BƯỚC 01 trong 03 bước của luồng SSI theo vai trò.' },
           { type: 'subheading', text: 'Ai tạo thực chứng và đoạn mã chạy ở đâu?' },
-          { type: 'p', text: 'Tổ chức phát hành kiểm tra dữ liệu, ký VC và gửi cho người dùng. Họ có thể tích hợp trên web nội bộ, server hoặc ứng dụng.' },
+          { type: 'p', text: 'Tổ chức phát hành kiểm tra dữ liệu, ký VC và gửi cho người dùng. Họ có thể tích hợp trên web nội bộ, máy chủ hoặc ứng dụng.' },
           { type: 'subheading', text: 'Ranh giới dữ liệu và khóa' },
-          { type: 'callout', text: 'Khóa ký của tổ chức phải được bảo vệ phù hợp với môi trường chạy, ưu tiên HSM trên server.' },
+          { type: 'callout', text: 'Khóa ký của tổ chức phải được bảo vệ phù hợp với môi trường chạy, ưu tiên HSM trên máy chủ.' },
           { type: 'table', headers: ['Môi trường chạy', 'SDK ví dụ', 'Khi nào dùng'], rows: [
             ['Web client', '@identra/web với Browser JavaScript hoặc TypeScript', 'Công cụ phát hành nội bộ có chính sách khóa được kiểm soát'],
             ['Server', '@identra/node hoặc identra-go', 'Dịch vụ ký được bảo vệ bằng HSM hoặc KMS được quản lý'],
@@ -443,28 +443,28 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
           { type: 'list', items: [
             { title: 'Khởi tạo', text: 'Khởi tạo SDK cho môi trường đang chạy.' },
             { title: 'Tạo DID', text: 'Tạo hoặc nạp DID của bên phát hành trên DID registry đã chọn.' },
-            { title: 'Ký VC', text: 'Ký Verifiable Credential cho DID của người nhận.' },
-            { title: 'Gửi offer', text: 'Gửi credential offer qua kết nối DIDComm.' }
+            { title: 'Ký VC', text: 'Ký thực chứng cho DID của người nhận.' },
+            { title: 'Gửi đề nghị', text: 'Gửi đề nghị cấp thực chứng qua kết nối DIDComm.' }
           ] },
           { type: 'sdkExplorer', flow: 'issuance' },
-          { type: 'p', text: 'Holder DID được lấy sau khi thiết lập kết nối hoặc tra từ hệ thống nghiệp vụ. Credential không đi qua QR; QR chỉ dùng để bootstrap kết nối DIDComm.' }
+          { type: 'p', text: 'DID của bên nắm giữ được lấy sau khi thiết lập kết nối hoặc tra cứu từ hệ thống nghiệp vụ. Thực chứng không đi qua mã QR; mã QR chỉ dùng để khởi tạo kết nối DIDComm.' }
         ]
       },
       {
         id: 'hold-and-share',
         title: 'Nắm giữ và chia sẻ thực chứng',
         blocks: [
-          { type: 'subheading', text: 'Người nắm giữ' },
+          { type: 'subheading', text: 'Bên nắm giữ' },
           { type: 'p', text: 'BƯỚC 02 trong 03 bước của luồng SSI theo vai trò.' },
           { type: 'subheading', text: 'Thực chứng nằm ở đâu và được chia sẻ thế nào?' },
-          { type: 'p', text: 'VC chỉ nằm trong secure vault trên điện thoại. Người dùng quét QR, xem yêu cầu, đồng ý rồi ứng dụng mới tạo VP và gửi qua DIDComm.' },
+          { type: 'p', text: 'VC chỉ nằm trong kho bảo mật trên điện thoại. Người dùng quét mã QR, xem yêu cầu, đồng ý rồi ứng dụng mới tạo VP và gửi qua DIDComm.' },
           { type: 'subheading', text: 'Ranh giới dữ liệu và thiết bị' },
-          { type: 'callout', text: 'Không có SDK Holder cho web hoặc server. Không export VC. Đổi thiết bị đồng nghĩa xóa toàn bộ VC trên thiết bị cũ.' },
+          { type: 'callout', text: 'Không có SDK dành cho bên nắm giữ trên web hoặc máy chủ. Không được xuất VC. Khi đổi thiết bị, toàn bộ VC trên thiết bị cũ phải được xóa.' },
           { type: 'list', items: [
             { title: 'SDK khả dụng', text: 'React Native, Java Android và Swift iOS.' },
-            { title: 'Kích hoạt vault', text: 'Kích hoạt kho thực chứng duy nhất trên thiết bị.' },
-            { title: 'Nhận VC', text: 'Nhận, xác minh và lưu VC vào secure vault.' },
-            { title: 'Quét yêu cầu', text: 'Quét QR và xem yêu cầu chia sẻ từ verifier.' },
+            { title: 'Kích hoạt kho', text: 'Kích hoạt kho thực chứng duy nhất trên thiết bị.' },
+            { title: 'Nhận VC', text: 'Nhận, xác minh và lưu VC vào kho bảo mật.' },
+            { title: 'Quét yêu cầu', text: 'Quét mã QR và xem yêu cầu chia sẻ từ bên xác minh.' },
             { title: 'Chia sẻ VP', text: 'Tạo VP được người dùng chấp thuận và gửi qua DIDComm.' }
           ] },
           { type: 'sdkExplorer', flow: 'holder' }
@@ -477,14 +477,14 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
           { type: 'subheading', text: 'Bên xác minh' },
           { type: 'p', text: 'BƯỚC 03 trong 03 bước của luồng SSI theo vai trò.' },
           { type: 'subheading', text: 'Bên xác minh tin vào VP bằng cách nào?' },
-          { type: 'p', text: 'Verifier nhận VP, lấy DID của holder và issuer bên trong, resolve DID Document qua registry provider tương ứng như CertNet, did:web hoặc ION rồi kiểm tra chữ ký, challenge và trạng thái thu hồi.' },
+          { type: 'p', text: 'Bên xác minh nhận VP, lấy DID của bên nắm giữ và bên phát hành, phân giải tài liệu DID qua nhà cung cấp sổ đăng ký tương ứng như CertNet, did:web hoặc ION rồi kiểm tra chữ ký, mã thử thách và trạng thái thu hồi.' },
           { type: 'subheading', text: 'Ranh giới dữ liệu và lưu trữ' },
-          { type: 'callout', text: 'Verifier có thể chạy trên web, server hoặc app nhưng không được lưu VC như một Holder.' },
+          { type: 'callout', text: 'Bên xác minh có thể chạy trên web, máy chủ hoặc ứng dụng nhưng không được lưu VC như bên nắm giữ.' },
           { type: 'list', items: [
-            { title: 'Tạo request', text: 'Tạo presentation request kèm challenge chống phát lại.' },
-            { title: 'Hiển thị QR', text: 'Hiển thị QR chứa DIDComm invitation.' },
+            { title: 'Tạo yêu cầu', text: 'Tạo yêu cầu trình xuất kèm mã thử thách chống phát lại.' },
+            { title: 'Hiển thị QR', text: 'Hiển thị mã QR chứa lời mời DIDComm.' },
             { title: 'Nhận VP', text: 'Nhận VP qua kết nối vừa thiết lập.' },
-            { title: 'Resolve và xác minh', text: 'Resolve holder và issuer DID qua registry provider rồi xác minh.' }
+            { title: 'Phân giải và xác minh', text: 'Phân giải DID của bên nắm giữ và bên phát hành qua nhà cung cấp sổ đăng ký rồi xác minh.' }
           ] },
           { type: 'sdkExplorer', flow: 'verification' }
         ]

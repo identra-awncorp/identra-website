@@ -815,7 +815,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.vi, {
   platformTitle: 'Xác minh, tín hiệu và điều phối từ đầu đến cuối',
   platformCards: [
     { title: 'Trình chỉnh sửa luồng', desc: 'Giảm khó chịu cho khách hàng bằng các luồng trực quan, có thương hiệu, hướng dẫn họ qua quy trình xác minh.' },
-    { title: 'Thư viện phương thức xác minh', desc: 'Kết hợp giấy tờ chính phủ, selfie, cơ sở dữ liệu, xác minh tài liệu cùng báo cáo PEP, watchlist và FinCEN 314a phù hợp với nhu cầu.' },
+    { title: 'Thư viện phương thức xác minh', desc: 'Kết hợp giấy tờ tùy thân, selfie, cơ sở dữ liệu và xác minh tài liệu với báo cáo PEP, danh sách cảnh báo và FinCEN 314a theo nhu cầu.' },
     { title: 'Hồ sơ', desc: 'Xem xét thông tin, ra quyết định và hành động với người dùng rủi ro cao hơn bằng mọi dữ liệu cần thiết ở một nơi.' },
     { title: 'Luồng động', desc: 'Đáp ứng quy định địa phương bằng cách chọn thông tin cần thu thập, làm giàu và cách xác minh người dùng/doanh nghiệp cho từng khu vực.' },
     { title: 'Nền tảng không cần mã', desc: 'Dễ dàng cấu hình và cập nhật luồng onboarding bằng trình chỉnh sửa tự phục vụ, mô-đun kéo thả và mẫu dựng sẵn của Identra.' },
@@ -845,7 +845,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.vi, {
     step1: '[1/4] Đang truy vấn lịch sử on-chain và tương tác smart contract của địa chỉ ví...',
     wallet: '[Wallet Check] Trạng thái địa chỉ: {walletCheck}. Đang đánh giá mức phơi nhiễm trực tiếp.',
     step2: '[2/4] Đang sàng lọc chỉ số danh tính với danh sách trừng phạt toàn cầu và AML...',
-    watchlist: '[Watchlist Check] Đã kiểm tra trạng thái PEP/OFAC. Kết quả khớp danh tính: {match}.',
+    watchlist: '[KIỂM TRA DANH SÁCH CẢNH BÁO] Đã kiểm tra trạng thái PEP/OFAC. Kết quả khớp danh tính: {match}.',
     step3: '[3/4] Đang phân tích tín hiệu trình duyệt, uy tín IP và thuộc tính hành vi...',
     signal: '[Signal Intel] Lớp IP: {ip}. Đang kiểm tra proxy mạng riêng ảo.',
     step4: '[4/4] Đang đưa biến vào công cụ quy tắc ma trận quyết định của Identra...',

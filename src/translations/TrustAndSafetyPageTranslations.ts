@@ -958,7 +958,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
   submittedProof: "Bằng chứng giấy tờ đã gửi",
   govIdAlt: "Ảnh quét giấy tờ",
   frontScanCompleted: "ĐÃ_QUÉT_MẶT_TRƯỚC",
-  livenessScore: "Điểm liveness:",
+  livenessScore: "Điểm xác minh hiện diện:",
   autoRiskScore: "Chỉ số rủi ro tự động:",
   riskSuffix: "RỦI RO",
   webhookActions: "Hành động sẽ kích hoạt webhook nền tảng tức thì.",
@@ -1163,20 +1163,20 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.vi, {
     { label: "Lớp 1: Sàng lọc mạng thụ động", metric: "IP và nhật ký geofence" },
     { label: "Lớp 2: Dấu vân tay thiết bị giả mạo", metric: "Chữ ký phần cứng" },
     { label: "Lớp 3: Ngăn trùng lặp toàn cầu", metric: "Liên kết tài khoản" },
-    { label: "Lớp 4: Xác minh liveness sinh trắc học", metric: "Xung khuôn mặt thời gian thực" }
+    { label: "Lớp 4: Xác minh hiện diện sinh trắc học", metric: "Xung khuôn mặt thời gian thực" }
   ],
   fraudLogsLegit: [
     "Đang phân tích kết nối mạng: IP dân cư sạch, không phát hiện VPN.",
     "Đang kiểm tra định danh thiết bị: thiết bị hiện đại, user agent tiêu chuẩn.",
     "Đang đối chiếu cơ sở dữ liệu: không có nhiều tài khoản hoặc bản trùng.",
-    "Đối chiếu sinh trắc học: điểm liveness cao (98%), khuôn mặt khớp ID.",
+    "Đối chiếu sinh trắc học: điểm xác minh hiện diện cao (98%), khuôn mặt khớp với giấy tờ.",
     "Kết quả: khuyến nghị tự động duyệt (độ tin cậy: 99%)."
   ],
   fraudLogsRisky: [
     "Đang phân tích kết nối mạng: phát hiện VPN hosting rủi ro cao.",
     "Đang kiểm tra định danh thiết bị: thiết bị Android giả lập, agent bị giả mạo.",
     "Đang đối chiếu cơ sở dữ liệu: ID thiết bị liên kết với 4 tài khoản khác.",
-    "Đối chiếu sinh trắc học: điểm liveness thấp (35%), ảnh chụp lại từ ảnh.",
+    "Đối chiếu sinh trắc học: điểm xác minh hiện diện thấp (35%), phát hiện ảnh chụp lại.",
     "Kết quả: tự động gắn cờ để xem xét thủ công (điểm rủi ro: 84)."
   ],
   fraudBenefits: [
@@ -1190,7 +1190,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.vi, {
     "flow-editor": { title: "Trình chỉnh sửa luồng", description: "Xây dựng luồng người dùng mang nhận diện thương hiệu để thu thập thông tin khách hàng mà không cần viết mã." },
     passive: { title: "Tín hiệu thụ động", description: "Đánh giá rủi ro âm thầm bằng dấu vân tay thiết bị và các tín hiệu hành vi khác." },
     "age-assure": { title: "Bảo đảm độ tuổi", description: "Đáp ứng quy định an toàn trực tuyến yêu cầu bảo đảm độ tuổi, quyền riêng tư và đồng ý." },
-    "selfie-live": { title: "Xác minh liveness bằng selfie", description: "Phát hiện nền ảnh giống nhau trong selfie đã gửi và so sánh với các tín hiệu khác." },
+    "selfie-live": { title: "Xác minh hiện diện qua selfie", description: "Phát hiện nền ảnh giống nhau trong selfie đã gửi và so sánh với các tín hiệu khác." },
     graph: { title: "Đồ thị", description: "Phát hiện và chặn các đường dây gian lận hoặc tài khoản rủi ro có liên kết với nhau." },
     cases: { title: "Hồ sơ", description: "Điều tra hiệu quả hơn với trung tâm quản lý hồ sơ có thể cấu hình." },
     workflows: { title: "Luồng công việc", description: "Tự động hóa quyết định và bước theo dõi trong toàn bộ vòng đời người dùng." }

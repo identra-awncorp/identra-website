@@ -77,7 +77,7 @@ export const docsReferenceActors: Record<DocsReferenceActor, LocalizedText> = {
     es: 'SDK móvil del titular',
     ja: '保有者モバイルSDK',
     de: 'Mobile Inhaber-SDK',
-    vi: 'SDK Holder Mobile'
+    vi: 'SDK di động cho bên nắm giữ'
   },
   verifier: {
     en: 'Verifier SDK',
@@ -183,19 +183,19 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
   },
   vi: {
     title: 'Toàn bộ vòng đời mật mã của một thực chứng',
-    overviewTitle: 'Tổng quan lifecycle',
-    overviewIntro: 'Tài liệu SDK API chi tiết từ tạo khóa, publish DID Document, thiết lập DIDComm, cấp phát VC, lưu mã hóa, tạo VP, xác minh và gửi receipt cho Holder.',
-    contractNotice: 'Contract SDK trong tài liệu này là thiết kế minh họa. Tên package, API và endpoint mô tả contract dự kiến cùng các ranh giới bảo mật bắt buộc.',
-    registryNotice: 'CertNet là registry mặc định trong sandbox, nhưng cùng lớp DID registry có thể publish và resolve document qua did:web, ION hoặc registry nội bộ.',
-    phaseCardsIntro: 'Lifecycle được chia thành ba phase để mỗi API stage có owner, input, output và security invariant rõ ràng.',
+    overviewTitle: 'Tổng quan vòng đời',
+    overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, cấp phát và lưu thực chứng (VC), tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
+    contractNotice: 'Giao diện SDK trong tài liệu này chỉ mang tính minh họa. Tên gói, API và điểm cuối mô tả giao diện dự kiến cùng các ranh giới bảo mật bắt buộc.',
+    registryNotice: 'CertNet là sổ đăng ký mặc định trong môi trường thử nghiệm. Cùng một lớp sổ đăng ký DID cũng có thể công bố và phân giải tài liệu qua did:web, ION hoặc sổ đăng ký nội bộ.',
+    phaseCardsIntro: 'Vòng đời được chia thành ba giai đoạn để mỗi bước API có chủ thể, đầu vào, đầu ra và ràng buộc bảo mật rõ ràng.',
     inputLabel: 'Đầu vào API',
     outputLabel: 'Đầu ra API',
     securityLabel: 'Ràng buộc bảo mật',
-    stageCount: 'API stage được mô tả chi tiết',
+    stageCount: 'Bước API được mô tả chi tiết',
     phaseIntro: {
-      identity: 'Tạo định danh công khai và vật liệu khóa mà mỗi actor cần trước khi phát hành hoặc xác minh thực chứng.',
-      issuance: 'Thiết lập quan hệ Holder-Issuer, gửi VC đã ký qua DIDComm và chỉ lưu VC trong mobile vault.',
-      verification: 'Tạo phiên Verifier, yêu cầu VP, xác minh từng DID và proof rồi gửi receipt bảo toàn quyền riêng tư.'
+      identity: 'Tạo định danh công khai và vật liệu khóa mà mỗi chủ thể cần trước khi phát hành hoặc xác minh thực chứng.',
+      issuance: 'Thiết lập quan hệ giữa bên nắm giữ và bên phát hành, gửi thực chứng (VC) đã ký qua DIDComm và chỉ lưu trong kho bảo mật trên thiết bị di động.',
+      verification: 'Tạo phiên cho bên xác minh, yêu cầu VP, xác minh từng DID và bằng chứng rồi gửi biên nhận bảo toàn quyền riêng tư.'
     }
   }
 };
@@ -240,7 +240,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Los servidores deben usar HSM o KMS; las apps usan Keystore o Secure Enclave; web solo aplica con política de claves controlada.',
       ja: 'サーバーはHSMまたはKMSを使い、アプリはKeystoreまたはSecure Enclaveを使います。Webは鍵ポリシーを制御できる場合だけ適します。',
       de: 'Server sollten HSM oder KMS nutzen; Apps verwenden Keystore oder Secure Enclave; Web eignet sich nur bei kontrollierter Schlüsselrichtlinie.',
-      vi: 'Server nên dùng HSM hoặc KMS; ứng dụng dùng Keystore hoặc Secure Enclave; web chỉ phù hợp khi chính sách khóa được kiểm soát.'
+      vi: 'Máy chủ nên dùng HSM hoặc KMS; ứng dụng dùng Keystore hoặc Secure Enclave; nền tảng web chỉ phù hợp khi chính sách khóa được kiểm soát.'
     },
     codeKey: 'issuerKeys',
     variants: allIssuerVerifierVariants
@@ -255,14 +255,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Crear un DID Document y publicarlo en un DID registry',
       ja: 'DID Documentを作成しDID registryへ公開',
       de: 'DID Document erstellen und in einem DID registry veröffentlichen',
-      vi: 'Tạo DID Document và publish lên DID registry'
+      vi: 'Tạo và công bố tài liệu DID lên sổ đăng ký DID'
     },
     summary: {
       en: 'The DID Document contains the public key and DIDComm service endpoint. The SDK can publish it to CertNet, did:web, ION, or an internal registry.',
       es: 'El DID Document contiene la clave pública y el endpoint DIDComm. El SDK puede publicarlo en CertNet, did:web, ION o un registro interno.',
       ja: 'DID Documentには公開鍵とDIDComm service endpointが含まれます。SDKはCertNet、did:web、ION、内部registryへ公開できます。',
       de: 'Das DID Document enthält öffentlichen Schlüssel und DIDComm-Service-Endpunkt. Das SDK kann es in CertNet, did:web, ION oder einem internen Register veröffentlichen.',
-      vi: 'DID Document chứa khóa công khai và DIDComm service endpoint. SDK có thể publish document lên CertNet, did:web, ION hoặc registry nội bộ.'
+      vi: 'Tài liệu DID chứa khóa công khai và điểm cuối dịch vụ DIDComm. SDK có thể công bố tài liệu lên CertNet, did:web, ION hoặc sổ đăng ký nội bộ.'
     },
     protocol: 'DID Core + DID Registry',
     inputs: [{
@@ -270,7 +270,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Clave pública y endpoint DIDComm',
       ja: '公開鍵とDIDComm endpoint',
       de: 'Öffentlicher Schlüssel und DIDComm-Endpunkt',
-      vi: 'Khóa công khai và DIDComm endpoint'
+      vi: 'Khóa công khai và điểm cuối DIDComm'
     }],
     outputs: [{
       en: 'Canonical DID and stored DID Document',
@@ -284,7 +284,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El registro nunca recibe la clave privada. verificationMethod debe apuntar al keyId usado para firmar VCs.',
       ja: 'registryは秘密鍵を受け取りません。verificationMethodはVC署名に使うkeyIdを参照する必要があります。',
       de: 'Das Register erhält niemals den privaten Schlüssel. verificationMethod muss auf die keyId verweisen, die VCs signiert.',
-      vi: 'Registry không nhận khóa bí mật. verificationMethod phải trỏ đúng keyId dùng để ký VC.'
+      vi: 'Sổ đăng ký không nhận khóa bí mật. verificationMethod phải trỏ đúng keyId dùng để ký thực chứng (VC).'
     },
     codeKey: 'issuerDid',
     variants: allIssuerVerifierVariants
@@ -299,14 +299,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Inicializar la wallet del titular y una bóveda cifrada única',
       ja: '保有者walletと単一暗号化vaultを初期化',
       de: 'Inhaber-Wallet und einzigen verschlüsselten Tresor initialisieren',
-      vi: 'Khởi tạo ví Holder và kho mã hóa duy nhất'
+      vi: 'Khởi tạo ví của bên nắm giữ và kho mã hóa riêng'
     },
     summary: {
       en: 'The app creates DID keys, a DID Document, and a VC vault. DID and vault keys are wrapped by non-exportable device protection keys.',
       es: 'La app crea claves DID, un DID Document y una bóveda VC. Las claves DID y de bóveda se protegen con claves de dispositivo no exportables.',
       ja: 'アプリはDID鍵、DID Document、VC vaultを作成します。DID鍵とvault鍵はexport不可のデバイス保護鍵で包まれます。',
       de: 'Die App erstellt DID-Schlüssel, ein DID Document und einen VC-Tresor. DID- und Tresorschlüssel werden durch nicht exportierbare Geräteschlüssel geschützt.',
-      vi: 'Ứng dụng tạo khóa DID, DID Document và VC vault. Khóa DID và khóa vault được bọc bởi khóa bảo vệ không thể export trên thiết bị.'
+      vi: 'Ứng dụng tạo khóa DID, tài liệu DID và kho thực chứng (VC). Khóa DID và khóa kho được bọc bằng khóa bảo vệ không thể xuất khỏi thiết bị.'
     },
     protocol: 'Mobile Secure Storage + DID Registry',
     inputs: [{
@@ -321,14 +321,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'DID del titular y bóveda segura activada',
       ja: '保有者DIDと有効化済みsecure vault',
       de: 'Inhaber-DID und aktivierter sicherer Tresor',
-      vi: 'Holder DID và secure vault đã kích hoạt'
+      vi: 'DID của bên nắm giữ và kho bảo mật đã được kích hoạt'
     }],
     security: {
       en: 'VCs cannot be exported. During migration, the old wallet must delete all keys and VCs before the new vault activates.',
       es: 'Las VCs no se exportan. En una migración, la wallet anterior debe borrar todas las claves y VCs antes de activar la nueva bóveda.',
       ja: 'VCはexportできません。移行時は新しいvaultの有効化前に、古いwalletがすべての鍵とVCを削除する必要があります。',
       de: 'VCs können nicht exportiert werden. Bei Migration muss die alte Wallet alle Schlüssel und VCs löschen, bevor der neue Tresor aktiv wird.',
-      vi: 'VC không được export. Khi đổi thiết bị, ví cũ phải xóa toàn bộ khóa và VC trước khi vault mới được kích hoạt.'
+      vi: 'Không được xuất thực chứng (VC) khỏi ví. Khi đổi thiết bị, ví cũ phải xóa toàn bộ khóa và VC trước khi kho mới được kích hoạt.'
     },
     codeKey: 'holderWallet',
     variants: mobileVariants
@@ -350,7 +350,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El emisor crea una invitación DIDComm Out-of-Band de un solo uso y la codifica como QR. El QR contiene datos de conexión, no una VC.',
       ja: '発行者は1回限りのDIDComm Out-of-Band invitationを作りQR化します。QRには接続設定だけが入り、VCは入りません。',
       de: 'Der Aussteller erstellt eine einmalige DIDComm-Out-of-Band-Einladung und codiert sie als QR. Der QR enthält Verbindungsdaten, keine VC.',
-      vi: 'Issuer tạo DIDComm Out-of-Band invitation dùng một lần và mã hóa thành QR. QR chỉ chứa thông tin thiết lập kết nối, không chứa VC.'
+      vi: 'Bên phát hành tạo lời mời DIDComm Out-of-Band dùng một lần và mã hóa thành QR. Mã QR chỉ chứa thông tin thiết lập kết nối, không chứa thực chứng (VC).'
     },
     protocol: 'DIDComm OOB 2.0',
     inputs: [{
@@ -358,21 +358,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'DID del emisor, objetivo receive-credential y vencimiento',
       ja: '発行者DID、receive-credential目的、有効期限',
       de: 'Aussteller-DID, receive-credential-Ziel und Ablaufzeit',
-      vi: 'Issuer DID, mục đích receive-credential và thời hạn'
+      vi: 'DID của bên phát hành, mục đích nhận thực chứng và thời hạn'
     }],
     outputs: [{
       en: 'Invitation ID and QR payload',
       es: 'ID de invitación y payload QR',
       ja: 'Invitation IDとQR payload',
       de: 'Einladungs-ID und QR-Payload',
-      vi: 'Invitation ID và QR payload'
+      vi: 'Mã lời mời và dữ liệu QR'
     }],
     security: {
       en: 'The invitation must expire, be single-use, and bind to a specific issuance session.',
       es: 'La invitación debe expirar, usarse una sola vez y quedar vinculada a una sesión de emisión concreta.',
       ja: 'invitationは期限付き、1回限り、特定の発行sessionに紐づく必要があります。',
       de: 'Die Einladung muss ablaufen, nur einmal nutzbar sein und an eine bestimmte Ausstellungssitzung gebunden sein.',
-      vi: 'Invitation phải có thời hạn, dùng một lần và gắn với phiên cấp phát cụ thể.'
+      vi: 'Lời mời phải có thời hạn, chỉ dùng một lần và gắn với phiên cấp phát cụ thể.'
     },
     codeKey: 'issuerInvitation',
     variants: allIssuerVerifierVariants
@@ -387,14 +387,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El titular escanea el QR y se conecta con el emisor',
       ja: '保有者がQRを読み取り発行者へ接続',
       de: 'Inhaber scannt den QR und verbindet sich mit dem Aussteller',
-      vi: 'Holder quét QR và thiết lập kết nối với Issuer'
+      vi: 'Bên nắm giữ quét mã QR và kết nối với bên phát hành'
     },
     summary: {
       en: 'The wallet decodes the invitation, resolves the Issuer DID Document, validates the endpoint, and completes the DIDComm handshake.',
       es: 'La wallet decodifica la invitación, resuelve el DID Document del emisor, valida el endpoint y completa el handshake DIDComm.',
       ja: 'walletはinvitationを復号し、発行者DID Documentを解決し、endpointを検証してDIDComm handshakeを完了します。',
       de: 'Die Wallet decodiert die Einladung, löst das DID Document des Ausstellers auf, validiert den Endpunkt und schließt den DIDComm-Handshake ab.',
-      vi: 'Ví giải mã invitation, resolve DID Document của Issuer, xác thực endpoint rồi hoàn tất DIDComm handshake.'
+      vi: 'Ví giải mã lời mời, phân giải tài liệu DID của bên phát hành, xác thực điểm cuối rồi hoàn tất quá trình bắt tay DIDComm.'
     },
     protocol: 'DIDComm DID Exchange',
     inputs: [{
@@ -402,21 +402,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Payload QR del emisor',
       ja: '発行者からのQR payload',
       de: 'QR-Payload vom Aussteller',
-      vi: 'QR payload từ Issuer'
+      vi: 'Dữ liệu QR từ bên phát hành'
     }],
     outputs: [{
       en: 'Encrypted Holder-Issuer connectionId',
       es: 'connectionId cifrado entre titular y emisor',
       ja: '暗号化されたHolder-Issuer connectionId',
       de: 'Verschlüsselte Holder-Issuer connectionId',
-      vi: 'connectionId mã hóa giữa Holder và Issuer'
+      vi: 'connectionId được mã hóa giữa bên nắm giữ và bên phát hành'
     }],
     security: {
       en: 'The wallet must display the resolved Issuer identity so the user knows whom they are connecting to.',
       es: 'La wallet debe mostrar la identidad resuelta del emisor para que el usuario sepa con quién conecta.',
       ja: 'walletは解決済みの発行者IDを表示し、ユーザーが接続先を確認できるようにします。',
       de: 'Die Wallet muss die aufgelöste Ausstelleridentität anzeigen, damit der Nutzer die Gegenstelle kennt.',
-      vi: 'Ví phải hiển thị danh tính Issuer đã resolve để người dùng biết đang kết nối với ai.'
+      vi: 'Ví phải hiển thị danh tính bên phát hành đã được phân giải để người dùng biết mình đang kết nối với ai.'
     },
     codeKey: 'holderIssuerConnection',
     variants: mobileVariants
@@ -438,7 +438,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El emisor crea una VC con issuer DID, subject DID y claims, la firma con la clave privada correspondiente y la envía por DIDComm.',
       ja: '発行者はissuer DID、subject DID、claimsを含むVCを作成し、対応する秘密鍵で署名してDIDCommで送信します。',
       de: 'Der Aussteller erstellt eine VC mit issuer DID, subject DID und Claims, signiert sie mit dem passenden privaten Schlüssel und sendet sie per DIDComm.',
-      vi: 'Issuer tạo VC chứa issuer DID, subject DID và claims, ký bằng khóa bí mật tương ứng rồi gửi qua DIDComm.'
+      vi: 'Bên phát hành tạo thực chứng (VC) chứa DID của bên phát hành, DID của chủ thể và các thuộc tính, ký bằng khóa bí mật tương ứng rồi gửi qua DIDComm.'
     },
     protocol: 'W3C VC + DIDComm Issue Credential',
     inputs: [{
@@ -446,7 +446,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Issuer DID, Holder DID, claims y connectionId',
       ja: 'Issuer DID、Holder DID、claims、connectionId',
       de: 'Issuer DID, Holder DID, Claims und connectionId',
-      vi: 'Issuer DID, Holder DID, claims và connectionId'
+      vi: 'DID của bên phát hành, DID của bên nắm giữ, các thuộc tính và connectionId'
     }],
     outputs: [{
       en: 'Signed VC and message ID',
@@ -460,7 +460,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'proof.verificationMethod debe referenciar la clave pública correspondiente en el DID Document publicado; la clave privada solo se usa mediante un key handle.',
       ja: 'proof.verificationMethodは公開済みDID Document内の対応公開鍵を参照する必要があります。秘密鍵はkey handle経由でのみ使われます。',
       de: 'proof.verificationMethod muss auf den passenden öffentlichen Schlüssel im veröffentlichten DID Document verweisen; der private Schlüssel läuft nur über ein Key Handle.',
-      vi: 'proof.verificationMethod phải trỏ đến khóa công khai tương ứng trong DID Document đã publish; khóa bí mật chỉ được gọi qua key handle.'
+      vi: 'proof.verificationMethod phải trỏ đến khóa công khai tương ứng trong tài liệu DID đã công bố; khóa bí mật chỉ được truy cập qua mã tham chiếu khóa.'
     },
     codeKey: 'issueCredential',
     variants: allIssuerVerifierVariants
@@ -475,14 +475,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El titular verifica y guarda la VC en la bóveda segura',
       ja: '保有者がVCを検証してsecure vaultへ保存',
       de: 'Inhaber prüft und speichert die VC im sicheren Tresor',
-      vi: 'Holder xác minh và lưu VC vào secure vault'
+      vi: 'Bên nắm giữ xác minh và lưu thực chứng (VC) vào kho bảo mật'
     },
     summary: {
       en: 'The wallet receives the VC, resolves the issuer DID, verifies signature and status, then encrypts the VC before local storage.',
       es: 'La wallet recibe la VC, resuelve el DID del emisor, verifica firma y estado, y cifra la VC antes de guardarla localmente.',
       ja: 'walletはVCを受信し、issuer DIDを解決し、署名と状態を検証してからVCを暗号化してローカル保存します。',
       de: 'Die Wallet empfängt die VC, löst die Issuer DID auf, prüft Signatur und Status und verschlüsselt die VC vor lokaler Speicherung.',
-      vi: 'Ví nhận VC, resolve issuer DID, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu cục bộ.'
+      vi: 'Ví nhận thực chứng (VC), phân giải DID của bên phát hành, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu trên thiết bị.'
     },
     protocol: 'DID Resolve + Encrypted Vault',
     inputs: [{
@@ -497,7 +497,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Registro de credencial cifrado',
       ja: '暗号化credential record',
       de: 'Verschlüsselter Credential-Datensatz',
-      vi: 'Credential record được mã hóa'
+      vi: 'Bản ghi thực chứng được mã hóa'
     }],
     security: {
       en: 'Every VC read requires Secure Enclave or Keystore to unwrap the vault key; the app never receives a clear private key.',
@@ -526,7 +526,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El verificador crea claves y publica un DID Document con clave pública y endpoint DIDComm para que el titular pueda autenticarlo.',
       ja: '検証者は鍵を作成し、公開鍵とDIDComm endpointを含むDID Documentを公開して、保有者が認証できるようにします。',
       de: 'Der Prüfer erstellt Schlüssel und veröffentlicht ein DID Document mit öffentlichem Schlüssel und DIDComm-Endpunkt, damit der Inhaber ihn authentifizieren kann.',
-      vi: 'Verifier tạo khóa và publish DID Document chứa khóa công khai cùng DIDComm endpoint để Holder xác thực trước khi chia sẻ.'
+      vi: 'Bên xác minh tạo khóa và công bố tài liệu DID chứa khóa công khai cùng điểm cuối DIDComm để bên nắm giữ xác thực trước khi chia sẻ.'
     },
     protocol: 'DID Core + DID Registry',
     inputs: [{
@@ -534,21 +534,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Clave pública y endpoint de recepción VP',
       ja: '公開鍵とVP受信endpoint',
       de: 'Öffentlicher Schlüssel und VP-Empfangsendpunkt',
-      vi: 'Khóa công khai và endpoint nhận VP'
+      vi: 'Khóa công khai và điểm cuối nhận VP'
     }],
     outputs: [{
       en: 'Verifier DID',
       es: 'DID del verificador',
       ja: 'Verifier DID',
       de: 'Verifier DID',
-      vi: 'Verifier DID'
+      vi: 'DID của bên xác minh'
     }],
     security: {
       en: 'The Holder displays a sharing request only after authenticating the Verifier DID and domain.',
       es: 'El titular muestra la solicitud de compartir solo después de autenticar el DID y dominio del verificador.',
       ja: '保有者はVerifier DIDとdomainを認証した後にだけ共有要求を表示します。',
       de: 'Der Inhaber zeigt eine Freigabeanfrage erst nach Authentifizierung von Verifier DID und Domain an.',
-      vi: 'Holder chỉ hiển thị yêu cầu chia sẻ sau khi xác thực DID và domain của Verifier.'
+      vi: 'Bên nắm giữ chỉ hiển thị yêu cầu chia sẻ sau khi xác thực DID và tên miền của bên xác minh.'
     },
     codeKey: 'verifierIdentity',
     variants: allIssuerVerifierVariants
@@ -563,14 +563,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El verificador crea un QR de conexión para verificación',
       ja: '検証者が検証接続QRを作成',
       de: 'Prüfer erstellt einen QR für die Prüfverbindung',
-      vi: 'Verifier tạo QR kết nối xác minh'
+      vi: 'Bên xác minh tạo mã QR kết nối'
     },
     summary: {
       en: 'The Verifier creates a DIDComm invitation bound to a verification session and displays it as a QR for the Holder.',
       es: 'El verificador crea una invitación DIDComm vinculada a una sesión de verificación y la muestra como QR.',
       ja: '検証者はverification sessionに紐づくDIDComm invitationを作成し、保有者向けにQR表示します。',
       de: 'Der Prüfer erstellt eine an die Prüfsitzung gebundene DIDComm-Einladung und zeigt sie dem Inhaber als QR.',
-      vi: 'Verifier tạo DIDComm invitation gắn với verification session và hiển thị dưới dạng QR cho Holder quét.'
+      vi: 'Bên xác minh tạo lời mời DIDComm gắn với phiên xác minh và hiển thị dưới dạng mã QR để bên nắm giữ quét.'
     },
     protocol: 'DIDComm OOB 2.0',
     inputs: [{
@@ -578,14 +578,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'DID del verificador, dominio e ID de sesión',
       ja: 'Verifier DID、domain、session ID',
       de: 'Verifier DID, Domain und Sitzungs-ID',
-      vi: 'Verifier DID, domain và session ID'
+      vi: 'DID của bên xác minh, tên miền và mã phiên'
     }],
     outputs: [{
       en: 'QR payload and verificationSessionId',
       es: 'Payload QR y verificationSessionId',
       ja: 'QR payloadとverificationSessionId',
       de: 'QR-Payload und verificationSessionId',
-      vi: 'QR payload và verificationSessionId'
+      vi: 'Dữ liệu QR và verificationSessionId'
     }],
     security: {
       en: 'The QR contains no personal data or VP; the challenge is created by a cryptographic random generator.',
@@ -607,14 +607,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El titular escanea el QR y se conecta con el verificador',
       ja: '保有者がQRを読み取り検証者へ接続',
       de: 'Inhaber scannt den QR und verbindet sich mit dem Prüfer',
-      vi: 'Holder quét QR và kết nối với Verifier'
+      vi: 'Bên nắm giữ quét mã QR và kết nối với bên xác minh'
     },
     summary: {
       en: 'The wallet resolves the Verifier DID, displays its identity, and establishes a DIDComm connection only after user confirmation.',
       es: 'La wallet resuelve el DID del verificador, muestra su identidad y establece DIDComm solo tras confirmación del usuario.',
       ja: 'walletはVerifier DIDを解決し、そのIDを表示し、ユーザー確認後にだけDIDComm接続を確立します。',
       de: 'Die Wallet löst die Verifier DID auf, zeigt die Identität an und stellt die DIDComm-Verbindung erst nach Nutzerbestätigung her.',
-      vi: 'Ví resolve Verifier DID, hiển thị danh tính Verifier và chỉ thiết lập DIDComm connection sau khi người dùng xác nhận.'
+      vi: 'Ví phân giải DID của bên xác minh, hiển thị danh tính của họ và chỉ thiết lập kết nối DIDComm sau khi người dùng xác nhận.'
     },
     protocol: 'DIDComm DID Exchange',
     inputs: [{
@@ -622,21 +622,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Payload QR del verificador',
       ja: '検証者からのQR payload',
       de: 'QR-Payload vom Prüfer',
-      vi: 'QR payload từ Verifier'
+      vi: 'Dữ liệu QR từ bên xác minh'
     }],
     outputs: [{
       en: 'Holder-Verifier connectionId',
       es: 'connectionId entre titular y verificador',
       ja: 'Holder-Verifier connectionId',
       de: 'Holder-Verifier connectionId',
-      vi: 'connectionId giữa Holder và Verifier'
+      vi: 'connectionId giữa bên nắm giữ và bên xác minh'
     }],
     security: {
       en: 'The Issuer connectionId is never reused; each relationship has its own connection and pairwise DID.',
       es: 'El connectionId del emisor nunca se reutiliza; cada relación tiene su propia conexión y pairwise DID.',
       ja: 'Issuer connectionIdは再利用しません。各関係は独自の接続とpairwise DIDを持ちます。',
       de: 'Die Issuer connectionId wird nie wiederverwendet; jede Beziehung hat eigene Verbindung und pairwise DID.',
-      vi: 'Không tái sử dụng connectionId của Issuer; mỗi quan hệ có kết nối và pairwise DID riêng.'
+      vi: 'Không tái sử dụng connectionId của bên phát hành; mỗi quan hệ có kết nối và DID theo cặp riêng.'
     },
     codeKey: 'holderVerifierConnection',
     variants: mobileVariants
@@ -651,14 +651,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El verificador envía una solicitud de compartir por DIDComm',
       ja: '検証者がDIDCommで共有要求を送信',
       de: 'Prüfer sendet Freigabeanfrage über DIDComm',
-      vi: 'Verifier gửi yêu cầu chia sẻ qua DIDComm'
+      vi: 'Bên xác minh gửi yêu cầu chia sẻ qua DIDComm'
     },
     summary: {
       en: 'After connection, the Verifier sends a Presentation Definition, challenge, domain, purpose, and expiry.',
       es: 'Tras la conexión, el verificador envía Presentation Definition, challenge, dominio, propósito y vencimiento.',
       ja: '接続後、検証者はPresentation Definition、challenge、domain、目的、有効期限を送信します。',
       de: 'Nach der Verbindung sendet der Prüfer Presentation Definition, Challenge, Domain, Zweck und Ablaufzeit.',
-      vi: 'Sau khi kết nối hoàn tất, Verifier gửi Presentation Definition, challenge, domain, mục đích sử dụng và thời hạn.'
+      vi: 'Sau khi kết nối, bên xác minh gửi định nghĩa trình xuất, mã thử thách, tên miền, mục đích sử dụng và thời hạn.'
     },
     protocol: 'DIDComm Present Proof',
     inputs: [{
@@ -666,21 +666,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Presentation Definition y connectionId',
       ja: 'Presentation DefinitionとconnectionId',
       de: 'Presentation Definition und connectionId',
-      vi: 'Presentation Definition và connectionId'
+      vi: 'Định nghĩa trình xuất và connectionId'
     }],
     outputs: [{
       en: 'Sent presentation request',
       es: 'Solicitud de presentación enviada',
       ja: '送信済みpresentation request',
       de: 'Gesendete Präsentationsanfrage',
-      vi: 'Presentation request đã gửi'
+      vi: 'Yêu cầu trình xuất đã gửi'
     }],
     security: {
       en: 'The request must minimize data and explain its purpose before the Holder consents.',
       es: 'La solicitud debe minimizar datos y explicar su propósito antes del consentimiento del titular.',
       ja: '要求はデータを最小化し、保有者の同意前に目的を説明する必要があります。',
       de: 'Die Anfrage muss Daten minimieren und ihren Zweck erklären, bevor der Inhaber zustimmt.',
-      vi: 'Yêu cầu phải tối thiểu hóa dữ liệu và giải thích mục đích trước khi Holder đồng ý.'
+      vi: 'Yêu cầu phải tối thiểu hóa dữ liệu và giải thích mục đích trước khi bên nắm giữ đồng ý.'
     },
     codeKey: 'presentationRequest',
     variants: allIssuerVerifierVariants
@@ -695,14 +695,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El titular consiente, crea una VP y la envía al verificador',
       ja: '保有者が同意しVPを作成して検証者へ送信',
       de: 'Inhaber stimmt zu, erstellt eine VP und sendet sie an den Prüfer',
-      vi: 'Holder đồng ý, tạo VP và gửi cho Verifier'
+      vi: 'Bên nắm giữ đồng ý, tạo VP và gửi cho bên xác minh'
     },
     summary: {
       en: 'After biometric authentication, the wallet opens the secure vault, selects matching VCs, creates a challenge-bound VP, signs it, and sends it over DIDComm.',
       es: 'Tras autenticación biométrica, la wallet abre la bóveda, elige VCs compatibles, crea una VP vinculada al challenge, la firma y la envía por DIDComm.',
       ja: '生体認証後、walletはsecure vaultを開き、該当VCを選び、challengeに紐づくVPを作成、署名してDIDCommで送信します。',
       de: 'Nach biometrischer Authentifizierung öffnet die Wallet den Tresor, wählt passende VCs, erstellt eine Challenge-gebundene VP, signiert und sendet sie per DIDComm.',
-      vi: 'Sau xác thực sinh trắc học, ví mở secure vault, chọn VC phù hợp, tạo VP gắn challenge, ký và gửi qua DIDComm.'
+      vi: 'Sau khi xác thực sinh trắc học, ví mở kho bảo mật, chọn thực chứng (VC) phù hợp, tạo VP gắn với mã thử thách, ký và gửi qua DIDComm.'
     },
     protocol: 'W3C VP + DIDComm Present Proof',
     inputs: [{
@@ -710,7 +710,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Solicitud de presentación y consentimiento del usuario',
       ja: 'presentation requestとユーザー同意',
       de: 'Präsentationsanfrage und Nutzerzustimmung',
-      vi: 'Presentation request và sự đồng ý của người dùng'
+      vi: 'Yêu cầu trình xuất và sự đồng ý của người dùng'
     }],
     outputs: [{
       en: 'Signed VP and message ID',
@@ -724,7 +724,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El SDK descifra VCs solo en memoria transitoria, limpia datos sensibles tras crear la VP y nunca permite exportar VCs.',
       ja: 'SDKはVCを一時メモリでのみ復号し、VP作成後に機微データを消去し、VC exportを許可しません。',
       de: 'Das SDK entschlüsselt VCs nur im flüchtigen Speicher, löscht sensible Daten nach VP-Erstellung und erlaubt nie VC-Export.',
-      vi: 'SDK chỉ giải mã VC trong bộ nhớ tạm, xóa dữ liệu nhạy cảm sau khi tạo VP và không cho phép export VC.'
+      vi: 'SDK chỉ giải mã thực chứng (VC) trong bộ nhớ tạm, xóa dữ liệu nhạy cảm sau khi tạo VP và không cho phép xuất VC.'
     },
     codeKey: 'createPresentation',
     variants: mobileVariants
@@ -739,14 +739,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El verificador resuelve DIDs y verifica la VP',
       ja: '検証者がDIDを解決してVPを検証',
       de: 'Prüfer löst DIDs auf und prüft die VP',
-      vi: 'Verifier resolve DID và xác minh VP'
+      vi: 'Bên xác minh phân giải DID và xác minh VP'
     },
     summary: {
       en: 'The Verifier receives the VP, resolves Holder and Issuer DIDs, obtains public keys, and checks signatures, challenge, domain, schema, and VC status.',
       es: 'El verificador recibe la VP, resuelve DIDs de Holder e Issuer, obtiene claves públicas y comprueba firmas, challenge, dominio, schema y estado de VC.',
       ja: '検証者はVPを受信し、HolderとIssuerのDIDを解決し、公開鍵を取得して署名、challenge、domain、schema、VC状態を検証します。',
       de: 'Der Prüfer empfängt die VP, löst Holder- und Issuer-DIDs auf, erhält öffentliche Schlüssel und prüft Signaturen, Challenge, Domain, Schema und VC-Status.',
-      vi: 'Verifier nhận VP, resolve Holder DID và từng Issuer DID, lấy khóa công khai rồi kiểm tra chữ ký, challenge, domain, schema và trạng thái VC.'
+      vi: 'Bên xác minh nhận VP, phân giải DID của bên nắm giữ và từng bên phát hành, lấy khóa công khai rồi kiểm tra chữ ký, mã thử thách, tên miền, lược đồ và trạng thái VC.'
     },
     protocol: 'DID Resolve + W3C VC/VP Verification',
     inputs: [{
@@ -754,7 +754,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'VP recibida por DIDComm y sesión de verificación',
       ja: 'DIDCommで受信したVPとverification session',
       de: 'Per DIDComm empfangene VP und Prüfsitzung',
-      vi: 'VP nhận qua DIDComm và verification session'
+      vi: 'VP nhận qua DIDComm và phiên xác minh'
     }],
     outputs: [{
       en: 'VerificationResult with detailed reason codes',
@@ -768,7 +768,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Comprobar solo la firma no basta: también hay que validar challenge anti-replay, dominio, vencimiento y revocación.',
       ja: '署名確認だけでは不十分です。replay challenge、domain、有効期限、失効状態も確認します。',
       de: 'Signaturprüfung allein reicht nicht: Replay-Challenge, Domain, Ablauf und Widerrufsstatus müssen ebenfalls geprüft werden.',
-      vi: 'Không chỉ kiểm tra chữ ký: phải kiểm tra challenge chống phát lại, domain, expiration và trạng thái thu hồi.'
+      vi: 'Ngoài chữ ký, hệ thống còn phải kiểm tra mã thử thách chống phát lại, tên miền, thời hạn và trạng thái thu hồi.'
     },
     codeKey: 'verifyPresentation',
     variants: allIssuerVerifierVariants
@@ -783,14 +783,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Enviar el resultado de verificación antes del proceso de negocio',
       ja: '業務処理前に検証結果を送信',
       de: 'Prüfergebnis vor Geschäftsverarbeitung senden',
-      vi: 'Gửi kết quả xác minh về Holder trước nghiệp vụ riêng'
+      vi: 'Gửi kết quả xác minh cho bên nắm giữ trước khi xử lý nghiệp vụ'
     },
     summary: {
       en: 'The Verifier creates a signed receipt containing the result and reason code, sends it to the Holder, then runs business-specific processing.',
       es: 'El verificador crea un recibo firmado con resultado y reason code, lo envía al titular y después ejecuta el proceso de negocio.',
       ja: '検証者は結果とreason codeを含む署名済みreceiptを作成して保有者へ送り、その後に業務処理を実行します。',
       de: 'Der Prüfer erstellt ein signiertes Receipt mit Ergebnis und Reason Code, sendet es an den Inhaber und startet erst danach die Fachlogik.',
-      vi: 'Verifier tạo signed receipt chứa kết quả và reason code, gửi về Holder rồi mới chạy xử lý nghiệp vụ riêng.'
+      vi: 'Bên xác minh tạo biên nhận đã ký chứa kết quả và mã lý do, gửi cho bên nắm giữ rồi mới thực hiện xử lý nghiệp vụ.'
     },
     protocol: 'DIDComm Receipt + Audit Trail',
     inputs: [{
@@ -798,21 +798,21 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'VerificationResult y connectionId entre Holder y Verifier',
       ja: 'VerificationResultとHolder-Verifier connectionId',
       de: 'VerificationResult und Holder-Verifier connectionId',
-      vi: 'VerificationResult và Holder-Verifier connectionId'
+      vi: 'VerificationResult và connectionId giữa bên nắm giữ với bên xác minh'
     }],
     outputs: [{
       en: 'Signed receipt and business decision trigger',
       es: 'Recibo firmado y disparador de decisión de negocio',
       ja: '署名済みreceiptと業務判断トリガー',
       de: 'Signiertes Receipt und Auslöser der Geschäftsentscheidung',
-      vi: 'Signed receipt và trigger quyết định nghiệp vụ'
+      vi: 'Biên nhận đã ký và tác nhân kích hoạt quyết định nghiệp vụ'
     }],
     security: {
       en: 'The receipt must not repeat sensitive Holder claims; store only the decision, reason code, and minimum audit evidence.',
       es: 'El recibo no debe repetir claims sensibles del Holder; guarda solo decisión, reason code y evidencia mínima de auditoría.',
       ja: 'receiptに保有者の機微claimを繰り返してはいけません。判断、reason code、最小限の監査証跡だけを保存します。',
       de: 'Das Receipt darf keine sensiblen Holder-Claims wiederholen; speichern Sie nur Entscheidung, Reason Code und minimale Audit-Belege.',
-      vi: 'Receipt không được lặp lại claim nhạy cảm của Holder; chỉ lưu quyết định, reason code và bằng chứng audit tối thiểu.'
+      vi: 'Biên nhận không được lặp lại thuộc tính nhạy cảm của bên nắm giữ; chỉ lưu quyết định, mã lý do và bằng chứng kiểm toán tối thiểu.'
     },
     codeKey: 'verificationReceipt',
     variants: allIssuerVerifierVariants
@@ -869,16 +869,16 @@ const comments: Record<Locale, ReferenceComments> = {
     unavailableMobile: 'Diese API-Stufe ist nur im Holder Mobile SDK verfügbar.'
   },
   vi: {
-    mock: 'SDK minh họa, chưa dùng cho production.',
-    registry: 'Publish hoặc resolve DID Document qua registry provider đã chọn.',
-    resolve: 'Resolve DID Document qua registry provider tương ứng.',
-    secure: 'Khóa bí mật chỉ được truy cập qua protected key handle.',
-    qrInvitation: 'QR chỉ bootstrap DIDComm; QR không chứa credential.',
-    credentialOverDidcomm: 'Credential được gửi qua kết nối DIDComm đã thiết lập sau khi quét QR.',
-    holderDisplay: 'Hiển thị danh tính đối tác đã resolve trước khi người dùng xác nhận.',
-    minimize: 'Chỉ yêu cầu những claim cần cho mục đích nghiệp vụ này.',
-    receiptPrivacy: 'Receipt không lặp lại claim nhạy cảm của Holder.',
-    unavailableMobile: 'API stage này chỉ có trong Holder Mobile SDK.'
+    mock: 'SDK minh họa, chưa dùng trong môi trường thực tế.',
+    registry: 'Công bố hoặc phân giải tài liệu DID qua nhà cung cấp sổ đăng ký đã chọn.',
+    resolve: 'Phân giải tài liệu DID qua nhà cung cấp sổ đăng ký tương ứng.',
+    secure: 'Khóa bí mật chỉ được truy cập qua mã tham chiếu khóa được bảo vệ.',
+    qrInvitation: 'Mã QR chỉ dùng để khởi tạo DIDComm, không chứa thực chứng.',
+    credentialOverDidcomm: 'Thực chứng được gửi qua kết nối DIDComm đã thiết lập sau khi quét mã QR.',
+    holderDisplay: 'Hiển thị danh tính đối tác đã được phân giải trước khi người dùng xác nhận.',
+    minimize: 'Chỉ yêu cầu những thuộc tính cần thiết cho mục đích nghiệp vụ.',
+    receiptPrivacy: 'Biên nhận không lặp lại thuộc tính nhạy cảm của bên nắm giữ.',
+    unavailableMobile: 'Bước API này chỉ có trong SDK di động dành cho bên nắm giữ.'
   }
 };
 

@@ -4,26 +4,59 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
-import { AlertCircle, ArrowLeft, ArrowRight, Award, Briefcase, Building2, Check, CheckCircle2, Code2, ExternalLink, FileCode, Globe, GraduationCap, Loader2, Lock, Mail, MapPin, Phone, Plus, QrCode, Server, ShieldCheck, Smartphone, Sparkles, Terminal, Trash2, User, UserCheck, X } from 'lucide-react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { AlertCircle, ArrowLeft, ArrowRight, Award, Briefcase, Building2, Check, CheckCircle2, Code2, ExternalLink, FileCode, Globe, GraduationCap, Loader2, Lock, Mail, Phone, Plus, QrCode, Server, ShieldCheck, Smartphone, Sparkles, Terminal, Trash2, User, X } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { APPLY_JOB_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/ApplyJobDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
+import {
+  getApplyJobFieldProvenance,
+  getApplyJobVerificationOutcome,
+  getApplyJobVerificationPlan,
+  getApplyJobVerificationSnapshot,
+  isCryptographicallyVerifiedField,
+  validateApplyJobApplication,
+  type ApplyJobFieldId,
+  type ApplyJobMode,
+  type ApplyJobValidationError,
+  type ApplyJobVerificationOutcome,
+  type ApplyJobVerificationRunStatus,
+  type ApplyJobVerificationSnapshot,
+} from './ApplyJobDemoModel';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
+
+type ApplyJobTranslation = typeof APPLY_JOB_DEMO_PAGE_TRANSLATIONS.en;
+type ApplyJobPageLogKey = keyof ApplyJobTranslation['page']['logs'];
+type ApplyJobFlowUiKey = keyof ApplyJobTranslation['flowUi'];
+type ApplyJobLogType = 'system' | 'action' | 'data' | 'ok' | 'processing';
+
+type ApplyJobSimulationLog =
+  | {
+      scope: 'page';
+      key: ApplyJobPageLogKey;
+      type: ApplyJobLogType;
+      values?: Record<string, string | number>;
+    }
+  | {
+      scope: 'flow';
+      key: ApplyJobFlowUiKey;
+      type: ApplyJobLogType;
+      values?: Record<string, string | number>;
+    };
 
 interface ApplyJobApplicationFlowProps {
   currentStepIdx: number;
   completedSteps: boolean[];
   isProcessingAction: boolean;
   setIsProcessingAction: (v: boolean) => void;
-  advanceStep: (stepLogs: string[]) => void;
-  addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
+  advanceStep: (stepLogs?: ApplyJobSimulationLog[]) => void;
+  addLog: (entry: ApplyJobSimulationLog) => void;
   isSuccess: boolean;
-  playTingTingSound?: () => void;
-  onServerProgressChange?: (progress: number) => void;
+  onOpenSummary: () => void;
+  onVerificationSnapshotChange?: (snapshot: ApplyJobVerificationSnapshot) => void;
   onSsiModeChange?: (isSsiMode: boolean) => void;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
@@ -89,12 +122,13 @@ function ApplyJobApplicationFlow({
   advanceStep,
   addLog,
   isSuccess,
-  playTingTingSound,
-  onServerProgressChange,
+  onOpenSummary,
+  onVerificationSnapshotChange,
   onSsiModeChange,
   scheduleTimeout
 }: ApplyJobApplicationFlowProps) {
   const { language } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
   const translations = getLocalizedRecord(
     APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
     language as keyof typeof APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
@@ -102,7 +136,6 @@ function ApplyJobApplicationFlow({
   );
   const t = translations.scenario;
   const bankT = translations.bankModal;
-  const logT = translations.logs;
   const uiT = translations.flowUi;
 
   // Scenario states
@@ -115,135 +148,197 @@ function ApplyJobApplicationFlow({
   const [newCertTitle, setNewCertTitle] = useState('');
   const [newCertUrl, setNewCertUrl] = useState('');
 
-  const [jobExp, setJobExp] = useState(uiT.defaultExperience);
-  const [jobGithub, setJobGithub] = useState('github.com/candidate-golang');
+  const [jobExp, setJobExp] = useState('');
+  const [jobGithub, setJobGithub] = useState('');
 
-  const [error, setError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<ApplyJobValidationError | null>(null);
 
-  // Automated Step 2 Server Simulation States
-  const [step2Seconds, setStep2Seconds] = useState(8);
-  const [serverCheckProgress, setServerCheckProgress] = useState(0);
-  const [step2Status, setStep2Status] = useState<'idle' | 'running' | 'passed'>('idle');
-  const [autoAdvanceSeconds, setAutoAdvanceSeconds] = useState(5);
+  const [completedDetailCount, setCompletedDetailCount] = useState(0);
+  const [verificationRunStatus, setVerificationRunStatus] = useState<ApplyJobVerificationRunStatus>('idle');
+  const [autoAdvanceSeconds, setAutoAdvanceSeconds] = useState(3);
 
   // Identra eID scan state
   const [isCryptographicallySecured, setIsCryptographicallySecured] = useState(false);
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [qrSeconds, setQrSeconds] = useState(5);
+  const qrTriggerRef = useRef<HTMLButtonElement>(null);
+  const qrDialogRef = useRef<HTMLDivElement>(null);
 
-  const step2RanRef = useRef(false);
+  const mode: ApplyJobMode = isCryptographicallySecured ? 'identra' : 'manual';
+  const verificationOutcome = getApplyJobVerificationOutcome(mode);
+  const verificationPlan = useMemo(
+    () => getApplyJobVerificationPlan(mode, jobCerts.length > 0),
+    [jobCerts.length, mode],
+  );
+  const verificationSnapshot = useMemo(
+    () => getApplyJobVerificationSnapshot(
+      verificationPlan,
+      completedDetailCount,
+      verificationRunStatus,
+    ),
+    [completedDetailCount, verificationPlan, verificationRunStatus],
+  );
+  const verificationDetails = useMemo(
+    () => verificationPlan.flatMap((stage) => stage.detailIds),
+    [verificationPlan],
+  );
+  const activeVerificationDetail = verificationSnapshot.activeDetailId
+    ? uiT[verificationSnapshot.activeDetailId]
+    : null;
+  const activeVerificationStage = verificationSnapshot.stages.find((stage) => stage.status === 'active');
+  const verificationStageLabels = {
+    identity: uiT.legalIdentitySectionTitle,
+    credentials: uiT.credentialSectionTitle,
+    background: uiT.backgroundSectionTitle,
+  } as const;
+  const activeVerificationStageLabel = activeVerificationStage
+    ? verificationStageLabels[activeVerificationStage.id]
+    : uiT.verificationCompleteTitle;
+  const step2Seconds = Math.max(
+    verificationSnapshot.totalDetailCount - verificationSnapshot.completedDetailCount,
+    0,
+  );
+  const error = useMemo(() => {
+    if (!validationError) return null;
+    const errorKeys: Record<ApplyJobValidationError, ApplyJobFlowUiKey> = {
+      'candidate-name': 'validCandidateNameError',
+      email: 'validEmailError',
+      phone: 'validPhoneError',
+      'identity-number': 'validSsnError',
+      degree: 'validDegreeError',
+      experience: 'experienceError',
+      'github-url': 'githubPortfolioError',
+      'certificate-incomplete': 'certificateIncompleteError',
+      'certificate-url': 'certificateUrlError',
+    };
+    return uiT[errorKeys[validationError]];
+  }, [uiT, validationError]);
 
-  // Trigger & execute Step 2 Automated Server Verification in sync with Left Panel UI
+  const isVerifiedField = useCallback(
+    (field: ApplyJobFieldId) => isCryptographicallyVerifiedField(mode, field),
+    [mode],
+  );
+  const getFieldSourceLabel = useCallback((field: ApplyJobFieldId) => {
+    const provenanceKey = getApplyJobFieldProvenance(mode, field);
+    const provenanceLabels: Record<typeof provenanceKey, ApplyJobFlowUiKey> = {
+      'self-declared': 'selfDeclaredPill',
+      'identity-vc': 'identityVcPill',
+      'contact-vc': 'contactVcPill',
+      'education-vc': 'educationVcPill',
+      'employment-vc': 'employmentVcPill',
+      'work-eligibility-proof': 'workEligibilityProofPill',
+    };
+    return uiT[provenanceLabels[provenanceKey]];
+  }, [mode, uiT]);
+
+  useEffect(() => {
+    onVerificationSnapshotChange?.(verificationSnapshot);
+  }, [onVerificationSnapshotChange, verificationSnapshot]);
+
+  // Start the deterministic verification plan once the application has been submitted.
   useEffect(() => {
     if (currentStepIdx !== 1 || completedSteps[1]) {
-      step2RanRef.current = false;
+      return;
+    }
+    if (verificationRunStatus !== 'idle') return;
+
+    setVerificationRunStatus('running');
+    setCompletedDetailCount(0);
+    setAutoAdvanceSeconds(3);
+    setIsProcessingAction(true);
+    addLog({ scope: 'flow', key: 'serverInitLog', type: 'system' });
+    addLog({ scope: 'flow', key: verificationDetails[0], type: 'processing' });
+  }, [
+    addLog,
+    completedSteps,
+    currentStepIdx,
+    setIsProcessingAction,
+    verificationDetails,
+    verificationRunStatus,
+  ]);
+
+  // Advance one verification detail at a time. Both panels render this same snapshot.
+  useEffect(() => {
+    if (verificationRunStatus !== 'running' || currentStepIdx !== 1) return;
+
+    const timer = window.setTimeout(() => {
+      const nextCompletedCount = completedDetailCount + 1;
+      setCompletedDetailCount(nextCompletedCount);
+
+      if (nextCompletedCount >= verificationDetails.length) {
+        setVerificationRunStatus('complete');
+        setIsProcessingAction(false);
+        addLog({ scope: 'flow', key: 'serverCompleteLog', type: 'ok' });
+        return;
+      }
+
+      addLog({
+        scope: 'flow',
+        key: verificationDetails[nextCompletedCount],
+        type: 'processing',
+      });
+    }, shouldReduceMotion ? 300 : 900);
+
+    return () => window.clearTimeout(timer);
+  }, [
+    addLog,
+    completedDetailCount,
+    currentStepIdx,
+    setIsProcessingAction,
+    shouldReduceMotion,
+    verificationDetails,
+    verificationRunStatus,
+  ]);
+
+  // Move to the result after a short, visible completion countdown.
+  useEffect(() => {
+    if (verificationRunStatus !== 'complete' || currentStepIdx !== 1) return;
+
+    if (autoAdvanceSeconds <= 0) {
+      advanceStep([{
+        scope: 'flow',
+        key: mode === 'identra' ? 'autoAdvanceSsiLog' : 'autoAdvanceManualLog',
+        type: 'data',
+      }]);
       return;
     }
 
-    if (step2RanRef.current) return;
-    step2RanRef.current = true;
+    const timer = window.setTimeout(() => {
+      setAutoAdvanceSeconds((previousSeconds) => Math.max(0, previousSeconds - 1));
+    }, shouldReduceMotion ? 300 : 1000);
 
-    setStep2Status('running');
-    setIsProcessingAction(true);
-    setStep2Seconds(10);
-    setServerCheckProgress(0);
-    if (onServerProgressChange) onServerProgressChange(0);
-
-    addLog(uiT.serverInitLog, 'system');
-    addLog(uiT.identityCheckStartedLog, 'processing');
-
-    let secLeft = 10;
-    const interval = setInterval(() => {
-      secLeft -= 1;
-      setStep2Seconds(secLeft);
-      const progress = Math.min(100, Math.round(((10 - secLeft) / 10) * 100));
-      setServerCheckProgress(progress);
-      if (onServerProgressChange) onServerProgressChange(progress);
-
-      if (secLeft === 9) {
-        addLog(uiT.identitySyntheticLog, 'action');
-      } else if (secLeft === 8) {
-        addLog(uiT.identityWorkAuthCompleteLog, 'ok');
-      } else if (secLeft === 7) {
-        addLog(isCryptographicallySecured ? uiT.ssiCredentialLog : uiT.manualDegreeRegistryLog, 'action');
-      } else if (secLeft === 6) {
-        addLog(isCryptographicallySecured ? uiT.ssiDidLog : uiT.manualGraduateRecordLog, 'data');
-      } else if (secLeft === 5) {
-        addLog(isCryptographicallySecured ? uiT.ssiZkpLog : uiT.manualCertificateUrlLog, 'data');
-      } else if (secLeft === 4) {
-        addLog(uiT.credentialChecksCompleteLog, 'ok');
-      } else if (secLeft === 3) {
-        addLog(uiT.backgroundRecordLog, 'action');
-      } else if (secLeft === 2) {
-        addLog(uiT.backgroundWatchlistLog, 'data');
-      } else if (secLeft === 1) {
-        addLog(uiT.backgroundCleanLog, 'ok');
-      } else if (secLeft <= 0) {
-        clearInterval(interval);
-        setStep2Status('passed');
-        setServerCheckProgress(100);
-        setIsProcessingAction(false);
-        if (playTingTingSound) playTingTingSound();
-
-        addLog(uiT.serverCompleteLog, 'ok');
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [currentStepIdx, completedSteps]);
-
-  // Handle 5-second automatic step advancement after Step 2 server verification finishes
-  useEffect(() => {
-    if (step2Status !== 'passed' || currentStepIdx !== 1) return;
-
-    setAutoAdvanceSeconds(5);
-    const autoTimer = setInterval(() => {
-      setAutoAdvanceSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(autoTimer);
-          advanceStep([
-            isCryptographicallySecured
-              ? uiT.autoAdvanceSsiLog
-              : uiT.autoAdvanceManualLog
-          ]);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(autoTimer);
-  }, [step2Status, currentStepIdx, isCryptographicallySecured, advanceStep, uiT]);
-
-  // Automatically trigger Audit Summary Modal 1.2s after landing on Step 3
-  useEffect(() => {
-    if (currentStepIdx === 2 && !completedSteps[2]) {
-      const timer = setTimeout(() => {
-        advanceStep([
-          uiT.auditSummaryAutoLog
-        ]);
-      }, 1200);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStepIdx, completedSteps, advanceStep, uiT]);
+    return () => window.clearTimeout(timer);
+  }, [
+    advanceStep,
+    autoAdvanceSeconds,
+    currentStepIdx,
+    mode,
+    shouldReduceMotion,
+    verificationRunStatus,
+  ]);
 
   // Start 5-second QR Modal Simulation
   const startQrScanModal = () => {
     setIsQrModalOpen(true);
     setQrSeconds(5);
-    addLog(uiT.qrApplyStartedLog, 'processing');
+    addLog({ scope: 'flow', key: 'qrApplyStartedLog', type: 'processing' });
   };
+
+  const closeQrScanModal = useCallback(() => {
+    setIsQrModalOpen(false);
+    window.requestAnimationFrame(() => qrTriggerRef.current?.focus());
+  }, []);
 
   // Handle 5-second QR scanning countdown
   useEffect(() => {
     if (!isQrModalOpen) return;
 
     if (qrSeconds <= 0) {
-      setIsQrModalOpen(false);
+      closeQrScanModal();
       setJobName(uiT.qrName);
       setJobEmail(uiT.qrEmail);
       setJobPhone(uiT.qrPhone);
-      setJobSsn(uiT.qrIdentityNumber);
+      setJobSsn(uiT.workEligibilityProofValue);
       setJobDegree(uiT.qrDegree);
       setJobCerts([
         { title: 'Certified Kubernetes Administrator (CKA)', url: 'https://credly.com/org/cncf/badge/cka-9481' },
@@ -254,8 +349,8 @@ function ApplyJobApplicationFlow({
       setJobGithub(uiT.qrGithub);
       setIsCryptographicallySecured(true);
       if (onSsiModeChange) onSsiModeChange(true);
-      setError(null);
-      addLog(uiT.qrApplySuccessLog, 'ok');
+      setValidationError(null);
+      addLog({ scope: 'flow', key: 'qrApplySuccessLog', type: 'ok' });
       return;
     }
 
@@ -264,7 +359,29 @@ function ApplyJobApplicationFlow({
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [isQrModalOpen, qrSeconds, addLog, uiT]);
+  }, [addLog, closeQrScanModal, isQrModalOpen, onSsiModeChange, qrSeconds, uiT]);
+
+  useEffect(() => {
+    if (!isQrModalOpen) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeQrScanModal();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [closeQrScanModal, isQrModalOpen]);
+
+  // Keep localized mock credential values current without restarting the flow.
+  useEffect(() => {
+    if (!isCryptographicallySecured) return;
+    setJobSsn(uiT.workEligibilityProofValue);
+    setJobDegree(uiT.qrDegree);
+    setJobExp(uiT.qrExperience);
+  }, [
+    isCryptographicallySecured,
+    uiT.qrDegree,
+    uiT.qrExperience,
+    uiT.workEligibilityProofValue,
+  ]);
 
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
@@ -277,20 +394,20 @@ function ApplyJobApplicationFlow({
       setJobCerts([]);
       setNewCertTitle('');
       setNewCertUrl('');
-      setJobExp(uiT.defaultExperience);
-      setJobGithub('github.com/candidate-golang');
-      setStep2Seconds(8);
-      setStep2Status('idle');
-      setServerCheckProgress(0);
-      setError(null);
+      setJobExp('');
+      setJobGithub('');
+      setCompletedDetailCount(0);
+      setVerificationRunStatus('idle');
+      setAutoAdvanceSeconds(3);
+      setValidationError(null);
       setIsQrModalOpen(false);
       setQrSeconds(5);
       setIsCryptographicallySecured(false);
-      if (onSsiModeChange) onSsiModeChange(false);
+      onSsiModeChange?.(false);
     } else {
-      setError(null);
+      setValidationError(null);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, onSsiModeChange]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -300,8 +417,12 @@ function ApplyJobApplicationFlow({
           <Building2 className="w-5 h-5 text-[#354CE1]" />
           <span className="font-bold tracking-tight text-slate-800">{t.headerTitle}</span>
         </div>
-        <span className="text-xs bg-emerald-50 text-emerald-600 border border-emerald-100/60 px-2.5 py-0.5 rounded-full font-bold">
-          {t.identraVerified}
+        <span className={`text-xs border px-2.5 py-0.5 rounded-full font-bold ${
+          mode === 'identra'
+            ? 'bg-emerald-50 text-emerald-600 border-emerald-100/60'
+            : 'bg-slate-50 text-slate-600 border-slate-200'
+        }`}>
+          {mode === 'identra' ? t.identraVerified : uiT.manualEntryBadge}
         </span>
       </div>
 
@@ -347,7 +468,7 @@ function ApplyJobApplicationFlow({
                 <div className="h-14 w-14 bg-white p-1.5 rounded-xl border border-indigo-100 shadow-xs shrink-0 flex items-center justify-center relative group">
                   <ApplyJobQrCodeGraphic className="h-10 w-10 text-[#354CE1]" />
                   <div className="absolute inset-0 bg-[#354CE1]/5 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Sparkles className="h-4 w-4 text-[#354CE1] animate-spin" />
+                    <Sparkles className={`h-4 w-4 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
                   </div>
                 </div>
                 <div className="space-y-1 text-center sm:text-left">
@@ -364,6 +485,7 @@ function ApplyJobApplicationFlow({
               </div>
 
               <button
+                ref={qrTriggerRef}
                 type="button"
                 onClick={startQrScanModal}
                 className="px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 border border-[#354CE1]/30 text-[#354CE1] text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-[#354CE1] active:scale-[0.98]"
@@ -375,7 +497,7 @@ function ApplyJobApplicationFlow({
 
             {/* Error Alert */}
             {error && (
-              <div className="bg-rose-50 text-rose-600 border border-rose-100 p-3 rounded-xl text-xs font-semibold flex items-center gap-2">
+              <div role="alert" className="bg-rose-50 text-rose-600 border border-rose-100 p-3 rounded-xl text-xs font-semibold flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -405,33 +527,35 @@ function ApplyJobApplicationFlow({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.candidateName}</label>
-                    {isCryptographicallySecured && (
+                    <label htmlFor="apply-job-name" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.candidateName}</label>
+                    {isVerifiedField('name') && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                        {uiT.cryptoVerifiedPill}
+                        {getFieldSourceLabel('name')}
                       </span>
                     )}
                   </div>
                   <div className="relative">
                     <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
+                      id="apply-job-name"
                       type="text"
+                      autoComplete="name"
                       value={jobName}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) {
-                          setError(null);
+                        if (!isVerifiedField('name')) {
+                          setValidationError(null);
                           setJobName(e.target.value);
                         }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isVerifiedField('name')}
                       disabled={isProcessingAction}
                       placeholder={uiT.candidateNamePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                        error && !jobName.trim() ? 'border-rose-300 focus:ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'candidate-name' ? 'border-rose-300 focus:ring-rose-200' : isVerifiedField('name') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isVerifiedField('name') && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -439,33 +563,52 @@ function ApplyJobApplicationFlow({
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{t.workingIdentityNumber}</label>
-                    {isCryptographicallySecured && (
+                    <label
+                      id="apply-job-identity-label"
+                      htmlFor={mode === 'manual' ? 'apply-job-identity' : undefined}
+                      className="text-xs font-bold text-slate-600 uppercase tracking-wider"
+                    >
+                      {mode === 'identra' ? uiT.workEligibilityProofLabel : t.workingIdentityNumber}
+                    </label>
+                    {isVerifiedField('identity') && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                        {uiT.cryptoVerifiedPill}
+                        {getFieldSourceLabel('identity')}
                       </span>
                     )}
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <input
-                      type="text"
-                      value={jobSsn}
-                      onChange={(e) => {
-                        if (!isCryptographicallySecured) {
-                          setError(null);
+                    {mode === 'identra' ? (
+                      <div
+                        id="apply-job-identity"
+                        role="textbox"
+                        aria-readonly="true"
+                        aria-labelledby="apply-job-identity-label"
+                        tabIndex={0}
+                        className="flex min-h-11 w-full items-center rounded-xl border border-emerald-300 bg-emerald-50/30 py-2.5 pl-10 pr-10 text-xs font-semibold leading-snug text-emerald-950"
+                      >
+                        {jobSsn}
+                      </div>
+                    ) : (
+                      <input
+                        id="apply-job-identity"
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="off"
+                        value={jobSsn}
+                        onChange={(e) => {
+                          setValidationError(null);
                           setJobSsn(e.target.value);
-                        }
-                      }}
-                      readOnly={isCryptographicallySecured}
-                      disabled={isProcessingAction}
-                      placeholder="012398765432"
-                      className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
-                      }`}
-                    />
-                    {isCryptographicallySecured && (
+                        }}
+                        disabled={isProcessingAction}
+                        placeholder={uiT.identityNumberPlaceholder}
+                        className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
+                          validationError === 'identity-number' ? 'border-rose-300 focus:ring-rose-200' : 'border-slate-200'
+                        }`}
+                      />
+                    )}
+                    {isVerifiedField('identity') && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -475,30 +618,35 @@ function ApplyJobApplicationFlow({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidateEmail}</label>
-                    {isCryptographicallySecured && (
+                    <label htmlFor="apply-job-email" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidateEmail}</label>
+                    {isVerifiedField('email') && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                        {uiT.cryptoVerifiedPill}
+                        {getFieldSourceLabel('email')}
                       </span>
                     )}
                   </div>
                   <div className="relative">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
+                      id="apply-job-email"
                       type="email"
+                      autoComplete="email"
                       value={jobEmail}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) setJobEmail(e.target.value);
+                        if (!isVerifiedField('email')) {
+                          setValidationError(null);
+                          setJobEmail(e.target.value);
+                        }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isVerifiedField('email')}
                       disabled={isProcessingAction}
                       placeholder={uiT.candidateEmailPlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'email' ? 'border-rose-300 focus:ring-rose-200' : isVerifiedField('email') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isVerifiedField('email') && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -506,30 +654,35 @@ function ApplyJobApplicationFlow({
 
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidatePhone}</label>
-                    {isCryptographicallySecured && (
+                    <label htmlFor="apply-job-phone" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.candidatePhone}</label>
+                    {isVerifiedField('phone') && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                         <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                        {uiT.cryptoVerifiedPill}
+                        {getFieldSourceLabel('phone')}
                       </span>
                     )}
                   </div>
                   <div className="relative">
                     <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
-                      type="text"
+                      id="apply-job-phone"
+                      type="tel"
+                      autoComplete="tel"
                       value={jobPhone}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) setJobPhone(e.target.value);
+                        if (!isVerifiedField('phone')) {
+                          setValidationError(null);
+                          setJobPhone(e.target.value);
+                        }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isVerifiedField('phone')}
                       disabled={isProcessingAction}
                       placeholder={uiT.candidatePhonePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'phone' ? 'border-rose-300 focus:ring-rose-200' : isVerifiedField('phone') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isVerifiedField('phone') && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
@@ -538,33 +691,34 @@ function ApplyJobApplicationFlow({
 
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.academicDegree}</label>
-                  {isCryptographicallySecured && (
+                  <label htmlFor="apply-job-degree" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.academicDegree}</label>
+                  {isVerifiedField('degree') && (
                     <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
                       <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-                      {uiT.cryptoVerifiedPill}
+                      {getFieldSourceLabel('degree')}
                     </span>
                   )}
                 </div>
                 <div className="relative">
                   <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                   <input
+                    id="apply-job-degree"
                     type="text"
                     value={jobDegree}
                     onChange={(e) => {
-                      if (!isCryptographicallySecured) {
-                        setError(null);
+                      if (!isVerifiedField('degree')) {
+                        setValidationError(null);
                         setJobDegree(e.target.value);
                       }
                     }}
-                    readOnly={isCryptographicallySecured}
+                    readOnly={isVerifiedField('degree')}
                     disabled={isProcessingAction}
                     placeholder={uiT.academicDegreePlaceholder}
                     className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                      error && !jobDegree.trim() ? 'border-rose-300 ring-2 ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                      validationError === 'degree' ? 'border-rose-300 ring-2 ring-rose-200' : isVerifiedField('degree') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
                     }`}
                   />
-                  {isCryptographicallySecured && (
+                  {isVerifiedField('degree') && (
                     <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                   )}
                 </div>
@@ -586,13 +740,13 @@ function ApplyJobApplicationFlow({
                       <div
                         key={cIdx}
                         className={`p-2.5 rounded-xl border flex items-center justify-between gap-3 text-xs font-semibold shadow-2xs transition-all ${
-                          isCryptographicallySecured
+                          isVerifiedField('certificates')
                             ? 'bg-emerald-50/80 border-emerald-300 text-emerald-950'
                             : 'bg-indigo-50/50 border-indigo-200/80 text-slate-900'
                         }`}
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className={`p-1.5 rounded-lg shrink-0 ${isCryptographicallySecured ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-[#354CE1]'}`}>
+                          <div className={`p-1.5 rounded-lg shrink-0 ${isVerifiedField('certificates') ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-[#354CE1]'}`}>
                             <Award className="h-4 w-4" />
                           </div>
                           <div className="min-w-0 space-y-0.5">
@@ -612,10 +766,10 @@ function ApplyJobApplicationFlow({
                           </div>
                         </div>
 
-                        {isCryptographicallySecured ? (
+                        {isVerifiedField('certificates') ? (
                           <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-300 font-bold shrink-0">
                             <Lock className="h-3 w-3 text-emerald-600" />
-                            {uiT.verifiedShort}
+                            {getFieldSourceLabel('certificates')}
                           </span>
                         ) : (
                           <button
@@ -623,6 +777,8 @@ function ApplyJobApplicationFlow({
                             onClick={() => {
                               setJobCerts(prev => prev.filter((_, idx) => idx !== cIdx));
                             }}
+                            aria-label={formatText(uiT.removeCertificate, { title: cert.title })}
+                            title={formatText(uiT.removeCertificate, { title: cert.title })}
                             className="h-7 w-7 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-600 flex items-center justify-center transition-colors shrink-0 cursor-pointer"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -634,7 +790,7 @@ function ApplyJobApplicationFlow({
                 )}
 
                 {/* Dual Inputs to add custom certificate with Title and Verification Link */}
-                {!isCryptographicallySecured && (
+                {!isVerifiedField('certificates') && (
                   <div className="space-y-2 p-3 bg-slate-50/70 border border-slate-200/80 rounded-xl">
                     <div className="space-y-1.5">
                       <div className="relative">
@@ -642,7 +798,11 @@ function ApplyJobApplicationFlow({
                         <input
                           type="text"
                           value={newCertTitle}
-                          onChange={(e) => setNewCertTitle(e.target.value)}
+                          onChange={(e) => {
+                            setValidationError(null);
+                            setNewCertTitle(e.target.value);
+                          }}
+                          aria-label={uiT.certTitleInputLabel}
                           placeholder={uiT.certTitlePlaceholder}
                           className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20"
                         />
@@ -653,7 +813,11 @@ function ApplyJobApplicationFlow({
                         <input
                           type="text"
                           value={newCertUrl}
-                          onChange={(e) => setNewCertUrl(e.target.value)}
+                          onChange={(e) => {
+                            setValidationError(null);
+                            setNewCertUrl(e.target.value);
+                          }}
+                          aria-label={uiT.certUrlInputLabel}
                           placeholder={uiT.certUrlPlaceholder}
                           className="w-full bg-white border border-slate-200 rounded-lg pl-9 pr-3 py-1.5 text-xs font-mono text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20"
                         />
@@ -663,13 +827,14 @@ function ApplyJobApplicationFlow({
                     <button
                       type="button"
                       onClick={() => {
-                        if (newCertTitle.trim()) {
+                        if (newCertTitle.trim() && newCertUrl.trim()) {
                           setJobCerts(prev => [...prev, { title: newCertTitle.trim(), url: newCertUrl.trim() }]);
                           setNewCertTitle('');
                           setNewCertUrl('');
+                          setValidationError(null);
                         }
                       }}
-                      disabled={!newCertTitle.trim()}
+                      disabled={!newCertTitle.trim() || !newCertUrl.trim()}
                       className="w-full py-2 rounded-lg bg-slate-900 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-2xs"
                     >
                       <Plus className="h-3.5 w-3.5" />
@@ -681,49 +846,65 @@ function ApplyJobApplicationFlow({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.golangExperience}</label>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="apply-job-experience" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.golangExperience}</label>
+                    {isVerifiedField('experience') && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
+                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                        {getFieldSourceLabel('experience')}
+                      </span>
+                    )}
+                  </div>
                   <div className="relative">
                     <FileCode className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
+                      id="apply-job-experience"
                       type="text"
                       value={jobExp}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) setJobExp(e.target.value);
+                        if (!isVerifiedField('experience')) {
+                          setValidationError(null);
+                          setJobExp(e.target.value);
+                        }
                       }}
-                      readOnly={isCryptographicallySecured}
+                      readOnly={isVerifiedField('experience')}
                       disabled={isProcessingAction}
+                      placeholder={uiT.experiencePlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-medium disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'experience' ? 'border-rose-300 ring-2 ring-rose-200' : isVerifiedField('experience') ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
+                    {isVerifiedField('experience') && (
                       <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.githubPortfolioUrl}</label>
+                  <div className="flex items-center justify-between">
+                    <label htmlFor="apply-job-github" className="text-xs font-bold text-slate-600 uppercase tracking-wider">{uiT.githubPortfolioUrl}</label>
+                    {mode === 'identra' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-slate-600 font-mono font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                        {getFieldSourceLabel('github')}
+                      </span>
+                    )}
+                  </div>
                   <div className="relative">
                     <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                     <input
+                      id="apply-job-github"
                       type="text"
                       value={jobGithub}
                       onChange={(e) => {
-                        if (!isCryptographicallySecured) {
-                          setError(null);
-                          setJobGithub(e.target.value);
-                        }
+                        setValidationError(null);
+                        setJobGithub(e.target.value);
                       }}
-                      readOnly={isCryptographicallySecured}
                       disabled={isProcessingAction}
+                      placeholder={uiT.githubPortfolioPlaceholder}
                       className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 transition-all ${
-                        error && !jobGithub.trim() ? 'border-rose-300 ring-2 ring-rose-200' : isCryptographicallySecured ? 'bg-emerald-50/30 border-emerald-300 text-emerald-950 font-bold cursor-not-allowed' : 'border-slate-200'
+                        validationError === 'github-url' ? 'border-rose-300 ring-2 ring-rose-200' : 'border-slate-200'
                       }`}
                     />
-                    {isCryptographicallySecured && (
-                      <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
-                    )}
                   </div>
                 </div>
               </div>
@@ -732,43 +913,40 @@ function ApplyJobApplicationFlow({
             {/* Awncorp Submit Button with Strict Validation */}
             <button
               onClick={() => {
-                // Strict Form & Format Validation
-                if (!jobName.trim()) {
-                  setError(uiT.validCandidateNameError);
-                  return;
-                }
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!jobEmail.trim() || !emailRegex.test(jobEmail.trim())) {
-                  setError(uiT.validEmailError);
-                  return;
-                }
-                const phoneDigits = jobPhone.replace(/\D/g, '');
-                if (!jobPhone.trim() || phoneDigits.length < 9) {
-                  setError(uiT.validPhoneError);
-                  return;
-                }
-                if (!jobSsn.trim()) {
-                  setError(uiT.validSsnError);
-                  return;
-                }
-                if (!jobDegree.trim()) {
-                  setError(uiT.validDegreeError);
-                  return;
-                }
-                if (!jobGithub.trim()) {
-                  setError(uiT.githubPortfolioError);
+                const nextValidationError = validateApplyJobApplication({
+                  name: jobName,
+                  identityNumber: jobSsn,
+                  email: jobEmail,
+                  phone: jobPhone,
+                  degree: jobDegree,
+                  certificates: jobCerts,
+                  pendingCertificateTitle: newCertTitle,
+                  pendingCertificateUrl: newCertUrl,
+                  experience: jobExp,
+                  githubUrl: jobGithub,
+                }, mode);
+                if (nextValidationError) {
+                  setValidationError(nextValidationError);
                   return;
                 }
 
-                setError(null);
+                setValidationError(null);
                 setIsProcessingAction(true);
-                addLog(formatText(logT.vettingSocialSecurity, { name: jobName.trim() }), 'action');
+                addLog({
+                  scope: 'flow',
+                  key: mode === 'identra'
+                    ? 'identraApplicationSubmittedLog'
+                    : 'manualApplicationSubmittedLog',
+                  type: 'action',
+                });
                 scheduleTimeout(() => {
                   setIsProcessingAction(false);
-                  advanceStep([
-                    formatText(logT.identityDatabaseComplete, { name: jobName.trim() }),
-                  ]);
-                }, 1200);
+                  advanceStep([{
+                    scope: 'flow',
+                    key: 'applicationAcceptedLog',
+                    type: 'data',
+                  }]);
+                }, shouldReduceMotion ? 250 : 900);
               }}
               disabled={isProcessingAction}
               className={`w-full py-3.5 text-white font-bold text-sm rounded-xl transition-all flex items-center justify-center gap-2 ${
@@ -793,7 +971,6 @@ function ApplyJobApplicationFlow({
         {/* STEP 2: Automated Server-side Credentials & Degree Verification */}
         {currentStepIdx === 1 && !completedSteps[1] && (
           <motion.div key="job-license" className="space-y-5">
-            {/* Header info box */}
             <div className={`p-4 rounded-2xl border text-xs space-y-1 ${
               isCryptographicallySecured
                 ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950'
@@ -810,175 +987,82 @@ function ApplyJobApplicationFlow({
               </p>
             </div>
 
-            {/* Server Automated Verification Status Card */}
-            <div className="bg-slate-900 rounded-3xl p-5 md:p-6 border border-slate-800 text-white shadow-xl space-y-5 relative overflow-hidden">
-              {/* Background glow */}
-              <div className={`absolute top-0 right-0 w-36 h-36 rounded-full blur-2xl pointer-events-none ${
-                isCryptographicallySecured ? 'bg-emerald-500/20' : 'bg-[#354CE1]/20'
-              }`} />
-
-              {/* Status Header */}
-              <div className="flex items-center justify-between z-10 relative">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm space-y-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className={`h-3 w-3 rounded-full animate-ping ${isCryptographicallySecured ? 'bg-emerald-400' : 'bg-amber-400'}`} />
-                  <span className={`font-mono text-xs font-bold uppercase tracking-wider ${isCryptographicallySecured ? 'text-emerald-400' : 'text-amber-400'}`}>
-                    {isCryptographicallySecured ? uiT.ssiEngineLabel : uiT.manualEngineLabel}
+                  <span className={`h-2.5 w-2.5 rounded-full ${
+                    verificationRunStatus === 'complete'
+                      ? 'bg-emerald-500'
+                      : `bg-[#354CE1] ${shouldReduceMotion ? '' : 'animate-ping'}`
+                  }`} />
+                  <span className="text-xs font-bold text-slate-900">
+                    {activeVerificationStageLabel}
                   </span>
                 </div>
-                <div className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono text-[11px] font-bold flex items-center gap-1.5">
-                  <Sparkles className="h-3 w-3 text-amber-400 animate-spin" />
+                <div className="px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 font-mono text-[11px] font-bold flex items-center gap-1.5">
+                  <Sparkles className={`h-3 w-3 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
                   <span>{step2Seconds}s</span>
                 </div>
               </div>
 
-              {/* Server Animated Progress Bar */}
-              <div className="space-y-1.5 z-10 relative">
-                <div className="flex justify-between text-xs font-mono text-slate-400 font-bold">
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs font-mono text-slate-500 font-bold">
                   <span>
                     {formatText(uiT.serverProgressLabel, { mode: isCryptographicallySecured ? uiT.ssiProtocol : uiT.restApi })}
                   </span>
-                  <span className="text-emerald-400">{serverCheckProgress}%</span>
+                  <span className="text-[#354CE1]">{verificationSnapshot.progressPercent}%</span>
                 </div>
-                <div className="h-2.5 w-full bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                <div
+                  role="progressbar"
+                  aria-label={formatText(uiT.serverProgressLabel, { mode: isCryptographicallySecured ? uiT.ssiProtocol : uiT.restApi })}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={verificationSnapshot.progressPercent}
+                  className="h-2 w-full overflow-hidden rounded-full bg-slate-100"
+                >
                   <motion.div
-                    className={`h-full rounded-full ${
-                      isCryptographicallySecured
-                        ? 'bg-gradient-to-r from-emerald-500 via-emerald-400 to-[#FFBF43]'
-                        : 'bg-gradient-to-r from-[#354CE1] via-indigo-400 to-emerald-400'
-                    }`}
-                    initial={{ width: '0%' }}
-                    animate={{ width: `${serverCheckProgress}%` }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="h-full rounded-full bg-gradient-to-r from-[#354CE1] to-emerald-500"
+                    animate={{ width: `${verificationSnapshot.progressPercent}%` }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: 'easeOut' }}
                   />
                 </div>
               </div>
 
-              {/* 3-Section Verification Modules Checklist */}
-              <div className="space-y-4 pt-1 z-10 relative text-xs font-mono">
-                {/* SECTION 1: Legal Identity Verification */}
-                <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                    <div className="flex items-center gap-2">
-                      <UserCheck className="h-4 w-4 text-emerald-400" />
-                      <span className="font-bold text-slate-200 text-[11px]">{uiT.legalIdentitySectionTitle}</span>
-                    </div>
-                    {serverCheckProgress >= 30 ? (
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">{uiT.passedShort}</span>
-                    ) : (
-                      <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 animate-pulse">{uiT.reviewingStatus}</span>
-                    )}
-                  </div>
-                  <div className="space-y-1.5 text-[11px]">
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 10 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 10 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.legalIdentityCheck1}</span>
-                    </div>
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 20 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 20 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.legalIdentityCheck2}</span>
-                    </div>
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 30 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 30 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.legalIdentityCheck3}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* SECTION 2: Degree & Credentials Verification */}
-                <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="h-4 w-4 text-emerald-400" />
-                      <span className="font-bold text-slate-200 text-[11px]">{uiT.credentialSectionTitle}</span>
-                    </div>
-                    {serverCheckProgress >= 60 ? (
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">{uiT.passedShort}</span>
-                    ) : serverCheckProgress >= 30 ? (
-                      <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 animate-pulse">{uiT.reviewingStatus}</span>
-                    ) : (
-                      <span className="text-[10px] font-mono text-slate-500">{uiT.waitingReviewStatus}</span>
-                    )}
-                  </div>
-                  <div className="space-y-1.5 text-[11px]">
-                    {isCryptographicallySecured ? (
-                      <>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 40 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 40 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.ssiCredentialCheck1}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 50 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 50 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.ssiCredentialCheck2}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 60 ? 'text-emerald-400 font-bold' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 60 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.ssiCredentialCheck3}</span>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 40 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 40 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.manualCredentialCheck1}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 50 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 50 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.manualCredentialCheck2}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 ${serverCheckProgress >= 60 ? 'text-emerald-400 font-bold' : 'text-slate-500'}`}>
-                          {serverCheckProgress >= 60 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                          <span>{uiT.manualCredentialCheck3}</span>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* SECTION 3: National Background Check */}
-                <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2.5">
-                  <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                    <div className="flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4 text-indigo-400" />
-                      <span className="font-bold text-slate-200 text-[11px]">{uiT.backgroundSectionTitle}</span>
-                    </div>
-                    {serverCheckProgress >= 100 ? (
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">{uiT.passedShort}</span>
-                    ) : serverCheckProgress >= 60 ? (
-                      <span className="text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20 animate-pulse">{uiT.backgroundReviewingStatus}</span>
-                    ) : (
-                      <span className="text-[10px] font-mono text-slate-500">{uiT.backgroundWaitingStatus}</span>
-                    )}
-                  </div>
-                  <div className="space-y-1.5 text-[11px]">
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 75 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 75 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.backgroundCheck1}</span>
-                    </div>
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 90 ? 'text-emerald-400 font-medium' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 90 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.backgroundCheck2}</span>
-                    </div>
-                    <div className={`flex items-center gap-2 ${serverCheckProgress >= 100 ? 'text-emerald-400 font-bold' : 'text-slate-500'}`}>
-                      {serverCheckProgress >= 100 ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> : <div className="h-3.5 w-3.5 border border-slate-600 rounded-full shrink-0" />}
-                      <span>{uiT.backgroundCheck3}</span>
-                    </div>
-                  </div>
-                </div>
+              <div className="min-h-14">
+                <AnimatePresence mode="wait">
+                  {activeVerificationDetail && (
+                    <motion.div
+                      key={verificationSnapshot.activeDetailId}
+                      initial={shouldReduceMotion ? false : { opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={shouldReduceMotion ? undefined : { opacity: 0, y: -4 }}
+                      role="status"
+                      aria-live="polite"
+                      className="flex min-h-14 items-center gap-3 rounded-xl border border-[#354CE1]/20 bg-[#354CE1]/5 px-4 py-3"
+                    >
+                      <span className={`h-2 w-2 shrink-0 rounded-full bg-[#354CE1] ${shouldReduceMotion ? '' : 'animate-ping'}`} />
+                      <p className="text-[11px] font-semibold leading-relaxed text-[#354CE1]">
+                        {activeVerificationDetail}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
-            {/* Auto-completing Procedures Banner (replaces manual button) */}
-            {serverCheckProgress >= 100 && (
+            {verificationRunStatus === 'complete' && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-emerald-950/80 border border-emerald-500/40 rounded-2xl p-4 text-center space-y-2 relative overflow-hidden shadow-lg shadow-emerald-950/50"
+                role="status"
+                aria-live="polite"
+                className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-2"
               >
-                <div className="flex items-center justify-center gap-2.5 text-emerald-400 font-bold text-xs uppercase tracking-wider font-mono">
-                  <Loader2 className="w-4 h-4 animate-spin text-emerald-400 shrink-0" />
+                <div className="flex items-center justify-center gap-2.5 text-emerald-700 font-bold text-xs uppercase tracking-wider font-mono">
+                  <Loader2 className={`w-4 h-4 text-emerald-600 shrink-0 ${shouldReduceMotion ? '' : 'animate-spin'}`} />
                   <span>{uiT.autoTransferStatus}</span>
                 </div>
-                <p className="text-[11px] text-slate-300 font-mono">
+                <p className="text-[11px] text-slate-600 font-mono">
                   {formatText(uiT.autoTransferDetail, { seconds: autoAdvanceSeconds })}
                 </p>
               </motion.div>
@@ -995,22 +1079,33 @@ function ApplyJobApplicationFlow({
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="space-y-6 text-center py-2"
           >
-            {/* Success Badge Icon */}
-            <div className="h-16 w-16 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20 ring-8 ring-emerald-50/80">
+            <div className={`h-16 w-16 text-white rounded-full flex items-center justify-center mx-auto shadow-lg ring-8 ${
+              verificationOutcome === 'verified'
+                ? 'bg-emerald-500 shadow-emerald-500/20 ring-emerald-50/80'
+                : 'bg-amber-500 shadow-amber-500/20 ring-amber-50/80'
+            }`}>
               <CheckCircle2 className="w-9 h-9" />
             </div>
 
-            {/* Confirmation Title & Description */}
             <div className="space-y-2 max-w-lg mx-auto">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-full uppercase tracking-wider border border-emerald-100 font-mono">
-                <Sparkles className="w-3 h-3 text-emerald-600" />
-                {uiT.successBadge}
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold rounded-full uppercase tracking-wider border font-mono ${
+                verificationOutcome === 'verified'
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-100'
+                  : 'bg-amber-50 text-amber-700 border-amber-100'
+              }`}>
+                <Sparkles className="w-3 h-3" />
+                {verificationOutcome === 'verified' ? uiT.identraResultBadge : uiT.manualResultBadge}
               </span>
               <h3 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">
                 {uiT.successTitle}
               </h3>
               <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-                {formatText(uiT.successDescription, { role: uiT.jobRoleTitle })}
+                {formatText(
+                  verificationOutcome === 'verified'
+                    ? uiT.identraSuccessDescription
+                    : uiT.manualSuccessDescription,
+                  { role: uiT.jobRoleTitle },
+                )}
               </p>
             </div>
 
@@ -1058,7 +1153,7 @@ function ApplyJobApplicationFlow({
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                     : 'bg-amber-50 text-amber-700 border-amber-200'
                 }`}>
-                  {isCryptographicallySecured ? uiT.ssiTrustStatus : uiT.manualTrustStatus}
+                  {verificationOutcome === 'verified' ? uiT.ssiTrustStatus : uiT.manualTrustStatus}
                 </span>
               </div>
             </div>
@@ -1072,8 +1167,12 @@ function ApplyJobApplicationFlow({
                 <div className="flex items-start gap-3 p-3 bg-emerald-50/60 rounded-xl border border-emerald-100/80 text-emerald-900">
                   <div className="h-5 w-5 rounded-full bg-emerald-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">✓</div>
                   <div>
-                    <span className="font-bold block text-slate-900">{uiT.nextStep1Title}</span>
-                    <span className="text-[11px] text-slate-600">{uiT.nextStep1Desc}</span>
+                    <span className="font-bold block text-slate-900">
+                      {verificationOutcome === 'verified' ? uiT.nextStep1Title : uiT.nextStep1ManualTitle}
+                    </span>
+                    <span className="text-[11px] text-slate-600">
+                      {verificationOutcome === 'verified' ? uiT.nextStep1Desc : uiT.nextStep1ManualDesc}
+                    </span>
                   </div>
                 </div>
 
@@ -1099,9 +1198,8 @@ function ApplyJobApplicationFlow({
             <div className="max-w-lg mx-auto pt-1">
               <button
                 onClick={() => {
-                  advanceStep([
-                    uiT.auditSummaryUserLog
-                  ]);
+                  addLog({ scope: 'flow', key: 'auditSummaryUserLog', type: 'action' });
+                  onOpenSummary();
                 }}
                 className="w-full py-3.5 px-4 bg-white hover:bg-slate-50 text-[#354CE1] font-bold text-xs rounded-xl transition-all border border-indigo-200/80 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
               >
@@ -1123,9 +1221,30 @@ function ApplyJobApplicationFlow({
         {isQrModalOpen && (
           <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <motion.div
+              ref={qrDialogRef}
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="apply-job-qr-title"
+              onKeyDown={(event) => {
+                if (event.key !== 'Tab') return;
+                const focusableElements = Array.from(
+                  qrDialogRef.current?.querySelectorAll<HTMLButtonElement>('button:not([disabled])') ?? [],
+                );
+                if (focusableElements.length === 0) return;
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (event.shiftKey && document.activeElement === firstElement) {
+                  event.preventDefault();
+                  lastElement.focus();
+                } else if (!event.shiftKey && document.activeElement === lastElement) {
+                  event.preventDefault();
+                  firstElement.focus();
+                }
+              }}
               className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative space-y-5"
             >
               {/* Modal Header */}
@@ -1135,7 +1254,7 @@ function ApplyJobApplicationFlow({
                     <QrCode className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-display font-bold text-slate-900 text-sm sm:text-base">
+                    <h4 id="apply-job-qr-title" className="font-display font-bold text-slate-900 text-sm sm:text-base">
                       {bankT.scanQrModalTitle}
                     </h4>
                     <p className="text-[11px] text-slate-500 font-medium">
@@ -1146,7 +1265,10 @@ function ApplyJobApplicationFlow({
 
                 <button
                   type="button"
-                  onClick={() => setIsQrModalOpen(false)}
+                  onClick={closeQrScanModal}
+                  autoFocus
+                  aria-label={bankT.cancelButton}
+                  title={bankT.cancelButton}
                   className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
                 >
                   <X className="h-4 w-4" />
@@ -1159,8 +1281,8 @@ function ApplyJobApplicationFlow({
                   {/* Sleek Laser Scan Line */}
                   <motion.div
                     initial={{ top: '5%' }}
-                    animate={{ top: ['5%', '92%', '5%'] }}
-                    transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
+                    animate={shouldReduceMotion ? { top: '5%' } : { top: ['5%', '92%', '5%'] }}
+                    transition={shouldReduceMotion ? undefined : { repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
                     className="absolute inset-x-3 h-0.5 bg-gradient-to-r from-transparent via-[#354CE1] to-transparent shadow-[0_0_10px_#354CE1] z-20"
                   />
 
@@ -1171,8 +1293,8 @@ function ApplyJobApplicationFlow({
                 </div>
 
                 {/* Soft Countdown Status Pill */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#354CE1]/10 border border-[#354CE1]/20 text-[#354CE1] text-xs font-mono font-bold">
-                  <Sparkles className="h-3.5 w-3.5 animate-spin text-[#354CE1]" />
+                <div role="status" aria-live="polite" className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#354CE1]/10 border border-[#354CE1]/20 text-[#354CE1] text-xs font-mono font-bold">
+                  <Sparkles className={`h-3.5 w-3.5 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
                   <span>{bankT.waitingForScan.replace('{seconds}', qrSeconds.toString())}</span>
                 </div>
 
@@ -1185,7 +1307,7 @@ function ApplyJobApplicationFlow({
               <div className="pt-2 border-t border-slate-100 flex items-center justify-end">
                 <button
                   type="button"
-                  onClick={() => setIsQrModalOpen(false)}
+                  onClick={closeQrScanModal}
                   className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
                 >
                   {bankT.cancelButton}
@@ -1216,24 +1338,47 @@ interface ApplyJobDemoCopy {
   desc: string;
   security: string;
   successResult: string;
-  steps: ApplyJobDemoStep[];
+  steps: readonly ApplyJobDemoStep[];
 }
 
 interface ApplyJobDemoScenario extends ApplyJobDemoCopy {
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const formatText = (template: string, values: Record<string, string | number>) =>
   template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 
+const createInitialApplyJobLogs = (isReset = false): ApplyJobSimulationLog[] => (
+  isReset
+    ? [
+        { scope: 'page', key: 'reset', type: 'system' },
+        { scope: 'page', key: 'resetInstruction', type: 'system' },
+      ]
+    : [
+        { scope: 'page', key: 'launch', type: 'system' },
+        { scope: 'page', key: 'environment', type: 'system' },
+        { scope: 'page', key: 'instruction', type: 'system' },
+      ]
+);
+
+const createIdleApplyJobVerificationSnapshot = (): ApplyJobVerificationSnapshot => (
+  getApplyJobVerificationSnapshot(
+    getApplyJobVerificationPlan('manual', false),
+    0,
+    'idle',
+  )
+);
+
 export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps) {
   const { language } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
   const translations = getLocalizedRecord(
     APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
     language as keyof typeof APPLY_JOB_DEMO_PAGE_TRANSLATIONS,
     'APPLY_JOB_DEMO_PAGE_TRANSLATIONS',
   );
   const t = translations.page;
+  const flowT = translations.flowUi;
   const scenario = useMemo<ApplyJobDemoScenario>(() => ({
     ...translations.meta,
     id: 'apply-job',
@@ -1244,7 +1389,8 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
 
   const playTingTingSound = useCallback(() => {
     try {
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContextClass = window.AudioContext
+        || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (!AudioContextClass) return;
       const ctx = new AudioContextClass();
 
@@ -1271,6 +1417,9 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
       gain2.connect(ctx.destination);
       osc2.start(ctx.currentTime + delay);
       osc2.stop(ctx.currentTime + delay + 0.4);
+      osc2.addEventListener('ended', () => {
+        void ctx.close();
+      }, { once: true });
     } catch (error) {
       console.warn(error);
     }
@@ -1279,80 +1428,56 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
   // General simulation states
   const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
   const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(scenario.steps.length).fill(false));
-  const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
+  const [simulationLogs, setSimulationLogs] = useState<ApplyJobSimulationLog[]>(() => createInitialApplyJobLogs());
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
-  const [serverVerificationProgress, setServerVerificationProgress] = useState<number>(0);
   const [isSsiCredentialMode, setIsSsiCredentialMode] = useState<boolean>(false);
-
-  // Initialize terminal logs
-  useEffect(() => {
-    clearTimeouts();
-    const title = scenario.title;
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
-    setIsProcessingAction(false);
-    setIsSummaryModalOpen(false);
-    setServerVerificationProgress(0);
-    setIsSsiCredentialMode(false);
-    setSimulationLogs([
-      formatText(t.logs.launch, { title }),
-      t.logs.environment,
-      t.logs.instruction
-    ]);
-  }, [scenario, language, t, clearTimeouts]);
+  const [verificationSnapshot, setVerificationSnapshot] = useState<ApplyJobVerificationSnapshot>(
+    createIdleApplyJobVerificationSnapshot,
+  );
+  const verificationOutcome: ApplyJobVerificationOutcome = getApplyJobVerificationOutcome(
+    isSsiCredentialMode ? 'identra' : 'manual',
+  );
 
   // Scroll terminal logs
   useEffect(() => {
     if (terminalContainerRef.current) {
       terminalContainerRef.current.scrollTo({
         top: terminalContainerRef.current.scrollHeight,
-        behavior: 'smooth'
+        behavior: shouldReduceMotion ? 'auto' : 'smooth'
       });
     }
-  }, [simulationLogs]);
+  }, [shouldReduceMotion, simulationLogs]);
 
-  const addLog = (text: string, type: 'system' | 'action' | 'data' | 'ok' | 'processing' = 'system') => {
-    const localizedText = text || '';
-    let prefix = '';
-    if (type === 'system') prefix = '[SYSTEM] ';
-    else if (type === 'action') prefix = '[ACTION] ';
-    else if (type === 'data') prefix = '[DATA] ';
-    else if (type === 'ok') prefix = '[OK] ';
-    else if (type === 'processing') prefix = '[PROCESSING] ';
+  const addLog = useCallback((entry: ApplyJobSimulationLog) => {
+    setSimulationLogs((previousLogs) => [...previousLogs, entry]);
+  }, []);
 
-    setSimulationLogs(prev => [...prev, `${prefix}${localizedText}`]);
-  };
+  const advanceStep = useCallback((stepLogs: ApplyJobSimulationLog[] = []) => {
+    if (isSuccess) return;
+    setCompletedSteps((previousSteps) => previousSteps.map((isDone, index) => (
+      index === currentStepIdx ? true : isDone
+    )));
+    setSimulationLogs((previousLogs) => [...previousLogs, ...stepLogs]);
 
-  const advanceStep = (stepLogs: string[]) => {
-    // Mark current step done
-    const updatedCompleted = [...completedSteps];
-    updatedCompleted[currentStepIdx] = true;
-    setCompletedSteps(updatedCompleted);
-
-    // Push logs
-    for (let i = 0; i < stepLogs.length; i++) {
-      addLog(stepLogs[i], 'data');
+    if (currentStepIdx === 0) {
+      setCurrentStepIdx(1);
+      addLog({ scope: 'flow', key: 'verificationStartedLog', type: 'system' });
+      return;
     }
 
-    const currentStep = scenario.steps[currentStepIdx];
-    addLog(formatText(t.logs.completedLayer, { label: currentStep.label }), 'ok');
-
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < scenario.steps.length) {
-      setCurrentStepIdx(nextIdx);
-      addLog(formatText(t.logs.nextTask, { action: scenario.steps[nextIdx].action }), 'system');
-    } else {
-      // Finished all steps
+    if (currentStepIdx === 1) {
+      setCurrentStepIdx(2);
       setIsSuccess(true);
-      setIsSummaryModalOpen(true);
-      addLog(t.logs.allPassed, 'ok');
-      addLog(t.logs.sealed, 'system');
+      addLog({
+        scope: 'flow',
+        key: isSsiCredentialMode ? 'identraResultReadyLog' : 'manualResultReadyLog',
+        type: isSsiCredentialMode ? 'ok' : 'action',
+      });
       playTingTingSound();
     }
-  };
+  }, [addLog, currentStepIdx, isSsiCredentialMode, isSuccess, playTingTingSound]);
 
   // Reset helper
   const handleReset = () => {
@@ -1362,13 +1487,30 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setServerVerificationProgress(0);
     setIsSsiCredentialMode(false);
-    setSimulationLogs([
-      formatText(t.logs.reset, { title: scenario.title }),
-      t.logs.resetInstruction
-    ]);
+    setVerificationSnapshot(createIdleApplyJobVerificationSnapshot());
+    setSimulationLogs(createInitialApplyJobLogs(true));
   };
+
+  const trackerActiveStepIdx = verificationSnapshot.stages.findIndex((stage) => stage.status === 'active');
+  const trackerCompletedSteps = verificationSnapshot.stages.map((stage) => stage.status === 'done');
+  const isVerificationComplete = trackerCompletedSteps.length > 0
+    && trackerCompletedSteps.every(Boolean);
+  const evidenceStatus = verificationOutcome === 'verified'
+    ? t.cryptographicEvidenceVerified
+    : t.manualEvidenceNeedsReview;
+  const riskStatus = isVerificationComplete
+    ? verificationOutcome === 'verified'
+      ? t.ssiRiskTrusted
+      : t.manualRiskNeedsReview
+    : t.notEvaluated;
+  const systemStatus = isSuccess
+    ? verificationOutcome === 'verified'
+      ? t.approved
+      : t.reviewRequired
+    : currentStepIdx === 0
+      ? t.waitingInput
+      : t.analyzing;
 
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 font-sans pb-24 relative overflow-hidden">
@@ -1379,14 +1521,15 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
       <div className="max-w-7xl mx-auto px-6 pt-8 space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/60 pb-5">
           <button
+            type="button"
             onClick={onBackToList}
             className="flex items-center gap-2 text-slate-600 hover:text-[#354CE1] transition font-semibold text-sm group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span>{t.backToScenarios}</span>
           </button>
-          <div className="flex items-center gap-3">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div role="status" className="flex items-center gap-3">
+            <span aria-hidden="true" className={`h-2 w-2 rounded-full bg-emerald-500 ${shouldReduceMotion ? '' : 'animate-pulse'}`} />
             <span className="text-xs font-mono text-[#354CE1] bg-indigo-50 border border-indigo-100/50 px-3 py-1 rounded-full font-bold uppercase tracking-wider">
               {t.liveBadge}
             </span>
@@ -1414,6 +1557,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
           </div>
           <div className="shrink-0 flex gap-3">
             <button
+              type="button"
               onClick={handleReset}
               className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer"
             >
@@ -1429,7 +1573,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
             <div className="bg-white rounded-[32px] border border-slate-200/80 shadow-xl overflow-hidden relative">
               {/* Device Header Bar */}
               <div className="bg-slate-900 text-slate-400 px-6 py-4 flex items-center justify-between border-b border-slate-800">
-                <div className="flex items-center gap-2">
+                <div aria-hidden="true" className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500" />
                   <span className="w-3 h-3 rounded-full bg-amber-500" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500" />
@@ -1438,7 +1582,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   <Smartphone className="w-3.5 h-3.5 text-emerald-500" />
                   <span>{t.clientEmulator}</span>
                 </div>
-                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                <div aria-hidden="true" className={`h-2 w-2 rounded-full bg-emerald-500 ${shouldReduceMotion ? '' : 'animate-ping'}`} />
               </div>
 
               {/* Dynamic app content provided by the scenario page */}
@@ -1451,8 +1595,8 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   advanceStep={advanceStep}
                   addLog={addLog}
                   isSuccess={isSuccess}
-                  playTingTingSound={playTingTingSound}
-                  onServerProgressChange={setServerVerificationProgress}
+                  onOpenSummary={() => setIsSummaryModalOpen(true)}
+                  onVerificationSnapshotChange={setVerificationSnapshot}
                   onSsiModeChange={setIsSsiCredentialMode}
                   scheduleTimeout={scheduleTimeout}
                 />
@@ -1475,7 +1619,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   </h3>
                 </div>
                 <div className="flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-100/50 px-2.5 py-0.5 rounded-full text-[9px] font-bold font-mono">
-                  <Sparkles className="w-2.5 h-2.5 animate-pulse text-emerald-600" />
+                  <Sparkles className={`w-2.5 h-2.5 text-emerald-600 ${shouldReduceMotion ? '' : 'animate-pulse'}`} />
                   <span>{t.coreVersion}</span>
                 </div>
               </div>
@@ -1485,23 +1629,25 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                 <div>
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.riskLevel}</span>
                   <span className={`font-bold text-[10px] ${
-                    isSsiCredentialMode ? 'text-emerald-600' : 'text-amber-600 font-bold'
+                    riskStatus === t.ssiRiskTrusted ? 'text-emerald-600' : 'text-amber-600'
                   }`}>
-                    {isSsiCredentialMode ? t.ssiRiskTrusted : t.manualRiskNeedsReview}
+                    {riskStatus}
                   </span>
                 </div>
                 <div className="border-x border-slate-200">
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.trustScore}</span>
                   <span className={`font-extrabold text-[11px] ${
-                    isSsiCredentialMode ? 'text-emerald-600 font-mono' : 'text-amber-600 font-mono'
+                    verificationOutcome === 'verified' ? 'text-emerald-600' : 'text-amber-600'
                   }`}>
-                    {isSsiCredentialMode ? '100%' : '76.5%'}
+                    {currentStepIdx === 0 ? t.notEvaluated : evidenceStatus}
                   </span>
                 </div>
                 <div>
                   <span className="block text-[8px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t.systemState}</span>
-                  <span className={`font-bold text-[10px] ${isSuccess ? 'text-emerald-600' : 'text-amber-500'}`}>
-                    {isSuccess ? t.approved : t.analyzing}
+                  <span className={`font-bold text-[10px] ${
+                    isSuccess && verificationOutcome === 'verified' ? 'text-emerald-600' : 'text-amber-500'
+                  }`}>
+                    {systemStatus}
                   </span>
                 </div>
               </div>
@@ -1509,39 +1655,18 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
               {/* Graphical representation of the Verification sequence */}
               <IdentityFlowGraph
                 steps={scenario.steps}
-                currentStepIdx={currentStepIdx}
-                completedSteps={completedSteps}
-                isSuccess={isSuccess}
+                currentStepIdx={trackerActiveStepIdx}
+                completedSteps={trackerCompletedSteps}
+                isSuccess={isVerificationComplete}
               />
 
               {/* Steps with connected timeline */}
               <div className="space-y-4 relative pl-3.5 border-l border-slate-100">
                 {scenario.steps.map((st, sIdx) => {
-                  let isActive = currentStepIdx === sIdx && !isSuccess;
-                  let isDone = completedSteps[sIdx] || isSuccess;
-                  const subChecks: string[] = t.subChecks[scenario.id]?.[sIdx] || [];
-
-                  if (currentStepIdx === 0) {
-                    isActive = sIdx === 0;
-                    isDone = false;
-                  } else if (currentStepIdx === 1) {
-                    if (sIdx === 0) {
-                      isActive = serverVerificationProgress < 30;
-                      isDone = serverVerificationProgress >= 30;
-                    } else if (sIdx === 1) {
-                      isActive = serverVerificationProgress >= 30 && serverVerificationProgress < 70;
-                      isDone = serverVerificationProgress >= 70;
-                    } else if (sIdx === 2) {
-                      isActive = serverVerificationProgress >= 70 && serverVerificationProgress < 100;
-                      isDone = serverVerificationProgress >= 100;
-                    }
-                  } else if (isSuccess) {
-                    isDone = true;
-                    isActive = false;
-                  } else if (currentStepIdx === 2) {
-                    isDone = sIdx < 2;
-                    isActive = sIdx === 2;
-                  }
+                  const stageSnapshot = verificationSnapshot.stages[sIdx];
+                  const isActive = stageSnapshot?.status === 'active';
+                  const isDone = stageSnapshot?.status === 'done';
+                  const subChecks = stageSnapshot?.detailIds.map((detailId) => flowT[detailId]) ?? [];
 
                   return (
                     <div
@@ -1559,7 +1684,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                         isDone
                           ? 'bg-[#354CE1] border-[#354CE1] text-white shadow-md'
                           : isActive
-                            ? 'bg-white border-[#354CE1] text-[#354CE1] shadow-sm ring-4 ring-indigo-50 scale-105 font-bold animate-pulse'
+                            ? `bg-white border-[#354CE1] text-[#354CE1] shadow-sm ring-4 ring-indigo-50 scale-105 font-bold ${shouldReduceMotion ? '' : 'animate-pulse'}`
                             : 'bg-white border-slate-200 text-slate-400'
                       }`}>
                         {isDone ? (
@@ -1578,7 +1703,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                             {st.label}
                           </p>
                           {isActive && (
-                            <span className="text-[8px] font-bold font-mono px-1.5 py-0.5 bg-indigo-500 text-white rounded-md uppercase tracking-wider animate-pulse shrink-0">
+                            <span className={`text-[8px] font-bold font-mono px-1.5 py-0.5 bg-indigo-500 text-white rounded-md uppercase tracking-wider shrink-0 ${shouldReduceMotion ? '' : 'animate-pulse'}`}>
                               {t.active}
                             </span>
                           )}
@@ -1601,54 +1726,15 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                           </div>
                           <div className="grid grid-cols-1 gap-1">
                             {subChecks.map((label: string, cIdx: number) => {
-                              // Step 2 streams server checks across the three timeline rows.
-                              let checkStatus: 'pending' | 'active' | 'done' = 'pending';
-                              if (isDone) {
-                                checkStatus = 'done';
-                              } else if (currentStepIdx === 1) {
-                                 if (sIdx === 0) {
-                                  const target = (cIdx + 1) * 10;
-                                  if (serverVerificationProgress >= target) checkStatus = 'done';
-                                  else if (serverVerificationProgress >= target - 10) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                } else if (sIdx === 1) {
-                                  const target = cIdx === 0 ? 45 : cIdx === 1 ? 55 : 70;
-                                  if (serverVerificationProgress >= target) checkStatus = 'done';
-                                  else if (serverVerificationProgress >= (cIdx === 0 ? 30 : cIdx === 1 ? 45 : 55)) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                } else if (sIdx === 2) {
-                                  const target = 70 + (cIdx + 1) * 10;
-                                  if (serverVerificationProgress >= target) checkStatus = 'done';
-                                  else if (serverVerificationProgress >= target - 10) checkStatus = 'active';
-                                  else checkStatus = 'pending';
-                                }
-                              } else if (isActive) {
-                                const loggedIndexes = subChecks.map((stepText: string) => {
-                                  const keyword = stepText.slice(0, 10);
-                                  return simulationLogs.some(log => log.includes(keyword));
-                                });
-                                const lastLoggedIdx = loggedIndexes.lastIndexOf(true);
-
-                                if (lastLoggedIdx >= 0) {
-                                  if (cIdx < lastLoggedIdx) {
-                                    checkStatus = 'done';
-                                  } else if (cIdx === lastLoggedIdx) {
-                                    checkStatus = 'active';
-                                  } else {
-                                    checkStatus = 'pending';
-                                  }
-                                } else {
-                                  checkStatus = cIdx === 0 ? 'active' : 'pending';
-                                }
-                              }
+                              const checkStatus = stageSnapshot?.detailStatuses[cIdx] ?? 'pending';
 
                               return (
                                 <div key={cIdx} className="flex items-center gap-2 text-[9.5px] font-mono leading-none">
                                   {checkStatus === 'done' ? (
                                     <span className="h-3.5 w-3.5 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-[8px] shrink-0 border border-emerald-100">✓</span>
                                   ) : checkStatus === 'active' ? (
-                                    <span className="h-3.5 w-3.5 rounded bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 animate-pulse">
-                                      <span className="h-1 w-1 rounded-full bg-amber-500 animate-ping" />
+                                    <span className={`h-3.5 w-3.5 rounded bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 border border-amber-100 ${shouldReduceMotion ? '' : 'animate-pulse'}`}>
+                                      <span className={`h-1 w-1 rounded-full bg-amber-500 ${shouldReduceMotion ? '' : 'animate-ping'}`} />
                                     </span>
                                   ) : (
                                     <span className="h-3.5 w-3.5 rounded bg-slate-50 text-slate-400 flex items-center justify-center text-[8px] shrink-0 border border-slate-100">−</span>
@@ -1657,7 +1743,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                                     checkStatus === 'done'
                                       ? 'text-slate-600 font-medium'
                                       : checkStatus === 'active'
-                                        ? 'text-amber-600 font-semibold animate-pulse'
+                                        ? `text-amber-600 font-semibold ${shouldReduceMotion ? '' : 'animate-pulse'}`
                                         : 'text-slate-400'
                                   }>
                                     {label}
@@ -1676,7 +1762,11 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
               {/* Status and Restart details */}
               <div className="border-t border-slate-100 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
-                  <span className={`h-2.5 w-2.5 rounded-full ${isSuccess ? 'bg-emerald-500 animate-pulse' : 'bg-[#354CE1] animate-ping'}`} />
+                  <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${
+                    isSuccess
+                      ? `bg-emerald-500 ${shouldReduceMotion ? '' : 'animate-pulse'}`
+                      : `bg-[#354CE1] ${shouldReduceMotion ? '' : 'animate-ping'}`
+                  }`} />
                   <span className="text-xs font-semibold font-mono text-slate-600 uppercase tracking-wide">
                     {isSuccess ? t.transactionComplete : t.waitingInput}
                   </span>
@@ -1684,12 +1774,14 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                 {isSuccess && (
                   <div className="flex gap-2 w-full sm:w-auto">
                     <button
+                      type="button"
                       onClick={() => setIsSummaryModalOpen(true)}
                       className="flex-1 sm:flex-none px-3.5 py-2 bg-[#354CE1] hover:bg-[#354CE1]/90 text-white font-bold text-xs rounded-xl transition shadow-lg shadow-[#354CE1]/15 cursor-pointer flex items-center justify-center gap-1.5 active:scale-[0.98]"
                     >
                       <span>{t.viewVerdict}</span>
                     </button>
                     <button
+                      type="button"
                       onClick={handleReset}
                       className="flex-1 sm:flex-none px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer flex items-center justify-center active:scale-[0.98]"
                     >
@@ -1709,21 +1801,43 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                     {t.ledgerTitle}
                   </span>
                 </div>
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full bg-emerald-500 ${shouldReduceMotion ? '' : 'animate-pulse'}`} />
               </div>
 
-              <div ref={terminalContainerRef} className="font-mono text-[10px] space-y-2 h-52 overflow-y-auto scrollbar-thin text-slate-300 pr-1 select-all leading-relaxed">
+              <div
+                ref={terminalContainerRef}
+                role="log"
+                aria-live="polite"
+                className="font-mono text-[10px] space-y-2 h-52 overflow-y-auto scrollbar-thin text-slate-300 pr-1 select-all leading-relaxed"
+              >
                 {simulationLogs.map((log, idx) => {
+                  const template = log.scope === 'page' ? t.logs[log.key] : flowT[log.key];
+                  const values = log.scope === 'page' && (log.key === 'launch' || log.key === 'reset')
+                    ? { ...log.values, title: scenario.title }
+                    : log.values ?? {};
+                  const localizedText = formatText(template, values);
+                  const prefixes: Record<ApplyJobLogType, string> = {
+                    system: '[SYSTEM]',
+                    action: '[ACTION]',
+                    data: '[DATA]',
+                    ok: '[OK]',
+                    processing: '[PROCESSING]',
+                  };
+                  const displayText = /^\[[A-Z]+\]/.test(localizedText)
+                    ? localizedText
+                    : `${prefixes[log.type]} ${localizedText}`;
                   let color = 'text-slate-300';
-                  if (log.startsWith('[SYSTEM]')) color = 'text-indigo-400';
-                  else if (log.startsWith('[ACTION]')) color = 'text-amber-400';
-                  else if (log.startsWith('[OK]')) color = 'text-emerald-500 font-semibold';
-                  else if (log.startsWith('[PROCESSING]')) color = 'text-purple-400 animate-pulse';
+                  if (log.type === 'system') color = 'text-indigo-400';
+                  else if (log.type === 'action') color = 'text-amber-400';
+                  else if (log.type === 'ok') color = 'text-emerald-500 font-semibold';
+                  else if (log.type === 'processing') {
+                    color = `text-purple-400 ${shouldReduceMotion ? '' : 'animate-pulse'}`;
+                  }
 
                   return (
                     <div key={idx} className="flex gap-2 items-start">
                       <span className="text-slate-600 select-none">&gt;</span>
-                      <span className={color}>{log}</span>
+                      <span className={color}>{displayText}</span>
                     </div>
                   );
                 })}

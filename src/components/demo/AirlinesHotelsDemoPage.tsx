@@ -11,6 +11,11 @@ import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/us
 import { AIRLINES_HOTELS_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/AirlinesHotelsDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
+import {
+  advanceAirlinesHotelsProgress,
+  createAirlinesHotelsProgress,
+  resetAirlinesHotelsProgress,
+} from './AirlinesHotelsDemoModel';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
@@ -23,6 +28,7 @@ interface AirlinesHotelsCheckInFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  resetKey: number;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
 
@@ -35,6 +41,7 @@ function AirlinesHotelsCheckInFlow({
   addLog,
   isSuccess,
   playTingTingSound,
+  resetKey,
   scheduleTimeout
 }: AirlinesHotelsCheckInFlowProps) {
   const { language } = useLanguage();
@@ -56,7 +63,7 @@ function AirlinesHotelsCheckInFlow({
       setNfcScanning(false);
       setDoorUnlocked(false);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, resetKey]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -364,20 +371,23 @@ export default function AirlinesHotelsDemoPage({ onBackToList }: AirlinesHotelsD
   }, []);
 
   // General simulation states
-  const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(scenario.steps.length).fill(false));
+  const [progress, setProgress] = useState(createAirlinesHotelsProgress);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const {
+    completedSteps,
+    currentStepIndex: currentStepIdx,
+    resetKey,
+    status,
+  } = progress;
+  const isSuccess = status === 'complete';
 
   // Initialize terminal logs
   useEffect(() => {
     clearTimeouts();
     const title = scenario.title;
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetAirlinesHotelsProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -410,10 +420,9 @@ export default function AirlinesHotelsDemoPage({ onBackToList }: AirlinesHotelsD
   };
 
   const advanceStep = (stepLogs: string[]) => {
-    // Mark current step done
-    const updatedCompleted = [...completedSteps];
-    updatedCompleted[currentStepIdx] = true;
-    setCompletedSteps(updatedCompleted);
+    const transition = advanceAirlinesHotelsProgress(progress);
+    if (!transition) return;
+    setProgress(transition.progress);
 
     // Push logs
     for (let i = 0; i < stepLogs.length; i++) {
@@ -423,13 +432,11 @@ export default function AirlinesHotelsDemoPage({ onBackToList }: AirlinesHotelsD
     const currentStep = scenario.steps[currentStepIdx];
     addLog(formatText(t.logs.completedLayer, { label: currentStep.label }), 'ok');
 
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < scenario.steps.length) {
-      setCurrentStepIdx(nextIdx);
+    const nextIdx = transition.progress.currentStepIndex;
+    if (transition.nextStageId !== null) {
       addLog(formatText(t.logs.nextTask, { action: scenario.steps[nextIdx].action }), 'system');
     } else {
       // Finished all steps
-      setIsSuccess(true);
       setIsSummaryModalOpen(true);
       addLog(t.logs.allPassed, 'ok');
       addLog(t.logs.sealed, 'system');
@@ -440,9 +447,7 @@ export default function AirlinesHotelsDemoPage({ onBackToList }: AirlinesHotelsD
   // Reset helper
   const handleReset = () => {
     clearTimeouts();
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetAirlinesHotelsProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -533,6 +538,7 @@ export default function AirlinesHotelsDemoPage({ onBackToList }: AirlinesHotelsD
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  resetKey={resetKey}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>

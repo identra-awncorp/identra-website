@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   X, ShieldCheck, Cpu, CheckCircle2, AlertTriangle,
   TrendingUp, ArrowRight, Lock, Shield, Sparkles, Check,
@@ -22,7 +22,7 @@ interface DemoSummaryModalProps {
   onClose: () => void;
   scenarioId: string;
   scenarioTitle: string;
-  steps: { label: string }[];
+  steps: readonly { label: string }[];
   isSsiMode?: boolean;
 }
 
@@ -35,6 +35,10 @@ export default function DemoSummaryModal({
   isSsiMode = false
 }: DemoSummaryModalProps) {
   const { language } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const t = getLocalizedRecord(
     DEMO_SUMMARY_MODAL_TRANSLATIONS,
     language as keyof typeof DEMO_SUMMARY_MODAL_TRANSLATIONS,
@@ -42,6 +46,7 @@ export default function DemoSummaryModal({
   );
 
   const data = getDemoSummaryDecisionData(scenarioId, language, isSsiMode);
+  const hidesNumericMetrics = scenarioId === 'apply-job';
   const riskIndex = data.overallRisk;
   const confidenceScore = data.overallConfidence;
   const credentialHash = `0x7f9a8b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7d6e5f4a3b2c1d0e9f8a-${scenarioId}`;
@@ -60,7 +65,25 @@ export default function DemoSummaryModal({
   // Sync activeNodeIdx to the last element of the new trend when scenario shifts
   useEffect(() => {
     setActiveNodeIdx(pointsCount - 1);
+    setActiveTab('verdict');
   }, [scenarioId, pointsCount]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    previousFocusRef.current = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    window.requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      previousFocusRef.current?.focus();
+    };
+  }, [isOpen, onClose]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -123,7 +146,7 @@ export default function DemoSummaryModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden select-none" id="decision-logic-modal">
       {/* Backdrop */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={shouldReduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
@@ -132,15 +155,40 @@ export default function DemoSummaryModal({
 
       {/* Modal Container */}
       <motion.div
-        initial={{ scale: 0.95, opacity: 0, y: 15 }}
+        ref={modalRef}
+        initial={shouldReduceMotion ? false : { scale: 0.95, opacity: 0, y: 15 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 15 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: 'easeOut' }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="demo-summary-modal-title"
+        onKeyDown={(event) => {
+          if (event.key !== 'Tab') return;
+          const focusableElements = Array.from(
+            modalRef.current?.querySelectorAll<HTMLButtonElement>('button:not([disabled])') ?? [],
+          );
+          if (focusableElements.length === 0) return;
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (event.shiftKey && document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement.focus();
+          } else if (!event.shiftKey && document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement.focus();
+          }
+        }}
         className="bg-white rounded-[32px] border border-slate-200/80 shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10 flex flex-col"
       >
         {/* Close Button */}
         <button
+          ref={closeButtonRef}
+          type="button"
           onClick={onClose}
+          aria-label={t.closeAuditSummary}
+          title={t.closeAuditSummary}
           className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-700 bg-slate-50 hover:bg-slate-100 rounded-full transition border border-slate-100 cursor-pointer z-30"
           id="close-modal-button"
         >
@@ -153,10 +201,10 @@ export default function DemoSummaryModal({
         {/* Header Title with animated sparkles */}
         <div className="space-y-2 max-w-[90%]">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-50 border border-indigo-100 text-[#354CE1] text-[10px] font-bold rounded-full uppercase tracking-wider">
-            <Cpu className="w-3.5 h-3.5 animate-pulse" />
+            <Cpu className={`w-3.5 h-3.5 ${shouldReduceMotion ? '' : 'animate-pulse'}`} />
             <span>{t.securityEngineVerdictReport}</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
+          <h2 id="demo-summary-modal-title" className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
             {t.decisionLogicAnalysis.replace('{scenario}', scenarioTitle)}
           </h2>
           <p className="text-xs md:text-sm text-slate-500 leading-relaxed">
@@ -200,23 +248,25 @@ export default function DemoSummaryModal({
               />
             )}
           </button>
-          <button
-            onClick={() => setActiveTab('certificate')}
-            className={`px-4 py-2.5 font-bold text-xs sm:text-sm transition-all relative shrink-0 flex items-center gap-2 cursor-pointer ${
-              activeTab === 'certificate'
-                ? 'text-[#354CE1]'
-                : 'text-slate-500 hover:text-slate-900'
-            }`}
-          >
-            <Award className="w-4 h-4" />
-            <span>{t.digitalPassTab}</span>
-            {activeTab === 'certificate' && (
-              <motion.div
-                layoutId="activeModalTab"
-                className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]"
-              />
-            )}
-          </button>
+          {!hidesNumericMetrics && (
+            <button
+              onClick={() => setActiveTab('certificate')}
+              className={`px-4 py-2.5 font-bold text-xs sm:text-sm transition-all relative shrink-0 flex items-center gap-2 cursor-pointer ${
+                activeTab === 'certificate'
+                  ? 'text-[#354CE1]'
+                  : 'text-slate-500 hover:text-slate-900'
+              }`}
+            >
+              <Award className="w-4 h-4" />
+              <span>{t.digitalPassTab}</span>
+              {activeTab === 'certificate' && (
+                <motion.div
+                  layoutId="activeModalTab"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]"
+                />
+              )}
+            </button>
+          )}
         </div>
 
         {/* Tab Contents Area */}
@@ -231,8 +281,20 @@ export default function DemoSummaryModal({
                 transition={{ duration: 0.2 }}
                 className="space-y-6"
               >
+                {hidesNumericMetrics && (
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 space-y-2">
+                    <div className="flex items-center gap-2 text-[#354CE1]">
+                      <ShieldCheck className="h-4 w-4" />
+                      <span className="text-xs font-bold">{data.verdict}</span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-slate-600">
+                      {data.decisionLogic}
+                    </p>
+                  </div>
+                )}
+
                 {/* Bento Grid Analytics Row */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div className={`${hidesNumericMetrics ? 'hidden' : 'grid'} grid-cols-1 md:grid-cols-12 gap-6`}>
                   {/* Circular Gauge */}
                   <div className="md:col-span-4 bg-[#FAFBFD] border border-slate-200/60 rounded-[24px] p-5 flex flex-col justify-between items-center text-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-16 h-16 bg-[#354CE1]/5 rounded-bl-full pointer-events-none" />
@@ -330,7 +392,7 @@ export default function DemoSummaryModal({
                 </div>
 
                 {/* Trust Progression Chart */}
-                <div className="bg-[#FAFBFD] border border-slate-200/60 rounded-[28px] p-5 space-y-4">
+                <div className={`${hidesNumericMetrics ? 'hidden' : 'block'} bg-[#FAFBFD] border border-slate-200/60 rounded-[28px] p-5 space-y-4`}>
                   <div className="flex items-start justify-between">
                     <div className="space-y-0.5">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
@@ -499,9 +561,11 @@ export default function DemoSummaryModal({
                         <p className={`text-[10px] font-bold leading-snug line-clamp-1 ${isActive ? 'text-slate-900' : 'text-slate-700'}`}>
                           {stepObj.label}
                         </p>
-                        <p className="text-[11px] font-mono text-emerald-600 font-extrabold mt-1">
-                          +{index === 0 ? point.value : (point.value - coords[index-1].value).toFixed(1)}% {t.trustGainLabel}
-                        </p>
+                        {!hidesNumericMetrics && (
+                          <p className="text-[11px] font-mono text-emerald-600 font-extrabold mt-1">
+                            +{index === 0 ? point.value : (point.value - coords[index-1].value).toFixed(1)}% {t.trustGainLabel}
+                          </p>
+                        )}
                       </button>
                     );
                   })}
@@ -520,12 +584,13 @@ export default function DemoSummaryModal({
                         <div className="flex items-center gap-2">
                           <Terminal className="w-4 h-4 text-emerald-400" />
                           <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
-                            {t.evidenceVaultTitle.replace('{index}', String(activeNodeIdx + 1))}
+                            {(hidesNumericMetrics ? t.applyJobEvidenceTitle : t.evidenceVaultTitle)
+                              .replace('{index}', String(activeNodeIdx + 1))}
                           </span>
                         </div>
                         <div className="flex items-center gap-2.5 text-[10px] font-mono text-slate-400">
                           <span className="bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/50">
-                            NODE: {evidence.processorNode}
+                            {hidesNumericMetrics ? t.applyJobProcessorLabel : 'NODE'}: {evidence.processorNode}
                           </span>
                           <span className="hidden sm:inline">•</span>
                           <span>
@@ -539,7 +604,7 @@ export default function DemoSummaryModal({
                         <div className="md:col-span-5 space-y-4 flex flex-col justify-between">
                           <div className="space-y-2">
                             <div className="text-xs text-slate-400 font-mono font-medium">
-                              {t.triggeredLogicBranch}
+                              {hidesNumericMetrics ? t.applyJobStageLabel : t.triggeredLogicBranch}
                             </div>
                             <h4 className="text-base font-bold text-white tracking-tight leading-snug">
                               {currentStepLabel.label}
@@ -549,7 +614,8 @@ export default function DemoSummaryModal({
                             </p>
                           </div>
 
-                          <div className="bg-slate-950/40 rounded-xl p-3 border border-slate-800 space-y-2.5 mt-2">
+                          {!hidesNumericMetrics && (
+                            <div className="bg-slate-950/40 rounded-xl p-3 border border-slate-800 space-y-2.5 mt-2">
                             <div className="flex items-center justify-between text-[11px] font-mono">
                               <span className="text-slate-400">{t.totalTrustGained}</span>
                               <span className="font-bold text-emerald-400">+{evidence.confidenceAchieved}%</span>
@@ -558,34 +624,43 @@ export default function DemoSummaryModal({
                               <span className="text-slate-400">{t.threatDeflected}</span>
                               <span className="font-bold text-emerald-400">{evidence.riskDeflection}</span>
                             </div>
-                          </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Right decoded signals */}
                         <div className="md:col-span-7 space-y-3">
                           <div className="text-xs text-slate-400 font-mono font-medium">
-                            {t.decodedCryptographicSignals}
+                            {hidesNumericMetrics ? t.applyJobSignalsTitle : t.decodedCryptographicSignals}
                           </div>
 
                           <div className="space-y-2">
-                            {evidence.signals.map((sig, sIdx) => (
-                              <div key={sIdx} className="bg-slate-950/40 rounded-xl p-2.5 flex items-center justify-between border border-slate-800/50 hover:border-slate-800 transition">
-                                <div className="flex items-center gap-2">
-                                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                                  <span className="text-xs font-bold text-slate-300">
-                                    {sig.label}
-                                  </span>
+                            {evidence.signals.map((sig, sIdx) => {
+                              const isSignalPassed = sig.status === 'PASS';
+
+                              return (
+                                <div key={sIdx} className="bg-slate-950/40 rounded-xl p-2.5 flex items-center justify-between border border-slate-800/50 hover:border-slate-800 transition">
+                                  <div className="flex items-center gap-2">
+                                    <span className={`h-1.5 w-1.5 rounded-full ${isSignalPassed ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                                    <span className="text-xs font-bold text-slate-300">
+                                      {sig.label}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 font-mono text-[10px]">
+                                    <span className={`font-semibold ${isSignalPassed ? 'text-emerald-400' : 'text-amber-300'}`}>
+                                      {sig.value}
+                                    </span>
+                                    <span className={`border text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase ${
+                                      isSignalPassed
+                                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                        : 'bg-amber-500/10 text-amber-300 border-amber-500/20'
+                                    }`}>
+                                      {isSignalPassed ? t.passedStatus : t.reviewStatus}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div className="flex items-center gap-2 font-mono text-[10px]">
-                                  <span className="text-emerald-400 font-semibold">
-                                    {sig.value}
-                                  </span>
-                                  <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[8px] font-extrabold px-1.5 py-0.2 rounded uppercase">
-                                    PASS
-                                  </span>
-                                </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -593,7 +668,7 @@ export default function DemoSummaryModal({
                       <div className="text-[10px] text-slate-400 font-mono pt-3.5 border-t border-slate-800 flex items-start gap-1.5">
                         <Lock className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
                         <p className="leading-normal">
-                          {t.consensusSealDescription}
+                          {hidesNumericMetrics ? t.applyJobEvidenceNotice : t.consensusSealDescription}
                         </p>
                       </div>
                     </div>
@@ -604,7 +679,7 @@ export default function DemoSummaryModal({
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                      {t.rulesEngineEvaluationAudit}
+                      {hidesNumericMetrics ? t.applyJobChecksTitle : t.rulesEngineEvaluationAudit}
                     </p>
                     <span className="text-[9px] font-mono font-bold text-indigo-500 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded">
                       {data.rules.length} {t.rulesChecked}
@@ -614,6 +689,7 @@ export default function DemoSummaryModal({
                   <div className="border border-slate-100 rounded-2xl overflow-hidden divide-y divide-slate-100 bg-slate-50/20 shadow-sm">
                     {data.rules.map((rule, index) => {
                       const isRuleActive = index === activeNodeIdx;
+                      const isRulePassed = rule.status === 'PASS';
                       return (
                         <div
                           key={index}
@@ -640,22 +716,32 @@ export default function DemoSummaryModal({
                               )}
                             </div>
                             <p className="text-[10px] text-slate-500">
-                              {t.ruleExplanation}
+                              {hidesNumericMetrics ? t.applyJobRuleExplanation : t.ruleExplanation}
                             </p>
                           </div>
 
                           <div className="flex items-center gap-4 shrink-0">
-                            <div className="text-right">
-                              <span className="text-[10px] font-mono font-bold text-slate-500 block">
-                                {t.trustWeight}
-                              </span>
-                              <span className="text-xs font-bold text-[#354CE1]">
-                                +{rule.weight}%
-                              </span>
-                            </div>
-                            <span className="inline-flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-lg">
-                              <Check className="w-3 h-3 stroke-[3]" />
-                              <span>PASS</span>
+                            {!hidesNumericMetrics && (
+                              <div className="text-right">
+                                <span className="text-[10px] font-mono font-bold text-slate-500 block">
+                                  {t.trustWeight}
+                                </span>
+                                <span className="text-xs font-bold text-[#354CE1]">
+                                  +{rule.weight}%
+                                </span>
+                              </div>
+                            )}
+                            <span className={`inline-flex items-center justify-center gap-1 border text-[10px] font-bold px-2.5 py-1 rounded-lg ${
+                              isRulePassed
+                                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                                : 'bg-amber-50 text-amber-700 border-amber-200'
+                            }`}>
+                              {isRulePassed ? (
+                                <Check className="w-3 h-3 stroke-[3]" />
+                              ) : (
+                                <AlertTriangle className="w-3 h-3" />
+                              )}
+                              <span>{isRulePassed ? t.passedStatus : t.reviewStatus}</span>
                             </span>
                           </div>
                         </div>

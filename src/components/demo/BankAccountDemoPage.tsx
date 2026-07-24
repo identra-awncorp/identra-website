@@ -5,38 +5,72 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { AlertCircle, ArrowLeft, ArrowRight, Camera, Check, CheckCircle2, CreditCard, Database, Fingerprint, Landmark, Lock, Mail, MapPin, Phone, QrCode, RefreshCw, ShieldAlert, ShieldCheck, Smartphone, Sparkles, Terminal, Truck, User, X } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, Camera, Check, CheckCircle2, CreditCard, Database, Fingerprint, Landmark, Lock, Mail, MapPin, Phone, QrCode, RefreshCw, ShieldAlert, ShieldCheck, Smartphone, Sparkles, Terminal, Truck, User, X, type LucideIcon } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/BankAccountDemoPageTranslations';
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
+import {
+  getBankAccountAmlOutcome,
+  getBankAccountOnboardingMethodChangeResetScope,
+  getBankAccountTypeChangeResetScope,
+  getBankAccountVerificationPlan,
+  getBankAccountVerificationSnapshot,
+  isBankAccountBusinessOwnershipMatched,
+  validateBankAccountApplication,
+  type BankAccountOnboardingMethod,
+  type BankAccountResetScope,
+  type BankAccountType,
+  type BankAccountValidationError,
+  type BankAccountVerificationRunStatus,
+  type BankAccountVerificationSnapshot,
+  type BankAccountVerificationStageId,
+  type BankAccountVerificationStageSnapshot,
+} from './BankAccountDemoModel';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
-type BankAccountType = 'checking' | 'savings' | 'business';
-type BankAccountOnboardingMethod = 'manual' | 'identra';
-type VerificationRunStatus = 'idle' | 'running' | 'passed';
-
-interface VerificationProgressStep {
+interface BankAccountVerificationStepCopy {
   label: string;
-  details: string[];
-  startIndex: number;
+  identraDetails: readonly string[];
+  manualDetails: readonly string[];
 }
 
-interface VerificationProgressState {
-  steps: VerificationProgressStep[];
-  detailCount: number;
-  totalDetails: number;
-  status: VerificationRunStatus;
+interface LocalizedBankAccountVerificationStage extends BankAccountVerificationStageSnapshot {
+  label: string;
+  details: readonly string[];
 }
 
-const EMPTY_VERIFICATION_PROGRESS: VerificationProgressState = {
-  steps: [],
-  detailCount: 0,
-  totalDetails: 0,
-  status: 'idle',
+const BANK_ACCOUNT_VERIFICATION_COPY_INDEX: Record<BankAccountVerificationStageId, number> = {
+  identity: 0,
+  'business-registration': 1,
+  'business-ownership': 2,
 };
+
+const getLocalizedBankAccountVerificationStages = (
+  snapshot: BankAccountVerificationSnapshot,
+  stepCopies: readonly BankAccountVerificationStepCopy[],
+): LocalizedBankAccountVerificationStage[] => snapshot.stages.map((stage) => {
+  const stepCopy = stepCopies[BANK_ACCOUNT_VERIFICATION_COPY_INDEX[stage.id]];
+  const detailCopies = snapshot.onboardingMethod === 'identra'
+    ? stepCopy.identraDetails
+    : stepCopy.manualDetails;
+
+  return {
+    ...stage,
+    label: stepCopy.label,
+    details: stage.detailIds.map((_, detailIndex) => detailCopies[detailIndex]),
+  };
+});
+
+const createInitialBankAccountVerificationSnapshot = (): BankAccountVerificationSnapshot => (
+  getBankAccountVerificationSnapshot(
+    getBankAccountVerificationPlan('checking', 'manual'),
+    0,
+    'idle',
+  )
+);
 
 interface BankAccountClientSimulatorProps {
   currentStepIdx: number;
@@ -47,7 +81,7 @@ interface BankAccountClientSimulatorProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   scheduleTimeout: ManagedTimeoutScheduler;
-  onVerificationProgressChange: (progress: VerificationProgressState) => void;
+  onVerificationSnapshotChange: (snapshot: BankAccountVerificationSnapshot) => void;
 }
 
 /**
@@ -108,7 +142,7 @@ function BankAccountClientSimulator({
   addLog,
   isSuccess,
   scheduleTimeout,
-  onVerificationProgressChange,
+  onVerificationSnapshotChange,
 }: BankAccountClientSimulatorProps) {
   const { language } = useLanguage();
   const translations = getLocalizedRecord(
@@ -134,7 +168,7 @@ function BankAccountClientSimulator({
   const [businessLicenseFileName, setBusinessLicenseFileName] = useState('');
   const [bankLivenessScanned, setBankLivenessScanned] = useState(false);
   const [bankAmlCleared, setBankAmlCleared] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<BankAccountValidationError | null>(null);
 
   // QR Modal States (5-second simulation countdown)
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
@@ -143,7 +177,7 @@ function BankAccountClientSimulator({
 
   // Step 2 verification state shared by every account and onboarding flow.
   const [verificationDetailCount, setVerificationDetailCount] = useState(0);
-  const [verificationStatus, setVerificationStatus] = useState<VerificationRunStatus>('idle');
+  const [verificationStatus, setVerificationStatus] = useState<BankAccountVerificationRunStatus>('idle');
 
   // Step 4 Server-side Automated AML states
   const [amlSeconds, setAmlSeconds] = useState(10);
@@ -151,55 +185,64 @@ function BankAccountClientSimulator({
   const isBusinessAccount = accountType === 'business';
   const isUsingIdentra = onboardingMethod === 'identra';
   const isProfileVerifiedByIdentra = isUsingIdentra && isCryptographicallySecured;
-  const isBusinessOwnershipMatched = Boolean(
-    isBusinessAccount
-    && businessRegistrationNumber.trim()
-    && businessOwnerIdentityNumber.trim()
-    && bankSsn.trim()
-    && businessOwnerIdentityNumber === bankSsn,
+  const isBusinessOwnershipMatched = isBankAccountBusinessOwnershipMatched(
+    accountType,
+    bankSsn,
+    businessRegistrationNumber,
+    businessOwnerIdentityNumber,
   );
-  const verificationSteps = useMemo<VerificationProgressStep[]>(() => {
-    let startIndex = 0;
-    const applicableSteps = isBusinessAccount
-      ? (t.businessVerificationSteps || [])
-      : (t.businessVerificationSteps || []).slice(0, 1);
-
-    return applicableSteps.map((step: {
-      label: string;
-      identraDetails: string[];
-      manualDetails: string[];
-    }) => {
-      const details = isUsingIdentra ? step.identraDetails : step.manualDetails;
-      const normalizedStep = { label: step.label, details, startIndex };
-      startIndex += details.length;
-      return normalizedStep;
-    });
-  }, [isBusinessAccount, isUsingIdentra, t.businessVerificationSteps]);
+  const verificationPlan = useMemo(
+    () => getBankAccountVerificationPlan(accountType, onboardingMethod),
+    [accountType, onboardingMethod],
+  );
+  const verificationSnapshot = useMemo(
+    () => getBankAccountVerificationSnapshot(
+      verificationPlan,
+      verificationDetailCount,
+      verificationStatus,
+    ),
+    [verificationDetailCount, verificationPlan, verificationStatus],
+  );
+  const localizedVerificationStages = useMemo(
+    () => getLocalizedBankAccountVerificationStages(
+      verificationSnapshot,
+      t.businessVerificationSteps,
+    ),
+    [t.businessVerificationSteps, verificationSnapshot],
+  );
   const verificationEvents = useMemo(
-    () => verificationSteps.flatMap((step, stepIndex) =>
-      step.details.map((detail, detailIndex) => ({
+    () => localizedVerificationStages.flatMap((stage) =>
+      stage.details.map((detail, detailIndex) => ({
+        detailId: stage.detailIds[detailIndex],
         detail,
-        isLastInStep: detailIndex === step.details.length - 1,
-        stepIndex,
+        isLastInStage: detailIndex === stage.details.length - 1,
       }))),
-    [verificationSteps],
+    [localizedVerificationStages],
   );
-  const verificationProgress = useMemo<VerificationProgressState>(() => ({
-    steps: verificationSteps,
-    detailCount: verificationDetailCount,
-    totalDetails: verificationEvents.length,
-    status: verificationStatus,
-  }), [verificationDetailCount, verificationEvents.length, verificationStatus, verificationSteps]);
-  const verificationPercent = Math.round(
-    (verificationDetailCount / Math.max(1, verificationEvents.length)) * 100,
-  );
-  const activeVerificationDetail = verificationStatus === 'running'
-    ? verificationEvents[verificationDetailCount]?.detail
+  const activeVerificationDetail = verificationSnapshot.activeDetailId
+    ? verificationEvents.find(
+        (event) => event.detailId === verificationSnapshot.activeDetailId,
+      )?.detail ?? null
     : null;
+  const error = useMemo(() => {
+    if (!validationError) return null;
+    const errorMessages: Record<BankAccountValidationError, string> = {
+      'identra-scan-required': t.identraScanRequiredError,
+      'full-name': t.fullNameError,
+      'identity-number': t.identityNumberError,
+      'physical-address': t.physicalAddressError,
+      'business-legal-name': t.businessLegalNameError,
+      'business-registration-number': t.businessRegistrationNumberError,
+      'business-owner-identity-number': t.businessOwnerIdentityNumberError,
+      'business-ownership-mismatch': t.businessOwnershipMismatchError,
+      'business-license': t.businessLicenseError,
+    };
+    return errorMessages[validationError];
+  }, [t, validationError]);
 
   useEffect(() => {
-    onVerificationProgressChange(verificationProgress);
-  }, [currentStepIdx, onVerificationProgressChange, verificationProgress]);
+    onVerificationSnapshotChange(verificationSnapshot);
+  }, [currentStepIdx, onVerificationSnapshotChange, verificationSnapshot]);
 
   // Handle 5-second QR scanning countdown
   useEffect(() => {
@@ -232,13 +275,21 @@ function BankAccountClientSimulator({
 
   // Run the input-dependent verification sequence in Step 2.
   useEffect(() => {
-    if (currentStepIdx !== 1 || completedSteps[1] || verificationEvents.length === 0) return;
+    if (
+      currentStepIdx !== 1
+      || completedSteps[1]
+      || verificationSnapshot.totalDetailCount === 0
+    ) {
+      return;
+    }
 
     if (verificationStatus === 'idle') {
       setVerificationDetailCount(0);
       setVerificationStatus('running');
       addLog(
-        isBusinessAccount ? t.businessVerificationStartedLog : verificationSteps[0].label,
+        isBusinessAccount
+          ? t.businessVerificationStartedLog
+          : localizedVerificationStages[0].label,
         'processing',
       );
       return;
@@ -246,8 +297,8 @@ function BankAccountClientSimulator({
 
     if (verificationStatus !== 'running') return;
 
-    if (verificationDetailCount >= verificationEvents.length) {
-      setVerificationStatus('passed');
+    if (verificationDetailCount >= verificationSnapshot.totalDetailCount) {
+      setVerificationStatus('complete');
       setIsProcessingAction(false);
       advanceStep([
         isBusinessAccount ? t.businessVerificationSuccess : t.govIdVerifiedSuccess,
@@ -257,7 +308,7 @@ function BankAccountClientSimulator({
 
     const timer = setTimeout(() => {
       const event = verificationEvents[verificationDetailCount];
-      addLog(event.detail, event.isLastInStep ? 'ok' : 'processing');
+      addLog(event.detail, event.isLastInStage ? 'ok' : 'processing');
       setVerificationDetailCount((count) => count + 1);
     }, 1100);
 
@@ -268,14 +319,15 @@ function BankAccountClientSimulator({
     completedSteps,
     currentStepIdx,
     isBusinessAccount,
-    isUsingIdentra,
+    localizedVerificationStages,
+    setIsProcessingAction,
     t.businessVerificationStartedLog,
     t.businessVerificationSuccess,
     t.govIdVerifiedSuccess,
     verificationDetailCount,
     verificationEvents,
+    verificationSnapshot.totalDetailCount,
     verificationStatus,
-    verificationSteps,
   ]);
 
   // Handle 10-second Server-side Automated AML screening for Step 4
@@ -291,8 +343,8 @@ function BankAccountClientSimulator({
 
     if (amlStatus === 'running') {
       if (amlSeconds <= 0) {
-        const cleanPhone = phone.replace(/\D/g, '');
-        if (cleanPhone === '0968268030') {
+        const amlOutcome = getBankAccountAmlOutcome(phone);
+        if (amlOutcome === 'failed') {
           setAmlStatus('failed');
           addLog(uiT.amlFailedLog, 'system');
         } else {
@@ -311,97 +363,70 @@ function BankAccountClientSimulator({
     }
   }, [currentStepIdx, completedSteps, amlStatus, amlSeconds, phone, addLog, uiT]);
 
+  const resetApplicationFields = useCallback((scope: BankAccountResetScope) => {
+    if (scope === 'none') return;
+
+    if (scope === 'all-fields') {
+      setBankName('');
+      setBankSsn('');
+      setEmail('');
+      setPhone('');
+      setBankAddress('');
+      setIsQrModalOpen(false);
+      setQrSeconds(5);
+      setIsCryptographicallySecured(false);
+      setVerificationDetailCount(0);
+      setVerificationStatus('idle');
+    }
+
+    setBusinessLegalName('');
+    setBusinessRegistrationNumber('');
+    setBusinessOwnerIdentityNumber('');
+    setBusinessLicenseFileName('');
+  }, []);
+
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
     if (currentStepIdx === 0) {
       setAccountType('checking');
       setOnboardingMethod('manual');
-      setBankName('');
-      setBankSsn('');
-      setEmail('');
-      setPhone('');
-      setBankAddress('');
-      setBusinessLegalName('');
-      setBusinessRegistrationNumber('');
-      setBusinessOwnerIdentityNumber('');
-      setBusinessLicenseFileName('');
+      resetApplicationFields('all-fields');
       setBankLivenessScanned(false);
       setBankAmlCleared(false);
-      setError(null);
-      setIsQrModalOpen(false);
-      setQrSeconds(5);
-      setIsCryptographicallySecured(false);
-      setVerificationDetailCount(0);
-      setVerificationStatus('idle');
+      setValidationError(null);
       setAmlSeconds(10);
       setAmlStatus('idle');
     } else {
-      setError(null);
+      setValidationError(null);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, resetApplicationFields]);
 
   const handleAccountTypeChange = (nextAccountType: BankAccountType) => {
-    if (nextAccountType === accountType) {
-      setError(null);
-      return;
-    }
+    const resetScope = getBankAccountTypeChangeResetScope(
+      accountType,
+      nextAccountType,
+      onboardingMethod,
+    );
 
     setAccountType(nextAccountType);
-    setError(null);
-
-    if (isUsingIdentra) {
-      setBankName('');
-      setBankSsn('');
-      setEmail('');
-      setPhone('');
-      setBankAddress('');
-      setBusinessLegalName('');
-      setBusinessRegistrationNumber('');
-      setBusinessOwnerIdentityNumber('');
-      setBusinessLicenseFileName('');
-      setIsQrModalOpen(false);
-      setQrSeconds(5);
-      setIsCryptographicallySecured(false);
-      setVerificationDetailCount(0);
-      setVerificationStatus('idle');
-      return;
-    }
-
-    if (nextAccountType !== 'business') {
-      setBusinessLegalName('');
-      setBusinessRegistrationNumber('');
-      setBusinessOwnerIdentityNumber('');
-      setBusinessLicenseFileName('');
-    }
+    setValidationError(null);
+    resetApplicationFields(resetScope);
   };
 
   const handleOnboardingMethodChange = (method: BankAccountOnboardingMethod) => {
-    if (method === onboardingMethod) {
-      setError(null);
-      return;
-    }
+    const resetScope = getBankAccountOnboardingMethodChangeResetScope(
+      onboardingMethod,
+      method,
+    );
 
     setOnboardingMethod(method);
-    setError(null);
-    setBankName('');
-    setBankSsn('');
-    setEmail('');
-    setPhone('');
-    setBankAddress('');
-    setBusinessLegalName('');
-    setBusinessRegistrationNumber('');
-    setBusinessOwnerIdentityNumber('');
-    setBusinessLicenseFileName('');
-    setIsQrModalOpen(false);
-    setQrSeconds(5);
-    setIsCryptographicallySecured(false);
-    setVerificationDetailCount(0);
-    setVerificationStatus('idle');
+    setValidationError(null);
+    resetApplicationFields(resetScope);
   };
 
   const startQrScanModal = () => {
     setOnboardingMethod('identra');
-    setError(null);
+    setValidationError(null);
     setQrSeconds(5);
     setIsQrModalOpen(true);
     addLog(uiT.qrScanStartedLog, 'action');
@@ -594,7 +619,7 @@ function BankAccountClientSimulator({
                       value={bankName}
                       onChange={(e) => {
                         if (!isUsingIdentra) {
-                          setError(null);
+                          setValidationError(null);
                           setBankName(e.target.value);
                         }
                       }}
@@ -628,7 +653,7 @@ function BankAccountClientSimulator({
                       value={bankSsn}
                       onChange={(e) => {
                         if (!isUsingIdentra) {
-                          setError(null);
+                          setValidationError(null);
                           setBankSsn(e.target.value);
                         }
                       }}
@@ -727,7 +752,7 @@ function BankAccountClientSimulator({
                     value={bankAddress}
                     onChange={(e) => {
                       if (!isUsingIdentra) {
-                        setError(null);
+                        setValidationError(null);
                         setBankAddress(e.target.value);
                       }
                     }}
@@ -775,7 +800,7 @@ function BankAccountClientSimulator({
                           value={businessLegalName}
                           onChange={(e) => {
                             if (!isUsingIdentra) {
-                              setError(null);
+                              setValidationError(null);
                               setBusinessLegalName(e.target.value);
                             }
                           }}
@@ -809,7 +834,7 @@ function BankAccountClientSimulator({
                           value={businessRegistrationNumber}
                           onChange={(event) => {
                             if (!isUsingIdentra) {
-                              setError(null);
+                              setValidationError(null);
                               setBusinessRegistrationNumber(event.target.value);
                             }
                           }}
@@ -843,7 +868,7 @@ function BankAccountClientSimulator({
                           value={businessOwnerIdentityNumber}
                           onChange={(event) => {
                             if (!isUsingIdentra) {
-                              setError(null);
+                              setValidationError(null);
                               setBusinessOwnerIdentityNumber(event.target.value);
                             }
                           }}
@@ -886,7 +911,7 @@ function BankAccountClientSimulator({
                           disabled={isProcessingAction}
                           onChange={(event) => {
                             const fileName = event.target.files?.[0]?.name || '';
-                            setError(null);
+                            setValidationError(null);
                             setBusinessLicenseFileName(fileName);
                           }}
                         />
@@ -908,43 +933,25 @@ function BankAccountClientSimulator({
 
             <button
               onClick={() => {
-                if (isUsingIdentra && !isProfileVerifiedByIdentra) {
-                  setError(t.identraScanRequiredError);
+                const nextValidationError = validateBankAccountApplication({
+                  name: bankName,
+                  identityNumber: bankSsn,
+                  email,
+                  phone,
+                  address: bankAddress,
+                  businessLegalName,
+                  businessRegistrationNumber,
+                  businessOwnerIdentityNumber,
+                  businessLicenseFileName,
+                  isCryptographicallySecured,
+                }, accountType, onboardingMethod);
+
+                if (nextValidationError) {
+                  setValidationError(nextValidationError);
                   return;
                 }
-                if (!bankName.trim()) {
-                  setError(t.fullNameError);
-                  return;
-                }
-                if (!bankSsn.trim()) {
-                  setError(t.identityNumberError);
-                  return;
-                }
-                if (!bankAddress.trim()) {
-                  setError(t.physicalAddressError);
-                  return;
-                }
-                if (isBusinessAccount && !businessLegalName.trim()) {
-                  setError(t.businessLegalNameError);
-                  return;
-                }
-                if (isBusinessAccount && !businessRegistrationNumber.trim()) {
-                  setError(t.businessRegistrationNumberError);
-                  return;
-                }
-                if (isBusinessAccount && !businessOwnerIdentityNumber.trim()) {
-                  setError(t.businessOwnerIdentityNumberError);
-                  return;
-                }
-                if (isBusinessAccount && !isBusinessOwnershipMatched) {
-                  setError(t.businessOwnershipMismatchError);
-                  return;
-                }
-                if (isBusinessAccount && !isProfileVerifiedByIdentra && !businessLicenseFileName) {
-                  setError(t.businessLicenseError);
-                  return;
-                }
-                setError(null);
+
+                setValidationError(null);
                 setIsProcessingAction(true);
                 addLog(formatText(logT.submittingProfile, { name: bankName }), 'action');
                 scheduleTimeout(() => {
@@ -1006,7 +1013,9 @@ function BankAccountClientSimulator({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">
-                    {isBusinessAccount ? t.businessVerificationTitle : verificationSteps[0]?.label}
+                    {isBusinessAccount
+                      ? t.businessVerificationTitle
+                      : localizedVerificationStages[0].label}
                   </h4>
                   <p className="text-[11px] text-slate-500 mt-0.5">
                     {isUsingIdentra ? t.businessVerificationIdentraFlow : t.businessVerificationManualFlow}
@@ -1014,7 +1023,7 @@ function BankAccountClientSimulator({
                 </div>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-[#354CE1]/20 bg-[#354CE1]/5 px-3 py-1 text-[10px] font-mono font-bold text-[#354CE1]">
                   <Sparkles className="h-3 w-3 animate-spin" />
-                  {verificationPercent}%
+                  {verificationSnapshot.progressPercent}%
                 </span>
               </div>
 
@@ -1022,7 +1031,7 @@ function BankAccountClientSimulator({
                 <motion.div
                   className="h-full bg-gradient-to-r from-[#354CE1] to-emerald-500"
                   animate={{
-                    width: `${verificationPercent}%`,
+                    width: `${verificationSnapshot.progressPercent}%`,
                   }}
                   transition={{ duration: 0.3 }}
                 />
@@ -1413,7 +1422,7 @@ interface BankAccountDemoCopy {
 }
 
 interface BankAccountDemoScenario extends BankAccountDemoCopy {
-  icon: React.ComponentType<any>;
+  icon: LucideIcon;
 }
 
 const formatText = (template: string, values: Record<string, string | number>) =>
@@ -1437,7 +1446,9 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
 
   const playTingTingSound = useCallback(() => {
     try {
-      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContextClass = window.AudioContext || (
+        window as typeof window & { webkitAudioContext?: typeof AudioContext }
+      ).webkitAudioContext;
       if (!AudioContextClass) return;
       const ctx = new AudioContextClass();
 
@@ -1476,10 +1487,19 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
-  const [verificationProgress, setVerificationProgress] = useState<VerificationProgressState>(EMPTY_VERIFICATION_PROGRESS);
-  const handleVerificationProgressChange = useCallback((progress: VerificationProgressState) => {
-    setVerificationProgress(progress);
+  const [verificationSnapshot, setVerificationSnapshot] = useState<BankAccountVerificationSnapshot>(
+    createInitialBankAccountVerificationSnapshot,
+  );
+  const handleVerificationSnapshotChange = useCallback((snapshot: BankAccountVerificationSnapshot) => {
+    setVerificationSnapshot(snapshot);
   }, []);
+  const localizedVerificationStages = useMemo(
+    () => getLocalizedBankAccountVerificationStages(
+      verificationSnapshot,
+      translations.scenario.businessVerificationSteps,
+    ),
+    [translations.scenario.businessVerificationSteps, verificationSnapshot],
+  );
 
   // Initialize terminal logs
   useEffect(() => {
@@ -1490,7 +1510,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setVerificationProgress(EMPTY_VERIFICATION_PROGRESS);
+    setVerificationSnapshot(createInitialBankAccountVerificationSnapshot());
     setSimulationLogs([
       formatText(t.logs.launch, { title }),
       t.logs.environment,
@@ -1556,7 +1576,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setVerificationProgress(EMPTY_VERIFICATION_PROGRESS);
+    setVerificationSnapshot(createInitialBankAccountVerificationSnapshot());
     setSimulationLogs([
       formatText(t.logs.reset, { title: scenario.title }),
       t.logs.resetInstruction
@@ -1645,7 +1665,7 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                   addLog={addLog}
                   isSuccess={isSuccess}
                   scheduleTimeout={scheduleTimeout}
-                  onVerificationProgressChange={handleVerificationProgressChange}
+                  onVerificationSnapshotChange={handleVerificationSnapshotChange}
                 />
               </div>
             </div>
@@ -1712,32 +1732,21 @@ export default function BankAccountDemoPage({ onBackToList }: BankAccountDemoPag
                   const verificationCheckRows: Array<{
                     label: string;
                     status: 'pending' | 'active' | 'done';
-                  }> = verificationProgress.steps.length > 1
-                    ? verificationProgress.steps.map((step) => {
-                      const stepEndIndex = step.startIndex + step.details.length;
-                      const isStepDone = verificationProgress.detailCount >= stepEndIndex;
-                      const isStepActive = verificationProgress.status === 'running'
-                        && verificationProgress.detailCount >= step.startIndex
-                        && verificationProgress.detailCount < stepEndIndex;
-                      const activeDetailIndex = verificationProgress.detailCount - step.startIndex;
-
+                  }> = localizedVerificationStages.length > 1
+                    ? localizedVerificationStages.map((step) => {
+                      const activeDetailIndex = step.detailStatuses.indexOf('active');
                       return {
-                        label: isStepActive
-                          ? (step.details[activeDetailIndex] || step.label)
+                        label: step.status === 'active' && activeDetailIndex >= 0
+                          ? step.details[activeDetailIndex]
                           : step.label,
-                        status: isStepDone ? 'done' : isStepActive ? 'active' : 'pending',
+                        status: step.status,
                       };
                     })
-                    : (verificationProgress.steps[0]?.details || []).map((detail, detailIndex) => ({
+                    : (localizedVerificationStages[0]?.details || []).map((detail, detailIndex) => ({
                       label: detail,
-                      status: detailIndex < verificationProgress.detailCount
-                        ? 'done'
-                        : detailIndex === verificationProgress.detailCount
-                          && verificationProgress.status === 'running'
-                          ? 'active'
-                          : 'pending',
+                      status: localizedVerificationStages[0].detailStatuses[detailIndex],
                     }));
-                  const subChecks = sIdx === 1 && verificationProgress.steps.length > 0
+                  const subChecks = sIdx === 1 && localizedVerificationStages.length > 0
                     ? verificationCheckRows.map((row) => row.label)
                     : staticSubChecks;
 

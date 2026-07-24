@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Check } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { IDENTITY_FLOW_GRAPH_TRANSLATIONS } from '../../translations/demo/IdentityFlowGraphTranslations';
@@ -11,7 +11,7 @@ interface IdentityFlowGraphStep {
 }
 
 interface IdentityFlowGraphProps {
-  steps: IdentityFlowGraphStep[];
+  steps: readonly IdentityFlowGraphStep[];
   currentStepIdx: number;
   completedSteps: boolean[];
   isSuccess: boolean;
@@ -24,6 +24,7 @@ export const IdentityFlowGraph: React.FC<IdentityFlowGraphProps> = ({
   isSuccess,
 }) => {
   const { language } = useLanguage();
+  const shouldReduceMotion = useReducedMotion();
   const t = getLocalizedRecord(
     IDENTITY_FLOW_GRAPH_TRANSLATIONS,
     language as keyof typeof IDENTITY_FLOW_GRAPH_TRANSLATIONS,
@@ -52,9 +53,9 @@ export const IdentityFlowGraph: React.FC<IdentityFlowGraphProps> = ({
                     className={`absolute inset-y-0 left-0 rounded-full ${
                       isLinkDone ? 'bg-emerald-500' : isLinkActive ? 'bg-[#354CE1]' : 'bg-transparent'
                     }`}
-                    initial={{ width: 0 }}
+                    initial={shouldReduceMotion ? false : { width: 0 }}
                     animate={{ width: isLinkDone || isLinkActive ? '100%' : '0%' }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
                   />
                 </div>
               )}
@@ -67,8 +68,8 @@ export const IdentityFlowGraph: React.FC<IdentityFlowGraphProps> = ({
                   {isActive && (
                     <motion.div 
                       className="absolute -inset-1.5 rounded-full border-2 border-[#354CE1]/30"
-                      animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
-                      transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                      animate={shouldReduceMotion ? { scale: 1, opacity: 0.6 } : { scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
+                      transition={shouldReduceMotion ? undefined : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                     />
                   )}
                   
@@ -81,13 +82,13 @@ export const IdentityFlowGraph: React.FC<IdentityFlowGraphProps> = ({
                           ? 'bg-white border-[#354CE1] text-[#354CE1] shadow-md shadow-[#354CE1]/15 ring-2 ring-indigo-50' 
                           : 'bg-white border-slate-200 text-slate-400'
                     }`}
-                    whileHover={{ scale: 1.1 }}
+                    whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 20 }}
                   >
                     {isDone ? (
                       <Check className="w-3.5 h-3.5 stroke-[3.5]" />
                     ) : isActive ? (
-                      <span className="h-2 w-2 rounded-full bg-[#354CE1] block animate-pulse" />
+                      <span className={`h-2 w-2 rounded-full bg-[#354CE1] block ${shouldReduceMotion ? '' : 'animate-pulse'}`} />
                     ) : (
                       <span className="text-[10px] font-bold font-mono">{idx + 1}</span>
                     )}

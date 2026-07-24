@@ -12,6 +12,16 @@ import { HEALTHCARE_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/Healt
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
+import {
+  advanceHealthcareProgress,
+  createHealthcareProgress,
+  HEALTHCARE_INITIAL_PATIENT_NAME,
+  HEALTHCARE_INSURANCE_GROUP_ID,
+  HEALTHCARE_INSURANCE_POLICY_ID,
+  resetHealthcareProgress,
+  validateHealthcareConsent,
+  validateHealthcarePatientName,
+} from './HealthcareDemoModel';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
 interface HealthcarePatientIntakeFlowProps {
@@ -23,6 +33,7 @@ interface HealthcarePatientIntakeFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  resetKey: number;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
 
@@ -34,6 +45,7 @@ function HealthcarePatientIntakeFlow({
   advanceStep,
   addLog,
   isSuccess,
+  resetKey,
   scheduleTimeout
 }: HealthcarePatientIntakeFlowProps) {
   const { language } = useLanguage();
@@ -46,24 +58,24 @@ function HealthcarePatientIntakeFlow({
   const logT = translations.logs;
 
   // Scenario states
-  const [patientName, setPatientName] = useState('John Doe');
+  const [patientName, setPatientName] = useState(HEALTHCARE_INITIAL_PATIENT_NAME);
   const [healthInsuranceScanned, setHealthInsuranceScanned] = useState(false);
-  const healthInsNum = 'BCX-4921-98A';
-  const healthInsGroup = 'GR-8491';
+  const healthInsNum = HEALTHCARE_INSURANCE_POLICY_ID;
+  const healthInsGroup = HEALTHCARE_INSURANCE_GROUP_ID;
   const [healthHipaaSigned, setHealthHipaaSigned] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
     if (currentStepIdx === 0) {
-      setPatientName('John Doe');
+      setPatientName(HEALTHCARE_INITIAL_PATIENT_NAME);
       setHealthInsuranceScanned(false);
       setHealthHipaaSigned(false);
       setError(null);
     } else {
       setError(null);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, resetKey]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -120,7 +132,7 @@ function HealthcarePatientIntakeFlow({
 
             <button
               onClick={() => {
-                if (!patientName.trim()) {
+                if (validateHealthcarePatientName(patientName)) {
                   setError(t.validPatientNameError);
                   return;
                 }
@@ -227,7 +239,7 @@ function HealthcarePatientIntakeFlow({
 
             <button
               onClick={() => {
-                if (!healthHipaaSigned) {
+                if (validateHealthcareConsent(healthHipaaSigned)) {
                   addLog(logT.consentRequired, 'system');
                   return;
                 }
@@ -364,20 +376,23 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
   }, []);
 
   // General simulation states
-  const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(scenario.steps.length).fill(false));
+  const [progress, setProgress] = useState(createHealthcareProgress);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const {
+    completedSteps,
+    currentStepIndex: currentStepIdx,
+    resetKey,
+    status,
+  } = progress;
+  const isSuccess = status === 'complete';
 
   // Initialize terminal logs
   useEffect(() => {
     clearTimeouts();
     const title = scenario.title;
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetHealthcareProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -410,10 +425,9 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
   };
 
   const advanceStep = (stepLogs: string[]) => {
-    // Mark current step done
-    const updatedCompleted = [...completedSteps];
-    updatedCompleted[currentStepIdx] = true;
-    setCompletedSteps(updatedCompleted);
+    const transition = advanceHealthcareProgress(progress);
+    if (!transition) return;
+    setProgress(transition.progress);
 
     // Push logs
     for (let i = 0; i < stepLogs.length; i++) {
@@ -423,13 +437,11 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
     const currentStep = scenario.steps[currentStepIdx];
     addLog(formatText(t.logs.completedLayer, { label: currentStep.label }), 'ok');
 
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < scenario.steps.length) {
-      setCurrentStepIdx(nextIdx);
+    const nextIdx = transition.progress.currentStepIndex;
+    if (transition.nextStageId !== null) {
       addLog(formatText(t.logs.nextTask, { action: scenario.steps[nextIdx].action }), 'system');
     } else {
       // Finished all steps
-      setIsSuccess(true);
       setIsSummaryModalOpen(true);
       addLog(t.logs.allPassed, 'ok');
       addLog(t.logs.sealed, 'system');
@@ -440,9 +452,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
   // Reset helper
   const handleReset = () => {
     clearTimeouts();
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetHealthcareProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -533,6 +543,7 @@ export default function HealthcareDemoPage({ onBackToList }: HealthcareDemoPageP
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  resetKey={resetKey}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>

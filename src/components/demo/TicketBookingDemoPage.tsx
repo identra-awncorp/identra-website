@@ -13,6 +13,19 @@ import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
+import {
+  advanceTicketBookingProgress,
+  createTicketBookingProgress,
+  resetTicketBookingProgress,
+  TICKET_BOOKING_HUMAN_SCORE,
+  TICKET_BOOKING_INITIAL_PHONE,
+  TICKET_BOOKING_INITIAL_SEATS,
+  TICKET_BOOKING_OTP,
+  toggleTicketBookingSeat,
+  validateTicketBookingOtp,
+  validateTicketBookingPhone,
+  validateTicketBookingSeats,
+} from './TicketBookingDemoModel';
 
 interface TicketBookingCheckoutFlowProps {
   currentStepIdx: number;
@@ -23,6 +36,7 @@ interface TicketBookingCheckoutFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  resetKey: number;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
 
@@ -34,6 +48,7 @@ function TicketBookingCheckoutFlow({
   advanceStep,
   addLog,
   isSuccess,
+  resetKey,
   scheduleTimeout
 }: TicketBookingCheckoutFlowProps) {
   const { language } = useLanguage();
@@ -46,26 +61,26 @@ function TicketBookingCheckoutFlow({
   const logT = translations.logs;
 
   // Scenario states
-  const [bookingSeats, setBookingSeats] = useState<string[]>(['A-12', 'A-13']);
-  const [bookingPhone, setBookingPhone] = useState('+1 (555) 234-5678');
+  const [bookingSeats, setBookingSeats] = useState<string[]>(() => [...TICKET_BOOKING_INITIAL_SEATS]);
+  const [bookingPhone, setBookingPhone] = useState(TICKET_BOOKING_INITIAL_PHONE);
   const [bookingOtp, setBookingOtp] = useState('');
-  const receivedOtp = '4920';
+  const receivedOtp = TICKET_BOOKING_OTP;
   const [showOtpBanner, setShowOtpBanner] = useState(false);
-  const botScore = 99.8;
+  const botScore = TICKET_BOOKING_HUMAN_SCORE;
   const [error, setError] = useState<string | null>(null);
 
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
     if (currentStepIdx === 0) {
-      setBookingSeats(['A-12', 'A-13']);
-      setBookingPhone('+1 (555) 234-5678');
+      setBookingSeats([...TICKET_BOOKING_INITIAL_SEATS]);
+      setBookingPhone(TICKET_BOOKING_INITIAL_PHONE);
       setBookingOtp('');
       setShowOtpBanner(false);
       setError(null);
     } else {
       setError(null);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, resetKey]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -104,11 +119,7 @@ function TicketBookingCheckoutFlow({
                       disabled={isProcessingAction}
                       onClick={() => {
                         setError(null);
-                        if (bookingSeats.includes(seat)) {
-                          setBookingSeats(bookingSeats.filter(s => s !== seat));
-                        } else {
-                          setBookingSeats([...bookingSeats, seat]);
-                        }
+                        setBookingSeats(toggleTicketBookingSeat(bookingSeats, seat));
                       }}
                       className={`py-2 text-[10px] font-bold rounded-lg font-mono transition-all border ${
                         isSelected 
@@ -128,7 +139,7 @@ function TicketBookingCheckoutFlow({
 
             <button
               onClick={() => {
-                if (bookingSeats.length === 0) {
+                if (validateTicketBookingSeats(bookingSeats)) {
                   setError(t.selectSeatError);
                   addLog(logT.validationNoSeats, 'system');
                   return;
@@ -255,7 +266,7 @@ function TicketBookingCheckoutFlow({
                   />
                   <button
                     onClick={() => {
-                      if (!bookingPhone.trim()) {
+                      if (validateTicketBookingPhone(bookingPhone)) {
                         setError(t.validPhoneError);
                         return;
                       }
@@ -291,17 +302,16 @@ function TicketBookingCheckoutFlow({
 
             <button
               onClick={() => {
-                if (!bookingPhone.trim()) {
-                  setError(t.phoneAndOtpFirstError);
-                  return;
-                }
-                if (!bookingOtp.trim()) {
-                  setError(t.enterOtpError);
-                  return;
-                }
-                if (bookingOtp !== receivedOtp) {
-                  setError(t.incorrectOtpError);
-                  addLog(formatText(logT.incorrectOtp, { otp: bookingOtp }), 'system');
+                const validationError = validateTicketBookingOtp(bookingPhone, bookingOtp);
+                if (validationError) {
+                  if (validationError === 'phone-required') {
+                    setError(t.phoneAndOtpFirstError);
+                  } else if (validationError === 'otp-required') {
+                    setError(t.enterOtpError);
+                  } else {
+                    setError(t.incorrectOtpError);
+                    addLog(formatText(logT.incorrectOtp, { otp: bookingOtp }), 'system');
+                  }
                   return;
                 }
                 setError(null);
@@ -457,20 +467,23 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
   }, []);
 
   // General simulation states
-  const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(scenario.steps.length).fill(false));
+  const [progress, setProgress] = useState(createTicketBookingProgress);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const {
+    completedSteps,
+    currentStepIndex: currentStepIdx,
+    resetKey,
+    status,
+  } = progress;
+  const isSuccess = status === 'complete';
 
   // Initialize terminal logs
   useEffect(() => {
     clearTimeouts();
     const title = scenario.title;
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetTicketBookingProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -503,10 +516,9 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
   };
 
   const advanceStep = (stepLogs: string[]) => {
-    // Mark current step done
-    const updatedCompleted = [...completedSteps];
-    updatedCompleted[currentStepIdx] = true;
-    setCompletedSteps(updatedCompleted);
+    const transition = advanceTicketBookingProgress(progress);
+    if (!transition) return;
+    setProgress(transition.progress);
 
     // Push logs
     for (let i = 0; i < stepLogs.length; i++) {
@@ -516,13 +528,11 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
     const currentStep = scenario.steps[currentStepIdx];
     addLog(formatText(t.logs.completedLayer, { label: currentStep.label }), 'ok');
 
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < scenario.steps.length) {
-      setCurrentStepIdx(nextIdx);
+    const nextIdx = transition.progress.currentStepIndex;
+    if (transition.nextStageId !== null) {
       addLog(formatText(t.logs.nextTask, { action: scenario.steps[nextIdx].action }), 'system');
     } else {
       // Finished all steps
-      setIsSuccess(true);
       setIsSummaryModalOpen(true);
       addLog(t.logs.allPassed, 'ok');
       addLog(t.logs.sealed, 'system');
@@ -533,9 +543,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
   // Reset helper
   const handleReset = () => {
     clearTimeouts();
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetTicketBookingProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -626,6 +634,7 @@ export default function TicketBookingDemoPage({ onBackToList }: TicketBookingDem
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  resetKey={resetKey}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>

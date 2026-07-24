@@ -51,8 +51,17 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "decodedCryptographicSignals": "DECODED CRYPTOGRAPHIC SIGNALS:",
     "consensusSealDescription": "Consensus sealed and approved under authority certificate Identra-Relay-Vault-2026. Real-time criteria satisfied.",
     "rulesEngineEvaluationAudit": "RULES ENGINE EVALUATION AUDIT",
+    "applyJobEvidenceTitle": "EVIDENCE REVIEW - STAGE {index}",
+    "applyJobProcessorLabel": "PROCESSOR",
+    "applyJobStageLabel": "REVIEWED STAGE:",
+    "applyJobSignalsTitle": "RECORDED EVIDENCE:",
+    "applyJobEvidenceNotice": "This report records simulated checks only. The employer remains responsible for reviewing the evidence and making the hiring decision.",
+    "applyJobChecksTitle": "APPLICATION EVIDENCE CHECKS",
+    "applyJobRuleExplanation": "This check records how the submitted evidence was handled within the demo scope.",
     "rulesChecked": "Rules Checked",
     "selectedLayer": "Selected Layer",
+    "passedStatus": "Passed",
+    "reviewStatus": "Needs review",
     "ruleExplanation": "Evaluation logic verifying mathematical authenticity thresholds.",
     "trustWeight": "Trust Weight",
     "highAssuranceSecurityAttestation": "HIGH-ASSURANCE SECURITY ATTESTATION",
@@ -108,8 +117,17 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "decodedCryptographicSignals": "SEÑALES CRIPTOGRÁFICAS DECODIFICADAS:",
     "consensusSealDescription": "Consenso sellado y aprobado con el certificado de autoridad Identra-Relay-Vault-2026. Criterios en tiempo real satisfechos.",
     "rulesEngineEvaluationAudit": "AUDITORÍA DE EVALUACIÓN DEL MOTOR DE REGLAS",
+    "applyJobEvidenceTitle": "REVISIÓN DE PRUEBAS - ETAPA {index}",
+    "applyJobProcessorLabel": "PROCESADOR",
+    "applyJobStageLabel": "ETAPA REVISADA:",
+    "applyJobSignalsTitle": "PRUEBAS REGISTRADAS:",
+    "applyJobEvidenceNotice": "Este informe solo registra comprobaciones simuladas. El empleador debe revisar las pruebas y tomar la decisión de contratación.",
+    "applyJobChecksTitle": "COMPROBACIONES DE LA SOLICITUD",
+    "applyJobRuleExplanation": "Esta comprobación registra cómo se trató la prueba aportada dentro del alcance de la demo.",
     "rulesChecked": "Reglas revisadas",
     "selectedLayer": "Capa seleccionada",
+    "passedStatus": "Aprobado",
+    "reviewStatus": "Requiere revisión",
     "ruleExplanation": "Lógica de evaluación que verifica umbrales matemáticos de autenticidad.",
     "trustWeight": "Peso de confianza",
     "highAssuranceSecurityAttestation": "CERTIFICACIÓN DE SEGURIDAD DE ALTA GARANTÍA",
@@ -165,8 +183,17 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "decodedCryptographicSignals": "復号済み暗号シグナル:",
     "consensusSealDescription": "Identra-Relay-Vault-2026の権限証明書によりコンセンサスが封印され承認されました。リアルタイム基準を満たしています。",
     "rulesEngineEvaluationAudit": "ルールエンジン評価監査",
+    "applyJobEvidenceTitle": "証拠確認 - ステージ {index}",
+    "applyJobProcessorLabel": "処理ノード",
+    "applyJobStageLabel": "確認対象ステージ:",
+    "applyJobSignalsTitle": "記録された証拠:",
+    "applyJobEvidenceNotice": "このレポートはシミュレーション結果のみを記録します。証拠の確認と採用判断は雇用主が行います。",
+    "applyJobChecksTitle": "応募証拠の確認",
+    "applyJobRuleExplanation": "この確認は、デモの範囲内で提出された証拠をどのように扱ったかを記録します。",
     "rulesChecked": "確認済みルール",
     "selectedLayer": "選択中のレイヤー",
+    "passedStatus": "確認済み",
+    "reviewStatus": "要確認",
     "ruleExplanation": "数学的な真正性しきい値を検証する評価ロジックです。",
     "trustWeight": "信頼重み",
     "highAssuranceSecurityAttestation": "高保証セキュリティ証明",
@@ -222,8 +249,17 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "decodedCryptographicSignals": "DECODIERTE KRYPTOGRAFISCHE SIGNALE:",
     "consensusSealDescription": "Konsens wurde unter dem Autoritätszertifikat Identra-Relay-Vault-2026 versiegelt und genehmigt. Echtzeitkriterien erfüllt.",
     "rulesEngineEvaluationAudit": "PRÜFUNG DER REGEL-ENGINE-BEWERTUNG",
+    "applyJobEvidenceTitle": "NACHWEISPRÜFUNG - STUFE {index}",
+    "applyJobProcessorLabel": "PROZESSOR",
+    "applyJobStageLabel": "GEPRÜFTE STUFE:",
+    "applyJobSignalsTitle": "ERFASSTE NACHWEISE:",
+    "applyJobEvidenceNotice": "Dieser Bericht dokumentiert nur simulierte Prüfungen. Der Arbeitgeber bleibt für die Nachweisprüfung und Einstellungsentscheidung verantwortlich.",
+    "applyJobChecksTitle": "PRÜFUNGEN DER BEWERBUNGSNACHWEISE",
+    "applyJobRuleExplanation": "Diese Prüfung dokumentiert die Verarbeitung des eingereichten Nachweises im Rahmen der Demo.",
     "rulesChecked": "Geprüfte Regeln",
     "selectedLayer": "Ausgewählte Ebene",
+    "passedStatus": "Bestanden",
+    "reviewStatus": "Prüfung erforderlich",
     "ruleExplanation": "Bewertungslogik zur Prüfung mathematischer Authentizitätsschwellen.",
     "trustWeight": "Vertrauensgewicht",
     "highAssuranceSecurityAttestation": "SICHERHEITSBESTÄTIGUNG MIT HOHER ZUSICHERUNG",
@@ -253,10 +289,10 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "threatDeflected": "Mối đe dọa đã chặn:",
     "exporting": "Đang xuất...",
     "reportExported": "Báo cáo đã được xuất!",
-    "securityEngineVerdictReport": "BẢN GHI PHÁN QUYẾT BẢO MẬT",
-    "decisionLogicAnalysis": "Phân tích logic quyết định: {scenario}",
-    "headerDescription": "Khám phá kiến trúc giảm thiểu rủi ro và các ngưỡng tiến triển độ tin cậy được bộ máy quy tắc tự động thực thi ngầm.",
-    "verdictProgression": "Phán quyết và tiến trình",
+    "securityEngineVerdictReport": "BÁO CÁO KẾT QUẢ XÁC MINH",
+    "decisionLogicAnalysis": "Báo cáo xác minh: {scenario}",
+    "headerDescription": "Xem lại kết quả, bằng chứng đã sử dụng và cách hệ thống xác định trạng thái cuối cùng.",
+    "verdictProgression": "Kết quả và tiến trình",
     "evidenceRules": "Bằng chứng và quy tắc",
     "digitalPassTab": "Chứng thư số",
     "systemVerdict": "PHÁN QUYẾT HỆ THỐNG",
@@ -279,8 +315,17 @@ export const DEMO_SUMMARY_MODAL_TRANSLATIONS: any = {
     "decodedCryptographicSignals": "DANH SÁCH TÍN HIỆU MẬT MÃ ĐÃ GIẢI MÃ:",
     "consensusSealDescription": "Phán quyết đã được niêm phong và phê duyệt bằng chứng chỉ thẩm quyền Identra-Relay-Vault-2026. Tiêu chí thời gian thực đã đạt.",
     "rulesEngineEvaluationAudit": "KIỂM TOÁN ĐÁNH GIÁ BỘ MÁY QUY TẮC",
+    "applyJobEvidenceTitle": "XEM XÉT BẰNG CHỨNG - GIAI ĐOẠN {index}",
+    "applyJobProcessorLabel": "BỘ XỬ LÝ",
+    "applyJobStageLabel": "GIAI ĐOẠN ĐƯỢC XEM XÉT:",
+    "applyJobSignalsTitle": "BẰNG CHỨNG ĐÃ GHI NHẬN:",
+    "applyJobEvidenceNotice": "Báo cáo này chỉ ghi nhận kết quả mô phỏng. Doanh nghiệp vẫn có trách nhiệm xem xét bằng chứng và đưa ra quyết định tuyển dụng.",
+    "applyJobChecksTitle": "CÁC KIỂM TRA ĐỐI VỚI HỒ SƠ",
+    "applyJobRuleExplanation": "Mục này ghi nhận cách bằng chứng được xử lý trong phạm vi bản demo.",
     "rulesChecked": "Quy tắc đã kiểm tra",
     "selectedLayer": "Tầng đang chọn",
+    "passedStatus": "Đã kiểm tra",
+    "reviewStatus": "Cần xem xét",
     "ruleExplanation": "Logic đánh giá xác minh các ngưỡng tính xác thực toán học.",
     "trustWeight": "Trọng số tin cậy",
     "highAssuranceSecurityAttestation": "CHỨNG THỰC BẢO MẬT ĐỘ ĐẢM BẢO CAO",
@@ -338,6 +383,20 @@ export const lt = (en: string, es: string, ja: string, de: string, vi: string): 
 });
 
 export const VERDICT_APPROVED: any = lt('APPROVED', 'APROBADO', '承認', 'GENEHMIGT', 'THÔNG QUA');
+export const VERDICT_REVIEW_REQUIRED: LocalizedText = lt(
+  'HR REVIEW REQUIRED',
+  'REQUIERE REVISIÓN DE RR. HH.',
+  '人事確認が必要',
+  'PRÜFUNG DURCH HR ERFORDERLICH',
+  'CẦN NHÂN SỰ XEM XÉT',
+);
+export const VERDICT_EVIDENCE_VERIFIED: LocalizedText = lt(
+  'EVIDENCE VERIFIED',
+  'PRUEBAS VERIFICADAS',
+  '証拠確認済み',
+  'NACHWEISE GEPRÜFT',
+  'BẰNG CHỨNG ĐÃ XÁC MINH',
+);
 
 export const RISK_LABELS: any = {
   profileValidation: lt('Profile validation', 'Validación de perfil', 'プロフィール検証', 'Profilvalidierung', 'Xác minh hồ sơ'),
@@ -407,7 +466,56 @@ export const EVIDENCE_COPY: any = {
     status: lt('Status', 'Estado', 'ステータス', 'Status', 'Trạng thái'),
   },
   statusPass: lt('Passed', 'Aprobado', '合格', 'Bestanden', 'Đạt'),
+  statusReview: lt('Needs review', 'Requiere revisión', '要確認', 'Prüfung erforderlich', 'Cần xem xét'),
 };
+
+const APPLY_JOB_IDENTRA_EVIDENCE_DETAILS: LocalizedText[] = [
+  lt(
+    'The candidate-approved minimum-disclosure proof confirmed work eligibility without revealing a personal identity number.',
+    'La prueba de divulgación mínima autorizada confirmó la aptitud laboral sin revelar el número de identidad personal.',
+    '候補者が承認した最小開示の証拠により、個人識別番号を開示せず就労資格を確認しました。',
+    'Der freigegebene Nachweis mit minimaler Offenlegung bestätigte die Arbeitsberechtigung ohne Preisgabe der persönlichen Identifikationsnummer.',
+    'Bằng chứng tiết lộ tối thiểu được ứng viên cho phép đã xác nhận điều kiện làm việc mà không tiết lộ số định danh cá nhân.',
+  ),
+  lt(
+    'Issuer DIDs, signatures, holder binding, and credential status were checked for the shared education and employment credentials.',
+    'Se comprobaron los DID de los emisores, las firmas, la vinculación del titular y el estado de las credenciales académicas y laborales compartidas.',
+    '共有された学歴・職歴資格情報について、発行者DID、署名、所有者バインディング、資格情報の状態を確認しました。',
+    'Für die freigegebenen Bildungs- und Beschäftigungsnachweise wurden Aussteller-DIDs, Signaturen, Inhaberbindung und Status geprüft.',
+    'DID của bên phát hành, chữ ký, sự ràng buộc với chủ thể và trạng thái của các thực chứng (VC) học vấn, kinh nghiệm đã được kiểm tra.',
+  ),
+  lt(
+    'Candidate consent and the permitted screening scope were recorded. The employer must still review the screening result under its hiring policy.',
+    'Se registraron el consentimiento del candidato y el alcance permitido. El empleador debe revisar el resultado según su política de contratación.',
+    '候補者の同意と許可された確認範囲を記録しました。雇用主は採用方針に基づいて結果を確認する必要があります。',
+    'Einwilligung und zulässiger Prüfungsumfang wurden erfasst. Der Arbeitgeber muss das Ergebnis weiterhin gemäß seiner Einstellungsrichtlinie prüfen.',
+    'Sự đồng ý của ứng viên và phạm vi rà soát được phép đã được ghi nhận. Doanh nghiệp vẫn cần xem xét kết quả theo chính sách tuyển dụng.',
+  ),
+];
+
+const APPLY_JOB_MANUAL_EVIDENCE_DETAILS: LocalizedText[] = [
+  lt(
+    'The submitted identity details were compared with a simulated response from an authorized source and require HR review.',
+    'Los datos de identidad se compararon con una respuesta simulada de una fuente autorizada y requieren revisión de RR. HH.',
+    '入力された本人情報を認可情報源の模擬応答と照合しました。人事担当者の確認が必要です。',
+    'Die eingegebenen Identitätsdaten wurden mit einer simulierten Antwort einer autorisierten Quelle abgeglichen und erfordern eine HR-Prüfung.',
+    'Thông tin định danh đã nhập được đối chiếu với kết quả giả lập từ nguồn được phép sử dụng và vẫn cần bộ phận nhân sự xem xét.',
+  ),
+  lt(
+    'Degree information and certificate links were checked using simulated source responses; no cryptographic credential proof was supplied.',
+    'La titulación y los enlaces de certificados se revisaron con respuestas simuladas; no se aportaron pruebas criptográficas de credenciales.',
+    '学位情報と証明書リンクを模擬応答で確認しました。暗号学的な資格証明は提供されていません。',
+    'Abschlussangaben und Zertifikatslinks wurden anhand simulierter Antworten geprüft; kryptografische Nachweise wurden nicht vorgelegt.',
+    'Thông tin học vấn và đường dẫn chứng chỉ được kiểm tra bằng kết quả giả lập; ứng viên không cung cấp bằng chứng thực chứng bằng mật mã.',
+  ),
+  lt(
+    'Candidate consent and the permitted screening scope were recorded. The simulated result remains subject to employer review.',
+    'Se registraron el consentimiento y el alcance permitido. El resultado simulado queda sujeto a revisión del empleador.',
+    '候補者の同意と許可された確認範囲を記録しました。模擬結果は雇用主による確認が必要です。',
+    'Einwilligung und zulässiger Prüfungsumfang wurden erfasst. Das simulierte Ergebnis muss vom Arbeitgeber geprüft werden.',
+    'Sự đồng ý của ứng viên và phạm vi rà soát được phép đã được ghi nhận. Kết quả giả lập vẫn cần doanh nghiệp xem xét.',
+  ),
+];
 
 export const BANK_ACCOUNT_SUMMARY_DATA: ScenarioDecisionData = {
   overallConfidence: 99.2,
@@ -438,29 +546,28 @@ export const BANK_ACCOUNT_SUMMARY_DATA: ScenarioDecisionData = {
 };
 
 export const APPLY_JOB_SUMMARY_DATA: ScenarioDecisionData = {
-  overallConfidence: 97.5,
-  overallRisk: 3.5,
-  verdict: VERDICT_APPROVED,
+  overallConfidence: 0,
+  overallRisk: 0,
+  verdict: VERDICT_EVIDENCE_VERIFIED,
   riskDimensions: [
-    { label: RISK_LABELS.identityFraud, score: 4 },
-    { label: RISK_LABELS.licenseForgery, score: 6 },
-    { label: RISK_LABELS.criminalBackground, score: 2 },
-    { label: RISK_LABELS.automationScore, score: 1 },
+    { label: RISK_LABELS.identityFraud, score: 0 },
+    { label: RISK_LABELS.licenseForgery, score: 0 },
+    { label: RISK_LABELS.criminalBackground, score: 0 },
   ],
-  confidenceTrend: [50, 85, 97.5],
+  confidenceTrend: [0, 0, 0],
   decisionLogic: lt(
-    'Candidate John Doe was verified. Active SSN records showed no red flags, the education registrar confirmed the software engineering degree, and court records returned no matching criminal history.',
-    'Se verificó al candidato John Doe. Los registros SSN activos no mostraron alertas, el registro educativo confirmó el título de ingeniería de software y los tribunales no devolvieron antecedentes penales coincidentes.',
-    '候補者John Doeを確認しました。有効なSSN記録に警告はなく、教育登録機関がソフトウェア工学の学位を確認し、裁判所記録に一致する犯罪歴はありませんでした。',
-    'Bewerber John Doe wurde verifiziert. Aktive SSN-Datensätze zeigten keine Warnsignale, das Bildungsregister bestätigte den Abschluss in Software Engineering und Gerichtsakten ergaben keine passenden Vorstrafen.',
-    'Ứng viên John Doe đã được xác minh. Hồ sơ SSN đang hoạt động không có cảnh báo, cơ quan đào tạo xác nhận bằng kỹ sư phần mềm và dữ liệu tòa án không có lịch sử hình sự trùng khớp.'
+    'The submitted evidence was checked across identity, credentials, and the candidate-approved background-screening scope. The employer remains responsible for the hiring decision.',
+    'Las pruebas aportadas se revisaron en identidad, credenciales y el alcance de antecedentes autorizado por el candidato. El empleador sigue siendo responsable de la decisión.',
+    '提出された証拠について、本人確認、資格情報、候補者が同意した経歴確認範囲を確認しました。採用判断は雇用主が行います。',
+    'Die eingereichten Nachweise wurden für Identität, Qualifikationen und den freigegebenen Umfang der Hintergrundprüfung geprüft. Die Einstellungsentscheidung bleibt beim Arbeitgeber.',
+    'Bằng chứng trong hồ sơ đã được kiểm tra theo ba nhóm: danh tính, chuyên môn và phạm vi lý lịch mà ứng viên đồng ý cho rà soát. Quyết định tuyển dụng vẫn thuộc về doanh nghiệp.'
   ),
   rules: [
-    { id: 'RULE-IDV-ASSURE', name: lt('National SSN identity security audit', 'Auditoría nacional de seguridad SSN', '国家SSN本人確認監査', 'Nationale SSN-Identitätssicherheitsprüfung', 'Kiểm toán an toàn SSN quốc gia'), weight: 30, status: 'PASS' },
-    { id: 'RULE-EDU-VALID', name: lt('Degree registry authority verification', 'Verificación de autoridad académica', '学位登録機関の検証', 'Prüfung der Abschlussregisterstelle', 'Xác minh cơ quan cấp bằng'), weight: 40, status: 'PASS' },
-    { id: 'RULE-BG-CRIMINAL', name: lt('Federal and county criminal search', 'Búsqueda penal federal y local', '連邦・郡犯罪歴検索', 'Bundes- und Bezirksstrafregistersuche', 'Tra cứu hình sự liên bang và quận'), weight: 30, status: 'PASS' },
+    { id: 'RULE-WORK-ELIGIBILITY', name: lt('Work eligibility evidence check', 'Comprobación de aptitud laboral', '就労資格証拠の確認', 'Prüfung des Arbeitsberechtigungsnachweises', 'Kiểm tra bằng chứng đủ điều kiện làm việc'), weight: 0, status: 'PASS' },
+    { id: 'RULE-CREDENTIAL-PROVENANCE', name: lt('Education and employment credential provenance', 'Procedencia de credenciales académicas y laborales', '学歴・職歴資格情報の出所確認', 'Herkunft von Bildungs- und Beschäftigungsnachweisen', 'Kiểm tra nguồn gốc thực chứng học vấn và kinh nghiệm'), weight: 0, status: 'PASS' },
+    { id: 'RULE-BACKGROUND-CONSENT', name: lt('Consent and permitted screening scope', 'Consentimiento y alcance permitido', '同意および許可された確認範囲', 'Einwilligung und zulässiger Prüfungsumfang', 'Kiểm tra sự đồng ý và phạm vi rà soát lý lịch'), weight: 0, status: 'PASS' },
   ],
-  processors: ['WORKFORCE-IDV-01', 'EDU-REGISTRY-LINK', 'COURT-RECORD-AUDIT'],
+  processors: ['WORKFORCE-EVIDENCE-01', 'CREDENTIAL-PROVENANCE-02', 'CONSENT-SCOPE-03'],
 };
 
 export const TICKET_BOOKING_SUMMARY_DATA: ScenarioDecisionData = {
@@ -646,54 +753,54 @@ export const getDemoSummaryDecisionData = (scenarioId: string, language: string,
   if (scenarioId === 'apply-job') {
     if (isSsiMode) {
       return {
-        overallConfidence: 100,
+        overallConfidence: 0,
         overallRisk: 0,
-        verdict: getSummaryLocalizedText(VERDICT_APPROVED, language),
+        verdict: getSummaryLocalizedText(VERDICT_EVIDENCE_VERIFIED, language),
         riskDimensions: [
           { label: getSummaryLocalizedText(RISK_LABELS.identityFraud, language), score: 0 },
           { label: getSummaryLocalizedText(RISK_LABELS.licenseForgery, language), score: 0 },
           { label: getSummaryLocalizedText(RISK_LABELS.criminalBackground, language), score: 0 },
           { label: getSummaryLocalizedText(RISK_LABELS.automationScore, language), score: 0 },
         ],
-        confidenceTrend: [60, 85, 100],
+        confidenceTrend: [0, 0, 0],
         decisionLogic: getSummaryLocalizedText(lt(
-          'Candidate identity was cryptographically verified via Identra eID ZKP Vault. 100% trust assurance achieved with 0% risk across all identity, credential, and background dimensions.',
-          'La identidad del candidato se verificó criptográficamente mediante Identra eID ZKP Vault. 100% de confianza con 0% de riesgo.',
-          '候補者の身元はIdentra eID ZKP Vault経由で暗号検証されました。100%の信頼性と0%のリスクを実現。',
-          'Kandidatenidentität wurde kryptografisch über Identra eID ZKP Vault verifiziert. 100% Vertrauen mit 0% Risiko.',
-          'Danh tính ứng viên đã được xác minh bằng chữ ký số mật mã ZKP-ECDSA từ Identra eID Vault. Đạt 100% độ tin cậy tuyệt đối với 0% rủi ro trên toàn bộ các chỉ số danh tính, bằng cấp và lý lịch.'
-        ), language),
-        rules: scenario.rules.map((rule) => ({
-          id: rule.id,
-          name: getSummaryLocalizedText(rule.name, language),
-          weight: rule.weight,
-          status: 'PASS',
-        })),
-      };
-    } else {
-      return {
-        overallConfidence: 76.5,
-        overallRisk: 23.5,
-        verdict: getSummaryLocalizedText(VERDICT_APPROVED, language),
-        riskDimensions: [
-          { label: getSummaryLocalizedText(RISK_LABELS.identityFraud, language), score: 18 },
-          { label: getSummaryLocalizedText(RISK_LABELS.licenseForgery, language), score: 24 },
-          { label: getSummaryLocalizedText(RISK_LABELS.criminalBackground, language), score: 12 },
-          { label: getSummaryLocalizedText(RISK_LABELS.automationScore, language), score: 8 },
-        ],
-        confidenceTrend: [40, 60, 76.5],
-        decisionLogic: getSummaryLocalizedText(lt(
-          'Candidate data was self-reported manually without direct ZKP cryptographic proof. Confidence score is limited to 76.5% (<80%) due to unverified primary credentials. Additional manual HR review is advised.',
-          'Datos autodeclarados manualmente sin prueba ZKP directa. Puntuación de confianza del 76.5% (<80%).',
-          'ZKP暗号証明なしの手動自己申告データ。信頼スコアは76.5%（80%未満）に制限されています。',
-          'Manuell selbst deklarierte Daten ohne direkten ZKP-Nachweis. Vertrauenswert auf 76.5% (<80%) begrenzt.',
-          'Dữ liệu ứng viên được khai báo thủ công không có bằng chứng mật mã ZKP trực tiếp từ nguồn cấp. Độ tin cậy đạt 76.5% (<80%) do dữ liệu chưa qua niêm phong chữ ký số. Đề xuất HR kiểm tra bổ sung.'
+          'The candidate-approved Identra presentation passed the simulated issuer, signature, holder-binding, challenge, and credential-status checks. Background-screening results remain subject to the employer review policy.',
+          'La presentación de Identra autorizada por el candidato superó las comprobaciones simuladas de emisor, firma, vinculación del titular, desafío y estado. Los antecedentes siguen sujetos a la política del empleador.',
+          '候補者が承認したIdentraプレゼンテーションは、発行者、署名、所有者バインディング、チャレンジ、資格情報の状態に関するシミュレーション検証を通過しました。経歴確認結果は雇用主の方針に基づき確認されます。',
+          'Die vom Bewerber freigegebene Identra-Präsentation hat die simulierten Prüfungen von Aussteller, Signatur, Inhaberbindung, Challenge und Status bestanden. Hintergrundprüfungen bleiben der Arbeitgeberrichtlinie unterstellt.',
+          'Bản trình bày Identra được ứng viên cho phép đã vượt qua bước kiểm tra giả lập đối với bên phát hành, chữ ký, sự ràng buộc với chủ thể, giá trị thử thách và trạng thái thực chứng. Kết quả kiểm tra lý lịch vẫn cần được xem xét theo chính sách tuyển dụng.'
         ), language),
         rules: scenario.rules.map((rule) => ({
           id: rule.id,
           name: getSummaryLocalizedText(rule.name, language),
           weight: rule.weight,
           status: rule.status,
+        })),
+      };
+    } else {
+      return {
+        overallConfidence: 0,
+        overallRisk: 0,
+        verdict: getSummaryLocalizedText(VERDICT_REVIEW_REQUIRED, language),
+        riskDimensions: [
+          { label: getSummaryLocalizedText(RISK_LABELS.identityFraud, language), score: 0 },
+          { label: getSummaryLocalizedText(RISK_LABELS.licenseForgery, language), score: 0 },
+          { label: getSummaryLocalizedText(RISK_LABELS.criminalBackground, language), score: 0 },
+          { label: getSummaryLocalizedText(RISK_LABELS.automationScore, language), score: 0 },
+        ],
+        confidenceTrend: [0, 0, 0],
+        decisionLogic: getSummaryLocalizedText(lt(
+          'The candidate entered this information manually. Registry responses and certificate links were simulated, so HR must inspect the supporting evidence before making a hiring decision.',
+          'El candidato introdujo la información manualmente. Las respuestas de los registros y los enlaces se simularon, por lo que RR. HH. debe revisar las pruebas antes de decidir.',
+          '候補者が情報を手動入力しました。登録簿の応答と証明書リンクはシミュレーションのため、採用判断前に人事担当者が証拠を確認する必要があります。',
+          'Der Bewerber hat die Angaben manuell eingegeben. Registerantworten und Zertifikatslinks wurden simuliert; HR muss die Nachweise vor einer Entscheidung prüfen.',
+          'Ứng viên tự nhập thông tin trong hồ sơ. Kết quả tra cứu và đường dẫn chứng chỉ chỉ được giả lập, vì vậy bộ phận nhân sự phải xem xét bằng chứng đi kèm trước khi đưa ra quyết định tuyển dụng.'
+        ), language),
+        rules: scenario.rules.map((rule) => ({
+          id: rule.id,
+          name: getSummaryLocalizedText(rule.name, language),
+          weight: rule.weight,
+          status: 'WARN',
         })),
       };
     }
@@ -725,7 +832,37 @@ export const getDemoSummaryStepEvidence = (scenarioId: string, language: string,
   return decisionData.confidenceTrend.map((confidence, index) => {
     const rule = decisionData.rules[index] || decisionData.rules[decisionData.rules.length - 1];
     const signalStatus: DemoSummaryEvidenceSignal['status'] = rule.status === 'FAIL' ? 'WARN' : rule.status;
-    const detailTemplate = getSummaryLocalizedText(EVIDENCE_COPY.details[index % EVIDENCE_COPY.details.length], language);
+    const applyJobDetails = isSsiMode
+      ? APPLY_JOB_IDENTRA_EVIDENCE_DETAILS
+      : APPLY_JOB_MANUAL_EVIDENCE_DETAILS;
+    const detailCopy = scenarioId === 'apply-job'
+      ? applyJobDetails[index] ?? applyJobDetails[applyJobDetails.length - 1]
+      : EVIDENCE_COPY.details[index % EVIDENCE_COPY.details.length];
+    const detailTemplate = getSummaryLocalizedText(detailCopy, language);
+    const statusValue = getSummaryLocalizedText(
+      signalStatus === 'PASS' ? EVIDENCE_COPY.statusPass : EVIDENCE_COPY.statusReview,
+      language,
+    );
+    const signals: DemoSummaryEvidenceSignal[] = [
+      {
+        label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.ruleApplied, language),
+        value: rule.name,
+        status: signalStatus,
+      },
+      {
+        label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.status, language),
+        value: statusValue,
+        status: signalStatus,
+      },
+    ];
+
+    if (scenarioId !== 'apply-job') {
+      signals.splice(1, 0, {
+        label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.confidence, language),
+        value: `${confidence}%`,
+        status: 'PASS',
+      });
+    }
 
     return {
       processorNode: scenario.processors[index] || `SECURE-CORE-${String(index + 1).padStart(2, '0')}`,
@@ -733,23 +870,7 @@ export const getDemoSummaryStepEvidence = (scenarioId: string, language: string,
       confidenceAchieved: confidence,
       riskDeflection: getSummaryLocalizedText(EVIDENCE_COPY.riskDeflections[index % EVIDENCE_COPY.riskDeflections.length], language),
       details: formatSummaryText(detailTemplate, { rule: rule.name }),
-      signals: [
-        {
-          label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.ruleApplied, language),
-          value: rule.name,
-          status: signalStatus,
-        },
-        {
-          label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.confidence, language),
-          value: `${confidence}%`,
-          status: 'PASS',
-        },
-        {
-          label: getSummaryLocalizedText(EVIDENCE_COPY.signalLabels.status, language),
-          value: getSummaryLocalizedText(EVIDENCE_COPY.statusPass, language),
-          status: 'PASS',
-        },
-      ],
+      signals,
     };
   });
 };

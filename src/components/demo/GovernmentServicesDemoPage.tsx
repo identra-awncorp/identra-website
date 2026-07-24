@@ -12,6 +12,13 @@ import { GOVERNMENT_SERVICES_DEMO_PAGE_TRANSLATIONS } from '../../translations/d
 import type { DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import DemoSummaryModal from './DemoSummaryModal';
+import {
+  advanceGovernmentServicesProgress,
+  createGovernmentServicesProgress,
+  getGovernmentSignatureSeal,
+  resetGovernmentServicesProgress,
+  validateGovernmentSignature,
+} from './GovernmentServicesDemoModel';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
 interface GovernmentServicesApplicationFlowProps {
@@ -23,6 +30,7 @@ interface GovernmentServicesApplicationFlowProps {
   addLog: (text: string, type?: 'system' | 'action' | 'data' | 'ok' | 'processing') => void;
   isSuccess: boolean;
   playTingTingSound: () => void;
+  resetKey: number;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
 
@@ -34,6 +42,7 @@ function GovernmentServicesApplicationFlow({
   advanceStep,
   addLog,
   isSuccess,
+  resetKey,
   scheduleTimeout
 }: GovernmentServicesApplicationFlowProps) {
   const { language } = useLanguage();
@@ -59,7 +68,7 @@ function GovernmentServicesApplicationFlow({
     } else {
       setError(null);
     }
-  }, [currentStepIdx]);
+  }, [currentStepIdx, resetKey]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -213,7 +222,7 @@ function GovernmentServicesApplicationFlow({
 
             <button
               onClick={() => {
-                if (!govSignature.trim()) {
+                if (validateGovernmentSignature(govSignature)) {
                   setError(t.signatureRequiredError);
                   addLog(logT.signatureRequired, 'system');
                   return;
@@ -224,7 +233,9 @@ function GovernmentServicesApplicationFlow({
                 scheduleTimeout(() => {
                   setIsProcessingAction(false);
                   advanceStep([
-                    formatText(logT.formDigitallySigned, { signature: govSignature.toUpperCase() }),
+                    formatText(logT.formDigitallySigned, {
+                      signature: getGovernmentSignatureSeal(govSignature),
+                    }),
                   ]);
                 }, 1500);
               }}
@@ -358,20 +369,23 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
   }, []);
 
   // General simulation states
-  const [currentStepIdx, setCurrentStepIdx] = useState<number>(0);
-  const [completedSteps, setCompletedSteps] = useState<boolean[]>(new Array(scenario.steps.length).fill(false));
+  const [progress, setProgress] = useState(createGovernmentServicesProgress);
   const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
+  const {
+    completedSteps,
+    currentStepIndex: currentStepIdx,
+    resetKey,
+    status,
+  } = progress;
+  const isSuccess = status === 'complete';
 
   // Initialize terminal logs
   useEffect(() => {
     clearTimeouts();
     const title = scenario.title;
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetGovernmentServicesProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -404,10 +418,9 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
   };
 
   const advanceStep = (stepLogs: string[]) => {
-    // Mark current step done
-    const updatedCompleted = [...completedSteps];
-    updatedCompleted[currentStepIdx] = true;
-    setCompletedSteps(updatedCompleted);
+    const transition = advanceGovernmentServicesProgress(progress);
+    if (!transition) return;
+    setProgress(transition.progress);
 
     // Push logs
     for (let i = 0; i < stepLogs.length; i++) {
@@ -417,13 +430,11 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
     const currentStep = scenario.steps[currentStepIdx];
     addLog(formatText(t.logs.completedLayer, { label: currentStep.label }), 'ok');
 
-    const nextIdx = currentStepIdx + 1;
-    if (nextIdx < scenario.steps.length) {
-      setCurrentStepIdx(nextIdx);
+    const nextIdx = transition.progress.currentStepIndex;
+    if (transition.nextStageId !== null) {
       addLog(formatText(t.logs.nextTask, { action: scenario.steps[nextIdx].action }), 'system');
     } else {
       // Finished all steps
-      setIsSuccess(true);
       setIsSummaryModalOpen(true);
       addLog(t.logs.allPassed, 'ok');
       addLog(t.logs.sealed, 'system');
@@ -434,9 +445,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
   // Reset helper
   const handleReset = () => {
     clearTimeouts();
-    setCurrentStepIdx(0);
-    setCompletedSteps(new Array(scenario.steps.length).fill(false));
-    setIsSuccess(false);
+    setProgress(resetGovernmentServicesProgress);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
     setSimulationLogs([
@@ -527,6 +536,7 @@ export default function GovernmentServicesDemoPage({ onBackToList }: GovernmentS
                   addLog={addLog}
                   isSuccess={isSuccess}
                   playTingTingSound={playTingTingSound}
+                  resetKey={resetKey}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>

@@ -149,7 +149,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
             {t('relayTitle')}
           </h2>
 
-          <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-md mx-auto lg:mx-0">
+          <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-md mx-auto lg:mx-0 lg:text-justify">
             {t('relayDesc')}
           </p>
 

@@ -212,7 +212,7 @@ export default function RelayTransactions() {
             {t('txTitle')}
           </h2>
 
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0">
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0 lg:text-justify">
             {t('txDesc')}
           </p>
 

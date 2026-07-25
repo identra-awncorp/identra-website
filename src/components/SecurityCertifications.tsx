@@ -37,7 +37,7 @@ export default function SecurityCertifications({ onOpenSandbox }: SecurityCertif
             {copy.securityTitle}
           </h2>
 
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+          <p className="text-slate-600 text-sm md:text-base leading-relaxed lg:text-justify">
             {copy.securityDesc}
           </p>
 

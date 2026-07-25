@@ -92,6 +92,20 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
               {translate('tryDemo')}
             </button>
 
+            <button
+              type="button"
+              onClick={() => {
+                if (onViewChange) {
+                  onViewChange('docs');
+                  return;
+                }
+                showUnavailableNotice();
+              }}
+              className="w-full sm:w-auto border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 font-semibold text-sm px-6 py-3.5 rounded-full transition inline-flex items-center justify-center gap-2"
+            >
+              {translate('tryItNow')}
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </button>
           </div>
         </div>
 

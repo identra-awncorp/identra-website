@@ -10,7 +10,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'SSI runtimes',
         blocks: [
           { type: 'p', text: 'Role-based SSI guide. Walk through the three roles, understand data boundaries, and compare examples across web, server, and mobile SDK runtimes.' },
-          { type: 'p', text: 'Self-sovereign identity becomes easier to understand when each responsibility has a clear owner. An Issuer creates a Verifiable Credential (VC), the Holder keeps it in a mobile secure vault, and a Verifier requests and verifies a Verifiable Presentation (VP).' },
+          { type: 'p', text: 'Self-sovereign identity becomes easier to understand when each responsibility has a clear owner. An Issuer creates a Verifiable Credential, the Holder keeps it in a mobile secure vault, and a Verifier requests and verifies a Verifiable Presentation (VP).' },
           { type: 'callout', text: '[Issuer validates and signs VC] -> [Holder stores VC on mobile] -> [Holder consents and creates VP] -> [Verifier validates VP]' },
           { type: 'cards', cards: [
             { title: 'Issuer', text: 'Validates source data, signs the credential, and sends a credential offer through DIDComm.' },
@@ -108,7 +108,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'Entornos SSI',
         blocks: [
           { type: 'p', text: 'Guía SSI basada en roles. Recorre los tres roles, entiende los límites de datos y compara ejemplos entre SDK web, servidor y móvil.' },
-          { type: 'p', text: 'La identidad autosoberana se entiende mejor cuando cada responsabilidad tiene un propietario claro. El Emisor crea una Credencial Verificable (VC), el Titular la conserva en una bóveda segura del móvil y el Verificador solicita y valida una Presentación Verificable (VP).' },
+          { type: 'p', text: 'La identidad autosoberana se entiende mejor cuando cada responsabilidad tiene un propietario claro. El Emisor crea una Credencial Verificable, el Titular la conserva en una bóveda segura del móvil y el Verificador solicita y valida una Presentación Verificable (VP).' },
           { type: 'callout', text: '[Emisor valida y firma la VC] -> [Titular guarda la VC en el móvil] -> [Titular acepta y crea la VP] -> [Verificador valida la VP]' },
           { type: 'cards', cards: [
             { title: 'Emisor', text: 'Valida datos de origen, firma la credencial y envía una oferta mediante DIDComm.' },
@@ -304,7 +304,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'SSI-Laufzeiten',
         blocks: [
           { type: 'p', text: 'Rollenbasierter SSI-Leitfaden. Gehen Sie die drei Rollen durch, verstehen Sie Datengrenzen und vergleichen Sie Beispiele für Web-, Server- und Mobile-SDKs.' },
-          { type: 'p', text: 'Selbstbestimmte Identität wird verständlich, wenn jede Verantwortung klar zugeordnet ist. Der Aussteller erstellt einen überprüfbaren Nachweis (VC), der Inhaber bewahrt ihn im sicheren mobilen Tresor auf und der Prüfer fordert eine überprüfbare Präsentation (VP) an und prüft sie.' },
+          { type: 'p', text: 'Selbstbestimmte Identität wird verständlich, wenn jede Verantwortung klar zugeordnet ist. Der Aussteller erstellt einen überprüfbaren Nachweis, der Inhaber bewahrt ihn im sicheren mobilen Tresor auf und der Prüfer fordert eine überprüfbare Präsentation (VP) an und prüft sie.' },
           { type: 'callout', text: '[Aussteller prüft und signiert VC] -> [Inhaber speichert VC mobil] -> [Inhaber stimmt zu und erstellt VP] -> [Prüfer prüft VP]' },
           { type: 'cards', cards: [
             { title: 'Aussteller', text: 'Prüft Quelldaten, signiert den Nachweis und sendet ein Angebot über DIDComm.' },
@@ -402,7 +402,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'Môi trường SSI',
         blocks: [
           { type: 'p', text: 'Hướng dẫn SSI theo vai trò. Đi từng bước qua ba vai trò, xem ranh giới dữ liệu và so sánh ví dụ giữa các SDK web, server và mobile.' },
-          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo thực chứng (VC), bên nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn bên xác minh yêu cầu và kiểm tra bản trình xuất (VP).' },
+          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo thực chứng, bên nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn bên xác minh yêu cầu và kiểm tra bản trình xuất (VP).' },
           { type: 'callout', text: '[Bên phát hành kiểm tra và ký VC] -> [Bên nắm giữ lưu VC trên thiết bị di động] -> [Người dùng đồng ý và tạo VP] -> [Bên xác minh kiểm tra VP]' },
           { type: 'cards', cards: [
             { title: 'Bên phát hành', text: 'Kiểm tra dữ liệu nguồn, ký thực chứng và gửi đề nghị nhận VC qua DIDComm.' },

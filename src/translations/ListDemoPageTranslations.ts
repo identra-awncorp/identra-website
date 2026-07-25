@@ -588,7 +588,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Relay',
         title: 'Chuyển nhượng vé đã xác thực',
         desc: 'Xác minh chủ sở hữu hiện tại, khóa tiền trong ký quỹ và chuyển vé an toàn cho người mua.',
-        security: 'Relay và ký quỹ thông minh',
+        security: 'Tiết lộ có chọn lọc và hợp đồng thông minh',
         successResult: 'Vé và tiền ký quỹ được chuyển giao trong cùng một giao dịch: người mua nhận vé đã xác thực, còn tiền chỉ được giải ngân khi hoàn tất.',
         steps: [
           { label: 'Xác minh quyền sở hữu', action: 'Kiểm tra chủ vé', logText: 'Mã giao dịch mua ban đầu và chữ ký của đơn vị phát hành xác nhận người bán là chủ sở hữu hợp lệ.' },

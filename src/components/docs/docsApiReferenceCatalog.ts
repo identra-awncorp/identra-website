@@ -184,7 +184,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
   vi: {
     title: 'Toàn bộ vòng đời mật mã của một thực chứng',
     overviewTitle: 'Tổng quan vòng đời',
-    overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, cấp phát và lưu thực chứng (VC), tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
+    overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, cấp phát và lưu thực chứng, tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
     contractNotice: 'Giao diện SDK trong tài liệu này chỉ mang tính minh họa. Tên gói, API và điểm cuối mô tả giao diện dự kiến cùng các ranh giới bảo mật bắt buộc.',
     registryNotice: 'CertNet là sổ đăng ký mặc định trong môi trường thử nghiệm. Cùng một lớp sổ đăng ký DID cũng có thể công bố và phân giải tài liệu qua did:web, ION hoặc sổ đăng ký nội bộ.',
     phaseCardsIntro: 'Vòng đời được chia thành ba giai đoạn để mỗi bước API có chủ thể, đầu vào, đầu ra và ràng buộc bảo mật rõ ràng.',
@@ -194,7 +194,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     stageCount: 'Bước API được mô tả chi tiết',
     phaseIntro: {
       identity: 'Tạo định danh công khai và vật liệu khóa mà mỗi chủ thể cần trước khi phát hành hoặc xác minh thực chứng.',
-      issuance: 'Thiết lập quan hệ giữa bên nắm giữ và bên phát hành, gửi thực chứng (VC) đã ký qua DIDComm và chỉ lưu trong kho bảo mật trên thiết bị di động.',
+      issuance: 'Thiết lập quan hệ giữa bên nắm giữ và bên phát hành, gửi thực chứng đã ký qua DIDComm và chỉ lưu trong kho bảo mật trên thiết bị di động.',
       verification: 'Tạo phiên cho bên xác minh, yêu cầu VP, xác minh từng DID và bằng chứng rồi gửi biên nhận bảo toàn quyền riêng tư.'
     }
   }
@@ -284,7 +284,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El registro nunca recibe la clave privada. verificationMethod debe apuntar al keyId usado para firmar VCs.',
       ja: 'registryは秘密鍵を受け取りません。verificationMethodはVC署名に使うkeyIdを参照する必要があります。',
       de: 'Das Register erhält niemals den privaten Schlüssel. verificationMethod muss auf die keyId verweisen, die VCs signiert.',
-      vi: 'Sổ đăng ký không nhận khóa bí mật. verificationMethod phải trỏ đúng keyId dùng để ký thực chứng (VC).'
+      vi: 'Sổ đăng ký không nhận khóa bí mật. verificationMethod phải trỏ đúng keyId dùng để ký thực chứng.'
     },
     codeKey: 'issuerDid',
     variants: allIssuerVerifierVariants
@@ -306,7 +306,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'La app crea claves DID, un DID Document y una bóveda VC. Las claves DID y de bóveda se protegen con claves de dispositivo no exportables.',
       ja: 'アプリはDID鍵、DID Document、VC vaultを作成します。DID鍵とvault鍵はexport不可のデバイス保護鍵で包まれます。',
       de: 'Die App erstellt DID-Schlüssel, ein DID Document und einen VC-Tresor. DID- und Tresorschlüssel werden durch nicht exportierbare Geräteschlüssel geschützt.',
-      vi: 'Ứng dụng tạo khóa DID, tài liệu DID và kho thực chứng (VC). Khóa DID và khóa kho được bọc bằng khóa bảo vệ không thể xuất khỏi thiết bị.'
+      vi: 'Ứng dụng tạo khóa DID, tài liệu DID và kho thực chứng. Khóa DID và khóa kho được bọc bằng khóa bảo vệ không thể xuất khỏi thiết bị.'
     },
     protocol: 'Mobile Secure Storage + DID Registry',
     inputs: [{
@@ -328,7 +328,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Las VCs no se exportan. En una migración, la wallet anterior debe borrar todas las claves y VCs antes de activar la nueva bóveda.',
       ja: 'VCはexportできません。移行時は新しいvaultの有効化前に、古いwalletがすべての鍵とVCを削除する必要があります。',
       de: 'VCs können nicht exportiert werden. Bei Migration muss die alte Wallet alle Schlüssel und VCs löschen, bevor der neue Tresor aktiv wird.',
-      vi: 'Không được xuất thực chứng (VC) khỏi ví. Khi đổi thiết bị, ví cũ phải xóa toàn bộ khóa và VC trước khi kho mới được kích hoạt.'
+      vi: 'Không được xuất thực chứng khỏi ví. Khi đổi thiết bị, ví cũ phải xóa toàn bộ khóa và VC trước khi kho mới được kích hoạt.'
     },
     codeKey: 'holderWallet',
     variants: mobileVariants
@@ -350,7 +350,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El emisor crea una invitación DIDComm Out-of-Band de un solo uso y la codifica como QR. El QR contiene datos de conexión, no una VC.',
       ja: '発行者は1回限りのDIDComm Out-of-Band invitationを作りQR化します。QRには接続設定だけが入り、VCは入りません。',
       de: 'Der Aussteller erstellt eine einmalige DIDComm-Out-of-Band-Einladung und codiert sie als QR. Der QR enthält Verbindungsdaten, keine VC.',
-      vi: 'Bên phát hành tạo lời mời DIDComm Out-of-Band dùng một lần và mã hóa thành QR. Mã QR chỉ chứa thông tin thiết lập kết nối, không chứa thực chứng (VC).'
+      vi: 'Bên phát hành tạo lời mời DIDComm Out-of-Band dùng một lần và mã hóa thành QR. Mã QR chỉ chứa thông tin thiết lập kết nối, không chứa thực chứng.'
     },
     protocol: 'DIDComm OOB 2.0',
     inputs: [{
@@ -438,7 +438,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El emisor crea una VC con issuer DID, subject DID y claims, la firma con la clave privada correspondiente y la envía por DIDComm.',
       ja: '発行者はissuer DID、subject DID、claimsを含むVCを作成し、対応する秘密鍵で署名してDIDCommで送信します。',
       de: 'Der Aussteller erstellt eine VC mit issuer DID, subject DID und Claims, signiert sie mit dem passenden privaten Schlüssel und sendet sie per DIDComm.',
-      vi: 'Bên phát hành tạo thực chứng (VC) chứa DID của bên phát hành, DID của chủ thể và các thuộc tính, ký bằng khóa bí mật tương ứng rồi gửi qua DIDComm.'
+      vi: 'Bên phát hành tạo thực chứng chứa DID của bên phát hành, DID của chủ thể và các thuộc tính, ký bằng khóa bí mật tương ứng rồi gửi qua DIDComm.'
     },
     protocol: 'W3C VC + DIDComm Issue Credential',
     inputs: [{
@@ -475,14 +475,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El titular verifica y guarda la VC en la bóveda segura',
       ja: '保有者がVCを検証してsecure vaultへ保存',
       de: 'Inhaber prüft und speichert die VC im sicheren Tresor',
-      vi: 'Bên nắm giữ xác minh và lưu thực chứng (VC) vào kho bảo mật'
+      vi: 'Bên nắm giữ xác minh và lưu thực chứng vào kho bảo mật'
     },
     summary: {
       en: 'The wallet receives the VC, resolves the issuer DID, verifies signature and status, then encrypts the VC before local storage.',
       es: 'La wallet recibe la VC, resuelve el DID del emisor, verifica firma y estado, y cifra la VC antes de guardarla localmente.',
       ja: 'walletはVCを受信し、issuer DIDを解決し、署名と状態を検証してからVCを暗号化してローカル保存します。',
       de: 'Die Wallet empfängt die VC, löst die Issuer DID auf, prüft Signatur und Status und verschlüsselt die VC vor lokaler Speicherung.',
-      vi: 'Ví nhận thực chứng (VC), phân giải DID của bên phát hành, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu trên thiết bị.'
+      vi: 'Ví nhận thực chứng, phân giải DID của bên phát hành, xác minh chữ ký và trạng thái rồi mã hóa VC trước khi lưu trên thiết bị.'
     },
     protocol: 'DID Resolve + Encrypted Vault',
     inputs: [{
@@ -702,7 +702,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Tras autenticación biométrica, la wallet abre la bóveda, elige VCs compatibles, crea una VP vinculada al challenge, la firma y la envía por DIDComm.',
       ja: '生体認証後、walletはsecure vaultを開き、該当VCを選び、challengeに紐づくVPを作成、署名してDIDCommで送信します。',
       de: 'Nach biometrischer Authentifizierung öffnet die Wallet den Tresor, wählt passende VCs, erstellt eine Challenge-gebundene VP, signiert und sendet sie per DIDComm.',
-      vi: 'Sau khi xác thực sinh trắc học, ví mở kho bảo mật, chọn thực chứng (VC) phù hợp, tạo VP gắn với mã thử thách, ký và gửi qua DIDComm.'
+      vi: 'Sau khi xác thực sinh trắc học, ví mở kho bảo mật, chọn thực chứng phù hợp, tạo VP gắn với mã thử thách, ký và gửi qua DIDComm.'
     },
     protocol: 'W3C VP + DIDComm Present Proof',
     inputs: [{
@@ -724,7 +724,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El SDK descifra VCs solo en memoria transitoria, limpia datos sensibles tras crear la VP y nunca permite exportar VCs.',
       ja: 'SDKはVCを一時メモリでのみ復号し、VP作成後に機微データを消去し、VC exportを許可しません。',
       de: 'Das SDK entschlüsselt VCs nur im flüchtigen Speicher, löscht sensible Daten nach VP-Erstellung und erlaubt nie VC-Export.',
-      vi: 'SDK chỉ giải mã thực chứng (VC) trong bộ nhớ tạm, xóa dữ liệu nhạy cảm sau khi tạo VP và không cho phép xuất VC.'
+      vi: 'SDK chỉ giải mã thực chứng trong bộ nhớ tạm, xóa dữ liệu nhạy cảm sau khi tạo VP và không cho phép xuất VC.'
     },
     codeKey: 'createPresentation',
     variants: mobileVariants

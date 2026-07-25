@@ -482,7 +482,7 @@ const APPLY_JOB_IDENTRA_EVIDENCE_DETAILS: LocalizedText[] = [
     'Se comprobaron los DID de los emisores, las firmas, la vinculación del titular y el estado de las credenciales académicas y laborales compartidas.',
     '共有された学歴・職歴資格情報について、発行者DID、署名、所有者バインディング、資格情報の状態を確認しました。',
     'Für die freigegebenen Bildungs- und Beschäftigungsnachweise wurden Aussteller-DIDs, Signaturen, Inhaberbindung und Status geprüft.',
-    'DID của bên phát hành, chữ ký, sự ràng buộc với chủ thể và trạng thái của các thực chứng (VC) học vấn, kinh nghiệm đã được kiểm tra.',
+    'DID của bên phát hành, chữ ký, sự ràng buộc với chủ thể và trạng thái của các thực chứng học vấn, kinh nghiệm đã được kiểm tra.',
   ),
   lt(
     'Candidate consent and the permitted screening scope were recorded. The employer must still review the screening result under its hiring policy.',

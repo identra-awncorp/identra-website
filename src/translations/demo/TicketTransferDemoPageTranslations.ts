@@ -510,7 +510,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Relay",
       "title": "Chuyển vé đã xác minh",
       "desc": "Chứng minh quyền sở hữu ban đầu, khóa ký quỹ và chuyển thông tin xác thực vé một cách an toàn.",
-      "security": "Relay + ký quỹ thông minh",
+      "security": "Tiết lộ có chọn lọc và hợp đồng thông minh",
       "successResult": "Quyền sở hữu vé đã được chuyển đồng thời. Người mua nhận thông tin xác thực đã xác minh và ký quỹ được giải phóng.",
       "steps": [
         {

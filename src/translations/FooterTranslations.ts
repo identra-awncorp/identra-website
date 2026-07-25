@@ -587,8 +587,8 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     consumerHealthPrivacy: 'Quyền riêng tư sức khỏe người tiêu dùng',
     accessibilityStatement: 'Tuyên bố khả năng truy cập website Identra',
     gartnerRating: '4,7 trên Gartner Peer Insights™',
-    g2Reviews: 'Đọc đánh giá của chúng tôi trên G2 • Dẫn đầu tiêu chuẩn ngành được khuyến nghị năm 2026',
-    slogan: 'Nhân văn hóa danh tính trực tuyến',
+    g2Reviews: 'Đọc đánh giá của chúng tôi trên G2 • Công ty dẫn đầu ngành năm 2025',
+    slogan: 'Trao lại quyền tự chủ dữ liệu cho người dùng',
     pageUnavailableNotice: 'Trang này chưa khả dụng. Vui lòng quay lại sau.',
 
     copyright: '© 2026 Identra Identities, Inc. Bảo lưu mọi quyền.'

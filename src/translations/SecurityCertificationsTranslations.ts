@@ -78,11 +78,11 @@ export const securityCertificationsTranslations = {
   vi: {
     securityBadge: 'Quản trị & Niềm tin',
     securityTitle: 'Bảo mật và quyền riêng tư là giá trị cốt lõi',
-    securityDesc: 'Bảo mật và quyền riêng tư là nền tảng của một mối quan hệ đáng tin cậy. Identra tuân thủ và được chứng nhận theo các tiêu chuẩn cao nhất của ngành, bảo đảm lớp bảo vệ vững chắc trên mọi quy trình xử lý dữ liệu.',
+    securityDesc: 'Bảo mật và quyền riêng tư là nền tảng của một mối quan hệ đáng tin cậy. Identra tuân thủ và được chứng nhận theo các tiêu chuẩn cao nhất của ngành, bảo đảm lớp bảo vệ vững chắc cho mọi quy trình xử lý dữ liệu.',
     learnMore: 'Tìm hiểu thêm',
     badgeCertified: 'ĐÃ CHỨNG NHẬN',
     badgeAudited: 'ĐÃ KIỂM TOÁN',
-    dataEncryptionText: 'Toàn bộ dữ liệu khách hàng được mã hóa khi truyền bằng TLS 1.3 và khi lưu trữ bằng hệ thống AES-256 mạnh mẽ với khóa do khách hàng quản lý.',
+    dataEncryptionText: 'Toàn bộ dữ liệu khách hàng được mã hóa khi truyền tải bằng TLS 1.3 và khi lưu trữ bằng hệ thống AES-256 mạnh mẽ với khóa do khách hàng quản lý.',
     badges: [
       { label: 'CCPA', title: 'Tuân thủ CCPA', desc: 'Biện pháp bảo vệ được chứng nhận theo Đạo luật Quyền riêng tư của Người tiêu dùng California.' },
       { label: 'GDPR', title: 'Tuân thủ GDPR', desc: 'Quy trình nghiêm ngặt theo Quy định Bảo vệ Dữ liệu Chung của Liên minh Châu Âu.' },

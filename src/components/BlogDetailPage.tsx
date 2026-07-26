@@ -19,6 +19,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { copyTextToClipboard } from '../utils/clipboard';
 import { blogDetailPath, type BlogDetailId } from '../types/routes';
+import {
+  isSsiBlogArticleId,
+  SSI_BLOG_ARTICLE,
+} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
+import StructuredBlogDetailPage from './blog/StructuredBlogDetailPage';
 
 interface BlogDetailPageProps {
   blogId: BlogDetailId;
@@ -33,7 +38,10 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
   const t = getLocalizedRecord(BLOG_DETAIL_PAGE_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_PAGE_TRANSLATIONS, 'BLOG_DETAIL_PAGE_TRANSLATIONS');
   const dataT = getLocalizedRecord(BLOG_DETAIL_DATA_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_DATA_TRANSLATIONS, 'BLOG_DETAIL_DATA_TRANSLATIONS');
   const blogPageT = BLOG_PAGE_TRANSLATIONS[language];
-  const currentPost = blogPageT.posts[blogId];
+  const isStructuredArticle = isSsiBlogArticleId(blogId);
+  const currentPost = isStructuredArticle
+    ? blogPageT.posts['blog-1']
+    : blogPageT.posts[blogId];
 
   const [activeSection, setActiveSection] = useState('how-it-works');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -89,6 +97,16 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
     setCopyStatus(copied ? 'success' : 'error');
     setTimeout(() => setCopyStatus('idle'), 2000);
   };
+
+  if (isStructuredArticle) {
+    return (
+      <StructuredBlogDetailPage
+        article={SSI_BLOG_ARTICLE}
+        onBack={onBack}
+        onOpenSandbox={onOpenSandbox}
+      />
+    );
+  }
 
   return (
     <div className="bg-[#FAFBFD] min-h-screen text-slate-800 font-sans antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]">

@@ -14,6 +14,7 @@ import {
   DEFAULT_BLOG_DETAIL_ID,
   DEFAULT_LOCALE,
   demoScenarioPath,
+  getBlogDetailLocales,
   getViewLocales,
   SUPPORTED_LOCALES,
   type AppView,
@@ -22,6 +23,10 @@ import {
   type Locale,
   viewToPath,
 } from '../types/routes';
+import {
+  isSsiBlogArticleId,
+  SSI_BLOG_ARTICLE,
+} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -144,6 +149,10 @@ export default function SeoMetadata({
   const metadata = useMemo(() => {
     const siteUrl = normalizeSiteUrl(import.meta.env.VITE_SITE_URL);
     const localeMeta = LANGUAGE_META[language];
+    const currentBlogId = blogId ?? DEFAULT_BLOG_DETAIL_ID;
+    const structuredArticle = isSsiBlogArticleId(currentBlogId)
+      ? SSI_BLOG_ARTICLE
+      : null;
     const routeTitle = isNotFound
       ? seo.notFoundTitle
       : seo.routeTitles[currentView];
@@ -159,21 +168,34 @@ export default function SeoMetadata({
       : absoluteUrl(routePathForLocale(language), siteUrl);
     const alternateUrls = isNotFound
       ? []
-      : getViewLocales(currentView).map((locale) => ({
+      : (
+          currentView === 'blog-detail'
+            ? getBlogDetailLocales(currentBlogId)
+            : getViewLocales(currentView)
+        ).map((locale) => ({
           href: absoluteUrl(routePathForLocale(locale), siteUrl),
           hrefLang: HREFLANG_CODES[locale],
           locale,
         }));
-    const imageUrl = absoluteUrl(PUBLIC_SOCIAL_IMAGE_PATH, siteUrl);
+    const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
+    const imageUrl = absoluteUrl(imagePath, siteUrl);
     const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
     const blogPost = isBlogDetail
-      ? seo.blogPosts[blogId ?? DEFAULT_BLOG_DETAIL_ID]
+      ? structuredArticle
+        ? {
+            title: structuredArticle.content.vi.seoTitle,
+            description: structuredArticle.content.vi.seoDescription,
+          }
+        : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
       : null;
     const title = isNotFound
       ? formatSeoTitle(routeTitle, seo.siteName)
       : isBlogDetail && blogPost
-        ? formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
+        ? formatSeoTitle(
+            blogPost.title,
+            structuredArticle ? undefined : seo.blogTitleSuffix,
+          )
         : currentView === 'landing'
           ? formatSeoTitle(seo.defaultTitle)
           : formatSeoTitle(routeTitle, seo.siteName);
@@ -189,8 +211,14 @@ export default function SeoMetadata({
       alternateUrls,
       canonicalUrl,
       description,
-      headline: isNotFound ? routeTitle : blogPost?.title ?? routeTitle,
+      headline: isNotFound
+        ? routeTitle
+        : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
+      imageAlt: structuredArticle?.listing.vi.title ?? seo.imageAlt,
+      imageHeight: String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT),
+      imageType: structuredArticle?.socialImage.type ?? 'image/jpeg',
       imageUrl,
+      imageWidth: String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH),
       isBlogDetail,
       localeMeta,
       logoUrl,
@@ -200,6 +228,12 @@ export default function SeoMetadata({
       routeTitle,
       siteUrl,
       title,
+      author: structuredArticle?.author ?? {
+        type: 'Person',
+        name: 'Brandon Chen',
+      },
+      publishedAt: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
+      modifiedAt: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
     };
   }, [blogId, currentView, demoScenarioId, isNotFound, language, seo]);
 
@@ -231,16 +265,16 @@ export default function SeoMetadata({
     upsertMeta('property', 'og:url', pageUrl);
     upsertMeta('property', 'og:image', metadata.imageUrl);
     upsertMeta('property', 'og:image:secure_url', metadata.imageUrl);
-    upsertMeta('property', 'og:image:type', 'image/jpeg');
-    upsertMeta('property', 'og:image:width', SOCIAL_IMAGE_WIDTH);
-    upsertMeta('property', 'og:image:height', SOCIAL_IMAGE_HEIGHT);
-    upsertMeta('property', 'og:image:alt', seo.imageAlt);
+    upsertMeta('property', 'og:image:type', metadata.imageType);
+    upsertMeta('property', 'og:image:width', metadata.imageWidth);
+    upsertMeta('property', 'og:image:height', metadata.imageHeight);
+    upsertMeta('property', 'og:image:alt', metadata.imageAlt);
     upsertMeta('property', 'og:locale', metadata.localeMeta.ogLocale);
     upsertMeta('name', 'twitter:card', 'summary_large_image');
     upsertMeta('name', 'twitter:title', metadata.title);
     upsertMeta('name', 'twitter:description', metadata.description);
     upsertMeta('name', 'twitter:image', metadata.imageUrl);
-    upsertMeta('name', 'twitter:image:alt', seo.imageAlt);
+    upsertMeta('name', 'twitter:image:alt', metadata.imageAlt);
 
     let schemaElement = document.getElementById('identra-seo-schema');
 
@@ -285,11 +319,11 @@ export default function SeoMetadata({
       ...(metadata.isBlogDetail
         ? {
             author: {
-              '@type': 'Person',
-              name: 'Brandon Chen',
+              '@type': metadata.author.type,
+              name: metadata.author.name,
             },
-            datePublished: BLOG_PUBLISHED_DATE,
-            dateModified: BLOG_MODIFIED_DATE,
+            datePublished: metadata.publishedAt,
+            dateModified: metadata.modifiedAt,
           }
         : {}),
     };
@@ -298,7 +332,7 @@ export default function SeoMetadata({
       organizationSchema,
       pageSchema,
     ]);
-  }, [metadata, seo.imageAlt, seo.organizationDescription]);
+  }, [metadata, seo.organizationDescription]);
 
   return null;
 }

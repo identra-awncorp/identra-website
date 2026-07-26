@@ -15,9 +15,14 @@ import {
 import { BLOG_PAGE_TRANSLATIONS } from '../translations/BlogPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
 import type { BlogDetailId } from '../types/routes';
+import {
+  isSsiBlogArticleId,
+  SSI_BLOG_ARTICLE,
+} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
 
 // Interfaces
 type BlogPostId = BlogDetailId;
+type LegacyBlogPostId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.posts;
 type TopicId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.topicLabels;
 type IndustryId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.industryLabels;
 
@@ -25,8 +30,10 @@ interface BlogPost {
   id: BlogPostId;
   topics: TopicId[];
   industries: IndustryId[];
+  publishedAt: string;
   gradient: string;
   illustration: 'shield' | 'chart' | 'users' | 'fingerprint' | 'globe' | 'face' | 'link' | 'lock' | 'document' | 'alert';
+  coverImage?: typeof SSI_BLOG_ARTICLE.coverImage;
 }
 
 interface BlogPageProps {
@@ -35,7 +42,10 @@ interface BlogPageProps {
 }
 
 // Blog articles use the same visual card architecture as the Ebooks page.
-const BLOG_POSTS_DATA: BlogPost[] = [
+const LEGACY_BLOG_PUBLISHED_AT = '2026-06-26';
+const BLOG_GRID_IMAGE_SIZES = '(min-width: 1280px) 280px, (min-width: 768px) 40vw, calc(100vw - 3rem)';
+
+const LEGACY_BLOG_POSTS_DATA: Omit<BlogPost, 'publishedAt'>[] = [
   {
     id: 'blog-1',
     topics: ['identity', 'fraud'],
@@ -121,6 +131,22 @@ const BLOG_POSTS_DATA: BlogPost[] = [
     illustration: 'face'
   }
 ];
+
+const BLOG_POSTS_DATA: BlogPost[] = [
+  {
+    id: SSI_BLOG_ARTICLE.id,
+    topics: [...SSI_BLOG_ARTICLE.topics],
+    industries: [...SSI_BLOG_ARTICLE.industries],
+    publishedAt: SSI_BLOG_ARTICLE.publishedAt,
+    gradient: 'from-[#172554] to-[#312E81]',
+    illustration: 'fingerprint',
+    coverImage: SSI_BLOG_ARTICLE.coverImage,
+  },
+  ...LEGACY_BLOG_POSTS_DATA.map((post) => ({
+    ...post,
+    publishedAt: LEGACY_BLOG_PUBLISHED_AT,
+  })),
+];
 // Helper to render covers elegantly
 function CoverIllustration({ type }: { type: BlogPost['illustration'] }) {
   switch (type) {
@@ -154,7 +180,11 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
   const { language } = useLanguage();
 
   const t = BLOG_PAGE_TRANSLATIONS[language];
-  const postCopy = (post: BlogPost) => t.posts[post.id];
+  const postCopy = React.useCallback((post: BlogPost) => (
+    isSsiBlogArticleId(post.id)
+      ? SSI_BLOG_ARTICLE.listing[language]
+      : t.posts[post.id as LegacyBlogPostId]
+  ), [language, t]);
 
   const [selectedTopic, setSelectedTopic] = useState<TopicId>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');
@@ -236,9 +266,18 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     { id: 'travel',},
   ];
 
+  const sortedBlogPosts = useMemo(
+    () => [...BLOG_POSTS_DATA].sort(
+      (left, right) => right.publishedAt.localeCompare(left.publishedAt),
+    ),
+    [],
+  );
+  const featuredPost = sortedBlogPosts[0];
+  const featuredSidebarPosts = sortedBlogPosts.slice(1, 4);
+
   // Filtered blog posts
   const filteredBlogPosts = useMemo(() => {
-    return BLOG_POSTS_DATA.filter((post) => {
+    return sortedBlogPosts.filter((post) => {
       const matchesTopic = selectedTopic === 'all' || post.topics.includes(selectedTopic);
       const matchesIndustry = selectedIndustry === 'all' || post.industries.includes(selectedIndustry) || post.industries.includes('all');
       const copy = postCopy(post);
@@ -253,7 +292,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
       
       return matchesTopic && matchesIndustry && matchesSearch;
     });
-  }, [selectedTopic, selectedIndustry, searchQuery, t]);
+  }, [postCopy, searchQuery, selectedIndustry, selectedTopic, sortedBlogPosts]);
 
   const visibleTopics = showAllTopics ? topicsList : topicsList.slice(0, 6);
   const visibleIndustries = showAllIndustries ? industriesList : industriesList.slice(0, 6);
@@ -279,13 +318,27 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left featured large card: Gartner Quadrant */}
             <button type="button"
-              onClick={() => openBlogDetail(BLOG_POSTS_DATA[0])}
+              onClick={() => openBlogDetail(featuredPost)}
               className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden"
             >
               {/* Outer light glow */}
               <div className="absolute -inset-px bg-gradient-to-tr from-transparent via-[#354CE1]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
               
-              {/* Mini Quadrant Mockup (Left portion of large card) */}
+              {featuredPost.coverImage ? (
+                <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900 md:w-[280px] md:aspect-[4/3]">
+                  <img
+                    src={featuredPost.coverImage.src}
+                    srcSet={featuredPost.coverImage.srcSet}
+                    sizes={featuredPost.coverImage.sizes}
+                    width={featuredPost.coverImage.width}
+                    height={featuredPost.coverImage.height}
+                    alt={postCopy(featuredPost).title}
+                    decoding="async"
+                    fetchPriority="high"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+              ) : (
               <div className="w-full md:w-[260px] shrink-0 bg-gradient-to-b from-[#182559] to-[#0C1333] border border-[#2B3D8A] rounded-2xl p-4 flex flex-col justify-between aspect-[4/3] md:aspect-auto">
                 <div>
                   <div className="flex items-center justify-between mb-2 pb-2 border-b border-[#2B3D8A]/50">
@@ -329,17 +382,18 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   <span className="rotate-90 origin-bottom-right translate-y-[-10px] -translate-x-[4px]">{t.copy.operationalReadiness}</span>
                 </div>
               </div>
+              )}
 
               {/* Text content of large card */}
               <div className="flex flex-col justify-between flex-1 py-1">
                 <div>
                   <div className="flex items-center gap-1.5 mb-3">
-                    <span className="text-[10px] bg-[#1E2E72] text-[#4F6CFF] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">{t.copy.blog}</span>
+                    <span className="text-[10px] bg-[#1E2E72] text-indigo-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">{postCopy(featuredPost).type}</span>
                     <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-500" />
-                    <span className="text-[10px] text-slate-400">{t.copy.text8MinRead}</span>
+                    <span className="text-[10px] text-slate-400">{postCopy(featuredPost).duration}</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold font-sans tracking-tight text-white mb-3 group-hover:text-[#4F6CFF] transition leading-snug">{t.copy.featuredTitle}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal mb-6">{t.copy.featuredDescription}</p>
+                  <h3 className="text-xl md:text-2xl font-bold font-sans tracking-tight text-white mb-3 group-hover:text-indigo-200 transition leading-snug line-clamp-3">{postCopy(featuredPost).title}</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed font-normal mb-6 line-clamp-3">{postCopy(featuredPost).description}</p>
                 </div>
                 
                 <div className="flex items-center gap-2 text-xs font-bold text-[#4F6CFF] group-hover:text-white transition mt-auto">
@@ -351,9 +405,9 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
 
             {/* Right featured sidebar: 3 small items */}
             <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-              {[BLOG_POSTS_DATA[1], BLOG_POSTS_DATA[2], BLOG_POSTS_DATA[3]].map((item, index) => (
+              {featuredSidebarPosts.map((item) => (
                 <button type="button"
-                  key={index}
+                  key={item.id}
                   onClick={() => openBlogDetail(item)}
                   className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200"
                 >
@@ -524,7 +578,21 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                       onClick={() => openBlogDetail(post)}
                       className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full"
                     >
-                      {/* Blog stylized vector cover */}
+                      {post.coverImage ? (
+                        <div className="relative h-40 shrink-0 overflow-hidden bg-slate-100">
+                          <img
+                            src={post.coverImage.src}
+                            srcSet={post.coverImage.srcSet}
+                            sizes={BLOG_GRID_IMAGE_SIZES}
+                            width={post.coverImage.width}
+                            height={post.coverImage.height}
+                            alt={postCopy(post).title}
+                            loading="lazy"
+                            decoding="async"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                          />
+                        </div>
+                      ) : (
                       <div className={`h-40 bg-gradient-to-tr ${post.gradient} p-4 flex flex-col justify-between relative overflow-hidden shrink-0`}>
                         {/* Background subtle stripes */}
                         <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent mix-blend-overlay" />
@@ -547,6 +615,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                           {postCopy(post).title}
                         </span>
                       </div>
+                      )}
 
                       {/* Blog details info */}
                       <div className="p-5 flex flex-col justify-between flex-1">

@@ -20,6 +20,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getBlogDetailLocales,
   getViewLocales,
   SUPPORTED_LOCALES,
   type AppView,
@@ -28,6 +29,10 @@ import {
   type Locale,
   viewToPath,
 } from '../src/types/routes';
+import {
+  isSsiBlogArticleId,
+  SSI_BLOG_ARTICLE,
+} from '../src/content/blog/dinh-danh-tu-chu-ssi-la-gi';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -81,6 +86,11 @@ const routePath = (route: LocalizedRoute, locale: Locale): string =>
       ? demoScenarioPath(route.demoScenarioId, locale)
       : viewToPath(route.view, locale);
 
+const localesForRoute = (route: LocalizedRoute): readonly Locale[] =>
+  route.view === 'blog-detail'
+    ? getBlogDetailLocales(route.blogId ?? DEFAULT_BLOG_DETAIL_ID)
+    : getViewLocales(route.view);
+
 const renderSeoFallback = (headline: string, description: string): string =>
   `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main></div>`;
 
@@ -111,11 +121,22 @@ const renderLocalizedHtml = (
   const routeTitle = seo.routeTitles[route.view];
   const routeGroup = SEO_ROUTE_GROUPS[route.view];
   const currentBlogId = route.blogId ?? DEFAULT_BLOG_DETAIL_ID;
+  const structuredArticle = isSsiBlogArticleId(currentBlogId)
+    ? SSI_BLOG_ARTICLE
+    : null;
   const blogPost = route.view === 'blog-detail'
-    ? seo.blogPosts[currentBlogId]
+    ? structuredArticle
+      ? {
+          title: structuredArticle.content.vi.seoTitle,
+          description: structuredArticle.content.vi.seoDescription,
+        }
+      : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
     : null;
   const title = blogPost
-    ? formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
+    ? formatSeoTitle(
+        blogPost.title,
+        structuredArticle ? undefined : seo.blogTitleSuffix,
+      )
     : route.view === 'landing'
       ? formatSeoTitle(seo.defaultTitle)
       : formatSeoTitle(routeTitle, seo.siteName);
@@ -125,9 +146,14 @@ const renderLocalizedHtml = (
       : seo.descriptionTemplates[routeGroup].replace(/\{page\}/g, routeTitle),
   );
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
-  const imageUrl = absoluteUrl(PUBLIC_SOCIAL_IMAGE_PATH, siteUrl);
+  const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
+  const imageUrl = absoluteUrl(imagePath, siteUrl);
+  const imageAlt = structuredArticle?.listing.vi.title ?? seo.imageAlt;
+  const imageType = structuredArticle?.socialImage.type ?? 'image/jpeg';
+  const imageWidth = String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH);
+  const imageHeight = String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT);
   const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
-  const routeLocales = getViewLocales(route.view);
+  const routeLocales = localesForRoute(route);
   const alternateLinks = routeLocales.map((alternateLocale) => {
     const href = absoluteUrl(routePath(route, alternateLocale), siteUrl);
     return `    <link rel="alternate" hreflang="${alternateLocale}" href="${escapeHtml(href)}" />`;
@@ -152,7 +178,7 @@ const renderLocalizedHtml = (
     '@context': 'https://schema.org',
     '@type': route.view === 'blog-detail' ? 'BlogPosting' : 'WebPage',
     name: title,
-    headline: blogPost?.title ?? routeTitle,
+    headline: structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
     description,
     url: canonicalUrl,
     image: imageUrl,
@@ -174,11 +200,11 @@ const renderLocalizedHtml = (
     ...(blogPost
       ? {
           author: {
-            '@type': 'Person',
-            name: 'Brandon Chen',
+            '@type': structuredArticle?.author.type ?? 'Person',
+            name: structuredArticle?.author.name ?? 'Brandon Chen',
           },
-          datePublished: BLOG_PUBLISHED_DATE,
-          dateModified: BLOG_MODIFIED_DATE,
+          datePublished: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
+          dateModified: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
         }
       : {}),
   };
@@ -221,14 +247,15 @@ const renderLocalizedHtml = (
   html = replaceMeta(html, 'property', 'og:url', canonicalUrl);
   html = replaceMeta(html, 'property', 'og:image', imageUrl);
   html = replaceMeta(html, 'property', 'og:image:secure_url', imageUrl);
-  html = replaceMeta(html, 'property', 'og:image:width', SOCIAL_IMAGE_WIDTH);
-  html = replaceMeta(html, 'property', 'og:image:height', SOCIAL_IMAGE_HEIGHT);
-  html = replaceMeta(html, 'property', 'og:image:alt', seo.imageAlt);
+  html = replaceMeta(html, 'property', 'og:image:type', imageType);
+  html = replaceMeta(html, 'property', 'og:image:width', imageWidth);
+  html = replaceMeta(html, 'property', 'og:image:height', imageHeight);
+  html = replaceMeta(html, 'property', 'og:image:alt', imageAlt);
   html = replaceMeta(html, 'property', 'og:locale', localeMeta.ogLocale);
   html = replaceMeta(html, 'name', 'twitter:title', title);
   html = replaceMeta(html, 'name', 'twitter:description', description);
   html = replaceMeta(html, 'name', 'twitter:image', imageUrl);
-  html = replaceMeta(html, 'name', 'twitter:image:alt', seo.imageAlt);
+  html = replaceMeta(html, 'name', 'twitter:image:alt', imageAlt);
 
   return html;
 };
@@ -305,7 +332,7 @@ const routes: LocalizedRoute[] = [
 ];
 
 for (const route of routes) {
-  for (const locale of getViewLocales(route.view)) {
+  for (const locale of localesForRoute(route)) {
     const outputPath = resolve(
       distDir,
       routePath(route, locale).replace(/^\/+/, ''),
@@ -346,7 +373,7 @@ rootHtml = replaceMeta(rootHtml, 'name', 'robots', 'noindex, nofollow');
 writeFileSync(resolve(distDir, 'index.html'), rootHtml, 'utf8');
 
 const localizedRouteCount = routes.reduce(
-  (count, route) => count + getViewLocales(route.view).length,
+  (count, route) => count + localesForRoute(route).length,
   0,
 );
 console.log(`Generated ${localizedRouteCount} localized HTML entry points and ${SUPPORTED_LOCALES.length} localized 404 pages`);

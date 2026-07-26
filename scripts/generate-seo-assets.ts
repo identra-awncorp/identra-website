@@ -14,6 +14,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getBlogDetailLocales,
   getViewLocales,
   stripLocaleFromPath,
   SUPPORTED_LOCALES,
@@ -53,7 +54,7 @@ const staticRoutes = APP_VIEWS
   }));
 const blogDetailRoutes = BLOG_DETAIL_IDS.map((id) => ({
   basePath: stripLocaleFromPath(blogDetailPath(id, DEFAULT_LOCALE)),
-  locales: SUPPORTED_LOCALES,
+  locales: getBlogDetailLocales(id),
   pathForLocale: (locale: Locale) => blogDetailPath(id, locale),
 }));
 const demoScenarioRoutes = DEMO_SCENARIO_IDS.map((id) => ({

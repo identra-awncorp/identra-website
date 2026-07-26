@@ -105,7 +105,7 @@ type SeoTranslation = {
   readonly notFoundDescription: string;
   readonly routeTitles: Record<AppView, string>;
   readonly descriptionTemplates: Record<SeoRouteGroup, string>;
-  readonly blogPosts: Record<BlogDetailId, BlogSeoCopy>;
+  readonly blogPosts: Partial<Record<BlogDetailId, BlogSeoCopy>>;
 };
 
 const en = {

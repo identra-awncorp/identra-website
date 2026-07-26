@@ -12,7 +12,7 @@
     "generate:localized-pages": "tsx scripts/generate-localized-pages.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --max-warnings 170",
-    "test": "node --import tsx --test tests/routes.test.ts tests/apply-job-demo-model.test.ts tests/bank-account-demo-model.test.ts tests/airlines-hotels-demo-model.test.ts tests/government-services-demo-model.test.ts tests/healthcare-demo-model.test.ts tests/ticket-booking-demo-model.test.ts tests/ticket-transfer-demo-model.test.ts",
+    "test": "node --import tsx --test tests/routes.test.ts tests/ssi-blog-article.test.ts tests/apply-job-demo-model.test.ts tests/bank-account-demo-model.test.ts tests/airlines-hotels-demo-model.test.ts tests/government-services-demo-model.test.ts tests/healthcare-demo-model.test.ts tests/ticket-booking-demo-model.test.ts tests/ticket-transfer-demo-model.test.ts",
     "check": "npm run typecheck && npm run lint && npm test && npm run scan:all",
     "scan:all": "npm run scan:assets && npm run scan:interactions && npm run scan:duplicate-ctas && npm run scan:localization && npm run scan:i18n-architecture && npm run scan:component-translation-data && npm run scan:routing-types && npm run scan:translation-encoding && npm run scan:translation-inheritance",
     "scan:assets": "node scripts/asset-path-scanner.mjs",
@@ -34,7 +34,9 @@
     "prismjs": "^1.30.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.18.1",
+    "remark-gfm": "^4.0.1",
     "vite": "^6.2.3"
   },
   "devDependencies": {

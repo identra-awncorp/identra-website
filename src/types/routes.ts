@@ -100,11 +100,24 @@ export const BLOG_DETAIL_IDS = [
   'blog-10',
   'blog-11',
   'blog-12',
+  'dinh-danh-tu-chu-ssi-la-gi',
 ] as const;
 
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
 
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'blog-1';
+
+const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale[]>> = {
+  'dinh-danh-tu-chu-ssi-la-gi': ['vi'],
+};
+
+export const getBlogDetailLocales = (id: BlogDetailId): readonly Locale[] =>
+  BLOG_DETAIL_LOCALE_OVERRIDES[id] ?? SUPPORTED_LOCALES;
+
+export const resolveBlogDetailLocale = (id: BlogDetailId, locale: Locale): Locale => {
+  const supportedLocales = getBlogDetailLocales(id);
+  return supportedLocales.includes(locale) ? locale : supportedLocales[0] ?? DEFAULT_LOCALE;
+};
 
 export const DEMO_SCENARIO_IDS = [
   'bank-account',
@@ -191,7 +204,7 @@ export const pathToBlogDetailId = (pathname: string): BlogDetailId | null => {
 };
 
 export const blogDetailPath = (id: BlogDetailId, locale: Locale) =>
-  `/${locale}/blog-detail/${encodeURIComponent(id)}`;
+  `/${resolveBlogDetailLocale(id, locale)}/blog-detail/${encodeURIComponent(id)}`;
 
 export const pathToDemoScenarioId = (pathname: string): DemoScenarioId | null => {
   const cleanPath = stripLocaleFromPath(pathname).replace(/^\/+/, '').replace(/\/+$/, '');

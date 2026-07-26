@@ -30,6 +30,7 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
     'dinh-danh-tu-chu-ssi-la-gi',
     'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
     'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+    'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
   ] as const;
 
   for (const articleId of articleIds) {

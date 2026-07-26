@@ -23,7 +23,7 @@ test('lifelong learning article exposes localized listing metadata and Vietnames
     getStructuredBlogArticle(LIFELONG_LEARNING_BLOG_ARTICLE_ID),
     LIFELONG_LEARNING_BLOG_ARTICLE,
   );
-  assert.equal(STRUCTURED_BLOG_ARTICLES[0], LIFELONG_LEARNING_BLOG_ARTICLE);
+  assert.equal(STRUCTURED_BLOG_ARTICLES.includes(LIFELONG_LEARNING_BLOG_ARTICLE), true);
 });
 
 test('lifelong learning article excludes source heading and references four optimized images', () => {

@@ -123,7 +123,7 @@ export default function StructuredBlogDetailPage({
     h2: ({ children }: { children?: React.ReactNode }) => (
       <h2
         id={headingId(children)}
-        className="type-document-heading scroll-mt-24 border-b border-slate-100 pb-3 pt-4 text-slate-900"
+        className="type-document-heading scroll-mt-24 border-b border-slate-100 pb-2 pt-2 text-slate-900"
       >
         {children}
       </h2>
@@ -131,7 +131,7 @@ export default function StructuredBlogDetailPage({
     h3: ({ children }: { children?: React.ReactNode }) => (
       <h3
         id={headingId(children)}
-        className="type-card-title scroll-mt-24 pt-4 text-slate-950"
+        className="type-card-title scroll-mt-24 pt-2 text-slate-950"
       >
         {children}
       </h3>
@@ -344,7 +344,7 @@ export default function StructuredBlogDetailPage({
 
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-          <article className="space-y-6 text-base font-normal leading-relaxed text-slate-700 lg:col-span-8 [&>p:first-child]:text-lg [&>p:first-child]:leading-relaxed [&>p:first-child]:text-slate-800">
+          <article className="space-y-4 text-base font-normal leading-relaxed text-slate-700 lg:col-span-8 [&>p:first-child]:text-lg [&>p:first-child]:leading-relaxed [&>p:first-child]:text-slate-800">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {content.markdown}
             </ReactMarkdown>

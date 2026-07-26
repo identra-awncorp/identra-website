@@ -199,17 +199,17 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Column: Article Body */}
-          <div className="type-body lg:col-span-8 space-y-10 text-slate-700">
+          <div className="type-body lg:col-span-8 space-y-8 text-slate-700">
             
             {/* Intro Paragraphs */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               <p className="type-lead text-slate-800">{t.copy.youveBuiltRigorousIdentityVerificationFlowsYoureRunning}</p>
               <p>{t.copy.sentinelExtendsPassiveSignalCollectionToAnyMoment}</p>
             </div>
 
             {/* Section 1: How Sentinel works */}
-            <div ref={secHowItWorks} id="how-sentinel-works" className="pt-4 scroll-mt-24 space-y-6">
-              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-3">{t.copy.howSentinelWorks}</h2>
+            <div ref={secHowItWorks} id="how-sentinel-works" className="pt-2 scroll-mt-24 space-y-4">
+              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.howSentinelWorks}</h2>
               <p>{t.copy.sentinelIsALightweightToolkitThatYouCan}</p>
               
               {/* Bullet list of collected signals */}
@@ -325,8 +325,8 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
             </div>
 
             {/* Section 2: Sentinel builds on Identra's comprehensive identity platform */}
-            <div ref={secComprehensive} id="sentinel-comprehensive" className="pt-4 scroll-mt-24 space-y-6">
-              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-3">{t.copy.sentinelBuildsOnIdentrasComprehensiveIdentityPlatform}</h2>
+            <div ref={secComprehensive} id="sentinel-comprehensive" className="pt-2 scroll-mt-24 space-y-4">
+              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.sentinelBuildsOnIdentrasComprehensiveIdentityPlatform}</h2>
               <p>{t.copy.oneOfIdentrasEarliestInnovationsWasTheCreation}</p>
               <p>{t.copy.asIdentrasPlatformExpandedWeCreatedNewBuilding}</p>
               <p>{t.copy.butExperiencedFraudstersKnowThatManyFraudDetection}</p>
@@ -335,8 +335,8 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
             </div>
 
             {/* Section 3: 5 ways Sentinel helps fraud fighters */}
-            <div ref={secFiveWays} id="five-ways-sentinel" className="pt-4 scroll-mt-24 space-y-6">
-              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-3">{t.copy.text5WaysSentinelHelpsFraudFightersMakeMore}</h2>
+            <div ref={secFiveWays} id="five-ways-sentinel" className="pt-2 scroll-mt-24 space-y-4">
+              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.text5WaysSentinelHelpsFraudFightersMakeMore}</h2>
               <p>{t.copy.whenAHighRiskSignalSurfacesOutsideOf}</p>
               <p>{t.copy.someOfTheCommonUseCasesForSentinel}</p>
 
@@ -361,8 +361,8 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
             </div>
 
             {/* Section 4: Sentinel is now available for all Identra customers */}
-            <div ref={secAvailable} id="sentinel-available" className="pt-4 scroll-mt-24 space-y-6">
-              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-3">{t.copy.sentinelIsNowAvailableForAllIdentraCustomers}</h2>
+            <div ref={secAvailable} id="sentinel-available" className="pt-2 scroll-mt-24 space-y-4">
+              <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.sentinelIsNowAvailableForAllIdentraCustomers}</h2>
               <p>{t.copy.weWorkedWithSeveralCustomersWhoFrequentlyExperience}</p>
               <p>{t.copy.buildComprehensiveRiskProfilesByCapturingSignalsAt}</p>
               <p className="font-medium text-slate-900">{t.copy.learnMoreAboutPassiveSignalsFromIdentraOr}</p>

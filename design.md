@@ -54,12 +54,69 @@ To maintain brand cohesion, only use the following verified hex codes and Tailwi
 
 ---
 
-## 3. Typography Hierarchy
+## 3. Typography And Content Rhythm
 
-Establish visual rhythm through purposeful typography pairings:
-- **Main Titles & Headings**: Use display-oriented sans-serif classes (`font-display font-semibold text-[#0F1E36] tracking-tight`) to project authority and precision.
-- **Body & Explanatory Text**: Use highly legible sans-serif classes (`font-sans text-slate-600 leading-relaxed`).
-- **Telemetry & Technical Metrics**: Always use monospace font families (`font-mono text-xs text-slate-400`).
+Typography is role-based. Components must use the semantic classes defined in
+`src/styles/typography.css` instead of assembling a new font size, weight, line
+height, and letter spacing for each page.
+
+### Font families
+
+- **Display and prominent metrics**: `Space Grotesk`.
+- **Body copy, labels, and controls**: `Plus Jakarta Sans`.
+- **Code, identifiers, and technical telemetry**: `JetBrains Mono`.
+- **Editorial exceptions**: system serif is allowed only through
+  `type-wordmark` for customer wordmarks, quotations, or simulated official
+  documents. It is not a fourth interface font.
+
+### Semantic text roles
+
+| Role | Responsive size | Weight | Line height | Intended use |
+| --- | --- | --- | --- | --- |
+| `type-display` | 40 / 48 / 60 / 72px | 700 | 1.08 | Primary landing-page hero |
+| `type-page-title` | 36 / 48 / 60px | 700 | 1.1 | Standard subpage title |
+| `type-document-title` | 30 / 36 / 46px | 700 | 1.18 | White paper or document hero |
+| `type-document-heading` | 20 / 22 / 24px | 700 | 1.35 | Section heading inside a document |
+| `type-section-title` | 30 / 36 / 48px | 700 | 1.2 | Prominent marketing section |
+| `type-section-title-compact` | 24 / 30 / 36px | 700 | 1.25 | Dense or editorial section |
+| `type-card-title` | 16 / 18 / 20px | 600 | 1.35 | Card and feature title |
+| `type-lead` | 16 / 18 / 20px | 400 | 1.625 | Hero or section introduction |
+| `type-body` | 14 / 16px | 400 | 1.625 | Standard explanatory copy |
+| `type-body-sm` | 12 / 14px | 400 | 1.625 | Compact cards and secondary copy |
+| `type-label` | 11 / 12px | 700 | 1.5 | Eyebrows and compact labels |
+| `type-control` | 12 / 14px | 600 | 1.4 | Buttons, tabs, and form controls |
+| `type-caption` | 10 / 12px | 400 | 1.5 | Captions and tertiary metadata |
+| `type-technical` | 10 / 12px | 500 | 1.5 | Technical data and identifiers |
+| `type-metric` | 24 / 30px | 700 | 1.2 | Prices and highlighted metrics |
+
+Text in the interface must not be smaller than 10px, and interactive text must
+not be smaller than 12px. Semantic roles always use zero letter spacing.
+Uppercase labels do not add tracking.
+
+### Measures and alignment
+
+- Use `measure-display` for hero headings, `measure-lead` for introductions, and
+  `measure-prose` for long-form reading content.
+- Body copy is left-aligned by default. Cards, forms, tables, controls, and
+  mobile content are never justified.
+- Use `align-longform` only for long-form copy with sufficient line width. It
+  becomes justified at the tablet breakpoint and stays left-aligned below it.
+- Center alignment is reserved for symmetrical hero, CTA, empty, and status
+  compositions. It is not inherited by article cards or operational UI.
+
+### Vertical rhythm
+
+| Role | Mobile | Tablet and desktop |
+| --- | --- | --- |
+| `section-space-wide` | 80px | 112px |
+| `section-space-standard` | 64px | 80px |
+| `section-space-compact` | 40px | 64px |
+| `section-space-document` | 32px | 32px |
+
+Use `stack-hero` for 24px hero rhythm, `stack-heading` and `stack-prose` for
+16px heading or paragraph rhythm, `stack-card` for 12px card rhythm, and
+`stack-compact` for 8px dense-interface rhythm. Layout-specific grid and flex
+gaps may remain local when they do not represent content rhythm.
 
 ---
 

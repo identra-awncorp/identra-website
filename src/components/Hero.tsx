@@ -80,7 +80,7 @@ const BACK_PARTNER_LOGOS = [
 function PartnerLogo({ name }: { name: string }) {
   return (
     <div className="flex h-20 w-full items-center justify-center px-1 text-slate-400 transition-colors hover:text-slate-600">
-      <span className="block whitespace-nowrap text-center font-sans text-base font-extrabold leading-none text-current sm:text-lg lg:text-xl">
+      <span className="block whitespace-nowrap text-center font-sans text-base font-bold leading-none text-current sm:text-lg lg:text-xl">
         {name}
       </span>
     </div>
@@ -192,10 +192,10 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
       <TechGridBg />
       
       {/* Container holding centered Hero info */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center space-y-6 md:space-y-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center stack-hero">
         
         {/* Title */}
-        <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight text-[#0F1E36] leading-[1.08] max-w-5xl lg:max-w-none mx-auto">
+        <h1 className="type-display measure-display hero-title-measure text-[#0F1E36] mx-auto">
           {t.keeping ? `${t.keeping} ` : ''}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#354CE1] via-[#5F3CF3] to-[#00D4B2]">
             {t.internetHuman}
@@ -204,7 +204,7 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
         </h1>
 
         {/* Description */}
-        <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto font-sans">
+        <p className="type-lead measure-lead text-slate-600 mx-auto">
           {t.heroDesc}
         </p>
 
@@ -212,7 +212,7 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
         <div className="flex flex-row items-center justify-center gap-6 pt-2">
           <button
             onClick={onOpenSandbox}
-            className="bg-[#04081E] hover:bg-slate-900 text-white font-semibold text-xs px-6 py-3.5 rounded-full flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-indigo-100/50 cursor-pointer"
+            className="type-control bg-[#04081E] hover:bg-slate-900 text-white px-6 py-3.5 rounded-full flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-indigo-100/50 cursor-pointer"
           >
             {t.tryDemo}
             <ArrowRight className="w-3.5 h-3.5" />
@@ -220,7 +220,7 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
           <button
             type="button"
             onClick={() => onViewChange?.('white-paper')}
-            className="text-[#04081E]/70 hover:text-[#04081E] font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+            className="type-control text-[#04081E]/70 hover:text-[#04081E] flex items-center justify-center gap-1.5 transition cursor-pointer"
           >
             {t.seeWhitePaper}
             <ArrowRight className="w-3 h-3 text-slate-400" />
@@ -294,7 +294,7 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
         </div>
 
         {/* Subtle certifications footer */}
-        <div className="flex items-center justify-center gap-8 text-[11px] text-slate-400 font-mono pt-4">
+        <div className="type-technical flex items-center justify-center gap-8 text-slate-400 pt-4">
           <span className="flex items-center gap-1.5">
             <CheckCircle className="w-4 h-4 text-emerald-500" />
             {t.soc2}

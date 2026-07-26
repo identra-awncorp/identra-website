@@ -195,24 +195,24 @@ export default function RelayTransactions() {
   };
 
   return (
-    <section id="relay-transactions" className="bg-[#FAFBFD] border-b border-slate-200 text-slate-800 py-20 md:py-28 overflow-hidden relative">
+    <section id="relay-transactions" className="section-space-wide bg-[#FAFBFD] border-b border-slate-200 text-slate-800 overflow-hidden relative">
       {/* Soft elegant background graphics */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#354CE1]/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Side: Editorial explanation of smart contract credential trades */}
-        <div className="lg:col-span-5 space-y-6 md:space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center gap-1.5 bg-[#354CE1]/10 border border-[#354CE1]/20 text-[#354CE1] font-semibold text-xs uppercase tracking-wider px-3.5 py-1 rounded-full">
+        <div className="lg:col-span-5 stack-hero text-center lg:text-left">
+          <div className="type-label inline-flex items-center gap-1.5 bg-[#354CE1]/10 border border-[#354CE1]/20 text-[#354CE1] uppercase px-3.5 py-1 rounded-full">
             <Sparkles className="w-3.5 h-3.5 text-[#354CE1]" />
             {t('txBadge')}
           </div>
 
-          <h2 className="font-display font-bold text-3xl sm:text-4xl tracking-tight leading-tight text-slate-900 max-w-xl mx-auto lg:mx-0">
+          <h2 className="type-section-title text-slate-900 max-w-xl mx-auto lg:mx-0">
             {t('txTitle')}
           </h2>
 
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-md mx-auto lg:mx-0 lg:text-justify">
+          <p className="type-body align-longform text-slate-600 max-w-md mx-auto lg:mx-0">
             {t('txDesc')}
           </p>
 
@@ -226,7 +226,7 @@ export default function RelayTransactions() {
                 <h4 className="text-xs font-bold text-slate-800">
                   {t('txPillarAuthenticityTitle')}
                 </h4>
-                <p className="text-[11px] text-slate-500 leading-normal">
+                <p className="type-caption text-slate-500">
                   {t('txPillarAuthenticityDesc')}
                 </p>
               </div>
@@ -240,7 +240,7 @@ export default function RelayTransactions() {
                 <h4 className="text-xs font-bold text-slate-800">
                   {t('txPillarCounterpartyTitle')}
                 </h4>
-                <p className="text-[11px] text-slate-500 leading-normal">
+                <p className="type-caption text-slate-500">
                   {t('txPillarCounterpartyDesc')}
                 </p>
               </div>
@@ -254,7 +254,7 @@ export default function RelayTransactions() {
                 <h4 className="text-xs font-bold text-slate-800">
                   {t('txPillarPortabilityTitle')}
                 </h4>
-                <p className="text-[11px] text-slate-500 leading-normal">
+                <p className="type-caption text-slate-500">
                   {t('txPillarPortabilityDesc')}
                 </p>
               </div>
@@ -275,7 +275,7 @@ export default function RelayTransactions() {
                   </div>
                   <div>
                     <h4 className="font-semibold text-xs text-slate-800 font-display">{t('txCardTitle')}</h4>
-                    <p className="text-[9px] text-[#354CE1] font-mono uppercase tracking-wider">
+                    <p className="type-technical text-[#354CE1] uppercase">
                       {t('txContractStatus')}: {
                         txStatus === 'completed' 
                           ? t('txStatusCompleted') 
@@ -289,7 +289,7 @@ export default function RelayTransactions() {
                   </div>
                 </div>
 
-                <span className={`text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full border ${
+                <span className={`type-technical px-2.5 py-0.5 rounded-full border ${
                   txStatus === 'completed' 
                     ? 'text-emerald-700 bg-emerald-50 border-emerald-200' 
                     : txStatus === 'executing'
@@ -310,7 +310,7 @@ export default function RelayTransactions() {
                   <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-4 flex flex-col justify-between">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">{t('txAliceLabel')}</span>
+                        <span className="type-technical text-slate-500 uppercase">{t('txAliceLabel')}</span>
                         <User className="w-4 h-4 text-slate-400" />
                       </div>
                       
@@ -324,14 +324,14 @@ export default function RelayTransactions() {
                           <Ticket className="w-4 h-4 text-[#354CE1]" />
                           <span>{t('txTicketTitle')}</span>
                         </div>
-                        <p className="text-[9px] text-slate-500 mt-1">{t('txTicketIssuer')}</p>
-                        <p className="text-[9px] text-[#354CE1] font-medium mt-0.5">{t('txTicketTransfer')}</p>
+                        <p className="type-caption text-slate-500 mt-1">{t('txTicketIssuer')}</p>
+                        <p className="type-caption text-[#354CE1] mt-0.5">{t('txTicketTransfer')}</p>
                       </div>
                     </div>
 
                     <div className="mt-4">
                       {ticketDeposited ? (
-                        <span className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1.5 py-2">
+                        <span className="type-technical text-emerald-600 flex items-center gap-1.5 py-2">
                           <Check className="w-4 h-4 stroke-[3px] text-emerald-500" />
                           {t('txAssetDeposited')}
                         </span>
@@ -350,7 +350,7 @@ export default function RelayTransactions() {
                   <div className="bg-slate-50 border border-slate-200/60 rounded-2xl p-4 flex flex-col justify-between">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">{t('txBobLabel')}</span>
+                        <span className="type-technical text-slate-500 uppercase">{t('txBobLabel')}</span>
                         <User className="w-4 h-4 text-slate-400" />
                       </div>
 
@@ -364,10 +364,10 @@ export default function RelayTransactions() {
                           <Coins className="w-4 h-4 text-amber-500" />
                           <span>{t('txPaymentAmount')}</span>
                         </div>
-                        <p className="text-[9px] text-slate-500 mt-1">
+                        <p className="type-caption text-slate-500 mt-1">
                           {t('txPaymentWallet')}
                         </p>
-                        <p className="text-[9px] text-[#354CE1] font-medium mt-0.5">
+                        <p className="type-caption text-[#354CE1] mt-0.5">
                           {t('txPaymentEncrypted')}
                         </p>
                       </div>
@@ -375,7 +375,7 @@ export default function RelayTransactions() {
 
                     <div className="mt-4">
                       {paymentDeposited ? (
-                        <span className="text-[10px] text-emerald-600 font-mono font-medium flex items-center gap-1.5 py-2">
+                        <span className="type-technical text-emerald-600 flex items-center gap-1.5 py-2">
                           <Check className="w-4 h-4 stroke-[3px] text-emerald-500" />
                           {t('txPaymentDeposited')}
                         </span>
@@ -397,11 +397,11 @@ export default function RelayTransactions() {
               {(txStatus === 'executing' || txStatus === 'completed') && (
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4 space-y-3.5 transition-all duration-300">
                   <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                    <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                    <span className="type-technical text-slate-500 uppercase flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5 text-[#354CE1]" />
                       {t('txConsensusEngine')}
                     </span>
-                    <span className="text-[10px] font-bold text-[#354CE1] font-mono">
+                    <span className="type-technical text-[#354CE1]">
                       {txStatus === 'completed' ? '4 / 4' : `${Math.min(activeStepIndex + 1, 4)} / 4`}
                     </span>
                   </div>
@@ -433,16 +433,16 @@ export default function RelayTransactions() {
                                 <RefreshCw className="w-3 h-3 animate-spin" />
                               </div>
                             ) : (
-                              <div className="w-4.5 h-4.5 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 font-mono text-[9px] font-bold">
+                              <div className="type-technical w-4.5 h-4.5 rounded-full bg-slate-200 flex items-center justify-center text-slate-400">
                                 {st.id}
                               </div>
                             )}
                           </div>
                           <div>
-                            <p className={`text-[11px] font-bold ${isActive ? 'text-slate-900' : isDone ? 'text-slate-700' : 'text-slate-400'}`}>
+                            <p className={`type-label ${isActive ? 'text-slate-900' : isDone ? 'text-slate-700' : 'text-slate-400'}`}>
                               {st.title}
                             </p>
-                            <p className="text-[10px] text-slate-500 leading-tight">
+                            <p className="type-caption text-slate-500">
                               {st.desc}
                             </p>
                           </div>
@@ -462,13 +462,13 @@ export default function RelayTransactions() {
                       {t('txSettlementSuccess')}
                     </span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] pt-1">
+                  <div className="type-caption grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-sm">
-                      <p className="text-slate-400 font-mono text-[9px] uppercase tracking-wider">{t('txBobLabel')}:</p>
+                      <p className="type-technical text-slate-400 uppercase">{t('txBobLabel')}:</p>
                       <p className="font-semibold text-emerald-700 mt-0.5">{t('txBuyerVerified')}</p>
                     </div>
                     <div className="bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-sm">
-                      <p className="text-slate-400 font-mono text-[9px] uppercase tracking-wider">{t('txAliceLabel')}:</p>
+                      <p className="type-technical text-slate-400 uppercase">{t('txAliceLabel')}:</p>
                       <p className="font-semibold text-emerald-700 mt-0.5">{t('txSellerReceived')}</p>
                     </div>
                   </div>
@@ -484,17 +484,17 @@ export default function RelayTransactions() {
                 >
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                    <span className="text-[10px] font-mono font-bold text-slate-300 uppercase tracking-widest">
+                    <span className="type-technical text-slate-300 uppercase">
                       {t('txEscrowLog')}
                     </span>
                   </div>
-                  <span className="text-[9px] font-mono font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700/50 hover:text-white transition">
+                  <span className="type-technical text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700/50 hover:text-white transition">
                     {isTerminalExpanded ? t('txTerminalMinimize') : t('txTerminalExpand')}
                   </span>
                 </button>
                 
                 {isTerminalExpanded ? (
-                  <div className="p-4 font-mono text-[10px] space-y-1.5 min-h-[72px] max-h-[140px] overflow-y-auto scrollbar-thin">
+                  <div className="type-technical p-4 space-y-1.5 min-h-[72px] max-h-[140px] overflow-y-auto scrollbar-thin">
                     {logs.map((log, index) => (
                       <div key={index} className="flex gap-1.5 items-start">
                         <span className="text-slate-600 shrink-0 select-none">&gt;</span>
@@ -505,7 +505,7 @@ export default function RelayTransactions() {
                     ))}
                   </div>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-950/40 text-slate-500 text-[9px] font-mono italic">
+                  <div className="type-technical px-4 py-2 bg-slate-950/40 text-slate-500 italic">
                     {t('txTerminalMinimized')}
                   </div>
                 )}

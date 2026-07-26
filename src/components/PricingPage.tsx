@@ -230,15 +230,15 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
     <div className="bg-[#FAFBFD] min-h-screen text-slate-800">
       
       {/* 1. Hero Section */}
-      <section className="pt-24 pb-16 px-6 max-w-7xl mx-auto text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#354CE1]/10 rounded-full text-xs font-semibold text-[#354CE1]">
+      <section className="section-space-standard px-6 max-w-7xl mx-auto text-center stack-hero">
+        <div className="type-label inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#354CE1]/10 rounded-full text-[#354CE1]">
           <Sparkles className="w-3.5 h-3.5 text-[#354CE1]" />
           <span>{t.badge}</span>
         </div>
-        <h1 className="text-4xl md:text-6xl font-display font-extrabold text-[#0F1E36] tracking-tight max-w-4xl mx-auto leading-tight">
+        <h1 className="type-page-title measure-display text-[#0F1E36] mx-auto">
           {t.heroTitle}
         </h1>
-        <p className="text-slate-500 text-sm md:text-lg max-w-2xl mx-auto font-normal leading-relaxed">
+        <p className="type-lead measure-lead text-slate-500 mx-auto">
           {t.heroDesc}
         </p>
       </section>
@@ -251,20 +251,20 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
           <div className="bg-gradient-to-b from-[#EFF2FF] to-white rounded-[2rem] border border-indigo-100/60 p-8 shadow-sm flex flex-col justify-between hover:shadow-md transition duration-300 relative group min-h-[560px]">
             <div className="space-y-6">
               <div className="space-y-2">
-                <span className="text-[10px] font-bold text-[#354CE1] uppercase tracking-wider bg-indigo-50 px-2.5 py-1 rounded-md inline-block">
+                <span className="type-label text-[#354CE1] uppercase bg-indigo-50 px-2.5 py-1 rounded-md inline-block">
                   {t.essentialLabel}
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 font-display">{t.essentialTitle}</h3>
+                <h3 className="type-card-title text-slate-900">{t.essentialTitle}</h3>
               </div>
               
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="type-body-sm text-slate-500">
                 {t.essentialDesc}
               </p>
 
               <div className="h-px bg-indigo-100/60" />
 
               <div className="space-y-4">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t.featuresInclude}</p>
+                <p className="type-label text-slate-400 uppercase">{t.featuresInclude}</p>
                 <ul className="space-y-3.5 text-xs text-slate-600">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-[#354CE1] mt-0.5 shrink-0" />
@@ -288,9 +288,9 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
 
             <div className="pt-8 space-y-4">
               <div className="bg-white/80 border border-slate-100/50 p-4 rounded-xl text-center">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">{t.startingAt}</p>
-                <p className="text-2xl font-extrabold text-slate-900">$250<span className="text-xs font-semibold text-slate-400">{t.perMonth}</span></p>
-                <p className="text-[9px] text-slate-400 mt-0.5">{t.contractTerm}</p>
+                <p className="type-label text-slate-400 uppercase">{t.startingAt}</p>
+                <p className="type-metric text-slate-900">$250<span className="type-caption text-slate-400">{t.perMonth}</span></p>
+                <p className="type-caption text-slate-400 mt-0.5">{t.contractTerm}</p>
               </div>
               <button 
                 onClick={onOpenSandbox}
@@ -305,28 +305,28 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
           {/* Card 2: Growth */}
           <div className="bg-white rounded-[2rem] border-2 border-[#354CE1] p-8 shadow-lg flex flex-col justify-between hover:shadow-xl transition duration-300 relative min-h-[560px]">
             {/* Recommended badge */}
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-tr from-[#354CE1] via-[#5F3CF3] to-[#00D4B2] text-white text-[10px] font-extrabold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
+            <div className="type-label absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-tr from-[#354CE1] via-[#5F3CF3] to-[#00D4B2] text-white px-4 py-1 rounded-full uppercase shadow-md">
               {t.recommendedBadge}
             </div>
 
             <div className="space-y-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded-md inline-block">
+                  <span className="type-label text-emerald-600 uppercase bg-emerald-50 px-2.5 py-1 rounded-md inline-block">
                     {t.growthLabel}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 font-display">{t.growthTitle}</h3>
+                <h3 className="type-card-title text-slate-900">{t.growthTitle}</h3>
               </div>
               
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="type-body-sm text-slate-500">
                 {t.growthDesc}
               </p>
 
               <div className="h-px bg-slate-100" />
 
               <div className="space-y-4">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t.growthIncludes}</p>
+                <p className="type-label text-slate-400 uppercase">{t.growthIncludes}</p>
                 <ul className="space-y-3.5 text-xs text-slate-600">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
@@ -350,9 +350,9 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
 
             <div className="pt-8 space-y-4">
               <div className="bg-[#FAFBFD] border border-slate-100 p-4 rounded-xl text-center">
-                <p className="text-[10px] font-bold text-slate-400 uppercase">{t.pricingModel}</p>
-                <p className="text-lg font-bold text-slate-800">{t.volumePricing}</p>
-                <p className="text-[9px] text-slate-400 mt-0.5">{t.payVerify}</p>
+                <p className="type-label text-slate-400 uppercase">{t.pricingModel}</p>
+                <p className="type-card-title text-slate-800">{t.volumePricing}</p>
+                <p className="type-caption text-slate-400 mt-0.5">{t.payVerify}</p>
               </div>
               <button 
                 onClick={onOpenSandbox}
@@ -368,20 +368,20 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
           <div className="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-[2rem] border border-slate-800 p-8 shadow-sm flex flex-col justify-between hover:shadow-lg transition duration-300 relative min-h-[560px]">
             <div className="space-y-6">
               <div className="space-y-2">
-                <span className="text-[10px] font-bold text-[#E5E9FF] uppercase tracking-wider bg-white/10 px-2.5 py-1 rounded-md inline-block">
+                <span className="type-label text-[#E5E9FF] uppercase bg-white/10 px-2.5 py-1 rounded-md inline-block">
                   {t.enterpriseLabel}
                 </span>
-                <h3 className="text-2xl font-bold text-white font-display">{t.enterpriseTitle}</h3>
+                <h3 className="type-card-title text-white">{t.enterpriseTitle}</h3>
               </div>
               
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="type-body-sm text-slate-400">
                 {t.enterpriseDesc}
               </p>
 
               <div className="h-px bg-slate-800" />
 
               <div className="space-y-4">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-indigo-200">{t.enterpriseIncludes}</p>
+                <p className="type-label text-indigo-200 uppercase">{t.enterpriseIncludes}</p>
                 <ul className="space-y-3.5 text-xs text-slate-300">
                   <li className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-[#354CE1] mt-0.5 shrink-0" />
@@ -405,9 +405,9 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
 
             <div className="pt-8 space-y-4">
               <div className="bg-white/5 border border-white/10 p-4 rounded-xl text-center">
-                <p className="text-[10px] font-bold text-slate-500 uppercase">{t.enterpriseAgreements}</p>
-                <p className="text-lg font-bold text-indigo-200">{t.bespokeSla}</p>
-                <p className="text-[9px] text-slate-400 mt-0.5">{t.flexibleCommitments}</p>
+                <p className="type-label text-slate-500 uppercase">{t.enterpriseAgreements}</p>
+                <p className="type-card-title text-indigo-200">{t.bespokeSla}</p>
+                <p className="type-caption text-slate-400 mt-0.5">{t.flexibleCommitments}</p>
               </div>
               <button 
                 onClick={onOpenSandbox}
@@ -425,20 +425,20 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
       {/* 3. Logo Slider Social Proof */}
       <section className="bg-white border-y border-slate-100 py-10 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto space-y-6">
-          <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+          <p className="type-label text-center text-slate-400 uppercase">
             {t.trustedBy}
           </p>
           
           <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-60">
             {/* Reddit */}
-            <div className="flex items-center gap-1.5 font-display text-slate-800 font-extrabold text-sm tracking-tighter">
-              <span className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white text-[10px] font-bold">{t.logoRedditMark}</span>
+            <div className="type-wordmark flex items-center gap-1.5 text-slate-800">
+              <span className="type-caption w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center text-white">{t.logoRedditMark}</span>
               {t.logoReddit}
             </div>
             {/* Coursera */}
-            <span className="font-display font-semibold text-slate-700 text-sm tracking-wide">{t.logoCoursera}</span>
+            <span className="type-wordmark text-slate-700">{t.logoCoursera}</span>
             {/* Dapper Labs */}
-            <span className="font-mono font-bold text-slate-800 text-xs tracking-tight">{t.logoDapper}</span>
+            <span className="type-technical text-slate-800">{t.logoDapper}</span>
             {/* Petal */}
             <span className="font-serif font-semibold italic text-slate-600 text-sm">{t.logoPetal}</span>
             {/* Square */}
@@ -447,25 +447,25 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
               {t.logoSquare}
             </div>
             {/* Travelex */}
-            <span className="font-sans font-black text-slate-600 tracking-wider text-xs">{t.logoTravelex}</span>
+            <span className="type-wordmark text-slate-600">{t.logoTravelex}</span>
           </div>
         </div>
       </section>
 
       {/* 4. Startup Program Eligibility Banner */}
-      <section className="py-16 px-6 max-w-7xl mx-auto">
+      <section className="section-space-standard px-6 max-w-7xl mx-auto">
         <div className="bg-indigo-50/50 rounded-3xl border border-indigo-100 p-8 md:p-12 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-4 max-w-2xl text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-2">
-              <span className="text-[10px] font-extrabold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider">
+              <span className="type-label text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full uppercase">
                 {t.startupBadge}
               </span>
               <span className="text-lg">{t.startupEmoji}</span>
             </div>
-            <h3 className="text-2xl font-bold text-slate-900 font-display">
+            <h3 className="type-section-title-compact text-slate-900">
               {t.startupTitle}
             </h3>
-            <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-normal">
+            <p className="type-body-sm text-slate-600">
               {t.startupDesc}
             </p>
           </div>
@@ -481,13 +481,13 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
       </section>
 
       {/* 5. Detailed Interactive Comparison Table / Feature Matrix */}
-      <section className="bg-white border-t border-slate-100 py-20 px-6">
+      <section className="section-space-standard bg-white border-t border-slate-100 px-6">
         <div className="max-w-7xl mx-auto space-y-10">
           
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-4 border-b border-slate-100">
             <div className="space-y-2">
-              <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900">
+              <h2 className="type-section-title-compact text-slate-900">
                 {t.planComparison}
               </h2>
               <p className="text-slate-400 text-xs">
@@ -509,7 +509,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
           </div>
 
           {/* Quick Info Legend */}
-          <div className="flex flex-wrap items-center gap-6 text-[11px] text-slate-500 bg-[#FAFBFD] p-3 px-4 rounded-xl border border-slate-100">
+          <div className="type-caption flex flex-wrap items-center gap-6 text-slate-500 bg-[#FAFBFD] p-3 px-4 rounded-xl border border-slate-100">
             <span className="font-semibold text-slate-700">{t.legend}</span>
             <span className="flex items-center gap-1">
               <Check className="w-3.5 h-3.5 text-[#354CE1]" /> {t.included}
@@ -528,7 +528,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
               {/* Header */}
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-150">
-                  <th className="py-5 px-6 text-xs font-bold text-slate-500 uppercase tracking-wider w-1/2">
+                  <th className="type-label py-5 px-6 text-slate-500 uppercase w-1/2">
                     {t.servicesAvailable}
                   </th>
                   <th className="py-5 px-4 text-center w-1/6">
@@ -536,7 +536,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                       <p className="text-xs font-bold text-slate-900">{t.essentialTitle}</p>
                       <button 
                         onClick={onOpenSandbox}
-                        className="text-[10px] font-bold text-[#354CE1] hover:underline"
+                        className="type-control text-[#354CE1] hover:underline"
                       >
                         {t.tryNow} &rarr;
                       </button>
@@ -547,7 +547,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                       <p className="text-xs font-bold text-slate-900">{t.growthTitle}</p>
                       <button 
                         onClick={onOpenSandbox}
-                        className="text-[10px] font-bold text-[#354CE1] hover:underline"
+                        className="type-control text-[#354CE1] hover:underline"
                       >
                         {t.contactUs} &rarr;
                       </button>
@@ -558,7 +558,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                       <p className="text-xs font-bold text-slate-900">{t.enterpriseTitle}</p>
                       <button 
                         onClick={onOpenSandbox}
-                        className="text-[10px] font-bold text-[#354CE1] hover:underline"
+                        className="type-control text-[#354CE1] hover:underline"
                       >
                         {t.contactUs} &rarr;
                       </button>
@@ -588,7 +588,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                             ) : (
                               <ChevronUp className="w-4 h-4 text-slate-400" />
                             )}
-                            <span className="uppercase tracking-wider">{translatedCategoryTitle}</span>
+                            <span className="uppercase">{translatedCategoryTitle}</span>
                           </button>
                         </td>
                       </tr>
@@ -605,7 +605,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                                 {feature.tooltip && (
                                   <div className="relative inline-block cursor-help text-slate-300 hover:text-slate-500">
                                     <InfoIcon className="w-3.5 h-3.5" />
-                                    <div className="hidden group-hover/tooltip:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-slate-900 text-white text-[10px] rounded-lg p-2.5 shadow-md z-30 font-normal leading-normal">
+                                    <div className="type-caption hidden group-hover/tooltip:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 bg-slate-900 text-white rounded-lg p-2.5 shadow-md z-30">
                                       {feature.tooltip}
                                       <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900" />
                                     </div>
@@ -644,11 +644,11 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
       </section>
 
       {/* 6. Polished FAQ Accordion */}
-      <section className="bg-[#FAFBFD] border-t border-slate-100 py-20 px-6">
+      <section className="section-space-standard bg-[#FAFBFD] border-t border-slate-100 px-6">
         <div className="max-w-4xl mx-auto space-y-12">
           
           <div className="text-center space-y-3">
-            <h2 className="text-2xl md:text-3xl font-display font-bold text-[#0F1E36]">
+            <h2 className="type-section-title-compact text-[#0F1E36]">
               {t.faqTitle}
             </h2>
             <p className="text-slate-400 text-xs">
@@ -695,7 +695,7 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
       </section>
 
       {/* 7. Ready to Get Started Bottom Banner */}
-      <section className="bg-[#354CE1] text-white py-20 px-6">
+      <section className="section-space-standard bg-[#354CE1] text-white px-6">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           <div className="relative inline-flex items-center justify-center">
             <div className="absolute inset-0 bg-white/20 blur-xl rounded-full" />
@@ -703,10 +703,10 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
           </div>
           
           <div className="space-y-3">
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight">
+            <h2 className="type-section-title">
               {t.readyToGet}
             </h2>
-            <p className="text-indigo-100 text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-normal">
+            <p className="type-body-sm measure-lead text-indigo-100 mx-auto">
               {t.bottomDesc}
             </p>
           </div>
@@ -727,4 +727,3 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
     </div>
   );
 }
-

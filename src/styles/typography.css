@@ -1,0 +1,302 @@
+:root {
+  --type-leading-display: 1.08;
+  --type-leading-title: 1.2;
+  --type-leading-body: 1.625;
+  --type-leading-compact: 1.5;
+  --type-measure-display: 64rem;
+  --type-measure-lead: 48rem;
+  --type-measure-prose: 65ch;
+}
+
+.type-display,
+.type-page-title,
+.type-document-title,
+.type-document-heading,
+.type-section-title,
+.type-section-title-compact,
+.type-card-title,
+.type-metric {
+  font-family: var(--font-display);
+  letter-spacing: 0;
+}
+
+.type-display {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: var(--type-leading-display);
+}
+
+.type-page-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.type-document-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.18;
+}
+
+.type-document-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.type-section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: var(--type-leading-title);
+}
+
+.type-section-title-compact {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.type-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.type-lead,
+.type-body,
+.type-body-sm,
+.type-label,
+.type-control,
+.type-caption {
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+}
+
+.type-lead {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: var(--type-leading-body);
+}
+
+.type-body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: var(--type-leading-body);
+}
+
+.type-body-sm {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: var(--type-leading-body);
+}
+
+.type-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: var(--type-leading-compact);
+}
+
+.type-control {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.type-caption {
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: var(--type-leading-compact);
+}
+
+.type-technical {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: var(--type-leading-compact);
+}
+
+.type-metric {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.type-wordmark {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
+.measure-display {
+  max-inline-size: var(--type-measure-display);
+}
+
+.hero-title-measure {
+  max-inline-size: var(--type-measure-display);
+}
+
+.measure-lead {
+  max-inline-size: var(--type-measure-lead);
+}
+
+.measure-prose {
+  max-inline-size: var(--type-measure-prose);
+}
+
+.section-space-wide {
+  padding-block: 5rem;
+}
+
+.section-space-standard {
+  padding-block: 4rem;
+}
+
+.section-space-compact {
+  padding-block: 2.5rem;
+}
+
+.section-space-document {
+  padding-block: 2rem;
+}
+
+.stack-hero > * + * {
+  margin-block-start: 1.5rem;
+}
+
+.stack-heading > * + * {
+  margin-block-start: 1rem;
+}
+
+.stack-prose > * + * {
+  margin-block-start: 1rem;
+}
+
+.stack-card > * + * {
+  margin-block-start: 0.75rem;
+}
+
+.stack-compact > * + * {
+  margin-block-start: 0.5rem;
+}
+
+.align-longform {
+  text-align: left;
+}
+
+@media (min-width: 40rem) {
+  .type-display {
+    font-size: 3rem;
+  }
+
+  .type-document-title {
+    font-size: 2.25rem;
+  }
+
+  .type-document-heading {
+    font-size: 1.375rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  .type-display {
+    font-size: 3.75rem;
+  }
+
+  .type-page-title {
+    font-size: 3rem;
+  }
+
+  .type-section-title {
+    font-size: 2.25rem;
+  }
+
+  .type-section-title-compact {
+    font-size: 1.875rem;
+  }
+
+  .type-card-title {
+    font-size: 1.125rem;
+  }
+
+  .type-lead {
+    font-size: 1.125rem;
+  }
+
+  .type-body {
+    font-size: 1rem;
+  }
+
+  .type-body-sm {
+    font-size: 0.875rem;
+  }
+
+  .type-label {
+    font-size: 0.75rem;
+  }
+
+  .type-control {
+    font-size: 0.875rem;
+  }
+
+  .type-caption,
+  .type-technical {
+    font-size: 0.75rem;
+  }
+
+  .type-metric {
+    font-size: 1.875rem;
+  }
+
+  .section-space-wide {
+    padding-block: 7rem;
+  }
+
+  .section-space-standard {
+    padding-block: 5rem;
+  }
+
+  .section-space-compact {
+    padding-block: 4rem;
+  }
+
+  .align-longform {
+    text-align: justify;
+  }
+}
+
+@media (min-width: 64rem) {
+  .hero-title-measure {
+    max-inline-size: none;
+  }
+
+  .type-display {
+    font-size: 4.5rem;
+  }
+
+  .type-page-title {
+    font-size: 3.75rem;
+  }
+
+  .type-document-title {
+    font-size: 2.875rem;
+  }
+
+  .type-document-heading {
+    font-size: 1.5rem;
+  }
+
+  .type-section-title {
+    font-size: 3rem;
+  }
+
+  .type-section-title-compact {
+    font-size: 2.25rem;
+  }
+
+  .type-card-title {
+    font-size: 1.25rem;
+  }
+}

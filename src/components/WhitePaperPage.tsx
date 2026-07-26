@@ -122,7 +122,7 @@ const renderContentBlock = (
       <h3
         key={`${block.text}-${index}`}
         className={[
-          'pt-2 text-left text-base font-bold md:text-lg',
+          'type-card-title pt-2 text-left',
           isConclusion ? 'text-white' : 'text-slate-900',
         ].join(' ')}
       >
@@ -136,7 +136,7 @@ const renderContentBlock = (
       <p
         key={`${block.text}-${index}`}
         className={[
-          'text-sm leading-relaxed text-justify md:text-base',
+          'type-body align-longform',
           isConclusion ? 'text-white/85' : 'text-slate-600',
         ].join(' ')}
       >
@@ -150,7 +150,7 @@ const renderContentBlock = (
       <div
         key={`${block.body}-${index}`}
         className={[
-          'rounded-xl border-l-4 p-4 text-sm leading-relaxed text-justify md:text-base',
+          'type-body align-longform rounded-xl border-l-4 p-4',
           isConclusion
             ? 'border-[#FFBF43] bg-white/10 text-white'
             : 'border-[#354CE1] bg-[#E2E6FF] text-slate-700',
@@ -174,7 +174,7 @@ const renderContentBlock = (
         key={`${block.type}-${index}`}
         className={[
           block.type === 'ordered-list' ? 'list-decimal' : 'list-disc',
-          'space-y-2 pl-5 text-sm leading-relaxed text-justify md:text-base',
+          'type-body align-longform space-y-2 pl-5',
           isConclusion ? 'text-white/85' : 'text-slate-600',
         ].join(' ')}
       >
@@ -187,7 +187,7 @@ const renderContentBlock = (
 
   return (
     <div key={`table-${index}`} className="overflow-x-auto rounded-xl border border-slate-100">
-      <table className="w-full border-collapse text-left text-sm md:text-base">
+      <table className="type-body w-full border-collapse text-left">
         <thead>
           <tr className="border-b border-slate-100 bg-slate-50">
             {block.headers.map((header) => (
@@ -228,7 +228,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
     <section
       id={section.id}
       className={[
-        'scroll-mt-24 rounded-2xl p-5 sm:p-6 md:p-8 shadow-xs space-y-5',
+        'scroll-mt-24 rounded-2xl p-5 sm:p-6 md:p-8 shadow-xs',
         isConclusion
           ? 'relative overflow-hidden bg-gradient-to-r from-[#5B6DFF] to-[#475BE8] text-white'
           : 'bg-white border border-slate-100',
@@ -241,11 +241,11 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         </>
       )}
 
-      <div className="relative z-10 space-y-5">
+      <div className="relative z-10 stack-prose">
         <div className={isConclusion ? 'border-b border-white/20 pb-3' : 'border-b border-slate-100 pb-3'}>
           <span
             className={[
-              'font-mono mb-1 block text-xs font-semibold uppercase tracking-wide md:text-sm',
+              'type-label mb-1 block uppercase',
               isConclusion ? 'text-[#FFBF43]' : 'text-[#354CE1]',
             ].join(' ')}
           >
@@ -253,7 +253,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
           </span>
           <h2
             className={[
-              'font-display text-left text-lg font-bold tracking-tight sm:text-xl md:text-2xl',
+              'type-document-heading text-left',
               isConclusion ? 'text-white' : 'text-slate-900',
             ].join(' ')}
           >
@@ -264,7 +264,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         {section.paragraphs.length > 0 && (
           <div
             className={[
-              'space-y-4 text-sm leading-relaxed text-justify md:text-base',
+              'type-body align-longform stack-prose',
               isConclusion ? 'text-white/85' : 'text-slate-600',
             ].join(' ')}
           >
@@ -275,7 +275,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         )}
 
         {hasStructuredBlocks && (
-          <div className="space-y-4">
+          <div className="stack-prose">
             {section.blocks?.map((block, index) => renderContentBlock(block, index, isConclusion))}
           </div>
         )}
@@ -294,13 +294,13 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
               >
                 <h3
                   className={[
-                    'mb-2 text-left text-sm font-bold md:text-base',
+                    'type-card-title mb-2 text-left',
                     isConclusion ? 'text-white' : 'text-slate-900',
                   ].join(' ')}
                 >
                   {card.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-justify md:text-base">{card.body}</p>
+                <p className="type-body text-left">{card.body}</p>
               </article>
             ))}
           </div>
@@ -309,7 +309,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         {!hasStructuredBlocks && section.note && (
           <div
             className={[
-              'rounded-xl p-4 text-sm leading-relaxed text-justify md:text-base',
+              'type-body align-longform rounded-xl p-4',
               isConclusion
                 ? 'bg-white/10 text-white ring-1 ring-white/15'
                 : 'bg-[#E2E6FF] text-slate-700 border border-[#354CE1]/15',
@@ -327,7 +327,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
             {section.bulletsTitle && (
               <h3
                 className={[
-                  'text-left text-base font-bold md:text-lg',
+                  'type-card-title text-left',
                   isConclusion ? 'text-white' : 'text-slate-900',
                 ].join(' ')}
               >
@@ -336,7 +336,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
             )}
             <ul
               className={[
-                'list-disc space-y-2 pl-5 text-sm leading-relaxed text-justify md:text-base',
+                'type-body align-longform list-disc space-y-2 pl-5',
                 isConclusion ? 'text-white/85' : 'text-slate-600',
               ].join(' ')}
             >
@@ -349,7 +349,7 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
 
         {!hasStructuredBlocks && section.table && (
           <div className="overflow-x-auto rounded-xl border border-slate-100">
-            <table className="w-full border-collapse text-left text-sm md:text-base">
+            <table className="type-body w-full border-collapse text-left">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50">
                   {section.table.headers.map((header) => (
@@ -382,13 +382,13 @@ function SectionContent({ section }: { section: WhitePaperSection; key?: React.K
         )}
 
         {!hasStructuredBlocks && section.ordered && (
-          <div className="rounded-xl bg-slate-50 p-5 text-sm md:text-base border border-slate-100">
+          <div className="type-body rounded-xl bg-slate-50 p-5 border border-slate-100">
             {section.orderedTitle && (
-              <strong className="mb-2 block text-left text-base font-bold text-[#354CE1] md:text-lg">
+              <strong className="type-card-title mb-2 block text-left text-[#354CE1]">
                 {section.orderedTitle}
               </strong>
             )}
-            <ol className="list-decimal space-y-1.5 pl-5 text-justify text-slate-600">
+            <ol className="align-longform list-decimal space-y-1.5 pl-5 text-slate-600">
               {section.ordered.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -497,7 +497,7 @@ export default function WhitePaperPage({
                 <ArrowLeft className="h-4 w-4" />
                 <span>{copy.backToLanding}</span>
               </button>
-              <span className="rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+              <span className="type-label rounded-full bg-white/20 px-3.5 py-1.5 uppercase text-white">
                 {copy.versionBadge}
               </span>
               <span className="hidden text-xs font-medium text-white/80 md:inline md:text-sm">
@@ -526,23 +526,23 @@ export default function WhitePaperPage({
             </div>
           </div>
 
-          <div className="relative z-10 max-w-4xl space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-1.5 text-xs font-semibold text-white md:text-sm">
+          <div className="relative z-10 max-w-4xl stack-hero">
+            <div className="type-label inline-flex items-center gap-2 rounded-full bg-white/20 px-3.5 py-1.5 text-white">
               <Sparkles className="h-4 w-4 text-[#FFBF43]" />
               <span>{copy.heroBadge}</span>
             </div>
 
-            <h1 className="font-display text-3xl font-extrabold leading-[1.18] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[46px]">
+            <h1 className="type-document-title text-white">
               {copy.heroTitle}
             </h1>
-            <p className="text-base font-medium leading-relaxed text-justify text-white/90 sm:text-lg md:text-xl">
+            <p className="type-lead align-longform measure-lead text-white/90">
               {copy.heroSubtitle}
             </p>
 
             <div className="grid grid-cols-2 gap-6 border-t border-white/25 pt-6 text-xs sm:grid-cols-4 sm:text-sm sm:gap-8">
               {copy.metadata.map((item) => (
                 <div key={item.title} className="space-y-1">
-                  <span className="font-mono block text-[11px] font-bold uppercase tracking-wider text-white/70">
+                  <span className="type-technical block uppercase text-white/70">
                     {item.title}
                   </span>
                   <span className="font-semibold text-white block">{item.body}</span>
@@ -554,7 +554,7 @@ export default function WhitePaperPage({
               {copy.callouts.map((callout) => (
                 <div
                   key={callout.title}
-                  className="rounded-2xl bg-white/15 p-4 sm:p-5 leading-relaxed text-white backdrop-blur-md border border-white/15 space-y-1 text-justify"
+                  className="type-body align-longform rounded-2xl bg-white/15 p-4 sm:p-5 text-white backdrop-blur-md border border-white/15 space-y-1"
                 >
                   <strong
                     className={[
@@ -612,7 +612,7 @@ export default function WhitePaperPage({
         <div className="relative grid grid-cols-1 items-start gap-8 md:grid-cols-12">
           <aside className="hidden h-[calc(100vh-2rem)] space-y-4 overflow-y-auto pr-2 sidebar-scrollbar md:sticky md:top-4 md:col-span-3 md:block">
             <div>
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+              <h3 className="type-label mb-2 uppercase text-slate-900">
                 {copy.desktopTocTitle}
               </h3>
               <div className="relative mb-3">
@@ -654,7 +654,7 @@ export default function WhitePaperPage({
             </nav>
           </aside>
 
-          <main className="col-span-1 space-y-8 text-sm leading-relaxed text-slate-600 md:col-span-9 md:pr-2 md:text-base">
+          <main className="type-body col-span-1 space-y-8 text-slate-600 md:col-span-9 md:pr-2">
             {copy.sections.map((section) => (
               <SectionContent key={section.id} section={section} />
             ))}

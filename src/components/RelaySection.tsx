@@ -131,7 +131,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
   const isAnyFieldSelected = Object.values(selectedFields).some(Boolean);
 
   return (
-    <section id="relay" className="bg-[#E6EAF2] border-t border-b border-[#D1D8E6] text-slate-800 py-20 md:py-28 overflow-hidden relative">
+    <section id="relay" className="section-space-wide bg-[#E6EAF2] border-t border-b border-[#D1D8E6] text-slate-800 overflow-hidden relative">
       {/* Background gradients */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#354CE1]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#00D4B2]/10 rounded-full blur-3xl pointer-events-none" />
@@ -139,17 +139,17 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         
         {/* Left Side: Info */}
-        <div className="lg:col-span-6 space-y-6 md:space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center gap-1.5 bg-[#354CE1]/12 border border-[#354CE1]/25 text-[#354CE1] font-semibold text-xs uppercase tracking-wider px-3.5 py-1 rounded-full">
+        <div className="lg:col-span-6 stack-hero text-center lg:text-left">
+          <div className="type-label inline-flex items-center gap-1.5 bg-[#354CE1]/12 border border-[#354CE1]/25 text-[#354CE1] uppercase px-3.5 py-1 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-[#354CE1] animate-ping" />
             {t('relayBadge')}
           </div>
 
-          <h2 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl tracking-tight leading-tight text-[#0F1E36] max-w-lg mx-auto lg:mx-0">
+          <h2 className="type-section-title text-[#0F1E36] max-w-lg mx-auto lg:mx-0">
             {t('relayTitle')}
           </h2>
 
-          <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-md mx-auto lg:mx-0 lg:text-justify">
+          <p className="type-lead align-longform text-slate-700 max-w-md mx-auto lg:mx-0">
             {t('relayDesc')}
           </p>
 
@@ -157,7 +157,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
             <button
               id="learn-relay-btn"
               onClick={onOpenSandbox}
-              className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-3.5 rounded-full flex items-center justify-center gap-1.5 transition shadow-lg shadow-[#354CE1]/10 hover:shadow-xl hover:shadow-[#354CE1]/20 cursor-pointer"
+              className="type-control w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white px-6 py-3.5 rounded-full flex items-center justify-center gap-1.5 transition shadow-lg shadow-[#354CE1]/10 hover:shadow-xl hover:shadow-[#354CE1]/20 cursor-pointer"
             >
               {t('learnRelay')}
               <ArrowRight className="w-4 h-4" />
@@ -181,15 +181,15 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                       </div>
                       <div>
                         <h4 className="font-semibold text-xs text-slate-100 font-display">{t('relayFilterTitle')}</h4>
-                        <p className="text-[9px] text-[#00D4B2] font-mono uppercase tracking-wider">{t('relayStatusSecure')}</p>
+                        <p className="type-technical text-[#00D4B2] uppercase">{t('relayStatusSecure')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+                    <span className="type-technical text-slate-400 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
                       {t('relayStep')}
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-300 mb-4 leading-relaxed">
+                  <p className="type-caption text-slate-300 mb-4">
                     {t('relaySelectDesc')}
                   </p>
 
@@ -219,7 +219,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                             
                             <div>
                               <p className="text-xs font-semibold text-slate-200">{field.label}</p>
-                              <p className={`font-mono text-[10px] transition-colors ${
+                              <p className={`type-technical transition-colors ${
                                 isSelected ? 'text-slate-400' : 'text-slate-500 line-through'
                               }`}>
                                 {field.value}
@@ -229,7 +229,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
 
                           <div className="flex items-center gap-2">
                             {/* Risk assessment tags */}
-                            <span className={`text-[8px] font-mono uppercase px-1.5 py-0.5 rounded font-bold ${
+                            <span className={`type-technical uppercase px-1.5 py-0.5 rounded ${
                               field.risk === 'High' 
                                 ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' 
                                 : field.risk === 'Medium'
@@ -255,7 +255,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                     id="share-verify-submit"
                     onClick={handleStartShare}
                     disabled={!isAnyFieldSelected}
-                    className={`w-full py-3 px-4 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all ${
+                    className={`type-control w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all ${
                       isAnyFieldSelected 
                         ? 'bg-[#354CE1] hover:bg-[#2539BE] text-white shadow-lg shadow-[#354CE1]/20 active:scale-98 cursor-pointer' 
                         : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
@@ -265,7 +265,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                     {t('relaySubmitBtn')}
                   </button>
                   {!isAnyFieldSelected && (
-                    <p className="text-[10px] text-center text-rose-400/80 mt-2 font-mono">
+                    <p className="type-technical text-center text-rose-400/80 mt-2">
                       {t('relayRequiredTip')}
                     </p>
                   )}
@@ -285,7 +285,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                 </div>
 
                 <div className="text-center space-y-2 max-w-xs">
-                  <h5 className="font-semibold text-xs text-slate-100 uppercase tracking-wider font-mono">
+                  <h5 className="type-technical text-slate-100 uppercase">
                     {t('relayProvingTitle')}
                   </h5>
                   <div className="h-1.5 w-32 bg-slate-800 rounded-full overflow-hidden mx-auto">
@@ -294,7 +294,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                       style={{ width: `${((processingIndex + 1) / processingSteps.length) * 100}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-[#00D4B2] font-mono animate-pulse min-h-[32px] px-4">
+                  <p className="type-technical text-[#00D4B2] animate-pulse min-h-[32px] px-4">
                     {processingSteps[processingIndex]}
                   </p>
                 </div>
@@ -313,10 +313,10 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                       </div>
                       <div>
                         <h4 className="font-semibold text-xs text-slate-100 font-display">{t('relayVerifierTitle')}</h4>
-                        <p className="text-[9px] text-emerald-400 font-mono uppercase tracking-wider">{t('relayStatusValidated')}</p>
+                        <p className="type-technical text-emerald-400 uppercase">{t('relayStatusValidated')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-900/50">
+                    <span className="type-technical text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-900/50">
                       {t('relayCompleted')}
                     </span>
                   </div>
@@ -325,8 +325,8 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                   <div className="bg-emerald-950/20 border border-emerald-800/30 rounded-xl p-3 mb-4 flex items-start gap-3">
                     <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-bold text-slate-100">{t('relayAttestationSuccess')}</p>
-                      <p className="text-[10px] text-slate-300 leading-normal">
+                      <p className="type-control text-slate-100">{t('relayAttestationSuccess')}</p>
+                      <p className="type-caption text-slate-300">
                         {t('relayAttestationDesc')}
                       </p>
                     </div>
@@ -334,7 +334,7 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
 
                   {/* Result Attribute Table */}
                   <div className="space-y-2 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80">
-                    <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest pb-1 border-b border-slate-800">
+                    <p className="type-technical text-slate-500 uppercase pb-1 border-b border-slate-800">
                       {t('relayAuditedDataHeader')}
                     </p>
 
@@ -353,15 +353,15 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
                             {isShared ? (
                               <>
                                 <span className="text-slate-200">{field.value}</span>
-                                <span className="text-[9px] text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-1.5 py-0.5 rounded font-semibold flex items-center gap-0.5">
+                                <span className="type-technical text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                                   <Check className="w-2.5 h-2.5 stroke-[3px]" />
                                   {t('relayProved')}
                                 </span>
                               </>
                             ) : (
                               <>
-                                <span className="text-slate-500 italic tracking-wide text-[10px]">{t('relayRedacted')}</span>
-                                <span className="text-[9px] text-[#354CE1] bg-[#354CE1]/10 border border-[#354CE1]/20 px-1.5 py-0.5 rounded font-semibold">
+                                <span className="type-technical text-slate-500 italic">{t('relayRedacted')}</span>
+                                <span className="type-technical text-[#354CE1] bg-[#354CE1]/10 border border-[#354CE1]/20 px-1.5 py-0.5 rounded">
                                   {t('relayZkHidden')}
                                 </span>
                               </>
@@ -374,11 +374,11 @@ export default function RelaySection({ onOpenSandbox }: RelaySectionProps) {
 
                   {/* Cryptographic Proof Details */}
                   <div className="mt-4 p-3 bg-slate-900/40 rounded-xl border border-slate-800/40">
-                    <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                    <div className="type-technical flex justify-between items-center text-slate-400">
                       <span>{t('relaySigScheme')}</span>
                       <span className="text-slate-200">{t('relaySignatureSchemeValue')}</span>
                     </div>
-                    <div className="flex justify-between items-center text-[10px] font-mono text-slate-400 mt-1">
+                    <div className="type-technical flex justify-between items-center text-slate-400 mt-1">
                       <span>{t('relayMerkleRootHash')}</span>
                       <span className="text-[#00D4B2]">{t('relayMerkleRootValue')}</span>
                     </div>

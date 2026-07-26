@@ -40,25 +40,25 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
   };
 
   return (
-    <section id="platform-solution" className="bg-[#FAFBFD] py-20 md:py-28 border-t border-b border-slate-100">
+    <section id="platform-solution" className="section-space-wide bg-[#FAFBFD] border-t border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         
         {/* Header */}
-        <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <span className="text-xs font-semibold uppercase tracking-wider text-[#354CE1] bg-[#E2E6FF] px-3.5 py-1.5 rounded-full">
+        <div className="text-center stack-heading max-w-2xl mx-auto">
+          <span className="type-label uppercase text-[#354CE1] bg-[#E2E6FF] px-3.5 py-1.5 rounded-full">
             {buildingBlocksT.blocksBadge}
           </span>
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-slate-900 tracking-tight">
+          <h2 className="type-section-title text-slate-900">
             {buildingBlocksT.blocksTitle}
           </h2>
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed">
+          <p className="type-body text-slate-600">
             {buildingBlocksT.blocksDesc}
           </p>
 
           <div>
             <button
               onClick={onOpenSandbox}
-              className="inline-flex items-center gap-1.5 bg-black hover:bg-slate-850 text-white text-xs font-semibold px-5 py-2.5 rounded-full shadow transition cursor-pointer"
+              className="type-control inline-flex items-center gap-1.5 bg-black hover:bg-slate-850 text-white px-5 py-2.5 rounded-full shadow transition cursor-pointer"
             >
               {buildingBlocksT.seeFullPlatform}
               <ArrowRight className="w-3.5 h-3.5" />
@@ -96,9 +96,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
           <div className="lg:col-span-5 space-y-6">
             {activeTab === 'verifications' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-[#354CE1] bg-[#E2E6FF] px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeVerifyClients}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.verifyClientsTitle}</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                <span className="type-technical text-[#354CE1] bg-[#E2E6FF] px-2.5 py-1 rounded-full uppercase">{buildingBlocksT.badgeVerifyClients}</span>
+                <h3 className="type-section-title-compact text-slate-900">{buildingBlocksT.verifyClientsTitle}</h3>
+                <p className="type-body-sm text-slate-600">
                   {buildingBlocksT.verifyClientsDesc}
                 </p>
                 <div className="space-y-2 pt-2">
@@ -116,9 +116,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'flow' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeDynamicUi}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.dynamicFlowTitle}</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                <span className="type-technical text-teal-600 bg-teal-50 px-2.5 py-1 rounded-full uppercase">{buildingBlocksT.badgeDynamicUi}</span>
+                <h3 className="type-section-title-compact text-slate-900">{buildingBlocksT.dynamicFlowTitle}</h3>
+                <p className="type-body-sm text-slate-600">
                   {buildingBlocksT.dynamicFlowDesc}
                 </p>
                 <div className="space-y-3 pt-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
@@ -147,9 +147,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'workflows' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeOrchestrate}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.workflowsTitle}</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                <span className="type-technical text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full uppercase">{buildingBlocksT.badgeOrchestrate}</span>
+                <h3 className="type-section-title-compact text-slate-900">{buildingBlocksT.workflowsTitle}</h3>
+                <p className="type-body-sm text-slate-600">
                   {buildingBlocksT.workflowsDesc}
                 </p>
                 <div className="space-y-3 pt-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
@@ -175,9 +175,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'graph' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeFraudDiscovery}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.graphTitle}</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                <span className="type-technical text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full uppercase">{buildingBlocksT.badgeFraudDiscovery}</span>
+                <h3 className="type-section-title-compact text-slate-900">{buildingBlocksT.graphTitle}</h3>
+                <p className="type-body-sm text-slate-600">
                   {buildingBlocksT.graphDesc}
                 </p>
                 <div className="space-y-2 pt-2">
@@ -195,9 +195,9 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
 
             {activeTab === 'cases' && (
               <div className="space-y-4 animate-in fade-in duration-300">
-                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-mono uppercase">{buildingBlocksT.badgeManualReview}</span>
-                <h3 className="text-2xl font-display font-bold text-slate-900">{buildingBlocksT.casesTitle}</h3>
-                <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                <span className="type-technical text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">{buildingBlocksT.badgeManualReview}</span>
+                <h3 className="type-section-title-compact text-slate-900">{buildingBlocksT.casesTitle}</h3>
+                <p className="type-body-sm text-slate-600">
                   {buildingBlocksT.casesDesc}
                 </p>
                 <p className="text-xs text-slate-400 leading-normal italic">
@@ -228,7 +228,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                     <Smartphone className="w-4.5 h-4.5 text-[#354CE1]" />
                     <span className="text-xs font-semibold text-slate-800">{buildingBlocksT.verificationsDesk}</span>
                   </div>
-                  <span className="text-[9px] font-bold font-mono text-slate-400 uppercase tracking-widest">{buildingBlocksT.signalEngine}</span>
+                  <span className="type-technical text-slate-400 uppercase">{buildingBlocksT.signalEngine}</span>
                 </div>
 
                 <div className="space-y-2">
@@ -243,7 +243,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                         <Check className="w-4 h-4 text-emerald-500" />
                         <span className="text-xs font-medium text-slate-700">{chk.label}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 font-mono text-[10px]">
+                      <div className="type-technical flex items-center gap-1.5">
                         <span className="text-slate-400">{chk.score}</span>
                         <span className={`font-bold px-1.5 py-0.5 rounded ${chk.color}`}>{chk.status}</span>
                       </div>
@@ -257,7 +257,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
             {activeTab === 'flow' && (
               <div className="w-full max-w-sm space-y-4 animate-in fade-in duration-300">
                 <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-md text-center">
-                  <p className="text-[10px] font-bold text-slate-400 font-mono">{buildingBlocksT.dynamicRoutingPreview}</p>
+                  <p className="type-technical text-slate-400">{buildingBlocksT.dynamicRoutingPreview}</p>
                   <p className="text-sm font-semibold text-slate-800 mt-1">
                     {buildingBlocksT.clientFlowSequencing}
                   </p>
@@ -272,13 +272,13 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                   {flowRiskRule === 'low' ? (
                     <div className="bg-emerald-50 text-emerald-800 p-3 rounded-xl shadow border border-emerald-200 text-xs text-center w-56 animate-in zoom-in-95 duration-200">
                       <p className="font-bold">{buildingBlocksT.lowRiskPath}</p>
-                      <p className="text-[10px] text-emerald-600 mt-0.5">{buildingBlocksT.allowInstantBank}</p>
+                      <p className="type-caption text-emerald-600 mt-0.5">{buildingBlocksT.allowInstantBank}</p>
                     </div>
                   ) : (
                     <div className="space-y-3 w-64 animate-in zoom-in-95 duration-200 flex flex-col items-center">
                       <div className="bg-amber-50 text-amber-800 border border-amber-200 p-3 rounded-xl text-xs text-center w-full">
                         <p className="font-bold">{buildingBlocksT.suspiciousDeviceSig}</p>
-                        <p className="text-[10px] text-amber-600 mt-0.5">{buildingBlocksT.routeToExtra}</p>
+                        <p className="type-caption text-amber-600 mt-0.5">{buildingBlocksT.routeToExtra}</p>
                       </div>
                       <div className="w-0.5 h-4 bg-slate-300" />
                       <div className="w-48 bg-purple-600 text-white p-2.5 rounded-xl text-xs font-semibold text-center shadow">
@@ -293,7 +293,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
             {/* 3. Workflows Mock */}
             {activeTab === 'workflows' && (
               <div className="w-full max-w-md bg-white rounded-2xl border border-slate-200 p-5 shadow-lg space-y-3 animate-in fade-in duration-300">
-                <p className="text-[10px] font-bold text-indigo-600 font-mono">{buildingBlocksT.routingEngineConfig}</p>
+                <p className="type-technical text-indigo-600">{buildingBlocksT.routingEngineConfig}</p>
                 
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100 font-mono text-xs text-slate-700 space-y-1">
                   <p className="text-slate-400">{buildingBlocksT.workflowRulesConfig}</p>
@@ -336,21 +336,21 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                     <div className="w-10 h-10 bg-indigo-600 rounded-full text-white flex items-center justify-center border-2 border-white shadow">
                       <Users className="w-5 h-5" />
                     </div>
-                    <span className="text-[9px] font-bold text-slate-800 mt-1">{buildingBlocksT.userCluster}</span>
+                    <span className="type-label text-slate-800 mt-1">{buildingBlocksT.userCluster}</span>
                   </div>
 
                   <div className="absolute top-6 left-12 flex flex-col items-center">
                     <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center border border-purple-200">
-                      <span className="text-[10px] font-mono">IP</span>
+                      <span className="type-technical">IP</span>
                     </div>
-                    <span className="text-[8px] text-slate-400 mt-0.5">{buildingBlocksT.sharedIpAddress}</span>
+                    <span className="type-caption text-slate-400 mt-0.5">{buildingBlocksT.sharedIpAddress}</span>
                   </div>
 
                   <div className="absolute bottom-6 right-12 flex flex-col items-center">
                     <div className="w-8 h-8 bg-rose-100 text-rose-700 rounded-full flex items-center justify-center border border-rose-200">
-                      <span className="text-[10px] font-mono">DEV</span>
+                      <span className="type-technical">DEV</span>
                     </div>
-                    <span className="text-[8px] text-slate-400 mt-0.5">{buildingBlocksT.duplicateDevice}</span>
+                    <span className="type-caption text-slate-400 mt-0.5">{buildingBlocksT.duplicateDevice}</span>
                   </div>
 
                   <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
@@ -359,7 +359,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                   </svg>
 
                   {/* alert header */}
-                  <div className="absolute top-2.5 right-2.5 bg-amber-50 border border-amber-200 text-amber-700 py-0.5 px-2 rounded-full text-[9px] font-bold font-mono">
+                  <div className="type-technical absolute top-2.5 right-2.5 bg-amber-50 border border-amber-200 text-amber-700 py-0.5 px-2 rounded-full">
                     {buildingBlocksT.probableSyndicate}
                   </div>
                 </div>
@@ -374,7 +374,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                     <Layers className="w-4 h-4 text-emerald-600" />
                     {buildingBlocksT.reviewInvestigatorInbox}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-400 font-bold">{buildingBlocksT.activeAssignments}</span>
+                  <span className="type-technical text-slate-400">{buildingBlocksT.activeAssignments}</span>
                 </div>
 
                 <div className="space-y-2">
@@ -382,7 +382,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                     <div key={c.id} className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white transition text-xs">
                       <div>
                         <p className="font-semibold text-slate-800">{c.name}</p>
-                        <p className="text-[10px] text-slate-500">
+                        <p className="type-caption text-slate-500">
                           {c.risk === 'Suspicious IP Location' ? buildingBlocksT.suspiciousIpLocation :
                            c.risk === 'Document Expiry Date mismatch' ? buildingBlocksT.docExpiryMismatch :
                            buildingBlocksT.nameTypoPassport}
@@ -409,7 +409,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                             </button>
                           </>
                         ) : (
-                          <span className={`text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded ${
+                          <span className={`type-technical uppercase px-2 py-0.5 rounded ${
                             c.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
                           }`}>
                             {c.status === 'Approved' ? buildingBlocksT.caseApproved : buildingBlocksT.caseRejected}

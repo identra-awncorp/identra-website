@@ -152,7 +152,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
     switch (type) {
       case 'grid':
         return (
-          <div className="w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-[#354CE1]">
+          <div className="type-technical w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden text-[#354CE1]">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#354CE1_1px,transparent_1px)] [background-size:12px_12px]" />
             <div className="flex justify-between border-b border-[#354CE1]/20 pb-1 z-10">
               <span>{t.visualMetricSpace}</span>
@@ -175,7 +175,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <path d="M 25 20 L 48 32 L 75 40" stroke="#354CE1" strokeWidth="0.5" strokeDasharray="2,2" opacity="0.3" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 z-10 text-slate-400">
               <span>{t.visualErrRate}</span>
               <span>{t.visualSampleSize}</span>
             </div>
@@ -183,7 +183,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         );
       case 'space':
         return (
-          <div className="w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-purple-400">
+          <div className="type-technical w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden text-purple-400">
             <div className="absolute inset-0 bg-gradient-to-tr from-purple-950/20 via-transparent to-transparent" />
             <div className="flex justify-between border-b border-purple-500/20 pb-1 z-10">
               <span>{t.visualSubRemoval}</span>
@@ -202,7 +202,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <line x1="75" y1="12" x2="75" y2="30" stroke="#94a3b8" strokeWidth="0.5" strokeDasharray="1,1" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-purple-500/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-purple-500/20 pt-1 z-10 text-slate-400">
               <span>{t.visualLeakage}</span>
               <span>{t.visualBiomVar}</span>
             </div>
@@ -210,7 +210,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         );
       case 'rings':
         return (
-          <div className="w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-[#354CE1]">
+          <div className="type-technical w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden text-[#354CE1]">
             <div className="absolute inset-0 bg-gradient-to-b from-[#354CE1]/10 via-transparent to-transparent" />
             <div className="flex justify-between border-b border-[#354CE1]/20 pb-1 z-10">
               <span>{t.visualMuleDetector}</span>
@@ -225,7 +225,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <circle cx="68" cy="30" r="2" fill="#354CE1" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 z-10 text-slate-400">
               <span>{t.visualTelemetryOk}</span>
               <span>{t.visualMuleRate}</span>
             </div>
@@ -233,7 +233,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         );
       case 'portraits':
         return (
-          <div className="w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-[#22c55e]">
+          <div className="type-technical w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden text-[#22c55e]">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#22c55e_1px,transparent_1px)] [background-size:10px_10px]" />
             <div className="flex justify-between border-b border-[#22c55e]/20 pb-1 z-10">
               <span>{t.visualThreatTdp}</span>
@@ -252,7 +252,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <path d="M 35 30 L 65 30" stroke="#22c55e" strokeWidth="1" strokeDasharray="3,3" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-[#22c55e]/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-[#22c55e]/20 pt-1 z-10 text-slate-400">
               <span>{t.visualAuditBias}</span>
               <span>{t.visualEstCi}</span>
             </div>
@@ -260,7 +260,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         );
       case 'nodes':
         return (
-          <div className="w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-amber-500">
+          <div className="type-technical w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden text-amber-500">
             <div className="flex justify-between border-b border-amber-500/20 pb-1 z-10">
               <span>{t.visualKybGraph}</span>
               <span>{t.visualOnlineCrawl}</span>
@@ -282,7 +282,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <line x1="25" y1="18" x2="75" y2="18" stroke="#94a3b8" strokeWidth="0.5" strokeDasharray="1,1" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-amber-500/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-amber-500/20 pt-1 z-10 text-slate-400">
               <span>{t.visualTrustScore}</span>
               <span>{t.visualNodes}</span>
             </div>
@@ -290,7 +290,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         );
       case 'network':
         return (
-          <div className="w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-[#354CE1]">
+          <div className="type-technical w-full h-full bg-slate-900 p-3 flex flex-col justify-between relative overflow-hidden text-[#354CE1]">
             <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#354CE1_1px,transparent_1px)] [background-size:8px_8px]" />
             <div className="flex justify-between border-b border-[#354CE1]/20 pb-1 z-10">
               <span>{t.visualDigitalId}</span>
@@ -307,7 +307,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <rect x="44" y="47" width="12" height="10" rx="1" fill="#1e293b" stroke="#354CE1" strokeWidth="0.5" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-[#354CE1]/20 pt-1 z-10 text-slate-400">
               <span>{t.visualVerifyPass}</span>
               <span>{t.visualTrustLevelMax}</span>
             </div>
@@ -316,7 +316,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
       case 'sphere':
       default:
         return (
-          <div className="w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden font-mono text-[9px] text-[#22c55e]">
+          <div className="type-technical w-full h-full bg-slate-950 p-3 flex flex-col justify-between relative overflow-hidden text-[#22c55e]">
             <div className="absolute inset-0 bg-gradient-to-tr from-[#22c55e]/10 via-transparent to-transparent" />
             <div className="flex justify-between border-b border-[#22c55e]/20 pb-1 z-10">
               <span>{t.visualGlobalLaws}</span>
@@ -332,7 +332,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 <circle cx="50" cy="10" r="2" fill="#a855f7" />
               </svg>
             </div>
-            <div className="flex justify-between border-t border-[#22c55e]/20 pt-1 text-[8px] z-10 text-slate-400">
+            <div className="flex justify-between border-t border-[#22c55e]/20 pt-1 z-10 text-slate-400">
               <span>{t.visualPolicies}</span>
               <span>{t.visualDbSyncOk}</span>
             </div>
@@ -364,7 +364,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="space-y-6"
+            className="stack-hero"
           >
             <button 
               onClick={onBackToLanding}
@@ -373,18 +373,18 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               <span>&larr; {t.backToPlatform}</span>
             </button>
 
-            <div className="space-y-3">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#354CE1]/10 text-[#354CE1] text-[10px] font-bold rounded-full uppercase tracking-wider w-max">
+            <div className="stack-card">
+              <span className="type-label inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#354CE1]/10 text-[#354CE1] rounded-full uppercase w-max">
                 <Sparkle className="w-3.5 h-3.5 fill-current text-[#354CE1]" />
                 <span>{t.researchLabs}</span>
               </span>
 
-              <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight text-[#0F1E36] leading-[1.05]">
+              <h1 className="type-page-title text-[#0F1E36]">
                 {t.heroTitle}
               </h1>
             </div>
 
-            <p className="text-slate-600 text-sm md:text-lg leading-relaxed max-w-3xl font-normal pt-2">
+            <p className="type-lead measure-lead text-slate-600 pt-2">
               {t.heroDesc}
             </p>
           </motion.div>
@@ -394,7 +394,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
       {/* CORE RESEARCH AREAS GRID */}
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="border-t border-slate-200/60 pt-10">
-          <h2 className="text-xs font-extrabold text-[#354CE1] uppercase tracking-widest mb-10 text-left">
+          <h2 className="type-label text-[#354CE1] uppercase mb-10 text-left">
             {t.coreResearchAreas}
           </h2>
 
@@ -406,10 +406,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               { title: t.categories["Data privacy"], desc: t.dataPrivacyDesc }
             ].map((area, idx) => (
               <div key={idx} className="space-y-3 flex flex-col justify-between h-full border-t border-slate-200/50 pt-4 group hover:border-[#354CE1] transition-colors duration-300">
-                <h3 className="font-bold text-slate-900 text-[13px] tracking-tight group-hover:text-[#354CE1] transition-colors">
+                <h3 className="type-control text-slate-900 group-hover:text-[#354CE1] transition-colors">
                   {area.title}
                 </h3>
-                <p className="text-slate-500 text-[11px] leading-relaxed font-normal flex-1">
+                <p className="type-caption text-slate-500 flex-1">
                   {area.desc}
                 </p>
               </div>
@@ -423,10 +423,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-slate-100 pb-8">
             <div className="space-y-2 text-left">
-              <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#0F1E36] tracking-tight">
+              <h2 className="type-section-title-compact text-[#0F1E36]">
                 {t.publicationsTitle}
               </h2>
-              <p className="text-slate-500 text-sm max-w-xl font-normal leading-relaxed">
+              <p className="type-body text-slate-500 max-w-xl">
                 {t.publicationsDesc}
               </p>
             </div>
@@ -450,14 +450,14 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition duration-200 flex items-center gap-2 ${
+                className={`type-control px-4 py-2 rounded-full transition duration-200 flex items-center gap-2 ${
                   activeCategory === cat 
                     ? 'bg-slate-900 text-white shadow-sm' 
                     : 'bg-indigo-50/70 text-[#354CE1] hover:bg-indigo-100/60'
                 }`}
               >
                 <span>{t.categories[cat]}</span>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-indigo-100 text-[#354CE1]'}`}>
+                <span className={`type-caption px-2 py-0.5 rounded-full ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-indigo-100 text-[#354CE1]'}`}>
                   {cat === 'All' ? counts.All : counts[cat]}
                 </span>
               </button>
@@ -483,7 +483,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                       <div className="md:col-span-3 aspect-[4/3] w-full rounded-2xl overflow-hidden shadow-xs border border-slate-200/60 bg-slate-100 relative shrink-0">
                         {renderVisualMock(pub.visualType)}
                         <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-200 flex items-center justify-center cursor-pointer group-hover/thumb:opacity-100 opacity-0">
-                          <span className="bg-white/95 backdrop-blur-xs text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md text-slate-800 flex items-center gap-1">
+                          <span className="type-caption bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full shadow-md text-slate-800 flex items-center gap-1">
                             <BookOpen className="w-3 h-3 text-[#354CE1]" />
                             {t.readAbstract}
                           </span>
@@ -495,7 +495,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                         <div className="space-y-3">
                           {/* Category tag */}
                           <div className="flex items-center gap-3">
-                            <span className={`inline-block text-[10px] font-extrabold uppercase tracking-wider ${
+                            <span className={`type-label inline-block uppercase ${
                               pub.category === 'Fraud intelligence' ? 'text-[#354CE1]' :
                               pub.category === 'Data privacy' ? 'text-purple-600' :
                               pub.category === 'Online safety' ? 'text-emerald-600' : 'text-amber-600'
@@ -503,19 +503,19 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                               {t.categories[pub.category as keyof typeof t.categories] || pub.category}
                             </span>
                             <span className="w-1 h-1 rounded-full bg-slate-300" />
-                            <span className="text-slate-400 font-mono text-[10px]">{pub.readTime}</span>
+                            <span className="type-technical text-slate-400">{pub.readTime}</span>
                           </div>
 
                           {/* Title */}
                           <h3 
                             onClick={() => setSelectedPub(pub)}
-                            className="text-lg md:text-2xl font-display font-semibold text-slate-900 group-hover:text-[#354CE1] transition-colors cursor-pointer leading-snug tracking-tight"
+                            className="type-card-title text-slate-900 group-hover:text-[#354CE1] transition-colors cursor-pointer"
                           >
                             {pub.title}
                           </h3>
 
                           {/* Summary description text */}
-                          <p className="text-slate-500 text-sm leading-relaxed font-normal">
+                          <p className="type-body text-slate-500">
                             {pub.description}
                           </p>
                         </div>
@@ -523,7 +523,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                         {/* Paper details and abstract trigger */}
                         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100">
                           <div className="space-y-0.5">
-                            <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wider">{t.authorsLabel}</p>
+                            <p className="type-label text-slate-400 uppercase">{t.authorsLabel}</p>
                             <p className="text-slate-600 text-xs font-normal max-w-lg truncate">{pub.authors}</p>
                           </div>
 
@@ -531,7 +531,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                             <span className="text-slate-400 text-xs font-mono">{pub.date}</span>
                             <button
                               onClick={() => setSelectedPub(pub)}
-                              className="bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-150 text-[#354CE1] font-bold text-[11px] px-4 py-2 rounded-full shadow-2xs transition flex items-center gap-1"
+                              className="type-control bg-slate-50 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-150 text-[#354CE1] px-4 py-2 rounded-full shadow-2xs transition flex items-center gap-1"
                             >
                               <span>{t.abstractLabel}</span>
                               <ChevronRight className="w-3 h-3" />
@@ -564,10 +564,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
       {/* READING LIST SECTION */}
       <div className="max-w-7xl mx-auto px-6 py-20 text-left">
         <div className="space-y-2 mb-10">
-          <h2 className="text-xs font-extrabold text-[#354CE1] uppercase tracking-widest">
+          <h2 className="type-label text-[#354CE1] uppercase">
             {t.readingListTitle}
           </h2>
-          <p className="text-slate-500 text-sm max-w-2xl font-normal leading-relaxed">
+          <p className="type-body text-slate-500 max-w-2xl">
             {t.readingListDesc}
           </p>
         </div>
@@ -593,27 +593,27 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               <circle cx="52" cy="28" r="2.5" fill="#ef4444" />
             </svg>
             
-            <div className="absolute bottom-4 left-4 bg-slate-900/90 py-1 px-2.5 rounded text-[8px] font-mono text-[#22c55e] border border-[#22c55e]/20 z-10">
+            <div className="type-technical absolute bottom-4 left-4 bg-slate-900/90 py-1 px-2.5 rounded text-[#22c55e] border border-[#22c55e]/20 z-10">
               {t.atlasSystemActive}
             </div>
           </div>
 
           {/* Core copy block */}
           <div className="md:col-span-8 p-10 md:p-14 space-y-6">
-            <span className="text-[10px] font-extrabold text-[#22c55e] uppercase tracking-widest bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded w-max block">
+            <span className="type-label text-[#22c55e] uppercase bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded w-max block">
               {t.featuredTool}
             </span>
-            <h3 className="text-2xl md:text-3.5xl font-display font-bold text-slate-900 leading-tight">
+            <h3 className="type-section-title-compact text-slate-900">
               {t.atlasTitle}
             </h3>
-            <p className="text-slate-500 text-sm md:text-base leading-relaxed max-w-2xl font-normal">
+            <p className="type-body text-slate-500 max-w-2xl">
               {t.atlasDesc}
             </p>
             
             <div className="pt-2">
               <button
                 onClick={() => setIsAtlasOpen(true)}
-                className="bg-black hover:bg-slate-800 text-white font-bold text-xs px-6 py-4 rounded-full shadow-md transition flex items-center gap-1.5 group"
+                className="type-control bg-black hover:bg-slate-800 text-white px-6 py-4 rounded-full shadow-md transition flex items-center gap-1.5 group"
               >
                 <span>{t.exploreAtlas}</span>
                 <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 transition-transform" />
@@ -626,10 +626,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
         <div className="border-t border-slate-200/60 pt-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div className="space-y-1">
-              <h3 className="text-xl md:text-2xl font-display font-bold text-slate-900 tracking-tight">
+              <h3 className="type-card-title text-slate-900">
                 {t.curatedBriefingsTitle}
               </h3>
-              <p className="text-slate-500 text-xs md:text-sm font-normal">
+              <p className="type-body-sm text-slate-500">
                 {t.curatedBriefingsDesc}
               </p>
             </div>
@@ -678,7 +678,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between gap-2">
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                      <span className={`type-label uppercase px-2.5 py-1 rounded-full ${
                         item.category === 'Regulatory Deep-Dive' ? 'bg-purple-50 text-purple-600' :
                         item.category === 'Technical Briefing' ? 'bg-indigo-50 text-indigo-600' :
                         item.category === 'Academic Paper' ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'
@@ -727,7 +727,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
 
                   <div className="mt-6 pt-4 border-t border-slate-50 flex items-center justify-between text-xs text-slate-400 font-medium">
                     <div className="space-y-0.5">
-                      <span className="text-[10px] text-slate-300 block uppercase font-bold">{t.sourceLabel}</span>
+                      <span className="type-label text-slate-300 block uppercase">{t.sourceLabel}</span>
                       <span>{item.source} {t.bulletSeparator} {item.publicationYear}</span>
                     </div>
                     
@@ -783,10 +783,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
             >
               <div className="bg-[#FAFBFD] border-b border-slate-100 p-6 md:p-8 flex items-start justify-between relative">
                 <div className="space-y-2">
-                  <span className="text-[9px] font-bold text-[#354CE1] uppercase tracking-wider bg-indigo-50 px-2 py-0.5 rounded">
+                  <span className="type-label text-[#354CE1] uppercase bg-indigo-50 px-2 py-0.5 rounded">
                     {t.readingListCategories[selectedReadItem.category as keyof typeof t.readingListCategories] || selectedReadItem.category}
                   </span>
-                  <h3 className="text-lg md:text-xl font-display font-semibold text-slate-900 pr-6 leading-snug">
+                  <h3 className="type-card-title text-slate-900 pr-6">
                     {selectedReadItem.title}
                   </h3>
                 </div>
@@ -803,24 +803,24 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               <div className="p-6 md:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
                 <div className="flex flex-wrap gap-x-6 gap-y-2 text-slate-500 text-xs border-b border-slate-100 pb-4">
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">{t.sourceLabel}</span>
+                    <span className="type-label text-slate-400 uppercase block">{t.sourceLabel}</span>
                     <span className="font-semibold text-slate-800">{selectedReadItem.source}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">{t.yearLengthLabel}</span>
+                    <span className="type-label text-slate-400 uppercase block">{t.yearLengthLabel}</span>
                     <span className="font-semibold text-slate-800">{selectedReadItem.publicationYear} {t.bulletSeparator} {selectedReadItem.readTime} {t.readingSuffix}</span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.executiveSummary}</h4>
-                  <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-normal bg-indigo-50/20 p-4 rounded-2xl border border-indigo-100/30">
+                  <h4 className="type-label text-slate-400 uppercase">{t.executiveSummary}</h4>
+                  <p className="type-body-sm text-slate-600 bg-indigo-50/20 p-4 rounded-2xl border border-indigo-100/30">
                     {selectedReadItem.summary}
                   </p>
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.keyInsights}</h4>
+                  <h4 className="type-label text-slate-400 uppercase">{t.keyInsights}</h4>
                   <ul className="space-y-2.5">
                     {selectedReadItem.keyInsights.map((insight, idx) => (
                       <li key={idx} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-600">
@@ -892,10 +892,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
             >
               <div className="bg-[#FAFBFD] border-b border-slate-100 p-6 md:p-8 flex items-start justify-between relative">
                 <div className="space-y-2">
-                  <span className="text-[9px] font-bold text-[#354CE1] uppercase tracking-wider bg-indigo-50 px-2 py-0.5 rounded">
+                  <span className="type-label text-[#354CE1] uppercase bg-indigo-50 px-2 py-0.5 rounded">
                     {t.categories[selectedPub.category as keyof typeof t.categories] || selectedPub.category}
                   </span>
-                  <h3 className="text-lg md:text-xl font-display font-semibold text-slate-900 pr-6 leading-snug">
+                  <h3 className="type-card-title text-slate-900 pr-6">
                     {selectedPub.title}
                   </h3>
                 </div>
@@ -912,31 +912,31 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
               <div className="p-6 md:p-8 space-y-6 max-h-[70vh] overflow-y-auto">
                 <div className="flex flex-wrap gap-x-6 gap-y-2 text-slate-500 text-xs border-b border-slate-100 pb-4">
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">{t.publishedLabel}</span>
+                    <span className="type-label text-slate-400 uppercase block">{t.publishedLabel}</span>
                     <span className="font-semibold text-slate-800">{selectedPub.date}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] block">{t.lengthLabel}</span>
+                    <span className="type-label text-slate-400 uppercase block">{t.lengthLabel}</span>
                     <span className="font-semibold text-slate-800">{selectedPub.pages} {t.pagesSuffix} {t.bulletSeparator} {selectedPub.readTime}</span>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.authorsLabel}</h4>
-                  <p className="text-xs md:text-sm font-medium text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <h4 className="type-label text-slate-400 uppercase">{t.authorsLabel}</h4>
+                  <p className="type-body-sm text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100">
                     {selectedPub.authors}
                   </p>
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.abstractLabel}</h4>
-                  <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-normal bg-indigo-50/20 p-4 rounded-2xl border border-indigo-100/30">
+                  <h4 className="type-label text-slate-400 uppercase">{t.abstractLabel}</h4>
+                  <p className="type-body-sm text-slate-600 bg-indigo-50/20 p-4 rounded-2xl border border-indigo-100/30">
                     {selectedPub.abstract}
                   </p>
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t.keyTakeaways}</h4>
+                  <h4 className="type-label text-slate-400 uppercase">{t.keyTakeaways}</h4>
                   <ul className="space-y-2.5">
                     {selectedPub.keyTakeaways.map((takeaway, tIdx) => (
                       <li key={tIdx} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-600">
@@ -950,7 +950,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
 
               {/* Modal Footer download */}
               <div className="p-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-                <span className="text-slate-400 text-[10px] font-normal flex items-center gap-1">
+                <span className="type-caption text-slate-400 flex items-center gap-1">
                   <Info className="w-3.5 h-3.5 text-[#354CE1]" />
                   <span>{t.licenseNotice}</span>
                 </span>
@@ -998,11 +998,11 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                 {/* Header info */}
                 <div className="p-6 border-b border-slate-150 flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-1.5">
+                    <h3 className="type-card-title text-slate-900 flex items-center gap-1.5">
                       <Globe className="w-5 h-5 text-emerald-600" />
                       <span>{t.atlasDatabaseTitle}</span>
                     </h3>
-                    <p className="text-slate-400 text-[11px] font-normal">{t.atlasDatabaseDesc}</p>
+                    <p className="type-caption text-slate-400">{t.atlasDatabaseDesc}</p>
                   </div>
                   
                   <button
@@ -1035,7 +1035,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                       <button
                         key={region}
                         onClick={() => setAtlasFilterRegion(region)}
-                        className={`px-2.5 py-1 rounded text-[10px] font-extrabold transition ${
+                        className={`type-control px-2.5 py-1 rounded transition ${
                           atlasFilterRegion === region
                             ? 'bg-emerald-600 text-white shadow-2xs'
                             : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'
@@ -1063,7 +1063,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                             <MapPin className="w-3.5 h-3.5 text-slate-400" />
                             {law.country}
                           </span>
-                          <span className={`text-[8.5px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                          <span className={`type-caption px-1.5 py-0.5 rounded-full ${
                             law.status === 'In Effect' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' :
                             law.status === 'Pending 2026' ? 'bg-amber-50 text-amber-700 border border-amber-100' : 'bg-blue-50 text-blue-700 border border-blue-100'
                           }`}>
@@ -1072,7 +1072,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                         </div>
                         
                         <h4 className="font-bold text-slate-900 text-xs line-clamp-1">{law.lawName}</h4>
-                        <div className="flex justify-between items-center text-[10px] text-slate-400 pt-1">
+                        <div className="type-caption flex justify-between items-center text-slate-400 pt-1">
                           <span>{t.targetAgeLabel}: &lt;{law.minAge}</span>
                           <span className="flex items-center gap-0.5 font-semibold text-slate-500">
                             <span>{t.strictnessLabel}: </span>
@@ -1108,23 +1108,23 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                   <div className="p-6 md:p-8 flex flex-col justify-between h-full overflow-y-auto">
                     <div className="space-y-6 text-left">
                       <div className="space-y-1">
-                        <span className="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest block">{t.regionJurisdiction}</span>
+                        <span className="type-label text-emerald-600 uppercase block">{t.regionJurisdiction}</span>
                         <h4 className="text-lg font-bold text-slate-900">{selectedAtlasLaw.country}</h4>
                         <p className="text-slate-400 text-xs font-medium">{getLocalizedRegionName(selectedAtlasLaw.region)}</p>
                       </div>
 
                       <div className="space-y-1 border-t border-slate-100 pt-4">
-                        <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">{t.actLegislativeName}</span>
+                        <span className="type-label text-slate-400 uppercase block">{t.actLegislativeName}</span>
                         <p className="font-bold text-slate-800 text-xs md:text-sm leading-snug">{selectedAtlasLaw.lawName}</p>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4 border-y border-slate-100 py-4">
                         <div>
-                          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">{t.minSafeAge}</span>
+                          <span className="type-label text-slate-400 uppercase block">{t.minSafeAge}</span>
                           <p className="font-bold text-slate-800 text-sm">{selectedAtlasLaw.minAge} {t.yearsOld}</p>
                         </div>
                         <div>
-                          <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">{t.statusLabel}</span>
+                          <span className="type-label text-slate-400 uppercase block">{t.statusLabel}</span>
                           <p className="font-bold text-slate-800 text-xs flex items-center gap-1 pt-0.5">
                             <span className={`w-1.5 h-1.5 rounded-full ${selectedAtlasLaw.status === 'In Effect' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                             {t.status[selectedAtlasLaw.status as keyof typeof t.status] || selectedAtlasLaw.status}
@@ -1133,10 +1133,10 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                       </div>
 
                       <div className="space-y-2">
-                        <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">{t.methodsAllowed}</span>
+                        <span className="type-label text-slate-400 uppercase block">{t.methodsAllowed}</span>
                         <div className="flex flex-wrap gap-1">
                           {selectedAtlasLaw.methodsAllowed.map((method, mIdx) => (
-                            <span key={mIdx} className="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2.5 py-1 rounded">
+                            <span key={mIdx} className="type-caption bg-slate-100 text-slate-700 px-2.5 py-1 rounded">
                               {method}
                             </span>
                           ))}
@@ -1144,7 +1144,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
                       </div>
 
                       <div className="space-y-2">
-                        <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest block">{t.operationalImpact}</span>
+                        <span className="type-label text-slate-400 uppercase block">{t.operationalImpact}</span>
                         <p className="text-slate-600 text-xs leading-relaxed font-normal bg-emerald-50/20 p-4 rounded-xl border border-emerald-100/30">
                           {selectedAtlasLaw.details}
                         </p>

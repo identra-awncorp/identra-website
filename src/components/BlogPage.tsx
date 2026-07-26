@@ -319,7 +319,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
             {/* Left featured large card: Gartner Quadrant */}
             <button type="button"
               onClick={() => openBlogDetail(featuredPost)}
-              className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden"
+              className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden text-left"
             >
               {/* Outer light glow */}
               <div className="absolute -inset-px bg-gradient-to-tr from-transparent via-[#354CE1]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
@@ -409,7 +409,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                 <button type="button"
                   key={item.id}
                   onClick={() => openBlogDetail(item)}
-                  className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200"
+                  className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200 text-left"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
@@ -576,7 +576,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                     <button type="button"
                       key={post.id}
                       onClick={() => openBlogDetail(post)}
-                      className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full"
+                      className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full text-left"
                     >
                       {post.coverImage ? (
                         <div className="relative h-40 shrink-0 overflow-hidden bg-slate-100">

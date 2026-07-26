@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const DEFAULT_SITE_URL = 'https://identra.com';
+export const DEFAULT_SITE_URL = 'https://identra.id.vn';
 export const PUBLIC_LOGO_PATH = '/identra-logo.svg';
 export const PUBLIC_SOCIAL_IMAGE_PATH = '/social/identra-og.jpg';
 export const SOCIAL_IMAGE_WIDTH = '1200';

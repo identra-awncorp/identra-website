@@ -6,4 +6,4 @@ Disallow: /ja/login
 Disallow: /de/login
 Disallow: /vi/login
 
-Sitemap: https://identra.com/sitemap.xml
+Sitemap: https://identra.id.vn/sitemap.xml

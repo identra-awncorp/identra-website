@@ -23,10 +23,7 @@ import {
   type Locale,
   viewToPath,
 } from '../types/routes';
-import {
-  isSsiBlogArticleId,
-  SSI_BLOG_ARTICLE,
-} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
+import { getStructuredBlogArticle } from '../content/blog/structuredBlogArticles';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -150,9 +147,7 @@ export default function SeoMetadata({
     const siteUrl = normalizeSiteUrl(import.meta.env.VITE_SITE_URL);
     const localeMeta = LANGUAGE_META[language];
     const currentBlogId = blogId ?? DEFAULT_BLOG_DETAIL_ID;
-    const structuredArticle = isSsiBlogArticleId(currentBlogId)
-      ? SSI_BLOG_ARTICLE
-      : null;
+    const structuredArticle = getStructuredBlogArticle(currentBlogId);
     const routeTitle = isNotFound
       ? seo.notFoundTitle
       : seo.routeTitles[currentView];

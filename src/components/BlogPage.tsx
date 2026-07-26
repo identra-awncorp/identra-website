@@ -16,9 +16,10 @@ import { BLOG_PAGE_TRANSLATIONS } from '../translations/BlogPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
 import type { BlogDetailId } from '../types/routes';
 import {
-  isSsiBlogArticleId,
-  SSI_BLOG_ARTICLE,
-} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
+  getStructuredBlogArticle,
+  STRUCTURED_BLOG_ARTICLES,
+} from '../content/blog/structuredBlogArticles';
+import type { BlogArticleImage } from '../content/blog/structuredBlogArticleModel';
 
 // Interfaces
 type BlogPostId = BlogDetailId;
@@ -33,7 +34,7 @@ interface BlogPost {
   publishedAt: string;
   gradient: string;
   illustration: 'shield' | 'chart' | 'users' | 'fingerprint' | 'globe' | 'face' | 'link' | 'lock' | 'document' | 'alert';
-  coverImage?: typeof SSI_BLOG_ARTICLE.coverImage;
+  coverImage?: BlogArticleImage;
 }
 
 interface BlogPageProps {
@@ -133,15 +134,15 @@ const LEGACY_BLOG_POSTS_DATA: Omit<BlogPost, 'publishedAt'>[] = [
 ];
 
 const BLOG_POSTS_DATA: BlogPost[] = [
-  {
-    id: SSI_BLOG_ARTICLE.id,
-    topics: [...SSI_BLOG_ARTICLE.topics],
-    industries: [...SSI_BLOG_ARTICLE.industries],
-    publishedAt: SSI_BLOG_ARTICLE.publishedAt,
+  ...STRUCTURED_BLOG_ARTICLES.map((article) => ({
+    id: article.id,
+    topics: [...article.topics] as TopicId[],
+    industries: [...article.industries] as IndustryId[],
+    publishedAt: article.publishedAt,
     gradient: 'from-[#172554] to-[#312E81]',
-    illustration: 'fingerprint',
-    coverImage: SSI_BLOG_ARTICLE.coverImage,
-  },
+    illustration: 'fingerprint' as const,
+    coverImage: article.coverImage,
+  })),
   ...LEGACY_BLOG_POSTS_DATA.map((post) => ({
     ...post,
     publishedAt: LEGACY_BLOG_PUBLISHED_AT,
@@ -180,11 +181,13 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
   const { language } = useLanguage();
 
   const t = BLOG_PAGE_TRANSLATIONS[language];
-  const postCopy = React.useCallback((post: BlogPost) => (
-    isSsiBlogArticleId(post.id)
-      ? SSI_BLOG_ARTICLE.listing[language]
-      : t.posts[post.id as LegacyBlogPostId]
-  ), [language, t]);
+  const postCopy = React.useCallback((post: BlogPost) => {
+    const structuredArticle = getStructuredBlogArticle(post.id);
+
+    return structuredArticle
+      ? structuredArticle.listing[language]
+      : t.posts[post.id as LegacyBlogPostId];
+  }, [language, t]);
 
   const [selectedTopic, setSelectedTopic] = useState<TopicId>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');

@@ -3,30 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type {
+  BlogArticleImage,
+  BlogArticleListingCopy,
+  BlogArticleTableOfContentsItem,
+  StructuredBlogArticle,
+} from './structuredBlogArticleModel';
 import type { Locale } from '../../types/routes';
 
 export const SSI_BLOG_ARTICLE_ID = 'dinh-danh-tu-chu-ssi-la-gi' as const;
-
-export interface BlogArticleListingCopy {
-  title: string;
-  description: string;
-  type: string;
-  duration: string;
-}
-
-export interface BlogArticleImage {
-  src: string;
-  srcSet: string;
-  sizes: string;
-  width: number;
-  height: number;
-}
-
-export interface BlogArticleTableOfContentsItem {
-  id: string;
-  label: string;
-  level: 2 | 3;
-}
 
 const assetRoot = '/blog/dinh-danh-tu-chu-ssi-la-gi';
 
@@ -396,9 +381,6 @@ Những thành phần này tạo nên nền tảng cơ bản của một hệ th
 - [OpenID Foundation — OpenID for Verifiable Presentations 1.0](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html)`,
     },
   },
-} as const;
+} as const satisfies StructuredBlogArticle;
 
-export type SsiBlogArticle = typeof SSI_BLOG_ARTICLE;
-
-export const isSsiBlogArticleId = (id: string): id is typeof SSI_BLOG_ARTICLE_ID =>
-  id === SSI_BLOG_ARTICLE_ID;
+export type SsiBlogArticle = StructuredBlogArticle;

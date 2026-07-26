@@ -25,12 +25,12 @@ This file tracks issues intentionally deferred until the project has a server/AP
 - Missing translation in production is reported to the server with enough context to fix the source dictionary.
 - `npm.cmd run scan:localization`, `npm.cmd run lint`, and `npm.cmd run build` pass.
 
-## [P2] Move Blog Articles to the API and Complete SSI Locales
+## [P2] Move Blog Articles to the API and Complete Structured Article Locales
 
 **Current state**
-- The SSI article `dinh-danh-tu-chu-ssi-la-gi` is stored in a typed client-side model that mirrors the intended API payload.
-- Its listing metadata is available in English, Spanish, Japanese, German, and Vietnamese.
-- Its full article content is currently available only in Vietnamese. Opening the article from another locale intentionally redirects to the canonical `/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi` route.
+- The current structured blog articles are stored in a typed client-side registry that mirrors the intended API payload.
+- Their listing metadata is available in English, Spanish, Japanese, German, and Vietnamese.
+- Their full article content is currently available only in Vietnamese. Opening a structured article from another locale intentionally redirects to its canonical `/vi/blog-detail/{slug}` route.
 - Responsive article images and the social sharing image are served from the local `public/blog` directory.
 
 **Why this should wait for the server**
@@ -39,8 +39,8 @@ This file tracks issues intentionally deferred until the project has a server/AP
 
 **Suggested server-side follow-up**
 - Add a localized blog article endpoint keyed by slug and locale.
-- Move the static article model and image URLs into the server/CMS response.
-- Add English, Spanish, Japanese, and German article bodies.
+- Move the static article registry, models, and image URLs into the server/CMS response.
+- Add English, Spanish, Japanese, and German bodies for every structured article.
 - Remove the Vietnamese-only route override after each translated payload is available.
 - Generate canonical, hreflang, sitemap, Open Graph, and structured-data metadata from the server-backed locale availability.
 

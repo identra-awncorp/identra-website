@@ -19,10 +19,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { copyTextToClipboard } from '../utils/clipboard';
 import { blogDetailPath, type BlogDetailId } from '../types/routes';
-import {
-  isSsiBlogArticleId,
-  SSI_BLOG_ARTICLE,
-} from '../content/blog/dinh-danh-tu-chu-ssi-la-gi';
+import { getStructuredBlogArticle } from '../content/blog/structuredBlogArticles';
 import StructuredBlogDetailPage from './blog/StructuredBlogDetailPage';
 
 interface BlogDetailPageProps {
@@ -38,10 +35,10 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
   const t = getLocalizedRecord(BLOG_DETAIL_PAGE_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_PAGE_TRANSLATIONS, 'BLOG_DETAIL_PAGE_TRANSLATIONS');
   const dataT = getLocalizedRecord(BLOG_DETAIL_DATA_TRANSLATIONS, language as keyof typeof BLOG_DETAIL_DATA_TRANSLATIONS, 'BLOG_DETAIL_DATA_TRANSLATIONS');
   const blogPageT = BLOG_PAGE_TRANSLATIONS[language];
-  const isStructuredArticle = isSsiBlogArticleId(blogId);
-  const currentPost = isStructuredArticle
+  const structuredArticle = getStructuredBlogArticle(blogId);
+  const currentPost = structuredArticle
     ? blogPageT.posts['blog-1']
-    : blogPageT.posts[blogId];
+    : blogPageT.posts[blogId as keyof typeof blogPageT.posts];
 
   const [activeSection, setActiveSection] = useState('how-it-works');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -98,10 +95,10 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
     setTimeout(() => setCopyStatus('idle'), 2000);
   };
 
-  if (isStructuredArticle) {
+  if (structuredArticle) {
     return (
       <StructuredBlogDetailPage
-        article={SSI_BLOG_ARTICLE}
+        article={structuredArticle}
         onBack={onBack}
         onOpenSandbox={onOpenSandbox}
       />

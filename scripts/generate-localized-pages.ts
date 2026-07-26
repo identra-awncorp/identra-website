@@ -29,10 +29,7 @@ import {
   type Locale,
   viewToPath,
 } from '../src/types/routes';
-import {
-  isSsiBlogArticleId,
-  SSI_BLOG_ARTICLE,
-} from '../src/content/blog/dinh-danh-tu-chu-ssi-la-gi';
+import { getStructuredBlogArticle } from '../src/content/blog/structuredBlogArticles';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -121,9 +118,7 @@ const renderLocalizedHtml = (
   const routeTitle = seo.routeTitles[route.view];
   const routeGroup = SEO_ROUTE_GROUPS[route.view];
   const currentBlogId = route.blogId ?? DEFAULT_BLOG_DETAIL_ID;
-  const structuredArticle = isSsiBlogArticleId(currentBlogId)
-    ? SSI_BLOG_ARTICLE
-    : null;
+  const structuredArticle = getStructuredBlogArticle(currentBlogId);
   const blogPost = route.view === 'blog-detail'
     ? structuredArticle
       ? {

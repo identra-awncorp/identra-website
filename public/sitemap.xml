@@ -4525,4 +4525,18 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc" />
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
 </urlset>

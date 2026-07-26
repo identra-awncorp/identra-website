@@ -25,14 +25,20 @@ test('fully translated views keep all supported locales', () => {
   assert.equal(viewToPath('connect', 'de'), '/de/connect');
 });
 
-test('Vietnamese-only SSI article canonicalizes every locale to Vietnamese', () => {
-  const articleId = 'dinh-danh-tu-chu-ssi-la-gi';
+test('Vietnamese-only structured articles canonicalize every locale to Vietnamese', () => {
+  const articleIds = [
+    'dinh-danh-tu-chu-ssi-la-gi',
+    'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
+    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+  ] as const;
 
-  assert.deepEqual(getBlogDetailLocales(articleId), ['vi']);
-  assert.equal(pathToBlogDetailId(`/en/blog-detail/${articleId}`), articleId);
-  assert.equal(blogDetailPath(articleId, 'en'), `/vi/blog-detail/${articleId}`);
-  assert.equal(
-    localizePath(`/de/blog-detail/${articleId}`, 'ja'),
-    `/vi/blog-detail/${articleId}`,
-  );
+  for (const articleId of articleIds) {
+    assert.deepEqual(getBlogDetailLocales(articleId), ['vi']);
+    assert.equal(pathToBlogDetailId(`/en/blog-detail/${articleId}`), articleId);
+    assert.equal(blogDetailPath(articleId, 'en'), `/vi/blog-detail/${articleId}`);
+    assert.equal(
+      localizePath(`/de/blog-detail/${articleId}`, 'ja'),
+      `/vi/blog-detail/${articleId}`,
+    );
+  }
 });

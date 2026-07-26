@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import type { SsiBlogArticle } from '../../content/blog/dinh-danh-tu-chu-ssi-la-gi';
+import type { StructuredBlogArticle } from '../../content/blog/structuredBlogArticleModel';
 import {
   BLOG_DETAIL_DATA_TRANSLATIONS,
   BLOG_DETAIL_PAGE_TRANSLATIONS,
@@ -24,7 +24,7 @@ import { blogDetailPath } from '../../types/routes';
 import { copyTextToClipboard } from '../../utils/clipboard';
 
 interface StructuredBlogDetailPageProps {
-  article: SsiBlogArticle;
+  article: StructuredBlogArticle;
   onBack: () => void;
   onOpenSandbox: () => void;
 }

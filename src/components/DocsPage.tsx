@@ -137,7 +137,7 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
   const renderTabButton = (id: DocsTabId, label: string, Icon: React.ComponentType<{ className?: string }>) => (
     <button
       onClick={() => handleTabChange(id)}
-      className={`flex items-center gap-2 h-full border-b-2 font-semibold text-xs md:text-sm px-1 shrink-0 transition-colors relative top-[1px] ${
+      className={`type-control flex items-center gap-2 h-full border-b-2 px-1 shrink-0 transition-colors relative top-[1px] ${
         currentTab === id
           ? 'border-[#354CE1] text-[#354CE1] dark:border-[#5F75FF] dark:text-[#5F75FF]'
           : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -155,13 +155,13 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
           <div className="flex items-center gap-4">
             <button onClick={onBackToLanding} className="flex items-center gap-2 group cursor-pointer">
               <img src={identraLogo} alt={ui.identra} className="h-8 w-8 object-contain" />
-              <span className="font-display font-bold text-xl tracking-tight text-slate-900 dark:text-white">{ui.identra}</span>
+              <span className="type-featured-title text-slate-900 dark:text-white">{ui.identra}</span>
             </button>
 
             <div className="relative">
               <button
                 onClick={() => setVersionDropdownOpen(!versionDropdownOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold bg-slate-100/55 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 rounded-md border border-slate-100 dark:border-slate-700/40 hover:bg-slate-200/50 dark:hover:bg-slate-700 transition"
+                className="type-control flex items-center gap-1.5 px-2.5 py-1 bg-slate-100/55 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 rounded-md border border-slate-100 dark:border-slate-700/40 hover:bg-slate-200/50 dark:hover:bg-slate-700 transition"
               >
                 <span>{version}</span>
                 <ChevronDown className="w-3 h-3 text-slate-400" />
@@ -177,7 +177,7 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
                           setVersion(versionOption);
                           setVersionDropdownOpen(false);
                         }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between"
+                        className="type-control w-full text-left px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between"
                       >
                         <span>{versionOption}</span>
                         {version === versionOption && <Check className="w-3.5 h-3.5 text-[#354CE1]" />}
@@ -201,15 +201,15 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
                 setSearchOpen(true);
               }}
               onFocus={() => setSearchOpen(true)}
-              className="w-full pl-9 pr-8 py-1.5 text-sm bg-slate-50/50 dark:bg-slate-900/50 text-slate-850 dark:text-slate-100 rounded-lg border border-slate-100 dark:border-slate-800/30 focus:outline-none focus:ring-1 focus:ring-[#354CE1] focus:border-[#354CE1] transition"
+              className="type-control w-full pl-9 pr-8 py-1.5 bg-slate-50/50 dark:bg-slate-900/50 text-slate-850 dark:text-slate-100 rounded-lg border border-slate-100 dark:border-slate-800/30 focus:outline-none focus:ring-1 focus:ring-[#354CE1] focus:border-[#354CE1] transition"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">/</span>
+            <span className="type-label-compact absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">/</span>
 
             {searchOpen && searchQuery.trim() !== '' && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setSearchOpen(false)} />
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/30 rounded-xl shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto">
-                  <div className="px-4 py-2 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-850/30 flex items-center justify-between text-xs text-slate-400 font-medium">
+                  <div className="type-caption px-4 py-2 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-850/30 flex items-center justify-between text-slate-400">
                     <span>{ui.searchResults}</span>
                     <span>{filteredSearchPages.length} {ui.found}</span>
                   </div>
@@ -221,13 +221,13 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
                           onClick={() => handleSearchPageSelect(page)}
                           className="w-full text-left p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-850 transition block"
                         >
-                          <span className="text-xs font-semibold text-[#354CE1] dark:text-[#5F75FF] block uppercase tracking-wide">{t.categories[page.category]}</span>
-                          <span className="text-sm font-bold text-slate-900 dark:text-white mt-1 block">{page.title}</span>
+                          <span className="type-label text-[#354CE1] dark:text-[#5F75FF] block uppercase">{t.categories[page.category]}</span>
+                          <span className="type-card-title-sm text-slate-900 dark:text-white mt-1 block">{page.title}</span>
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <div className="p-6 text-center text-sm text-slate-400">
+                    <div className="type-body-sm p-6 text-center text-slate-400">
                       {formatText(ui.noResults, { query: searchQuery })}
                     </div>
                   )}
@@ -237,10 +237,10 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <a href="https://support.withidentra.com" target="_blank" rel="noreferrer" className="hidden sm:inline-flex text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.helpCenter}</a>
-            <a href="#openapi" onClick={(event) => { event.preventDefault(); handleTabChange('api-ref'); }} className="hidden sm:inline-flex text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.openApi}</a>
+            <a href="https://support.withidentra.com" target="_blank" rel="noreferrer" className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.helpCenter}</a>
+            <a href="#openapi" onClick={(event) => { event.preventDefault(); handleTabChange('api-ref'); }} className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.openApi}</a>
             <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" title={ui.serviceOperational} />
-            <a href="https://status.withidentra.com" target="_blank" rel="noreferrer" className="hidden sm:inline-flex text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.status}</a>
+            <a href="https://status.withidentra.com" target="_blank" rel="noreferrer" className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.status}</a>
             <button onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')} aria-label={ui.toggleTheme} className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
             </button>
@@ -261,7 +261,7 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
         <aside className={`${mobileSidebarOpen ? 'fixed inset-0 z-50 bg-white dark:bg-slate-900 p-6 overflow-y-auto space-y-6' : 'hidden'}`}>
           {mobileSidebarOpen && (
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-6">
-              <span className="font-bold text-slate-900 dark:text-white text-base">{ui.documentationNavigation}</span>
+              <span className="type-card-title text-slate-900 dark:text-white">{ui.documentationNavigation}</span>
               <button onClick={() => setMobileSidebarOpen(false)} className="p-2 text-slate-500 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-850">
                 <X className="w-5 h-5" />
               </button>
@@ -271,11 +271,11 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
           {mobileSidebarOpen && (
             <div className="relative w-full mb-6">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input type="text" placeholder={ui.mobileSearchPlaceholder} value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} className="w-full pl-9 pr-4 py-2 text-sm bg-slate-50/50 dark:bg-slate-800/40 text-slate-850 dark:text-slate-100 rounded-lg border border-slate-100 dark:border-slate-800/30" />
+              <input type="text" placeholder={ui.mobileSearchPlaceholder} value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} className="type-control w-full pl-9 pr-4 py-2 bg-slate-50/50 dark:bg-slate-800/40 text-slate-850 dark:text-slate-100 rounded-lg border border-slate-100 dark:border-slate-800/30" />
               {searchQuery && (
                 <div className="mt-2 bg-slate-50 dark:bg-slate-800 rounded-lg p-1 border border-slate-100 dark:border-slate-800/30 max-h-48 overflow-y-auto">
                   {filteredSearchPages.map(page => (
-                    <button key={page.id} onClick={() => handleSearchPageSelect(page)} className="w-full text-left p-2 hover:bg-slate-100 dark:hover:bg-slate-750 rounded text-xs text-slate-700 dark:text-slate-300">
+                    <button key={page.id} onClick={() => handleSearchPageSelect(page)} className="type-control w-full text-left p-2 hover:bg-slate-100 dark:hover:bg-slate-750 rounded text-slate-700 dark:text-slate-300">
                       {page.title}
                     </button>
                   ))}
@@ -284,18 +284,18 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
             </div>
           )}
 
-          <button onClick={onBackToLanding} className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition pb-2 border-b border-slate-100 dark:border-slate-850/20 w-full">
+          <button onClick={onBackToLanding} className="type-control flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition pb-2 border-b border-slate-100 dark:border-slate-850/20 w-full">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>{ui.backToMain}</span>
           </button>
 
           <div className="space-y-1">
-            <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-2">{ui.documentationNavigation}</h3>
+            <h3 className="type-label text-slate-900 dark:text-white uppercase mb-2">{ui.documentationNavigation}</h3>
             <div className="space-y-0.5">
               {tabItems.map(tab => {
                 const isActive = currentTab === tab.id;
                 return (
-                  <button key={tab.id} onClick={() => handleTabChange(tab.id)} className={`w-full text-left px-3 py-2 text-xs md:text-[13px] font-medium rounded-lg transition-all duration-150 flex items-center justify-between ${isActive ? 'bg-[#EEF2F6] dark:bg-slate-800 text-[#354CE1] dark:text-[#5F75FF] font-semibold' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-850'}`}>
+                  <button key={tab.id} onClick={() => handleTabChange(tab.id)} className={`type-control w-full text-left px-3 py-2 rounded-lg transition-all duration-150 flex items-center justify-between ${isActive ? 'bg-[#EEF2F6] dark:bg-slate-800 text-[#354CE1] dark:text-[#5F75FF]' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/50 dark:hover:bg-slate-850'}`}>
                     <span>{tab.label}</span>
                   </button>
                 );

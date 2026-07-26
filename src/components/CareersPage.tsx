@@ -245,16 +245,16 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
             <div className="lg:col-span-7 flex flex-col justify-between gap-8 text-left">
               <div className="space-y-5">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-white/20 border border-white/25 text-yellow-300 shadow-xs">
+                <span className="type-label inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full uppercase bg-white/20 border border-white/25 text-yellow-300 shadow-xs">
                   <Sparkle className="w-3.5 h-3.5" />
                   <span>{t.hiringBadge}</span>
                 </span>
                 
-                <h1 className="text-4xl md:text-6xl font-display font-medium leading-[1.08] tracking-tight text-white max-w-3xl">
+                <h1 className="type-page-title measure-display text-balance text-white max-w-3xl">
                   {t.heroTitle}
                 </h1>
                 
-                <p className="text-white/95 text-sm md:text-lg leading-relaxed max-w-2xl font-normal">
+                <p className="type-lead measure-lead text-white/95 max-w-2xl">
                   {t.heroDesc}
                 </p>
 
@@ -267,14 +267,14 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                         element.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className="bg-white hover:bg-teal-50 text-[#354CE1] text-xs font-bold px-6 py-4 rounded-full shadow-md transition-all duration-200 flex items-center gap-2 group cursor-pointer"
+                    className="type-control bg-white hover:bg-teal-50 text-[#354CE1] px-6 py-4 rounded-full shadow-md transition-all duration-200 flex items-center gap-2 group cursor-pointer"
                   >
                     <span>{t.exploreOpenRoles}</span>
                     <ArrowRight className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform text-[#354CE1]" />
                   </button>
                   <button
                     onClick={onOpenSandbox}
-                    className="bg-white/10 hover:bg-white/25 text-white text-xs font-bold px-6 py-4 rounded-full border border-white/20 shadow-xs transition cursor-pointer"
+                    className="type-control bg-white/10 hover:bg-white/25 text-white px-6 py-4 rounded-full border border-white/20 shadow-xs transition cursor-pointer"
                   >
                     {t.learnPlatform}
                   </button>
@@ -284,8 +284,8 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
               <div className="grid grid-cols-3 divide-x divide-white/20 border-y border-white/20 bg-white/10 backdrop-blur-xs rounded-2xl overflow-hidden">
                 {hiringStats.map((stat) => (
                   <div key={stat.label} className="py-5 px-4">
-                    <p className="text-2xl md:text-3xl font-display font-semibold text-white">{stat.value}</p>
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-white/75 mt-1">{stat.label}</p>
+                    <p className="type-metric text-white">{stat.value}</p>
+                    <p className="type-label uppercase text-white/75 mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -302,10 +302,10 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                 <div className="bg-white p-5 md:p-6 space-y-4">
                   <div className="flex items-center justify-between gap-4 border-b border-slate-100 pb-4">
                     <div>
-                      <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">{board.snapshotTitle}</p>
-                      <p className="text-sm font-bold text-[#0F1E36] mt-1">{board.snapshotStatus}</p>
+                      <p className="type-label uppercase text-slate-400">{board.snapshotTitle}</p>
+                      <p className="type-body-sm font-bold text-[#0F1E36] mt-1">{board.snapshotStatus}</p>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 border border-emerald-100 shadow-xs">
+                    <span className="type-label inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 uppercase text-emerald-700 border border-emerald-100 shadow-xs">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                       {board.snapshotStatusLabel}
                     </span>
@@ -313,12 +313,12 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
                     <div>
-                      <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">{board.snapshotLocationLabel}</p>
-                      <p className="text-xs font-semibold text-slate-700 mt-1 leading-relaxed">{board.snapshotLocation}</p>
+                      <p className="type-label uppercase text-slate-400">{board.snapshotLocationLabel}</p>
+                      <p className="type-body-sm font-semibold text-slate-700 mt-1">{board.snapshotLocation}</p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">{board.snapshotModeLabel}</p>
-                      <p className="text-xs font-semibold text-slate-700 mt-1 leading-relaxed">{board.snapshotMode}</p>
+                      <p className="type-label uppercase text-slate-400">{board.snapshotModeLabel}</p>
+                      <p className="type-body-sm font-semibold text-slate-700 mt-1">{board.snapshotMode}</p>
                     </div>
                   </div>
                 </div>
@@ -332,11 +332,11 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
       {/* 2. VALUES SECTION */}
       <div className="max-w-7xl mx-auto px-6 py-24">
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <span className="text-[10px] font-extrabold text-[#354CE1] uppercase tracking-widest">{t.cultureBadge}</span>
-          <h2 className="text-3xl md:text-4xl font-display font-medium text-[#0F1E36] tracking-tight">
+          <span className="type-label text-[#354CE1] uppercase">{t.cultureBadge}</span>
+          <h2 className="type-section-title-compact text-[#0F1E36]">
             {t.cultureTitle}
           </h2>
-          <p className="text-slate-500 text-sm md:text-base leading-relaxed">
+          <p className="type-body text-slate-500">
             {t.cultureDesc}
           </p>
         </div>
@@ -359,8 +359,8 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                   <Icon className="w-5 h-5" />
                 </div>
                 
-                <h3 className="text-lg font-bold text-[#0F1E36] mb-3">{val.title}</h3>
-                <p className="text-slate-500 text-xs md:text-sm leading-relaxed">{val.description}</p>
+                <h3 className="type-card-title text-[#0F1E36] mb-3">{val.title}</h3>
+                <p className="type-body-sm text-slate-500">{val.description}</p>
               </motion.div>
             );
           })}
@@ -371,11 +371,11 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
       <div className="w-full bg-slate-50 border-y border-slate-200/50 py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-            <span className="text-[10px] font-extrabold text-[#354CE1] uppercase tracking-widest">{t.perksBadge}</span>
-            <h2 className="text-3xl md:text-4xl font-display font-medium text-[#0F1E36] tracking-tight">
+            <span className="type-label text-[#354CE1] uppercase">{t.perksBadge}</span>
+            <h2 className="type-section-title-compact text-[#0F1E36]">
               {t.perksTitle}
             </h2>
-            <p className="text-slate-500 text-sm md:text-base leading-relaxed">
+            <p className="type-body text-slate-500">
               {t.perksDesc}
             </p>
           </div>
@@ -391,8 +391,8 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 text-[#354CE1] flex items-center justify-center mb-4">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-2">{perk.title}</h4>
-                  <p className="text-slate-500 text-xs leading-relaxed">{perk.desc}</p>
+                  <h4 className="type-card-title text-slate-900 mb-2">{perk.title}</h4>
+                  <p className="type-body-sm text-slate-500">{perk.desc}</p>
                 </div>
               );
             })}
@@ -405,11 +405,11 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
         <div className="max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 text-left">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-[10px] font-extrabold text-[#354CE1] uppercase tracking-widest">{board.processBadge}</span>
-            <h2 className="text-3xl md:text-4xl font-display font-medium text-[#0F1E36] tracking-tight">
+            <span className="type-label text-[#354CE1] uppercase">{board.processBadge}</span>
+            <h2 className="type-section-title-compact text-[#0F1E36]">
               {board.processTitle}
             </h2>
-            <p className="text-slate-500 text-sm md:text-base leading-relaxed">
+            <p className="type-body text-slate-500">
               {board.processDesc}
             </p>
           </div>
@@ -418,11 +418,11 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {board.processSteps.map((step, idx) => (
             <div key={step.title} className="bg-[#FAFBFD] border border-indigo-100 rounded-2xl p-5 text-left shadow-xs hover:shadow-md transition">
-              <div className="w-8 h-8 rounded-xl bg-[#354CE1] text-white flex items-center justify-center text-xs font-extrabold mb-4 shadow-sm">
+              <div className="type-control w-8 h-8 rounded-xl bg-[#354CE1] text-white flex items-center justify-center mb-4 shadow-sm">
                 {idx + 1}
               </div>
-              <h3 className="text-sm font-bold text-[#0F1E36] mb-2">{step.title}</h3>
-              <p className="text-xs leading-relaxed text-slate-500">{step.desc}</p>
+              <h3 className="type-card-title text-[#0F1E36] mb-2">{step.title}</h3>
+              <p className="type-body-sm text-slate-500">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -435,11 +435,11 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
         {/* Header and filters */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-3 text-left">
-            <span className="text-[10px] font-extrabold text-[#354CE1] uppercase tracking-widest">{t.applyBadge}</span>
-            <h2 className="text-3xl font-display font-medium text-[#0F1E36] tracking-tight">
+            <span className="type-label text-[#354CE1] uppercase">{t.applyBadge}</span>
+            <h2 className="type-section-title-compact text-[#0F1E36]">
               {t.openPositionsTitle}
             </h2>
-            <p className="text-slate-500 text-xs md:text-sm leading-relaxed max-w-md">
+            <p className="type-body-sm text-slate-500 max-w-md">
               {t.openPositionsDesc}
             </p>
           </div>
@@ -452,7 +452,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
               placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-full border border-slate-200 text-xs font-semibold placeholder-slate-400 focus:outline-none focus:border-[#354CE1] focus:ring-1 focus:ring-[#354CE1] transition bg-white"
+              className="type-control w-full pl-10 pr-4 py-3 rounded-full border border-slate-200 placeholder-slate-400 focus:outline-none focus:border-[#354CE1] focus:ring-1 focus:ring-[#354CE1] transition bg-white"
             />
           </div>
         </div>
@@ -474,14 +474,14 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                 setSelectedDepartment(dept);
                 setExpandedJobId(null);
               }}
-              className={`px-4 py-2 rounded-full text-xs font-bold transition duration-200 ${
+              className={`type-control px-4 py-2 rounded-full transition duration-200 ${
                 selectedDepartment === dept 
                   ? 'bg-[#354CE1] text-white shadow-xs' 
                   : 'bg-indigo-50/70 text-[#354CE1] hover:bg-indigo-100/60'
               }`}
             >
               {dept === CAREERS_DEPARTMENT_KEYS.all ? t.allRoles : departmentLabels[dept]}
-              <span className={`text-[10px] ml-1.5 px-1.5 py-0.5 rounded-full font-extrabold ${selectedDepartment === dept ? 'bg-white/20 text-white' : 'bg-indigo-100/80 text-[#354CE1]'}`}>
+              <span className={`type-caption ml-1.5 px-1.5 py-0.5 rounded-full font-bold ${selectedDepartment === dept ? 'bg-white/20 text-white' : 'bg-indigo-100/80 text-[#354CE1]'}`}>
                 {dept === CAREERS_DEPARTMENT_KEYS.all 
                   ? translatedJobs.length 
                   : translatedJobs.filter(j => j.department === dept).length
@@ -508,7 +508,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-[#354CE1] tracking-wider uppercase bg-indigo-50 px-2.5 py-1 rounded">
+                        <span className="type-label text-[#354CE1] uppercase bg-indigo-50 px-2.5 py-1 rounded">
                           {departmentLabels[job.department]}
                         </span>
                         <span className="text-slate-400 text-xs font-semibold flex items-center gap-1">
@@ -517,7 +517,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                         </span>
                       </div>
 
-                      <h3 className="text-lg font-bold text-[#0F1E36] group-hover:text-[#354CE1] transition-colors pt-1 line-clamp-2">
+                      <h3 className="type-card-title text-[#0F1E36] group-hover:text-[#354CE1] transition-colors pt-1 line-clamp-2">
                         {job.title}
                       </h3>
 
@@ -582,10 +582,10 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                 </button>
 
                 <div className="space-y-2 text-left pr-8">
-                  <span className="text-[10px] font-bold text-yellow-300 uppercase tracking-wider bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
+                  <span className="type-label text-yellow-300 uppercase bg-white/10 px-2.5 py-1 rounded-full border border-white/10">
                     {departmentLabels[viewingJobDetails.department]}
                   </span>
-                  <h3 className="text-xl md:text-3xl font-display font-bold tracking-tight text-white pt-1">
+                  <h3 className="type-section-title-compact text-white pt-1">
                     {viewingJobDetails.title}
                   </h3>
                   
@@ -613,13 +613,13 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                 
                 {/* Description */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-extrabold text-[#0F1E36] uppercase tracking-wider">{t.roleOverview}</h4>
-                  <p className="text-slate-600 text-sm leading-relaxed">{viewingJobDetails.description}</p>
+                  <h4 className="type-label text-[#0F1E36] uppercase">{t.roleOverview}</h4>
+                  <p className="type-body text-slate-600">{viewingJobDetails.description}</p>
                 </div>
 
                 {/* Responsibilities */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-[#0F1E36] uppercase tracking-wider">{t.whatYouDo}</h4>
+                  <h4 className="type-label text-[#0F1E36] uppercase">{t.whatYouDo}</h4>
                   <ul className="grid grid-cols-1 gap-2.5">
                     {viewingJobDetails.responsibilities.map((resp, idx) => (
                       <li key={idx} className="flex items-start gap-2.5 text-slate-600 text-xs leading-relaxed">
@@ -632,7 +632,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
 
                 {/* Requirements */}
                 <div className="space-y-3">
-                  <h4 className="text-xs font-extrabold text-[#0F1E36] uppercase tracking-wider">{t.whatWeLookFor}</h4>
+                  <h4 className="type-label text-[#0F1E36] uppercase">{t.whatWeLookFor}</h4>
                   <ul className="grid grid-cols-1 gap-2.5">
                     {viewingJobDetails.requirements.map((req, idx) => (
                       <li key={idx} className="flex items-start gap-2.5 text-slate-600 text-xs leading-relaxed">
@@ -697,10 +697,10 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                 </button>
 
                 <div className="space-y-1.5 text-left pr-8 relative z-10">
-                  <span className="text-[9px] font-bold text-white uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full border border-white/25">
+                  <span className="type-label text-white uppercase bg-white/20 px-2.5 py-1 rounded-full border border-white/25">
                     {t.applyingFor.replace('{department}', departmentLabels[applyingJob.department])}
                   </span>
-                  <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white pt-1.5 leading-snug">
+                  <h3 className="type-card-title text-white pt-1.5">
                     {applyingJob.title}
                   </h3>
                   <p className="text-white/85 text-xs font-semibold flex items-center gap-1.5">
@@ -718,7 +718,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                     {/* Basic info row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <label className="type-label block text-slate-500 uppercase">
                           {t.fullName}
                         </label>
                         <input 
@@ -732,7 +732,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                       </div>
 
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <label className="type-label block text-slate-500 uppercase">
                           {t.email}
                         </label>
                         <input 
@@ -749,7 +749,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                     {/* Phone and LinkedIn */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <label className="type-label block text-slate-500 uppercase">
                           {t.phone}
                         </label>
                         <input 
@@ -762,7 +762,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                       </div>
 
                       <div className="space-y-1">
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <label className="type-label block text-slate-500 uppercase">
                           {t.linkedin}
                         </label>
                         <input 
@@ -777,7 +777,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
 
                     {/* Resume Upload Drop Zone */}
                     <div className="space-y-2">
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                      <label className="type-label block text-slate-500 uppercase">
                         {t.resume}
                       </label>
                       
@@ -808,14 +808,14 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                                 <CheckCircle className="w-5 h-5" />
                               </div>
                               <p className="text-xs font-bold text-slate-800">{resumeFile.name}</p>
-                              <p className="text-[10px] text-slate-400 font-medium">{(resumeFile.size / 1024 / 1024).toFixed(2)} MB - {t.fileMeta}</p>
+                              <p className="type-caption text-slate-400 font-medium">{(resumeFile.size / 1024 / 1024).toFixed(2)} MB - {t.fileMeta}</p>
                               <button
                                 type="button"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setResumeFile(null);
                                 }}
-                                className="text-[10px] text-red-500 font-extrabold hover:underline mt-2 flex items-center gap-0.5"
+                                className="type-control text-red-500 hover:underline mt-2 flex items-center gap-0.5"
                               >
                                 <X className="w-3 h-3" />
                                 <span>{t.removeFile}</span>
@@ -827,8 +827,8 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                                 <UploadCloud className="w-5 h-5" />
                               </div>
                               <p className="text-xs font-bold text-slate-700">{t.dragResume}</p>
-                              <p className="text-[10px] text-slate-400 font-medium">{t.browsePrefix} <span className="text-[#354CE1] underline font-bold">{t.browseFolders}</span> {t.browseSuffix}</p>
-                              <p className="text-[9px] text-slate-400 pt-1">{t.acceptsFormats}</p>
+                              <p className="type-caption text-slate-400 font-medium">{t.browsePrefix} <span className="text-[#354CE1] underline font-bold">{t.browseFolders}</span> {t.browseSuffix}</p>
+                              <p className="type-caption text-slate-400 pt-1">{t.acceptsFormats}</p>
                             </>
                           )}
                         </label>
@@ -837,7 +837,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
 
                     {/* Why Identra */}
                     <div className="space-y-1">
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                      <label className="type-label block text-slate-500 uppercase">
                         {t.whyIdentra}
                       </label>
                       <textarea 
@@ -887,7 +887,7 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
                     <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shadow-sm">
                       <Check className="w-8 h-8" />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900">{t.applicationSubmitted}</h3>
+                    <h3 className="type-card-title text-slate-900">{t.applicationSubmitted}</h3>
                     <p className="text-sm text-slate-500 max-w-sm leading-relaxed">
                       {t.successThanksBefore}{applicantName}{t.successThanksMiddle}<span className="font-semibold text-slate-800">{applyingJob.title}</span>{t.successThanksAfter}
                     </p>
@@ -913,8 +913,8 @@ export default function CareersPage({ onOpenSandbox, onBackToLanding }: CareersP
       <div className="max-w-7xl mx-auto px-6 py-16 pb-24">
         <div className="bg-[#5B6DFF] text-white rounded-[2rem] p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden shadow-xl border border-white/40">
           <div className="space-y-3 text-left max-w-lg relative z-10">
-            <h2 className="text-2xl md:text-3xl font-display font-semibold tracking-tight text-white">{t.bottomTitle}</h2>
-            <p className="text-white/85 text-sm font-normal leading-relaxed">
+            <h2 className="type-section-title-compact text-white">{t.bottomTitle}</h2>
+            <p className="type-body text-white/85">
               {t.bottomDesc}
             </p>
           </div>

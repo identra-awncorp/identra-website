@@ -123,7 +123,7 @@ export default function StructuredBlogDetailPage({
     h2: ({ children }: { children?: React.ReactNode }) => (
       <h2
         id={headingId(children)}
-        className="scroll-mt-24 border-b border-slate-100 pb-3 pt-4 text-2xl font-bold tracking-tight text-slate-900"
+        className="type-document-heading scroll-mt-24 border-b border-slate-100 pb-3 pt-4 text-slate-900"
       >
         {children}
       </h2>
@@ -131,7 +131,7 @@ export default function StructuredBlogDetailPage({
     h3: ({ children }: { children?: React.ReactNode }) => (
       <h3
         id={headingId(children)}
-        className="scroll-mt-24 pt-4 text-xl font-bold tracking-tight text-slate-950"
+        className="type-card-title scroll-mt-24 pt-4 text-slate-950"
       >
         {children}
       </h3>
@@ -278,7 +278,7 @@ export default function StructuredBlogDetailPage({
               {copyStatus !== 'idle' ? (
                 <span
                   role="status"
-                  className={`absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-[10px] font-medium text-white ${
+                  className={`type-caption absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md px-2 py-1 text-white ${
                     copyStatus === 'success' ? 'bg-slate-900' : 'bg-rose-600'
                   }`}
                 >
@@ -307,7 +307,7 @@ export default function StructuredBlogDetailPage({
 
           <div className="relative z-10">
             <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <span className="rounded-full border border-white/25 bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-yellow-300 backdrop-blur-md">
+              <span className="type-label rounded-full border border-white/25 bg-white/20 px-3 py-1 uppercase text-yellow-300 backdrop-blur-md">
                 {content.category}
               </span>
               <div className="flex items-center gap-1.5 text-xs text-indigo-100">
@@ -321,7 +321,7 @@ export default function StructuredBlogDetailPage({
               </div>
             </div>
 
-            <h1 className="mb-6 max-w-4xl font-display text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:text-5xl">
+            <h1 className="type-document-title measure-display text-balance mb-6 max-w-4xl">
               {content.title}
             </h1>
 
@@ -330,7 +330,7 @@ export default function StructuredBlogDetailPage({
             </p>
 
             <div className="mt-8 flex items-center gap-3 border-t border-white/10 pt-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-tr from-[#354CE1] to-[#BE185D] text-sm font-bold tracking-wide text-white shadow-md">
+              <div className="type-control flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-gradient-to-tr from-[#354CE1] to-[#BE185D] text-white shadow-md">
                 ID
               </div>
               <div>
@@ -352,7 +352,7 @@ export default function StructuredBlogDetailPage({
 
           <aside className="space-y-8 lg:sticky lg:top-6 lg:col-span-4 lg:h-[calc(100vh-3rem)] lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-3">
             <div className="rounded-2xl bg-white p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)]">
-              <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <h3 className="type-label mb-4 uppercase text-slate-400">
                 {content.ui.tableOfContents}
               </h3>
               <nav aria-label={content.ui.tableOfContents} className="flex flex-col gap-1">
@@ -378,8 +378,8 @@ export default function StructuredBlogDetailPage({
             <div className="space-y-4 rounded-2xl bg-gradient-to-b from-indigo-900 to-[#12183A] p-6 text-white shadow-md">
               <Sparkles className="h-8 w-8 text-[#4F6CFF]" />
               <div className="space-y-1">
-                <h4 className="text-sm font-bold tracking-tight">{content.ui.ctaTitle}</h4>
-                <p className="text-[11px] font-normal leading-normal text-slate-300">
+                <h4 className="type-card-title">{content.ui.ctaTitle}</h4>
+                <p className="type-body-sm text-slate-300">
                   {content.ui.ctaDescription}
                 </p>
               </div>
@@ -398,7 +398,7 @@ export default function StructuredBlogDetailPage({
 
       <div className="border-t border-slate-200/60 bg-white py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <h3 className="mb-8 text-xl font-bold tracking-tight text-slate-950">
+          <h3 className="type-section-title-compact mb-8 text-slate-950">
             {commonCopy.continueReading}
           </h3>
 
@@ -409,7 +409,7 @@ export default function StructuredBlogDetailPage({
                 className="group flex cursor-pointer flex-col justify-between rounded-2xl p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)] transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-[#354CE1]/50"
               >
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <div className="type-label flex items-center gap-2 uppercase text-slate-400">
                     <span>{card.type}</span>
                     <span aria-hidden="true">&middot;</span>
                     <span>{card.time}</span>

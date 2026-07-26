@@ -409,7 +409,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
             <div className="max-w-7xl mx-auto px-6 relative z-10">
               <button 
                 onClick={onBackToLanding}
-                className="group inline-flex items-center gap-2 text-indigo-600 hover:text-[#354CE1] text-xs font-semibold mb-8 transition cursor-pointer"
+                className="type-control group inline-flex items-center gap-2 text-indigo-600 hover:text-[#354CE1] mb-8 transition cursor-pointer"
                 id="academy_back_btn"
               >
                 <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -418,28 +418,28 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div className="lg:col-span-7 space-y-6 text-left">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-[#354CE1]/5 border border-[#354CE1]/15 rounded-full text-[11px] font-bold tracking-wider text-[#354CE1] uppercase shadow-xs">
+                  <div className="type-label inline-flex items-center gap-2 px-3.5 py-1 bg-[#354CE1]/5 border border-[#354CE1]/15 rounded-full text-[#354CE1] uppercase shadow-xs">
                     <GraduationCap className="w-4 h-4 text-indigo-600 animate-pulse" />
                     {t.academyTitle}
                   </div>
                   
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-semibold tracking-tight text-slate-900 leading-[1.05]">
+                  <h1 className="type-page-title measure-display text-balance text-slate-900">
                     {t.heroHeading}
                   </h1>
-                  <p className="text-base sm:text-lg text-slate-600 max-w-2xl font-light leading-relaxed">
+                  <p className="type-lead measure-lead text-slate-600 max-w-2xl">
                     {t.heroSubheading}
                   </p>
                   
                   <div className="flex flex-wrap items-center gap-4 pt-4">
                     <a 
                       href="#catalog-grid" 
-                      className="bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-3 rounded-full transition shadow-lg shadow-indigo-100/30 text-center"
+                      className="type-control bg-[#354CE1] hover:bg-[#2539BE] text-white px-6 py-3 rounded-full transition shadow-lg shadow-indigo-100/30 text-center"
                     >
                       {t.browseCatalog}
                     </a>
                     <button
                       onClick={onOpenSandbox}
-                      className="bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-700 font-semibold text-sm px-6 py-3 rounded-full transition cursor-pointer"
+                      className="type-control bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-700 px-6 py-3 rounded-full transition cursor-pointer"
                     >
                       {t.interactiveSandbox}
                     </button>
@@ -451,8 +451,8 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                   <div className="bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-100/40 space-y-6">
                     <div className="flex items-center justify-between">
                       <div className="space-y-1 text-left">
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest block">{t.enrollmentProgram}</span>
-                        <h3 className="text-sm font-bold text-slate-900">{t.practitionerPath}</h3>
+                        <span className="type-technical text-slate-400 uppercase block">{t.enrollmentProgram}</span>
+                        <h3 className="type-card-title text-slate-900">{t.practitionerPath}</h3>
                       </div>
                       <div className="w-10 h-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-[#354CE1]">
                         <Award className="w-5 h-5" />
@@ -474,11 +474,11 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
 
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       <div className="bg-slate-50/60 p-3 rounded-xl border border-slate-150 text-left">
-                        <span className="text-[9px] font-mono text-slate-400 block uppercase">{t.completedPrograms}</span>
+                        <span className="type-technical text-slate-400 block uppercase">{t.completedPrograms}</span>
                         <span className="text-base font-bold text-slate-800">{completedCourseIds.length} <span className="text-xs text-slate-500">/ {translatedCourses.length}</span></span>
                       </div>
                       <div className="bg-slate-50/60 p-3 rounded-xl border border-slate-150 text-left">
-                        <span className="text-[9px] font-mono text-slate-400 block uppercase">{t.examQualification}</span>
+                        <span className="type-technical text-slate-400 block uppercase">{t.examQualification}</span>
                         <span className="text-base font-bold text-slate-800">
                           {completedCourseIds.length === translatedCourses.length ? (
                             <span className="text-emerald-600 text-xs font-semibold flex items-center gap-1">
@@ -492,7 +492,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                     </div>
 
                     {completedCourseIds.length < translatedCourses.length && (
-                      <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 border-t border-slate-100">
+                      <div className="type-caption flex items-center justify-between text-slate-400 pt-1.5 border-t border-slate-100">
                         <span>{t.needBypass}</span>
                         <button 
                           onClick={handleQuickCompleteAll}
@@ -511,9 +511,9 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
           {/* Courses Grid / Listing (Udemy Catalog Style) */}
           <section id="catalog-grid" className="max-w-7xl mx-auto px-6 py-20 space-y-12">
             <div className="space-y-3 text-left">
-              <span className="text-xs font-bold text-[#354CE1] uppercase tracking-wider block">{t.courseCatalog}</span>
-              <h2 className="text-3xl font-display font-bold text-[#0F1E36] tracking-tight">{t.explorePrograms}</h2>
-              <p className="text-slate-500 text-sm font-light max-w-2xl leading-relaxed">
+              <span className="type-label text-[#354CE1] uppercase block">{t.courseCatalog}</span>
+              <h2 className="type-section-title-compact text-[#0F1E36]">{t.explorePrograms}</h2>
+              <p className="type-body text-slate-500 max-w-2xl">
                 {t.catalogDesc}
               </p>
             </div>
@@ -538,21 +538,21 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                         <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-100 px-2.5 py-0.5 rounded-full text-amber-700 text-xs font-bold font-mono">
                           <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                           <span>{course.rating}</span>
-                          <span className="text-[10px] text-amber-600/70">({course.reviewsCount})</span>
+                  <span className="type-caption text-amber-600/70">({course.reviewsCount})</span>
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className="bg-indigo-50 border border-indigo-100 text-[#354CE1] px-2 py-0.5 rounded-full text-[9px] font-bold uppercase">
+                  <span className="type-label bg-indigo-50 border border-indigo-100 text-[#354CE1] px-2 py-0.5 rounded-full uppercase">
                             {course.category}
                           </span>
-                          <span className="text-slate-400 text-[10px] font-mono">
+                  <span className="type-technical text-slate-400">
                             {course.level}
                           </span>
                         </div>
                         
-                        <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug line-clamp-1">
+                <h3 className="type-card-title text-slate-900 line-clamp-1">
                           {course.title}
                         </h3>
                         
@@ -570,7 +570,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                         />
                         <div className="text-left">
                           <p className="text-xs font-semibold text-slate-800 leading-none">{course.instructor.name}</p>
-                          <p className="text-[10px] text-slate-400 font-light mt-0.5">{course.instructor.role}</p>
+                    <p className="type-caption text-slate-400 mt-0.5">{course.instructor.role}</p>
                         </div>
                       </div>
                     </div>
@@ -632,7 +632,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
 
               <div className="flex items-center gap-3">
                 <span className="text-xs text-slate-400 font-light hidden sm:inline">{t.professionalPath}</span>
-                <span className="bg-indigo-50 text-[#354CE1] px-3 py-1 rounded-full text-[10px] font-bold uppercase font-mono">
+              <span className="type-technical bg-indigo-50 text-[#354CE1] px-3 py-1 rounded-full uppercase">
                   {selectedCourse.category}
                 </span>
               </div>
@@ -646,13 +646,13 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
               
               <div className="lg:col-span-8 space-y-6">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="bg-[#354CE1] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-sm">
+              <span className="type-label bg-[#354CE1] text-white uppercase px-2.5 py-1 rounded-sm">
                     {t.certificateEligibility}
                   </span>
                   <span className="text-slate-500 text-xs">• {t.selfPaced} • {t.online100}</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-semibold tracking-tight leading-tight max-w-4xl text-slate-900">
+            <h1 className="type-document-title measure-display text-balance max-w-4xl text-slate-900">
                   {selectedCourse.title}
                 </h1>
 
@@ -686,7 +686,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                     className="w-12 h-12 rounded-full object-cover border border-slate-200 shadow-md" 
                   />
                   <div>
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider block">{t.instructorLabel}</span>
+                <span className="type-label text-slate-400 uppercase block">{t.instructorLabel}</span>
                     <p className="text-sm font-bold text-slate-900">{selectedCourse.instructor.name}</p>
                     <p className="text-xs text-indigo-600 font-light">{selectedCourse.instructor.role}</p>
                   </div>
@@ -713,8 +713,8 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
               <div className="lg:col-span-4 bg-white text-slate-800 rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl relative">
                 <div className="space-y-6 text-left">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase block tracking-widest">{t.enrollmentStatus}</span>
-                    <h3 className="text-lg font-bold text-slate-900">
+                <span className="type-technical text-slate-400 uppercase block">{t.enrollmentStatus}</span>
+                <h3 className="type-card-title text-slate-900">
                       {completedCourseIds.includes(selectedCourse.id) ? (
                         <span className="text-emerald-600 flex items-center gap-1.5 font-bold">
                           <CheckCircle2 className="w-5 h-5" /> {t.courseComplete}
@@ -798,7 +798,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 
                 {/* What You'll Learn Module (Standard Udemy grid box) */}
                 <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 space-y-6">
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">{t.whatYouWillLearn}</h3>
+            <h3 className="type-card-title text-slate-900">{t.whatYouWillLearn}</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {selectedCourse.whatYouWillLearn.map((item, idx) => (
                       <div key={idx} className="flex items-start gap-2.5">
@@ -811,7 +811,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
 
                 {/* Deeply Described Long Description */}
                 <div className="space-y-4">
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">{t.aboutThisCourse}</h3>
+            <h3 className="type-card-title text-slate-900">{t.aboutThisCourse}</h3>
                   <p className="text-xs sm:text-sm text-slate-600 font-light leading-relaxed whitespace-pre-line">
                     {selectedCourse.longDesc}
                   </p>
@@ -823,7 +823,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 {/* Detailed Curriculum Syllabus Timeline */}
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">{t.courseCurriculum}</h3>
+            <h3 className="type-card-title text-slate-900">{t.courseCurriculum}</h3>
                     <span className="text-xs text-slate-400 font-mono">{t.sectionsCount.replace('{count}', String(selectedCourse.chapters.length))}</span>
                   </div>
 
@@ -838,11 +838,11 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                             <span className="w-6 h-6 rounded-md bg-[#354CE1]/5 text-[#354CE1] font-bold text-xs flex items-center justify-center shrink-0">
                               {idx + 1}
                             </span>
-                            <h4 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight leading-snug">
+                      <h4 className="type-card-title text-slate-900">
                               {chap.title}
                             </h4>
                           </div>
-                          <span className="text-[11px] text-slate-400 font-mono shrink-0">{chap.duration}</span>
+                      <span className="type-technical text-slate-400 shrink-0">{chap.duration}</span>
                         </div>
                         <p className="text-xs sm:text-sm text-slate-500 font-light leading-relaxed pl-9">
                           {chap.description}
@@ -871,8 +871,8 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
             <div className="bg-gradient-to-r from-indigo-950 to-indigo-900 text-white p-8 md:p-10 text-center relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(53,76,225,0.15),transparent_60%)] pointer-events-none" />
               <div className="relative z-10 space-y-3 text-center">
-                <span className="text-xs font-bold text-indigo-300 uppercase tracking-widest font-mono block">{t.examTitle}</span>
-                <h2 className="text-2xl sm:text-3xl font-display font-semibold">{t.examHeading}</h2>
+              <span className="type-technical text-indigo-300 uppercase block">{t.examTitle}</span>
+              <h2 className="type-section-title-compact">{t.examHeading}</h2>
                 <p className="text-indigo-200 text-xs sm:text-sm font-light max-w-xl mx-auto leading-relaxed">
                   {t.examDesc.replace('{count}', String(translatedCourses.length))}
                 </p>
@@ -886,7 +886,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 <div className="text-center space-y-6 py-4 max-w-md">
                   <Lock className="w-12 h-12 text-slate-300 mx-auto animate-pulse" />
                   <div className="space-y-2">
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">{t.examLocked}</h3>
+                    <h3 className="type-card-title text-slate-900">{t.examLocked}</h3>
                     <p className="text-xs text-slate-500 font-light leading-relaxed">
                       {t.examLockedDesc.replace('{count}', String(translatedCourses.length))}
                     </p>
@@ -897,7 +897,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                       style={{ width: `${percentageProgress}%` }}
                     />
                   </div>
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                    <div className="type-technical flex items-center justify-between text-slate-500">
                     <span>{t.progressText.replace('{completed}', String(completedCourseIds.length)).replace('{total}', String(translatedCourses.length))}</span>
                     <button 
                       onClick={handleQuickCompleteAll}
@@ -914,7 +914,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 <div className="text-center space-y-6 py-4 max-w-md">
                   <Award className="w-12 h-12 text-[#354CE1] mx-auto animate-bounce" />
                   <div className="space-y-2">
-                    <h3 className="text-lg font-bold text-slate-900">{t.examAvailable}</h3>
+                    <h3 className="type-card-title text-slate-900">{t.examAvailable}</h3>
                     <p className="text-xs text-slate-500 font-light leading-relaxed">
                       {t.examAvailableDesc}
                     </p>
@@ -933,8 +933,8 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 <div className="w-full space-y-6 text-left">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                     <div className="space-y-1">
-                      <span className="text-[10px] font-mono text-indigo-500 uppercase tracking-widest font-bold">{t.certificationExam}</span>
-                      <h3 className="text-sm font-bold text-slate-900">{t.questionCount.replace('{current}', String(currentQuestionIdx + 1)).replace('{total}', String(translatedQuizQuestions.length))}</h3>
+                  <span className="type-technical text-indigo-500 uppercase font-bold">{t.certificationExam}</span>
+                  <h3 className="type-card-title text-slate-900">{t.questionCount.replace('{current}', String(currentQuestionIdx + 1)).replace('{total}', String(translatedQuizQuestions.length))}</h3>
                     </div>
                     <span className="text-xs bg-indigo-50 text-[#354CE1] font-mono font-bold px-2.5 py-1 rounded-full">
                       {t.correctScore.replace('{score}', String(score)).replace('{total}', String(currentQuestionIdx + (isAnswerChecked ? 1 : 0)))}
@@ -1040,7 +1040,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                   </div>
 
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-slate-900">
+                <h3 className="type-card-title text-slate-900">
                       {score >= 2 ? t.congratsPassed : t.examNotCompleted}
                     </h3>
                     <p className="text-xs text-slate-500 font-light leading-relaxed">
@@ -1055,7 +1055,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                     <div className="w-full pt-2 text-left">
                       {!isCertVerified ? (
                         <form onSubmit={handleGenerateCertificate} className="space-y-3 text-left max-w-md mx-auto">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">{t.studentFullName}</label>
+                  <label className="type-label text-slate-500 uppercase block">{t.studentFullName}</label>
                           <div className="flex flex-col sm:flex-row gap-2">
                             <input
                               type="text"
@@ -1113,8 +1113,8 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
           
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="text-center space-y-3">
-              <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest font-mono block">{t.academicAccreditation}</span>
-              <h2 className="text-3xl sm:text-4xl font-display font-semibold tracking-tight">{t.digitalChampionTitle}</h2>
+            <span className="type-technical text-indigo-400 uppercase block">{t.academicAccreditation}</span>
+            <h2 className="type-section-title-compact">{t.digitalChampionTitle}</h2>
               <p className="text-slate-400 text-sm font-light max-w-xl mx-auto">
                 {t.digitalChampionDesc}
               </p>
@@ -1129,23 +1129,23 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                 <div className="space-y-1 text-left">
                   <div className="flex items-center gap-2">
                     <GraduationCap className="w-6 h-6 text-[#354CE1]" />
-                    <span className="font-display font-bold text-base text-indigo-950 tracking-wider">{t.identraAcademy}</span>
+                    <span className="type-card-title text-indigo-950">{t.identraAcademy}</span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 block tracking-widest uppercase">{t.globalTrustCredentials}</span>
+                    <span className="type-technical text-slate-400 block uppercase">{t.globalTrustCredentials}</span>
                 </div>
 
                 <div className="bg-[#FAFBFD] border border-slate-150 px-4 py-2 rounded-xl flex items-center gap-3 self-start">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                   <div className="text-left">
-                    <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest block leading-none">{t.statusLabel}</span>
-                    <span className="text-[10px] font-mono font-bold text-slate-700">{t.verifiedLedger}</span>
+                    <span className="type-label text-slate-400 uppercase block">{t.statusLabel}</span>
+                    <span className="type-technical font-bold text-slate-700">{t.verifiedLedger}</span>
                   </div>
                 </div>
               </div>
 
               <div className="text-center my-8 space-y-4">
-                <span className="text-xs font-mono font-semibold text-indigo-500 uppercase tracking-widest">{t.certifiesThat}</span>
-                <h3 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight border-b border-indigo-100/60 pb-3 max-w-lg mx-auto italic">
+                <span className="type-technical text-indigo-500 uppercase">{t.certifiesThat}</span>
+                <h3 className="type-section-title-compact text-slate-900 border-b border-indigo-100/60 pb-3 max-w-lg mx-auto italic">
                   {studentName}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-500 max-w-xl mx-auto font-light leading-relaxed">
@@ -1155,17 +1155,17 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
 
               <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
                 <div className="space-y-1 text-left">
-                  <span className="text-[9px] font-mono text-slate-400 uppercase tracking-wider block">{t.idSignatureLabel}</span>
+                    <span className="type-technical text-slate-400 uppercase block">{t.idSignatureLabel}</span>
                   <span className="text-xs font-mono font-bold text-indigo-950 block">{certId}</span>
-                  <span className="text-[10px] text-slate-500 font-light block">{t.dateOfIssue} {new Date().toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span className="type-caption text-slate-500 block">{t.dateOfIssue} {new Date().toLocaleDateString(dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
 
                 {/* Accredit Badge */}
                 <div className="flex items-center gap-4">
                   <div className="text-right border-r border-slate-150 pr-4">
-                    <span className="text-[9px] font-mono text-slate-400 uppercase block tracking-wider">{t.authorizedSignature}</span>
+                    <span className="type-technical text-slate-400 uppercase block">{t.authorizedSignature}</span>
                     <span className="text-sm font-serif italic font-bold text-[#354CE1] block leading-relaxed animate-pulse">Rick Song</span>
-                    <span className="text-[8px] text-slate-400 block leading-none">{t.rickSongTitle}</span>
+                    <span className="type-caption text-slate-400 block">{t.rickSongTitle}</span>
                   </div>
 
                   <div className="w-14 h-14 bg-indigo-50 rounded-full flex items-center justify-center border border-indigo-100 relative shrink-0">
@@ -1227,7 +1227,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
       <section className="bg-white border-t border-slate-150 py-16 px-6 text-center">
         <div className="max-w-2xl mx-auto space-y-6">
           <GraduationCap className="w-12 h-12 text-[#354CE1] mx-auto animate-bounce" />
-          <h2 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-[#0F1E36]">
+            <h2 className="type-section-title-compact text-[#0F1E36]">
             {t.applyKnowledgeHeading}
           </h2>
           <p className="text-slate-500 text-xs sm:text-sm font-light leading-relaxed max-w-lg mx-auto">

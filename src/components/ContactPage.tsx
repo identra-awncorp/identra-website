@@ -207,7 +207,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
           {/* Back Button */}
           <button 
             onClick={onBackToLanding}
-            className="group inline-flex items-center gap-2 text-blue-100 hover:text-white text-xs font-semibold mb-8 transition cursor-pointer"
+            className="type-control group inline-flex items-center gap-2 text-blue-100 hover:text-white mb-8 transition cursor-pointer"
             id="contact_back_btn"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
@@ -217,19 +217,19 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7 space-y-6">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-[11px] font-bold tracking-wider text-yellow-300 uppercase border border-white/25 shadow-sm">
+              <div className="type-label inline-flex items-center gap-2 px-3.5 py-1 bg-white/20 backdrop-blur-md rounded-full text-yellow-300 uppercase border border-white/25 shadow-sm">
                 <PhoneCall className="w-3.5 h-3.5 text-yellow-300" />
                 {t.badge}
               </div>
               
-              <h1 className="text-3xl sm:text-4xl md:text-5.5xl font-sans font-semibold tracking-tight text-white leading-[1.1]">
+              <h1 className="type-page-title measure-display text-balance text-white">
                 {t.heroTitle}
               </h1>
-              <p className="text-base sm:text-lg text-white/95 max-w-xl font-normal leading-relaxed">
+              <p className="type-lead measure-lead text-white/95 max-w-xl">
                 {t.heroDesc}
               </p>
               
-              <div className="flex flex-wrap items-center gap-6 text-sm text-blue-100 font-light pt-2">
+              <div className="type-body-sm flex flex-wrap items-center gap-6 text-blue-100 pt-2">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4.5 h-4.5 text-yellow-300" />
                   {t.slaResponse}
@@ -244,14 +244,14 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
             {/* Quick Metrics Cards */}
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
               <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                <p className="text-xs text-blue-200 uppercase tracking-wider font-bold">{t.inquiriesHandled}</p>
-                <p className="text-3xl font-bold mt-1 text-white">{t.inquiriesValue}</p>
-                <p className="text-[10px] text-blue-100/80 mt-1 font-light">{t.slaDeliveries}</p>
+                <p className="type-label text-blue-200 uppercase">{t.inquiriesHandled}</p>
+                <p className="type-metric mt-1 text-white">{t.inquiriesValue}</p>
+                <p className="type-caption text-blue-100/80 mt-1">{t.slaDeliveries}</p>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                <p className="text-xs text-blue-200 uppercase tracking-wider font-bold">{t.globalPresence}</p>
-                <p className="text-3xl font-bold mt-1 text-white">{t.globalPresenceValue}</p>
-                <p className="text-[10px] text-blue-100/80 mt-1 font-light">{t.hubOffices}</p>
+                <p className="type-label text-blue-200 uppercase">{t.globalPresence}</p>
+                <p className="type-metric mt-1 text-white">{t.globalPresenceValue}</p>
+                <p className="type-caption text-blue-100/80 mt-1">{t.hubOffices}</p>
               </div>
             </div>
           </div>
@@ -278,10 +278,10 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                 className={`pb-4 px-1 text-left relative min-w-[120px] transition cursor-pointer flex-1 disabled:opacity-50`}
                 id={`tab-btn-${tab.id}`}
               >
-                <span className={`text-xs font-bold block ${activeTab === tab.id ? 'text-[#354CE1]' : 'text-slate-500 hover:text-slate-800'}`}>
+                <span className={`type-control block ${activeTab === tab.id ? 'text-[#354CE1]' : 'text-slate-500 hover:text-slate-800'}`}>
                   {tab.label}
                 </span>
-                <span className="text-[10px] text-slate-400 font-normal leading-tight hidden sm:block mt-0.5">
+                <span className="type-caption text-slate-400 hidden sm:block mt-0.5">
                   {tab.desc}
                 </span>
                 {activeTab === tab.id && (
@@ -296,7 +296,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Full name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.fullName}</label>
+                  <label className="type-label text-slate-700 uppercase">{t.fullName}</label>
                   <input
                     type="text"
                     name="name"
@@ -308,7 +308,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     }`}
                   />
                   {formErrors.name && (
-                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1">
+                    <p className="type-body-sm text-rose-500 font-medium flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       {formErrors.name}
                     </p>
@@ -317,7 +317,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
 
                 {/* Work Email */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.workEmail}</label>
+                  <label className="type-label text-slate-700 uppercase">{t.workEmail}</label>
                   <input
                     type="email"
                     name="email"
@@ -329,7 +329,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     }`}
                   />
                   {formErrors.email && (
-                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1">
+                    <p className="type-body-sm text-rose-500 font-medium flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       {formErrors.email}
                     </p>
@@ -340,7 +340,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {/* Company Name */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.companyName}</label>
+                  <label className="type-label text-slate-700 uppercase">{t.companyName}</label>
                   <input
                     type="text"
                     name="company"
@@ -352,7 +352,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     }`}
                   />
                   {formErrors.company && (
-                    <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1">
+                    <p className="type-body-sm text-rose-500 font-medium flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       {formErrors.company}
                     </p>
@@ -361,7 +361,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
 
                 {/* Job Title */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.jobTitle}</label>
+                  <label className="type-label text-slate-700 uppercase">{t.jobTitle}</label>
                   <input
                     type="text"
                     name="role"
@@ -375,7 +375,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
 
               {/* Subject */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.inquirySubject}</label>
+                <label className="type-label text-slate-700 uppercase">{t.inquirySubject}</label>
                 <input
                   type="text"
                   name="subject"
@@ -388,8 +388,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               {/* Message */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-xs font-bold text-slate-700 tracking-wide uppercase">{t.helpLabel}</label>
-                  <span className="text-[10px] text-slate-400 font-mono font-medium">
+                  <label className="type-label text-slate-700 uppercase">{t.helpLabel}</label>
+                  <span className="type-technical text-slate-400">
                     {formData.message.length} {t.characters}
                   </span>
                 </div>
@@ -404,7 +404,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                   }`}
                 />
                 {formErrors.message && (
-                  <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1">
+                  <p className="type-body-sm text-rose-500 font-medium flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
                     {formErrors.message}
                   </p>
@@ -421,12 +421,12 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     onChange={handleInputChange}
                     className="mt-1 accent-[#354CE1] rounded w-4 h-4 cursor-pointer"
                   />
-                  <span className="text-[11px] sm:text-xs text-slate-500 leading-normal">
+                  <span className="type-body-sm text-slate-500">
                     {t.consentPrefix} <a href="#" className="text-[#354CE1] hover:underline font-semibold">{t.privacyPolicy}</a>. {t.consentSuffix}
                   </span>
                 </label>
                 {formErrors.consent && (
-                  <p className="text-[11px] text-rose-500 font-medium flex items-center gap-1 ml-7">
+                  <p className="type-body-sm text-rose-500 font-medium flex items-center gap-1 ml-7">
                     <AlertCircle className="w-3.5 h-3.5" />
                     {formErrors.consent}
                   </p>
@@ -437,7 +437,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-4 rounded-full transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/20 hover:-translate-y-0.5 cursor-pointer"
+                  className="type-control w-full bg-[#354CE1] hover:bg-[#2539BE] text-white px-6 py-4 rounded-full transition-all duration-200 flex items-center justify-center gap-2 shadow-lg shadow-indigo-950/20 hover:-translate-y-0.5 cursor-pointer"
                 >
                   <Send className="w-4.5 h-4.5" />
                   <span>{t.submitInquiry}</span>
@@ -452,9 +452,9 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Loader2 className="w-5 h-5 text-[#354CE1] animate-spin" />
-                  <span className="text-sm font-semibold text-[#354CE1]">{t.terminal.processing}</span>
+                  <span className="type-control text-[#354CE1]">{t.terminal.processing}</span>
                 </div>
-                <span className="text-[10px] text-slate-400 font-mono font-medium">{t.terminal.estimated}</span>
+                <span className="type-technical text-slate-400">{t.terminal.estimated}</span>
               </div>
 
               {/* Code Terminal styled container as requested in design.md Section 2 */}
@@ -464,7 +464,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                   <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                  <div className="text-[10px] text-slate-500 font-sans tracking-wide ml-2 uppercase">{t.terminal.title}</div>
+                  <div className="type-label text-slate-500 ml-2 uppercase">{t.terminal.title}</div>
                 </div>
 
                 <div className="space-y-1.5 overflow-y-auto max-h-[160px] scrollbar-none">
@@ -494,8 +494,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               </div>
               
               <div className="space-y-2 max-w-md mx-auto">
-                <h3 className="text-2xl font-bold text-slate-900 tracking-tight">{t.successTitle}</h3>
-                <p className="text-sm text-slate-500 leading-relaxed">
+                <h3 className="type-section-title-compact text-slate-900">{t.successTitle}</h3>
+                <p className="type-body text-slate-500">
                   {t.successDescPrefix} <span className="font-semibold text-slate-800">{formData.email}</span>.
                 </p>
               </div>
@@ -503,8 +503,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               {/* Stored Ticket Record code pane */}
               <div className="max-w-md mx-auto bg-slate-900 border border-slate-800 text-slate-300 p-6 rounded-2xl text-left font-mono text-xs space-y-2 shadow-lg">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-2">
-                  <span className="text-[10px] text-slate-500 font-sans font-bold uppercase tracking-wider">{t.metadataTitle}</span>
-                  <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-sans font-semibold border border-emerald-500/20">
+                  <span className="type-label text-slate-500 uppercase">{t.metadataTitle}</span>
+                  <div className="type-label flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                     <Check className="w-3 h-3" />
                     {t.encrypted}
                   </div>
@@ -522,13 +522,13 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     setFormData({ name: '', email: '', company: '', role: '', subject: '', message: '', consent: false });
                     setFormStatus('idle');
                   }}
-                  className="px-6 py-2.5 text-xs font-bold text-[#354CE1] hover:text-[#2539BE] hover:bg-slate-50 rounded-full transition border border-slate-200 cursor-pointer"
+                  className="type-control px-6 py-2.5 text-[#354CE1] hover:text-[#2539BE] hover:bg-slate-50 rounded-full transition border border-slate-200 cursor-pointer"
                 >
                   {t.submitAnother}
                 </button>
                 <button
                   onClick={onBackToLanding}
-                  className="bg-[#354CE1] hover:bg-[#2539BE] text-white text-xs font-bold px-6 py-2.5 rounded-full shadow-md transition cursor-pointer"
+                  className="type-control bg-[#354CE1] hover:bg-[#2539BE] text-white px-6 py-2.5 rounded-full shadow-md transition cursor-pointer"
                 >
                   {t.returnHome}
                 </button>
@@ -544,8 +544,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
           {/* Support Channels Card */}
           <div className="bg-gradient-to-tr from-[#0F1E36] to-[#1E355E] text-white rounded-3xl p-6 md:p-8 border border-[#354CE1]/10 shadow-xl space-y-6">
             <div className="space-y-2">
-              <h4 className="text-lg font-bold font-display">{t.channelsTitle}</h4>
-              <p className="text-xs text-indigo-200 leading-relaxed font-light">
+              <h4 className="type-card-title">{t.channelsTitle}</h4>
+              <p className="type-body-sm text-indigo-200">
                 {t.channelsDesc}
               </p>
             </div>
@@ -554,8 +554,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
                 <ShieldCheck className="w-6 h-6 text-yellow-300 shrink-0" />
                 <div>
-                  <p className="text-xs font-bold">{t.securityTitle}</p>
-                  <p className="text-[10px] text-indigo-200/80 mt-1 leading-normal">
+                  <p className="type-body-sm font-bold">{t.securityTitle}</p>
+                  <p className="type-caption text-indigo-200/80 mt-1">
                     {t.securityDesc}
                   </p>
                   <a href="mailto:security@withidentra.com" className="text-xs text-yellow-300 hover:underline font-semibold mt-1.5 block">
@@ -567,8 +567,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
                 <Building2 className="w-6 h-6 text-[#00E5FF] shrink-0" />
                 <div>
-                  <p className="text-xs font-bold">{t.pressTitle}</p>
-                  <p className="text-[10px] text-indigo-200/80 mt-1 leading-normal">
+                  <p className="type-body-sm font-bold">{t.pressTitle}</p>
+                  <p className="type-caption text-indigo-200/80 mt-1">
                     {t.pressDesc}
                   </p>
                   <a href="mailto:press@withidentra.com" className="text-xs text-[#00E5FF] hover:underline font-semibold mt-1.5 block">
@@ -582,8 +582,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
           {/* Global Office Clocks Board */}
           <div className="bg-white rounded-3xl border border-slate-150 p-6 md:p-8 shadow-lg shadow-indigo-950/5 space-y-6">
             <div className="space-y-2">
-              <h4 className="text-base font-bold text-[#0F1E36] tracking-tight">{t.officesTitle}</h4>
-              <p className="text-xs text-slate-500 leading-normal">
+              <h4 className="type-card-title text-[#0F1E36]">{t.officesTitle}</h4>
+              <p className="type-body-sm text-slate-500">
                 {t.officesDesc}
               </p>
             </div>
@@ -592,16 +592,16 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
               {offices.map((office, idx) => (
                 <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between space-y-3">
                   <div>
-                    <span className="inline-flex items-center gap-1.5 text-[9px] font-bold text-slate-400 tracking-wide uppercase">
+                    <span className="type-label inline-flex items-center gap-1.5 text-slate-400 uppercase">
                       <MapPin className="w-3 h-3 text-[#354CE1]" />
                       {office.location}
                     </span>
                     <p className="text-xs font-bold text-slate-900 mt-1 leading-tight">{office.name}</p>
-                    <p className="text-[10px] text-slate-400 mt-1.5 font-light leading-normal">{office.address}</p>
+                    <p className="type-caption text-slate-400 mt-1.5">{office.address}</p>
                   </div>
                   
                   <div className="border-t border-slate-200/60 pt-3 flex items-center justify-between">
-                    <span className="text-[9px] font-mono font-bold text-[#354CE1] uppercase tracking-wider flex items-center gap-1">
+                    <span className="type-technical text-[#354CE1] uppercase flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       {t.localTime}
                     </span>
@@ -622,14 +622,14 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
         <div className="max-w-4xl mx-auto space-y-12">
           
           <div className="text-center space-y-4">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#354CE1]/10 rounded-full text-xs font-bold text-[#354CE1]">
+            <span className="type-label inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#354CE1]/10 rounded-full text-[#354CE1]">
               <HelpCircle className="w-4 h-4 text-[#354CE1]" />
               <span>{t.faqBadge}</span>
             </span>
-            <h2 className="text-2xl sm:text-4xl font-display font-semibold tracking-tight text-[#0F1E36]">
+            <h2 className="type-section-title-compact text-[#0F1E36]">
               {t.faqTitle}
             </h2>
-            <p className="text-slate-500 text-sm max-w-lg mx-auto">
+            <p className="type-body text-slate-500 max-w-lg mx-auto">
               {t.faqDesc}
             </p>
           </div>
@@ -697,20 +697,20 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
           <div className="absolute left-1/3 top-10 w-48 h-48 bg-indigo-400/20 rounded-full filter blur-xl" />
 
           <div className="max-w-2xl space-y-8 relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-bold uppercase tracking-wider text-yellow-300 border border-white/25">
+            <span className="type-label inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full uppercase text-yellow-300 border border-white/25">
               <Sparkles className="w-3.5 h-3.5" />
               <span>{t.footerBadge}</span>
             </span>
-            <h2 className="text-3xl sm:text-5xl font-display font-bold leading-tight">
+            <h2 className="type-section-title">
               {t.footerTitle}
             </h2>
-            <p className="text-indigo-50 text-lg leading-relaxed max-w-xl font-light">
+            <p className="type-lead text-indigo-50 max-w-xl">
               {t.footerDesc}
             </p>
             <div>
               <button 
                 onClick={onOpenSandbox}
-                className="inline-flex items-center gap-2 px-6 py-4 bg-white hover:bg-teal-50 text-[#354CE1] font-bold rounded-full text-xs shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+                className="type-control inline-flex items-center gap-2 px-6 py-4 bg-white hover:bg-teal-50 text-[#354CE1] rounded-full shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
                 id="contact-footer-sandbox-btn"
               >
                 <span>{t.launchSandbox}</span>

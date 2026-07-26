@@ -217,12 +217,12 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
             
             {/* Left Copy Column */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#354CE1]/10 text-[#354CE1] text-xs font-semibold tracking-wide">
+            <div className="type-label inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#354CE1]/10 text-[#354CE1]">
                 <Layers className="w-3.5 h-3.5 text-[#354CE1]" />
                 <span>{t('badge')}</span>
               </div>
               
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-[#0F1E36] tracking-tight leading-tight">
+              <h1 className="type-page-title measure-display text-balance text-[#0F1E36]">
                 {t('heroTitlePrefix')} <br className="hidden md:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#354CE1] via-[#5F3CF3] to-[#00D4B2]">
                   {t('heroTitleGradient')}
@@ -230,7 +230,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 {t('heroTitleSuffix')}
               </h1>
               
-              <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed font-sans">
+              <p className="type-lead measure-lead text-slate-600 max-w-2xl mx-auto lg:mx-0">
                 {t('heroDesc')}
               </p>
               
@@ -249,16 +249,16 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
               {/* Trust Badge Grid */}
               <div className="pt-6 border-t border-slate-100 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 text-center lg:text-left">
                 <div>
-                  <p className="text-2xl font-bold text-slate-900">99.4%</p>
-                  <p className="text-xxs text-slate-500 font-medium tracking-wide uppercase">{t('statDecisions')}</p>
+                  <p className="type-metric text-slate-900">99.4%</p>
+                  <p className="type-label text-slate-500 uppercase">{t('statDecisions')}</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-900">{t('statUnderFiveSeconds')}</p>
-                  <p className="text-xxs text-slate-500 font-medium tracking-wide uppercase">{t('statResponse')}</p>
+                  <p className="type-metric text-slate-900">{t('statUnderFiveSeconds')}</p>
+                  <p className="type-label text-slate-500 uppercase">{t('statResponse')}</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-900">190+</p>
-                  <p className="text-xxs text-slate-500 font-medium tracking-wide uppercase">{t('statCountries')}</p>
+                  <p className="type-metric text-slate-900">190+</p>
+                  <p className="type-label text-slate-500 uppercase">{t('statCountries')}</p>
                 </div>
               </div>
             </div>
@@ -272,12 +272,12 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <div className="w-3 h-3 rounded-full bg-yellow-500" />
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                   </div>
-                  <span className="text-xxs font-mono text-slate-500 uppercase tracking-widest">
+              <span className="type-technical text-slate-500 uppercase">
                     {t('stackExplorerTitle')}
                   </span>
                 </div>
 
-                <p className="text-xs text-slate-400 mb-6 font-sans">
+                <p className="type-body-sm text-slate-400 mb-6">
                   {t('stackExplorerDesc')}
                 </p>
 
@@ -299,9 +299,9 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-200">{t('layer3Title')}</span>
-                        {activeStackLayer === 'analyze' && <span className="bg-green-500/20 text-green-400 text-[9px] px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
+                    {activeStackLayer === 'analyze' && <span className="type-caption bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
                       </div>
-                      <p className="text-xxs mt-0.5 text-slate-400 font-sans">{t('layer3Desc')}</p>
+                      <p className="type-caption mt-0.5 text-slate-400">{t('layer3Desc')}</p>
                     </div>
                   </button>
 
@@ -320,9 +320,9 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-200">{t('layer2Title')}</span>
-                        {activeStackLayer === 'orchestrate' && <span className="bg-green-500/20 text-green-400 text-[9px] px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
+                    {activeStackLayer === 'orchestrate' && <span className="type-caption bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
                       </div>
-                      <p className="text-xxs mt-0.5 text-slate-400 font-sans">{t('layer2Desc')}</p>
+                      <p className="type-caption mt-0.5 text-slate-400">{t('layer2Desc')}</p>
                     </div>
                   </button>
 
@@ -341,9 +341,9 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-bold text-slate-200">{t('layer1Title')}</span>
-                        {activeStackLayer === 'collect' && <span className="bg-green-500/20 text-green-400 text-[9px] px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
+                    {activeStackLayer === 'collect' && <span className="type-caption bg-green-500/20 text-green-400 px-1.5 py-0.5 rounded font-bold">{t('active')}</span>}
                       </div>
-                      <p className="text-xxs mt-0.5 text-slate-400 font-sans">{t('layer1Desc')}</p>
+                      <p className="type-caption mt-0.5 text-slate-400">{t('layer1Desc')}</p>
                     </div>
                   </button>
 
@@ -364,10 +364,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <Smile className="w-3.5 h-3.5" />
                           {t('layer1DetailTitle')}
                         </h4>
-                        <p className="text-[11px] text-slate-400 leading-normal font-sans">
+                        <p className="type-body-sm text-slate-400">
                           {t('layer1DetailDesc')}
                         </p>
-                        <div className="flex flex-wrap gap-1.5 pt-1.5 font-mono text-[9px]">
+                        <div className="type-technical flex flex-wrap gap-1.5 pt-1.5">
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagDynamicFlow')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagDatabaseChecks')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagNfcScans')}</span>
@@ -387,10 +387,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <Cpu className="w-3.5 h-3.5" />
                           {t('layer2DetailTitle')}
                         </h4>
-                        <p className="text-[11px] text-slate-400 leading-normal font-sans">
+                        <p className="type-body-sm text-slate-400">
                           {t('layer2DetailDesc')}
                         </p>
-                        <div className="flex flex-wrap gap-1.5 pt-1.5 font-mono text-[9px]">
+                        <div className="type-technical flex flex-wrap gap-1.5 pt-1.5">
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagWorkflows')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagCases')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagMarketplaceApis')}</span>
@@ -410,10 +410,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <ShieldAlert className="w-3.5 h-3.5" />
                           {t('layer3DetailTitle')}
                         </h4>
-                        <p className="text-[11px] text-slate-400 leading-normal font-sans">
+                        <p className="type-body-sm text-slate-400">
                           {t('layer3DetailDesc')}
                         </p>
-                        <div className="flex flex-wrap gap-1.5 pt-1.5 font-mono text-[9px]">
+                        <div className="type-technical flex flex-wrap gap-1.5 pt-1.5">
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagLinkGraph')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagDeviceIntel')}</span>
                           <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">{t('tagFuzzySearch')}</span>
@@ -433,10 +433,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
       <section id="platform-customizer-section" className="py-24 border-b border-slate-100 bg-[#F8F9FC]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">
+            <h2 className="type-section-title-compact text-slate-900">
               {t('customizerTitle')}
             </h2>
-            <p className="text-slate-600 font-sans text-sm sm:text-base leading-relaxed">
+            <p className="type-body text-slate-600">
               {t('customizerDesc')}
             </p>
           </div>
@@ -446,7 +446,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
             {/* Left Controls Column (Interactive Inputs) */}
             <div className="lg:col-span-5 bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2 pb-3 border-b border-slate-100">
+                <h3 className="type-card-title text-slate-900 mb-6 flex items-center gap-2 pb-3 border-b border-slate-100">
                   <Sliders className="w-4.5 h-4.5 text-[#354CE1]" />
                   {t('flowConfigTitle')}
                 </h3>
@@ -469,7 +469,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                         <p className="text-xxs text-slate-500 mt-0.5 leading-relaxed">{t('verifyGovIdDesc')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-[#354CE1] bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wide">{t('frictionHigh')}</span>
+                      <span className="type-label text-[#354CE1] bg-blue-50 px-2 py-0.5 rounded uppercase">{t('frictionHigh')}</span>
                   </label>
 
                   {/* Toggle 2: Selfie Biometrics */}
@@ -488,7 +488,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                         <p className="text-xxs text-slate-500 mt-0.5 leading-relaxed">{t('verifySelfieDesc')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-[#354CE1] bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wide">{t('frictionHigh')}</span>
+                      <span className="type-label text-[#354CE1] bg-blue-50 px-2 py-0.5 rounded uppercase">{t('frictionHigh')}</span>
                   </label>
 
                   {/* Toggle 3: Global Databases */}
@@ -507,7 +507,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                         <p className="text-xxs text-slate-500 mt-0.5 leading-relaxed">{t('verifyDatabaseDesc')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase tracking-wide">{t('frictionLow')}</span>
+                      <span className="type-label text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase">{t('frictionLow')}</span>
                   </label>
 
                   {/* Toggle 4: Passive Signals */}
@@ -526,7 +526,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                         <p className="text-xxs text-slate-500 mt-0.5 leading-relaxed">{t('verifyPassiveDesc')}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase tracking-wide">{t('frictionNone')}</span>
+                      <span className="type-label text-green-600 bg-green-50 px-2 py-0.5 rounded uppercase">{t('frictionNone')}</span>
                   </label>
 
                 </div>
@@ -534,7 +534,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
 
               {/* Static Callout */}
               <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100">
-                <p className="text-[11px] text-slate-500 leading-relaxed">
+                <p className="type-body-sm text-slate-500">
                   <strong>{t('proTip')}</strong> {t('proTipText')}
                 </p>
               </div>
@@ -546,7 +546,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
               {/* Box 1: Performance Outputs */}
               <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6">{t('analyticsTitle')}</h4>
+                  <h4 className="type-label text-slate-400 uppercase mb-6">{t('analyticsTitle')}</h4>
                   
                   <div className="space-y-6">
                     {/* Gauge 1: Conversion */}
@@ -580,14 +580,14 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     {/* Extra values */}
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100 font-sans">
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{t('assuranceRank')}</p>
+                        <p className="type-label text-slate-400 uppercase">{t('assuranceRank')}</p>
                         <p className="text-sm font-bold text-slate-900 mt-1 flex items-center gap-1">
                           <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                           {tMetricSecurity(metrics.security)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{t('avgSpeed')}</p>
+                        <p className="type-label text-slate-400 uppercase">{t('avgSpeed')}</p>
                         <p className="text-sm font-bold text-slate-900 mt-1 flex items-center gap-1">
                           <Activity className="w-4 h-4 text-slate-500" />
                           {tMetricSpeed(metrics.speed)}
@@ -611,17 +611,17 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
               {/* Box 2: Visual Wireframe Simulation */}
               <div className="bg-slate-950 rounded-3xl p-6 shadow-xl border border-slate-800 text-white flex flex-col justify-between">
                 <div>
-                  <h4 className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-4 pb-2 border-b border-slate-800/80">
+                  <h4 className="type-technical text-slate-400 uppercase mb-4 pb-2 border-b border-slate-800/80">
                     {t('wireframeTitle')}
                   </h4>
 
-                  <div className="space-y-3 font-mono text-[10px] text-slate-300">
+                  <div className="type-technical space-y-3 text-slate-300">
                     <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
                         {t('initOnboardingFlow')}
                       </span>
-                      <span className="text-slate-500 text-[8px]">{t('flowsEndpoint')}</span>
+                        <span className="type-caption text-slate-500">{t('flowsEndpoint')}</span>
                     </div>
 
                     {/* Step Government ID */}
@@ -631,7 +631,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <FileBadge className="w-3.5 h-3.5 text-indigo-400" />
                           {t('stepGovId')}
                         </span>
-                        <span className="text-slate-400 font-bold text-[8px] bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleIdv')}</span>
+                        <span className="type-caption text-slate-400 font-bold bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleIdv')}</span>
                       </div>
                     ) : (
                       <div className="p-3 rounded-lg bg-slate-900/30 border border-slate-800/40 text-slate-500 line-through">
@@ -646,7 +646,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <ScanEye className="w-3.5 h-3.5 text-indigo-400" />
                           {t('stepSelfie')}
                         </span>
-                        <span className="text-slate-400 font-bold text-[8px] bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleBioLiveness')}</span>
+                        <span className="type-caption text-slate-400 font-bold bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleBioLiveness')}</span>
                       </div>
                     ) : (
                       <div className="p-3 rounded-lg bg-slate-900/30 border border-slate-800/40 text-slate-500 line-through">
@@ -661,7 +661,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <Database className="w-3.5 h-3.5 text-indigo-400" />
                           {t('stepDatabase')}
                         </span>
-                        <span className="text-slate-400 font-bold text-[8px] bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleDatabaseKyc')}</span>
+                        <span className="type-caption text-slate-400 font-bold bg-indigo-900/40 px-1 py-0.5 rounded">{t('moduleDatabaseKyc')}</span>
                       </div>
                     ) : (
                       <div className="p-3 rounded-lg bg-slate-900/30 border border-slate-800/40 text-slate-500 line-through">
@@ -676,7 +676,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                           <Radio className="w-3.5 h-3.5 text-indigo-400" />
                           {t('stepPassive')}
                         </span>
-                        <span className="text-slate-400 font-bold text-[8px] bg-indigo-900/40 px-1 py-0.5 rounded">{t('modulePassiveRisk')}</span>
+                        <span className="type-caption text-slate-400 font-bold bg-indigo-900/40 px-1 py-0.5 rounded">{t('modulePassiveRisk')}</span>
                       </div>
                     ) : (
                       <div className="p-3 rounded-lg bg-slate-900/30 border border-slate-800/40 text-slate-500">
@@ -687,7 +687,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 </div>
 
                 <div className="pt-4 border-t border-slate-800 text-center">
-                  <span className="text-[9px] font-mono text-slate-500">
+                  <span className="type-technical text-slate-500">
                     {t('statusReadyConfig')}
                   </span>
                 </div>
@@ -705,14 +705,14 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
             
             <div className="lg:col-span-6 space-y-4">
-              <div className="inline-flex items-center gap-1.5 text-[#354CE1] font-semibold text-xs tracking-wider uppercase">
+            <div className="type-label inline-flex items-center gap-1.5 text-[#354CE1] uppercase">
                 <Shuffle className="w-3.5 h-3.5" />
                 <span>{t('caseIntroBadge')}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight leading-snug">
+              <h2 className="type-section-title-compact text-slate-900">
                 {t('caseSectionTitle')}
               </h2>
-              <p className="text-slate-600 font-sans text-sm sm:text-base leading-relaxed">
+              <p className="type-body text-slate-600">
                 {t('caseSectionDesc')}
               </p>
             </div>
@@ -743,15 +743,15 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
           <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800 text-white">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-800 pb-4 mb-6 gap-3">
               <div>
-                <span className="text-xxs font-mono text-indigo-400 font-bold uppercase tracking-wider block">{t('caseDeskSimulator')}</span>
-                <h3 className="text-lg font-bold text-slate-100">{t('caseDeskTitle')}</h3>
+                <span className="type-technical text-indigo-400 font-bold uppercase block">{t('caseDeskSimulator')}</span>
+                <h3 className="type-card-title text-slate-100">{t('caseDeskTitle')}</h3>
               </div>
               
               <div className="flex gap-2">
-                <div className="text-[10px] font-mono px-2.5 py-1 bg-slate-800 rounded border border-slate-700/60 text-slate-300">
+                <div className="type-technical px-2.5 py-1 bg-slate-800 rounded border border-slate-700/60 text-slate-300">
                   {t('caseDeskTotalQueued').replace('3', cases.length.toString())}
                 </div>
-                <div className="text-[10px] font-mono px-2.5 py-1 bg-green-950 text-green-400 rounded border border-green-900/60 font-bold">
+                <div className="type-technical px-2.5 py-1 bg-green-950 text-green-400 rounded border border-green-900/60 font-bold">
                   {t('caseDeskHealth')}
                 </div>
               </div>
@@ -776,17 +776,17 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                       <img src={c.avatar} alt={c.name} className="w-8 h-8 rounded-full border border-slate-700 object-cover" />
                       <div>
                         <p className="text-xs font-bold text-slate-100">{c.name}</p>
-                        <p className="text-[9px] font-mono text-slate-400 mt-0.5">{c.id} &bull; {getCaseIssue(c.id, c.issue)}</p>
+                        <p className="type-technical text-slate-400 mt-0.5">{c.id} &bull; {getCaseIssue(c.id, c.issue)}</p>
                       </div>
                     </div>
 
                     <div>
                       {c.status === 'approve' ? (
-                        <span className="bg-green-500/20 text-green-400 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarApproved')}</span>
+                          <span className="type-caption bg-green-500/20 text-green-400 font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarApproved')}</span>
                       ) : c.status === 'reject' ? (
-                        <span className="bg-red-500/20 text-red-400 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarRejected')}</span>
+                          <span className="type-caption bg-red-500/20 text-red-400 font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarRejected')}</span>
                       ) : (
-                        <span className="bg-yellow-500/20 text-yellow-400 text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarReview')}</span>
+                          <span className="type-caption bg-yellow-500/20 text-yellow-400 font-bold px-1.5 py-0.5 rounded uppercase">{t('caseSidebarReview')}</span>
                       )}
                     </div>
                   </button>
@@ -802,17 +802,17 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                     <div className="flex items-center gap-3">
                       <img src={activeCase.avatar} alt={activeCase.name} className="w-12 h-12 rounded-full border border-slate-800 object-cover" />
                       <div>
-                        <h4 className="text-sm font-bold text-slate-100">{activeCase.name}</h4>
-                        <p className="text-[10px] font-mono text-slate-400">{t('caseDetailsTitle')}</p>
+                        <h4 className="type-card-title text-slate-100">{activeCase.name}</h4>
+                        <p className="type-technical text-slate-400">{t('caseDetailsTitle')}</p>
                       </div>
                     </div>
-                    <span className="text-[11px] font-mono text-[#354CE1] bg-[#354CE1]/10 px-2.5 py-1 rounded-full border border-[#354CE1]/20 font-semibold">
+                      <span className="type-technical text-[#354CE1] bg-[#354CE1]/10 px-2.5 py-1 rounded-full border border-[#354CE1]/20 font-semibold">
                       {activeCase.id}
                     </span>
                   </div>
 
                   {/* Case Verification Signal Grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 font-mono text-[10px]">
+                    <div className="type-technical grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                     <div className="p-2.5 rounded bg-slate-900 border border-slate-850">
                       <p className="text-slate-500">{t('caseDocAi')}</p>
                       <p className="font-bold text-slate-200 mt-1">{getCaseDocAuthenticity(activeCase.id, activeCase.docAuthenticity)}</p>
@@ -837,7 +837,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
 
                   {/* Case Investigation Narrative */}
                   <div className="p-4 rounded-xl bg-slate-900 border border-slate-850 space-y-1">
-                    <p className="text-[10px] font-mono text-indigo-300 font-bold uppercase flex items-center gap-1">
+                    <p className="type-technical text-indigo-300 font-bold uppercase flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5" />
                       {t('caseAnomaliesTitle')}
                     </p>
@@ -849,13 +849,13 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
 
                 {/* Case Actions bar */}
                 <div className="pt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
-                  <div className="text-[10.5px] text-slate-400 font-sans">
+                  <div className="type-body-sm text-slate-400">
                     {activeCase.status === 'approve' ? (
-                      <span className="text-green-400 font-bold flex items-center gap-1.5 font-mono text-[9px]">
+                      <span className="type-technical text-green-400 font-bold flex items-center gap-1.5">
                         <Check className="w-4.5 h-4.5" /> {t('caseActionsBannerApprove')}
                       </span>
                     ) : activeCase.status === 'reject' ? (
-                      <span className="text-red-400 font-bold flex items-center gap-1.5 font-mono text-[9px]">
+                      <span className="type-technical text-red-400 font-bold flex items-center gap-1.5">
                         <AlertOctagon className="w-4.5 h-4.5" /> {t('caseActionsBannerReject')}
                       </span>
                     ) : (
@@ -906,11 +906,11 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
               <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm relative overflow-hidden">
                 <div className="absolute top-4 right-4 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                  <span className="text-[10px] font-mono text-red-500 font-bold uppercase">{t('graphAlertTitle')}</span>
+              <span className="type-technical text-red-500 font-bold uppercase">{t('graphAlertTitle')}</span>
                 </div>
 
                 <div className="border-b border-slate-100 pb-3 mb-6">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t('graphTitle')}</h4>
+                  <h4 className="type-label text-slate-400 uppercase">{t('graphTitle')}</h4>
                   <p className="text-xxs text-slate-500 mt-0.5">{t('graphDesc')}</p>
                 </div>
 
@@ -942,7 +942,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                       }`}
                     >
                       <Radio className="w-6 h-6" />
-                      <span className="absolute top-full left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap text-[9px] font-mono font-bold bg-slate-900/90 text-slate-300 px-1.5 py-0.5 rounded border border-slate-800">
+                      <span className="type-technical absolute top-full left-1/2 -translate-x-1/2 mt-1 whitespace-nowrap font-bold bg-slate-900/90 text-slate-300 px-1.5 py-0.5 rounded border border-slate-800">
                         {t('graphDeviceFingerprint')}
                       </span>
                     </button>
@@ -955,7 +955,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                       } ${blockedFingeprint ? 'border-red-500/40 text-red-400' : ''}`}
                     >
                       <Users className="w-4.5 h-4.5 mx-auto" />
-                      <span className="text-[8.5px] block font-mono mt-0.5">{t('graphNodeEvVance')}</span>
+                        <span className="type-technical block mt-0.5">{t('graphNodeEvVance')}</span>
                     </button>
 
                     {/* NODE Top Right: Eleanor Smith */}
@@ -966,7 +966,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                       } ${blockedFingeprint ? 'border-red-500/40 text-red-400' : ''}`}
                     >
                       <Users className="w-4.5 h-4.5 mx-auto" />
-                      <span className="text-[8.5px] block font-mono mt-0.5">{t('graphNodeElSmith')}</span>
+                        <span className="type-technical block mt-0.5">{t('graphNodeElSmith')}</span>
                     </button>
 
                     {/* NODE Bottom: Robert Vance */}
@@ -977,7 +977,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                       } ${blockedFingeprint ? 'border-red-500/40 text-red-400' : ''}`}
                     >
                       <Users className="w-4.5 h-4.5 mx-auto" />
-                      <span className="text-[8.5px] block font-mono mt-0.5">{t('graphNodeRobVance')}</span>
+                        <span className="type-technical block mt-0.5">{t('graphNodeRobVance')}</span>
                     </button>
 
                   </div>
@@ -987,7 +987,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 {/* Graph Action Console */}
                 <div className="mt-4 p-4 rounded-xl bg-slate-950 text-slate-300 border border-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="space-y-0.5 text-left">
-                    <p className="text-[10px] font-mono text-slate-500">{t('graphMetadataTitle')}</p>
+                    <p className="type-technical text-slate-500">{t('graphMetadataTitle')}</p>
                     <p className="text-xs font-sans text-slate-300 font-semibold">
                       {selectedNode === 'device' ? (
                         <span>{t('graphDeviceSelected')}</span>
@@ -1005,7 +1005,7 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
 
                   <button
                     onClick={() => setBlockedFingerprint(prev => !prev)}
-                    className={`w-full sm:w-auto px-4 py-2 rounded-lg text-xxs font-mono font-bold tracking-wider uppercase transition ${
+                    className={`type-control w-full sm:w-auto px-4 py-2 rounded-lg uppercase transition ${
                       blockedFingeprint 
                         ? 'bg-emerald-950 text-emerald-400 border border-emerald-900' 
                         : 'bg-red-600 hover:bg-red-500 text-white shadow'
@@ -1019,20 +1019,20 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
 
             {/* Right Copy Column */}
             <div className="lg:col-span-5 space-y-6 text-left">
-              <div className="inline-flex items-center gap-1.5 text-teal-600 font-semibold text-xs tracking-wider uppercase">
+            <div className="type-label inline-flex items-center gap-1.5 text-teal-600 uppercase">
                 <Network className="w-3.5 h-3.5" />
                 <span>{t('graphBadge')}</span>
               </div>
               
-              <h3 className="text-3xl font-display font-bold text-slate-900 tracking-tight leading-snug">
+              <h3 className="type-section-title-compact text-slate-900">
                 {t('graphSectionTitle')}
               </h3>
 
-              <p className="text-slate-600 font-sans text-sm leading-relaxed">
+              <p className="type-body text-slate-600">
                 {t('graphSectionDesc1')}
               </p>
 
-              <p className="text-slate-600 font-sans text-sm leading-relaxed">
+              <p className="type-body text-slate-600">
                 {t('graphSectionDesc2')}
               </p>
 
@@ -1054,8 +1054,8 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
       {/* 5. Enterprise-Grade Security & Trust Metrics */}
       <section id="platform-trust-section" className="py-20 border-b border-slate-100 bg-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-[10px] font-bold text-[#354CE1] uppercase tracking-widest mb-4">{t('trustBadge')}</p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-slate-900 tracking-tight mb-12">
+          <p className="type-label text-[#354CE1] uppercase mb-4">{t('trustBadge')}</p>
+          <h2 className="type-section-title-compact text-slate-900 mb-12">
             {t('trustTitle')}
           </h2>
 
@@ -1066,10 +1066,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 <div className="w-10 h-10 rounded-full bg-blue-50 text-[#354CE1] flex items-center justify-center mx-auto mb-4">
                   <Lock className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-slate-950">{t('trustCard1Title')}</h4>
-                <p className="text-xxs text-slate-500 leading-relaxed font-sans">{t('trustCard1Desc')}</p>
+                <h4 className="type-card-title text-slate-950">{t('trustCard1Title')}</h4>
+                <p className="type-body-sm text-slate-500">{t('trustCard1Desc')}</p>
               </div>
-              <span className="text-[9px] font-mono text-slate-400 mt-4 block">{t('trustCard1Footer')}</span>
+              <span className="type-technical text-slate-400 mt-4 block">{t('trustCard1Footer')}</span>
             </div>
 
             <div className="p-6 rounded-2xl border border-slate-100 bg-[#FAFBFD] flex flex-col justify-between">
@@ -1077,10 +1077,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 <div className="w-10 h-10 rounded-full bg-blue-50 text-[#354CE1] flex items-center justify-center mx-auto mb-4">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-slate-950">{t('trustCard2Title')}</h4>
-                <p className="text-xxs text-slate-500 leading-relaxed font-sans">{t('trustCard2Desc')}</p>
+                <h4 className="type-card-title text-slate-950">{t('trustCard2Title')}</h4>
+                <p className="type-body-sm text-slate-500">{t('trustCard2Desc')}</p>
               </div>
-              <span className="text-[9px] font-mono text-slate-400 mt-4 block">{t('trustCard2Footer')}</span>
+              <span className="type-technical text-slate-400 mt-4 block">{t('trustCard2Footer')}</span>
             </div>
 
             <div className="p-6 rounded-2xl border border-slate-100 bg-[#FAFBFD] flex flex-col justify-between">
@@ -1088,10 +1088,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 <div className="w-10 h-10 rounded-full bg-blue-50 text-[#354CE1] flex items-center justify-center mx-auto mb-4">
                   <EyeOff className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-slate-950">{t('trustCard3Title')}</h4>
-                <p className="text-xxs text-slate-500 leading-relaxed font-sans">{t('trustCard3Desc')}</p>
+                <h4 className="type-card-title text-slate-950">{t('trustCard3Title')}</h4>
+                <p className="type-body-sm text-slate-500">{t('trustCard3Desc')}</p>
               </div>
-              <span className="text-[9px] font-mono text-slate-400 mt-4 block">{t('trustCard3Footer')}</span>
+              <span className="type-technical text-slate-400 mt-4 block">{t('trustCard3Footer')}</span>
             </div>
 
             <div className="p-6 rounded-2xl border border-slate-100 bg-[#FAFBFD] flex flex-col justify-between">
@@ -1099,10 +1099,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
                 <div className="w-10 h-10 rounded-full bg-blue-50 text-[#354CE1] flex items-center justify-center mx-auto mb-4">
                   <RefreshCw className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-slate-950">{t('trustCard4Title')}</h4>
-                <p className="text-xxs text-slate-500 leading-relaxed font-sans">{t('trustCard4Desc')}</p>
+                <h4 className="type-card-title text-slate-950">{t('trustCard4Title')}</h4>
+                <p className="type-body-sm text-slate-500">{t('trustCard4Desc')}</p>
               </div>
-              <span className="text-[9px] font-mono text-slate-400 mt-4 block">{t('trustCard4Footer')}</span>
+              <span className="type-technical text-slate-400 mt-4 block">{t('trustCard4Footer')}</span>
             </div>
 
           </div>
@@ -1113,8 +1113,8 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
       <section id="platform-faqs-section" className="py-24 bg-[#F8F9FC] border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center space-y-4 mb-16">
-            <h2 className="text-3xl font-display font-bold text-slate-900 tracking-tight">{t('faqTitle')}</h2>
-            <p className="text-slate-600 font-sans text-sm">{t('faqDesc')}</p>
+            <h2 className="type-section-title-compact text-slate-900">{t('faqTitle')}</h2>
+            <p className="type-body text-slate-600">{t('faqDesc')}</p>
           </div>
 
           <div className="space-y-3">
@@ -1167,10 +1167,10 @@ export default function PlatformPage({ onOpenSandbox, onBackToLanding, onViewCha
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-4xl mx-auto px-6 relative z-10 space-y-8">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight">
+          <h2 className="type-section-title">
             {t('ctaTitle')}
           </h2>
-          <p className="text-indigo-100 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="type-body text-indigo-100 max-w-2xl mx-auto">
             {t('ctaDesc')}
           </p>
 

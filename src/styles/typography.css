@@ -14,7 +14,9 @@
 .type-document-heading,
 .type-section-title,
 .type-section-title-compact,
+.type-featured-title,
 .type-card-title,
+.type-card-title-sm,
 .type-metric {
   font-family: var(--font-display);
   letter-spacing: 0;
@@ -62,12 +64,27 @@
   line-height: 1.35;
 }
 
+.type-featured-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.type-card-title-sm {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .type-lead,
 .type-body,
 .type-body-sm,
 .type-label,
+.type-label-compact,
 .type-control,
-.type-caption {
+.type-control-compact,
+.type-caption,
+.type-caption-compact {
   font-family: var(--font-sans);
   letter-spacing: 0;
 }
@@ -96,13 +113,31 @@
   line-height: var(--type-leading-compact);
 }
 
+.type-label-compact {
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: var(--type-leading-compact);
+}
+
 .type-control {
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
 }
 
+.type-control-compact {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .type-caption {
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: var(--type-leading-compact);
+}
+
+.type-caption-compact {
   font-size: 0.625rem;
   font-weight: 400;
   line-height: var(--type-leading-compact);
@@ -219,6 +254,14 @@
 
   .type-card-title {
     font-size: 1.125rem;
+  }
+
+  .type-featured-title {
+    font-size: 1.5rem;
+  }
+
+  .type-card-title-sm {
+    font-size: 1rem;
   }
 
   .type-lead {

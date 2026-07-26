@@ -516,7 +516,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           {/* Section Indicator */}
-          <div className="flex items-center gap-2 mb-8 text-yellow-300 font-bold text-xs tracking-wider uppercase bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full w-max border border-white/25 shadow-sm">
+          <div className="type-label flex items-center gap-2 mb-8 text-yellow-300 uppercase bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full w-max border border-white/25 shadow-sm">
             <Book className="w-4 h-4 text-yellow-300" />
             <span>{t.copy.featuredEbooks}</span>
           </div>
@@ -534,8 +534,8 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
               <div className="w-full md:w-[260px] shrink-0 bg-gradient-to-b from-[#182559] to-[#0C1333] border border-[#2B3D8A] rounded-2xl p-4 flex flex-col justify-between aspect-[4/3] md:aspect-auto">
                 <div>
                   <div className="flex items-center justify-between mb-2 pb-2 border-b border-[#2B3D8A]/50">
-                    <span className="text-[7px] font-bold text-slate-400 tracking-wider uppercase">{t.copy.figure1MagicQuadrant}</span>
-                    <span className="text-[7px] font-bold text-[#4F6CFF] tracking-wider uppercase">2025</span>
+                    <span className="type-caption font-bold text-slate-400 uppercase">{t.copy.figure1MagicQuadrant}</span>
+                    <span className="type-caption font-bold text-[#4F6CFF] uppercase">2025</span>
                   </div>
                   
                   {/* Scatter Plot Coordinates */}
@@ -545,10 +545,10 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                     <div className="absolute inset-y-0 left-1/2 border-l border-dashed border-[#2B3D8A]/30" />
                     
                     {/* Quadrant Titles */}
-                    <span className="absolute top-1 left-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.challengers}</span>
-                    <span className="absolute top-1 right-1 text-[5px] text-[#4F6CFF] font-extrabold tracking-wider uppercase uppercase">{t.copy.leaders}</span>
-                    <span className="absolute bottom-1 left-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.nichePlayers}</span>
-                    <span className="absolute bottom-1 right-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.visionaries}</span>
+                    <span className="type-caption absolute top-1 left-1 text-slate-500 font-bold uppercase">{t.copy.challengers}</span>
+                    <span className="type-caption absolute top-1 right-1 text-[#4F6CFF] font-bold uppercase">{t.copy.leaders}</span>
+                    <span className="type-caption absolute bottom-1 left-1 text-slate-500 font-bold uppercase">{t.copy.nichePlayers}</span>
+                    <span className="type-caption absolute bottom-1 right-1 text-slate-500 font-bold uppercase">{t.copy.visionaries}</span>
                     
                     {/* Other players - Soft grey dots */}
                     <div className="absolute top-[30%] left-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
@@ -563,13 +563,13 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                       className="absolute top-[18%] right-[15%] flex flex-col items-center"
                     >
                       <div className="w-3 h-3 rounded-full bg-[#354CE1] border-2 border-white shadow-lg shadow-[#354CE1]/50 relative">
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs leading-none">Identra</span>
+                        <span className="type-caption absolute -top-3 left-1/2 -translate-x-1/2 font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs">Identra</span>
                       </div>
                     </motion.div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[7px] text-slate-400 mt-2">
+                <div className="type-caption flex items-center justify-between text-slate-400 mt-2">
                   <span>{t.copy.completenessOfVision}</span>
                   <span className="rotate-90 origin-bottom-right translate-y-[-10px] -translate-x-[4px]">{t.copy.abilityToExecute}</span>
                 </div>
@@ -579,10 +579,10 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
               <div className="flex flex-col justify-between flex-1 py-1">
                 <div>
                   <div className="flex items-center gap-1.5 mb-3">
-                    <span className="text-[10px] bg-[#1E2E72] text-[#4F6CFF] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">{t.copy.report}</span>
-                    <span className="text-[10px] text-slate-400">• {t.copy.text45MinRead}</span>
+                  <span className="type-label bg-[#1E2E72] text-[#4F6CFF] px-2.5 py-0.5 rounded-full uppercase">{t.copy.report}</span>
+                  <span className="type-caption text-slate-400">• {t.copy.text45MinRead}</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold font-sans tracking-tight text-white mb-3 group-hover:text-[#4F6CFF] transition leading-snug">{t.copy.identraIsNamedALeaderInThe2025}</h3>
+                <h3 className="type-featured-title text-white mb-3 group-hover:text-[#4F6CFF] transition">{t.copy.identraIsNamedALeaderInThe2025}</h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-normal mb-6">{t.copy.inTheNewlyReleasedReportGartnerEvaluatesIdentity}</p>
                 </div>
                 
@@ -603,12 +603,12 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-[9px] font-bold tracking-wider uppercase text-slate-400">{ebookCopy(item).type}</span>
+                      <span className="type-label uppercase text-slate-400">{ebookCopy(item).type}</span>
                       {ebookCopy(item).duration && (
-                        <span className="text-[9px] text-slate-500">• {ebookCopy(item).duration}</span>
+                        <span className="type-caption text-slate-500">• {ebookCopy(item).duration}</span>
                       )}
                     </div>
-                    <h4 className="text-sm font-bold text-white group-hover:text-[#4F6CFF] transition line-clamp-1">
+                    <h4 className="type-card-title-sm text-white group-hover:text-[#4F6CFF] transition line-clamp-1">
                       {ebookCopy(item).title}
                     </h4>
                     <p className="text-xs text-slate-400 line-clamp-1 font-normal leading-relaxed">
@@ -638,7 +638,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
           {/* Header and Search */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-display font-bold text-slate-900 tracking-tight">{t.copy.allEbooks}</h1>
+              <h1 className="type-section-title-compact text-slate-900">{t.copy.allEbooks}</h1>
             </div>
             
             {/* Custom Search bar */}
@@ -670,7 +670,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
           <div className="lg:col-span-3 space-y-10 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-2 lg:pb-8">
             {/* Filter Group: Topics */}
             <div>
-              <h3 className="text-[15px] font-semibold text-slate-900 mb-4 font-sans leading-none">{t.copy.topics}</h3>
+              <h3 className="type-card-title text-slate-900 mb-4">{t.copy.topics}</h3>
               <div className="flex flex-col items-start gap-2.5">
                 {visibleTopics.map((topic) => {
                   const isSelected = selectedTopic === topic.id;
@@ -678,7 +678,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                     <button
                       key={topic.id}
                       onClick={() => selectTopic(topic.id)}
-                      className={`px-4.5 py-2 rounded-full text-xs font-semibold text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                      className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
@@ -691,7 +691,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
               </div>
               <button
                 onClick={() => setShowAllTopics(!showAllTopics)}
-                className="text-xs font-semibold text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
               >
                 {showAllTopics ? (
                   <>
@@ -709,7 +709,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
 
             {/* Filter Group: Industries */}
             <div>
-              <h3 className="text-[15px] font-semibold text-slate-900 mb-4 font-sans leading-none">{t.copy.industries}</h3>
+              <h3 className="type-card-title text-slate-900 mb-4">{t.copy.industries}</h3>
               <div className="flex flex-col items-start gap-2.5">
                 {visibleIndustries.map((ind) => {
                   const isSelected = selectedIndustry === ind.id;
@@ -717,7 +717,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                     <button
                       key={ind.id}
                       onClick={() => selectIndustry(ind.id)}
-                      className={`px-4.5 py-2 rounded-full text-xs font-semibold text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                      className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
@@ -730,7 +730,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
               </div>
               <button
                 onClick={() => setShowAllIndustries(!showAllIndustries)}
-                className="text-xs font-semibold text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
               >
                 {showAllIndustries ? (
                   <>
@@ -771,9 +771,9 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent mix-blend-overlay" />
                         
                         {/* Top logo */}
-                        <div className="flex items-center gap-1 text-[8px] font-bold tracking-widest text-white/80 uppercase">
+                        <div className="type-label flex items-center gap-1 text-white/80 uppercase">
                           <div className="w-2.5 h-2.5 bg-white rounded-xs rotate-12 flex items-center justify-center">
-                            <span className="text-[5px] text-[#354CE1]">p</span>
+                            <span className="type-caption text-[#354CE1]">p</span>
                           </div>
                           <span>identra</span>
                         </div>
@@ -784,7 +784,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         </div>
 
                         {/* Card bottom cover subtitle */}
-                        <span className="text-[8px] font-semibold tracking-wider text-white/50 uppercase leading-none truncate">
+                        <span className="type-label text-white/50 uppercase truncate">
                           {ebookCopy(ebook).title}
                         </span>
                       </div>
@@ -793,23 +793,23 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                       <div className="p-5 flex flex-col justify-between flex-1">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                            <span className="type-label-compact bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md uppercase">
                               {ebookCopy(ebook).type}
                             </span>
                             {ebookCopy(ebook).duration && (
-                              <span className="text-[10px] text-slate-400 flex items-center gap-1 font-normal">
+                              <span className="type-caption-compact text-slate-400 flex items-center gap-1">
                                 <Clock className="w-3 h-3 text-slate-400" />
                                 <span>{ebookCopy(ebook).duration}</span>
                               </span>
                             )}
                           </div>
                           
-                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#354CE1] transition leading-snug line-clamp-2">
+                          <h3 className="type-card-title-sm text-slate-900 group-hover:text-[#354CE1] transition line-clamp-2">
                             {ebookCopy(ebook).title}
                           </h3>
                         </div>
 
-                        <p className="text-[11px] text-slate-400 leading-normal line-clamp-2 mt-2">
+                        <p className="type-body-sm text-slate-400 line-clamp-2 mt-2">
                           {ebookCopy(ebook).description}
                         </p>
                       </div>
@@ -822,7 +822,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                 <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-5 h-5" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 mb-1">{t.copy.noEbooksFound}</h3>
+                <h3 className="type-card-title text-slate-900 mb-1">{t.copy.noEbooksFound}</h3>
                 <p className="text-xs text-slate-400 leading-normal mb-6">{t.copy.weCouldntFindAnyResourcesMatching}{searchQuery}{t.copy.tryClearingYourSearchQueryOrSelectingOther}</p>
                 <button 
                   onClick={clearAllFilters}
@@ -871,9 +871,9 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                   <div className={`md:w-2/5 bg-gradient-to-tr ${activeEbookModal.gradient} p-8 text-white flex flex-col justify-between min-h-[350px] md:min-h-0 relative`}>
                     <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent mix-blend-overlay" />
                     
-                    <div className="flex items-center gap-1.5 text-[9px] font-bold tracking-widest text-white/80 uppercase">
+                  <div className="type-label flex items-center gap-1.5 text-white/80 uppercase">
                       <div className="w-3.5 h-3.5 bg-white rounded-xs rotate-12 flex items-center justify-center">
-                        <span className="text-[6px] text-[#354CE1]">p</span>
+                      <span className="type-caption text-[#354CE1]">p</span>
                       </div>
                       <span>identra</span>
                     </div>
@@ -881,27 +881,27 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                     <div className="my-auto flex flex-col items-center gap-4 text-center">
                       <CoverIllustration type={activeEbookModal.illustration} />
                       <div className="space-y-1.5">
-                        <span className="text-[10px] bg-white/10 text-white border border-white/20 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                  <span className="type-label bg-white/10 text-white border border-white/20 px-2.5 py-0.5 rounded-full uppercase">
                           {ebookCopy(activeEbookModal).type}
                         </span>
-                        <h3 className="text-base font-bold leading-snug max-w-[200px] mx-auto drop-shadow-md">
+                  <h3 className="type-card-title max-w-[200px] mx-auto drop-shadow-md">
                           {ebookCopy(activeEbookModal).title}
                         </h3>
                       </div>
                     </div>
 
-                    <div className="text-[9px] text-white/60 tracking-wider font-semibold uppercase truncate">{t.copy.resourceLibraryVol3}</div>
+                  <div className="type-label text-white/60 uppercase truncate">{t.copy.resourceLibraryVol3}</div>
                   </div>
 
                   {/* Right Column: details & Form */}
                   <div className="md:w-3/5 p-8 md:p-10 space-y-6">
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-xs font-bold text-[#354CE1] uppercase tracking-wider">
+              <div className="type-label flex items-center gap-2 text-[#354CE1] uppercase">
                         <span>{t.copy.freeAccess}</span>
                         <span className="text-slate-300">•</span>
                         <span>{t.copy.pdfFormat}</span>
                       </div>
-                      <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight leading-snug">
+              <h2 className="type-section-title-compact text-slate-900">
                         {ebookCopy(activeEbookModal).title}
                       </h2>
                     </div>
@@ -912,7 +912,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                     <form onSubmit={handleDownloadSubmit} className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-1">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{t.copy.firstName}</label>
+                    <label className="type-label text-slate-400 uppercase block">{t.copy.firstName}</label>
                           <div className="relative">
                             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                               <User className="w-3.5 h-3.5" />
@@ -929,7 +929,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{t.copy.lastName}</label>
+                    <label className="type-label text-slate-400 uppercase block">{t.copy.lastName}</label>
                           <div className="relative">
                             <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                               <User className="w-3.5 h-3.5" />
@@ -947,7 +947,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{t.copy.businessEmail}</label>
+                  <label className="type-label text-slate-400 uppercase block">{t.copy.businessEmail}</label>
                         <div className="relative">
                           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                             <Mail className="w-3.5 h-3.5" />
@@ -964,7 +964,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{t.copy.companyName}</label>
+                  <label className="type-label text-slate-400 uppercase block">{t.copy.companyName}</label>
                         <div className="relative">
                           <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                             <Building2 className="w-3.5 h-3.5" />
@@ -1010,17 +1010,17 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         <Book className="w-4.5 h-4.5 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-xs font-bold leading-none line-clamp-1">{ebookCopy(activeEbookModal).title}</h3>
-                        <p className="text-[9px] text-slate-400 mt-1 uppercase font-semibold">{t.copy.simulatedSecurePdfViewer}</p>
+                  <h3 className="type-card-title line-clamp-1">{ebookCopy(activeEbookModal).title}</h3>
+                  <p className="type-label text-slate-400 mt-1 uppercase">{t.copy.simulatedSecurePdfViewer}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-4">
                       {/* Zoom Controls */}
                       <div className="hidden sm:flex items-center gap-2 bg-slate-800 rounded-lg px-2.5 py-1 text-xs">
-                        <button onClick={() => setZoom(z => Math.max(z - 10, 80))} className="hover:text-white text-slate-400 font-bold px-1 text-[11px]">-</button>
-                        <span className="text-[10px] font-mono text-slate-300">{zoom}%</span>
-                        <button onClick={() => setZoom(z => Math.min(z + 10, 150))} className="hover:text-white text-slate-400 font-bold px-1 text-[11px]">+</button>
+                    <button onClick={() => setZoom(z => Math.max(z - 10, 80))} className="type-control hover:text-white text-slate-400 px-1">-</button>
+                    <span className="type-technical text-slate-300">{zoom}%</span>
+                    <button onClick={() => setZoom(z => Math.min(z + 10, 150))} className="type-control hover:text-white text-slate-400 px-1">+</button>
                       </div>
 
                       {/* PDF Navigation */}
@@ -1032,7 +1032,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         >
                           <ChevronLeft className="w-4 h-4" />
                         </button>
-                        <span className="text-[10px] font-mono font-bold text-slate-300">
+                    <span className="type-technical font-bold text-slate-300">
                           {pdfPage} / 5
                         </span>
                         <button 
@@ -1064,7 +1064,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                       className="w-full max-w-2xl bg-white rounded-xl shadow-2xl p-8 md:p-12 text-slate-800 transition-all duration-300 relative min-h-[450px]"
                     >
                       {/* Mini watermark */}
-                      <div className="absolute top-4 right-6 flex items-center gap-1 text-[7px] text-slate-300 tracking-wider font-bold">
+                            <div className="type-caption absolute top-4 right-6 flex items-center gap-1 text-slate-300 font-bold">
                         <span>{t.copy.securedByIdentra}</span>
                       </div>
 
@@ -1079,17 +1079,17 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                           </div>
 
                           <div className="space-y-4 max-w-md mx-auto my-auto mt-12 mb-12">
-                            <span className="text-[9px] bg-slate-100 text-[#354CE1] px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-slate-200">
+                              <span className="type-label bg-slate-100 text-[#354CE1] px-3 py-1 rounded-full uppercase border border-slate-200">
                               {ebookCopy(activeEbookModal).type} {t.copy.edition}</span>
-                            <h1 className="text-xl md:text-3xl font-display font-extrabold text-slate-900 tracking-tight leading-tight pt-2">
+                              <h1 className="type-section-title-compact text-slate-900 pt-2">
                               {ebookCopy(activeEbookModal).title}
                             </h1>
                             <div className="h-1 w-16 bg-[#354CE1] mx-auto rounded-full mt-4" />
                           </div>
 
                           <div className="text-slate-400 space-y-1">
-                            <p className="text-[10px] font-bold tracking-wider uppercase">{t.copy.publishedByIdentraTechnologiesInc}</p>
-                            <p className="text-[9px] font-mono">Document Hash: 0x8a92f...7e402b • H1 2026</p>
+                                <p className="type-label uppercase">{t.copy.publishedByIdentraTechnologiesInc}</p>
+                                <p className="type-technical">Document Hash: 0x8a92f...7e402b • H1 2026</p>
                           </div>
                         </div>
                       )}
@@ -1098,20 +1098,20 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         /* PAGE 2: EXEC SUMMARY */
                         <div className="space-y-6 select-none animate-in fade-in duration-200">
                           <div className="border-b border-slate-100 pb-3">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">{t.copy.chapter01}</span>
-                            <h2 className="text-lg font-bold text-slate-900">{t.copy.executiveSummaryKeyFindings}</h2>
+                              <span className="type-label text-slate-400 uppercase block">{t.copy.chapter01}</span>
+                              <h2 className="type-document-heading text-slate-900">{t.copy.executiveSummaryKeyFindings}</h2>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                             <div className="space-y-4">
-                              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">{t.copy.theEvolvingLandscape}</h3>
+                                <h3 className="type-label text-slate-900 uppercase">{t.copy.theEvolvingLandscape}</h3>
                               <p className="text-xs text-slate-600 leading-relaxed font-normal">{t.copy.asRemoteOnboardingAndDigitalFirstInteractionsSolidify}</p>
                               <p className="text-xs text-slate-600 leading-relaxed font-normal">{t.copy.toPreventOnboardingDropOffWhileSafeguardingSystems}</p>
                             </div>
 
                             {/* Stat block */}
                             <div className="bg-slate-50 border border-slate-150 rounded-xl p-4 space-y-3.5">
-                              <h3 className="text-[10px] font-bold text-[#354CE1] uppercase tracking-wider">{t.copy.h12026KeyStatistics}</h3>
+                                <h3 className="type-label text-[#354CE1] uppercase">{t.copy.h12026KeyStatistics}</h3>
                               <div className="space-y-3">
                                 <div className="flex justify-between items-center text-xs">
                                   <span className="text-slate-500 font-medium">{t.copy.selfieFraudFrequency}</span>
@@ -1135,8 +1135,8 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         /* PAGE 3: MAIN FINDINGS / DATA TABLES */
                         <div className="space-y-6 select-none animate-in fade-in duration-200">
                           <div className="border-b border-slate-100 pb-3">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">{t.copy.chapter02}</span>
-                            <h2 className="text-lg font-bold text-slate-900">{t.copy.multiLayeredSignalsMatrix}</h2>
+                              <span className="type-label text-slate-400 uppercase block">{t.copy.chapter02}</span>
+                              <h2 className="type-document-heading text-slate-900">{t.copy.multiLayeredSignalsMatrix}</h2>
                           </div>
 
                           <p className="text-xs text-slate-600 leading-relaxed font-normal">{t.copy.relyingEntirelyOnADocumentImageMatchAllows}</p>
@@ -1177,8 +1177,8 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         /* PAGE 4: INTERACTIVE CHECKLIST */
                         <div className="space-y-6 animate-in fade-in duration-200">
                           <div className="border-b border-slate-100 pb-3">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">{t.copy.chapter03}</span>
-                            <h2 className="text-lg font-bold text-slate-900">{t.copy.actionableTrustArchitectureChecklist}</h2>
+                              <span className="type-label text-slate-400 uppercase block">{t.copy.chapter03}</span>
+                              <h2 className="type-document-heading text-slate-900">{t.copy.actionableTrustArchitectureChecklist}</h2>
                           </div>
 
                           <p className="text-xs text-slate-600 leading-relaxed font-normal">{t.copy.checkTheBoxesBelowToAssessYourCurrent}</p>
@@ -1201,8 +1201,8 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                                   {checkedRules[rule.key] && <Check className="w-3 h-3 stroke-[3]" />}
                                 </div>
                                 <div>
-                                  <h4 className="text-xs font-bold text-slate-900 leading-none">{rule.title}</h4>
-                                  <p className="text-[10px] text-slate-400 mt-1 leading-normal font-normal">{rule.desc}</p>
+                                  <h4 className="type-card-title text-slate-900">{rule.title}</h4>
+                                  <p className="type-caption text-slate-400 mt-1">{rule.desc}</p>
                                 </div>
                               </button>
                             ))}
@@ -1214,8 +1214,8 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                         /* PAGE 5: CONCLUSION & CTA */
                         <div className="h-full flex flex-col justify-between py-6 text-center select-none animate-in fade-in duration-200">
                           <div>
-                            <span className="text-[9px] font-bold text-[#354CE1] uppercase tracking-widest block">{t.copy.conclusion}</span>
-                            <h2 className="text-lg md:text-xl font-bold text-slate-900 mt-1">{t.copy.establishingAdaptiveTrust}</h2>
+                              <span className="type-label text-[#354CE1] uppercase block">{t.copy.conclusion}</span>
+                              <h2 className="type-document-heading text-slate-900 mt-1">{t.copy.establishingAdaptiveTrust}</h2>
                           </div>
 
                           <div className="max-w-md mx-auto space-y-4 my-auto mt-8 mb-8">
@@ -1237,7 +1237,7 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
                                 className="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-full transition cursor-pointer"
                               >{t.copy.closePdf}</button>
                             </div>
-                            <p className="text-[10px] text-slate-400 font-semibold uppercase">{t.copy.thankYouForReading} {firstName}!</p>
+                            <p className="type-label text-slate-400 uppercase">{t.copy.thankYouForReading} {firstName}!</p>
                           </div>
                         </div>
                       )}

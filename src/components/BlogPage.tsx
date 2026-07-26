@@ -310,7 +310,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           {/* Section Indicator */}
-          <div className="flex items-center gap-2 mb-8 text-yellow-300 font-bold text-xs tracking-wider uppercase bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full w-max border border-white/25 shadow-sm">
+          <div className="type-label flex items-center gap-2 mb-8 text-yellow-300 uppercase bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full w-max border border-white/25 shadow-sm">
             <Book className="w-4 h-4 text-yellow-300" />
             <span>{t.copy.featuredBlogPosts}</span>
           </div>
@@ -342,8 +342,8 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
               <div className="w-full md:w-[260px] shrink-0 bg-gradient-to-b from-[#182559] to-[#0C1333] border border-[#2B3D8A] rounded-2xl p-4 flex flex-col justify-between aspect-[4/3] md:aspect-auto">
                 <div>
                   <div className="flex items-center justify-between mb-2 pb-2 border-b border-[#2B3D8A]/50">
-                    <span className="text-[7px] font-bold text-slate-400 tracking-wider uppercase">{t.copy.figure1IdentityMap}</span>
-                    <span className="text-[7px] font-bold text-[#4F6CFF] tracking-wider uppercase">2025</span>
+                    <span className="type-caption font-bold text-slate-400 uppercase">{t.copy.figure1IdentityMap}</span>
+                    <span className="type-caption font-bold text-[#4F6CFF] uppercase">2025</span>
                   </div>
                   
                   {/* Scatter Plot Coordinates */}
@@ -353,10 +353,10 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                     <div className="absolute inset-y-0 left-1/2 border-l border-dashed border-[#2B3D8A]/30" />
                     
                     {/* Quadrant Titles */}
-                    <span className="absolute top-1 left-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.challengers}</span>
-                    <span className="absolute top-1 right-1 text-[5px] text-[#4F6CFF] font-extrabold tracking-wider uppercase uppercase">{t.copy.leaders}</span>
-                    <span className="absolute bottom-1 left-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.nichePlayers}</span>
-                    <span className="absolute bottom-1 right-1 text-[5px] text-slate-500 font-bold tracking-wider uppercase uppercase">{t.copy.visionaries}</span>
+                    <span className="type-caption absolute top-1 left-1 text-slate-500 font-bold uppercase">{t.copy.challengers}</span>
+                    <span className="type-caption absolute top-1 right-1 text-[#4F6CFF] font-bold uppercase">{t.copy.leaders}</span>
+                    <span className="type-caption absolute bottom-1 left-1 text-slate-500 font-bold uppercase">{t.copy.nichePlayers}</span>
+                    <span className="type-caption absolute bottom-1 right-1 text-slate-500 font-bold uppercase">{t.copy.visionaries}</span>
                     
                     {/* Other players - Soft grey dots */}
                     <div className="absolute top-[30%] left-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
@@ -371,13 +371,13 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                       className="absolute top-[18%] right-[15%] flex flex-col items-center"
                     >
                       <div className="w-3 h-3 rounded-full bg-[#354CE1] border-2 border-white shadow-lg shadow-[#354CE1]/50 relative">
-                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 text-[6px] font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs leading-none">Identra</span>
+                        <span className="type-caption absolute -top-3 left-1/2 -translate-x-1/2 font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs">Identra</span>
                       </div>
                     </motion.div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[7px] text-slate-400 mt-2">
+                <div className="type-caption flex items-center justify-between text-slate-400 mt-2">
                   <span>{t.copy.depthOfSignals}</span>
                   <span className="rotate-90 origin-bottom-right translate-y-[-10px] -translate-x-[4px]">{t.copy.operationalReadiness}</span>
                 </div>
@@ -388,15 +388,15 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
               <div className="flex flex-col justify-between flex-1 py-1">
                 <div>
                   <div className="flex items-center gap-1.5 mb-3">
-                    <span className="text-[10px] bg-[#1E2E72] text-indigo-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">{postCopy(featuredPost).type}</span>
+                    <span className="type-label bg-[#1E2E72] text-indigo-200 px-2.5 py-0.5 rounded-full uppercase">{postCopy(featuredPost).type}</span>
                     <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-500" />
-                    <span className="text-[10px] text-slate-400">{postCopy(featuredPost).duration}</span>
+                    <span className="type-caption text-slate-400">{postCopy(featuredPost).duration}</span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold font-sans tracking-tight text-white mb-3 group-hover:text-indigo-200 transition leading-snug line-clamp-3">{postCopy(featuredPost).title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal mb-6 line-clamp-3">{postCopy(featuredPost).description}</p>
+                  <h3 className="type-featured-title text-white mb-3 group-hover:text-indigo-200 transition line-clamp-3">{postCopy(featuredPost).title}</h3>
+                  <p className="type-body-sm text-slate-300 mb-6 line-clamp-3">{postCopy(featuredPost).description}</p>
                 </div>
                 
-                <div className="flex items-center gap-2 text-xs font-bold text-[#4F6CFF] group-hover:text-white transition mt-auto">
+                <div className="type-control flex items-center gap-2 text-[#4F6CFF] group-hover:text-white transition mt-auto">
                   <span>{t.copy.readTheArticle}</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -413,18 +413,18 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
-                      <span className="text-[9px] font-bold tracking-wider uppercase text-slate-400">{postCopy(item).type}</span>
+                      <span className="type-label uppercase text-slate-400">{postCopy(item).type}</span>
                       {postCopy(item).duration && (
-                        <span className="text-[9px] text-slate-500 flex items-center gap-1">
+                        <span className="type-caption text-slate-500 flex items-center gap-1">
                           <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-600" />
                           <span>{postCopy(item).duration}</span>
                         </span>
                       )}
                     </div>
-                    <h4 className="text-sm font-bold text-white group-hover:text-[#4F6CFF] transition line-clamp-1">
+                    <h4 className="type-card-title-sm text-white group-hover:text-[#4F6CFF] transition line-clamp-1">
                       {postCopy(item).title}
                     </h4>
-                    <p className="text-xs text-slate-400 line-clamp-1 font-normal leading-relaxed">
+                    <p className="type-body-sm text-slate-400 line-clamp-1">
                       {postCopy(item).description}
                     </p>
                   </div>
@@ -442,7 +442,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
       <div ref={catalogTopRef} className="max-w-7xl mx-auto px-6 mt-12">
         <div className="sticky top-0 z-30 -mx-6 mb-8 bg-[#FAFBFD]/95 px-6 py-4 backdrop-blur-md border-b border-slate-100/80">
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-2">
+          <div className="type-body-sm flex items-center gap-1.5 text-slate-400 mb-2">
             <button type="button" className="hover:text-[#354CE1]" onClick={onBackToLanding}>{t.copy.resourceCenter}</button>
             <span>&gt;</span>
             <span className="font-semibold text-slate-600">{t.copy.blog}</span>
@@ -451,7 +451,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
           {/* Header and Search */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-2xl md:text-3xl font-display font-bold text-slate-900 tracking-tight">{t.copy.allBlogPosts}</h1>
+              <h1 className="type-section-title-compact text-slate-900">{t.copy.allBlogPosts}</h1>
             </div>
             
             {/* Custom Search bar */}
@@ -464,7 +464,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                 placeholder={t.copy.searchBlogPosts}
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full bg-white border border-slate-200 pl-10 pr-4 py-2.5 rounded-full text-xs font-medium text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#354CE1]/20 focus:border-[#354CE1] transition"
+                className="type-control w-full bg-white border border-slate-200 pl-10 pr-4 py-2.5 rounded-full text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-[#354CE1]/20 focus:border-[#354CE1] transition"
               />
               {searchInput && (
                 <button 
@@ -483,7 +483,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
           <div className="lg:col-span-3 space-y-10 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-2 lg:pb-8">
             {/* Filter Group: Topics */}
             <div>
-              <h3 className="text-[15px] font-semibold text-slate-900 mb-4 font-sans leading-none">{t.copy.topics}</h3>
+              <h3 className="type-card-title text-slate-900 mb-4">{t.copy.topics}</h3>
               <div className="flex flex-col items-start gap-2.5">
                 {visibleTopics.map((topic) => {
                   const isSelected = selectedTopic === topic.id;
@@ -491,7 +491,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                     <button
                       key={topic.id}
                       onClick={() => selectTopic(topic.id)}
-                      className={`px-4.5 py-2 rounded-full text-xs font-semibold text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                      className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
@@ -504,7 +504,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
               </div>
               <button
                 onClick={() => setShowAllTopics(!showAllTopics)}
-                className="text-xs font-semibold text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
               >
                 {showAllTopics ? (
                   <>
@@ -522,7 +522,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
 
             {/* Filter Group: Industries */}
             <div>
-              <h3 className="text-[15px] font-semibold text-slate-900 mb-4 font-sans leading-none">{t.copy.industries}</h3>
+              <h3 className="type-card-title text-slate-900 mb-4">{t.copy.industries}</h3>
               <div className="flex flex-col items-start gap-2.5">
                 {visibleIndustries.map((ind) => {
                   const isSelected = selectedIndustry === ind.id;
@@ -530,7 +530,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                     <button
                       key={ind.id}
                       onClick={() => selectIndustry(ind.id)}
-                      className={`px-4.5 py-2 rounded-full text-xs font-semibold text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                      className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
@@ -543,7 +543,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
               </div>
               <button
                 onClick={() => setShowAllIndustries(!showAllIndustries)}
-                className="text-xs font-semibold text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
               >
                 {showAllIndustries ? (
                   <>
@@ -598,9 +598,9 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                         <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent mix-blend-overlay" />
                         
                         {/* Top logo */}
-                        <div className="flex items-center gap-1 text-[8px] font-bold tracking-widest text-white/80 uppercase">
+                        <div className="type-label flex items-center gap-1 text-white/80 uppercase">
                           <div className="w-2.5 h-2.5 bg-white rounded-xs rotate-12 flex items-center justify-center">
-                            <span className="text-[5px] text-[#354CE1]">p</span>
+                            <span className="type-caption text-[#354CE1]">p</span>
                           </div>
                           <span>identra</span>
                         </div>
@@ -611,7 +611,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                         </div>
 
                         {/* Card bottom cover subtitle */}
-                        <span className="text-[8px] font-semibold tracking-wider text-white/50 uppercase leading-none truncate">
+                        <span className="type-label text-white/50 uppercase truncate">
                           {postCopy(post).title}
                         </span>
                       </div>
@@ -621,23 +621,23 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                       <div className="p-5 flex flex-col justify-between flex-1">
                         <div className="space-y-2">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">
+                            <span className="type-label-compact bg-slate-100 text-slate-500 px-2 py-0.5 rounded-md uppercase">
                               {postCopy(post).type}
                             </span>
                             {postCopy(post).duration && (
-                              <span className="text-[10px] text-slate-400 flex items-center gap-1 font-normal">
+                              <span className="type-caption-compact text-slate-400 flex items-center gap-1">
                                 <Clock className="w-3 h-3 text-slate-400" />
                                 <span>{postCopy(post).duration}</span>
                               </span>
                             )}
                           </div>
                           
-                          <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#354CE1] transition leading-snug line-clamp-2">
+                          <h3 className="type-card-title-sm text-slate-900 group-hover:text-[#354CE1] transition line-clamp-2">
                             {postCopy(post).title}
                           </h3>
                         </div>
 
-                        <p className="text-[11px] text-slate-400 leading-normal line-clamp-2 mt-2">
+                        <p className="type-body-sm text-slate-400 line-clamp-2 mt-2">
                           {postCopy(post).description}
                         </p>
                       </div>
@@ -650,11 +650,11 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                 <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-5 h-5" />
                 </div>
-                <h3 className="text-sm font-bold text-slate-900 mb-1">{t.copy.noBlogPostsFound}</h3>
-                <p className="text-xs text-slate-400 leading-normal mb-6">{noResultsText}</p>
+                <h3 className="type-card-title text-slate-900 mb-1">{t.copy.noBlogPostsFound}</h3>
+                <p className="type-body-sm text-slate-400 mb-6">{noResultsText}</p>
                 <button 
                   onClick={clearAllFilters}
-                  className="px-4 py-2 bg-[#354CE1] text-white hover:bg-[#2539BE] text-xs font-semibold rounded-xl transition"
+                  className="type-control px-4 py-2 bg-[#354CE1] text-white hover:bg-[#2539BE] rounded-xl transition"
                 >{t.copy.clearAllFilters}</button>
               </div>
             )}

@@ -14,6 +14,20 @@ const migratedComponents = [
   'src/components/PricingPage.tsx',
   'src/components/ResearchPage.tsx',
   'src/components/CustomersPage.tsx',
+  'src/components/PlatformPage.tsx',
+  'src/components/BlogPage.tsx',
+  'src/components/BlogDetailPage.tsx',
+  'src/components/blog/StructuredBlogDetailPage.tsx',
+  'src/components/EbooksPage.tsx',
+  'src/components/ListDemoPage.tsx',
+  'src/components/AboutPage.tsx',
+  'src/components/CareersPage.tsx',
+  'src/components/ContactPage.tsx',
+  'src/components/AcademyPage.tsx',
+  'src/components/DocsPage.tsx',
+  'src/components/docs/DocsArticleLayout.tsx',
+  'src/components/docs/DocsApiReferenceCodeExplorer.tsx',
+  'src/components/docs/DocsSdkFlowCodeExplorer.tsx',
 ];
 
 const forbiddenPatterns = [

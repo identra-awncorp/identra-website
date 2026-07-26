@@ -76,16 +76,21 @@ height, and letter spacing for each page.
 | `type-display` | 40 / 48 / 60 / 72px | 700 | 1.08 | Primary landing-page hero |
 | `type-page-title` | 36 / 48 / 60px | 700 | 1.1 | Standard subpage title |
 | `type-document-title` | 30 / 36 / 46px | 700 | 1.18 | White paper or document hero |
-| `type-document-heading` | 20 / 22 / 24px | 700 | 1.35 | Section heading inside a document |
+| `type-document-heading` | 20 / 22 / 24px | 700 | 1.35 | Section heading inside a document or Docs article |
 | `type-section-title` | 30 / 36 / 48px | 700 | 1.2 | Prominent marketing section |
 | `type-section-title-compact` | 24 / 30 / 36px | 700 | 1.25 | Dense or editorial section |
+| `type-featured-title` | 20 / 24px | 700 | 1.3 | Featured content title inside a Hero |
 | `type-card-title` | 16 / 18 / 20px | 600 | 1.35 | Card and feature title |
+| `type-card-title-sm` | 14 / 16px | 600 | 1.4 | Dense catalog card title |
 | `type-lead` | 16 / 18 / 20px | 400 | 1.625 | Hero or section introduction |
 | `type-body` | 14 / 16px | 400 | 1.625 | Standard explanatory copy |
 | `type-body-sm` | 12 / 14px | 400 | 1.625 | Compact cards and secondary copy |
 | `type-label` | 11 / 12px | 700 | 1.5 | Eyebrows and compact labels |
+| `type-label-compact` | 10px | 700 | 1.5 | Dense catalog metadata tag |
 | `type-control` | 12 / 14px | 600 | 1.4 | Buttons, tabs, and form controls |
+| `type-control-compact` | 12px | 600 | 1.4 | Compact filter and tertiary control |
 | `type-caption` | 10 / 12px | 400 | 1.5 | Captions and tertiary metadata |
+| `type-caption-compact` | 10px | 400 | 1.5 | Dense catalog duration metadata |
 | `type-technical` | 10 / 12px | 500 | 1.5 | Technical data and identifiers |
 | `type-metric` | 24 / 30px | 700 | 1.2 | Prices and highlighted metrics |
 
@@ -117,6 +122,15 @@ Use `stack-hero` for 24px hero rhythm, `stack-heading` and `stack-prose` for
 16px heading or paragraph rhythm, `stack-card` for 12px card rhythm, and
 `stack-compact` for 8px dense-interface rhythm. Layout-specific grid and flex
 gaps may remain local when they do not represent content rhythm.
+
+### Migrated page scope
+
+The typography scanner currently covers the homepage, White Paper, Pricing,
+Research, Customers, Platform, Blog, Blog Detail (including the structured SSI
+article renderer), Ebooks, Demo List, About, Careers, Contact, and Academy.
+New work in these components must use semantic roles for `h1` through `h3` and
+must not reintroduce arbitrary font sizes, nonzero tracking, `font-extrabold`,
+or `font-black`.
 
 ---
 

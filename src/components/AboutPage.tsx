@@ -162,12 +162,12 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
         <div className="max-w-4xl space-y-6">
           <button 
             onClick={onBackToLanding}
-            className="group inline-flex items-center gap-1.5 text-xs font-semibold text-[#354CE1] hover:text-[#2539BE] transition mb-4"
+            className="type-control group inline-flex items-center gap-1.5 text-[#354CE1] hover:text-[#2539BE] transition mb-4"
           >
             <span>&larr; {t.backToPlatform}</span>
           </button>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-sans tracking-tight font-semibold text-slate-900 leading-[1.08] max-w-3xl">
+          <h1 className="type-page-title measure-display text-balance text-slate-900 max-w-3xl">
             {t.heroTitleBefore}<span className="font-semibold text-[#354CE1]">{t.heroTitleHighlighted}</span>{t.heroTitleAfter}
           </h1>
         </div>
@@ -177,14 +177,14 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
           {/* Card 1: Lead by serving */}
           <div className="bg-[#E2FBE9] border border-[#C5F3D1] rounded-3xl p-8 h-72 flex flex-col justify-between hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex justify-between items-start">
-              <span className="text-xs font-semibold text-emerald-800 uppercase tracking-wider">{t.commitment1Badge}</span>
+              <span className="type-label text-emerald-800 uppercase">{t.commitment1Badge}</span>
               <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700">
                 <Heart className="w-5 h-5 fill-emerald-600/10" />
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-sans font-semibold text-emerald-950 mb-1">{t.commitment1Title}</h3>
-              <p className="text-sm text-emerald-800/80 leading-relaxed font-sans max-w-xs">
+              <h3 className="type-card-title text-emerald-950 mb-1">{t.commitment1Title}</h3>
+              <p className="type-body text-emerald-800/80 max-w-xs">
                 {t.commitment1Desc}
               </p>
             </div>
@@ -193,14 +193,14 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
           {/* Card 2: People first */}
           <div className="bg-[#FFEEDB] border border-[#FED7AA] rounded-3xl p-8 h-72 flex flex-col justify-between hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex justify-between items-start">
-              <span className="text-xs font-semibold text-orange-800 uppercase tracking-wider">{t.commitment2Badge}</span>
+              <span className="type-label text-orange-800 uppercase">{t.commitment2Badge}</span>
               <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-700">
                 <Smile className="w-5 h-5 fill-orange-600/10" />
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-sans font-semibold text-orange-950 mb-1">{t.commitment2Title}</h3>
-              <p className="text-sm text-orange-800/80 leading-relaxed font-sans max-w-xs">
+              <h3 className="type-card-title text-orange-950 mb-1">{t.commitment2Title}</h3>
+              <p className="type-body text-orange-800/80 max-w-xs">
                 {t.commitment2Desc}
               </p>
             </div>
@@ -209,14 +209,14 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
           {/* Card 3: Work in public */}
           <div className="bg-[#E0F2FE] border border-[#BAE6FD] rounded-3xl p-8 h-72 flex flex-col justify-between hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
             <div className="flex justify-between items-start">
-              <span className="text-xs font-semibold text-sky-800 uppercase tracking-wider">{t.commitment3Badge}</span>
+              <span className="type-label text-sky-800 uppercase">{t.commitment3Badge}</span>
               <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center text-sky-700">
                 <Eye className="w-5 h-5" />
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-sans font-semibold text-sky-950 mb-1">{t.commitment3Title}</h3>
-              <p className="text-sm text-sky-800/80 leading-relaxed font-sans max-w-xs">
+              <h3 className="type-card-title text-sky-950 mb-1">{t.commitment3Title}</h3>
+              <p className="type-body text-sky-800/80 max-w-xs">
                 {t.commitment3Desc}
               </p>
             </div>
@@ -229,11 +229,11 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
         <div className="max-w-7xl mx-auto">
           <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 sm:p-16 shadow-xl relative z-10">
             <div className="max-w-2xl space-y-4 mb-16">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F2F4FF] rounded-full text-[11px] font-semibold text-[#354CE1] uppercase tracking-wider">
+            <div className="type-label inline-flex items-center gap-1.5 px-3 py-1 bg-[#F2F4FF] rounded-full text-[#354CE1] uppercase">
                 <Sparkles className="w-3 h-3" />
                 <span>{t.ourValuesBadge}</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-slate-900 tracking-tight">
+              <h2 className="type-section-title-compact text-slate-900">
                 {t.ourValuesTitle}
               </h2>
             </div>
@@ -247,10 +247,10 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
                       <IconComponent className="w-5.5 h-5.5" />
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-semibold text-slate-900 font-sans tracking-tight">
+                      <h4 className="type-card-title text-slate-900">
                         {v.title}
                       </h4>
-                      <p className="text-sm text-slate-500 leading-relaxed font-sans font-normal">
+                      <p className="type-body text-slate-500">
                         {v.description}
                       </p>
                     </div>
@@ -265,13 +265,13 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
       {/* Journey Section */}
       <section className="py-24 px-6 max-w-7xl mx-auto border-b border-slate-100">
         <div className="max-w-3xl space-y-6 mb-20 text-center mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#F2F4FF] rounded-full text-[11px] font-semibold text-[#354CE1] uppercase tracking-wider w-max">
+          <div className="type-label inline-flex items-center gap-1.5 px-3 py-1 bg-[#F2F4FF] rounded-full text-[#354CE1] uppercase w-max">
             <span>{t.journeyBadge}</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-sans tracking-tight font-semibold text-[#0F1E36] leading-tight">
+          <h2 className="type-section-title-compact text-[#0F1E36]">
             {t.journeyTitle}
           </h2>
-          <p className="text-sm sm:text-base text-slate-500 leading-relaxed font-sans font-normal max-w-2xl mx-auto">
+          <p className="type-body text-slate-500 max-w-2xl mx-auto">
             {t.journeyDesc}
           </p>
         </div>
@@ -305,15 +305,15 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
                           <Icon className="w-5.5 h-5.5" />
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-[11px] font-semibold text-[#354CE1] uppercase tracking-wider bg-[#E2E6FF] px-2.5 py-0.5 rounded-full w-max">
+                        <span className="type-label text-[#354CE1] uppercase bg-[#E2E6FF] px-2.5 py-0.5 rounded-full w-max">
                             {item.year}
                           </span>
-                          <h3 className="text-lg font-semibold text-[#0F1E36] mt-1 font-sans tracking-tight leading-tight">
+                          <h3 className="type-card-title text-[#0F1E36] mt-1">
                             {item.title}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-sm text-slate-500 leading-relaxed font-sans font-normal">
+                      <p className="type-body text-slate-500">
                         {item.description}
                       </p>
                     </motion.div>
@@ -342,10 +342,10 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
           
           {/* Press Info Block */}
           <div className="lg:col-span-4 space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-slate-900 tracking-tight">
+            <h2 className="type-section-title-compact text-slate-900">
               {t.inThePressTitle}
             </h2>
-            <p className="text-sm text-slate-500 leading-relaxed">
+            <p className="type-body text-slate-500">
               {t.pressInquiriesText}{' '}
               <a 
                 href="mailto:pr@withidentra.com" 
@@ -366,10 +366,10 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
                 className="group py-6 block flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition hover:bg-slate-50/50 px-2 rounded-xl"
               >
                 <div className="space-y-1 max-w-2xl">
-                  <span className="text-[11px] font-semibold text-[#354CE1] uppercase tracking-widest">
+              <span className="type-label text-[#354CE1] uppercase">
                     {article.source}
                   </span>
-                  <h3 className="text-lg font-sans font-semibold text-slate-800 group-hover:text-[#354CE1] transition leading-snug">
+                  <h3 className="type-card-title text-slate-800 group-hover:text-[#354CE1] transition">
                     {article.headline}
                   </h3>
                 </div>
@@ -387,10 +387,10 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
       <section className="py-20 px-6 bg-[#FAFBFD] border-t border-b border-slate-100">
         <div className="max-w-7xl mx-auto text-center space-y-12">
           <div className="space-y-4 max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-slate-900 tracking-tight">
+            <h2 className="type-section-title-compact text-slate-900">
               {t.ourInvestorsTitle}
             </h2>
-            <p className="text-sm text-slate-500 leading-relaxed">
+            <p className="type-body text-slate-500">
               {t.ourInvestorsDesc}
             </p>
           </div>
@@ -402,8 +402,8 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
                 className="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-sm hover:shadow transition duration-200"
               >
                 <Award className="w-6 h-6 text-[#354CE1]/60 mb-2" />
-                <h4 className="text-sm font-semibold text-slate-800 leading-tight">{inv.name}</h4>
-                <p className="text-[11px] text-slate-400 mt-1 uppercase font-semibold tracking-wider">{inv.description}</p>
+                <h4 className="type-card-title text-slate-800">{inv.name}</h4>
+                <p className="type-label text-slate-400 mt-1 uppercase">{inv.description}</p>
               </div>
             ))}
           </div>
@@ -419,10 +419,10 @@ export default function AboutPage({ onOpenSandbox, onBackToLanding }: AboutPageP
           <div className="absolute left-1/3 top-10 w-48 h-48 bg-white/10 rounded-full filter blur-xl" />
 
           <div className="max-w-2xl space-y-8 relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-sans font-semibold tracking-tight leading-tight">
+            <h2 className="type-section-title-compact">
               {t.joinTeamTitle}
             </h2>
-            <p className="text-indigo-50 text-sm sm:text-base leading-relaxed max-w-xl font-normal">
+            <p className="type-body text-indigo-50 max-w-xl">
               {t.joinTeamDesc}
             </p>
             <div>

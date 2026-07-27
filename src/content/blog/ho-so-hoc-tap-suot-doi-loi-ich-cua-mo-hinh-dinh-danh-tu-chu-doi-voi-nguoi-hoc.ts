@@ -92,8 +92,6 @@ export const LIFELONG_LEARNING_BLOG_ARTICLE = {
       title: 'Hồ sơ học tập suốt đời: Lợi ích của mô hình định danh tự chủ cho người học',
       description: 'Tìm hiểu cách SSI giúp người học trực tiếp nắm giữ, kết hợp và sử dụng những thành tích có thể kiểm chứng trong suốt hành trình học tập và nghề nghiệp.',
       excerpt: 'Khi việc học diễn ra ở nhiều trường, nền tảng và môi trường nghề nghiệp, người học cần một hồ sơ có thể đi cùng mình thay vì bị chia cắt trong từng hệ thống.',
-      seoTitle: 'Hồ sơ học tập suốt đời: Lợi ích của SSI với người học',
-      seoDescription: 'SSI giúp xây dựng hồ sơ học tập suốt đời từ thực chứng của nhiều tổ chức, trao cho người học quyền quản lý, kết hợp và chia sẻ thành tích phù hợp.',
       category: 'Giáo dục',
       tags: ['SSI', 'Hồ sơ học tập suốt đời', 'Giáo dục số', 'Thực chứng', 'Quyền dữ liệu'],
       readTimeMinutes: 25,

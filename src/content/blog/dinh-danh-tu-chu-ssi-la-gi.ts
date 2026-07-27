@@ -127,8 +127,6 @@ export const SSI_BLOG_ARTICLE = {
       title: 'Định danh tự chủ (SSI) là gì? Từ giới hạn của định danh số hiện nay đến một mô hình mới',
       description: 'Vì sao các mô hình định danh số hiện nay còn nhiều giới hạn, định danh tự chủ ra đời để giải quyết điều gì và SSI vận hành như thế nào?',
       excerpt: 'SSI không bắt đầu từ blockchain hay một loại ví mới. Nó bắt đầu từ câu hỏi: liệu mỗi người có thể mang theo những bằng chứng đáng tin cậy về mình giữa các dịch vụ hay không?',
-      seoTitle: 'Định danh tự chủ (SSI) là gì? Giải thích từ nền tảng',
-      seoDescription: 'SSI là gì, vì sao mô hình này ra đời và khác định danh tập trung, đăng nhập liên kết như thế nào? Tìm hiểu thực chứng, ví định tín và DID.',
       category: 'Kiến thức nền tảng',
       tags: ['SSI', 'Định danh tự chủ', 'Danh tính số', 'Verifiable Credentials', 'DID'],
       readTimeMinutes: 20,

@@ -101,8 +101,6 @@ export const INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE = {
       title: 'Rào cản pháp lý trong tuyển dụng quốc tế: SSI mở đường cho nhân sự remote như thế nào?',
       description: 'Phân tích cách SSI hỗ trợ xác minh danh tính, năng lực và lý lịch trong tuyển dụng Việt Nam–EU mà vẫn tôn trọng GDPR cùng chủ quyền pháp lý.',
       excerpt: 'Internet đã đưa việc làm vượt qua biên giới, nhưng hạ tầng niềm tin và pháp lý vẫn bị chia cắt. SSI có thể giúp hai bên thu hẹp khoảng cách đó bằng những bằng chứng số có nguồn gốc rõ ràng.',
-      seoTitle: 'Rào cản pháp lý khi tuyển dụng quốc tế với SSI',
-      seoDescription: 'SSI giúp doanh nghiệp EU xác minh danh tính, năng lực và lý lịch của nhân sự remote tại Việt Nam, đồng thời giảm thu thập dữ liệu nhạy cảm.',
       category: 'Tuyển dụng',
       tags: ['Tuyển dụng quốc tế', 'Nhân sự remote', 'SSI', 'GDPR', 'Thực chứng'],
       readTimeMinutes: 22,

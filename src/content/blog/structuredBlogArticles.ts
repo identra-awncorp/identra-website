@@ -28,6 +28,13 @@ export const getStructuredBlogArticle = (
   id: string,
 ): StructuredBlogArticle | null => structuredArticlesById.get(id) ?? null;
 
+export const getStructuredBlogSeoMetadata = (
+  article: StructuredBlogArticle,
+): Pick<StructuredBlogArticle['content']['vi'], 'title' | 'description'> => ({
+  title: article.content.vi.title,
+  description: article.content.vi.description,
+});
+
 export const getRelatedStructuredBlogArticles = (
   article: StructuredBlogArticle,
 ): StructuredBlogArticle[] => {

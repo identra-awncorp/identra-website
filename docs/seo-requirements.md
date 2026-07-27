@@ -46,6 +46,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 ## Social Preview Metadata
 
 - Keep Open Graph and Twitter card metadata in sync: title, description, canonical URL, image URL, image dimensions, and localized image alt text should describe the same page.
+- Structured blog articles must use `content.vi.title` and `content.vi.description` verbatim for document, Open Graph, Twitter, and structured-data metadata. Do not add separate rewritten SEO title or description fields.
 - Social preview imagery should remain a production-safe 1200x630 asset.
 - The source asset is `src/assets/images/identra-og-social-branded.jpg`.
 - `npm.cmd run generate:seo` copies the public social image to `public/social/identra-og.jpg`.

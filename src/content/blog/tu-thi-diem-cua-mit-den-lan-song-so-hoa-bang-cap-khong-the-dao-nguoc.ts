@@ -92,8 +92,6 @@ export const MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE = {
       title: 'Từ thí điểm của MIT đến làn sóng số hóa bằng cấp không thể đảo ngược',
       description: 'Nhìn lại thí điểm bằng số của MIT năm 2017 và hành trình đưa thực chứng giáo dục từ một thử nghiệm blockchain đến tiêu chuẩn mở cùng hạ tầng liên thông.',
       excerpt: 'Từ 111 tấm bằng trên điện thoại, văn bằng số đã phát triển thành một chương trình nghị sự toàn cầu về khả năng kiểm chứng, quyền nắm giữ và tính di động của kết quả học tập.',
-      seoTitle: 'Từ thí điểm MIT đến làn sóng số hóa bằng cấp',
-      seoDescription: 'Thí điểm MIT năm 2017 đã góp phần mở đường cho bằng cấp số có thể kiểm chứng, tiêu chuẩn mở và hạ tầng thực chứng giáo dục liên thông.',
       category: 'Giáo dục',
       tags: ['MIT', 'Bằng cấp số', 'Thực chứng', 'SSI', 'Giáo dục số'],
       readTimeMinutes: 20,

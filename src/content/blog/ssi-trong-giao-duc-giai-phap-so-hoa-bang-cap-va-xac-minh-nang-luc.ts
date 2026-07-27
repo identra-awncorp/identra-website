@@ -92,8 +92,6 @@ export const SSI_EDUCATION_BLOG_ARTICLE = {
       title: 'SSI trong giáo dục: Giải pháp số hóa bằng cấp và xác minh năng lực',
       description: 'Tìm hiểu cách SSI biến bằng cấp và kết quả học tập thành thực chứng có thể kiểm tra, giúp trường học, người học và nhà tuyển dụng trao đổi dữ liệu đáng tin cậy hơn.',
       excerpt: 'Số hóa bằng cấp không nên dừng ở PDF hay mã QR. Giá trị lớn hơn xuất hiện khi kết quả học tập trở thành bằng chứng số có thể kiểm tra, mang theo và sử dụng ngoài hệ thống của trường.',
-      seoTitle: 'SSI trong giáo dục: Số hóa bằng cấp và xác minh năng lực',
-      seoDescription: 'SSI giúp số hóa bằng cấp thành thực chứng có thể xác minh, giảm gian lận, rút ngắn kiểm tra hồ sơ và trao quyền quản lý kết quả học tập cho người học.',
       category: 'Giáo dục',
       tags: ['SSI', 'Giáo dục số', 'Thực chứng', 'Bằng cấp số', 'Xác minh năng lực'],
       readTimeMinutes: 20,

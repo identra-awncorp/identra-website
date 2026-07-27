@@ -23,7 +23,10 @@ import {
   type Locale,
   viewToPath,
 } from '../types/routes';
-import { getStructuredBlogArticle } from '../content/blog/structuredBlogArticles';
+import {
+  getStructuredBlogArticle,
+  getStructuredBlogSeoMetadata,
+} from '../content/blog/structuredBlogArticles';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -178,29 +181,27 @@ export default function SeoMetadata({
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
     const blogPost = isBlogDetail
       ? structuredArticle
-        ? {
-            title: structuredArticle.content.vi.seoTitle,
-            description: structuredArticle.content.vi.seoDescription,
-          }
+        ? getStructuredBlogSeoMetadata(structuredArticle)
         : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
       : null;
     const title = isNotFound
       ? formatSeoTitle(routeTitle, seo.siteName)
       : isBlogDetail && blogPost
-        ? formatSeoTitle(
-            blogPost.title,
-            structuredArticle ? undefined : seo.blogTitleSuffix,
-          )
+        ? structuredArticle
+          ? blogPost.title
+          : formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
         : currentView === 'landing'
           ? formatSeoTitle(seo.defaultTitle)
           : formatSeoTitle(routeTitle, seo.siteName);
-    const description = formatSeoDescription(
-      isNotFound
-        ? seo.notFoundDescription
-        : isBlogDetail && blogPost
-          ? blogPost.description
-          : templateDescription(seo.descriptionTemplates[routeGroup], routeTitle),
-    );
+    const description = structuredArticle
+      ? blogPost?.description ?? ''
+      : formatSeoDescription(
+          isNotFound
+            ? seo.notFoundDescription
+            : isBlogDetail && blogPost
+              ? blogPost.description
+              : templateDescription(seo.descriptionTemplates[routeGroup], routeTitle),
+        );
 
     return {
       alternateUrls,
@@ -209,7 +210,7 @@ export default function SeoMetadata({
       headline: isNotFound
         ? routeTitle
         : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
-      imageAlt: structuredArticle?.listing.vi.title ?? seo.imageAlt,
+      imageAlt: structuredArticle?.content.vi.title ?? seo.imageAlt,
       imageHeight: String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT),
       imageType: structuredArticle?.socialImage.type ?? 'image/jpeg',
       imageUrl,

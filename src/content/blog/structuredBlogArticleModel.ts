@@ -30,8 +30,6 @@ export interface StructuredBlogArticleContent {
   title: string;
   description: string;
   excerpt: string;
-  seoTitle: string;
-  seoDescription: string;
   category: string;
   tags: readonly string[];
   readTimeMinutes: number;

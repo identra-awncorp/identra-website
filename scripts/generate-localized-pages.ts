@@ -29,7 +29,10 @@ import {
   type Locale,
   viewToPath,
 } from '../src/types/routes';
-import { getStructuredBlogArticle } from '../src/content/blog/structuredBlogArticles';
+import {
+  getStructuredBlogArticle,
+  getStructuredBlogSeoMetadata,
+} from '../src/content/blog/structuredBlogArticles';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -121,29 +124,27 @@ const renderLocalizedHtml = (
   const structuredArticle = getStructuredBlogArticle(currentBlogId);
   const blogPost = route.view === 'blog-detail'
     ? structuredArticle
-      ? {
-          title: structuredArticle.content.vi.seoTitle,
-          description: structuredArticle.content.vi.seoDescription,
-        }
+      ? getStructuredBlogSeoMetadata(structuredArticle)
       : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
     : null;
   const title = blogPost
-    ? formatSeoTitle(
-        blogPost.title,
-        structuredArticle ? undefined : seo.blogTitleSuffix,
-      )
+    ? structuredArticle
+      ? blogPost.title
+      : formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
     : route.view === 'landing'
       ? formatSeoTitle(seo.defaultTitle)
       : formatSeoTitle(routeTitle, seo.siteName);
-  const description = formatSeoDescription(
-    blogPost
-      ? blogPost.description
-      : seo.descriptionTemplates[routeGroup].replace(/\{page\}/g, routeTitle),
-  );
+  const description = structuredArticle
+    ? blogPost?.description ?? ''
+    : formatSeoDescription(
+        blogPost
+          ? blogPost.description
+          : seo.descriptionTemplates[routeGroup].replace(/\{page\}/g, routeTitle),
+      );
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
   const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
   const imageUrl = absoluteUrl(imagePath, siteUrl);
-  const imageAlt = structuredArticle?.listing.vi.title ?? seo.imageAlt;
+  const imageAlt = structuredArticle?.content.vi.title ?? seo.imageAlt;
   const imageType = structuredArticle?.socialImage.type ?? 'image/jpeg';
   const imageWidth = String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH);
   const imageHeight = String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT);

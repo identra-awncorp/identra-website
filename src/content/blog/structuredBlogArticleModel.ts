@@ -61,6 +61,7 @@ export interface StructuredBlogArticle {
   topics: readonly string[];
   industries: readonly string[];
   contentLocales: readonly ['vi'];
+  relatedArticleIds: readonly [BlogDetailId, BlogDetailId, BlogDetailId];
   coverImage: BlogArticleImage;
   socialImage: {
     src: string;

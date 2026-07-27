@@ -27,6 +27,11 @@ export const SSI_BLOG_ARTICLE = {
   topics: ['identity', 'privacy'],
   industries: ['all'],
   contentLocales: ['vi'],
+  relatedArticleIds: [
+    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+    'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
+    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
+  ],
   coverImage: {
     src: `${assetRoot}/self-sovereign-identity-explained-1440.webp`,
     srcSet: [

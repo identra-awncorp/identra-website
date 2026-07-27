@@ -9,7 +9,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   APP_VIEWS,
-  BLOG_DETAIL_IDS,
+  PUBLIC_BLOG_DETAIL_IDS,
   blogDetailPath,
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
@@ -52,7 +52,7 @@ const staticRoutes = APP_VIEWS
     locales: getViewLocales(view),
     pathForLocale: (locale: Locale) => viewToPath(view, locale),
   }));
-const blogDetailRoutes = BLOG_DETAIL_IDS.map((id) => ({
+const blogDetailRoutes = PUBLIC_BLOG_DETAIL_IDS.map((id) => ({
   basePath: stripLocaleFromPath(blogDetailPath(id, DEFAULT_LOCALE)),
   locales: getBlogDetailLocales(id),
   pathForLocale: (locale: Locale) => blogDetailPath(id, locale),

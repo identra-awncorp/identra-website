@@ -104,17 +104,27 @@ export const BLOG_DETAIL_IDS = [
   'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
   'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
   'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
+  'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
 ] as const;
 
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
 
-export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'blog-1';
+export const PUBLIC_BLOG_DETAIL_IDS = [
+  'dinh-danh-tu-chu-ssi-la-gi',
+  'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
+  'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+  'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
+  'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
+] as const satisfies readonly BlogDetailId[];
+
+export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'dinh-danh-tu-chu-ssi-la-gi';
 
 const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale[]>> = {
   'dinh-danh-tu-chu-ssi-la-gi': ['vi'],
   'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc': ['vi'],
   'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc': ['vi'],
   'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc': ['vi'],
+  'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao': ['vi'],
 };
 
 export const getBlogDetailLocales = (id: BlogDetailId): readonly Locale[] =>
@@ -138,7 +148,7 @@ export const DEMO_SCENARIO_IDS = [
 export type DemoScenarioId = typeof DEMO_SCENARIO_IDS[number];
 
 export const VALID_VIEWS = new Set<AppView>(APP_VIEWS);
-export const VALID_BLOG_DETAIL_IDS = new Set<BlogDetailId>(BLOG_DETAIL_IDS);
+export const VALID_BLOG_DETAIL_IDS = new Set<BlogDetailId>(PUBLIC_BLOG_DETAIL_IDS);
 export const VALID_DEMO_SCENARIO_IDS = new Set<DemoScenarioId>(DEMO_SCENARIO_IDS);
 export const VALID_LOCALES = new Set<Locale>(SUPPORTED_LOCALES);
 

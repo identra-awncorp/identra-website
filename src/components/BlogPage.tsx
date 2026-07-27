@@ -23,7 +23,6 @@ import type { BlogArticleImage } from '../content/blog/structuredBlogArticleMode
 
 // Interfaces
 type BlogPostId = BlogDetailId;
-type LegacyBlogPostId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.posts;
 type TopicId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.topicLabels;
 type IndustryId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.industryLabels;
 
@@ -43,111 +42,17 @@ interface BlogPageProps {
 }
 
 // Blog articles use the same visual card architecture as the Ebooks page.
-const LEGACY_BLOG_PUBLISHED_AT = '2026-06-26';
 const BLOG_GRID_IMAGE_SIZES = '(min-width: 1280px) 280px, (min-width: 768px) 40vw, calc(100vw - 3rem)';
 
-const LEGACY_BLOG_POSTS_DATA: Omit<BlogPost, 'publishedAt'>[] = [
-  {
-    id: 'blog-1',
-    topics: ['identity', 'fraud'],
-    industries: ['all'],
-    gradient: 'from-[#354CE1] to-[#1E3A8A]',
-    illustration: 'fingerprint'
-  },
-  {
-    id: 'blog-2',
-    topics: ['identity', 'security'],
-    industries: ['finance-fintech', 'marketplaces'],
-    gradient: 'from-[#0E1B40] to-[#1F3369]',
-    illustration: 'alert'
-  },
-  {
-    id: 'blog-3',
-    topics: ['compliance', 'identity'],
-    industries: ['finance-fintech', 'cryptocurrency'],
-    gradient: 'from-[#312E81] to-[#4338CA]',
-    illustration: 'document'
-  },
-  {
-    id: 'blog-4',
-    topics: ['fraud', 'artificial-intelligence'],
-    industries: ['all'],
-    gradient: 'from-[#7C2D12] to-[#9A3412]',
-    illustration: 'alert'
-  },
-  {
-    id: 'blog-5',
-    topics: ['identity', 'security'],
-    industries: ['government', 'travel'],
-    gradient: 'from-[#065F46] to-[#047857]',
-    illustration: 'lock'
-  },
-  {
-    id: 'blog-6',
-    topics: ['fraud', 'identity'],
-    industries: ['marketplaces', 'retail-ecommerce'],
-    gradient: 'from-[#354CE1] to-[#1E293B]',
-    illustration: 'link'
-  },
-  {
-    id: 'blog-7',
-    topics: ['age-assurance', 'privacy'],
-    industries: ['gaming', 'adult-entertainment', 'dating'],
-    gradient: 'from-[#4C1D95] to-[#5B21B6]',
-    illustration: 'shield'
-  },
-  {
-    id: 'blog-8',
-    topics: ['compliance', 'fraud'],
-    industries: ['marketplaces', 'retail-ecommerce'],
-    gradient: 'from-[#9D174D] to-[#BE185D]',
-    illustration: 'users'
-  },
-  {
-    id: 'blog-9',
-    topics: ['security', 'fraud'],
-    industries: ['finance-fintech', 'gaming'],
-    gradient: 'from-[#0F172A] to-[#334155]',
-    illustration: 'face'
-  },
-  {
-    id: 'blog-10',
-    topics: ['international', 'compliance'],
-    industries: ['all'],
-    gradient: 'from-[#0D9488] to-[#0F766E]',
-    illustration: 'globe'
-  },
-  {
-    id: 'blog-11',
-    topics: ['compliance', 'security'],
-    industries: ['legal', 'finance-fintech'],
-    gradient: 'from-[#1E3A8A] to-[#354CE1]',
-    illustration: 'chart'
-  },
-  {
-    id: 'blog-12',
-    topics: ['artificial-intelligence', 'fraud'],
-    industries: ['all'],
-    gradient: 'from-[#111827] to-[#1F2937]',
-    illustration: 'face'
-  }
-];
-
-const BLOG_POSTS_DATA: BlogPost[] = [
-  ...STRUCTURED_BLOG_ARTICLES.map((article) => ({
-    id: article.id,
-    topics: [...article.topics] as TopicId[],
-    industries: [...article.industries] as IndustryId[],
-    publishedAt: article.publishedAt,
-    gradient: 'from-[#172554] to-[#312E81]',
-    illustration: 'fingerprint' as const,
-    coverImage: article.coverImage,
-  })),
-  ...LEGACY_BLOG_POSTS_DATA.map((post) => ({
-    ...post,
-    publishedAt: LEGACY_BLOG_PUBLISHED_AT,
-  })),
-];
+const BLOG_POSTS_DATA: BlogPost[] = STRUCTURED_BLOG_ARTICLES.map((article) => ({
+  id: article.id,
+  topics: [...article.topics] as TopicId[],
+  industries: [...article.industries] as IndustryId[],
+  publishedAt: article.publishedAt,
+  gradient: 'from-[#172554] to-[#312E81]',
+  illustration: 'fingerprint' as const,
+  coverImage: article.coverImage,
+}));
 // Helper to render covers elegantly
 function CoverIllustration({ type }: { type: BlogPost['illustration'] }) {
   switch (type) {
@@ -183,11 +88,12 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
   const t = BLOG_PAGE_TRANSLATIONS[language];
   const postCopy = React.useCallback((post: BlogPost) => {
     const structuredArticle = getStructuredBlogArticle(post.id);
+    if (!structuredArticle) {
+      throw new Error(`Missing structured blog article: ${post.id}`);
+    }
 
-    return structuredArticle
-      ? structuredArticle.listing[language]
-      : t.posts[post.id as LegacyBlogPostId];
-  }, [language, t]);
+    return structuredArticle.listing[language];
+  }, [language]);
 
   const [selectedTopic, setSelectedTopic] = useState<TopicId>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');
@@ -275,8 +181,12 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     ),
     [],
   );
-  const featuredPost = sortedBlogPosts[0];
-  const featuredSidebarPosts = sortedBlogPosts.slice(1, 4);
+  const featuredPost = sortedBlogPosts.find(
+    (post) => post.id === 'dinh-danh-tu-chu-ssi-la-gi',
+  ) ?? sortedBlogPosts[0];
+  const featuredSidebarPosts = sortedBlogPosts
+    .filter((post) => post.id !== featuredPost.id)
+    .slice(0, 3);
 
   // Filtered blog posts
   const filteredBlogPosts = useMemo(() => {

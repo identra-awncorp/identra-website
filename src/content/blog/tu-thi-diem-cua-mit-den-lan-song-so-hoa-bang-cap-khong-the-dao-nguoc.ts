@@ -28,6 +28,11 @@ export const MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE = {
   topics: ['identity', 'technology'],
   industries: ['education'],
   contentLocales: ['vi'],
+  relatedArticleIds: [
+    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+    'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
+    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
+  ],
   coverImage: {
     src: `${assetRoot}/mit-blockchain-digital-diplomas-cover-1440.webp`,
     srcSet: [

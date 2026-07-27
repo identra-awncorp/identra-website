@@ -28,6 +28,11 @@ export const LIFELONG_LEARNING_BLOG_ARTICLE = {
   topics: ['identity', 'privacy'],
   industries: ['education'],
   contentLocales: ['vi'],
+  relatedArticleIds: [
+    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+    'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
+    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
+  ],
   coverImage: {
     src: `${assetRoot}/learning-passport-digital-education-records-1440.webp`,
     srcSet: [

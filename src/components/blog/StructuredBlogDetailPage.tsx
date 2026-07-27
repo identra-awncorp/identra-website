@@ -16,16 +16,17 @@ import {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { StructuredBlogArticle } from '../../content/blog/structuredBlogArticleModel';
+import { getRelatedStructuredBlogArticles } from '../../content/blog/structuredBlogArticles';
 import {
-  BLOG_DETAIL_DATA_TRANSLATIONS,
   BLOG_DETAIL_PAGE_TRANSLATIONS,
 } from '../../translations/BlogDetailPageTranslations';
-import { blogDetailPath } from '../../types/routes';
+import { blogDetailPath, type BlogDetailId } from '../../types/routes';
 import { copyTextToClipboard } from '../../utils/clipboard';
 
 interface StructuredBlogDetailPageProps {
   article: StructuredBlogArticle;
   onBack: () => void;
+  onOpenArticle: (id: BlogDetailId) => void;
   onOpenSandbox: () => void;
 }
 
@@ -62,11 +63,12 @@ const isCaptionParagraph = (children: React.ReactNode): boolean => {
 export default function StructuredBlogDetailPage({
   article,
   onBack,
+  onOpenArticle,
   onOpenSandbox,
 }: StructuredBlogDetailPageProps) {
   const content = article.content.vi;
   const commonCopy = BLOG_DETAIL_PAGE_TRANSLATIONS.vi.copy;
-  const relatedPosts = BLOG_DETAIL_DATA_TRANSLATIONS.vi.continueCards;
+  const relatedPosts = getRelatedStructuredBlogArticles(article);
   const [activeSection, setActiveSection] = useState(content.tableOfContents[0]?.id ?? '');
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -403,31 +405,38 @@ export default function StructuredBlogDetailPage({
           </h3>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {relatedPosts.map((card, index) => (
-              <div
-                key={index}
-                className="group flex cursor-pointer flex-col justify-between rounded-2xl p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)] transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-[#354CE1]/50"
-              >
-                <div className="space-y-3">
-                  <div className="type-label flex items-center gap-2 uppercase text-slate-400">
-                    <span>{card.type}</span>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{card.time}</span>
-                  </div>
-                  <h4 className="line-clamp-2 text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#354CE1]">
-                    {card.title}
-                  </h4>
-                  <p className="line-clamp-3 text-xs font-normal leading-relaxed text-slate-500">
-                    {card.desc}
-                  </p>
-                </div>
+            {relatedPosts.map((relatedArticle) => {
+              const relatedContent = relatedArticle.content.vi;
 
-                <div className="mt-5 flex items-center gap-1.5 text-xs font-bold text-[#354CE1]">
-                  <span>{commonCopy.readArticle}</span>
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                </div>
-              </div>
-            ))}
+              return (
+                <button
+                  key={relatedArticle.id}
+                  type="button"
+                  onClick={() => onOpenArticle(relatedArticle.id)}
+                  aria-label={relatedContent.title}
+                  className="group flex w-full cursor-pointer flex-col justify-between rounded-2xl p-5 text-left shadow-[0_0_18px_rgba(15,23,42,0.08)] transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-[#354CE1]/50"
+                >
+                  <div className="space-y-3">
+                    <div className="type-label flex items-center gap-2 uppercase text-slate-400">
+                      <span>{relatedContent.category}</span>
+                      <span aria-hidden="true">&middot;</span>
+                      <span>{relatedArticle.listing.vi.duration}</span>
+                    </div>
+                    <h4 className="line-clamp-2 text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#354CE1]">
+                      {relatedContent.title}
+                    </h4>
+                    <p className="line-clamp-3 text-xs font-normal leading-relaxed text-slate-500">
+                      {relatedContent.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-5 flex items-center gap-1.5 text-xs font-bold text-[#354CE1]">
+                    <span>{commonCopy.readArticle}</span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import {
 import { NOT_FOUND_PAGE_TRANSLATIONS } from '../src/translations/NotFoundPageTranslations';
 import {
   APP_VIEWS,
-  BLOG_DETAIL_IDS,
+  PUBLIC_BLOG_DETAIL_IDS,
   blogDetailPath,
   DEFAULT_BLOG_DETAIL_ID,
   DEFAULT_LOCALE,
@@ -320,7 +320,7 @@ const routes: LocalizedRoute[] = [
     view: 'demo' as const,
     demoScenarioId,
   })),
-  ...BLOG_DETAIL_IDS.map((blogId) => ({
+  ...PUBLIC_BLOG_DETAIL_IDS.map((blogId) => ({
     view: 'blog-detail' as const,
     blogId,
   })),

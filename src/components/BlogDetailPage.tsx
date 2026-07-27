@@ -25,10 +25,16 @@ import StructuredBlogDetailPage from './blog/StructuredBlogDetailPage';
 interface BlogDetailPageProps {
   blogId: BlogDetailId;
   onBack: () => void;
+  onOpenArticle: (id: BlogDetailId) => void;
   onOpenSandbox: () => void;
 }
 
-export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDetailPageProps) {
+export default function BlogDetailPage({
+  blogId,
+  onBack,
+  onOpenArticle,
+  onOpenSandbox,
+}: BlogDetailPageProps) {
 
   const { language } = useLanguage();
 
@@ -100,6 +106,7 @@ export default function BlogDetailPage({ blogId, onBack, onOpenSandbox }: BlogDe
       <StructuredBlogDetailPage
         article={structuredArticle}
         onBack={onBack}
+        onOpenArticle={onOpenArticle}
         onOpenSandbox={onOpenSandbox}
       />
     );

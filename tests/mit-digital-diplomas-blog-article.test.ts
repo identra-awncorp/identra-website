@@ -26,7 +26,10 @@ test('MIT digital diplomas article exposes localized listing metadata and Vietna
     getStructuredBlogArticle(MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE_ID),
     MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE,
   );
-  assert.equal(STRUCTURED_BLOG_ARTICLES[0], MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE);
+  assert.equal(
+    STRUCTURED_BLOG_ARTICLES.includes(MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE),
+    true,
+  );
 });
 
 test('MIT digital diplomas article keeps source metadata out and references optimized images', () => {

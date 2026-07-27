@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  DEFAULT_BLOG_DETAIL_ID,
+  PUBLIC_BLOG_DETAIL_IDS,
   SUPPORTED_LOCALES,
   blogDetailPath,
   getBlogDetailLocales,
@@ -31,6 +33,7 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
     'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
     'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
     'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
+    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
   ] as const;
 
   for (const articleId of articleIds) {
@@ -42,4 +45,14 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
       `/vi/blog-detail/${articleId}`,
     );
   }
+});
+
+test('only real structured articles are published as blog detail routes', () => {
+  assert.equal(DEFAULT_BLOG_DETAIL_ID, 'dinh-danh-tu-chu-ssi-la-gi');
+  assert.equal(PUBLIC_BLOG_DETAIL_IDS.length, 5);
+  assert.equal(pathToBlogDetailId('/vi/blog-detail/blog-1'), null);
+  assert.equal(
+    viewToPath('blog-detail', 'en'),
+    '/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi',
+  );
 });

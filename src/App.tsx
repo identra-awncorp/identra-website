@@ -356,7 +356,8 @@ export default function App() {
         ) : currentView === 'blog-detail' ? (
           <BlogDetailPage
             blogId={resolvedBlogId!}
-            onBack={() => handleBackNavigation('blog')}
+            onBack={() => handleViewChange('blog')}
+            onOpenArticle={handleBlogDetailChange}
             onOpenSandbox={handleOpenSandbox}
           />
         ) : currentView === 'careers' ? (

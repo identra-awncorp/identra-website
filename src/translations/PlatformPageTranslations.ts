@@ -187,8 +187,8 @@ const en: PlatformPageCopy = {
     },
   },
   products: {
-    flowEditor: {
-      title: 'Flow Editor',
+    interfaceStudio: {
+      title: 'Interface Studio',
       description: 'Design branded verification journeys with a visual no-code builder and preview every screen before publishing.',
     },
     dynamicFlow: {
@@ -302,11 +302,11 @@ const en: PlatformPageCopy = {
     items: {
       selection: {
         question: 'Which Identra product should we start with?',
-        answer: 'Start with the problem closest to your current workflow. Use Flow Editor for the customer-facing journey, Workflows for backend decision automation, Passive Signals or Graph for fraud intelligence, and Case Management when reviewers need a shared investigation workspace.',
+        answer: 'Start with the problem closest to your current workflow. Use Interface Studio for the customer-facing journey, Workflows for backend decision automation, Passive Signals or Graph for fraud intelligence, and Case Management when reviewers need a shared investigation workspace.',
       },
       flowDifference: {
-        question: 'How are Flow Editor and Dynamic Flow different?',
-        answer: 'Flow Editor is the visual workspace used to design screens, collection steps, and branding. Dynamic Flow is the runtime capability that changes the path according to identity context and live risk.',
+        question: 'How are Interface Studio and Dynamic Flow different?',
+        answer: 'Interface Studio is the visual workspace used to design screens, collection steps, and branding. Dynamic Flow is the runtime capability that changes the path according to identity context and live risk.',
       },
       sharedData: {
         question: 'Do products share signals and decision history?',
@@ -374,8 +374,8 @@ const es: PlatformPageCopy = {
     },
   },
   products: {
-    flowEditor: {
-      title: 'Flow Editor',
+    interfaceStudio: {
+      title: 'Interface Studio',
       description: 'Diseñe recorridos de verificación con su marca mediante un editor visual no-code y revise cada pantalla antes de publicar.',
     },
     dynamicFlow: {
@@ -489,11 +489,11 @@ const es: PlatformPageCopy = {
     items: {
       selection: {
         question: '¿Con qué producto Identra deberíamos empezar?',
-        answer: 'Empiece por el problema más cercano a su proceso actual. Use Flow Editor para la experiencia del cliente, Workflows para automatizar decisiones, Señales pasivas o Graph para inteligencia de fraude y Gestión de casos para la investigación manual.',
+        answer: 'Empiece por el problema más cercano a su proceso actual. Use Interface Studio para la experiencia del cliente, Workflows para automatizar decisiones, Señales pasivas o Graph para inteligencia de fraude y Gestión de casos para la investigación manual.',
       },
       flowDifference: {
-        question: '¿En qué se diferencian Flow Editor y Dynamic Flow?',
-        answer: 'Flow Editor es el espacio visual para diseñar pantallas, pasos y marca. Dynamic Flow es la capacidad de ejecución que modifica el recorrido según el contexto de identidad y el riesgo en tiempo real.',
+        question: '¿En qué se diferencian Interface Studio y Dynamic Flow?',
+        answer: 'Interface Studio es el espacio visual para diseñar pantallas, pasos y marca. Dynamic Flow es la capacidad de ejecución que modifica el recorrido según el contexto de identidad y el riesgo en tiempo real.',
       },
       sharedData: {
         question: '¿Los productos comparten señales e historial?',
@@ -561,8 +561,8 @@ const ja: PlatformPageCopy = {
     },
   },
   products: {
-    flowEditor: {
-      title: 'Flow Editor',
+    interfaceStudio: {
+      title: 'Interface Studio',
       description: '視覚的なノーコードエディターでブランドに合う本人確認フローを設計し、公開前に各画面を確認できます。',
     },
     dynamicFlow: {
@@ -676,11 +676,11 @@ const ja: PlatformPageCopy = {
     items: {
       selection: {
         question: 'どの Identra 製品から始めるべきですか？',
-        answer: '現在の課題に最も近い製品から始めてください。顧客向け体験には Flow Editor、バックエンドの判断自動化には Workflows、不正分析にはパッシブシグナルまたは Graph、手動調査にはケース管理が適しています。',
+        answer: '現在の課題に最も近い製品から始めてください。顧客向け体験には Interface Studio、バックエンドの判断自動化には Workflows、不正分析にはパッシブシグナルまたは Graph、手動調査にはケース管理が適しています。',
       },
       flowDifference: {
-        question: 'Flow Editor と Dynamic Flow の違いは何ですか？',
-        answer: 'Flow Editor は画面、収集ステップ、ブランド表現を設計する視覚的な作業領域です。Dynamic Flow は本人確認コンテキストとリアルタイムのリスクに応じて経路を変える実行機能です。',
+        question: 'Interface Studio と Dynamic Flow の違いは何ですか？',
+        answer: 'Interface Studio は画面、収集ステップ、ブランド表現を設計する視覚的な作業領域です。Dynamic Flow は本人確認コンテキストとリアルタイムのリスクに応じて経路を変える実行機能です。',
       },
       sharedData: {
         question: '製品間でシグナルと判断履歴を共有できますか？',
@@ -748,8 +748,8 @@ const de: PlatformPageCopy = {
     },
   },
   products: {
-    flowEditor: {
-      title: 'Flow Editor',
+    interfaceStudio: {
+      title: 'Interface Studio',
       description: 'Gestalten Sie markengerechte Verifizierungsreisen mit einem visuellen No-Code-Editor und prüfen Sie jeden Bildschirm vor der Veröffentlichung.',
     },
     dynamicFlow: {
@@ -863,11 +863,11 @@ const de: PlatformPageCopy = {
     items: {
       selection: {
         question: 'Mit welchem Identra Produkt sollten wir beginnen?',
-        answer: 'Starten Sie mit dem Problem, das Ihrem aktuellen Ablauf am nächsten liegt. Flow Editor eignet sich für die Kundenerfahrung, Workflows für Backend-Entscheidungen, Passive Signale oder Graph für Betrugsanalyse und Fallmanagement für gemeinsame Untersuchungen.',
+        answer: 'Starten Sie mit dem Problem, das Ihrem aktuellen Ablauf am nächsten liegt. Interface Studio eignet sich für die Kundenerfahrung, Workflows für Backend-Entscheidungen, Passive Signale oder Graph für Betrugsanalyse und Fallmanagement für gemeinsame Untersuchungen.',
       },
       flowDifference: {
-        question: 'Wie unterscheiden sich Flow Editor und Dynamic Flow?',
-        answer: 'Flow Editor ist der visuelle Arbeitsbereich für Bildschirme, Erfassungsschritte und Branding. Dynamic Flow ist die Laufzeitfunktion, die den Pfad anhand von Identitätskontext und Live-Risiko verändert.',
+        question: 'Wie unterscheiden sich Interface Studio und Dynamic Flow?',
+        answer: 'Interface Studio ist der visuelle Arbeitsbereich für Bildschirme, Erfassungsschritte und Branding. Dynamic Flow ist die Laufzeitfunktion, die den Pfad anhand von Identitätskontext und Live-Risiko verändert.',
       },
       sharedData: {
         question: 'Teilen die Produkte Signale und Entscheidungen?',
@@ -935,8 +935,8 @@ const vi: PlatformPageCopy = {
     },
   },
   products: {
-    flowEditor: {
-      title: 'Flow Editor',
+    interfaceStudio: {
+      title: 'Interface Studio',
       description: 'Thiết kế hành trình xác minh phù hợp với nhận diện thương hiệu bằng công cụ no-code trực quan, đồng thời xem trước từng màn hình trước khi phát hành.',
     },
     dynamicFlow: {
@@ -1050,11 +1050,11 @@ const vi: PlatformPageCopy = {
     items: {
       selection: {
         question: 'Nên bắt đầu với sản phẩm Identra nào?',
-        answer: 'Hãy bắt đầu từ nhu cầu cấp thiết nhất trong quy trình hiện tại. Flow Editor phù hợp để thiết kế hành trình cho khách hàng; Workflows giúp tự động hóa việc ra quyết định; Tín hiệu thụ động và Graph hỗ trợ phát hiện gian lận; còn Quản lý hồ sơ dành cho những trường hợp cần chuyên viên xem xét.',
+        answer: 'Hãy bắt đầu từ nhu cầu cấp thiết nhất trong quy trình hiện tại. Interface Studio phù hợp để thiết kế hành trình cho khách hàng; Workflows giúp tự động hóa việc ra quyết định; Tín hiệu thụ động và Graph hỗ trợ phát hiện gian lận; còn Quản lý hồ sơ dành cho những trường hợp cần chuyên viên xem xét.',
       },
       flowDifference: {
-        question: 'Flow Editor khác Dynamic Flow như thế nào?',
-        answer: 'Flow Editor là công cụ trực quan để thiết kế màn hình, các bước thu thập thông tin và nhận diện thương hiệu. Dynamic Flow tự động thay đổi hành trình dựa trên thông tin định danh và mức rủi ro tại thời điểm xác minh.',
+        question: 'Interface Studio khác Dynamic Flow như thế nào?',
+        answer: 'Interface Studio là công cụ trực quan để thiết kế màn hình, các bước thu thập thông tin và nhận diện thương hiệu. Dynamic Flow tự động thay đổi hành trình dựa trên thông tin định danh và mức rủi ro tại thời điểm xác minh.',
       },
       sharedData: {
         question: 'Các sản phẩm có dùng chung tín hiệu và lịch sử quyết định không?',

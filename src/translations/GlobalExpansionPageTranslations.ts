@@ -39,7 +39,7 @@ export type GlobalExpansionTextKey =
   | 'sdkFootprint'
   | 'deployOnce'
   | 'sdkDesc'
-  | 'launchFlowEditor'
+  | 'launchInterfaceStudio'
   | 'libraryEyebrow'
   | 'libraryTitle'
   | 'libraryDesc'
@@ -178,7 +178,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     sdkFootprint: 'Single SDK Footprint',
     deployOnce: 'Deploy Once, Expand Everywhere',
     sdkDesc: 'Access all verification, registry check, and fraud signals via a single JSON schema.',
-    launchFlowEditor: 'Launch flow editor',
+    launchInterfaceStudio: 'Launch Interface Studio',
     libraryEyebrow: 'Modular Verification Library',
     libraryTitle: 'Everything you need for global onboarding',
     libraryDesc: 'Our comprehensive building blocks operate in concert to deliver compliant onboarding pipelines in seconds. Hover over any block to inspect active system operations.',
@@ -298,7 +298,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     sdkFootprint: 'Huella única de SDK',
     deployOnce: 'Implemente una vez, expándase a todas partes',
     sdkDesc: 'Acceda a verificaciones, comprobaciones de registros y señales de fraude mediante un único esquema JSON.',
-    launchFlowEditor: 'Abrir editor de flujos',
+    launchInterfaceStudio: 'Abrir Interface Studio',
     libraryEyebrow: 'Biblioteca modular de verificación',
     libraryTitle: 'Todo lo necesario para onboarding global',
     libraryDesc: 'Nuestros bloques trabajan juntos para entregar canales de onboarding conformes en segundos. Pase el cursor por cualquier bloque para inspeccionar operaciones activas.',
@@ -403,7 +403,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     sdkFootprint: '単一SDK構成',
     deployOnce: '一度導入して、どこへでも拡大',
     sdkDesc: 'すべての確認、登録簿チェック、不正シグナルに単一のJSONスキーマでアクセスできます。',
-    launchFlowEditor: 'フローエディターを開く',
+    launchInterfaceStudio: 'Interface Studioを開く',
     libraryEyebrow: 'モジュール型確認ライブラリ',
     libraryTitle: 'グローバルオンボーディングに必要なすべて',
     libraryDesc: '包括的な構成要素が連携し、準拠したオンボーディングパイプラインを数秒で提供します。各ブロックにカーソルを合わせると稼働中の処理を確認できます。',
@@ -508,7 +508,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     sdkFootprint: 'Ein SDK-Footprint',
     deployOnce: 'Einmal bereitstellen, überall expandieren',
     sdkDesc: 'Greifen Sie über ein einziges JSON-Schema auf Verifizierungen, Registerprüfungen und Betrugssignale zu.',
-    launchFlowEditor: 'Flow-Editor öffnen',
+    launchInterfaceStudio: 'Interface Studio öffnen',
     libraryEyebrow: 'Modulare Verifizierungsbibliothek',
     libraryTitle: 'Alles für globales Onboarding',
     libraryDesc: 'Unsere Bausteine arbeiten zusammen, um konforme Onboarding-Pipelines in Sekunden bereitzustellen. Bewegen Sie den Mauszeiger über einen Block, um aktive Systemoperationen zu sehen.',
@@ -613,7 +613,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     sdkFootprint: 'Một dấu vết SDK duy nhất',
     deployOnce: 'Triển khai một lần, mở rộng mọi nơi',
     sdkDesc: 'Truy cập mọi tín hiệu xác minh, kiểm tra sổ đăng ký và gian lận qua một lược đồ JSON duy nhất.',
-    launchFlowEditor: 'Mở trình chỉnh sửa luồng',
+    launchInterfaceStudio: 'Mở Interface Studio',
     libraryEyebrow: 'Thư viện xác minh mô-đun',
     libraryTitle: 'Mọi thứ bạn cần cho đăng ký toàn cầu',
     libraryDesc: 'Các khối toàn diện của chúng tôi phối hợp để tạo quy trình đăng ký tuân thủ trong vài giây. Di chuột lên từng khối để xem hoạt động hệ thống đang chạy.',

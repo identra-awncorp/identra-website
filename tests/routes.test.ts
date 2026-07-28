@@ -30,11 +30,12 @@ test('fully translated views keep all supported locales', () => {
   assert.equal(viewToPath('connect', 'de'), '/de/connect');
 });
 
-test('Flow Editor and Relay publish independent canonical routes', () => {
-  assert.ok(APP_VIEWS.includes('flow-editor'));
+test('Interface Studio and Relay publish independent canonical routes', () => {
+  assert.ok(APP_VIEWS.includes('interface-studio'));
   assert.ok(APP_VIEWS.includes('relay'));
-  assert.equal(viewToPath('flow-editor', 'vi'), '/vi/flow-editor');
-  assert.equal(pathToView('/ja/flow-editor'), 'flow-editor');
+  assert.equal(viewToPath('interface-studio', 'vi'), '/vi/interface-studio');
+  assert.equal(pathToView('/ja/interface-studio'), 'interface-studio');
+  assert.equal(pathToView('/ja/flow-editor'), null);
 
   assert.deepEqual(LEGACY_VIEW_ALIASES, {});
   assert.equal(viewToPath('relay', 'de'), '/de/relay');

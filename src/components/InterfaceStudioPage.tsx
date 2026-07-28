@@ -15,9 +15,9 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
-import { flowEditorPageTranslations } from '../translations/FlowEditorPageTranslations';
+import { interfaceStudioPageTranslations } from '../translations/InterfaceStudioPageTranslations';
 
-interface FlowEditorPageProps {
+interface InterfaceStudioPageProps {
   onOpenSandbox: () => void;
   onBackToLanding: () => void;
   onViewChange?: (view: AppView) => void;
@@ -59,49 +59,49 @@ interface OutcomeConfig {
   redirectUrl: string;
 }
 
-type FlowEditorLanguage = keyof typeof flowEditorPageTranslations;
-type FlowEditorPageTranslationKey = keyof typeof flowEditorPageTranslations.en;
+type InterfaceStudioLanguage = keyof typeof interfaceStudioPageTranslations;
+type InterfaceStudioPageTranslationKey = keyof typeof interfaceStudioPageTranslations.en;
 
-const flowEditorStartTitleKeys: readonly FlowEditorPageTranslationKey[] = [
+const interfaceStudioStartTitleKeys: readonly InterfaceStudioPageTranslationKey[] = [
   'defaultStartTitle',
   'presetFintechStartTitle',
   'presetGigStartTitle',
   'presetAgeStartTitle'
 ];
 
-const flowEditorStartButtonKeys: readonly FlowEditorPageTranslationKey[] = [
+const interfaceStudioStartButtonKeys: readonly InterfaceStudioPageTranslationKey[] = [
   'defaultStartButton',
   'presetFintechButton',
   'presetGigButton',
   'presetAgeButton'
 ];
 
-const flowEditorOutcomeTitleKeys: readonly FlowEditorPageTranslationKey[] = [
+const interfaceStudioOutcomeTitleKeys: readonly InterfaceStudioPageTranslationKey[] = [
   'defaultOutcomeTitle',
   'presetFintechOutcomeTitle',
   'presetGigOutcomeTitle',
   'presetAgeOutcomeTitle'
 ];
 
-const flowEditorFlowNameKeys: readonly FlowEditorPageTranslationKey[] = [
+const interfaceStudioFlowNameKeys: readonly InterfaceStudioPageTranslationKey[] = [
   'defaultFlowName'
 ];
 
-const findFlowEditorTranslationKey = (
+const findInterfaceStudioTranslationKey = (
   value: string,
-  keys: readonly FlowEditorPageTranslationKey[]
-): FlowEditorPageTranslationKey | null => (
-  keys.find((key) => Object.values(flowEditorPageTranslations).some((translations) => translations[key] === value)) ?? null
+  keys: readonly InterfaceStudioPageTranslationKey[]
+): InterfaceStudioPageTranslationKey | null => (
+  keys.find((key) => Object.values(interfaceStudioPageTranslations).some((translations) => translations[key] === value)) ?? null
 );
 
-export default function FlowEditorPage({ onOpenSandbox, onBackToLanding, onViewChange }: FlowEditorPageProps) {
+export default function InterfaceStudioPage({ onOpenSandbox, onBackToLanding, onViewChange }: InterfaceStudioPageProps) {
   const { language } = useLanguage();
-  const t = (key: FlowEditorPageTranslationKey) => {
-    const lang = language as FlowEditorLanguage;
-    return getLocalizedValue(getLocalizedRecord(flowEditorPageTranslations, lang as keyof typeof flowEditorPageTranslations, 'flowEditorPageTranslations'), key, lang, 'flowEditorPageTranslations');
+  const t = (key: InterfaceStudioPageTranslationKey) => {
+    const lang = language as InterfaceStudioLanguage;
+    return getLocalizedValue(getLocalizedRecord(interfaceStudioPageTranslations, lang as keyof typeof interfaceStudioPageTranslations, 'interfaceStudioPageTranslations'), key, lang, 'interfaceStudioPageTranslations');
   };
 
-  // 1. Flow Editor State Configuration
+  // 1. Interface Studio State Configuration
   const [activeNode, setActiveNode] = useState<NodeID>('start');
   const [activeTab, setActiveTab] = useState<'collect' | 'verify' | 'route' | 'refine'>('collect');
   const [useCasePreset, setUseCasePreset] = useState<'fintech' | 'gig' | 'age_gate'>('fintech');
@@ -149,10 +149,10 @@ export default function FlowEditorPage({ onOpenSandbox, onBackToLanding, onViewC
 
   // Sync state values with language changes when they are at their defaults
   useEffect(() => {
-    const startTitleKey = findFlowEditorTranslationKey(startConfig.title, flowEditorStartTitleKeys);
-    const startButtonKey = findFlowEditorTranslationKey(startConfig.buttonText, flowEditorStartButtonKeys);
-    const outcomeTitleKey = findFlowEditorTranslationKey(outcomeConfig.title, flowEditorOutcomeTitleKeys);
-    const flowNameKey = findFlowEditorTranslationKey(flowName, flowEditorFlowNameKeys);
+    const startTitleKey = findInterfaceStudioTranslationKey(startConfig.title, interfaceStudioStartTitleKeys);
+    const startButtonKey = findInterfaceStudioTranslationKey(startConfig.buttonText, interfaceStudioStartButtonKeys);
+    const outcomeTitleKey = findInterfaceStudioTranslationKey(outcomeConfig.title, interfaceStudioOutcomeTitleKeys);
+    const flowNameKey = findInterfaceStudioTranslationKey(flowName, interfaceStudioFlowNameKeys);
 
     if (startTitleKey || startButtonKey) {
       setStartConfig(prev => ({
@@ -460,7 +460,7 @@ import Identra from 'identra-react';
 export default function IdentityOnboarding() {
   return (
     <Identra.Inquiry
-      templateId="itmpl_flow_editor_live"
+      templateId="itmpl_interface_studio_live"
       environment="${environment}"
       onComplete={({ inquiryId, status }) => {
         console.log(\`${t('codeVerifiedLog')} \${inquiryId} ${t('codeWithStateLog')} \${status}\`);
@@ -486,7 +486,7 @@ const client = new Identra.Client({
 });
 
 async function configureInquiryFlow() {
-  const template = await client.templates.update('itmpl_flow_editor_live', {
+  const template = await client.templates.update('itmpl_interface_studio_live', {
     name: "${flowName}",
     config: {
       steps: ${JSON.stringify(activeSteps)}
@@ -509,7 +509,7 @@ async function configureInquiryFlow() {
 
 <script>
   const client = new Identra.Client({
-    templateId: "itmpl_flow_editor_live",
+    templateId: "itmpl_interface_studio_live",
     environment: "${environment}",
     onComplete: (data) => {
       window.location.href = "${outcomeConfig.redirectUrl}";
@@ -548,7 +548,7 @@ async function configureInquiryFlow() {
         <button 
           onClick={onBackToLanding}
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-950 transition font-medium group"
-          id="flow_editor_back_btn"
+          id="interface_studio_back_btn"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           <span>{t('backToLanding')}</span>
@@ -563,10 +563,10 @@ async function configureInquiryFlow() {
           <div className="lg:col-span-6 space-y-8">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#354CE1]/10 text-[#354CE1] rounded-full text-xs font-bold">
               <Sparkles className="w-3.5 h-3.5 text-[#354CE1]" />
-              <span>{t('flowEditor')}</span>
+              <span>{t('interfaceStudio')}</span>
             </div>
             
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.05]" id="flow_editor_hero_title">
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.05]" id="interface_studio_hero_title">
               {t('heroTitle')}
             </h1>
             
@@ -615,18 +615,18 @@ async function configureInquiryFlow() {
               <button 
                 onClick={onOpenSandbox}
                 className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#354CE1] hover:bg-[#2A3EB3] text-white font-bold rounded-full text-sm shadow-md transition"
-                id="flow_editor_hero_cta_sandbox"
+                id="interface_studio_hero_cta_sandbox"
               >
                 <span>{t('requestApiCreds')}</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </button>
               <button 
                 onClick={() => {
-                  const el = document.getElementById('flow_editor_workspace');
+                  const el = document.getElementById('interface_studio_workspace');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="inline-flex items-center gap-1.5 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm rounded-full transition"
-                id="flow_editor_hero_cta_workspace"
+                id="interface_studio_hero_cta_workspace"
               >
                 <span>{t('enterInteractiveEditor')}</span>
                 <ChevronDown className="w-4 h-4" />
@@ -712,7 +712,7 @@ async function configureInquiryFlow() {
       </div>
 
       {/* Main Feature Area: The Visual Flow Workspace */}
-      <div className="bg-slate-900 text-white border-y border-slate-950 py-20" id="flow_editor_workspace">
+      <div className="bg-slate-900 text-white border-y border-slate-950 py-20" id="interface_studio_workspace">
         <div className="max-w-7xl mx-auto px-6">
           
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
@@ -1465,7 +1465,7 @@ async function configureInquiryFlow() {
                 onClick={runOnboardingSimulation}
                 disabled={isSimulating}
                 className="w-full py-3.5 bg-[#354CE1] hover:bg-[#2A3EB3] text-white font-bold text-xs rounded-2xl uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                id="flow_editor_run_sim_btn"
+                id="interface_studio_run_sim_btn"
               >
                 {isSimulating ? (
                   <>
@@ -1569,7 +1569,7 @@ async function configureInquiryFlow() {
         </div>
       </div>
 
-      {/* Interactive Tabs: How Flow Editor helps different stages */}
+      {/* Interactive Tabs: How Interface Studio helps different stages */}
       <div className="bg-slate-100/50 border-y border-slate-200 py-20">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1844,7 +1844,7 @@ async function configureInquiryFlow() {
       </div>
 
       {/* API Sandbox Credentials Generator CTA Section */}
-      <div className="bg-slate-950 border-t border-slate-900 py-24 text-white" id="flow_editor_early_access_section">
+      <div className="bg-slate-950 border-t border-slate-900 py-24 text-white" id="interface_studio_early_access_section">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             

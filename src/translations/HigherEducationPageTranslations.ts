@@ -137,7 +137,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     featuresDesc: 'Everything academic registrars and admissions offices need to streamline student onboarding.',
     features: [
       { title: 'Dynamic Flow', desc: 'Adjust friction during the collection flow to welcome more legitimate users while increasing screening for potential fraudsters.' },
-      { title: 'Flow Editor', desc: 'Use our no-code visual editor to build branded flows that match your academic institution\'s colors, logo, and design style to create a continuous experience for users.' },
+      { title: 'Interface Studio', desc: 'Use our no-code visual editor to build branded flows that match your academic institution\'s colors, logo, and design style to create a continuous experience for users.' },
       { title: 'Library of verification methods', desc: 'Automatically conduct a series of verification checks, including ensuring that selfies match government ID portraits.' },
       { title: 'Workflows', desc: 'Leverage rule-based automated decisioning flows to easily approve or reject account recovery requests or student aid applications.' },
       { title: 'Cases', desc: 'Perform additional screening in Identra\'s investigation hub to review any discrepancies in collected data.' },
@@ -245,7 +245,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     featuresDesc: 'Todo lo que los registros académicos y oficinas de admisión necesitan para optimizar la incorporación estudiantil.',
     features: [
       { title: 'Dynamic Flow', desc: 'Ajuste la fricción durante la recopilación para recibir más usuarios legítimos y aumentar el filtrado de posibles fraudes.' },
-      { title: 'Flow Editor', desc: 'Use el editor visual sin código para crear flujos con la marca, colores y diseño de su institución.' },
+      { title: 'Interface Studio', desc: 'Use el editor visual sin código para crear flujos con la marca, colores y diseño de su institución.' },
       { title: 'Biblioteca de métodos de verificación', desc: 'Ejecute automáticamente verificaciones, incluida la coincidencia de selfies con retratos de documentos oficiales.' },
       { title: 'Workflows', desc: 'Use decisiones automatizadas basadas en reglas para aprobar o rechazar recuperaciones de cuenta o solicitudes de ayuda estudiantil.' },
       { title: 'Cases', desc: 'Realice revisión adicional en el centro de investigación de Identra para analizar discrepancias.' },
@@ -350,7 +350,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     featuresDesc: '学籍担当と入学事務が学生オンボーディングを効率化するために必要なものを提供します。',
     features: [
       { title: 'Dynamic Flow', desc: '正規ユーザーを迎え入れながら、潜在的不正には追加審査を行うよう摩擦を調整します。' },
-      { title: 'Flow Editor', desc: 'no-code のビジュアルエディターで、大学の色、ロゴ、デザインに合うブランドフローを構築できます。' },
+      { title: 'Interface Studio', desc: 'no-code のビジュアルエディターで、大学の色、ロゴ、デザインに合うブランドフローを構築できます。' },
       { title: '確認方法ライブラリ', desc: 'selfie と政府ID写真の照合など、一連の確認を自動実行します。' },
       { title: 'Workflows', desc: 'ルールベースの自動判定で、アカウント復旧や学生支援金申請を承認または拒否します。' },
       { title: 'Cases', desc: 'Identra の調査ハブで収集データの不一致を追加審査できます。' },
@@ -455,7 +455,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     featuresDesc: 'Alles, was akademische Register und Zulassungsstellen für effizientes Studierenden-Onboarding benötigen.',
     features: [
       { title: 'Dynamic Flow', desc: 'Passen Sie Reibung in der Datenerfassung an, um legitime Nutzer willkommen zu heißen und potenzielle Betrüger stärker zu prüfen.' },
-      { title: 'Flow Editor', desc: 'Erstellen Sie mit dem no-code visuellen Editor markenkonforme Flows für Farben, Logo und Design Ihrer Institution.' },
+      { title: 'Interface Studio', desc: 'Erstellen Sie mit dem no-code visuellen Editor markenkonforme Flows für Farben, Logo und Design Ihrer Institution.' },
       { title: 'Bibliothek von Prüfmethoden', desc: 'Führen Sie automatisch Prüfungen durch, einschließlich Abgleich von selfies mit Ausweisfotos.' },
       { title: 'Workflows', desc: 'Nutzen Sie regelbasierte automatische Entscheidungen für Kontowiederherstellung oder Förderanträge.' },
       { title: 'Cases', desc: 'Prüfen Sie Unstimmigkeiten in Identra Untersuchungshub zusätzlich.' },
@@ -560,7 +560,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     featuresDesc: 'Mọi thứ phòng đào tạo và văn phòng tuyển sinh cần để tinh gọn tiếp nhận sinh viên.',
     features: [
       { title: 'Dynamic Flow', desc: 'Điều chỉnh mức ma sát trong luồng thu thập để chào đón nhiều người dùng hợp lệ hơn đồng thời tăng sàng lọc với người có nguy cơ gian lận.' },
-      { title: 'Flow Editor', desc: 'Dùng trình chỉnh sửa trực quan không cần code để xây dựng luồng mang thương hiệu phù hợp màu sắc, logo và phong cách thiết kế của trường.' },
+      { title: 'Interface Studio', desc: 'Dùng trình chỉnh sửa trực quan không cần code để xây dựng luồng mang thương hiệu phù hợp màu sắc, logo và phong cách thiết kế của trường.' },
       { title: 'Thư viện phương thức xác minh', desc: 'Tự động thực hiện nhiều kiểm tra xác minh, bao gồm bảo đảm selfie khớp với ảnh trên giấy tờ tùy thân.' },
       { title: 'Workflows', desc: 'Tận dụng luồng quyết định tự động dựa trên quy tắc để phê duyệt hoặc từ chối yêu cầu khôi phục tài khoản hay hồ sơ hỗ trợ sinh viên.' },
       { title: 'Cases', desc: 'Thực hiện sàng lọc bổ sung trong trung tâm điều tra của Identra để rà soát sai lệch trong dữ liệu đã thu thập.' },

@@ -26,7 +26,7 @@ test('platform registry exposes nine unique products exactly once', () => {
 
 test('platform product destinations are valid and preserve Relay taxonomy', () => {
   assert.deepEqual(PLATFORM_PRODUCT_VIEWS, {
-    flowEditor: 'flow-editor',
+    interfaceStudio: 'interface-studio',
     dynamicFlow: 'dynamic-flow',
     relay: 'relay',
     workflows: 'workflows',

@@ -536,8 +536,8 @@ export default function FraudPreventionPage({ onOpenSandbox, onBackToLanding, on
                 <p className="text-xs text-slate-500 leading-relaxed font-sans">{t.copy.automaticallySlideVerificationHurdlesUpOrDownBased}</p>
               </div>
               <div className="pt-6">
-                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('dynamic-flow')}>
-                  <span>{t.copy.exploreFlowEditor}</span>
+                <button type="button" className="text-xs font-semibold text-[#354CE1] inline-flex items-center gap-1" onClick={() => onViewChange?.('interface-studio')}>
+                  <span>{t.copy.exploreInterfaceStudio}</span>
                   <ArrowRight className="w-3.5 h-3.5 transition group-hover:translate-x-0.5" />
                 </button>
               </div>

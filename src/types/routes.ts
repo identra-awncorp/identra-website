@@ -23,7 +23,7 @@ export const APP_VIEWS = [
   'nfc',
   'customers',
   'dynamic-flow',
-  'flow-editor',
+  'interface-studio',
   'kyb',
   'business-fraud',
   'contact',

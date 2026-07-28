@@ -626,7 +626,7 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
               <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
                 <Workflow className="w-6 h-6" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-2">{t.copy.flowEditor}</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">{t.copy.interfaceStudio}</h3>
               <p className="text-slate-500 text-sm leading-relaxed">{t.copy.preventPatientConfusionWithAnIntuitiveFlowThat}</p>
             </div>
 

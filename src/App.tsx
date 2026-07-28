@@ -54,7 +54,7 @@ const PlatformPage = lazy(() => import('./components/PlatformPage'));
 const NfcPage = lazy(() => import('./components/NfcPage'));
 const CustomersPage = lazy(() => import('./components/CustomersPage'));
 const DynamicFlowPage = lazy(() => import('./components/DynamicFlowPage'));
-const FlowEditorPage = lazy(() => import('./components/FlowEditorPage'));
+const InterfaceStudioPage = lazy(() => import('./components/InterfaceStudioPage'));
 const KybPage = lazy(() => import('./components/KybPage'));
 const BusinessFraudPage = lazy(() => import('./components/BusinessFraudPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
@@ -463,8 +463,8 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
-        ) : currentView === 'flow-editor' ? (
-          <FlowEditorPage
+        ) : currentView === 'interface-studio' ? (
+          <InterfaceStudioPage
             onOpenSandbox={handleOpenSandbox}
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}

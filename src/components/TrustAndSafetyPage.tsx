@@ -120,7 +120,7 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
   const FEATURES: FeatureItem[] = [
     { id: 'gov-id', icon: FileText, targetView: 'government-id' },
     { id: 'mdl', icon: Smartphone, targetView: 'mobile-drivers-license' },
-    { id: 'flow-editor', icon: Sliders, targetView: 'dynamic-flow' },
+    { id: 'interface-studio', icon: Sliders, targetView: 'interface-studio' },
     { id: 'passive', icon: Radio, targetView: 'passive-signals' },
     { id: 'age-assure', icon: Smile, targetView: 'age-assurance' },
     { id: 'selfie-live', icon: UserCheck, targetView: 'selfie-age-estimation' },

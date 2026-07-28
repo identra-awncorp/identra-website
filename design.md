@@ -161,7 +161,7 @@ Every subpage in the Identra platform is designed as an immersive, highly intera
 - **Purpose**: Platform is the product overview and navigation hub for the Identra ecosystem. It explains how products connect across collection, orchestration, risk intelligence, and integrations, then sends visitors to the relevant product page.
 - **Layout & Interaction**: Use a left-aligned product hero, a lightweight four-stage architecture navigator, full-width product groups, static product-state previews, shared platform foundations, FAQ, and a final CTA. Interaction is limited to navigation and disclosure controls.
 - **Product Boundaries**: Detailed builders, simulations, timers, configuration controls, and code export belong to the corresponding product pages. Flow Studio remains a reusable product component and must not be imported into the Platform overview.
-- **Navigation Taxonomy**: Product links must use the shared platform registry. Flow Editor uses `/[locale]/flow-editor`, Relay uses `/[locale]/relay`, and Connect remains available independently at `/[locale]/connect`.
+- **Navigation Taxonomy**: Product links must use the shared platform registry. Interface Studio uses `/[locale]/interface-studio`, Relay uses `/[locale]/relay`, and Connect remains available independently at `/[locale]/connect`.
 - **Visual System**: Use the established off-white and white page bands, navy typography, cobalt brand actions, and semantic risk colors. Do not add unsupported marketing metrics, gradients, decorative light orbs, or nested cards.
 
 ### 4.6 NFC & ePassport Verification (`nfc`)

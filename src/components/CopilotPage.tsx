@@ -863,7 +863,7 @@ export default function CopilotPage({ onOpenSandbox, onBackToLanding, onViewChan
             {/* Catch more fraud with passive signals */}
             <button type="button"
               onClick={() => {
-                if (onViewChange) onViewChange('dynamic-flow');
+                if (onViewChange) onViewChange('interface-studio');
               }}
               className="bg-white hover:bg-[#EEF1FF]/30 p-8 rounded-2xl border border-slate-100 hover:border-[#8586FF]/30 transition-all cursor-pointer group flex flex-col justify-between space-y-12"
             >
@@ -879,7 +879,7 @@ export default function CopilotPage({ onOpenSandbox, onBackToLanding, onViewChan
                 </p>
               </div>
               <span className="text-xs font-semibold text-[#5254FF] flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                <span>{t.exploreFlowEditor}</span>
+                <span>{t.exploreInterfaceStudio}</span>
                 <ArrowRight className="w-4 h-4" />
               </span>
             </button>

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// Compatibility alias for modules that still use the former translation export.
+// Compatibility alias for the Relay route until it receives dedicated copy.
 export {
-  flowEditorPageTranslations as relayPageTranslations,
-} from './FlowEditorPageTranslations';
+  interfaceStudioPageTranslations as relayPageTranslations,
+} from './InterfaceStudioPageTranslations';

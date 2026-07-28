@@ -24,7 +24,7 @@ export type FooterTextKey =
   | 'platformOverview'
   | 'dynamicFlow'
   | 'relay'
-  | 'flowEditor'
+  | 'interfaceStudio'
   | 'passiveSignals'
   | 'caseManagement'
   | 'graph'
@@ -122,7 +122,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     platformOverview: 'Platform Overview',
     dynamicFlow: 'Dynamic Flow',
     relay: 'Relay',
-    flowEditor: 'Flow Editor',
+    interfaceStudio: 'Interface Studio',
     passiveSignals: 'Passive signals',
     caseManagement: 'Case management',
     graph: 'Graph',
@@ -220,7 +220,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     platformOverview: 'Resumen de la plataforma',
     dynamicFlow: 'Dynamic Flow',
     relay: 'Relay',
-    flowEditor: 'Editor de flujos',
+    interfaceStudio: 'Interface Studio',
     passiveSignals: 'Señales pasivas',
     caseManagement: 'Gestión de casos',
     graph: 'Graph',
@@ -318,7 +318,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     platformOverview: 'プラットフォーム概要',
     dynamicFlow: 'Dynamic Flow',
     relay: 'Relay',
-    flowEditor: 'フローエディター',
+    interfaceStudio: 'Interface Studio',
     passiveSignals: 'パッシブシグナル',
     caseManagement: 'ケース管理',
     graph: 'Graph',
@@ -416,7 +416,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     platformOverview: 'Plattformübersicht',
     dynamicFlow: 'Dynamic Flow',
     relay: 'Relay',
-    flowEditor: 'Flow-Editor',
+    interfaceStudio: 'Interface Studio',
     passiveSignals: 'Passive Signale',
     caseManagement: 'Fallmanagement',
     graph: 'Graph',
@@ -514,7 +514,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     platformOverview: 'Tổng quan nền tảng',
     dynamicFlow: 'Dynamic Flow',
     relay: 'Relay',
-    flowEditor: 'Trình chỉnh sửa luồng',
+    interfaceStudio: 'Interface Studio',
     passiveSignals: 'Tín hiệu thụ động',
     caseManagement: 'Quản lý hồ sơ',
     graph: 'Graph',
@@ -604,7 +604,7 @@ export const FOOTER_SECTIONS = [
     wide: true,
     links: [
       { key: 'platformOverview', view: 'platform' },
-      { key: 'flowEditor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+      { key: 'interfaceStudio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
       { key: 'dynamicFlow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
       { key: 'relay', view: PLATFORM_PRODUCT_VIEWS.relay },
       { key: 'workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },

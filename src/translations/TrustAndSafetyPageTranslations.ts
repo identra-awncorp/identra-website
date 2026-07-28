@@ -133,7 +133,7 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     features: {
       "gov-id": { title: "Government ID verification", description: "Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories." },
       mdl: { title: "Mobile driver's license (mDL) verification", description: "Verify mobile driver's licenses with a low-friction, high-assurance verification method." },
-      "flow-editor": { title: "Flow Editor", description: "Build branded user flows to collect customer information, no code needed." },
+      "interface-studio": { title: "Interface Studio", description: "Build branded user flows to collect customer information, no code needed." },
       passive: { title: "Passive signals", description: "Silently assess risk with device fingerprints and other behavioral signals." },
       "age-assure": { title: "Age assurance", description: "Comply with online safety regulations requiring age assurance, privacy, and consent." },
       "selfie-live": { title: "Selfie liveness verification", description: "Detect similar backgrounds in submitted selfies and compare against other signals with a selfie similarity check." },
@@ -404,8 +404,8 @@ TRUST_AND_SAFETY_TRANSLATIONS.ja = {
         "title": "Mobile driver's license (mDL) verification",
         "description": "Verify mobile driver's licenses with a low-friction, high-assurance verification method."
       },
-      "flow-editor": {
-        "title": "Flow Editor",
+      "interface-studio": {
+        "title": "Interface Studio",
         "description": "Build branded user flows to collect customer information, no code needed."
       },
       "passive": {
@@ -639,8 +639,8 @@ TRUST_AND_SAFETY_TRANSLATIONS.de = {
         "title": "Mobile driver's license (mDL) verification",
         "description": "Verify mobile driver's licenses with a low-friction, high-assurance verification method."
       },
-      "flow-editor": {
-        "title": "Flow Editor",
+      "interface-studio": {
+        "title": "Interface Studio",
         "description": "Build branded user flows to collect customer information, no code needed."
       },
       "passive": {
@@ -844,8 +844,8 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
         "title": "Mobile driver's license (mDL) verification",
         "description": "Verify mobile driver's licenses with a low-friction, high-assurance verification method."
       },
-      "flow-editor": {
-        "title": "Flow Editor",
+      "interface-studio": {
+        "title": "Interface Studio",
         "description": "Build branded user flows to collect customer information, no code needed."
       },
       "passive": {
@@ -990,7 +990,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
 TRUST_AND_SAFETY_TRANSLATIONS.es.features = {
   "gov-id": { title: "Verificación de documento oficial", description: "Recopila y verifica documentos oficiales para identificar usuarios en más de 200 países y territorios." },
   mdl: { title: "Verificación de licencia móvil (mDL)", description: "Verifica licencias de conducir móviles con un método de baja fricción y alta garantía." },
-  "flow-editor": { title: "Editor de flujos", description: "Crea flujos de usuario con tu marca para recopilar información sin escribir código." },
+  "interface-studio": { title: "Interface Studio", description: "Crea flujos de usuario con tu marca para recopilar información sin escribir código." },
   passive: { title: "Señales pasivas", description: "Evalúa riesgo de forma silenciosa con huellas de dispositivo y otras señales de comportamiento." },
   "age-assure": { title: "Garantía de edad", description: "Cumple normas de seguridad en línea que exigen verificación de edad, privacidad y consentimiento." },
   "selfie-live": { title: "Prueba de vida por selfie", description: "Detecta fondos similares en selfies enviados y compara la imagen con otras señales." },
@@ -1059,7 +1059,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.ja, {
   features: {
     "gov-id": { title: "公的ID確認", description: "200以上の国と地域で、公的身分証を収集してユーザーを確認します。" },
     mdl: { title: "モバイル運転免許証 (mDL) 確認", description: "低摩擦で高保証の方法により、モバイル運転免許証を確認します。" },
-    "flow-editor": { title: "フローエディター", description: "コードなしで、ブランドに合うユーザーフローを構築して顧客情報を収集します。" },
+    "interface-studio": { title: "Interface Studio", description: "コードなしで、ブランドに合うユーザーフローを構築して顧客情報を収集します。" },
     passive: { title: "受動的シグナル", description: "デバイス指紋や行動シグナルを使い、ユーザーに負担をかけずリスクを評価します。" },
     "age-assure": { title: "年齢保証", description: "年齢確認、プライバシー、同意を求めるオンライン安全規制に対応します。" },
     "selfie-live": { title: "セルフィーライブネス確認", description: "提出セルフィーの背景類似性を検出し、他のシグナルと照合します。" },
@@ -1139,7 +1139,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.de, {
   features: {
     "gov-id": { title: "Prüfung amtlicher Ausweise", description: "Erfassen und prüfen Sie amtliche Ausweise zur Identifizierung von Nutzern in über 200 Ländern und Regionen." },
     mdl: { title: "Prüfung mobiler Führerscheine (mDL)", description: "Prüfen Sie mobile Führerscheine mit geringer Reibung und hoher Sicherheit." },
-    "flow-editor": { title: "Flow-Editor", description: "Erstellen Sie markenkonforme Nutzerflows zur Datenerfassung ohne Code." },
+    "interface-studio": { title: "Interface Studio", description: "Erstellen Sie markenkonforme Nutzerflows zur Datenerfassung ohne Code." },
     passive: { title: "Passive Signale", description: "Bewerten Sie Risiken unauffällig mit Geräte-Fingerprints und weiteren Verhaltenssignalen." },
     "age-assure": { title: "Altersabsicherung", description: "Erfüllen Sie Online-Sicherheitsvorgaben zu Altersprüfung, Datenschutz und Einwilligung." },
     "selfie-live": { title: "Selfie-liveness-Prüfung", description: "Erkennen Sie ähnliche Hintergründe in Selfies und vergleichen Sie diese mit weiteren Signalen." },
@@ -1187,7 +1187,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.vi, {
   features: {
     "gov-id": { title: "Xác minh giấy tờ chính phủ", description: "Thu thập và xác minh giấy tờ do chính phủ cấp để định danh người dùng tại hơn 200 quốc gia và vùng lãnh thổ." },
     mdl: { title: "Xác minh bằng lái xe di động (mDL)", description: "Xác minh bằng lái xe di động bằng phương thức ít ma sát và có độ bảo đảm cao." },
-    "flow-editor": { title: "Trình chỉnh sửa luồng", description: "Xây dựng luồng người dùng mang nhận diện thương hiệu để thu thập thông tin khách hàng mà không cần viết mã." },
+    "interface-studio": { title: "Interface Studio", description: "Xây dựng luồng người dùng mang nhận diện thương hiệu để thu thập thông tin khách hàng mà không cần viết mã." },
     passive: { title: "Tín hiệu thụ động", description: "Đánh giá rủi ro âm thầm bằng dấu vân tay thiết bị và các tín hiệu hành vi khác." },
     "age-assure": { title: "Bảo đảm độ tuổi", description: "Đáp ứng quy định an toàn trực tuyến yêu cầu bảo đảm độ tuổi, quyền riêng tư và đồng ý." },
     "selfie-live": { title: "Xác minh hiện diện qua selfie", description: "Phát hiện nền ảnh giống nhau trong selfie đã gửi và so sánh với các tín hiệu khác." },

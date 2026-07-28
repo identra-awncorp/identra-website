@@ -336,8 +336,8 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
                     <span className="text-sm font-bold text-slate-900 block">{t('deployOnce')}</span>
                     <p className="text-xs text-slate-500">{t('sdkDesc')}</p>
                   </div>
-                  <button onClick={onOpenSandbox} className="px-4 py-2 bg-white hover:bg-slate-50 text-[#354CE1] border border-slate-200 font-semibold text-xs rounded-full transition shadow-xs whitespace-nowrap shrink-0 flex items-center gap-1.5">
-                    <span>{t('launchFlowEditor')}</span>
+                  <button onClick={() => openView('interface-studio')} className="px-4 py-2 bg-white hover:bg-slate-50 text-[#354CE1] border border-slate-200 font-semibold text-xs rounded-full transition shadow-xs whitespace-nowrap shrink-0 flex items-center gap-1.5">
+                    <span>{t('launchInterfaceStudio')}</span>
                     <ExternalLink className="w-3 h-3" />
                   </button>
                 </div>

@@ -56,7 +56,7 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
     platformBadge: 'Identity Platform Building Blocks',
     platformTitle: 'End-to-end verifications, signals, and orchestration',
     platformCards: [
-      { title: 'Flow Editor', desc: 'Minimize customer frustration with intuitive, branded flows that guide them through the verification process.' },
+      { title: 'Interface Studio', desc: 'Minimize customer frustration with intuitive, branded flows that guide them through the verification process.' },
       { title: 'Library of verification methods', desc: 'Mix and match verification methods that best fit your needs, such as government ID, selfie, database, and document verifications, along with PEP, watchlist, and FinCEN 314a reports.' },
       { title: 'Cases', desc: 'Efficiently review information, make decisions, and take action on riskier users with all the information you need in one place.' },
       { title: 'Dynamic Flow', desc: 'Meet local regulations by choosing what information to collect and data to enrich, along with how users and businesses are verified for every region you serve.' },
@@ -220,7 +220,7 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
     platformBadge: 'Bloques de la plataforma de identidad',
     platformTitle: 'Verificaciones, señales y orquestación de extremo a extremo',
     platformCards: [
-      { title: 'Editor de flujos', desc: 'Reduce la frustración del cliente con flujos intuitivos y de marca que guían el proceso de verificación.' },
+      { title: 'Interface Studio', desc: 'Reduce la frustración del cliente con flujos intuitivos y de marca que guían el proceso de verificación.' },
       { title: 'Biblioteca de métodos de verificación', desc: 'Combina métodos como documento oficial, selfie, base de datos y verificación documental, junto con informes PEP, listas de vigilancia y FinCEN 314a.' },
       { title: 'Casos', desc: 'Revisa información, toma decisiones y actúa sobre usuarios de mayor riesgo con todo lo necesario en un solo lugar.' },
       { title: 'Flujo dinámico', desc: 'Cumple regulaciones locales eligiendo qué información recopilar y enriquecer, y cómo verificar usuarios y empresas en cada región.' },
@@ -450,7 +450,7 @@ CRYPTOCURRENCY_TRANSLATIONS.ja = {
   platformBadge: '本人確認プラットフォームの構成要素',
   platformTitle: 'エンドツーエンドの確認、シグナル、オーケストレーション',
   platformCards: [
-    { title: 'フローエディター', desc: '直感的でブランドに合ったフローにより、ユーザーを確認プロセスへ自然に案内し、離脱を減らします。' },
+    { title: 'Interface Studio', desc: '直感的でブランドに合ったフローにより、ユーザーを確認プロセスへ自然に案内し、離脱を減らします。' },
     { title: '確認方法ライブラリ', desc: '公的身分証、セルフィー、データベース、書類確認に加え、PEP、ウォッチリスト、FinCEN 314a レポートなどを組み合わせられます。' },
     { title: 'ケース', desc: '必要な情報を一か所に集約し、リスクの高いユーザーを効率的にレビュー、判断、対応できます。' },
     { title: 'ダイナミックフロー', desc: '地域ごとに収集・補強する情報と、ユーザーや企業の確認方法を選び、現地規制に対応します。' },
@@ -689,7 +689,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.de, {
   platformBadge: 'Bausteine der Identitätsplattform',
   platformTitle: 'Verifizierungen, Signale und Orchestrierung von Ende zu Ende',
   platformCards: [
-    { title: 'Flow-Editor', desc: 'Reduzieren Sie Frust mit intuitiven, markengerechten Flows, die Nutzer durch die Verifizierung führen.' },
+    { title: 'Interface Studio', desc: 'Reduzieren Sie Frust mit intuitiven, markengerechten Flows, die Nutzer durch die Verifizierung führen.' },
     { title: 'Bibliothek der Verifizierungsmethoden', desc: 'Kombinieren Sie Ausweis, Selfie, Datenbank- und Dokumentenprüfungen sowie PEP-, Watchlist- und FinCEN-314a-Berichte passend zu Ihren Anforderungen.' },
     { title: 'Cases', desc: 'Prüfen Sie Informationen, treffen Sie Entscheidungen und handeln Sie bei riskanteren Nutzern effizient mit allen Daten an einem Ort.' },
     { title: 'Dynamic Flow', desc: 'Erfüllen Sie lokale Vorschriften, indem Sie pro Region festlegen, welche Informationen erhoben, angereichert und wie Nutzer und Unternehmen verifiziert werden.' },
@@ -814,7 +814,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.vi, {
   platformBadge: 'Khối xây dựng nền tảng danh tính',
   platformTitle: 'Xác minh, tín hiệu và điều phối từ đầu đến cuối',
   platformCards: [
-    { title: 'Trình chỉnh sửa luồng', desc: 'Giảm khó chịu cho khách hàng bằng các luồng trực quan, có thương hiệu, hướng dẫn họ qua quy trình xác minh.' },
+    { title: 'Interface Studio', desc: 'Giảm khó chịu cho khách hàng bằng các luồng trực quan, có thương hiệu, hướng dẫn họ qua quy trình xác minh.' },
     { title: 'Thư viện phương thức xác minh', desc: 'Kết hợp giấy tờ tùy thân, selfie, cơ sở dữ liệu và xác minh tài liệu với báo cáo PEP, danh sách cảnh báo và FinCEN 314a theo nhu cầu.' },
     { title: 'Hồ sơ', desc: 'Xem xét thông tin, ra quyết định và hành động với người dùng rủi ro cao hơn bằng mọi dữ liệu cần thiết ở một nơi.' },
     { title: 'Luồng động', desc: 'Đáp ứng quy định địa phương bằng cách chọn thông tin cần thu thập, làm giàu và cách xác minh người dùng/doanh nghiệp cho từng khu vực.' },

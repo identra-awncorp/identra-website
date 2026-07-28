@@ -57,7 +57,7 @@ interface PlatformPageProps {
 }
 
 const PRODUCT_ICONS: Record<PlatformProductId, LucideIcon> = {
-  flowEditor: LayoutTemplate,
+  interfaceStudio: LayoutTemplate,
   dynamicFlow: GitBranch,
   relay: Link2,
   workflows: Workflow,

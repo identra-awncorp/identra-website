@@ -26,7 +26,7 @@ import eventNetworkingImage from '../assets/images/identra_event_networking_1783
 import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 const PLATFORM_ITEMS = [
-  { label: HEADER_COPY_KEYS.flowEditor, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#flow-editor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+  { label: HEADER_COPY_KEYS.interfaceStudio, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
   { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#dynamic-flow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
   { label: HEADER_COPY_KEYS.relay, subtitle: HEADER_COPY_KEYS.eligibilityAssurance, icon: 'ShieldCheck', href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
   { label: HEADER_COPY_KEYS.workflows, subtitle: HEADER_COPY_KEYS.processAutomation, icon: 'Shuffle', href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
@@ -193,7 +193,7 @@ const NAVIGATION_ITEMS: NavItem[] = [
     label: HEADER_COPY_KEYS.products,
     children: [
       { label: HEADER_COPY_KEYS.verifications, description: HEADER_COPY_KEYS.descVerifications, href: '#verifications' },
-      { label: HEADER_COPY_KEYS.flowEditor, description: HEADER_COPY_KEYS.descFlowEditor, href: '#flow-editor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+      { label: HEADER_COPY_KEYS.interfaceStudio, description: HEADER_COPY_KEYS.descInterfaceStudio, href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
       { label: HEADER_COPY_KEYS.workflows, description: HEADER_COPY_KEYS.descWorkflows, href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
       { label: HEADER_COPY_KEYS.relay, description: HEADER_COPY_KEYS.descRelay, href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
       { label: HEADER_COPY_KEYS.cases, description: HEADER_COPY_KEYS.descCases, href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
@@ -637,9 +637,9 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('nfc');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.flowEditor || href === '#flow-editor')) {
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.interfaceStudio || href === '#interface-studio')) {
       e.preventDefault();
-      onViewChange('flow-editor');
+      onViewChange('interface-studio');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
     } else if (onViewChange && (label === HEADER_COPY_KEYS.dynamicFlow || label === 'Flow' || href === '#flow' || href === '#dynamic-flow')) {

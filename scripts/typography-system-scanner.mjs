@@ -15,6 +15,7 @@ const migratedComponents = [
   'src/components/ResearchPage.tsx',
   'src/components/CustomersPage.tsx',
   'src/components/PlatformPage.tsx',
+  'src/components/platform/PlatformFlowStudio.tsx',
   'src/components/BlogPage.tsx',
   'src/components/BlogDetailPage.tsx',
   'src/components/blog/StructuredBlogDetailPage.tsx',

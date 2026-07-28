@@ -18,11 +18,12 @@ export const APP_VIEWS = [
   'research',
   'compliance',
   'connect',
+  'relay',
   'platform',
   'nfc',
   'customers',
   'dynamic-flow',
-  'relay',
+  'flow-editor',
   'kyb',
   'business-fraud',
   'contact',
@@ -74,6 +75,10 @@ export const APP_VIEWS = [
 ] as const;
 
 export type AppView = typeof APP_VIEWS[number];
+
+export const LEGACY_VIEW_ALIASES = {} as const satisfies Record<string, AppView>;
+
+export type LegacyViewAlias = keyof typeof LEGACY_VIEW_ALIASES;
 
 const VIEW_LOCALE_OVERRIDES: Partial<Record<AppView, readonly Locale[]>> = {
   'white-paper': ['vi'],
@@ -187,23 +192,27 @@ export const pathToView = (pathname: string): AppView | null => {
   if (!cleanPath) return 'landing';
 
   const [viewSegment, ...extraSegments] = cleanPath.split('/');
-  if (!isAppView(viewSegment)) return null;
+  const aliasedView = (
+    LEGACY_VIEW_ALIASES as Partial<Record<string, AppView>>
+  )[viewSegment];
+  const resolvedView = isAppView(viewSegment) ? viewSegment : aliasedView;
+  if (!resolvedView) return null;
 
-  if (viewSegment === 'demo') {
-    if (extraSegments.length === 0) return viewSegment;
+  if (resolvedView === 'demo') {
+    if (extraSegments.length === 0) return resolvedView;
     if (extraSegments.length > 1) return null;
 
     try {
       const decodedScenarioId = decodeURIComponent(extraSegments[0]);
-      return isDemoScenarioId(decodedScenarioId) ? viewSegment : null;
+      return isDemoScenarioId(decodedScenarioId) ? resolvedView : null;
     } catch {
       return null;
     }
   }
 
-  if (viewSegment !== 'blog-detail' && extraSegments.length > 0) return null;
+  if (resolvedView !== 'blog-detail' && extraSegments.length > 0) return null;
 
-  return viewSegment;
+  return resolvedView;
 };
 
 export const pathToBlogDetailId = (pathname: string): BlogDetailId | null => {
@@ -237,6 +246,9 @@ export const pathToDemoScenarioId = (pathname: string): DemoScenarioId | null =>
 
 export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
   `/${locale}/demo/${encodeURIComponent(id)}`;
+
+export const legacyViewAliasPath = (alias: LegacyViewAlias, locale: Locale) =>
+  `/${locale}/${alias}`;
 
 export const viewToPath = (view: AppView, locale: Locale) => {
   const resolvedLocale = resolveViewLocale(view, locale);

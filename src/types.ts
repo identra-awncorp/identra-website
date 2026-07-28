@@ -3,10 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type { AppView } from './types/routes';
+
 export interface NavItem {
   label: string;
   href?: string;
-  children?: { label: string; description: string; href: string }[];
+  view?: AppView;
+  children?: { label: string; description: string; href: string; view?: AppView }[];
 }
 
 export type ProductId = 'verifications' | 'flow' | 'workflows' | 'graph' | 'cases';

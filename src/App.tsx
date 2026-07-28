@@ -49,11 +49,12 @@ const CareersPage = lazy(() => import('./components/CareersPage'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const KycAmlPage = lazy(() => import('./components/KycAmlPage'));
 const ConnectPage = lazy(() => import('./components/ConnectPage'));
+const RelayPage = lazy(() => import('./components/RelayPage'));
 const PlatformPage = lazy(() => import('./components/PlatformPage'));
 const NfcPage = lazy(() => import('./components/NfcPage'));
 const CustomersPage = lazy(() => import('./components/CustomersPage'));
 const DynamicFlowPage = lazy(() => import('./components/DynamicFlowPage'));
-const RelayPage = lazy(() => import('./components/RelayPage'));
+const FlowEditorPage = lazy(() => import('./components/FlowEditorPage'));
 const KybPage = lazy(() => import('./components/KybPage'));
 const BusinessFraudPage = lazy(() => import('./components/BusinessFraudPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
@@ -432,6 +433,12 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
+        ) : currentView === 'relay' ? (
+          <RelayPage
+            onOpenSandbox={handleOpenSandbox}
+            onBackToLanding={() => handleBackNavigation('landing')}
+            onViewChange={handleViewChange}
+          />
         ) : currentView === 'platform' ? (
           <PlatformPage
             onOpenSandbox={handleOpenSandbox}
@@ -456,8 +463,8 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
-        ) : currentView === 'relay' ? (
-          <RelayPage
+        ) : currentView === 'flow-editor' ? (
+          <FlowEditorPage
             onOpenSandbox={handleOpenSandbox}
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}

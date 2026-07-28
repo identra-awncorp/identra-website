@@ -22,10 +22,13 @@ import {
   demoScenarioPath,
   getBlogDetailLocales,
   getViewLocales,
+  LEGACY_VIEW_ALIASES,
+  legacyViewAliasPath,
   SUPPORTED_LOCALES,
   type AppView,
   type BlogDetailId,
   type DemoScenarioId,
+  type LegacyViewAlias,
   type Locale,
   viewToPath,
 } from '../src/types/routes';
@@ -256,6 +259,28 @@ const renderLocalizedHtml = (
   return html;
 };
 
+const renderLegacyRedirectHtml = (
+  sourceHtml: string,
+  targetView: AppView,
+  locale: Locale,
+  siteUrl: string,
+): string => {
+  const targetPath = viewToPath(targetView, locale);
+  const serializedTargetPath = JSON.stringify(targetPath).replace(/</g, '\\u003c');
+  const redirectMarkup = [
+    `    <meta http-equiv="refresh" content="0;url=${escapeHtml(targetPath)}" />`,
+    `    <script>window.location.replace(${serializedTargetPath} + window.location.search + window.location.hash);</script>`,
+  ].join('\n');
+
+  return replaceMeta(
+    renderLocalizedHtml(sourceHtml, { view: targetView }, locale, siteUrl)
+      .replace('</head>', `${redirectMarkup}\n  </head>`),
+    'name',
+    'robots',
+    'noindex, follow',
+  );
+};
+
 const renderNotFoundHtml = (
   sourceHtml: string,
   locale: Locale,
@@ -343,6 +368,26 @@ for (const route of routes) {
   }
 }
 
+const legacyRoutes = Object.entries(LEGACY_VIEW_ALIASES) as Array<
+  [LegacyViewAlias, AppView]
+>;
+
+for (const [alias, targetView] of legacyRoutes) {
+  for (const locale of getViewLocales(targetView)) {
+    const outputPath = resolve(
+      distDir,
+      legacyViewAliasPath(alias, locale).replace(/^\/+/, ''),
+      'index.html',
+    );
+    mkdirSync(dirname(outputPath), { recursive: true });
+    writeFileSync(
+      outputPath,
+      renderLegacyRedirectHtml(sourceHtml, targetView, locale, siteUrl),
+      'utf8',
+    );
+  }
+}
+
 for (const locale of SUPPORTED_LOCALES) {
   const notFoundHtml = renderNotFoundHtml(sourceHtml, locale, siteUrl);
   const outputPath = resolve(distDir, locale, '404', 'index.html');
@@ -372,4 +417,8 @@ const localizedRouteCount = routes.reduce(
   (count, route) => count + localesForRoute(route).length,
   0,
 );
-console.log(`Generated ${localizedRouteCount} localized HTML entry points and ${SUPPORTED_LOCALES.length} localized 404 pages`);
+const legacyRouteCount = legacyRoutes.reduce(
+  (count, [, targetView]) => count + getViewLocales(targetView).length,
+  0,
+);
+console.log(`Generated ${localizedRouteCount} localized HTML entry points, ${legacyRouteCount} legacy redirects, and ${SUPPORTED_LOCALES.length} localized 404 pages`);

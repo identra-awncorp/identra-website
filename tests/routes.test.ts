@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  APP_VIEWS,
   DEFAULT_BLOG_DETAIL_ID,
+  LEGACY_VIEW_ALIASES,
   PUBLIC_BLOG_DETAIL_IDS,
   SUPPORTED_LOCALES,
   blogDetailPath,
@@ -10,6 +12,7 @@ import {
   getViewLocales,
   localizePath,
   pathToBlogDetailId,
+  pathToView,
   resolveViewLocale,
   viewToPath,
 } from '../src/types/routes.ts';
@@ -25,6 +28,19 @@ test('fully translated views keep all supported locales', () => {
   assert.deepEqual(getViewLocales('connect'), SUPPORTED_LOCALES);
   assert.equal(resolveViewLocale('connect', 'de'), 'de');
   assert.equal(viewToPath('connect', 'de'), '/de/connect');
+});
+
+test('Flow Editor and Relay publish independent canonical routes', () => {
+  assert.ok(APP_VIEWS.includes('flow-editor'));
+  assert.ok(APP_VIEWS.includes('relay'));
+  assert.equal(viewToPath('flow-editor', 'vi'), '/vi/flow-editor');
+  assert.equal(pathToView('/ja/flow-editor'), 'flow-editor');
+
+  assert.deepEqual(LEGACY_VIEW_ALIASES, {});
+  assert.equal(viewToPath('relay', 'de'), '/de/relay');
+  assert.equal(pathToView('/de/relay'), 'relay');
+  assert.equal(localizePath('/de/relay', 'vi'), '/vi/relay');
+  assert.equal(pathToView('/vi/relay/unexpected'), null);
 });
 
 test('Vietnamese-only structured articles canonicalize every locale to Vietnamese', () => {

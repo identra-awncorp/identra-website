@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { PLATFORM_PRODUCT_VIEWS } from '../types/platformProducts';
+
 export type FooterLanguage = 'en' | 'es' | 'ja' | 'de' | 'vi';
 
 export type FooterTextKey =
@@ -602,15 +604,15 @@ export const FOOTER_SECTIONS = [
     wide: true,
     links: [
       { key: 'platformOverview', view: 'platform' },
-      { key: 'dynamicFlow', view: 'dynamic-flow' },
-      { key: 'relay', view: 'relay' },
-      { key: 'flowEditor', view: 'dynamic-flow' },
-      { key: 'passiveSignals', view: 'passive-signals' },
-      { key: 'caseManagement', view: 'case-management' },
-      { key: 'graph', view: 'graph' },
-      { key: 'workflows', view: 'workflows' },
-      { key: 'copilot', view: 'copilot' },
-      { key: 'identraMarketplace', view: 'platform' }
+      { key: 'flowEditor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+      { key: 'dynamicFlow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
+      { key: 'relay', view: PLATFORM_PRODUCT_VIEWS.relay },
+      { key: 'workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
+      { key: 'caseManagement', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
+      { key: 'copilot', view: PLATFORM_PRODUCT_VIEWS.copilot },
+      { key: 'passiveSignals', view: PLATFORM_PRODUCT_VIEWS.passiveSignals },
+      { key: 'graph', view: PLATFORM_PRODUCT_VIEWS.graph },
+      { key: 'identraMarketplace', view: PLATFORM_PRODUCT_VIEWS.marketplace }
     ]
   },
   {

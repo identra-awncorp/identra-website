@@ -777,7 +777,7 @@ export default function PhoneEmailRiskPage({ onOpenSandbox, onBackToLanding, onV
 
           {/* Card 2: Lavender / Slate Blue */}
           <button type="button" className="bg-indigo-100/60 border border-indigo-200 p-8 md:p-12 rounded-[2rem] flex flex-col justify-between group cursor-pointer hover:border-indigo-400/80 transition"
-               onClick={() => onViewChange?.('relay')}>
+               onClick={() => onViewChange?.('workflows')}>
             <div className="space-y-4">
               <div className="w-10 h-10 bg-[#354CE1] text-white rounded-xl flex items-center justify-center font-bold">
                 <Radio className="w-5 h-5" />

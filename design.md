@@ -157,9 +157,12 @@ Every subpage in the Identra platform is designed as an immersive, highly intera
 - **Layout & Interaction**: Serves as a playground for developers. Features an **Interactive API Explorer & Code Snippet Panel** to toggle between language tabs (cURL, Node.js, Python, Ruby), alongside a live API webhook simulator with editable JSON requests and instant mock server event logs.
 - **Color Theme**: Dark theme focus inside interactive code frames (`bg-slate-950`), custom colored code syntax highlights (green, yellow, orange), and vivid green state signals.
 
-### 4.5 Platform Hub & Workflows (`platform`)
-- **Layout & Interaction**: Highlights Identra’s identity orchestration engine. Includes an interactive flow diagram showing connected node maps (Collection, Verifications, DB Checks, Manual Review), allowing users to hover and inspect logic routing.
-- **Color Theme**: Clean off-white canvas with strong navy fonts, and clean cobalt blue connectors showing clear data streams.
+### 4.5 Platform Product Overview (`platform`)
+- **Purpose**: Platform is the product overview and navigation hub for the Identra ecosystem. It explains how products connect across collection, orchestration, risk intelligence, and integrations, then sends visitors to the relevant product page.
+- **Layout & Interaction**: Use a left-aligned product hero, a lightweight four-stage architecture navigator, full-width product groups, static product-state previews, shared platform foundations, FAQ, and a final CTA. Interaction is limited to navigation and disclosure controls.
+- **Product Boundaries**: Detailed builders, simulations, timers, configuration controls, and code export belong to the corresponding product pages. Flow Studio remains a reusable product component and must not be imported into the Platform overview.
+- **Navigation Taxonomy**: Product links must use the shared platform registry. Flow Editor uses `/[locale]/flow-editor`, Relay uses `/[locale]/relay`, and Connect remains available independently at `/[locale]/connect`.
+- **Visual System**: Use the established off-white and white page bands, navy typography, cobalt brand actions, and semantic risk colors. Do not add unsupported marketing metrics, gradients, decorative light orbs, or nested cards.
 
 ### 4.6 NFC & ePassport Verification (`nfc`)
 - **Layout & Interaction**: Displays specialized mobile identity validation. Features an **Interactive NFC Tap Simulator** where users hover/tap a simulated passport card over a modern smartphone graphic, triggering glowing sonar wave animations (`animate-ping`) and unlocking cryptographic compliance signatures.

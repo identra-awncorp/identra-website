@@ -19,21 +19,22 @@ import {
 } from 'lucide-react';
 import { NavItem } from '../types';
 import { HEADER_COPY_KEYS, MENU_TRANSLATIONS } from '../translations/HeaderTranslations';
+import { PLATFORM_PRODUCT_VIEWS } from '../types/platformProducts';
 import identraLogo from '../assets/images/identra-logo.svg';
 import careersTeamImage from '../assets/images/identra_careers_team_1783338578864.jpg';
 import eventNetworkingImage from '../assets/images/identra_event_networking_1783338372214.jpg';
 import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 const PLATFORM_ITEMS = [
-  { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#flow' },
-  { label: HEADER_COPY_KEYS.relay, subtitle: HEADER_COPY_KEYS.eligibilityAssurance, icon: 'ShieldCheck', href: '#relay' },
-  { label: HEADER_COPY_KEYS.flowEditor, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#flow' },
-  { label: HEADER_COPY_KEYS.passiveSignals, subtitle: HEADER_COPY_KEYS.behavioralDeviceData, icon: 'Radio', href: '#passive-signals' },
-  { label: HEADER_COPY_KEYS.caseManagement, subtitle: HEADER_COPY_KEYS.manualReviewHub, icon: 'FolderHeart', href: '#cases' },
-  { label: HEADER_COPY_KEYS.graph, subtitle: HEADER_COPY_KEYS.linkAnalysisForFraud, icon: 'Network', href: '#graph' },
-  { label: HEADER_COPY_KEYS.workflows, subtitle: HEADER_COPY_KEYS.processAutomation, icon: 'Shuffle', href: '#workflows' },
-  { label: HEADER_COPY_KEYS.copilot, subtitle: HEADER_COPY_KEYS.aiDrivenAgents, icon: 'Sparkles', href: '#copilot' },
-  { label: HEADER_COPY_KEYS.identraMarketplace, subtitle: HEADER_COPY_KEYS.partnerIntegrations, icon: 'Puzzle', href: '#marketplace' },
+  { label: HEADER_COPY_KEYS.flowEditor, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#flow-editor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+  { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#dynamic-flow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
+  { label: HEADER_COPY_KEYS.relay, subtitle: HEADER_COPY_KEYS.eligibilityAssurance, icon: 'ShieldCheck', href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
+  { label: HEADER_COPY_KEYS.workflows, subtitle: HEADER_COPY_KEYS.processAutomation, icon: 'Shuffle', href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
+  { label: HEADER_COPY_KEYS.caseManagement, subtitle: HEADER_COPY_KEYS.manualReviewHub, icon: 'FolderHeart', href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
+  { label: HEADER_COPY_KEYS.copilot, subtitle: HEADER_COPY_KEYS.aiDrivenAgents, icon: 'Sparkles', href: '#copilot', view: PLATFORM_PRODUCT_VIEWS.copilot },
+  { label: HEADER_COPY_KEYS.passiveSignals, subtitle: HEADER_COPY_KEYS.behavioralDeviceData, icon: 'Radio', href: '#passive-signals', view: PLATFORM_PRODUCT_VIEWS.passiveSignals },
+  { label: HEADER_COPY_KEYS.graph, subtitle: HEADER_COPY_KEYS.linkAnalysisForFraud, icon: 'Network', href: '#graph', view: PLATFORM_PRODUCT_VIEWS.graph },
+  { label: HEADER_COPY_KEYS.identraMarketplace, subtitle: HEADER_COPY_KEYS.partnerIntegrations, icon: 'Puzzle', href: '#marketplace', view: PLATFORM_PRODUCT_VIEWS.marketplace },
 ];
 
 const VERIFICATION_ITEMS = [
@@ -58,7 +59,7 @@ const RISK_ITEMS = [
 
 const SOLUTIONS_USE_CASES = [
   { label: HEADER_COPY_KEYS.amlKycCompliance, icon: 'ClipboardCheck', href: '#verifications' },
-  { label: HEADER_COPY_KEYS.shareableKyc, icon: 'Share2', href: '#relay' },
+  { label: HEADER_COPY_KEYS.shareableKyc, icon: 'Share2', href: '#connect' },
   { label: HEADER_COPY_KEYS.knowYourBusinessKyb, icon: 'Briefcase', href: '#kyb' },
   { label: HEADER_COPY_KEYS.businessFraudPrevention, icon: 'ShieldAlert', href: '#business-fraud' },
   { label: HEADER_COPY_KEYS.ageAssurance, icon: 'Calendar', href: '#age-assurance' },
@@ -187,19 +188,19 @@ interface HeaderProps {
 }
 
 const NAVIGATION_ITEMS: NavItem[] = [
-  { label: HEADER_COPY_KEYS.platform, href: '#platform' },
+  { label: HEADER_COPY_KEYS.platform, href: '#platform', view: 'platform' },
   {
     label: HEADER_COPY_KEYS.products,
     children: [
       { label: HEADER_COPY_KEYS.verifications, description: HEADER_COPY_KEYS.descVerifications, href: '#verifications' },
-      { label: HEADER_COPY_KEYS.flowEditor, description: HEADER_COPY_KEYS.descFlowEditor, href: '#flow' },
-      { label: HEADER_COPY_KEYS.workflows, description: HEADER_COPY_KEYS.descWorkflows, href: '#workflows' },
-      { label: HEADER_COPY_KEYS.relay, description: HEADER_COPY_KEYS.descRelay, href: '#relay' },
-      { label: HEADER_COPY_KEYS.cases, description: HEADER_COPY_KEYS.descCases, href: '#cases' },
-      { label: HEADER_COPY_KEYS.passiveSignalsTitle, description: HEADER_COPY_KEYS.descPassiveSignals, href: '#passive-signals' },
-      { label: HEADER_COPY_KEYS.graph, description: HEADER_COPY_KEYS.descGraph, href: '#graph' },
-      { label: HEADER_COPY_KEYS.copilot, description: HEADER_COPY_KEYS.descCopilot, href: '#copilot' },
-      { label: HEADER_COPY_KEYS.identraMarketplace, description: HEADER_COPY_KEYS.descMarketplace, href: '#marketplace' },
+      { label: HEADER_COPY_KEYS.flowEditor, description: HEADER_COPY_KEYS.descFlowEditor, href: '#flow-editor', view: PLATFORM_PRODUCT_VIEWS.flowEditor },
+      { label: HEADER_COPY_KEYS.workflows, description: HEADER_COPY_KEYS.descWorkflows, href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
+      { label: HEADER_COPY_KEYS.relay, description: HEADER_COPY_KEYS.descRelay, href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
+      { label: HEADER_COPY_KEYS.cases, description: HEADER_COPY_KEYS.descCases, href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
+      { label: HEADER_COPY_KEYS.passiveSignalsTitle, description: HEADER_COPY_KEYS.descPassiveSignals, href: '#passive-signals', view: PLATFORM_PRODUCT_VIEWS.passiveSignals },
+      { label: HEADER_COPY_KEYS.graph, description: HEADER_COPY_KEYS.descGraph, href: '#graph', view: PLATFORM_PRODUCT_VIEWS.graph },
+      { label: HEADER_COPY_KEYS.copilot, description: HEADER_COPY_KEYS.descCopilot, href: '#copilot', view: PLATFORM_PRODUCT_VIEWS.copilot },
+      { label: HEADER_COPY_KEYS.identraMarketplace, description: HEADER_COPY_KEYS.descMarketplace, href: '#marketplace', view: PLATFORM_PRODUCT_VIEWS.marketplace },
     ]
   },
   {
@@ -465,8 +466,18 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     }
   };
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string, href: string) => {
-    if (onViewChange && (label === HEADER_COPY_KEYS.whitePaper || label.toLowerCase().includes('white paper') || label.toLowerCase().includes('sách trắng') || href === '#white-paper')) {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, label: string, href: string, targetView?: AppView) => {
+    if (targetView) {
+      e.preventDefault();
+      setActiveDropdown(null);
+      setMobileMenuOpen(false);
+
+      if (onViewChange) {
+        onViewChange(targetView);
+      } else {
+        handleUnavailableNavigation();
+      }
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.whitePaper || label.toLowerCase().includes('white paper') || label.toLowerCase().includes('sách trắng') || href === '#white-paper')) {
       e.preventDefault();
       onViewChange('white-paper');
       setActiveDropdown(null);
@@ -566,9 +577,9 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('profile-report');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.relay || href === '#relay')) {
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.relay || href === '#connect' || href === '#relay')) {
       e.preventDefault();
-      onViewChange('relay');
+      onViewChange('connect');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
     } else if (onViewChange && (label === HEADER_COPY_KEYS.pricing || href === '#pricing')) {
@@ -626,7 +637,12 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('nfc');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.dynamicFlow || label === 'Flow' || label === HEADER_COPY_KEYS.flowEditor || href === '#flow')) {
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.flowEditor || href === '#flow-editor')) {
+      e.preventDefault();
+      onViewChange('flow-editor');
+      setActiveDropdown(null);
+      setMobileMenuOpen(false);
+    } else if (onViewChange && (label === HEADER_COPY_KEYS.dynamicFlow || label === 'Flow' || href === '#flow' || href === '#dynamic-flow')) {
       e.preventDefault();
       onViewChange('dynamic-flow');
       setActiveDropdown(null);
@@ -839,7 +855,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                             <a
                               key={cIdx}
                               href={child.href}
-                              onClick={(e) => handleLinkClick(e, child.label, child.href)}
+                              onClick={(e) => handleLinkClick(e, child.label, child.href, child.view)}
                               className="p-3 hover:bg-slate-50 rounded-xl transition flex flex-col gap-0.5"
                             >
                               <span className="text-xs font-semibold text-slate-900 flex items-center justify-between">
@@ -858,7 +874,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                 ) : (
                   <a
                     href={item.href}
-                    onClick={(e) => handleLinkClick(e, item.label, item.href || '')}
+                    onClick={(e) => handleLinkClick(e, item.label, item.href || '', item.view)}
                     className="px-3.5 py-1.5 rounded-xl text-sm font-medium text-slate-600 hover:text-[#354CE1] hover:bg-slate-50 transition"
                   >
                     {translatedLabel}
@@ -1045,7 +1061,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                       <a
                                         key={cIdx}
                                         href={p.href}
-                                        onClick={(e) => handleLinkClick(e, p.label, p.href)}
+                                        onClick={(e) => handleLinkClick(e, p.label, p.href, p.view)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
                                         <p className="text-xs font-semibold text-slate-800 hover:text-[#354CE1]">{tm(p.label)}</p>
@@ -1194,7 +1210,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                 <a
                                   key={cIdx}
                                   href={child.href}
-                                  onClick={(e) => handleLinkClick(e, child.label, child.href)}
+                                  onClick={(e) => handleLinkClick(e, child.label, child.href, child.view)}
                                   className="p-2 hover:bg-slate-50 rounded-lg transition"
                                 >
                                   <p className="text-xs font-semibold text-slate-900">{tm(child.label)}</p>
@@ -1208,7 +1224,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     ) : (
                       <a
                         href={item.href}
-                        onClick={(e) => handleLinkClick(e, item.label, item.href || '')}
+                        onClick={(e) => handleLinkClick(e, item.label, item.href || '', item.view)}
                         className="block px-3 py-2 text-sm font-semibold text-slate-800 hover:text-[#354CE1]"
                       >
                         {translatedLabel}
@@ -1309,7 +1325,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                       <a
                         key={idx}
                         href={p.href}
-                        onClick={(e) => handleLinkClick(e, p.label, p.href)}
+                        onClick={(e) => handleLinkClick(e, p.label, p.href, p.view)}
                         className="flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
                         <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-[#354CE1]/10 group-hover:text-[#354CE1] transition shrink-0 mt-0.5">

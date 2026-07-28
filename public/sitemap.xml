@@ -607,6 +607,61 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://identra.id.vn/en/relay</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.id.vn/es/relay</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.id.vn/ja/relay</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.id.vn/de/relay</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://identra.id.vn/vi/relay</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://identra.id.vn/en/platform</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/platform" />
     <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/platform" />
@@ -827,57 +882,57 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://identra.id.vn/en/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <loc>https://identra.id.vn/en/flow-editor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/flow-editor" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://identra.id.vn/es/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <loc>https://identra.id.vn/es/flow-editor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/flow-editor" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://identra.id.vn/ja/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <loc>https://identra.id.vn/ja/flow-editor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/flow-editor" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://identra.id.vn/de/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <loc>https://identra.id.vn/de/flow-editor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/flow-editor" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://identra.id.vn/vi/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/relay" />
+    <loc>https://identra.id.vn/vi/flow-editor</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.id.vn/en/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://identra.id.vn/es/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.id.vn/ja/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://identra.id.vn/de/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.id.vn/vi/flow-editor" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.id.vn/en/flow-editor" />
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

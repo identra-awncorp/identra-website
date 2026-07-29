@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, BookOpen, Clock, ArrowRight, Check, Sparkles, 
   ChevronLeft, ChevronRight, FileText, CheckCircle2, 
   Lock, AlertTriangle, Fingerprint, Eye, Globe, Newspaper, 
-  Smartphone, ArrowUpRight, Mail, Video, Mic, Shield, Layers, Smile
+  Smartphone, ArrowUpRight, Mail, Video, Mic, Shield, Layers, Smile, X,
+  type LucideIcon
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
@@ -23,7 +24,7 @@ interface Resource {
   category: 'identity-101' | 'compliance' | 'user-lifecycle' | 'latest';
   description: string;
   gradient: string;
-  icon: any;
+  icon: LucideIcon;
   date: string;
 }
 
@@ -116,7 +117,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
   const [visibleCount, setVisibleCount] = useState(6);
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
-  const [, setActiveArticle] = useState<Resource | null>(null);
+  const [activeArticle, setActiveArticle] = useState<Resource | null>(null);
 
   // Scroll Refs for Carousels
   const identity101Ref = useRef<HTMLDivElement>(null);
@@ -137,6 +138,50 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
   const complianceResources = useMemo<Resource[]>(() => buildResources(pageCopy.resources.compliance, complianceResourceMeta), [pageCopy]);
   const lifecycleResources = useMemo<Resource[]>(() => buildResources(pageCopy.resources.lifecycle, lifecycleResourceMeta), [pageCopy]);
   const latestResources = useMemo<Resource[]>(() => buildResources(pageCopy.resources.latest, latestResourceMeta), [pageCopy]);
+  const featuredResources: Resource[] = [
+    {
+      ...latestResources[0],
+      id: 'featured-deepfake',
+      title: text('heroTitle')
+    },
+    {
+      ...identity101Resources[0],
+      id: 'featured-evaluator',
+      title: text('evaluatorTitle'),
+      duration: text('evaluatorDuration'),
+      icon: Smartphone
+    },
+    {
+      ...latestResources[2],
+      id: 'featured-gartner',
+      title: text('gartnerTitle'),
+      duration: text('gartnerDuration')
+    }
+  ];
+  const trendResources: Resource[] = [
+    {
+      ...latestResources[4],
+      id: 'trend-synthetic-identities',
+      type: 'Blog',
+      title: text('trend1Title'),
+      description: text('trend1Desc'),
+      icon: Fingerprint
+    },
+    {
+      ...complianceResources[1],
+      id: 'trend-biometric-compliance',
+      title: text('trend2Title'),
+      description: text('trend2Desc'),
+      icon: Globe
+    },
+    {
+      ...identity101Resources[3],
+      id: 'trend-passkey-nfc',
+      title: text('trend3Title'),
+      description: text('trend3Desc'),
+      icon: Lock
+    }
+  ];
 
   const filteredLatestResources = latestResources.filter(item => {
     if (selectedCategory !== 'All') {
@@ -160,65 +205,47 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
     e.preventDefault();
     if (newsletterEmail.trim() !== '') {
       setNewsletterSubscribed(true);
-      setTimeout(() => {
-        setNewsletterEmail('');
-      }, 3000);
     }
   };
 
-  return (
-    <div id="resource-center-root" className="bg-[#FAFBFD] pt-16 font-sans">
-      
-      {/* Sub-navigation Header */}
-      <div className="bg-white border-b border-slate-100 sticky top-16 z-10 shadow-xs">
-        <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <span className="text-sm font-extrabold text-slate-900 tracking-tight">{text('resourceCenterTitle')}</span>
-            <div className="hidden md:flex items-center gap-6">
-              {categoryFilters.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setVisibleCount(6);
-                  }}
-                  className={`text-xs font-semibold transition-all relative py-4 ${
-                    selectedCategory === cat 
-                      ? 'text-[#354CE1]' 
-                      : 'text-slate-500 hover:text-slate-900'
-                  }`}
-                >
-                  {filterLabel(cat)}
-                  {selectedCategory === cat && (
-                    <motion.div 
-                      layoutId="categoryIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#354CE1]" 
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="relative w-48 md:w-64">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder={text('searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-full pl-9 pr-4 py-1.5 text-xs focus:outline-none focus:border-[#354CE1] focus:bg-white transition"
-            />
-          </div>
-        </div>
-      </div>
+  useEffect(() => {
+    if (!newsletterSubscribed) return;
 
+    const resetTimer = window.setTimeout(() => {
+      setNewsletterSubscribed(false);
+      setNewsletterEmail('');
+    }, 5000);
+
+    return () => window.clearTimeout(resetTimer);
+  }, [newsletterSubscribed]);
+
+  useEffect(() => {
+    if (!activeArticle) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setActiveArticle(null);
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [activeArticle]);
+
+  const ActiveArticleIcon = activeArticle?.icon ?? FileText;
+
+  return (
+    <div id="resource-center-root" className="bg-[#FAFBFD] font-sans">
+      
       {/* Hero Featured Segment */}
       <section className="max-w-7xl mx-auto px-6 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Main Hero Card (Large - 7/12 width) */}
-          <button type="button" className="lg:col-span-7 group cursor-pointer" onClick={() => onOpenSandbox()}>
-            <div className="rounded-[2rem] overflow-hidden bg-gradient-to-br from-slate-950 via-[#121B3A] to-indigo-950 aspect-[16/10] relative p-8 flex flex-col justify-between border border-slate-850 shadow-xl group-hover:shadow-2xl transition duration-300">
+          <button
+            type="button"
+            className="lg:col-span-7 group cursor-pointer text-left"
+            onClick={() => setActiveArticle(featuredResources[0])}
+          >
+            <div className="rounded-[2rem] overflow-hidden bg-gradient-to-br from-slate-950 via-[#121B3A] to-indigo-950 min-h-[500px] md:min-h-0 md:aspect-[16/10] relative p-6 md:p-8 flex flex-col justify-between shadow-xl group-hover:shadow-2xl transition duration-300">
               
               {/* Animated Deepfake Illustration */}
               <div className="absolute inset-0 opacity-80 overflow-hidden pointer-events-none">
@@ -227,7 +254,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                 <div className="absolute top-10 right-10 w-48 h-48 bg-[#354CE1]/20 rounded-full blur-3xl" />
                 
                 {/* Floating elements inside deepfake illustration */}
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 flex items-center justify-center">
+                <div className="absolute left-1/2 top-[38%] md:top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 scale-75 md:scale-100 flex items-center justify-center">
                   
                   {/* Outer Scan Radar ring */}
                   <div className="w-64 h-64 border border-[#354CE1]/30 rounded-full animate-[spin_20s_linear_infinite] flex items-center justify-center">
@@ -275,6 +302,8 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                 </div>
               </div>
 
+              <div className="absolute inset-x-0 bottom-0 z-[5] h-3/5 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent pointer-events-none" />
+
               {/* Top Row Pill */}
               <div className="z-10 self-start">
                 <span className="bg-[#E2E6FF] text-[#354CE1] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -288,7 +317,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                   {text('heroTitle')}
                 </h2>
                 
-                <div className="flex items-center gap-4 text-xs text-slate-400">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-slate-400">
                   <span className="flex items-center gap-1">
                     <Newspaper className="w-3.5 h-3.5 text-[#354CE1]" />
                     <span>{text('typeBlog')}</span>
@@ -313,11 +342,11 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             
             {/* Stack Card 1: Shop like a pro */}
             <button type="button"
-              className="bg-white rounded-[2rem] border border-slate-150 p-6 flex flex-col md:flex-row gap-6 cursor-pointer hover:border-[#354CE1] hover:shadow-lg transition duration-300 group"
-              onClick={() => onOpenSandbox()}
+              className="bg-white rounded-[2rem] p-5 md:p-6 flex flex-row gap-4 md:gap-6 cursor-pointer text-left shadow-sm hover:shadow-lg transition duration-300 group"
+              onClick={() => setActiveArticle(featuredResources[1])}
             >
               {/* Side vector illustration */}
-              <div className="w-full md:w-36 aspect-video md:aspect-square bg-indigo-50 rounded-2xl shrink-0 flex items-center justify-center p-4 relative overflow-hidden">
+              <div className="w-24 h-24 md:w-36 md:h-auto md:aspect-square bg-indigo-50 rounded-2xl shrink-0 flex items-center justify-center p-4 relative overflow-hidden">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-[#354CE1]/10 rounded-full" />
                 <div className="space-y-2 z-10 w-full text-center">
                   <Smartphone className="w-8 h-8 text-[#354CE1] mx-auto" />
@@ -330,7 +359,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               </div>
 
               {/* Text content */}
-              <div className="flex flex-col justify-between py-1">
+              <div className="min-w-0 flex flex-col justify-between py-1">
                 <div className="space-y-2">
                   <span className="bg-emerald-50 text-emerald-700 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider inline-block">
                     {text('evaluatorGuide')}
@@ -355,11 +384,11 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
             {/* Stack Card 2: Gartner Leader */}
             <button type="button"
-              className="bg-white rounded-[2rem] border border-slate-150 p-6 flex flex-col md:flex-row gap-6 cursor-pointer hover:border-[#354CE1] hover:shadow-lg transition duration-300 group"
-              onClick={() => onOpenSandbox()}
+              className="bg-white rounded-[2rem] p-5 md:p-6 flex flex-row gap-4 md:gap-6 cursor-pointer text-left shadow-sm hover:shadow-lg transition duration-300 group"
+              onClick={() => setActiveArticle(featuredResources[2])}
             >
               {/* Gartner Magic Quadrant mockup */}
-              <div className="w-full md:w-36 aspect-video md:aspect-square bg-slate-900 rounded-2xl shrink-0 flex flex-col justify-between p-3 relative overflow-hidden">
+              <div className="w-24 h-24 md:w-36 md:h-auto md:aspect-square bg-slate-900 rounded-2xl shrink-0 flex flex-col justify-between p-3 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#121E36] to-indigo-950 opacity-90" />
                 
                 {/* 2x2 Quadrant Grid mockup */}
@@ -376,7 +405,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               </div>
 
               {/* Text content */}
-              <div className="flex flex-col justify-between py-1">
+              <div className="min-w-0 flex flex-col justify-between py-1">
                 <div className="space-y-2">
                   <span className="bg-amber-50 text-amber-700 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider inline-block">
                     {text('recognition')}
@@ -405,7 +434,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
       </section>
 
       {/* Full Width Ambient Banner: Trends Shaping Identity */}
-      <section className="bg-gradient-to-r from-indigo-50 to-purple-50/70 border-y border-indigo-100 py-16">
+      <section className="bg-gradient-to-r from-indigo-50 to-purple-50/70 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="max-w-2xl">
             <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest block mb-2">{text('platformResearch')}</span>
@@ -421,7 +450,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
             
             {/* Trend Card 1 */}
-            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl p-6 flex flex-col justify-between text-left shadow-sm hover:shadow-lg transition duration-300 cursor-pointer" onClick={() => setActiveArticle(trendResources[0])}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Fingerprint className="w-5 h-5" />
@@ -439,7 +468,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             </button>
 
             {/* Trend Card 2 */}
-            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl p-6 flex flex-col justify-between text-left shadow-sm hover:shadow-lg transition duration-300 cursor-pointer" onClick={() => setActiveArticle(trendResources[1])}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Globe className="w-5 h-5" />
@@ -457,7 +486,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             </button>
 
             {/* Trend Card 3 */}
-            <button type="button" className="bg-white rounded-3xl border border-slate-150 p-6 flex flex-col justify-between hover:shadow-xl hover:border-indigo-400 transition duration-300 cursor-pointer" onClick={() => onOpenSandbox()}>
+            <button type="button" className="bg-white rounded-3xl p-6 flex flex-col justify-between text-left shadow-sm hover:shadow-lg transition duration-300 cursor-pointer" onClick={() => setActiveArticle(trendResources[2])}>
               <div className="space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600">
                   <Lock className="w-5 h-5" />
@@ -479,7 +508,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
       </section>
 
       {/* Series Carousels: Identity Foundations */}
-      <section className="max-w-7xl mx-auto px-6 py-16 space-y-16">
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-16 space-y-12 md:space-y-16">
         <div>
           <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">{text('identityFoundationsTitle')}</h2>
           <p className="text-slate-500 text-sm mt-1">
@@ -489,21 +518,25 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
         {/* Series 1: Identity 101 */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center justify-between pb-3">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <span className="w-1.5 h-6 bg-[#354CE1] rounded-full" />
               <span>{text('identity101Title')}</span>
             </h3>
             <div className="flex items-center gap-2">
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('previousResources')}: ${text('identity101Title')}`}
                 onClick={() => scroll(identity101Ref, 'left')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('nextResources')}: ${text('identity101Title')}`}
                 onClick={() => scroll(identity101Ref, 'right')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -520,8 +553,8 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               return (
                 <button type="button"
                   key={item.id}
-                  onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
-                  className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-indigo-300 transition duration-300 cursor-pointer group"
+                  onClick={() => setActiveArticle(item)}
+                  className="w-[290px] md:w-[320px] bg-white rounded-2xl overflow-hidden shrink-0 snap-start flex flex-col justify-between shadow-sm hover:shadow-lg transition duration-300 cursor-pointer group"
                 >
                   <div className={`p-6 bg-gradient-to-b ${item.gradient} aspect-[16/10] flex items-center justify-center relative`}>
                     <div className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-wider text-[#354CE1] bg-white/80 px-2 py-0.5 rounded-md backdrop-blur-xs">
@@ -538,7 +571,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                         {item.description}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3 border-t border-slate-50">
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3">
                       <span>{item.duration}</span>
                       <span className="font-semibold text-[#354CE1] flex items-center gap-0.5">
                         {resourceActionLabel(item.type)} <ArrowUpRight className="w-3 h-3" />
@@ -553,21 +586,25 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
         {/* Series 2: Compliance and Regulations */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center justify-between pb-3">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <span className="w-1.5 h-6 bg-rose-500 rounded-full" />
               <span>{text('complianceTitle')}</span>
             </h3>
             <div className="flex items-center gap-2">
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('previousResources')}: ${text('complianceTitle')}`}
                 onClick={() => scroll(complianceRef, 'left')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('nextResources')}: ${text('complianceTitle')}`}
                 onClick={() => scroll(complianceRef, 'right')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -584,8 +621,8 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               return (
                 <button type="button"
                   key={item.id}
-                  onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
-                  className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-rose-300 transition duration-300 cursor-pointer group"
+                  onClick={() => setActiveArticle(item)}
+                  className="w-[290px] md:w-[320px] bg-white rounded-2xl overflow-hidden shrink-0 snap-start flex flex-col justify-between shadow-sm hover:shadow-lg transition duration-300 cursor-pointer group"
                 >
                   <div className={`p-6 bg-gradient-to-b ${item.gradient} aspect-[16/10] flex items-center justify-center relative`}>
                     <div className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-wider text-rose-600 bg-white/80 px-2 py-0.5 rounded-md backdrop-blur-xs">
@@ -602,7 +639,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                         {item.description}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3 border-t border-slate-50">
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3">
                       <span>{item.duration}</span>
                       <span className="font-semibold text-rose-600 flex items-center gap-0.5">
                         {resourceActionLabel(item.type)} <ArrowUpRight className="w-3 h-3" />
@@ -617,21 +654,25 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
         {/* Series 3: Identity Across the User Life Cycle */}
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center justify-between pb-3">
             <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <span className="w-1.5 h-6 bg-amber-500 rounded-full" />
               <span>{text('lifecycleTitle')}</span>
             </h3>
             <div className="flex items-center gap-2">
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('previousResources')}: ${text('lifecycleTitle')}`}
                 onClick={() => scroll(lifecycleRef, 'left')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <button 
+              <button
+                type="button"
+                aria-label={`${text('nextResources')}: ${text('lifecycleTitle')}`}
                 onClick={() => scroll(lifecycleRef, 'right')}
-                className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 flex items-center justify-center transition active:scale-95"
+                className="w-8 h-8 rounded-full bg-white text-slate-600 shadow-sm hover:shadow-md flex items-center justify-center transition active:scale-95"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -648,8 +689,8 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               return (
                 <button type="button"
                   key={item.id}
-                  onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
-                  className="w-[290px] md:w-[320px] bg-white rounded-2xl border border-slate-150 overflow-hidden shrink-0 snap-start flex flex-col justify-between hover:shadow-lg hover:border-amber-300 transition duration-300 cursor-pointer group"
+                  onClick={() => setActiveArticle(item)}
+                  className="w-[290px] md:w-[320px] bg-white rounded-2xl overflow-hidden shrink-0 snap-start flex flex-col justify-between shadow-sm hover:shadow-lg transition duration-300 cursor-pointer group"
                 >
                   <div className={`p-6 bg-gradient-to-b ${item.gradient} aspect-[16/10] flex items-center justify-center relative`}>
                     <div className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-wider text-amber-600 bg-white/80 px-2 py-0.5 rounded-md backdrop-blur-xs">
@@ -666,7 +707,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                         {item.description}
                       </p>
                     </div>
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3 border-t border-slate-50">
+                    <div className="flex items-center justify-between text-[11px] text-slate-400 mt-6 pt-3">
                       <span>{item.duration}</span>
                       <span className="font-semibold text-amber-600 flex items-center gap-0.5">
                         {resourceActionLabel(item.type)} <ArrowUpRight className="w-3 h-3" />
@@ -682,24 +723,24 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
       {/* High-Fidelity Newsletter Signup Box */}
       <section className="max-w-7xl mx-auto px-6 py-10">
-        <div className="bg-slate-900 rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden shadow-2xl border border-slate-800 flex flex-col lg:flex-row items-center justify-between gap-12">
+        <div className="bg-[#5B6DFF] text-white rounded-[2.5rem] p-8 md:p-14 relative overflow-hidden shadow-xl flex flex-col lg:flex-row items-center justify-between gap-12">
           
           {/* Aesthetic Background Vector Accents */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(53,76,225,0.08),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_50%,rgba(255,255,255,0.10),transparent_58%)]" />
           
           {/* Decorative Pattern in Lavender */}
           <div className="absolute right-10 top-0 bottom-0 w-36 opacity-10 hidden lg:flex flex-col justify-between py-10">
             {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} className="flex justify-between">
                 {Array.from({ length: 6 }).map((_, j) => (
-                  <div key={j} className="w-1.5 h-1.5 bg-indigo-400 rounded-full" />
+                  <div key={j} className="w-1.5 h-1.5 bg-white rounded-full" />
                 ))}
               </div>
             ))}
           </div>
 
           <div className="max-w-lg space-y-4 text-center lg:text-left z-10">
-            <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest block">
+            <span className="text-[10px] font-bold text-white/75 uppercase tracking-widest block">
               {text('newsletterEyebrow')}
             </span>
             <h2 className="text-2xl md:text-4xl font-extrabold text-white leading-tight">
@@ -711,20 +752,20 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             {!newsletterSubscribed ? (
               <form onSubmit={handleNewsletterSubmit} className="space-y-4">
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     required
                     placeholder={text('emailPlaceholder')}
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
-                    className="w-full bg-slate-950/60 border border-slate-700/80 rounded-full pl-12 pr-4 py-3.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#354CE1] focus:ring-1 focus:ring-[#354CE1]/20 transition"
+                    className="w-full bg-white rounded-full pl-12 pr-4 py-3.5 text-xs text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:shadow-md focus:ring-2 focus:ring-[#354CE1]/20 transition"
                   />
                 </div>
                 
                 <button
                   type="submit"
-                  className="w-full bg-white hover:bg-slate-100 text-slate-950 text-xs font-bold py-3.5 rounded-full shadow-md hover:shadow-xl transition flex items-center justify-center gap-2 group"
+                  className="w-full bg-white hover:bg-indigo-50 text-[#354CE1] text-xs font-bold py-3.5 rounded-full shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 group"
                 >
                   <span>{text('newsletterSubmit')}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -734,21 +775,26 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-slate-950/80 border border-emerald-500/30 rounded-3xl p-6 text-center space-y-3"
+                className="bg-white rounded-3xl p-6 text-center shadow-md space-y-3"
               >
-                <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mx-auto">
+                <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600 mx-auto">
                   <Check className="w-5 h-5" />
                 </div>
-                <h4 className="text-sm font-bold text-white">{text('newsletterSuccessTitle')}</h4>
-                <p className="text-[11px] text-slate-400">
+                <h4 className="text-sm font-bold text-slate-950">{text('newsletterSuccessTitle')}</h4>
+                <p className="text-[11px] text-slate-500">
                   {text('newsletterSuccessDesc')}
                 </p>
               </motion.div>
             )}
 
-            <p className="text-[10px] text-slate-500 leading-normal text-center lg:text-left">
+            <p className="text-[10px] text-white/70 leading-normal text-center lg:text-left">
               {text('newsletterConsentPrefix')}{' '}
-              <span className="underline hover:text-slate-300 cursor-pointer">{text('privacyPolicy')}</span>{' '}
+              <a
+                href={`/${language}/privacy-overview`}
+                className="underline hover:text-white"
+              >
+                {text('privacyPolicy')}
+              </a>{' '}
               {text('newsletterConsentSuffix')}
             </p>
           </div>
@@ -757,20 +803,48 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
       </section>
 
       {/* Grid: Latest Resources */}
-      <section className="max-w-7xl mx-auto px-6 py-16 space-y-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div>
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-16 space-y-8 md:space-y-10">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
             <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">{text('latestResourcesTitle')}</h2>
             <p className="text-slate-500 text-sm mt-1">
               {text('latestResourcesDesc')}
             </p>
           </div>
-          <div className="flex items-center gap-2 self-start md:self-auto bg-slate-100 rounded-full p-1 border border-slate-200 text-xs text-slate-600">
-            <span className="font-semibold pl-3 pr-2">{text('filterActive')}</span>
-            <span className="bg-white text-slate-900 font-bold px-3 py-1 rounded-full shadow-xs">
-              {selectedCategory === 'All' ? text('allFormats') : filterLabel(selectedCategory)}
-            </span>
+          <div className="relative w-full lg:w-80">
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="search"
+              aria-label={text('searchPlaceholder')}
+              placeholder={text('searchPlaceholder')}
+              value={searchQuery}
+              onChange={(event) => {
+                setSearchQuery(event.target.value);
+                setVisibleCount(6);
+              }}
+              className="w-full rounded-full bg-white py-3 pl-11 pr-4 text-xs text-slate-800 shadow-sm outline-none transition focus:shadow-md focus:ring-2 focus:ring-[#354CE1]/20"
+            />
           </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {categoryFilters.map((category) => (
+            <button
+              type="button"
+              key={category}
+              onClick={() => {
+                setSelectedCategory(category);
+                setVisibleCount(6);
+              }}
+              className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold transition ${
+                selectedCategory === category
+                  ? 'bg-[#354CE1] text-white shadow-md shadow-[#354CE1]/20'
+                  : 'bg-white text-slate-600 shadow-sm hover:text-[#354CE1] hover:shadow-md'
+              }`}
+            >
+              {filterLabel(category)}
+            </button>
+          ))}
         </div>
 
         {/* Resource Cards Grid */}
@@ -780,14 +854,15 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
               {filteredLatestResources.slice(0, visibleCount).map((item) => {
                 const IconComp = item.icon;
                 return (
-                  <motion.div
+                  <motion.button
+                    type="button"
                     key={item.id}
                     layout
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    onClick={() => { setActiveArticle(item); onOpenSandbox(); }}
-                    className="bg-white rounded-3xl border border-slate-150 overflow-hidden shadow-xs hover:shadow-lg hover:border-indigo-300 transition duration-300 cursor-pointer group flex flex-col justify-between min-h-[380px]"
+                    onClick={() => setActiveArticle(item)}
+                    className="w-full bg-white rounded-3xl overflow-hidden text-left shadow-sm hover:shadow-lg transition duration-300 cursor-pointer group flex flex-col justify-between min-h-[380px]"
                   >
                     <div>
                       {/* Banner section */}
@@ -823,18 +898,18 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                       </div>
                     </div>
 
-                    <div className="p-6 pt-0 mt-4 border-t border-slate-50 flex items-center justify-between text-xs font-semibold text-[#354CE1]">
+                    <div className="p-6 pt-0 mt-4 flex items-center justify-between text-xs font-semibold text-[#354CE1]">
                       <span>{text('openResource')}</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
 
-                  </motion.div>
+                  </motion.button>
                 );
               })}
             </AnimatePresence>
           </div>
         ) : (
-          <div className="bg-white border border-slate-150 rounded-3xl p-12 text-center max-w-md mx-auto space-y-4">
+          <div className="bg-white rounded-3xl p-12 text-center max-w-md mx-auto shadow-sm space-y-4">
             <Search className="w-8 h-8 text-slate-300 mx-auto" />
             <h3 className="text-base font-bold text-slate-900">{text('noResourcesFound')}</h3>
             <p className="text-xs text-slate-500">
@@ -866,7 +941,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
       </section>
 
       {/* Real Stories, Real Results Section */}
-      <section className="bg-[#E2E6FF]/40 border-y border-indigo-100/50 py-16">
+      <section className="bg-[#E2E6FF]/40 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-6 space-y-12">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 max-w-3xl">
@@ -891,7 +966,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
           {/* Customer Stories Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {pageCopy.customerStories.slice(0, 3).map((story) => (
-              <div key={story.company} className="bg-white rounded-3xl border border-slate-150 p-6 space-y-6 hover:shadow-lg transition">
+              <div key={story.company} className="bg-white rounded-3xl p-6 space-y-6 shadow-sm hover:shadow-lg transition">
                 <div className="flex items-center gap-2">
                   <span className="font-extrabold text-[#354CE1] tracking-tighter text-sm">{text('identraBrand')}</span>
                   <span className="text-slate-300">|</span>
@@ -912,7 +987,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
           {/* Secondary Bento Client Strip */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
             {pageCopy.customerStories.slice(3).map((story) => (
-              <div key={story.company} className="bg-white rounded-3xl border border-slate-150 p-6 space-y-6 hover:shadow-lg transition">
+              <div key={story.company} className="bg-white rounded-3xl p-6 space-y-6 shadow-sm hover:shadow-lg transition">
                 <div className="flex items-center gap-2">
                   <span className="font-extrabold text-[#354CE1] tracking-tighter text-sm">{text('identraBrand')}</span>
                   <span className="text-slate-300">|</span>
@@ -928,35 +1003,91 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
         </div>
       </section>
 
-      {/* Want to Learn More? Footer Callout */}
-      <section className="bg-white py-16 border-t border-slate-100">
-        <div className="max-w-5xl mx-auto px-6 text-center space-y-8">
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#0F1E36] tracking-tight">
-              {text('learnMoreTitle')}
-            </h2>
-            <p className="text-slate-600 text-base md:text-lg">
-              {text('learnMoreDesc')}
-            </p>
-          </div>
+      <AnimatePresence>
+        {activeArticle && (
+          <motion.div
+            className="fixed inset-0 z-[80] flex items-end justify-center bg-slate-950/60 p-0 backdrop-blur-sm sm:items-center sm:p-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setActiveArticle(null);
+            }}
+          >
+            <motion.article
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={`resource-preview-${activeArticle.id}`}
+              className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded-t-[2rem] bg-white shadow-2xl sm:rounded-[2rem]"
+              initial={{ opacity: 0, y: 24, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+            >
+              <button
+                type="button"
+                aria-label={text('closeResource')}
+                onClick={() => setActiveArticle(null)}
+                autoFocus
+                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/60 text-white shadow-lg backdrop-blur-md transition hover:bg-slate-950"
+              >
+                <X className="h-4 w-4" />
+              </button>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <button
-              onClick={() => onOpenSandbox()}
-              className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-extrabold text-xs px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 group"
-            >
-              <span>{text('tryDemo')}</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </button>
-            <button
-              onClick={() => onOpenSandbox()}
-              className="w-full sm:w-auto border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-extrabold text-xs px-8 py-4 rounded-full transition"
-            >
-              {text('tryItNow')}
-            </button>
-          </div>
-        </div>
-      </section>
+              <div className={`relative flex min-h-52 items-center justify-center overflow-hidden bg-gradient-to-tr ${activeArticle.gradient} p-10`}>
+                <div className="absolute inset-0 bg-slate-950/10" />
+                <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/35 to-transparent" />
+                <ActiveArticleIcon className="relative z-10 h-16 w-16 text-white drop-shadow-lg" />
+              </div>
+
+              <div className="space-y-5 p-6 sm:p-8">
+                <div className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="rounded-full bg-indigo-50 px-3 py-1 text-[#354CE1]">
+                    {text('resourceDetails')}
+                  </span>
+                  <span className="text-slate-400">{typeLabel(activeArticle.type)}</span>
+                  <span className="text-slate-300">•</span>
+                  <span className="text-slate-400">{activeArticle.duration}</span>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="text-xs font-bold uppercase tracking-wider text-indigo-600">{activeArticle.date}</p>
+                  <h2
+                    id={`resource-preview-${activeArticle.id}`}
+                    className="text-2xl font-extrabold leading-tight text-slate-950 sm:text-3xl"
+                  >
+                    {activeArticle.title}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    {activeArticle.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3 pt-5 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveArticle(null);
+                      onOpenSandbox();
+                    }}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#354CE1] px-6 py-3 text-xs font-extrabold text-white shadow-md transition hover:bg-[#2539BE]"
+                  >
+                    {text('tryDemo')}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveArticle(null)}
+                    className="inline-flex items-center justify-center rounded-full bg-slate-100 px-6 py-3 text-xs font-extrabold text-slate-700 shadow-sm transition hover:bg-slate-200"
+                  >
+                    {text('closeResource')}
+                  </button>
+                </div>
+              </div>
+            </motion.article>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );

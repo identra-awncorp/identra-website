@@ -472,8 +472,6 @@ export default function App() {
           />
         ) : currentView === 'dynamic-flow' ? (
           <DynamicFlowPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
         ) : currentView === 'interface-studio' ? (

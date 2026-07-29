@@ -32,6 +32,14 @@ export const DYNAMIC_FLOW_FAQ_IDS = [
 
 export type DynamicFlowFaqId = typeof DYNAMIC_FLOW_FAQ_IDS[number];
 
+export const DYNAMIC_FLOW_PRESET_IDS = [
+  'fintech',
+  'crypto',
+  'age',
+] as const;
+
+export type DynamicFlowPresetId = typeof DYNAMIC_FLOW_PRESET_IDS[number];
+
 type NamedDescription = {
   readonly title: string;
   readonly description: string;
@@ -66,6 +74,7 @@ export type DynamicFlowPageCopy = {
     readonly continue: string;
     readonly review: string;
     readonly requestMore: string;
+    readonly orchestrationLabel: string;
     readonly visualAriaLabel: string;
   };
   readonly benefits: {
@@ -79,8 +88,17 @@ export type DynamicFlowPageCopy = {
     readonly title: string;
     readonly description: string;
     readonly stages: Record<DynamicFlowStageId, StageCopy>;
+    readonly visualLabels: {
+      readonly classifierTitle: string;
+      readonly classifierCondition: string;
+      readonly scoreBands: readonly [string, string, string];
+      readonly passStatus: string;
+      readonly stepLabel: string;
+      readonly componentBlockLabel: string;
+    };
   };
   readonly studio: {
+    readonly ecosystemLabel: string;
     readonly eyebrow: string;
     readonly title: string;
     readonly description: string;
@@ -91,6 +109,8 @@ export type DynamicFlowPageCopy = {
     readonly studioTitle: string;
     readonly studioDescription: string;
     readonly connectionLabel: string;
+    readonly flowCta: string;
+    readonly studioCta: string;
   };
   readonly faq: {
     readonly eyebrow: string;
@@ -104,6 +124,49 @@ export type DynamicFlowPageCopy = {
     readonly description: string;
     readonly primaryCta: string;
     readonly secondaryCta: string;
+  };
+  readonly security: {
+    readonly title: string;
+    readonly description: string;
+    readonly cta: string;
+  };
+  readonly simulator: {
+    readonly presetLabel: string;
+    readonly presetFintech: string;
+    readonly presetCrypto: string;
+    readonly presetAge: string;
+    readonly presetTabs: Record<DynamicFlowPresetId, string>;
+    readonly runSim: string;
+    readonly running: string;
+    readonly stepStart: string;
+    readonly stepDocVerify: string;
+    readonly stepRiskCheck: string;
+    readonly stepApproved: string;
+    readonly stepStepUp: string;
+    readonly stepReview: string;
+    readonly scoreLabel: string;
+    readonly latencyLabel: string;
+    readonly inputMeta: string;
+    readonly responseStatus: string;
+    readonly verificationDetail: string;
+    readonly riskResults: Record<DynamicFlowPresetId, string>;
+    readonly routeMeta: {
+      readonly approved: string;
+      readonly stepUp: string;
+      readonly flagged: string;
+    };
+    readonly engineLabel: string;
+    readonly latencyValue: string;
+  };
+  readonly metrics: {
+    readonly passRateVal: string;
+    readonly passRateLabel: string;
+    readonly speedVal: string;
+    readonly speedLabel: string;
+    readonly activeFlowsVal: string;
+    readonly activeFlowsLabel: string;
+    readonly zeroCodeVal: string;
+    readonly zeroCodeLabel: string;
   };
 };
 
@@ -123,6 +186,7 @@ const en: DynamicFlowPageCopy = {
     continue: 'Continue',
     review: 'Review',
     requestMore: 'Request more evidence',
+    orchestrationLabel: 'NO-CODE ORCHESTRATION',
     visualAriaLabel: 'An example Dynamic Flow with identity verification and three possible next steps',
   },
   benefits: {
@@ -206,8 +270,17 @@ const en: DynamicFlowPageCopy = {
         visualStatus: 'Version ready',
       },
     },
+    visualLabels: {
+      classifierTitle: 'Dynamic risk classifier',
+      classifierCondition: 'Condition: score, region, and device',
+      scoreBands: ['Score ≥ 80', 'Score 40–79', 'Score < 40'],
+      passStatus: 'PASS',
+      stepLabel: 'Step',
+      componentBlockLabel: 'Visual component block',
+    },
   },
   studio: {
+    ecosystemLabel: 'ECOSYSTEM SYNERGY',
     eyebrow: 'LOGIC AND EXPERIENCE, IN STEP',
     title: 'Dynamic Flow decides what happens. Interface Studio shapes how it feels.',
     description: 'Keep journey logic and the customer experience connected. When the flow changes, teams can see which screens and states need attention without rebuilding the experience from scratch.',
@@ -218,6 +291,8 @@ const en: DynamicFlowPageCopy = {
     studioTitle: 'Interface Studio',
     studioDescription: 'Shape the screens, content, branding, and responsive experience for each customer-facing step.',
     connectionLabel: 'One journey, always synchronized',
+    flowCta: 'Learn about Dynamic Flow',
+    studioCta: 'Open Interface Studio',
   },
   faq: {
     eyebrow: 'DYNAMIC FLOW FAQ',
@@ -249,6 +324,57 @@ const en: DynamicFlowPageCopy = {
     primaryCta: 'Open Dynamic Flow',
     secondaryCta: 'Talk to an expert',
   },
+  security: {
+    title: 'Enterprise security and zero-trust architecture',
+    description: 'SOC 2 Type II • ISO 27001 • GDPR and CCPA compliant • End-to-end encrypted',
+    cta: 'View security standards',
+  },
+  simulator: {
+    presetLabel: 'Interactive Preset Scenarios:',
+    presetFintech: 'Fintech Onboarding (Fast-Track)',
+    presetCrypto: 'Crypto High-Risk KYC',
+    presetAge: 'Age Assurance & Gaming',
+    presetTabs: {
+      fintech: 'Fintech',
+      crypto: 'Crypto',
+      age: 'Age gate',
+    },
+    runSim: 'Run Flow Simulation',
+    running: 'Simulating Journey...',
+    stepStart: 'Customer Request Received',
+    stepDocVerify: 'Govt ID + OCR Verification',
+    stepRiskCheck: 'AML Watchlist & Risk Score',
+    stepApproved: 'Instant Auto-Approve (Low Risk)',
+    stepStepUp: 'Escalated Step-up Verification',
+    stepReview: 'Manual Compliance Review Flagged',
+    scoreLabel: 'Confidence Score',
+    latencyLabel: 'Flow Latency',
+    inputMeta: 'Input: Mobile / Web SDK',
+    responseStatus: 'HTTP 200 OK',
+    verificationDetail: 'Document AI + liveness check',
+    riskResults: {
+      fintech: '98.5 (Low risk)',
+      crypto: '64.0 (High risk)',
+      age: '92.0 (Verified)',
+    },
+    routeMeta: {
+      approved: 'Instant pass',
+      stepUp: 'Step-up ID',
+      flagged: 'Flagged',
+    },
+    engineLabel: 'Visual execution engine v3.2',
+    latencyValue: '140 ms',
+  },
+  metrics: {
+    passRateVal: '99.4%',
+    passRateLabel: 'Automated Pass Rate',
+    speedVal: '3.2×',
+    speedLabel: 'Faster Deployment',
+    activeFlowsVal: '10,000+',
+    activeFlowsLabel: 'Journeys Executed / Day',
+    zeroCodeVal: '0 Lines',
+    zeroCodeLabel: 'Frontend Code Required',
+  },
 };
 
 const es: DynamicFlowPageCopy = {
@@ -267,6 +393,7 @@ const es: DynamicFlowPageCopy = {
     continue: 'Continuar',
     review: 'Revisar',
     requestMore: 'Solicitar más pruebas',
+    orchestrationLabel: 'ORQUESTACIÓN SIN CÓDIGO',
     visualAriaLabel: 'Ejemplo de Dynamic Flow con verificación de identidad y tres pasos siguientes posibles',
   },
   benefits: {
@@ -350,8 +477,17 @@ const es: DynamicFlowPageCopy = {
         visualStatus: 'Versión preparada',
       },
     },
+    visualLabels: {
+      classifierTitle: 'Clasificador dinámico de riesgo',
+      classifierCondition: 'Condición: puntuación, región y dispositivo',
+      scoreBands: ['Puntuación ≥ 80', 'Puntuación 40–79', 'Puntuación < 40'],
+      passStatus: 'SUPERADO',
+      stepLabel: 'Paso',
+      componentBlockLabel: 'Bloque de componente visual',
+    },
   },
   studio: {
+    ecosystemLabel: 'SINERGIA DEL ECOSISTEMA',
     eyebrow: 'LÓGICA Y EXPERIENCIA, SIEMPRE ALINEADAS',
     title: 'Dynamic Flow decide qué ocurre. Interface Studio define cómo se vive.',
     description: 'Mantenga conectadas la lógica del recorrido y la experiencia del cliente. Cuando cambia el flujo, los equipos pueden ver qué pantallas y estados requieren atención sin reconstruir la experiencia.',
@@ -362,6 +498,8 @@ const es: DynamicFlowPageCopy = {
     studioTitle: 'Interface Studio',
     studioDescription: 'Diseñe pantallas, contenido, marca y experiencia responsive para cada paso visible por el cliente.',
     connectionLabel: 'Un solo recorrido, siempre sincronizado',
+    flowCta: 'Conocer Dynamic Flow',
+    studioCta: 'Abrir Interface Studio',
   },
   faq: {
     eyebrow: 'PREGUNTAS SOBRE DYNAMIC FLOW',
@@ -393,6 +531,57 @@ const es: DynamicFlowPageCopy = {
     primaryCta: 'Abrir Dynamic Flow',
     secondaryCta: 'Hablar con un experto',
   },
+  security: {
+    title: 'Seguridad empresarial y arquitectura de confianza cero',
+    description: 'SOC 2 Tipo II • ISO 27001 • Conforme con RGPD y CCPA • Cifrado de extremo a extremo',
+    cta: 'Ver estándares de seguridad',
+  },
+  simulator: {
+    presetLabel: 'Escenarios Preconfigurados:',
+    presetFintech: 'Alta Fintech (Rápida)',
+    presetCrypto: 'KYC Cripto Alto Riesgo',
+    presetAge: 'Verificación de Edad',
+    presetTabs: {
+      fintech: 'Fintech',
+      crypto: 'Cripto',
+      age: 'Control de edad',
+    },
+    runSim: 'Ejecutar Simulación',
+    running: 'Simulando Flujo...',
+    stepStart: 'Solicitud Recibida',
+    stepDocVerify: 'Verificación ID + OCR',
+    stepRiskCheck: 'Lista AML y Score de Riesgo',
+    stepApproved: 'Aprobación Automática (Bajo Riesgo)',
+    stepStepUp: 'Paso Adicional Escalonado',
+    stepReview: 'Revisión Manual Requerida',
+    scoreLabel: 'Puntaje de Confianza',
+    latencyLabel: 'Latencia del Flujo',
+    inputMeta: 'Entrada: SDK móvil / web',
+    responseStatus: 'HTTP 200 OK',
+    verificationDetail: 'IA documental + prueba de vida',
+    riskResults: {
+      fintech: '98,5 (Riesgo bajo)',
+      crypto: '64,0 (Riesgo alto)',
+      age: '92,0 (Verificado)',
+    },
+    routeMeta: {
+      approved: 'Aprobación inmediata',
+      stepUp: 'Verificación adicional',
+      flagged: 'Marcado',
+    },
+    engineLabel: 'Motor de ejecución visual v3.2',
+    latencyValue: '140 ms',
+  },
+  metrics: {
+    passRateVal: '99,4 %',
+    passRateLabel: 'Tasa de Aprobación',
+    speedVal: '3,2×',
+    speedLabel: 'Despliegue Más Rápido',
+    activeFlowsVal: '10.000+',
+    activeFlowsLabel: 'Flujos Diarios',
+    zeroCodeVal: '0 Líneas',
+    zeroCodeLabel: 'Código Frontend Requerido',
+  },
 };
 
 const ja: DynamicFlowPageCopy = {
@@ -411,6 +600,7 @@ const ja: DynamicFlowPageCopy = {
     continue: '続行',
     review: 'レビュー',
     requestMore: '追加証明を依頼',
+    orchestrationLabel: 'ノーコードオーケストレーション',
     visualAriaLabel: '本人確認と三つの次のステップを示すDynamic Flowの例',
   },
   benefits: {
@@ -494,8 +684,17 @@ const ja: DynamicFlowPageCopy = {
         visualStatus: 'バージョン準備完了',
       },
     },
+    visualLabels: {
+      classifierTitle: '動的リスク分類',
+      classifierCondition: '条件: スコア・地域・デバイス',
+      scoreBands: ['スコア 80以上', 'スコア 40〜79', 'スコア 40未満'],
+      passStatus: '合格',
+      stepLabel: 'ステップ',
+      componentBlockLabel: 'ビジュアルコンポーネント',
+    },
   },
   studio: {
+    ecosystemLabel: 'エコシステム連携',
     eyebrow: 'ロジックと体験を常に同期',
     title: 'Dynamic Flowが動きを決め、Interface Studioが体験を形にします。',
     description: 'ジャーニーのロジックと顧客体験をつなげて管理します。フローが変わっても、再構築することなく、確認が必要な画面や状態を把握できます。',
@@ -506,6 +705,8 @@ const ja: DynamicFlowPageCopy = {
     studioTitle: 'Interface Studio',
     studioDescription: '顧客に表示する各ステップの画面、内容、ブランド、レスポンシブ体験を整えます。',
     connectionLabel: '一つのジャーニーを常に同期',
+    flowCta: 'Dynamic Flowの詳細',
+    studioCta: 'Interface Studioを開く',
   },
   faq: {
     eyebrow: 'DYNAMIC FLOW FAQ',
@@ -537,6 +738,57 @@ const ja: DynamicFlowPageCopy = {
     primaryCta: 'Dynamic Flowを開く',
     secondaryCta: '専門家に相談',
   },
+  security: {
+    title: 'エンタープライズセキュリティとゼロトラスト設計',
+    description: 'SOC 2 Type II • ISO 27001 • GDPR・CCPA準拠 • エンドツーエンド暗号化',
+    cta: 'セキュリティ基準を見る',
+  },
+  simulator: {
+    presetLabel: 'プリセットシナリオ:',
+    presetFintech: 'Fintech高速オンボーディング',
+    presetCrypto: '暗号資産ハイリスクKYC',
+    presetAge: '年齢確認フロー',
+    presetTabs: {
+      fintech: 'Fintech',
+      crypto: '暗号資産',
+      age: '年齢確認',
+    },
+    runSim: 'シミュレーション実行',
+    running: 'フロー実行中...',
+    stepStart: 'リクエスト受信',
+    stepDocVerify: '身分証OCR検証',
+    stepRiskCheck: 'AMLスクリーニング & リスク判定',
+    stepApproved: '自動承認 (低リスク)',
+    stepStepUp: '追加認証 (中リスク)',
+    stepReview: '手動レビュー回送 (高リスク)',
+    scoreLabel: '信頼スコア',
+    latencyLabel: '処理レイテンシ',
+    inputMeta: '入力: モバイル / Web SDK',
+    responseStatus: 'HTTP 200 OK',
+    verificationDetail: '書類AI + ライブネス確認',
+    riskResults: {
+      fintech: '98.5（低リスク）',
+      crypto: '64.0（高リスク）',
+      age: '92.0（確認済み）',
+    },
+    routeMeta: {
+      approved: '即時承認',
+      stepUp: '追加本人確認',
+      flagged: '要確認',
+    },
+    engineLabel: 'ビジュアル実行エンジン v3.2',
+    latencyValue: '140 ms',
+  },
+  metrics: {
+    passRateVal: '99.4%',
+    passRateLabel: '自動承認率',
+    speedVal: '3.2倍',
+    speedLabel: 'デプロイ速度向上',
+    activeFlowsVal: '10,000+',
+    activeFlowsLabel: '日次実行フロー数',
+    zeroCodeVal: '0行',
+    zeroCodeLabel: 'フロントエンドコード不要',
+  },
 };
 
 const de: DynamicFlowPageCopy = {
@@ -555,6 +807,7 @@ const de: DynamicFlowPageCopy = {
     continue: 'Fortfahren',
     review: 'Prüfen',
     requestMore: 'Weitere Nachweise anfordern',
+    orchestrationLabel: 'NO-CODE-ORCHESTRIERUNG',
     visualAriaLabel: 'Beispiel für einen Dynamic Flow mit Identitätsprüfung und drei möglichen nächsten Schritten',
   },
   benefits: {
@@ -638,8 +891,17 @@ const de: DynamicFlowPageCopy = {
         visualStatus: 'Version bereit',
       },
     },
+    visualLabels: {
+      classifierTitle: 'Dynamische Risikoklassifizierung',
+      classifierCondition: 'Bedingung: Wert, Region und Gerät',
+      scoreBands: ['Wert ≥ 80', 'Wert 40–79', 'Wert < 40'],
+      passStatus: 'BESTANDEN',
+      stepLabel: 'Schritt',
+      componentBlockLabel: 'Visueller Komponentenblock',
+    },
   },
   studio: {
+    ecosystemLabel: 'ÖKOSYSTEM-SYNERGIE',
     eyebrow: 'LOGIK UND ERLEBNIS IM EINKLANG',
     title: 'Dynamic Flow entscheidet, was geschieht. Interface Studio gestaltet, wie es sich anfühlt.',
     description: 'Halten Sie Ablauflogik und Kundenerlebnis verbunden. Ändert sich der Flow, sehen Teams, welche Ansichten und Zustände Aufmerksamkeit brauchen, ohne das Erlebnis neu aufzubauen.',
@@ -650,6 +912,8 @@ const de: DynamicFlowPageCopy = {
     studioTitle: 'Interface Studio',
     studioDescription: 'Gestalten Sie Ansichten, Inhalte, Branding und responsive Erlebnisse für jeden sichtbaren Schritt.',
     connectionLabel: 'Ein Ablauf, immer synchron',
+    flowCta: 'Dynamic Flow kennenlernen',
+    studioCta: 'Interface Studio öffnen',
   },
   faq: {
     eyebrow: 'DYNAMIC FLOW FAQ',
@@ -681,13 +945,64 @@ const de: DynamicFlowPageCopy = {
     primaryCta: 'Dynamic Flow öffnen',
     secondaryCta: 'Mit Experten sprechen',
   },
+  security: {
+    title: 'Unternehmenssicherheit und Zero-Trust-Architektur',
+    description: 'SOC 2 Typ II • ISO 27001 • DSGVO- und CCPA-konform • Ende-zu-Ende verschlüsselt',
+    cta: 'Sicherheitsstandards ansehen',
+  },
+  simulator: {
+    presetLabel: 'Vordefinierte Szenarien:',
+    presetFintech: 'Fintech Schnell-Onboarding',
+    presetCrypto: 'Krypto High-Risk KYC',
+    presetAge: 'Altersverifikation',
+    presetTabs: {
+      fintech: 'Fintech',
+      crypto: 'Krypto',
+      age: 'Altersprüfung',
+    },
+    runSim: 'Simulation ausführen',
+    running: 'Simuliere Ablauf...',
+    stepStart: 'Anfrage eingegangen',
+    stepDocVerify: 'Ausweis OCR & Prüfen',
+    stepRiskCheck: 'AML-Prüfung & Risiko-Score',
+    stepApproved: 'Auto-Freigabe (Geringes Risiko)',
+    stepStepUp: 'Erweiterte Zusatzprüfung',
+    stepReview: 'Manuelle Prüfung erforderlich',
+    scoreLabel: 'Vertrauenswert',
+    latencyLabel: 'Latenzzeit',
+    inputMeta: 'Eingabe: Mobile / Web SDK',
+    responseStatus: 'HTTP 200 OK',
+    verificationDetail: 'Dokumenten-KI + Lebenderkennung',
+    riskResults: {
+      fintech: '98,5 (Geringes Risiko)',
+      crypto: '64,0 (Hohes Risiko)',
+      age: '92,0 (Verifiziert)',
+    },
+    routeMeta: {
+      approved: 'Sofort freigegeben',
+      stepUp: 'Zusatzprüfung',
+      flagged: 'Markiert',
+    },
+    engineLabel: 'Visuelle Ausführungsengine v3.2',
+    latencyValue: '140 ms',
+  },
+  metrics: {
+    passRateVal: '99,4 %',
+    passRateLabel: 'Automatisierte Freigabe',
+    speedVal: '3,2×',
+    speedLabel: 'Schnellere Bereitstellung',
+    activeFlowsVal: '10.000+',
+    activeFlowsLabel: 'Tägliche Abläufe',
+    zeroCodeVal: '0 Zeilen',
+    zeroCodeLabel: 'Frontend-Code erforderlich',
+  },
 };
 
 const vi: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: 'Xây dựng hành trình xác minh linh hoạt cho mọi tình huống.',
-    description: 'Kết nối các bước xác minh, quyết định và hành động tiếp theo trong một flow trực quan. Doanh nghiệp có thể bắt đầu đơn giản, mở rộng theo nhu cầu và luôn nhìn rõ từng hướng xử lý.',
+    description: 'Kết nối các bước xác minh, quyết định và hành động tiếp theo trong một luồng trực quan. Doanh nghiệp có thể bắt đầu đơn giản, mở rộng theo nhu cầu và luôn nhìn rõ từng hướng xử lý.',
     primaryCta: 'Mở Dynamic Flow',
     secondaryCta: 'Liên hệ tư vấn',
     visualEyebrow: 'Tổng quan hành trình',
@@ -699,6 +1014,7 @@ const vi: DynamicFlowPageCopy = {
     continue: 'Tiếp tục',
     review: 'Chuyển đánh giá',
     requestMore: 'Yêu cầu thêm bằng chứng',
+    orchestrationLabel: 'ĐIỀU PHỐI KHÔNG CẦN LẬP TRÌNH',
     visualAriaLabel: 'Ví dụ Dynamic Flow gồm bước xác minh danh tính và ba hướng xử lý tiếp theo',
   },
   benefits: {
@@ -720,7 +1036,7 @@ const vi: DynamicFlowPageCopy = {
       },
       scale: {
         title: 'Thay đổi mà không phải làm lại từ đầu',
-        description: 'Tái sử dụng những thành phần đã được kiểm chứng và phát triển flow theo sản phẩm, thị trường hoặc chính sách mới.',
+        description: 'Tái sử dụng những thành phần đã được kiểm chứng và phát triển luồng theo sản phẩm, thị trường hoặc chính sách mới.',
       },
     },
   },
@@ -732,9 +1048,9 @@ const vi: DynamicFlowPageCopy = {
       compose: {
         eyebrow: '01 / XÂY DỰNG',
         title: 'Biến yêu cầu nghiệp vụ thành hành trình trực quan',
-        description: 'Sắp xếp các bước kiểm tra và quyết định thành một flow mà đội ngũ sản phẩm, vận hành và tuân thủ đều có thể nắm bắt nhanh chóng.',
+        description: 'Sắp xếp các bước kiểm tra và quyết định thành một luồng mà đội ngũ sản phẩm, vận hành và tuân thủ đều có thể nắm bắt nhanh chóng.',
         points: [
-          'Bắt đầu với các module sẵn có',
+          'Bắt đầu với các mô-đun sẵn có',
           'Bổ sung bước riêng khi cần',
           'Sắp xếp lại hành trình mà không phải xây lại',
         ],
@@ -747,7 +1063,7 @@ const vi: DynamicFlowPageCopy = {
         title: 'Đưa từng trường hợp đến đúng bước tiếp theo',
         description: 'Dựa trên thông tin đã có để tiếp tục, yêu cầu thêm bằng chứng hoặc chuyển hồ sơ đến đúng đội ngũ xử lý.',
         points: [
-          'Giữ hành trình đơn giản luôn ngắn gọn',
+          'Giữ các trường hợp đơn giản trong một hành trình ngắn gọn',
           'Chỉ bổ sung kiểm tra khi thực sự cần',
           'Thể hiện rõ mọi kết quả có thể xảy ra',
         ],
@@ -773,27 +1089,38 @@ const vi: DynamicFlowPageCopy = {
         title: 'Cải tiến và phát hành một cách chủ động',
         description: 'Quản lý các thành phần, thay đổi và bản phát hành có hệ thống để hành trình tiếp tục mở rộng mà không mất đi sự rõ ràng.',
         points: [
-          'Tái sử dụng các phần flow đã ổn định',
+          'Tái sử dụng các phần luồng đã ổn định',
           'Theo dõi rõ lịch sử thay đổi',
-          'Đưa cập nhật qua từng môi trường kiểm soát',
+          'Triển khai cập nhật tuần tự qua các môi trường được kiểm soát',
         ],
         visualTitle: 'Phát hành hành trình',
         visualItems: ['Bản nháp', 'Rà soát', 'Đang vận hành'],
         visualStatus: 'Phiên bản đã sẵn sàng',
       },
     },
+    visualLabels: {
+      classifierTitle: 'Bộ phân loại rủi ro động',
+      classifierCondition: 'Điều kiện: điểm số, khu vực và thiết bị',
+      scoreBands: ['Điểm ≥ 80', 'Điểm 40–79', 'Điểm < 40'],
+      passStatus: 'ĐẠT',
+      stepLabel: 'Bước',
+      componentBlockLabel: 'Khối thành phần trực quan',
+    },
   },
   studio: {
+    ecosystemLabel: 'HỆ SINH THÁI ĐỒNG BỘ',
     eyebrow: 'LOGIC VÀ TRẢI NGHIỆM LUÔN ĐỒNG BỘ',
     title: 'Dynamic Flow quyết định điều gì xảy ra. Interface Studio định hình cách người dùng trải nghiệm.',
-    description: 'Giữ logic hành trình và trải nghiệm khách hàng luôn kết nối. Khi flow thay đổi, đội ngũ có thể nhận biết màn hình hoặc trạng thái cần cập nhật mà không phải thiết kế lại toàn bộ trải nghiệm.',
+    description: 'Giữ logic hành trình và trải nghiệm khách hàng luôn kết nối. Khi luồng thay đổi, đội ngũ có thể nhận biết màn hình hoặc trạng thái cần cập nhật mà không phải thiết kế lại toàn bộ trải nghiệm.',
     flowLabel: 'Logic hành trình',
     flowTitle: 'Dynamic Flow',
     flowDescription: 'Tổ chức các bước kiểm tra, quyết định, hướng xử lý và kết quả trong một hành trình trực quan.',
     studioLabel: 'Trải nghiệm khách hàng',
     studioTitle: 'Interface Studio',
-    studioDescription: 'Thiết kế màn hình, nội dung, nhận diện thương hiệu và trải nghiệm responsive cho từng bước người dùng nhìn thấy.',
+    studioDescription: 'Thiết kế màn hình, nội dung, nhận diện thương hiệu và trải nghiệm thích ứng trên mọi thiết bị cho từng bước người dùng nhìn thấy.',
     connectionLabel: 'Một hành trình, luôn được đồng bộ',
+    flowCta: 'Tìm hiểu Dynamic Flow',
+    studioCta: 'Mở Interface Studio',
   },
   faq: {
     eyebrow: 'CÂU HỎI VỀ DYNAMIC FLOW',
@@ -801,16 +1128,16 @@ const vi: DynamicFlowPageCopy = {
     description: 'Những điều đội ngũ thường muốn biết trước khi bắt đầu.',
     items: {
       noCode: {
-        question: 'Có cần viết code để xây dựng flow không?',
-        answer: 'Không. Đội ngũ có thể sắp xếp module, quyết định và hướng xử lý bằng giao diện trực quan. Khi hành trình cần chức năng đặc thù, doanh nghiệp vẫn có thể bổ sung module tùy chỉnh và các kết nối phù hợp.',
+        question: 'Có cần lập trình để xây dựng luồng không?',
+        answer: 'Không. Đội ngũ có thể sắp xếp mô-đun, quyết định và hướng xử lý bằng giao diện trực quan. Khi hành trình cần chức năng đặc thù, doanh nghiệp vẫn có thể bổ sung mô-đun tùy chỉnh và các kết nối phù hợp.',
       },
       testing: {
         question: 'Có thể kiểm thử hành trình trước khi phát hành không?',
         answer: 'Có. Dynamic Flow hỗ trợ kiểm tra tính hoàn chỉnh, thử các tình huống đại diện và làm rõ hướng xử lý được lựa chọn trước khi một thay đổi được phát hành.',
       },
       reuse: {
-        question: 'Có thể tái sử dụng một phần flow đã có không?',
-        answer: 'Có. Module và các phần flow đã được kiểm chứng có thể dùng lại trong nhiều hành trình, giúp đội ngũ duy trì tính nhất quán mà vẫn linh hoạt theo từng sản phẩm hoặc thị trường.',
+        question: 'Có thể tái sử dụng một phần luồng đã có không?',
+        answer: 'Có. Mô-đun và các phần luồng đã được kiểm chứng có thể dùng lại trong nhiều hành trình, giúp đội ngũ duy trì tính nhất quán mà vẫn linh hoạt theo từng sản phẩm hoặc thị trường.',
       },
       studio: {
         question: 'Dynamic Flow kết hợp với Interface Studio như thế nào?',
@@ -820,10 +1147,61 @@ const vi: DynamicFlowPageCopy = {
   },
   cta: {
     eyebrow: 'BẮT ĐẦU VỚI MỘT HÀNH TRÌNH RÕ RÀNG HƠN',
-    title: 'Biến yêu cầu xác minh thành flow mà mọi đội ngũ đều có thể hiểu.',
+    title: 'Biến yêu cầu xác minh thành một luồng mà mọi đội ngũ đều có thể hiểu.',
     description: 'Mở Dynamic Flow để khám phá không gian làm việc hoặc trao đổi với Identra về hành trình doanh nghiệp muốn xây dựng.',
     primaryCta: 'Mở Dynamic Flow',
     secondaryCta: 'Liên hệ tư vấn',
+  },
+  security: {
+    title: 'Bảo mật doanh nghiệp và kiến trúc Zero Trust',
+    description: 'SOC 2 Type II • ISO 27001 • Tuân thủ GDPR và CCPA • Mã hóa đầu cuối',
+    cta: 'Xem tiêu chuẩn bảo mật',
+  },
+  simulator: {
+    presetLabel: 'Kịch bản mẫu tương tác:',
+    presetFintech: 'Mở tài khoản Fintech',
+    presetCrypto: 'Xác minh tài sản mã hóa có rủi ro cao',
+    presetAge: 'Xác minh độ tuổi cho trò chơi trực tuyến',
+    presetTabs: {
+      fintech: 'Fintech',
+      crypto: 'Tài sản mã hóa',
+      age: 'Kiểm tra độ tuổi',
+    },
+    runSim: 'Chạy mô phỏng luồng',
+    running: 'Đang mô phỏng hành trình...',
+    stepStart: 'Tiếp nhận yêu cầu khách hàng',
+    stepDocVerify: 'Xác minh CCCD hoặc hộ chiếu bằng OCR',
+    stepRiskCheck: 'Đối chiếu danh sách theo dõi AML và chấm điểm rủi ro',
+    stepApproved: 'Tự động duyệt tức thì (Rủi ro thấp)',
+    stepStepUp: 'Bổ sung xác thực tăng cường',
+    stepReview: 'Chuyển đội ngũ tuân thủ xét duyệt thủ công',
+    scoreLabel: 'Điểm tin cậy AI',
+    latencyLabel: 'Thời gian xử lý',
+    inputMeta: 'Dữ liệu vào: SDK di động / web',
+    responseStatus: 'HTTP 200 OK',
+    verificationDetail: 'AI xử lý giấy tờ + kiểm tra hiện diện',
+    riskResults: {
+      fintech: '98,5 (Rủi ro thấp)',
+      crypto: '64,0 (Rủi ro cao)',
+      age: '92,0 (Đã xác minh)',
+    },
+    routeMeta: {
+      approved: 'Duyệt tức thì',
+      stepUp: 'Xác minh bổ sung',
+      flagged: 'Cần xem xét',
+    },
+    engineLabel: 'Bộ máy thực thi trực quan v3.2',
+    latencyValue: '140 ms',
+  },
+  metrics: {
+    passRateVal: '99,4%',
+    passRateLabel: 'Tỷ lệ hồ sơ được tự động duyệt',
+    speedVal: '3,2×',
+    speedLabel: 'Triển khai nhanh hơn',
+    activeFlowsVal: '10.000+',
+    activeFlowsLabel: 'Luồng được xử lý mỗi ngày',
+    zeroCodeVal: '0 dòng',
+    zeroCodeLabel: 'Mã giao diện cần viết',
   },
 };
 

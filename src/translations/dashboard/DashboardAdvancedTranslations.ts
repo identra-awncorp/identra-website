@@ -229,6 +229,14 @@ export type DashboardAdvancedCopy = {
     readonly alwaysVisible: string;
     readonly conditionalVisibility: string;
     readonly blockSettings: string;
+    readonly dynamicContent: string;
+    readonly dynamicContentHint: string;
+    readonly dynamicValue: string;
+    readonly dynamicFallback: string;
+    readonly staticFallback: string;
+    readonly noBinding: string;
+    readonly staleBinding: string;
+    readonly staleBindingHint: string;
   };
   readonly blockTypes: Record<InterfaceBlockTypeKey, string>;
   readonly localization: {
@@ -267,6 +275,42 @@ export type DashboardAdvancedCopy = {
     readonly tablet: string;
     readonly desktop: string;
     readonly safeArea: string;
+    readonly responsiveOverrides: string;
+    readonly responsiveHint: string;
+    readonly resetOverride: string;
+  };
+  readonly designSystem: {
+    readonly title: string;
+    readonly description: string;
+    readonly importAction: string;
+    readonly manifestJson: string;
+    readonly loadExample: string;
+    readonly apply: string;
+    readonly valid: string;
+    readonly invalid: string;
+    readonly imported: string;
+    readonly current: string;
+    readonly safeNotice: string;
+    readonly tokenSummary: string;
+  };
+  readonly visualRegression: {
+    readonly title: string;
+    readonly description: string;
+    readonly createBaseline: string;
+    readonly updateBaseline: string;
+    readonly runAll: string;
+    readonly noBaselines: string;
+    readonly passed: string;
+    readonly changed: string;
+    readonly missing: string;
+    readonly baseline: string;
+    readonly currentContext: string;
+    readonly exportBlocked: string;
+    readonly deleteBaseline: string;
+    readonly layoutChannel: string;
+    readonly themeChannel: string;
+    readonly structureChannel: string;
+    readonly contentChannel: string;
   };
   readonly accessibility: {
     readonly title: string;
@@ -723,6 +767,14 @@ const en: DashboardAdvancedCopy = {
     alwaysVisible: 'Always visible',
     conditionalVisibility: 'Show when rules match',
     blockSettings: 'Block settings',
+    dynamicContent: 'Dynamic content binding',
+    dynamicContentHint: 'The selected runtime field replaces this text; the localized text above remains the safe fallback.',
+    dynamicValue: 'Dynamic value',
+    dynamicFallback: 'Static fallback',
+    staticFallback: 'Localized fallback content',
+    noBinding: 'Use static content',
+    staleBinding: 'Stale field reference',
+    staleBindingHint: 'The referenced field no longer exists. Select a new source before export.',
   },
   blockTypes: {
     heading: 'Heading',
@@ -772,6 +824,42 @@ const en: DashboardAdvancedCopy = {
     tablet: 'Tablet',
     desktop: 'Desktop',
     safeArea: 'Safe area',
+    responsiveOverrides: 'Responsive overrides',
+    responsiveHint: 'Override layout, spacing, radius and typography only for the selected device.',
+    resetOverride: 'Reset to base theme',
+  },
+  designSystem: {
+    title: 'Design System Import',
+    description: 'Apply validated design tokens without changing screens or flow logic.',
+    importAction: 'Import design system',
+    manifestJson: 'Design system manifest JSON',
+    loadExample: 'Load example',
+    apply: 'Apply design system',
+    valid: 'Manifest is valid',
+    invalid: 'Manifest needs attention',
+    imported: 'Design system applied',
+    current: 'Current design system',
+    safeNotice: 'JSON only. No scripts, CSS, remote fetches or runtime values are executed.',
+    tokenSummary: 'Validated token groups',
+  },
+  visualRegression: {
+    title: 'Visual Regression',
+    description: 'Compare deterministic preview snapshots across device, theme and locale.',
+    createBaseline: 'Create baseline',
+    updateBaseline: 'Accept current as baseline',
+    runAll: 'Run all comparisons',
+    noBaselines: 'No visual baselines yet.',
+    passed: 'Passed',
+    changed: 'Changed',
+    missing: 'Preview target missing',
+    baseline: 'Baseline',
+    currentContext: 'Current preview context',
+    exportBlocked: 'Changed or missing baselines block export until reviewed.',
+    deleteBaseline: 'Delete baseline',
+    layoutChannel: 'Layout',
+    themeChannel: 'Theme',
+    structureChannel: 'Block structure',
+    contentChannel: 'Localized content',
   },
   accessibility: {
     title: 'Accessibility inspector',
@@ -1248,6 +1336,14 @@ const es: DashboardAdvancedCopy = {
     alwaysVisible: 'Siempre visible',
     conditionalVisibility: 'Mostrar cuando se cumplan las reglas',
     blockSettings: 'Configuración del bloque',
+    dynamicContent: 'Enlace de contenido dinámico',
+    dynamicContentHint: 'El campo de ejecución seleccionado reemplaza este texto; el texto localizado anterior queda como alternativa segura.',
+    dynamicValue: 'Valor dinámico',
+    dynamicFallback: 'Contenido alternativo',
+    staticFallback: 'Contenido alternativo localizado',
+    noBinding: 'Usar contenido estático',
+    staleBinding: 'Referencia de campo obsoleta',
+    staleBindingHint: 'El campo referenciado ya no existe. Selecciona otra fuente antes de exportar.',
   },
   blockTypes: {
     heading: 'Encabezado',
@@ -1297,6 +1393,42 @@ const es: DashboardAdvancedCopy = {
     tablet: 'Tableta',
     desktop: 'Escritorio',
     safeArea: 'Área segura',
+    responsiveOverrides: 'Ajustes responsivos',
+    responsiveHint: 'Sobrescribe diseño, espaciado, radio y tipografía solo para el dispositivo seleccionado.',
+    resetOverride: 'Restablecer el tema base',
+  },
+  designSystem: {
+    title: 'Importar sistema de diseño',
+    description: 'Aplica tokens validados sin modificar pantallas ni la lógica del flujo.',
+    importAction: 'Importar sistema de diseño',
+    manifestJson: 'JSON del manifiesto',
+    loadExample: 'Cargar ejemplo',
+    apply: 'Aplicar sistema de diseño',
+    valid: 'El manifiesto es válido',
+    invalid: 'El manifiesto requiere atención',
+    imported: 'Sistema de diseño aplicado',
+    current: 'Sistema de diseño actual',
+    safeNotice: 'Solo JSON. No se ejecutan scripts, CSS, solicitudes remotas ni valores de ejecución.',
+    tokenSummary: 'Grupos de tokens validados',
+  },
+  visualRegression: {
+    title: 'Regresión visual',
+    description: 'Compara snapshots deterministas por dispositivo, tema e idioma.',
+    createBaseline: 'Crear baseline',
+    updateBaseline: 'Aceptar como baseline',
+    runAll: 'Ejecutar comparaciones',
+    noBaselines: 'Todavía no hay baselines visuales.',
+    passed: 'Correcto',
+    changed: 'Modificado',
+    missing: 'Falta el destino de vista previa',
+    baseline: 'Baseline',
+    currentContext: 'Contexto de vista previa actual',
+    exportBlocked: 'Los baselines modificados o ausentes bloquean la exportación.',
+    deleteBaseline: 'Eliminar baseline',
+    layoutChannel: 'Diseño',
+    themeChannel: 'Tema',
+    structureChannel: 'Estructura de bloques',
+    contentChannel: 'Contenido localizado',
   },
   accessibility: {
     title: 'Inspector de accesibilidad',
@@ -1773,6 +1905,14 @@ const ja: DashboardAdvancedCopy = {
     alwaysVisible: '常に表示',
     conditionalVisibility: 'ルールに一致した場合に表示',
     blockSettings: 'ブロック設定',
+    dynamicContent: '動的コンテンツバインディング',
+    dynamicContentHint: '選択した実行時フィールドでテキストを置換し、上のローカライズ済みテキストを安全なフォールバックとして保持します。',
+    dynamicValue: '動的な値',
+    dynamicFallback: '静的フォールバック',
+    staticFallback: 'ローカライズ済みフォールバック',
+    noBinding: '静的コンテンツを使用',
+    staleBinding: '古いフィールド参照',
+    staleBindingHint: '参照先のフィールドが存在しません。エクスポート前に新しいソースを選択してください。',
   },
   blockTypes: {
     heading: '見出し',
@@ -1822,6 +1962,42 @@ const ja: DashboardAdvancedCopy = {
     tablet: 'タブレット',
     desktop: 'デスクトップ',
     safeArea: 'セーフエリア',
+    responsiveOverrides: 'レスポンシブ上書き',
+    responsiveHint: '選択したデバイスだけのレイアウト、間隔、角丸、タイポグラフィを上書きします。',
+    resetOverride: '基本テーマに戻す',
+  },
+  designSystem: {
+    title: 'デザインシステムのインポート',
+    description: '画面やフローロジックを変えずに検証済みトークンを適用します。',
+    importAction: 'デザインシステムを読み込む',
+    manifestJson: 'マニフェスト JSON',
+    loadExample: '例を読み込む',
+    apply: 'デザインシステムを適用',
+    valid: 'マニフェストは有効です',
+    invalid: 'マニフェストを確認してください',
+    imported: 'デザインシステムを適用しました',
+    current: '現在のデザインシステム',
+    safeNotice: 'JSON のみ。スクリプト、CSS、外部通信、実行時値は実行しません。',
+    tokenSummary: '検証済みトークングループ',
+  },
+  visualRegression: {
+    title: 'ビジュアルリグレッション',
+    description: 'デバイス、テーマ、言語ごとの決定的なスナップショットを比較します。',
+    createBaseline: 'ベースラインを作成',
+    updateBaseline: '現在をベースラインに採用',
+    runAll: 'すべて比較',
+    noBaselines: 'ビジュアルベースラインはまだありません。',
+    passed: '合格',
+    changed: '変更あり',
+    missing: 'プレビュー対象がありません',
+    baseline: 'ベースライン',
+    currentContext: '現在のプレビュー条件',
+    exportBlocked: '変更または欠落したベースラインは確認までエクスポートを停止します。',
+    deleteBaseline: 'ベースラインを削除',
+    layoutChannel: 'レイアウト',
+    themeChannel: 'テーマ',
+    structureChannel: 'ブロック構造',
+    contentChannel: 'ローカライズ内容',
   },
   accessibility: {
     title: 'アクセシビリティ検査',
@@ -2298,6 +2474,14 @@ const de: DashboardAdvancedCopy = {
     alwaysVisible: 'Immer sichtbar',
     conditionalVisibility: 'Anzeigen, wenn Regeln erfüllt sind',
     blockSettings: 'Blockeinstellungen',
+    dynamicContent: 'Dynamische Inhaltsbindung',
+    dynamicContentHint: 'Das gewählte Laufzeitfeld ersetzt diesen Text; der lokalisierte Text bleibt als sicherer Fallback erhalten.',
+    dynamicValue: 'Dynamischer Wert',
+    dynamicFallback: 'Statischer Fallback',
+    staticFallback: 'Lokalisierter Fallback-Inhalt',
+    noBinding: 'Statischen Inhalt verwenden',
+    staleBinding: 'Veralteter Feldverweis',
+    staleBindingHint: 'Das referenzierte Feld existiert nicht mehr. Wählen Sie vor dem Export eine neue Quelle.',
   },
   blockTypes: {
     heading: 'Überschrift',
@@ -2347,6 +2531,42 @@ const de: DashboardAdvancedCopy = {
     tablet: 'Tablet',
     desktop: 'Desktop',
     safeArea: 'Sicherheitsabstand',
+    responsiveOverrides: 'Responsive Überschreibungen',
+    responsiveHint: 'Layout, Abstände, Radius und Typografie nur für das ausgewählte Gerät überschreiben.',
+    resetOverride: 'Auf Basisthema zurücksetzen',
+  },
+  designSystem: {
+    title: 'Designsystem importieren',
+    description: 'Validierte Design-Tokens anwenden, ohne Screens oder Ablauflogik zu ändern.',
+    importAction: 'Designsystem importieren',
+    manifestJson: 'Manifest-JSON',
+    loadExample: 'Beispiel laden',
+    apply: 'Designsystem anwenden',
+    valid: 'Manifest ist gültig',
+    invalid: 'Manifest muss geprüft werden',
+    imported: 'Designsystem angewendet',
+    current: 'Aktuelles Designsystem',
+    safeNotice: 'Nur JSON. Skripte, CSS, Remote-Aufrufe und Laufzeitwerte werden nicht ausgeführt.',
+    tokenSummary: 'Validierte Token-Gruppen',
+  },
+  visualRegression: {
+    title: 'Visuelle Regression',
+    description: 'Deterministische Vorschau-Snapshots nach Gerät, Theme und Sprache vergleichen.',
+    createBaseline: 'Baseline erstellen',
+    updateBaseline: 'Aktuellen Stand übernehmen',
+    runAll: 'Alle Vergleiche ausführen',
+    noBaselines: 'Noch keine visuellen Baselines.',
+    passed: 'Bestanden',
+    changed: 'Geändert',
+    missing: 'Vorschauziel fehlt',
+    baseline: 'Baseline',
+    currentContext: 'Aktueller Vorschaukontext',
+    exportBlocked: 'Geänderte oder fehlende Baselines blockieren den Export bis zur Prüfung.',
+    deleteBaseline: 'Baseline löschen',
+    layoutChannel: 'Layout',
+    themeChannel: 'Theme',
+    structureChannel: 'Blockstruktur',
+    contentChannel: 'Lokalisierter Inhalt',
   },
   accessibility: {
     title: 'Barrierefreiheitsprüfung',
@@ -2823,6 +3043,14 @@ const vi: DashboardAdvancedCopy = {
     alwaysVisible: 'Luôn hiển thị',
     conditionalVisibility: 'Hiển thị khi thỏa mãn quy tắc',
     blockSettings: 'Cài đặt khối',
+    dynamicContent: 'Liên kết nội dung động',
+    dynamicContentHint: 'Trường runtime được chọn sẽ thay thế nội dung; phần dịch phía trên vẫn là fallback an toàn.',
+    dynamicValue: 'Giá trị động',
+    dynamicFallback: 'Fallback tĩnh',
+    staticFallback: 'Nội dung fallback theo ngôn ngữ',
+    noBinding: 'Dùng nội dung tĩnh',
+    staleBinding: 'Tham chiếu field đã lỗi thời',
+    staleBindingHint: 'Field được tham chiếu không còn tồn tại. Hãy chọn nguồn mới trước khi export.',
   },
   blockTypes: {
     heading: 'Tiêu đề',
@@ -2872,6 +3100,42 @@ const vi: DashboardAdvancedCopy = {
     tablet: 'Máy tính bảng',
     desktop: 'Máy tính',
     safeArea: 'Vùng hiển thị an toàn',
+    responsiveOverrides: 'Ghi đè responsive',
+    responsiveHint: 'Chỉ ghi đè layout, khoảng cách, bo góc và typography cho thiết bị đang chọn.',
+    resetOverride: 'Đặt lại theo theme gốc',
+  },
+  designSystem: {
+    title: 'Nhập Design System',
+    description: 'Áp dụng design token đã kiểm tra mà không thay đổi màn hình hoặc logic của luồng.',
+    importAction: 'Nhập design system',
+    manifestJson: 'Manifest JSON của design system',
+    loadExample: 'Nạp manifest mẫu',
+    apply: 'Áp dụng design system',
+    valid: 'Manifest hợp lệ',
+    invalid: 'Manifest cần được kiểm tra',
+    imported: 'Đã áp dụng design system',
+    current: 'Design system hiện tại',
+    safeNotice: 'Chỉ nhận JSON. Không thực thi script, CSS, request từ xa hoặc giá trị runtime.',
+    tokenSummary: 'Nhóm token đã xác minh',
+  },
+  visualRegression: {
+    title: 'Visual Regression',
+    description: 'So sánh snapshot preview ổn định theo thiết bị, theme và ngôn ngữ.',
+    createBaseline: 'Tạo baseline',
+    updateBaseline: 'Chấp nhận hiện tại làm baseline',
+    runAll: 'Chạy toàn bộ so sánh',
+    noBaselines: 'Chưa có visual baseline.',
+    passed: 'Đạt',
+    changed: 'Có thay đổi',
+    missing: 'Không còn preview mục tiêu',
+    baseline: 'Baseline',
+    currentContext: 'Ngữ cảnh preview hiện tại',
+    exportBlocked: 'Baseline thay đổi hoặc bị thiếu sẽ chặn export cho đến khi được duyệt.',
+    deleteBaseline: 'Xóa baseline',
+    layoutChannel: 'Bố cục',
+    themeChannel: 'Theme',
+    structureChannel: 'Cấu trúc block',
+    contentChannel: 'Nội dung theo ngôn ngữ',
   },
   accessibility: {
     title: 'Trình kiểm tra khả năng tiếp cận',

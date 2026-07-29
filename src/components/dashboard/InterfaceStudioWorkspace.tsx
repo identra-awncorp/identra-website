@@ -14,8 +14,10 @@ import {
   Accessibility,
   ArrowDown,
   ArrowLeft,
+  ArrowRight,
   ArrowUp,
   Check,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   CircleAlert,
@@ -23,6 +25,8 @@ import {
   Download,
   Eye,
   EyeOff,
+  FileInput,
+  Info,
   Layers3,
   LoaderCircle,
   Monitor,
@@ -37,6 +41,9 @@ import {
   Pause,
   Play,
   Plus,
+  RefreshCw,
+  ScanLine,
+  ShieldCheck,
   Smartphone,
   Sun,
   Tablet,
@@ -44,7 +51,10 @@ import {
   Type,
 } from 'lucide-react';
 import identraLogo from '../../assets/images/identra-logo.svg';
-import type { DashboardAdvancedCopy } from '../../translations/dashboard/DashboardAdvancedTranslations';
+import {
+  DASHBOARD_ADVANCED_TRANSLATIONS,
+  type DashboardAdvancedCopy,
+} from '../../translations/dashboard/DashboardAdvancedTranslations';
 import {
   DASHBOARD_PAGE_TRANSLATIONS,
   type DashboardCopy,
@@ -75,19 +85,35 @@ import {
   buildPreviewJourney,
   interfaceBlockReducer,
   reconcileInterfaceStudioManifest,
+  resolveDynamicContent,
   resolveLocalizedContent,
+  resolveResponsiveInterface,
   validateInterfaceStudioManifest,
+  type DynamicContentContext,
   type PreviewJourney,
 } from './interfaceStudioEngine';
+import {
+  applyDesignSystemManifest,
+  compareVisualRegressionSnapshot,
+  createVisualRegressionBaseline,
+  createVisualRegressionSnapshot,
+  parseDesignSystemManifest,
+  upsertVisualRegressionBaseline,
+  type VisualRegressionChannel,
+  type VisualRegressionComparison,
+  type VisualRegressionContext,
+} from './interfaceQualityEngine';
 import type {
   DashboardWorkspaceV2,
   ConditionOperator,
   DataReference,
+  DynamicContentReference,
   FlowField,
   FlowProjectV2,
   FlowScenario,
   InterfaceBlock,
   InterfaceManifestV2,
+  InterfaceResponsiveOverride,
   InterfaceScreenV2,
   InterfaceScreenVariant,
   InterfaceVariantState,
@@ -108,7 +134,12 @@ type InterfaceStudioWorkspaceProps = {
 };
 
 type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
-type StudioTab = 'blocks' | 'localization' | 'theme' | 'accessibility';
+type StudioTab =
+  | 'blocks'
+  | 'localization'
+  | 'theme'
+  | 'regression'
+  | 'accessibility';
 type PreviewTheme = 'light' | 'dark';
 type ExportState = 'idle' | 'exporting' | 'success' | 'blocked';
 
@@ -117,6 +148,12 @@ type VisibilityOption = {
   readonly label: string;
   readonly reference: Exclude<DataReference, { readonly kind: 'literal' }>;
   readonly field: FlowField;
+};
+
+type DynamicContentOption = {
+  readonly key: string;
+  readonly label: string;
+  readonly source: DynamicContentReference;
 };
 
 const BLOCK_KINDS = [
@@ -132,6 +169,52 @@ const BLOCK_KINDS = [
   'actionGroup',
 ] as const satisfies readonly InterfaceBlock['kind'][];
 const CONSENT_SCOPE_PLACEHOLDER = 'scope.read, scope.verify';
+const DESIGN_SYSTEM_EXAMPLE = JSON.stringify({
+  schemaVersion: 1,
+  name: 'Identra Trust Experience',
+  version: '1.0.0',
+  layout: 'card',
+  theme: {
+    light: {
+      primary: '#354CE1',
+      accent: '#00BFA6',
+      background: '#F5F7FB',
+      surface: '#FFFFFF',
+      text: '#172033',
+    },
+    dark: {
+      primary: '#8C9BFF',
+      accent: '#53DDC8',
+      background: '#10131C',
+      surface: '#191E2B',
+      text: '#F4F6FA',
+    },
+    typography: {
+      fontFamily: 'Inter, ui-sans-serif',
+      headingScale: 1.05,
+      bodyScale: 1,
+      lineHeight: 1.5,
+    },
+    controls: {
+      height: 48,
+      radius: 12,
+      borderWidth: 1,
+    },
+    borderRadius: 20,
+    spacingScale: 1,
+    elevation: 'soft',
+    motion: 'reduced',
+  },
+  responsiveOverrides: {
+    mobile: {
+      layout: 'fullscreen',
+      spacingScale: 0.9,
+      borderRadius: 16,
+      headingScale: 0.95,
+      bodyScale: 1,
+    },
+  },
+}, null, 2);
 
 const SCREEN_KIND_TO_DEFAULT = {
   welcome: 'welcome',
@@ -215,6 +298,11 @@ const seedManifestCopy = (
     locale,
     'DASHBOARD_PAGE_TRANSLATIONS',
   );
+  const advancedLocaleCopy = getLocalizedRecord(
+    DASHBOARD_ADVANCED_TRANSLATIONS,
+    locale,
+    'DASHBOARD_ADVANCED_TRANSLATIONS',
+  );
   let changed = false;
   const screens = manifest.screens.map((screen) => {
     const defaults = screen.kind === 'module'
@@ -236,27 +324,45 @@ const seedManifestCopy = (
           };
         }
         if (
-          block.kind === 'text'
+          (
+            block.kind === 'text'
+            || block.kind === 'consent'
+            || block.kind === 'credentialRequest'
+            || block.kind === 'instruction'
+            || block.kind === 'status'
+          )
           && !block.content[locale]?.trim()
         ) {
+          const content = block.kind === 'status'
+            ? advancedLocaleCopy.variantStates[variant.state]
+            : block.kind === 'consent'
+              ? localeCopy.screenDefaults.consent.body
+              : defaults.body;
           changed = true;
           return {
             ...block,
             content: {
               ...block.content,
-              [locale]: defaults.body,
+              [locale]: content,
             },
           };
         }
         if (block.kind === 'actionGroup') {
           const actions = block.actions.map((action) => {
             if (action.label[locale]?.trim()) return action;
+            const label = action.intent === 'retry'
+              ? advancedLocaleCopy.variantStates.retry
+              : action.intent === 'cancel'
+                ? advancedLocaleCopy.common.cancel
+                : variant.state === 'permission'
+                  ? localeCopy.screenDefaults.consent.action
+                  : defaults.action;
             changed = true;
             return {
               ...action,
               label: {
                 ...action.label,
-                [locale]: defaults.action,
+                [locale]: label,
               },
             };
           });
@@ -292,6 +398,16 @@ const visibilityReferenceKey = (reference: DataReference): string => (
       ? `node:${reference.nodeId}:${reference.fieldId}`
       : 'literal'
 );
+
+const dynamicContentReferenceKey = (
+  reference: DynamicContentReference,
+): string => {
+  if (reference.kind === 'flowInput') return `flow:${reference.fieldId}`;
+  if (reference.kind === 'nodeOutput') {
+    return `node:${reference.nodeId}:${reference.fieldId}`;
+  }
+  return `system:${reference.fieldId}`;
+};
 
 const visibilityLiteral = (
   field: FlowField,
@@ -357,6 +473,75 @@ const visibilityOptionsForProject = (
   return [...flowOptions, ...nodeOptions];
 };
 
+const dynamicContentOptionsForProject = (
+  project: FlowProjectV2,
+  workspace: DashboardWorkspaceV2,
+): readonly DynamicContentOption[] => {
+  const canBind = (field: FlowField) => (
+    (field.type === 'string'
+      || field.type === 'number'
+      || field.type === 'boolean')
+    && field.classification !== 'sensitivePii'
+    && field.classification !== 'biometric'
+    && field.classification !== 'secret'
+  );
+  const options: DynamicContentOption[] = [
+    {
+      key: 'system:flowName',
+      label: 'system.flowName',
+      source: { kind: 'system', fieldId: 'flowName' },
+    },
+    {
+      key: 'system:currentStep',
+      label: 'system.currentStep',
+      source: { kind: 'system', fieldId: 'currentStep' },
+    },
+    {
+      key: 'system:totalSteps',
+      label: 'system.totalSteps',
+      source: { kind: 'system', fieldId: 'totalSteps' },
+    },
+    {
+      key: 'system:outcome',
+      label: 'system.outcome',
+      source: { kind: 'system', fieldId: 'outcome' },
+    },
+  ];
+  for (const field of project.flow.inputSchema.fields.filter(canBind)) {
+    options.push({
+      key: `flow:${field.id}`,
+      label: `flow.${field.key}`,
+      source: { kind: 'flowInput', fieldId: field.id },
+    });
+  }
+  for (const node of project.flow.nodes) {
+    let fields: readonly FlowField[] = [];
+    if (node.kind === 'verification') {
+      fields = resolveModuleContract(node.moduleRef, workspace.moduleCatalog)
+        ?.outputFields ?? [];
+    } else if (node.kind === 'subflow') {
+      fields = workspace.subflowCatalog
+        .find((item) => item.id === node.subflowRef.packageId)
+        ?.versions.find(
+          (version) => version.version === node.subflowRef.version,
+        )
+        ?.contract.outputFields ?? [];
+    }
+    for (const field of fields.filter(canBind)) {
+      options.push({
+        key: `node:${node.id}:${field.id}`,
+        label: `${node.name ?? node.id}.${field.key}`,
+        source: {
+          kind: 'nodeOutput',
+          nodeId: node.id,
+          fieldId: field.id,
+        },
+      });
+    }
+  }
+  return options;
+};
+
 const conditionContextForSimulation = (
   simulation: ScenarioExecutionResult | null,
 ): ConditionEvaluationContext => ({
@@ -370,6 +555,33 @@ const conditionContextForSimulation = (
         || (typeof entry[1] === 'number' && Number.isFinite(entry[1])),
     )),
   ])),
+});
+
+const dynamicContentContextForPreview = (
+  project: FlowProjectV2,
+  simulation: ScenarioExecutionResult | null,
+  currentStep: number,
+  totalSteps: number,
+  outcome: string,
+): DynamicContentContext => ({
+  flowInputs: Object.fromEntries(project.flow.inputSchema.fields.map((field) => [
+    field.id,
+    field.type === 'boolean'
+      ? true
+      : field.type === 'number'
+        ? 1
+        : `__synthetic_${field.id}__`,
+  ])),
+  nodeOutputs: Object.fromEntries((simulation?.steps ?? []).map((step) => [
+    step.nodeId,
+    step.metadata ?? {},
+  ])),
+  system: {
+    flowName: project.name,
+    currentStep,
+    totalSteps,
+    outcome,
+  },
 });
 
 const setBlockContent = (
@@ -478,6 +690,28 @@ const scenarioLabel = (
   copy: DashboardAdvancedCopy,
 ): string => scenario?.name ?? copy.journey.noScenario;
 
+const designSystemVersionLabel = (
+  name: string,
+  version: string,
+): string => `${name} · v${version}`;
+
+const designSystemTokenSummary = (
+  name: string,
+  version: string,
+  label: string,
+  count: number,
+): string => `${designSystemVersionLabel(name, version)} · ${label}: ${count}`;
+
+const visualRegressionChannelLabel = (
+  channel: VisualRegressionChannel,
+  copy: DashboardAdvancedCopy,
+): string => ({
+  layout: copy.visualRegression.layoutChannel,
+  theme: copy.visualRegression.themeChannel,
+  structure: copy.visualRegression.structureChannel,
+  content: copy.visualRegression.contentChannel,
+})[channel];
+
 function PreviewBlock({
   block,
   locale,
@@ -486,6 +720,7 @@ function PreviewBlock({
   theme,
   copy,
   simulation,
+  dynamicContentContext,
 }: {
   readonly block: InterfaceBlock;
   readonly locale: Locale;
@@ -494,6 +729,7 @@ function PreviewBlock({
   readonly theme: SemanticTheme;
   readonly copy: DashboardAdvancedCopy;
   readonly simulation: ScenarioExecutionResult | null;
+  readonly dynamicContentContext: DynamicContentContext;
 }) {
   if (block.hidden) return null;
   if (
@@ -508,7 +744,15 @@ function PreviewBlock({
   const resolve = (content: LocalizedContent) =>
     resolveLocalizedContent(content, locale, defaultLocale);
   const content = contentForBlock(block);
-  const resolved = content ? resolve(content) : null;
+  const resolved = content
+    ? resolveDynamicContent(
+        content,
+        block.contentBinding,
+        dynamicContentContext,
+        locale,
+        defaultLocale,
+      )
+    : null;
   const fallbackBadge = resolved?.fallbackUsed ? (
     <span className="type-label-compact ml-2 rounded bg-amber-100 px-1.5 py-0.5 font-bold text-amber-700">
       {copy.localization.fallbackBadge}
@@ -519,6 +763,15 @@ function PreviewBlock({
       {copy.localization.missingTranslation}
     </span>
   ) : null;
+  const bindingBadge = resolved?.bindingApplied ? (
+    <span className="type-label-compact ml-2 rounded bg-indigo-50 px-1.5 py-0.5 font-bold text-indigo-700">
+      {copy.blocks.dynamicValue}
+    </span>
+  ) : resolved?.bindingFallbackUsed ? (
+    <span className="type-label-compact ml-2 rounded bg-amber-100 px-1.5 py-0.5 font-bold text-amber-700">
+      {copy.blocks.dynamicFallback}
+    </span>
+  ) : null;
 
   switch (block.kind) {
     case 'heading': {
@@ -526,35 +779,67 @@ function PreviewBlock({
       return (
         <Tag
           className={block.level === 1
- ? 'text-2xl font-bold leading-tight'
+ ? 'max-w-xl text-3xl font-bold leading-[1.15]'
  : block.level === 2
- ? 'text-lg font-bold'
- : 'text-base font-bold'}
+ ? 'max-w-xl text-xl font-bold'
+ : 'max-w-xl text-base font-bold'}
           style={{
             fontSize: `${(
-              block.level === 1 ? 24 : block.level === 2 ? 18 : 16
+              block.level === 1 ? 30 : block.level === 2 ? 20 : 16
             ) * theme.typography.headingScale}px`,
             lineHeight: theme.typography.lineHeight,
           }}
         >
           {resolved?.value || missing}
+          {bindingBadge}
           {fallbackBadge}
         </Tag>
       );
     }
     case 'text':
-    case 'instruction':
       return (
         <p
-          className="text-sm opacity-75"
+          className="max-w-xl text-sm opacity-70"
           style={{
             fontSize: `${14 * theme.typography.bodyScale}px`,
-            lineHeight: theme.typography.lineHeight,
+            lineHeight: Math.max(1.6, theme.typography.lineHeight),
           }}
         >
           {resolved?.value || missing}
+          {bindingBadge}
           {fallbackBadge}
         </p>
+      );
+    case 'instruction':
+      return (
+        <div
+          className="flex items-start gap-3 rounded-2xl border px-4 py-3.5"
+          style={{
+            borderColor: colors.border,
+            backgroundColor: `${colors.primary}08`,
+          }}
+        >
+          <span
+            className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl"
+            style={{
+              color: colors.primary,
+              backgroundColor: `${colors.primary}12`,
+            }}
+          >
+            <Info className="h-4 w-4" />
+          </span>
+          <p
+            className="text-sm opacity-80"
+            style={{
+              fontSize: `${14 * theme.typography.bodyScale}px`,
+              lineHeight: Math.max(1.55, theme.typography.lineHeight),
+            }}
+          >
+            {resolved?.value || missing}
+            {bindingBadge}
+            {fallbackBadge}
+          </p>
+        </div>
       );
     case 'illustration': {
       const alt = resolve(block.alt);
@@ -562,35 +847,78 @@ function PreviewBlock({
         <img
           src={block.value}
           alt={alt.value}
-          className="mx-auto max-h-36 max-w-full object-contain"
+          className="mx-auto max-h-40 max-w-full rounded-2xl object-contain"
         />
       ) : (
-        <div className="flex h-24 items-center justify-center rounded-xl border border-dashed text-xs opacity-50">
+        <div className="flex h-28 items-center justify-center rounded-2xl border border-dashed text-xs opacity-50">
           {copy.blockTypes.illustration}
         </div>
       );
     }
     case 'consent':
       return (
-        <label className="flex items-start gap-3 rounded-xl border p-3 text-sm">
-          <input type="checkbox" className="mt-1" />
-          <span>{resolved?.value || missing}{fallbackBadge}</span>
+        <label
+          className="flex cursor-pointer items-start gap-3 rounded-2xl border p-4 text-sm transition-colors"
+          style={{
+            borderColor: colors.border,
+            backgroundColor: `${colors.primary}06`,
+          }}
+        >
+          <input
+            type="checkbox"
+            className="mt-0.5 h-5 w-5 shrink-0 rounded"
+            style={{ accentColor: colors.primary }}
+          />
+          <span className="leading-6 opacity-85">
+            {resolved?.value || missing}{bindingBadge}{fallbackBadge}
+          </span>
         </label>
       );
     case 'credentialRequest':
       return (
-        <div className="rounded-xl border p-3">
-          <p className="type-technical font-mono opacity-55">{block.credentialType}</p>
-          <p className="mt-1 text-sm">{resolved?.value || missing}{fallbackBadge}</p>
+        <div
+          className="rounded-2xl border p-4"
+          style={{
+            borderColor: colors.border,
+            backgroundColor: `${colors.primary}06`,
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+              style={{
+                color: colors.primary,
+                backgroundColor: `${colors.primary}12`,
+              }}
+            >
+              <ShieldCheck className="h-5 w-5" />
+            </span>
+            <div className="min-w-0">
+              <p className="type-label-compact font-bold uppercase opacity-45">
+                {copy.blockTypes.credentialRequest}
+              </p>
+              <p className="mt-0.5 truncate text-sm font-bold">{block.credentialType}</p>
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-6 opacity-70">
+            {resolved?.value || missing}{bindingBadge}{fallbackBadge}
+          </p>
         </div>
       );
     case 'fieldSummary':
       return (
-        <div className="space-y-2 rounded-xl border p-3">
+        <div
+          className="space-y-2 rounded-2xl border p-4"
+          style={{ borderColor: colors.border }}
+        >
           {block.fields.length === 0 ? (
             <span className="text-xs opacity-50">{copy.blockTypes.fieldSummary}</span>
           ) : block.fields.map((field) => (
-            <div key={`${field.nodeId ?? 'flow'}:${field.fieldId}`} className="flex justify-between text-xs">
+            <div
+              key={`${field.nodeId ?? 'flow'}:${field.fieldId}`}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs"
+              style={{ backgroundColor: `${colors.primary}06` }}
+            >
               <span>{field.fieldId}</span><span className="opacity-50">••••</span>
             </div>
           ))}
@@ -598,47 +926,92 @@ function PreviewBlock({
       );
     case 'progress':
       return (
-        <div className="h-2 overflow-hidden rounded-full" style={{ backgroundColor: colors.border }}>
-          <div
-            className="h-full w-2/3 rounded-full motion-safe:animate-pulse"
-            style={{ backgroundColor: colors.primary }}
-          />
+        <div
+          className="rounded-2xl border p-4"
+          style={{ borderColor: colors.border }}
+        >
+          <div className="mb-3 flex items-center gap-2">
+            {[0, 1, 2].map((index) => (
+              <span
+                key={index}
+                className="h-2 w-2 rounded-full motion-safe:animate-pulse"
+                style={{
+                  backgroundColor: colors.primary,
+                  opacity: 1 - index * 0.24,
+                  animationDelay: `${index * 160}ms`,
+                }}
+              />
+            ))}
+          </div>
+          <div className="h-2 overflow-hidden rounded-full" style={{ backgroundColor: colors.border }}>
+            <div
+              className="h-full w-2/3 rounded-full motion-safe:animate-pulse"
+              style={{ backgroundColor: colors.primary }}
+            />
+          </div>
         </div>
       );
-    case 'status':
+    case 'status': {
+      const accent = block.tone === 'error'
+        ? colors.error
+        : block.tone === 'success'
+          ? colors.success
+          : colors.primary;
+      const StatusIcon = block.tone === 'error'
+        ? CircleAlert
+        : block.tone === 'success'
+          ? CheckCircle2
+          : block.tone === 'neutral'
+            ? LoaderCircle
+            : Info;
       return (
         <div
-          className="rounded-xl border px-3 py-2 text-sm font-semibold"
+          className="inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-bold"
           style={{
-            borderColor: block.tone === 'error'
-              ? colors.error
-              : block.tone === 'success'
-                ? colors.success
-                : colors.border,
+            borderColor: `${accent}35`,
+            backgroundColor: `${accent}0D`,
+            color: accent,
           }}
         >
-          {resolved?.value || missing}{fallbackBadge}
+          <StatusIcon
+            className={`h-3.5 w-3.5 ${
+              block.tone === 'neutral' ? 'motion-safe:animate-spin' : ''
+            }`}
+          />
+          {resolved?.value || missing}{bindingBadge}{fallbackBadge}
         </div>
       );
+    }
     case 'actionGroup':
       return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 pt-1">
           {block.actions.map((action, index) => {
             const label = resolve(action.label);
+            const primary = index === 0;
             return (
               <button
                 key={action.id}
                 type="button"
-                className="min-h-11 flex-1 rounded-xl px-4 py-2.5 text-sm font-bold"
+                className="group inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-transform motion-safe:hover:-translate-y-0.5"
                 style={{
                   minHeight: theme.controls.height,
                   borderRadius: theme.controls.radius,
-                  backgroundColor: index === 0 ? colors.primary : colors.surface,
-                  color: index === 0 ? colors.onPrimary : colors.text,
-                  border: `${theme.controls.borderWidth}px solid ${colors.border}`,
+                  backgroundColor: primary ? colors.primary : colors.surface,
+                  color: primary ? colors.onPrimary : colors.text,
+                  border: `${theme.controls.borderWidth}px solid ${
+                    primary ? colors.primary : colors.border
+                  }`,
+                  boxShadow: primary
+                    ? `0 10px 24px ${colors.primary}24`
+                    : 'none',
                 }}
               >
                 {label.value || copy.localization.missingTranslation}
+                {action.intent === 'retry'
+                  ? <RefreshCw className="h-4 w-4" />
+                  : primary
+                    ? <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    : null}
               </button>
             );
           })}
@@ -655,6 +1028,7 @@ function BlockEditor({
   defaultLocale,
   copy,
   visibilityOptions,
+  dynamicContentOptions,
   onUpdate,
   onAction,
 }: {
@@ -665,6 +1039,7 @@ function BlockEditor({
   readonly defaultLocale: Locale;
   readonly copy: DashboardAdvancedCopy;
   readonly visibilityOptions: readonly VisibilityOption[];
+  readonly dynamicContentOptions: readonly DynamicContentOption[];
   readonly onUpdate: (block: InterfaceBlock) => void;
   readonly onAction: (
     action:
@@ -676,6 +1051,13 @@ function BlockEditor({
 }) {
   const content = contentForBlock(block);
   const missing = content !== null && !content[locale]?.trim();
+  const bindingKey = block.contentBinding
+    ? dynamicContentReferenceKey(block.contentBinding.source)
+    : '';
+  const bindingIsStale = Boolean(
+    bindingKey
+    && !dynamicContentOptions.some((option) => option.key === bindingKey),
+  );
   const copyDefault = () => {
     if (!content) return;
     onUpdate(setBlockContent(block, locale, content[defaultLocale] ?? ''));
@@ -723,13 +1105,55 @@ function BlockEditor({
         </div>
       </div>
       {content && (
-        <textarea
-          rows={3}
-          value={content[locale] ?? ''}
-          onChange={(event) => onUpdate(setBlockContent(block, locale, event.target.value))}
-          placeholder={copy.localization.missingTranslation}
-          className="type-control-compact mt-3 w-full resize-none rounded-lg border border-slate-200 px-2.5 py-2 leading-4 outline-none focus:border-[#354CE1]"
-        />
+        <>
+          <textarea
+            rows={3}
+            value={content[locale] ?? ''}
+            onChange={(event) => onUpdate(setBlockContent(block, locale, event.target.value))}
+            placeholder={copy.localization.missingTranslation}
+            aria-label={copy.blocks.staticFallback}
+            className="type-control-compact mt-3 w-full resize-none rounded-lg border border-slate-200 px-2.5 py-2 leading-4 outline-none focus:border-[#354CE1]"
+          />
+          <div className="mt-2 rounded-lg border border-indigo-100 bg-indigo-50/60 p-2.5">
+            <label className="type-label-compact block font-bold text-indigo-800">
+              {copy.blocks.dynamicContent}
+              <select
+                value={bindingKey}
+                onChange={(event) => {
+                  const option = dynamicContentOptions.find(
+                    (candidate) => candidate.key === event.target.value,
+                  );
+                  onUpdate({
+                    ...block,
+                    contentBinding: option
+                      ? { source: option.source }
+                      : undefined,
+                  });
+                }}
+                className={`type-control-compact mt-1 w-full rounded-lg border bg-white px-2 py-2 font-mono ${
+                  bindingIsStale ? 'border-amber-400 text-amber-800' : 'border-indigo-100 text-slate-700'
+                }`}
+              >
+                <option value="">{copy.blocks.noBinding}</option>
+                {bindingIsStale && (
+                  <option value={bindingKey}>
+                    {copy.blocks.staleBinding} · {bindingKey}
+                  </option>
+                )}
+                {dynamicContentOptions.map((option) => (
+                  <option key={option.key} value={option.key}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="type-caption mt-1 leading-4 text-indigo-700/70">
+              {bindingIsStale
+                ? copy.blocks.staleBindingHint
+                : copy.blocks.dynamicContentHint}
+            </p>
+          </div>
+        </>
       )}
       {block.kind === 'illustration' && (
         <div className="mt-3 space-y-2">
@@ -1074,7 +1498,17 @@ export default function InterfaceStudioWorkspace({
   const [journeyIndex, setJourneyIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [exportState, setExportState] = useState<ExportState>('idle');
+  const [designSystemImportOpen, setDesignSystemImportOpen] = useState(false);
+  const [designSystemSource, setDesignSystemSource] = useState('');
+  const [designSystemApplied, setDesignSystemApplied] = useState(false);
+  const [regressionHasRun, setRegressionHasRun] = useState(false);
   const exportTimerRef = useRef<number | null>(null);
+  const designSystemImportResult = useMemo(
+    () => designSystemSource.trim()
+      ? parseDesignSystemManifest(designSystemSource)
+      : null,
+    [designSystemSource],
+  );
 
   const selectedScreen = seeded.screens.find(
     (screen) => screen.id === selectedScreenId,
@@ -1143,13 +1577,70 @@ export default function InterfaceStudioWorkspace({
   ]);
   const currentJourneyStep = journey?.steps[journeyIndex];
   const report = useMemo(
-    () => validateInterfaceStudioManifest(seeded),
-    [seeded],
+    () => validateInterfaceStudioManifest(seeded, {
+      flow: project.flow,
+      moduleCatalog: workspace.moduleCatalog,
+      subflowCatalog: workspace.subflowCatalog,
+    }),
+    [
+      project.flow,
+      seeded,
+      workspace.moduleCatalog,
+      workspace.subflowCatalog,
+    ],
   );
   const visibilityOptions = useMemo(
     () => visibilityOptionsForProject(project, workspace),
     [project, workspace],
   );
+  const dynamicContentOptions = useMemo(
+    () => dynamicContentOptionsForProject(project, workspace),
+    [project, workspace],
+  );
+  const currentVisualContext: VisualRegressionContext = {
+    screenId: selectedScreen?.id ?? '',
+    variantId: selectedVariant?.id ?? '',
+    breakpoint: previewDevice,
+    themeMode: previewTheme,
+    locale: previewLocale,
+  };
+  const visualBaselines = useMemo(
+    () => project.visualRegressionBaselines ?? [],
+    [project.visualRegressionBaselines],
+  );
+  const visualRegressionResults = useMemo(() => visualBaselines.map(
+    (baseline) => ({
+      baseline,
+      comparison: compareVisualRegressionSnapshot(
+        baseline.snapshot,
+        createVisualRegressionSnapshot(seeded, {
+          screenId: baseline.screenId,
+          variantId: baseline.variantId,
+          breakpoint: baseline.breakpoint,
+          themeMode: baseline.themeMode,
+          locale: baseline.locale,
+        }),
+      ),
+    }),
+  ), [seeded, visualBaselines]);
+  const currentVisualBaseline = visualBaselines.find((baseline) => (
+    baseline.screenId === currentVisualContext.screenId
+    && baseline.variantId === currentVisualContext.variantId
+    && baseline.breakpoint === currentVisualContext.breakpoint
+    && baseline.themeMode === currentVisualContext.themeMode
+    && baseline.locale === currentVisualContext.locale
+  ));
+  const currentVisualComparison: VisualRegressionComparison | null =
+    currentVisualBaseline
+      ? compareVisualRegressionSnapshot(
+          currentVisualBaseline.snapshot,
+          createVisualRegressionSnapshot(seeded, currentVisualContext),
+        )
+      : null;
+  const visualRegressionBlocksExport = visualBaselines.length > 0
+    && visualRegressionResults.some(
+      (result) => result.comparison.status !== 'passed',
+    );
   const flowIssues = useMemo(
     () => validateDynamicFlowV2(
       project.flow,
@@ -1227,6 +1718,66 @@ export default function InterfaceStudioWorkspace({
       ),
     });
   };
+  const updateResponsiveOverride = (
+    override: InterfaceResponsiveOverride | undefined,
+  ) => {
+    const responsiveOverrides: Partial<Record<
+      PreviewDevice,
+      InterfaceResponsiveOverride
+    >> = { ...(seeded.responsiveOverrides ?? {}) };
+    if (override) responsiveOverrides[previewDevice] = override;
+    else delete responsiveOverrides[previewDevice];
+    updateManifest({
+      ...seeded,
+      responsiveOverrides,
+    });
+  };
+  const applyImportedDesignSystem = () => {
+    if (!designSystemImportResult?.ok) return;
+    updateManifest(
+      applyDesignSystemManifest(
+        seeded,
+        designSystemImportResult.manifest,
+      ),
+      true,
+    );
+    setDesignSystemApplied(true);
+    setRegressionHasRun(true);
+  };
+  const captureVisualBaseline = () => {
+    if (!selectedScreen || !selectedVariant) return;
+    const capturedAt = new Date().toISOString();
+    const baseline = createVisualRegressionBaseline(
+      seeded,
+      currentVisualContext,
+      {
+        id: currentVisualBaseline?.id
+          ?? createDashboardId('visual-baseline'),
+        capturedAt,
+      },
+    );
+    if (!baseline) return;
+    onProjectChange({
+      ...project,
+      interface: seeded,
+      updatedAt: capturedAt,
+      visualRegressionBaselines: upsertVisualRegressionBaseline(
+        visualBaselines,
+        baseline,
+      ),
+    });
+    setRegressionHasRun(true);
+  };
+  const deleteVisualBaseline = (baselineId: string) => {
+    onProjectChange({
+      ...project,
+      interface: seeded,
+      updatedAt: new Date().toISOString(),
+      visualRegressionBaselines: visualBaselines.filter(
+        (baseline) => baseline.id !== baselineId,
+      ),
+    });
+  };
   const updateSelectedVariant = (
     update: (variant: InterfaceScreenVariant) => InterfaceScreenVariant,
   ) => {
@@ -1250,7 +1801,11 @@ export default function InterfaceStudioWorkspace({
   };
   const handleExport = () => {
     if (exportTimerRef.current !== null) window.clearTimeout(exportTimerRef.current);
-    if (report.blocksExport || flowIssues.length > 0) {
+    if (
+      report.blocksExport
+      || flowIssues.length > 0
+      || visualRegressionBlocksExport
+    ) {
       setExportState('blocked');
       exportTimerRef.current = window.setTimeout(() => setExportState('idle'), 3200);
     } else {
@@ -1313,6 +1868,31 @@ export default function InterfaceStudioWorkspace({
     )?.id ?? '');
   };
   const colors = seeded.theme[previewTheme];
+  const responsiveInterface = resolveResponsiveInterface(
+    seeded,
+    previewDevice,
+  );
+  const activeResponsiveOverride =
+    seeded.responsiveOverrides?.[previewDevice];
+  const previewSemanticTheme: SemanticTheme = {
+    ...seeded.theme,
+    borderRadius: responsiveInterface.borderRadius,
+    spacingScale: responsiveInterface.spacingScale,
+    typography: {
+      ...seeded.theme.typography,
+      headingScale: responsiveInterface.headingScale,
+      bodyScale: responsiveInterface.bodyScale,
+    },
+  };
+  const dynamicContentContext = dynamicContentContextForPreview(
+    project,
+    simulation,
+    journey ? journeyIndex + 1 : 1,
+    journey?.steps.length ?? 1,
+    currentJourneyStep?.outcome
+      ?? simulation?.terminalOutcome
+      ?? '',
+  );
   const deviceWidth = previewDevice === 'mobile'
     ? 'max-w-[390px]'
     : previewDevice === 'tablet'
@@ -1321,13 +1901,13 @@ export default function InterfaceStudioWorkspace({
   const previewStyle: CSSProperties = {
     backgroundColor: colors.background,
     color: colors.text,
-    fontFamily: seeded.theme.typography.fontFamily === 'system'
+    fontFamily: previewSemanticTheme.typography.fontFamily === 'system'
       ? 'ui-sans-serif, system-ui, sans-serif'
-      : seeded.theme.typography.fontFamily,
+      : previewSemanticTheme.typography.fontFamily,
   };
 
   return (
-    <div className="flex min-h-[inherit] flex-col bg-slate-50">
+    <div className="flex min-h-[inherit] flex-col bg-slate-50 xl:h-[100dvh] xl:max-h-[100dvh] xl:overflow-hidden">
       {toolbarVisible && (
         <>
           <header className="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white px-4 py-3 sm:px-5">
@@ -1386,7 +1966,7 @@ export default function InterfaceStudioWorkspace({
         </>
       )}
 
-      <main className={`grid min-h-0 flex-1 ${
+      <main className={`grid min-h-0 flex-1 xl:h-full xl:overflow-hidden ${
  screensPanelVisible && editorPanelVisible
  ? 'xl:grid-cols-[260px_minmax(440px,1fr)_360px]'
  : screensPanelVisible
@@ -1396,7 +1976,7 @@ export default function InterfaceStudioWorkspace({
  : 'xl:grid-cols-1'
  }`}>
         {screensPanelVisible && (
-          <aside className="overflow-y-auto border-b border-slate-200 bg-white p-4 xl:border-b-0 xl:border-r">
+          <aside className="sidebar-scrollbar min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain border-b border-slate-200 bg-white p-4 xl:h-full xl:max-h-none xl:border-b-0 xl:border-r">
           <div className="flex items-center gap-2">
             <p className="type-label-compact min-w-0 flex-1 font-bold uppercase text-slate-400">{copy.studio.screens}</p>
             <button
@@ -1449,7 +2029,7 @@ export default function InterfaceStudioWorkspace({
         </aside>
         )}
 
-        <section className="relative flex min-h-[520px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#ffffff_0,#f1f5f9_72%)] p-5 sm:p-8">
+        <section className="relative flex min-h-[520px] items-center justify-center overflow-auto bg-[radial-gradient(circle_at_center,#ffffff_0,#f1f5f9_72%)] p-5 sm:p-8 xl:h-full xl:min-h-0">
           {(!toolbarVisible || !screensPanelVisible || !editorPanelVisible) && (
             <div className="absolute right-4 top-4 z-20 flex items-center gap-1 rounded-xl border border-slate-200 bg-white/95 p-1.5 shadow-lg shadow-slate-900/10 backdrop-blur">
               {!screensPanelVisible && (
@@ -1495,15 +2075,65 @@ export default function InterfaceStudioWorkspace({
                 {seeded.enabledLocales.map((locale) => <option key={locale} value={locale}>{locale.toUpperCase()}</option>)}
               </select>
             </div>
-            <div aria-label={advancedCopy.aria.previewFrame} className="min-h-[500px] overflow-hidden border shadow-2xl shadow-slate-300/40" style={{ ...previewStyle, borderColor: colors.border, borderRadius: seeded.theme.borderRadius }}>
+            <div aria-label={advancedCopy.aria.previewFrame} className="min-h-[500px] overflow-hidden border shadow-2xl shadow-slate-300/40" style={{ ...previewStyle, borderColor: colors.border, borderRadius: responsiveInterface.borderRadius }}>
               <div className="h-1.5" style={{ backgroundColor: colors.border }}><div className="h-full" style={{ width: `${journey ? ((journeyIndex + 1) / Math.max(1, journey.steps.length)) * 100 : 18}%`, backgroundColor: colors.primary }} /></div>
               <div className="flex items-center justify-between border-b px-6 py-4" style={{ borderColor: colors.border, backgroundColor: colors.surface }}>
                 <img src={previewTheme === 'dark' && seeded.theme.branding.logoDarkUrl ? seeded.theme.branding.logoDarkUrl : seeded.theme.branding.logoLightUrl || identraLogo} alt={copy.brandAlt} className="h-5 max-w-[132px] object-contain object-left" />
                 <span className="type-label-compact font-bold uppercase " style={{ color: colors.textMuted }}>{copy.studio.secureSession}</span>
               </div>
-              <div className="mx-auto flex min-h-[420px] max-w-2xl items-center px-5 py-8 sm:px-10" style={{ paddingTop: Math.max(32, seeded.theme.safeAreas[previewDevice].top), paddingBottom: Math.max(32, seeded.theme.safeAreas[previewDevice].bottom) }}>
-                <div className="flex w-full flex-col rounded-3xl p-6 sm:p-8" style={{ gap: `${20 * seeded.theme.spacingScale}px`, backgroundColor: seeded.layout === 'fullscreen' ? 'transparent' : colors.surface, boxShadow: seeded.theme.elevation === 'none' ? 'none' : seeded.theme.elevation === 'raised' ? '0 28px 70px rgba(15,23,42,.18)' : '0 20px 50px rgba(15,23,42,.10)', borderRadius: seeded.theme.borderRadius }}>
-                  {selectedVariant ? selectedVariant.blocks.map((block) => <PreviewBlock key={block.id} block={block} locale={previewLocale} defaultLocale={seeded.defaultLocale} colors={colors} theme={seeded.theme} copy={advancedCopy} simulation={simulation} />) : <p className="text-center text-sm opacity-50">{advancedCopy.journey.noResultDescription}</p>}
+              <div
+                className="mx-auto flex min-h-[420px] max-w-2xl items-center px-5 py-8 sm:px-10"
+                style={{
+                  backgroundImage: `radial-gradient(circle at 90% 8%, ${colors.primary}12, transparent 42%)`,
+                  paddingTop: Math.max(32, seeded.theme.safeAreas[previewDevice].top),
+                  paddingRight: Math.max(20, seeded.theme.safeAreas[previewDevice].right),
+                  paddingBottom: Math.max(32, seeded.theme.safeAreas[previewDevice].bottom),
+                  paddingLeft: Math.max(20, seeded.theme.safeAreas[previewDevice].left),
+                }}
+              >
+                <div
+                  className="flex w-full flex-col rounded-3xl border p-6 sm:p-8"
+                  style={{
+                    gap: `${20 * responsiveInterface.spacingScale}px`,
+                    backgroundColor: responsiveInterface.layout === 'fullscreen'
+                      ? 'transparent'
+                      : colors.surface,
+                    borderColor: responsiveInterface.layout === 'fullscreen'
+                      ? 'transparent'
+                      : colors.border,
+                    boxShadow: seeded.theme.elevation === 'none'
+                      ? 'none'
+                      : seeded.theme.elevation === 'raised'
+                        ? '0 28px 70px rgba(15,23,42,.18)'
+                        : '0 20px 50px rgba(15,23,42,.10)',
+                    borderRadius: responsiveInterface.borderRadius,
+                    maxWidth:
+                      responsiveInterface.layout === 'split'
+                      && previewDevice !== 'mobile'
+                        ? '58%'
+                        : responsiveInterface.layout === 'card'
+                          ? '580px'
+                          : '100%',
+                    marginLeft:
+                      responsiveInterface.layout === 'split'
+                      && previewDevice !== 'mobile'
+                        ? 'auto'
+                        : undefined,
+                  }}
+                >
+                  {selectedVariant ? selectedVariant.blocks.map((block) => (
+                    <PreviewBlock
+                      key={block.id}
+                      block={block}
+                      locale={previewLocale}
+                      defaultLocale={seeded.defaultLocale}
+                      colors={colors}
+                      theme={previewSemanticTheme}
+                      copy={advancedCopy}
+                      simulation={simulation}
+                      dynamicContentContext={dynamicContentContext}
+                    />
+                  )) : <p className="text-center text-sm opacity-50">{advancedCopy.journey.noResultDescription}</p>}
                 </div>
               </div>
               <div className="type-caption border-t px-6 py-3 text-center " style={{ borderColor: colors.border, color: colors.textMuted }}>{copy.studio.poweredBy}</div>
@@ -1512,13 +2142,14 @@ export default function InterfaceStudioWorkspace({
         </section>
 
         {editorPanelVisible && (
-          <aside className="overflow-y-auto border-t border-slate-200 bg-white xl:border-l xl:border-t-0">
+          <aside className="sidebar-scrollbar min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white xl:h-full xl:max-h-none xl:border-l xl:border-t-0">
           <div className="flex items-center border-b border-slate-200 pr-2">
-            <div role="tablist" className="grid min-w-0 flex-1 grid-cols-4 p-2">
+            <div role="tablist" className="grid min-w-0 flex-1 grid-cols-5 p-2">
             {([
               ['blocks', Layers3, advancedCopy.blocks.title],
               ['localization', Type, advancedCopy.localization.title],
               ['theme', Palette, advancedCopy.theme.title],
+              ['regression', ScanLine, advancedCopy.visualRegression.title],
               ['accessibility', Accessibility, advancedCopy.accessibility.title],
             ] as const).map(([tab, Icon, label]) => (
               <button key={tab} type="button" role="tab" aria-selected={studioTab === tab} aria-label={label} title={label} onClick={() => setStudioTab(tab)} className={`flex items-center justify-center rounded-lg p-2 ${studioTab === tab ? 'bg-[#EEF0FF] text-[#354CE1]' : 'text-slate-400 hover:bg-slate-50'}`}><Icon className="h-4 w-4" /></button>
@@ -1604,7 +2235,7 @@ export default function InterfaceStudioWorkspace({
                   )}
                 </div>
                 <div className="mt-3 space-y-3">
-                  {selectedVariant.blocks.map((block, index) => <BlockEditor key={block.id} block={block} index={index} total={selectedVariant.blocks.length} locale={editingLocale} defaultLocale={seeded.defaultLocale} copy={advancedCopy} visibilityOptions={visibilityOptions} onUpdate={updateBlock} onAction={blockAction} />)}
+                  {selectedVariant.blocks.map((block, index) => <BlockEditor key={block.id} block={block} index={index} total={selectedVariant.blocks.length} locale={editingLocale} defaultLocale={seeded.defaultLocale} copy={advancedCopy} visibilityOptions={visibilityOptions} dynamicContentOptions={dynamicContentOptions} onUpdate={updateBlock} onAction={blockAction} />)}
                 </div>
               </div>
             )}
@@ -1632,6 +2263,218 @@ export default function InterfaceStudioWorkspace({
                 <div>
                   <h2 className="type-card-title-sm text-slate-900">{advancedCopy.theme.title}</h2>
                   <label className="type-label-compact mt-3 block font-bold text-slate-500">{copy.studio.layout}<select value={seeded.layout} onChange={(event) => updateManifest({ ...seeded, layout: event.target.value as typeof seeded.layout })} className="type-control-compact mt-1 w-full rounded-lg border border-slate-200 px-2 py-2 "><option value="card">{copy.studio.cardLayout}</option><option value="split">{copy.studio.splitLayout}</option><option value="fullscreen">{copy.studio.fullscreenLayout}</option></select></label>
+                </div>
+                <div className="rounded-xl border border-slate-200 p-3">
+                  <div className="flex items-start gap-2">
+                    <FileInput className="mt-0.5 h-4 w-4 shrink-0 text-[#354CE1]" />
+                    <div className="min-w-0 flex-1">
+                      <p className="type-label-compact font-bold text-slate-900">
+                        {advancedCopy.designSystem.title}
+                      </p>
+                      <p className="type-caption mt-1 leading-4 text-slate-500">
+                        {advancedCopy.designSystem.description}
+                      </p>
+                    </div>
+                  </div>
+                  {seeded.designSystem && (
+                    <div className="mt-3 rounded-lg bg-emerald-50 px-2.5 py-2">
+                      <p className="type-label-compact font-bold text-emerald-800">
+                        {advancedCopy.designSystem.current}
+                      </p>
+                      <p className="type-technical mt-0.5 truncate font-mono text-emerald-700">
+                        {designSystemVersionLabel(
+                          seeded.designSystem.name,
+                          seeded.designSystem.version,
+                        )}
+                      </p>
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDesignSystemImportOpen((value) => !value);
+                      setDesignSystemApplied(false);
+                    }}
+                    className="type-control-compact mt-3 inline-flex items-center gap-1.5 rounded-lg bg-slate-950 px-2.5 py-2 font-bold text-white"
+                  >
+                    <FileInput className="h-3.5 w-3.5" />
+                    {advancedCopy.designSystem.importAction}
+                  </button>
+                  {designSystemImportOpen && (
+                    <div className="mt-3 space-y-2 border-t border-slate-100 pt-3">
+                      <div className="flex items-center justify-between gap-2">
+                        <label htmlFor="design-system-manifest" className="type-label-compact font-bold text-slate-600">
+                          {advancedCopy.designSystem.manifestJson}
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDesignSystemSource(DESIGN_SYSTEM_EXAMPLE);
+                            setDesignSystemApplied(false);
+                          }}
+                          className="type-label-compact font-bold text-[#354CE1]"
+                        >
+                          {advancedCopy.designSystem.loadExample}
+                        </button>
+                      </div>
+                      <input
+                        type="file"
+                        accept=".json,application/json"
+                        aria-label={advancedCopy.designSystem.importAction}
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (!file) return;
+                          void file.text().then((content) => {
+                            setDesignSystemSource(content);
+                            setDesignSystemApplied(false);
+                          }).catch(() => {
+                            setDesignSystemSource('INVALID_JSON_FILE');
+                            setDesignSystemApplied(false);
+                          });
+                        }}
+                        className="type-caption w-full rounded-lg border border-dashed border-slate-200 px-2 py-2 text-slate-500 file:mr-2 file:rounded-md file:border-0 file:bg-slate-100 file:px-2 file:py-1 file:font-bold file:text-slate-700"
+                      />
+                      <textarea
+                        id="design-system-manifest"
+                        rows={10}
+                        value={designSystemSource}
+                        onChange={(event) => {
+                          setDesignSystemSource(event.target.value);
+                          setDesignSystemApplied(false);
+                        }}
+                        spellCheck={false}
+                        className="type-technical w-full resize-y rounded-lg border border-slate-200 bg-slate-950 px-2.5 py-2 font-mono leading-4 text-slate-100 outline-none focus:border-[#354CE1]"
+                      />
+                      <p className="type-caption leading-4 text-slate-500">
+                        {advancedCopy.designSystem.safeNotice}
+                      </p>
+                      {designSystemImportResult && (
+                        <div className={`rounded-lg border p-2.5 ${
+                          designSystemImportResult.ok
+                            ? 'border-emerald-200 bg-emerald-50'
+                            : 'border-rose-200 bg-rose-50'
+                        }`}>
+                          <p className={`type-label-compact flex items-center gap-1.5 font-bold ${
+                            designSystemImportResult.ok
+                              ? 'text-emerald-800'
+                              : 'text-rose-700'
+                          }`}>
+                            {designSystemImportResult.ok && <ShieldCheck className="h-3.5 w-3.5" />}
+                            {designSystemImportResult.ok
+                              ? advancedCopy.designSystem.valid
+                              : advancedCopy.designSystem.invalid}
+                          </p>
+                          {designSystemImportResult.ok ? (
+                            <p className="type-caption mt-1 text-emerald-700">
+                              {designSystemTokenSummary(
+                                designSystemImportResult.manifest.name,
+                                designSystemImportResult.manifest.version,
+                                advancedCopy.designSystem.tokenSummary,
+                                Object.keys(
+                                  designSystemImportResult.manifest.theme,
+                                ).length,
+                              )}
+                            </p>
+                          ) : (
+                            <div className="mt-1 max-h-24 overflow-y-auto">
+                              {designSystemImportResult.issues.map((issue, index) => (
+                                <p key={`${issue.code}-${issue.path}-${index}`} className="type-technical font-mono text-rose-700">
+                                  {issue.path}: {issue.code}
+                                </p>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {designSystemApplied && (
+                        <p className="type-label-compact rounded-lg bg-emerald-50 px-2.5 py-2 font-bold text-emerald-700">
+                          {advancedCopy.designSystem.imported}
+                        </p>
+                      )}
+                      <button
+                        type="button"
+                        disabled={!designSystemImportResult?.ok}
+                        onClick={applyImportedDesignSystem}
+                        className="type-control-compact w-full rounded-lg bg-[#354CE1] px-3 py-2 font-bold text-white disabled:opacity-40"
+                      >
+                        {advancedCopy.designSystem.apply}
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-3">
+                  <label className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(activeResponsiveOverride)}
+                      onChange={(event) => updateResponsiveOverride(
+                        event.target.checked
+                          ? { ...responsiveInterface }
+                          : undefined,
+                      )}
+                      className="mt-0.5 accent-[#354CE1]"
+                    />
+                    <span>
+                      <span className="type-label-compact block font-bold text-indigo-900">
+                        {advancedCopy.theme.responsiveOverrides} · {advancedCopy.theme[previewDevice]}
+                      </span>
+                      <span className="type-caption mt-0.5 block leading-4 text-indigo-700/70">
+                        {advancedCopy.theme.responsiveHint}
+                      </span>
+                    </span>
+                  </label>
+                  {activeResponsiveOverride && (
+                    <div className="mt-3 space-y-3 border-t border-indigo-100 pt-3">
+                      <label className="type-label-compact block font-bold text-indigo-800">
+                        {copy.studio.layout}
+                        <select
+                          value={responsiveInterface.layout}
+                          onChange={(event) => updateResponsiveOverride({
+                            ...activeResponsiveOverride,
+                            layout: event.target.value as typeof responsiveInterface.layout,
+                          })}
+                          className="type-control-compact mt-1 w-full rounded-lg border border-indigo-100 bg-white px-2 py-2 text-slate-700"
+                        >
+                          <option value="card">{copy.studio.cardLayout}</option>
+                          <option value="split">{copy.studio.splitLayout}</option>
+                          <option value="fullscreen">{copy.studio.fullscreenLayout}</option>
+                        </select>
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {([
+                          ['spacingScale', responsiveInterface.spacingScale, 0.5, 2, 0.05],
+                          ['borderRadius', responsiveInterface.borderRadius, 0, 64, 1],
+                          ['headingScale', responsiveInterface.headingScale, 0.75, 2, 0.05],
+                          ['bodyScale', responsiveInterface.bodyScale, 0.75, 2, 0.05],
+                        ] as const).map(([key, value, min, max, step]) => (
+                          <label key={key}>
+                            <span className="type-technical block truncate font-mono text-indigo-600">
+                              {key}
+                            </span>
+                            <input
+                              type="number"
+                              min={min}
+                              max={max}
+                              step={step}
+                              value={value}
+                              onChange={(event) => updateResponsiveOverride({
+                                ...activeResponsiveOverride,
+                                [key]: Number(event.target.value),
+                              })}
+                              className="type-control-compact mt-1 w-full rounded-lg border border-indigo-100 bg-white px-2 py-1.5 text-slate-700"
+                            />
+                          </label>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => updateResponsiveOverride(undefined)}
+                        className="type-control-compact font-bold text-indigo-700 hover:text-indigo-950"
+                      >
+                        {advancedCopy.theme.resetOverride}
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <p className="type-label-compact font-bold text-slate-500">{advancedCopy.theme.semanticColors} · {previewTheme === 'light' ? advancedCopy.theme.lightMode : advancedCopy.theme.darkMode}</p>
@@ -1823,6 +2666,161 @@ export default function InterfaceStudioWorkspace({
                   </div>
                 </div>
                 {(['logoLightUrl', 'logoDarkUrl', 'faviconUrl'] as const).map((key) => <label key={key} className="type-label-compact block font-bold text-slate-500">{key === 'logoLightUrl' ? advancedCopy.theme.logoLight : key === 'logoDarkUrl' ? advancedCopy.theme.logoDark : advancedCopy.theme.favicon}<input value={seeded.theme.branding[key]} onChange={(event) => updateManifest({ ...seeded, theme: { ...seeded.theme, branding: { ...seeded.theme.branding, [key]: event.target.value } } })} placeholder="https://" className="type-control-compact mt-1 w-full rounded-lg border border-slate-200 px-2 py-2 " /></label>)}
+              </div>
+            )}
+            {studioTab === 'regression' && (
+              <div className="space-y-4">
+                <div>
+                  <h2 className="type-card-title-sm text-slate-900">
+                    {advancedCopy.visualRegression.title}
+                  </h2>
+                  <p className="type-caption mt-1 leading-4 text-slate-500">
+                    {advancedCopy.visualRegression.description}
+                  </p>
+                </div>
+                <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-3">
+                  <p className="type-label-compact font-bold text-indigo-900">
+                    {advancedCopy.visualRegression.currentContext}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {[
+                      selectedScreen?.kind ?? 'screen',
+                      selectedVariant?.state ?? 'variant',
+                      previewDevice,
+                      previewTheme,
+                      previewLocale.toUpperCase(),
+                    ].map((item) => (
+                      <span key={item} className="type-technical rounded bg-white px-1.5 py-1 font-mono text-indigo-700">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                  {currentVisualComparison && (
+                    <div className={`mt-3 rounded-lg border px-2.5 py-2 ${
+                      currentVisualComparison.status === 'passed'
+                        ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                        : currentVisualComparison.status === 'changed'
+                          ? 'border-amber-200 bg-amber-50 text-amber-800'
+                          : 'border-rose-200 bg-rose-50 text-rose-700'
+                    }`}>
+                      <p className="type-label-compact font-bold">
+                        {currentVisualComparison.status === 'passed'
+                          ? advancedCopy.visualRegression.passed
+                          : currentVisualComparison.status === 'changed'
+                            ? advancedCopy.visualRegression.changed
+                            : advancedCopy.visualRegression.missing}
+                      </p>
+                      {currentVisualComparison.status === 'changed' && (
+                        <p className="type-caption mt-1">
+                          {currentVisualComparison.changedChannels.map(
+                            (channel) => visualRegressionChannelLabel(
+                              channel,
+                              advancedCopy,
+                            ),
+                          ).join(' · ')}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  <button
+                    type="button"
+                    disabled={!selectedScreen || !selectedVariant}
+                    onClick={captureVisualBaseline}
+                    className="type-control-compact mt-3 w-full rounded-lg bg-[#354CE1] px-3 py-2 font-bold text-white disabled:opacity-40"
+                  >
+                    {currentVisualBaseline
+                      ? advancedCopy.visualRegression.updateBaseline
+                      : advancedCopy.visualRegression.createBaseline}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="type-label-compact font-bold text-slate-700">
+                    {advancedCopy.visualRegression.baseline} · {visualBaselines.length}
+                  </p>
+                  <button
+                    type="button"
+                    disabled={visualBaselines.length === 0}
+                    onClick={() => setRegressionHasRun(true)}
+                    className="type-label-compact rounded-lg border border-slate-200 px-2 py-1.5 font-bold text-slate-600 disabled:opacity-40"
+                  >
+                    {advancedCopy.visualRegression.runAll}
+                  </button>
+                </div>
+                {visualRegressionBlocksExport && (
+                  <p className="type-label-compact rounded-xl border border-amber-200 bg-amber-50 p-3 font-semibold leading-4 text-amber-800">
+                    {advancedCopy.visualRegression.exportBlocked}
+                  </p>
+                )}
+                {visualBaselines.length === 0 ? (
+                  <p className="type-caption rounded-xl border border-dashed border-slate-200 p-4 text-center text-slate-400">
+                    {advancedCopy.visualRegression.noBaselines}
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {visualRegressionResults.map(({ baseline, comparison }) => {
+                      const screen = seeded.screens.find(
+                        (candidate) => candidate.id === baseline.screenId,
+                      );
+                      const status = regressionHasRun
+                        ? comparison.status
+                        : null;
+                      return (
+                        <div key={baseline.id} className="rounded-xl border border-slate-200 p-3">
+                          <div className="flex items-start gap-2">
+                            <div className="min-w-0 flex-1">
+                              <p className="type-label-compact truncate font-bold text-slate-800">
+                                {screen
+                                  ? localizedScreenName(
+                                      screen,
+                                      project,
+                                      workspace,
+                                      copy,
+                                    )
+                                  : baseline.screenId}
+                              </p>
+                              <p className="type-technical mt-1 font-mono text-slate-400">
+                                {baseline.breakpoint} · {baseline.themeMode} · {baseline.locale.toUpperCase()}
+                              </p>
+                            </div>
+                            {status && (
+                              <span className={`type-label-compact rounded px-1.5 py-1 font-bold ${
+                                status === 'passed'
+                                  ? 'bg-emerald-50 text-emerald-700'
+                                  : status === 'changed'
+                                    ? 'bg-amber-50 text-amber-800'
+                                    : 'bg-rose-50 text-rose-700'
+                              }`}>
+                                {status === 'passed'
+                                  ? advancedCopy.visualRegression.passed
+                                  : status === 'changed'
+                                    ? advancedCopy.visualRegression.changed
+                                    : advancedCopy.visualRegression.missing}
+                              </span>
+                            )}
+                            <button
+                              type="button"
+                              aria-label={advancedCopy.visualRegression.deleteBaseline}
+                              title={advancedCopy.visualRegression.deleteBaseline}
+                              onClick={() => deleteVisualBaseline(baseline.id)}
+                              className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600"
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                          {status === 'changed' && (
+                            <div className="mt-2 flex flex-wrap gap-1">
+                              {comparison.changedChannels.map((channel) => (
+                                <span key={channel} className="type-label-compact rounded bg-amber-50 px-1.5 py-1 font-semibold text-amber-800">
+                                  {visualRegressionChannelLabel(channel, advancedCopy)}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
             {studioTab === 'accessibility' && (

@@ -8,6 +8,7 @@ import type { Locale } from '../../types/routes';
 export const DASHBOARD_WORKSPACE_SCHEMA_VERSION = 2 as const;
 export const DYNAMIC_FLOW_SCHEMA_VERSION = 2 as const;
 export const INTERFACE_MANIFEST_SCHEMA_VERSION = 2 as const;
+export const DESIGN_SYSTEM_MANIFEST_SCHEMA_VERSION = 1 as const;
 
 export const DASHBOARD_WORKSPACE_STORAGE_KEY = 'identra_dashboard_workspace' as const;
 export const LEGACY_DASHBOARD_WORKSPACE_STORAGE_KEY =
@@ -107,6 +108,12 @@ export type InterfaceVariantState =
   | 'sourceUnavailable';
 
 export type ModuleUiCapabilities = {
+  /**
+   * Explicitly distinguishes user-facing collection/capture modules from
+   * background verification modules. Optional for backward compatibility with
+   * workspaces created before this capability was introduced.
+   */
+  readonly requiresUserInteraction?: boolean;
   readonly supportedStates: readonly InterfaceVariantState[];
   readonly supportsConsent: boolean;
   readonly supportsCredentialRequest: boolean;
@@ -399,11 +406,36 @@ export type BlockVisibilityRule = {
   readonly condition: ConditionGroup;
 };
 
+export type SystemContentField =
+  | 'flowName'
+  | 'currentStep'
+  | 'totalSteps'
+  | 'outcome';
+
+export type SystemContentReference = {
+  readonly kind: 'system';
+  readonly fieldId: SystemContentField;
+};
+
+export type DynamicContentReference =
+  | FlowInputReference
+  | NodeOutputReference
+  | SystemContentReference;
+
+export type DynamicContentBinding = {
+  readonly source: DynamicContentReference;
+};
+
 export type InterfaceBlockBase = {
   readonly id: string;
   readonly hidden: boolean;
   readonly required: boolean;
   readonly visibility?: BlockVisibilityRule;
+  /**
+   * The localized block content remains the explicit fallback. Runtime values
+   * are resolved from this reference and are never persisted in the manifest.
+   */
+  readonly contentBinding?: DynamicContentBinding;
 };
 
 export type HeadingBlock = InterfaceBlockBase & {
@@ -546,6 +578,54 @@ export type BreakpointSafeArea = {
   readonly left: number;
 };
 
+export type InterfaceLayout = 'card' | 'split' | 'fullscreen';
+export type InterfaceBreakpoint = 'mobile' | 'tablet' | 'desktop';
+
+export type InterfaceResponsiveOverride = {
+  readonly layout?: InterfaceLayout;
+  readonly spacingScale?: number;
+  readonly borderRadius?: number;
+  readonly headingScale?: number;
+  readonly bodyScale?: number;
+};
+
+export type InterfaceResponsiveOverrides = Readonly<Partial<Record<
+  InterfaceBreakpoint,
+  InterfaceResponsiveOverride
+>>>;
+
+export type DesignSystemManifestV1 = {
+  readonly schemaVersion: typeof DESIGN_SYSTEM_MANIFEST_SCHEMA_VERSION;
+  readonly name: string;
+  readonly version: string;
+  readonly layout?: InterfaceLayout;
+  readonly theme: {
+    readonly light?: Partial<SemanticColorTokens>;
+    readonly dark?: Partial<SemanticColorTokens>;
+    readonly typography?: Partial<TypographyTokens>;
+    readonly controls?: Partial<ControlTokens>;
+    readonly borderRadius?: number;
+    readonly spacingScale?: number;
+    readonly elevation?: SemanticTheme['elevation'];
+    readonly iconStyle?: SemanticTheme['iconStyle'];
+    readonly motion?: SemanticTheme['motion'];
+    readonly branding?: Partial<SemanticTheme['branding']>;
+    readonly safeAreas?: Readonly<Partial<Record<
+      InterfaceBreakpoint,
+      Partial<BreakpointSafeArea>
+    >>>;
+  };
+  readonly responsiveOverrides?: InterfaceResponsiveOverrides;
+};
+
+export type ImportedDesignSystem = {
+  readonly name: string;
+  readonly version: string;
+  readonly format: 'identra-design-system-v1';
+  readonly importedAt: string;
+  readonly sourceHash: string;
+};
+
 export type SemanticTheme = {
   readonly light: SemanticColorTokens;
   readonly dark: SemanticColorTokens;
@@ -644,10 +724,38 @@ export type InterfaceManifestV2 = {
   readonly defaultLocale: Locale;
   readonly enabledLocales: readonly Locale[];
   readonly contentLocaleReviewRequired: boolean;
-  readonly layout: 'card' | 'split' | 'fullscreen';
+  readonly layout: InterfaceLayout;
+  /**
+   * Sparse overrides inherit from the semantic base theme. Keeping this
+   * optional preserves serialized schema-v2 workspaces created before the
+   * responsive editor was introduced.
+   */
+  readonly responsiveOverrides?: InterfaceResponsiveOverrides;
+  readonly designSystem?: ImportedDesignSystem;
   readonly theme: SemanticTheme;
   readonly screens: readonly InterfaceScreenV2[];
   readonly orphanedScreens: readonly InterfaceScreenV2[];
+};
+
+export type VisualRegressionThemeMode = 'light' | 'dark';
+
+export type VisualRegressionSnapshot = {
+  readonly signature: string;
+  readonly layoutSignature: string;
+  readonly themeSignature: string;
+  readonly structureSignature: string;
+  readonly contentSignature: string;
+};
+
+export type VisualRegressionBaseline = {
+  readonly id: string;
+  readonly capturedAt: string;
+  readonly screenId: string;
+  readonly variantId: string;
+  readonly breakpoint: InterfaceBreakpoint;
+  readonly themeMode: VisualRegressionThemeMode;
+  readonly locale: Locale;
+  readonly snapshot: VisualRegressionSnapshot;
 };
 
 export type AccessibilitySeverity = 'error' | 'warning';
@@ -784,6 +892,7 @@ export type FlowProjectV2 = FlowProjectContentV2 & {
   readonly description: string;
   readonly createdAt: string;
   readonly updatedAt: string;
+  readonly visualRegressionBaselines?: readonly VisualRegressionBaseline[];
 };
 
 export type ProjectSnapshotV2 = {

@@ -9,11 +9,14 @@ import {
   buildPreviewJourney,
   interfaceBlockReducer,
   reconcileInterfaceStudioManifest,
+  resolveDynamicContent,
   resolveLocalizedContent,
+  resolveResponsiveInterface,
   validateIntegrationSettings,
   validateInterfaceAccessibility,
   validateInterfaceStudioManifest,
   type InterfaceBlockReducerState,
+  type DynamicContentContext,
 } from '../src/components/dashboard/interfaceStudioEngine.ts';
 import {
   createModuleScreenV2,
@@ -91,6 +94,7 @@ const customModulePackage = (
       outputFields: [],
       outcomes: outcomes.map((outcome) => ({ id: outcome, terminal: false })),
       uiCapabilities: {
+        requiresUserInteraction: true,
         supportedStates: states,
         supportsConsent: states.includes('permission'),
         supportsCredentialRequest: states.includes('input'),
@@ -303,7 +307,134 @@ test('creates stable screen, variant, and block IDs for a new node', () => {
   const secondScreen = second.screens.find((screen) => screen.sourceNodeId === 'identity');
 
   assert.equal(firstScreen?.id, 'module-screen:identity');
+  assert.deepEqual(
+    firstScreen?.variants.find((item) => item.state === 'intro')
+      ?.blocks.map((block) => block.kind),
+    ['status', 'heading', 'text', 'actionGroup'],
+  );
+  assert.deepEqual(
+    firstScreen?.variants.find((item) => item.state === 'input')
+      ?.blocks.map((block) => block.kind),
+    ['status', 'heading', 'credentialRequest', 'actionGroup'],
+  );
+  assert.deepEqual(
+    firstScreen?.variants.find((item) => item.state === 'processing')
+      ?.blocks.map((block) => block.kind),
+    ['status', 'heading', 'text', 'progress'],
+  );
   assert.deepEqual(secondScreen, firstScreen);
+});
+
+test('upgrades untouched legacy defaults while preserving edited title and action', () => {
+  const legacyScreen: InterfaceScreenV2 = {
+    id: 'module-screen:identity',
+    kind: 'module',
+    sourceNodeId: 'identity',
+    variants: [{
+      id: 'variant:identity:intro',
+      state: 'intro',
+      outcomes: [],
+      blocks: [
+        {
+          id: 'block:identity:intro:heading',
+          kind: 'heading',
+          level: 1,
+          content: { en: 'My custom identity title' },
+          hidden: false,
+          required: true,
+        },
+        {
+          id: 'block:identity:intro:actions',
+          kind: 'actionGroup',
+          hidden: false,
+          required: true,
+          actions: [{
+            id: 'action:identity:intro:continue',
+            intent: 'continue',
+            label: { en: 'Verify now' },
+          }],
+        },
+      ],
+    }],
+  };
+  const project = createProject(
+    [startNode, verificationNode(), terminalNode('success')],
+    createManifest([legacyScreen]),
+  );
+  const screen = reconcileInterfaceStudioManifest(
+    project.interface,
+    project,
+  ).screens.find((candidate) => candidate.sourceNodeId === 'identity');
+  const intro = screen?.variants.find((variant) => variant.state === 'intro');
+  const heading = intro?.blocks.find((block) => block.kind === 'heading');
+  const actions = intro?.blocks.find((block) => block.kind === 'actionGroup');
+
+  assert.deepEqual(
+    intro?.blocks.map((block) => block.kind),
+    ['status', 'heading', 'text', 'actionGroup'],
+  );
+  assert.equal(heading?.kind === 'heading' && heading.content.en, 'My custom identity title');
+  assert.equal(
+    actions?.kind === 'actionGroup' && actions.actions[0]?.label.en,
+    'Verify now',
+  );
+});
+
+test('background verification modules have no editable screen or preview step', () => {
+  const databaseNode = {
+    ...verificationNode('database-check'),
+    moduleRef: { packageId: 'database-cross-check', version: '1' },
+  } satisfies Extract<DynamicFlowNodeV2, { readonly kind: 'verification' }>;
+  const faceMatchNode = {
+    ...verificationNode('face-match'),
+    moduleRef: { packageId: 'face-data-match', version: '1' },
+  } satisfies Extract<DynamicFlowNodeV2, { readonly kind: 'verification' }>;
+  const legacyDatabaseScreen: InterfaceScreenV2 = {
+    id: 'legacy-database-screen',
+    kind: 'module',
+    sourceNodeId: databaseNode.id,
+    variants: [variant('legacy-database-processing', 'processing')],
+  };
+  const project = createProject(
+    [startNode, databaseNode, faceMatchNode, terminalNode('success')],
+    createManifest([legacyDatabaseScreen]),
+  );
+  const reconciled = reconcileInterfaceStudioManifest(project.interface, project);
+
+  assert.equal(
+    reconciled.screens.some((screen) => screen.kind === 'module'),
+    false,
+  );
+  assert.equal(
+    reconciled.orphanedScreens.some(
+      (screen) => screen.id === legacyDatabaseScreen.id,
+    ),
+    false,
+  );
+  assert.equal(createModuleScreenV2(databaseNode, 'en'), null);
+  assert.equal(createModuleScreenV2(faceMatchNode, 'en'), null);
+
+  const simulation: ScenarioExecutionResult = {
+    scenarioId: 'background-modules',
+    completed: true,
+    terminalNodeId: 'terminal-success',
+    terminalOutcome: 'success',
+    steps: [
+      { nodeId: 'start', outcome: 'next' },
+      { nodeId: databaseNode.id, outcome: 'matched' },
+      { nodeId: faceMatchNode.id, outcome: 'success' },
+      { nodeId: 'terminal-success' },
+    ],
+    traversedEdgeIds: [],
+    assertionResults: [],
+  };
+  const journey = buildPreviewJourney(project, simulation);
+
+  assert.equal(
+    journey.steps.some((step) => step.kind === 'module'),
+    false,
+  );
+  assert.deepEqual(journey.issues, []);
 });
 
 test('generates only capability states and binds canonical failure outcomes', () => {
@@ -340,6 +471,7 @@ test('generates only capability states and binds canonical failure outcomes', ()
   );
 
   const modelScreen = createModuleScreenV2(verificationNode(), 'en');
+  assert.ok(modelScreen);
   assert.deepEqual(
     modelScreen.variants.find((item) => item.state === 'success')?.outcomes,
     ['success'],
@@ -783,6 +915,187 @@ test('localized content resolution exposes explicit default-locale fallback meta
       fallbackUsed: false,
       badge: null,
     },
+  );
+});
+
+test('responsive overrides inherit semantic defaults per device', () => {
+  const manifest = createManifest();
+  assert.deepEqual(resolveResponsiveInterface(manifest, 'mobile'), {
+    layout: 'card',
+    spacingScale: manifest.theme.spacingScale,
+    borderRadius: manifest.theme.borderRadius,
+    headingScale: manifest.theme.typography.headingScale,
+    bodyScale: manifest.theme.typography.bodyScale,
+  });
+
+  const responsive: InterfaceManifestV2 = {
+    ...manifest,
+    responsiveOverrides: {
+      mobile: {
+        layout: 'fullscreen',
+        spacingScale: 0.8,
+        borderRadius: 12,
+        headingScale: 0.9,
+        bodyScale: 0.95,
+      },
+    },
+  };
+  assert.deepEqual(resolveResponsiveInterface(responsive, 'mobile'), {
+    layout: 'fullscreen',
+    spacingScale: 0.8,
+    borderRadius: 12,
+    headingScale: 0.9,
+    bodyScale: 0.95,
+  });
+  assert.deepEqual(
+    resolveResponsiveInterface(responsive, 'desktop'),
+    resolveResponsiveInterface(manifest, 'desktop'),
+  );
+
+  const invalid: InterfaceManifestV2 = {
+    ...responsive,
+    responsiveOverrides: {
+      mobile: { spacingScale: 0.1 },
+    },
+  };
+  assert.equal(
+    validateInterfaceStudioManifest(invalid).issues.some(
+      (issue) => issue.code === 'invalidResponsiveOverride'
+        && issue.breakpoint === 'mobile',
+    ),
+    true,
+  );
+});
+
+test('dynamic content resolves primitive runtime values and uses localized fallback', () => {
+  const context: DynamicContentContext = {
+    flowInputs: { customerName: '__synthetic_customer__' },
+    nodeOutputs: {
+      identity: {
+        verified: true,
+        profile: { synthetic: true },
+      },
+    },
+    system: {
+      flowName: 'Reusable onboarding',
+      currentStep: 2,
+      totalSteps: 5,
+      outcome: 'success',
+    },
+  };
+  const content = { en: 'Static fallback', vi: 'Ná»™i dung dá»± phÃ²ng' };
+
+  assert.deepEqual(
+    resolveDynamicContent(
+      content,
+      { source: { kind: 'system', fieldId: 'flowName' } },
+      context,
+      'vi',
+      'en',
+    ),
+    {
+      value: 'Reusable onboarding',
+      requestedLocale: 'vi',
+      missing: false,
+      fallbackUsed: false,
+      badge: null,
+      bindingApplied: true,
+      bindingFallbackUsed: false,
+    },
+  );
+  assert.equal(
+    resolveDynamicContent(
+      content,
+      {
+        source: {
+          kind: 'nodeOutput',
+          nodeId: 'identity',
+          fieldId: 'verified',
+        },
+      },
+      context,
+      'vi',
+      'en',
+    ).value,
+    'true',
+  );
+  const missing = resolveDynamicContent(
+    content,
+    {
+      source: {
+        kind: 'nodeOutput',
+        nodeId: 'identity',
+        fieldId: 'removedField',
+      },
+    },
+    context,
+    'vi',
+    'en',
+  );
+  assert.equal(missing.value, content.vi);
+  assert.equal(missing.bindingFallbackUsed, true);
+  assert.equal(missing.bindingApplied, false);
+});
+
+test('content binding validation preserves stale refs and blocks unsafe fields', () => {
+  const project = createProject([startNode, verificationNode()]);
+  const bindHeading = (fieldId: string): InterfaceManifestV2 => {
+    const manifest = createManifest();
+    return {
+      ...manifest,
+      screens: manifest.screens.map((screen, screenIndex) => screenIndex === 0
+        ? {
+            ...screen,
+            variants: screen.variants.map((screenVariant, variantIndex) =>
+              variantIndex === 0
+                ? {
+                    ...screenVariant,
+                    blocks: screenVariant.blocks.map((block, blockIndex) =>
+                      blockIndex === 0
+                        ? {
+                            ...block,
+                            contentBinding: {
+                              source: {
+                                kind: 'nodeOutput',
+                                nodeId: 'identity',
+                                fieldId,
+                              },
+                            },
+                          }
+                        : block),
+                  }
+                : screenVariant),
+          }
+        : screen),
+    };
+  };
+  const context = {
+    flow: project.flow,
+    moduleCatalog: [],
+    subflowCatalog: [],
+  } as const;
+
+  assert.equal(
+    validateInterfaceStudioManifest(
+      bindHeading('fullName'),
+      context,
+    ).issues.some((issue) => issue.code === 'staleContentBinding'
+      || issue.code === 'unsafeContentBinding'),
+    false,
+  );
+  assert.equal(
+    validateInterfaceStudioManifest(
+      bindHeading('identityNumber'),
+      context,
+    ).issues.some((issue) => issue.code === 'unsafeContentBinding'),
+    true,
+  );
+  assert.equal(
+    validateInterfaceStudioManifest(
+      bindHeading('removedField'),
+      context,
+    ).issues.some((issue) => issue.code === 'staleContentBinding'),
+    true,
   );
 });
 

@@ -116,6 +116,16 @@ export type DashboardCopy = {
     readonly clearSelection: string;
     readonly nodeActions: string;
     readonly connectionActions: string;
+    readonly quickInsert: string;
+    readonly quickInsertDescription: string;
+    readonly autoLayout: string;
+    readonly autoLayoutApplied: string;
+    readonly edgeInspector: string;
+    readonly edgeInspectorDescription: string;
+    readonly edgeSource: string;
+    readonly edgeTarget: string;
+    readonly edgeOutcome: string;
+    readonly edgeOutcomeInUse: string;
     readonly configureNode: string;
     readonly focusNode: string;
     readonly focusConnection: string;
@@ -177,6 +187,82 @@ export type DashboardCopy = {
     readonly createModuleAction: string;
     readonly moduleCreated: string;
     readonly invalidSchema: string;
+  };
+  readonly debugger: {
+    readonly title: string;
+    readonly description: string;
+    readonly start: string;
+    readonly continue: string;
+    readonly step: string;
+    readonly restart: string;
+    readonly addBreakpoint: string;
+    readonly removeBreakpoint: string;
+    readonly breakpointHint: string;
+    readonly pausedAtEntry: string;
+    readonly pausedAtBreakpoint: string;
+    readonly pausedAfterStep: string;
+    readonly completed: string;
+    readonly explanation: string;
+    readonly chosenOutcome: string;
+    readonly selectedConnection: string;
+    readonly noMatchingConnection: string;
+    readonly metadata: string;
+    readonly reasons: {
+      readonly start: string;
+      readonly condition: string;
+      readonly legacyCondition: string;
+      readonly verificationFixture: string;
+      readonly databaseStrategy: string;
+      readonly subflow: string;
+      readonly terminal: string;
+      readonly blocked: string;
+    };
+  };
+  readonly insights: {
+    readonly title: string;
+    readonly description: string;
+    readonly visualDiff: string;
+    readonly visualDiffDescription: string;
+    readonly dataLineage: string;
+    readonly dataLineageDescription: string;
+    readonly compareAgainst: string;
+    readonly revision: string;
+    readonly release: string;
+    readonly before: string;
+    readonly currentDraft: string;
+    readonly noBaseline: string;
+    readonly hideUnchanged: string;
+    readonly added: string;
+    readonly removed: string;
+    readonly modified: string;
+    readonly unchanged: string;
+    readonly noChanges: string;
+    readonly interfaceChanges: string;
+    readonly nodes: string;
+    readonly connections: string;
+    readonly screens: string;
+    readonly theme: string;
+    readonly layout: string;
+    readonly locales: string;
+    readonly searchLineage: string;
+    readonly allClassifications: string;
+    readonly fields: string;
+    readonly links: string;
+    readonly sensitive: string;
+    readonly stale: string;
+    readonly noLineage: string;
+    readonly source: string;
+    readonly target: string;
+    readonly focusNode: string;
+    readonly binding: string;
+    readonly condition: string;
+    readonly produces: string;
+    readonly position: string;
+    readonly configuration: string;
+    readonly moduleVersion: string;
+    readonly route: string;
+    readonly outcome: string;
+    readonly content: string;
   };
   readonly studio: {
     readonly breadcrumb: string;
@@ -338,6 +424,16 @@ const en: DashboardCopy = {
     clearSelection: 'Clear selection',
     nodeActions: 'Node actions',
     connectionActions: 'Connection actions',
+    quickInsert: 'Quick insert',
+    quickInsertDescription: 'Choose a module to insert directly into this connection.',
+    autoLayout: 'Auto layout',
+    autoLayoutApplied: 'The flow has been arranged from left to right.',
+    edgeInspector: 'Connection settings',
+    edgeInspectorDescription: 'Inspect the route and assign an available outcome from the source node.',
+    edgeSource: 'Source',
+    edgeTarget: 'Target',
+    edgeOutcome: 'Source outcome',
+    edgeOutcomeInUse: 'Already used by another connection',
     configureNode: 'Configure node',
     focusNode: 'Focus node',
     focusConnection: 'Focus connection',
@@ -399,6 +495,82 @@ const en: DashboardCopy = {
     createModuleAction: 'Create module',
     moduleCreated: 'Custom module created',
     invalidSchema: 'Use comma-separated field:type entries. Add ! for required fields.',
+  },
+  debugger: {
+    title: 'Flow debugger',
+    description: 'Run the synthetic trace step by step, pause at breakpoints, and inspect why each branch was selected.',
+    start: 'Start debugging',
+    continue: 'Continue',
+    step: 'Step',
+    restart: 'Restart',
+    addBreakpoint: 'Add breakpoint',
+    removeBreakpoint: 'Remove breakpoint',
+    breakpointHint: 'Breakpoints pause Continue before this node is processed.',
+    pausedAtEntry: 'Paused at flow entry',
+    pausedAtBreakpoint: 'Paused at breakpoint',
+    pausedAfterStep: 'Paused after one step',
+    completed: 'Debug session completed',
+    explanation: 'Why this path?',
+    chosenOutcome: 'Chosen outcome',
+    selectedConnection: 'Selected connection',
+    noMatchingConnection: 'No connection matches this outcome, so execution stops here.',
+    metadata: 'Synthetic execution metadata',
+    reasons: {
+      start: 'The Start node emits the next outcome and enters the first connected step.',
+      condition: 'The structured condition was evaluated from synthetic flow inputs and available upstream outputs.',
+      legacyCondition: 'This legacy condition cannot be executed. The selected synthetic fallback outcome was used.',
+      verificationFixture: 'The verification outcome comes from the synthetic debugger fixture configured for this node.',
+      databaseStrategy: 'Configured database fixtures were normalized and aggregated by this node’s database strategy.',
+      subflow: 'The pinned subflow was simulated and its terminal result was mapped to this outcome.',
+      terminal: 'The path reached a terminal node, so no outgoing connection is evaluated.',
+      blocked: 'Execution could not produce a usable outcome for this node.',
+    },
+  },
+  insights: {
+    title: 'Flow insights',
+    description: 'Compare manifest versions and trace how typed data moves through this flow.',
+    visualDiff: 'Visual Diff',
+    visualDiffDescription: 'Compare the current draft with an immutable checkpoint or release.',
+    dataLineage: 'Data Lineage',
+    dataLineageDescription: 'Trace field-level bindings, condition references, classifications, and stale dependencies.',
+    compareAgainst: 'Compare against',
+    revision: 'Revision',
+    release: 'Release',
+    before: 'Before',
+    currentDraft: 'Current draft',
+    noBaseline: 'Create a checkpoint or release to compare with the current draft.',
+    hideUnchanged: 'Hide unchanged',
+    added: 'Added',
+    removed: 'Removed',
+    modified: 'Modified',
+    unchanged: 'Unchanged',
+    noChanges: 'No manifest changes were found.',
+    interfaceChanges: 'Interface changes',
+    nodes: 'Nodes',
+    connections: 'Connections',
+    screens: 'Screens',
+    theme: 'Theme',
+    layout: 'Layout',
+    locales: 'Locales',
+    searchLineage: 'Search fields or nodes',
+    allClassifications: 'All classifications',
+    fields: 'Fields',
+    links: 'Links',
+    sensitive: 'Sensitive',
+    stale: 'Stale',
+    noLineage: 'No lineage relationships match these filters.',
+    source: 'Source',
+    target: 'Target',
+    focusNode: 'Focus node',
+    binding: 'Input binding',
+    condition: 'Condition reference',
+    produces: 'Module contract',
+    position: 'Position',
+    configuration: 'Configuration',
+    moduleVersion: 'Module version',
+    route: 'Route',
+    outcome: 'Outcome',
+    content: 'Content',
   },
   studio: {
     breadcrumb: 'Interface Studio',
@@ -609,6 +781,16 @@ const vi: DashboardCopy = {
     clearSelection: 'Bỏ chọn',
     nodeActions: 'Thao tác với node',
     connectionActions: 'Thao tác với đường nối',
+    quickInsert: 'Chèn nhanh',
+    quickInsertDescription: 'Chọn module để chèn trực tiếp vào đường nối này.',
+    autoLayout: 'Tự động sắp xếp',
+    autoLayoutApplied: 'Luồng đã được sắp xếp từ trái sang phải.',
+    edgeInspector: 'Cấu hình đường nối',
+    edgeInspectorDescription: 'Kiểm tra tuyến kết nối và gán outcome còn trống của node nguồn.',
+    edgeSource: 'Node nguồn',
+    edgeTarget: 'Node đích',
+    edgeOutcome: 'Outcome nguồn',
+    edgeOutcomeInUse: 'Đã được dùng bởi đường nối khác',
     configureNode: 'Cấu hình node',
     focusNode: 'Tập trung vào node',
     focusConnection: 'Tập trung vào đường nối',
@@ -670,6 +852,82 @@ const vi: DashboardCopy = {
     createModuleAction: 'Tạo module',
     moduleCreated: 'Đã tạo module tùy chỉnh',
     invalidSchema: 'Dùng các mục field:type phân tách bằng dấu phẩy. Thêm ! cho trường bắt buộc.',
+  },
+  debugger: {
+    title: 'Trình gỡ lỗi flow',
+    description: 'Chạy trace synthetic từng bước, dừng tại breakpoint và xem lý do mỗi nhánh được chọn.',
+    start: 'Bắt đầu gỡ lỗi',
+    continue: 'Tiếp tục',
+    step: 'Chạy một bước',
+    restart: 'Chạy lại',
+    addBreakpoint: 'Thêm breakpoint',
+    removeBreakpoint: 'Xóa breakpoint',
+    breakpointHint: 'Breakpoint khiến Tiếp tục dừng trước khi xử lý node này.',
+    pausedAtEntry: 'Đang dừng tại điểm bắt đầu',
+    pausedAtBreakpoint: 'Đang dừng tại breakpoint',
+    pausedAfterStep: 'Đang dừng sau một bước',
+    completed: 'Phiên gỡ lỗi đã hoàn tất',
+    explanation: 'Vì sao đi theo đường này?',
+    chosenOutcome: 'Outcome được chọn',
+    selectedConnection: 'Đường nối được chọn',
+    noMatchingConnection: 'Không có đường nối khớp outcome này nên quá trình thực thi dừng tại đây.',
+    metadata: 'Metadata thực thi synthetic',
+    reasons: {
+      start: 'Node Bắt đầu phát outcome next và chuyển sang bước được kết nối đầu tiên.',
+      condition: 'Điều kiện có cấu trúc được đánh giá từ input synthetic và output upstream hiện có.',
+      legacyCondition: 'Điều kiện legacy không được thực thi. Hệ thống dùng outcome synthetic dự phòng đã chọn.',
+      verificationFixture: 'Outcome xác minh đến từ fixture synthetic được cấu hình cho node này trong debugger.',
+      databaseStrategy: 'Các fixture cơ sở dữ liệu được chuẩn hóa và tổng hợp theo strategy của node.',
+      subflow: 'Subflow đã pin version được mô phỏng và kết quả terminal được ánh xạ thành outcome này.',
+      terminal: 'Đường chạy đã tới node kết thúc nên không đánh giá đường nối đầu ra.',
+      blocked: 'Node này không tạo được outcome có thể sử dụng.',
+    },
+  },
+  insights: {
+    title: 'Phân tích flow',
+    description: 'So sánh các phiên bản manifest và theo dõi dữ liệu typed đi qua flow.',
+    visualDiff: 'So sánh trực quan',
+    visualDiffDescription: 'So sánh draft hiện tại với checkpoint hoặc release bất biến.',
+    dataLineage: 'Dòng dữ liệu',
+    dataLineageDescription: 'Theo dõi binding ở cấp field, reference điều kiện, phân loại và dependency stale.',
+    compareAgainst: 'So sánh với',
+    revision: 'Bản revision',
+    release: 'Bản release',
+    before: 'Trước thay đổi',
+    currentDraft: 'Draft hiện tại',
+    noBaseline: 'Hãy tạo checkpoint hoặc release để so sánh với draft hiện tại.',
+    hideUnchanged: 'Ẩn mục không đổi',
+    added: 'Đã thêm',
+    removed: 'Đã xóa',
+    modified: 'Đã sửa',
+    unchanged: 'Không đổi',
+    noChanges: 'Không tìm thấy thay đổi trong manifest.',
+    interfaceChanges: 'Thay đổi giao diện',
+    nodes: 'Node',
+    connections: 'Đường nối',
+    screens: 'Màn hình',
+    theme: 'Theme',
+    layout: 'Layout',
+    locales: 'Ngôn ngữ',
+    searchLineage: 'Tìm field hoặc node',
+    allClassifications: 'Tất cả phân loại',
+    fields: 'Field',
+    links: 'Liên kết',
+    sensitive: 'Nhạy cảm',
+    stale: 'Stale',
+    noLineage: 'Không có quan hệ dòng dữ liệu khớp bộ lọc.',
+    source: 'Nguồn',
+    target: 'Đích',
+    focusNode: 'Tập trung vào node',
+    binding: 'Input binding',
+    condition: 'Reference điều kiện',
+    produces: 'Module contract',
+    position: 'Vị trí',
+    configuration: 'Cấu hình',
+    moduleVersion: 'Phiên bản module',
+    route: 'Tuyến',
+    outcome: 'Outcome',
+    content: 'Nội dung',
   },
   studio: {
     breadcrumb: 'Interface Studio',
@@ -880,6 +1138,16 @@ const es: DashboardCopy = {
     clearSelection: 'Borrar selección',
     nodeActions: 'Acciones del nodo',
     connectionActions: 'Acciones de la conexión',
+    quickInsert: 'Inserción rápida',
+    quickInsertDescription: 'Elige un módulo para insertarlo directamente en esta conexión.',
+    autoLayout: 'Diseño automático',
+    autoLayoutApplied: 'El flujo se ha organizado de izquierda a derecha.',
+    edgeInspector: 'Configuración de conexión',
+    edgeInspectorDescription: 'Revisa la ruta y asigna un resultado disponible del nodo de origen.',
+    edgeSource: 'Origen',
+    edgeTarget: 'Destino',
+    edgeOutcome: 'Resultado de origen',
+    edgeOutcomeInUse: 'Ya utilizado por otra conexión',
     configureNode: 'Configurar nodo',
     focusNode: 'Enfocar nodo',
     focusConnection: 'Enfocar conexión',
@@ -941,6 +1209,82 @@ const es: DashboardCopy = {
     createModuleAction: 'Crear módulo',
     moduleCreated: 'Módulo personalizado creado',
     invalidSchema: 'Usa entradas campo:tipo separadas por comas. Añade ! a los campos obligatorios.',
+  },
+  debugger: {
+    title: 'Depurador del flujo',
+    description: 'Ejecuta la traza sintética paso a paso, detente en puntos de interrupción y revisa cada rama.',
+    start: 'Iniciar depuración',
+    continue: 'Continuar',
+    step: 'Paso',
+    restart: 'Reiniciar',
+    addBreakpoint: 'Añadir punto de interrupción',
+    removeBreakpoint: 'Quitar punto de interrupción',
+    breakpointHint: 'Los puntos de interrupción pausan Continuar antes de procesar este nodo.',
+    pausedAtEntry: 'Pausado al inicio del flujo',
+    pausedAtBreakpoint: 'Pausado en el punto de interrupción',
+    pausedAfterStep: 'Pausado después de un paso',
+    completed: 'Sesión de depuración completada',
+    explanation: '¿Por qué esta ruta?',
+    chosenOutcome: 'Resultado elegido',
+    selectedConnection: 'Conexión seleccionada',
+    noMatchingConnection: 'Ninguna conexión coincide con este resultado; la ejecución se detiene aquí.',
+    metadata: 'Metadatos sintéticos de ejecución',
+    reasons: {
+      start: 'El nodo inicial emite next y entra en el primer paso conectado.',
+      condition: 'La condición estructurada se evaluó con entradas sintéticas y salidas anteriores disponibles.',
+      legacyCondition: 'La condición heredada no puede ejecutarse; se usó el resultado sintético alternativo.',
+      verificationFixture: 'El resultado de verificación procede del fixture sintético configurado para este nodo.',
+      databaseStrategy: 'Los fixtures de bases de datos se normalizaron y agregaron mediante la estrategia del nodo.',
+      subflow: 'Se simuló el subflujo fijado y su resultado terminal se asignó a este resultado.',
+      terminal: 'La ruta alcanzó un nodo terminal y no se evalúan conexiones salientes.',
+      blocked: 'La ejecución no pudo producir un resultado utilizable para este nodo.',
+    },
+  },
+  insights: {
+    title: 'Análisis del flujo',
+    description: 'Compara versiones del manifiesto y sigue cómo se mueven los datos tipados por el flujo.',
+    visualDiff: 'Diferencia visual',
+    visualDiffDescription: 'Compara el borrador actual con un checkpoint o release inmutable.',
+    dataLineage: 'Linaje de datos',
+    dataLineageDescription: 'Sigue bindings por campo, referencias de condiciones, clasificaciones y dependencias obsoletas.',
+    compareAgainst: 'Comparar con',
+    revision: 'Revisión',
+    release: 'Release',
+    before: 'Antes',
+    currentDraft: 'Borrador actual',
+    noBaseline: 'Crea un checkpoint o release para compararlo con el borrador actual.',
+    hideUnchanged: 'Ocultar sin cambios',
+    added: 'Añadido',
+    removed: 'Eliminado',
+    modified: 'Modificado',
+    unchanged: 'Sin cambios',
+    noChanges: 'No se encontraron cambios en el manifiesto.',
+    interfaceChanges: 'Cambios de interfaz',
+    nodes: 'Nodos',
+    connections: 'Conexiones',
+    screens: 'Pantallas',
+    theme: 'Tema',
+    layout: 'Diseño',
+    locales: 'Idiomas',
+    searchLineage: 'Buscar campos o nodos',
+    allClassifications: 'Todas las clasificaciones',
+    fields: 'Campos',
+    links: 'Enlaces',
+    sensitive: 'Sensible',
+    stale: 'Obsoleto',
+    noLineage: 'Ninguna relación de linaje coincide con los filtros.',
+    source: 'Origen',
+    target: 'Destino',
+    focusNode: 'Enfocar nodo',
+    binding: 'Binding de entrada',
+    condition: 'Referencia de condición',
+    produces: 'Contrato del módulo',
+    position: 'Posición',
+    configuration: 'Configuración',
+    moduleVersion: 'Versión del módulo',
+    route: 'Ruta',
+    outcome: 'Resultado',
+    content: 'Contenido',
   },
   studio: {
     breadcrumb: 'Interface Studio',
@@ -1151,6 +1495,16 @@ const de: DashboardCopy = {
     clearSelection: 'Auswahl aufheben',
     nodeActions: 'Knotenaktionen',
     connectionActions: 'Verbindungsaktionen',
+    quickInsert: 'Schnell einfügen',
+    quickInsertDescription: 'Wählen Sie ein Modul, das direkt in diese Verbindung eingefügt wird.',
+    autoLayout: 'Automatisch anordnen',
+    autoLayoutApplied: 'Der Flow wurde von links nach rechts angeordnet.',
+    edgeInspector: 'Verbindungseinstellungen',
+    edgeInspectorDescription: 'Prüfen Sie die Route und weisen Sie ein verfügbares Ergebnis des Quellknotens zu.',
+    edgeSource: 'Quelle',
+    edgeTarget: 'Ziel',
+    edgeOutcome: 'Quellergebnis',
+    edgeOutcomeInUse: 'Bereits von einer anderen Verbindung verwendet',
     configureNode: 'Knoten konfigurieren',
     focusNode: 'Knoten fokussieren',
     focusConnection: 'Verbindung fokussieren',
@@ -1212,6 +1566,82 @@ const de: DashboardCopy = {
     createModuleAction: 'Modul erstellen',
     moduleCreated: 'Eigenes Modul erstellt',
     invalidSchema: 'Verwenden Sie kommagetrennte Feld:Typ-Einträge. Pflichtfelder erhalten ein !.',
+  },
+  debugger: {
+    title: 'Flow-Debugger',
+    description: 'Führen Sie den synthetischen Ablauf schrittweise aus, pausieren Sie an Breakpoints und prüfen Sie jede Verzweigung.',
+    start: 'Debugging starten',
+    continue: 'Fortsetzen',
+    step: 'Einzelschritt',
+    restart: 'Neu starten',
+    addBreakpoint: 'Breakpoint hinzufügen',
+    removeBreakpoint: 'Breakpoint entfernen',
+    breakpointHint: 'Breakpoints pausieren Fortsetzen, bevor dieser Knoten verarbeitet wird.',
+    pausedAtEntry: 'Am Flow-Einstieg pausiert',
+    pausedAtBreakpoint: 'Am Breakpoint pausiert',
+    pausedAfterStep: 'Nach einem Schritt pausiert',
+    completed: 'Debug-Sitzung abgeschlossen',
+    explanation: 'Warum dieser Pfad?',
+    chosenOutcome: 'Gewähltes Ergebnis',
+    selectedConnection: 'Gewählte Verbindung',
+    noMatchingConnection: 'Keine Verbindung entspricht diesem Ergebnis; die Ausführung endet hier.',
+    metadata: 'Synthetische Ausführungsmetadaten',
+    reasons: {
+      start: 'Der Startknoten gibt next aus und wechselt zum ersten verbundenen Schritt.',
+      condition: 'Die strukturierte Bedingung wurde mit synthetischen Eingaben und verfügbaren Upstream-Ausgaben ausgewertet.',
+      legacyCondition: 'Die Legacy-Bedingung kann nicht ausgeführt werden; das synthetische Ersatzergebnis wurde verwendet.',
+      verificationFixture: 'Das Prüfergebnis stammt aus dem für diesen Knoten konfigurierten synthetischen Fixture.',
+      databaseStrategy: 'Datenbank-Fixtures wurden normalisiert und durch die Strategie dieses Knotens aggregiert.',
+      subflow: 'Der fixierte Subflow wurde simuliert und sein Endergebnis auf dieses Ergebnis abgebildet.',
+      terminal: 'Der Pfad hat einen Endknoten erreicht; ausgehende Verbindungen werden nicht ausgewertet.',
+      blocked: 'Die Ausführung konnte für diesen Knoten kein nutzbares Ergebnis erzeugen.',
+    },
+  },
+  insights: {
+    title: 'Flow-Einblicke',
+    description: 'Vergleichen Sie Manifestversionen und verfolgen Sie typisierte Daten im Flow.',
+    visualDiff: 'Visueller Vergleich',
+    visualDiffDescription: 'Vergleichen Sie den aktuellen Entwurf mit einem unveränderlichen Checkpoint oder Release.',
+    dataLineage: 'Datenherkunft',
+    dataLineageDescription: 'Verfolgen Sie Feld-Bindings, Bedingungsreferenzen, Klassifizierungen und veraltete Abhängigkeiten.',
+    compareAgainst: 'Vergleichen mit',
+    revision: 'Revision',
+    release: 'Release',
+    before: 'Vorher',
+    currentDraft: 'Aktueller Entwurf',
+    noBaseline: 'Erstellen Sie einen Checkpoint oder ein Release für den Vergleich.',
+    hideUnchanged: 'Unveränderte ausblenden',
+    added: 'Hinzugefügt',
+    removed: 'Entfernt',
+    modified: 'Geändert',
+    unchanged: 'Unverändert',
+    noChanges: 'Keine Manifeständerungen gefunden.',
+    interfaceChanges: 'Oberflächenänderungen',
+    nodes: 'Knoten',
+    connections: 'Verbindungen',
+    screens: 'Bildschirme',
+    theme: 'Theme',
+    layout: 'Layout',
+    locales: 'Sprachen',
+    searchLineage: 'Felder oder Knoten suchen',
+    allClassifications: 'Alle Klassifizierungen',
+    fields: 'Felder',
+    links: 'Verknüpfungen',
+    sensitive: 'Sensibel',
+    stale: 'Veraltet',
+    noLineage: 'Keine Datenherkunft entspricht den Filtern.',
+    source: 'Quelle',
+    target: 'Ziel',
+    focusNode: 'Knoten fokussieren',
+    binding: 'Eingabe-Binding',
+    condition: 'Bedingungsreferenz',
+    produces: 'Modulvertrag',
+    position: 'Position',
+    configuration: 'Konfiguration',
+    moduleVersion: 'Modulversion',
+    route: 'Route',
+    outcome: 'Ergebnis',
+    content: 'Inhalt',
   },
   studio: {
     breadcrumb: 'Interface Studio',
@@ -1422,6 +1852,16 @@ const ja: DashboardCopy = {
     clearSelection: '選択を解除',
     nodeActions: 'ノード操作',
     connectionActions: '接続操作',
+    quickInsert: 'クイック挿入',
+    quickInsertDescription: 'この接続に直接挿入するモジュールを選択します。',
+    autoLayout: '自動レイアウト',
+    autoLayoutApplied: 'フローを左から右へ配置しました。',
+    edgeInspector: '接続設定',
+    edgeInspectorDescription: '経路を確認し、開始ノードの未使用 outcome を割り当てます。',
+    edgeSource: '開始ノード',
+    edgeTarget: '接続先',
+    edgeOutcome: '開始 outcome',
+    edgeOutcomeInUse: '別の接続で使用されています',
     configureNode: 'ノードを設定',
     focusNode: 'ノードにフォーカス',
     focusConnection: '接続にフォーカス',
@@ -1483,6 +1923,82 @@ const ja: DashboardCopy = {
     createModuleAction: 'モジュールを作成',
     moduleCreated: 'カスタムモジュールを作成しました',
     invalidSchema: 'カンマ区切りのフィールド名:型で入力し、必須項目には!を付けてください。',
+  },
+  debugger: {
+    title: 'フローデバッガー',
+    description: 'synthetic trace をステップ実行し、ブレークポイントで停止して各分岐の理由を確認します。',
+    start: 'デバッグを開始',
+    continue: '続行',
+    step: 'ステップ',
+    restart: '再開始',
+    addBreakpoint: 'ブレークポイントを追加',
+    removeBreakpoint: 'ブレークポイントを削除',
+    breakpointHint: 'ブレークポイントは、このノードを処理する前に続行を停止します。',
+    pausedAtEntry: 'フロー開始位置で一時停止',
+    pausedAtBreakpoint: 'ブレークポイントで一時停止',
+    pausedAfterStep: '1 ステップ後に一時停止',
+    completed: 'デバッグセッションが完了しました',
+    explanation: 'この経路が選ばれた理由',
+    chosenOutcome: '選択された outcome',
+    selectedConnection: '選択された接続',
+    noMatchingConnection: 'この outcome に一致する接続がないため、ここで実行を停止します。',
+    metadata: 'synthetic 実行メタデータ',
+    reasons: {
+      start: '開始ノードが next outcome を返し、最初に接続されたステップへ進みます。',
+      condition: '構造化条件を synthetic input と利用可能な upstream output で評価しました。',
+      legacyCondition: 'legacy 条件は実行できないため、synthetic fallback outcome を使用しました。',
+      verificationFixture: '検証 outcome は、このノードに設定された synthetic debugger fixture から取得しました。',
+      databaseStrategy: 'データベース fixture を正規化し、このノードの strategy で集約しました。',
+      subflow: '固定バージョンの subflow をシミュレートし、terminal 結果をこの outcome に変換しました。',
+      terminal: 'terminal ノードに到達したため、出力接続は評価されません。',
+      blocked: 'このノードでは利用可能な outcome を生成できませんでした。',
+    },
+  },
+  insights: {
+    title: 'フロー分析',
+    description: 'manifest のバージョンを比較し、型付きデータがフローを移動する経路を追跡します。',
+    visualDiff: 'ビジュアル差分',
+    visualDiffDescription: '現在の draft を不変の checkpoint または release と比較します。',
+    dataLineage: 'データリネージ',
+    dataLineageDescription: 'field 単位の binding、条件参照、分類、stale dependency を追跡します。',
+    compareAgainst: '比較対象',
+    revision: 'Revision',
+    release: 'Release',
+    before: '変更前',
+    currentDraft: '現在の draft',
+    noBaseline: '比較する checkpoint または release を作成してください。',
+    hideUnchanged: '未変更を非表示',
+    added: '追加',
+    removed: '削除',
+    modified: '変更',
+    unchanged: '未変更',
+    noChanges: 'manifest の変更は見つかりませんでした。',
+    interfaceChanges: 'インターフェースの変更',
+    nodes: 'ノード',
+    connections: '接続',
+    screens: '画面',
+    theme: 'テーマ',
+    layout: 'レイアウト',
+    locales: '言語',
+    searchLineage: 'field または node を検索',
+    allClassifications: 'すべての分類',
+    fields: 'フィールド',
+    links: 'リンク',
+    sensitive: '機密',
+    stale: 'Stale',
+    noLineage: 'フィルターに一致するデータリネージはありません。',
+    source: 'ソース',
+    target: 'ターゲット',
+    focusNode: 'ノードを表示',
+    binding: '入力 binding',
+    condition: '条件参照',
+    produces: 'モジュール contract',
+    position: '位置',
+    configuration: '設定',
+    moduleVersion: 'モジュールバージョン',
+    route: '経路',
+    outcome: 'Outcome',
+    content: 'コンテンツ',
   },
   studio: {
     breadcrumb: 'Interface Studio',

@@ -16,7 +16,9 @@ import {
 import {
   Background,
   BackgroundVariant,
+  BaseEdge,
   Controls,
+  EdgeLabelRenderer,
   Handle,
   MarkerType,
   MiniMap,
@@ -25,10 +27,12 @@ import {
   type Connection,
   type Edge,
   type EdgeChange,
+  type EdgeProps,
   type Node,
   type NodeProps,
   type OnSelectionChangeFunc,
   type ReactFlowInstance,
+  getSmoothStepPath,
   useEdgesState,
   useNodesState,
 } from '@xyflow/react';
@@ -36,15 +40,19 @@ import {
   Activity,
   BadgeCheck,
   Braces,
+  Bug,
   Check,
   ChevronRight,
+  CircleDot,
   CircleStop,
   Database,
+  GitCompareArrows,
   GitBranch,
   GraduationCap,
   HeartPulse,
   IdCard,
   Keyboard,
+  LayoutGrid,
   ListChecks,
   Network,
   PanelLeftClose,
@@ -53,14 +61,17 @@ import {
   PanelRightOpen,
   PanelTopClose,
   PanelTopOpen,
+  Pause,
   Phone,
   Play,
   Plus,
   Redo2,
+  RotateCcw,
   ScanFace,
   Search,
   ShieldCheck,
   SmartphoneNfc,
+  StepForward,
   Trash2,
   Undo2,
   X,
@@ -103,6 +114,7 @@ import type {
 } from './dashboardV2Types';
 import FlowInspectorAdvanced from './FlowInspectorAdvanced';
 import { FlowOperationsDialog } from './FlowOperationsDialog';
+import { FlowInsightsDialog } from './FlowInsightsDialog';
 import ScenarioSuiteDialog from './ScenarioSuiteDialog';
 import { useDialogFocus } from './useDialogFocus';
 import {
@@ -111,6 +123,17 @@ import {
   isEditableShortcutTarget,
   resolveDynamicFlowShortcut,
 } from './dynamicFlowShortcuts';
+import {
+  autoLayoutDynamicFlow,
+  insertNodeOnEdge,
+} from './flowEditorOperations';
+import {
+  continueFlowDebugger,
+  explainSimulationStep,
+  startFlowDebugger,
+  stepFlowDebugger,
+  type FlowDebuggerSession,
+} from './flowDebugger';
 
 type FlowNodeData = {
   readonly title: string;
@@ -123,10 +146,18 @@ type FlowNodeData = {
   readonly connectionLabel: string;
   readonly issueCount: number;
   readonly simulationOrder?: number;
+  readonly hasBreakpoint: boolean;
+  readonly breakpointLabel: string;
+  readonly debuggerActive: boolean;
 };
 
 type FlowUiNode = Node<FlowNodeData>;
-type FlowUiEdge = Edge;
+type FlowEdgeData = {
+  readonly outcomeLabel: string;
+  readonly quickInsertLabel: string;
+  readonly onQuickInsert: (edgeId: string) => void;
+};
+type FlowUiEdge = Edge<FlowEdgeData, 'flowConnection'>;
 
 type FlowHistory = {
   readonly past: readonly DynamicFlowManifestV2[];
@@ -149,8 +180,8 @@ type CanvasContextMenu =
     };
 
 const CONTEXT_MENU_WIDTH = 224;
-const NODE_CONTEXT_MENU_HEIGHT = 204;
-const EDGE_CONTEXT_MENU_HEIGHT = 132;
+const NODE_CONTEXT_MENU_HEIGHT = 252;
+const EDGE_CONTEXT_MENU_HEIGHT = 172;
 const DUPLICATE_SHORTCUT_LABEL = 'Ctrl/⌘ D';
 
 type DynamicFlowWorkspaceProps = {
@@ -330,7 +361,9 @@ function VerificationNodeCard({ data, selected }: NodeProps<FlowUiNode>) {
   return (
     <div className={`relative w-[228px] rounded-2xl border-2 bg-white p-4 shadow-lg shadow-slate-300/20 transition ${
  selected ? 'border-[#354CE1] ring-4 ring-[#354CE1]/10' : accent
- } ${data.simulationOrder !== undefined ? 'ring-4 ring-emerald-300/40' : ''}`}>
+ } ${data.simulationOrder !== undefined ? 'ring-4 ring-emerald-300/40' : ''} ${
+ data.debuggerActive ? 'border-amber-400 ring-4 ring-amber-300/40' : ''
+ }`}>
       {!isStart && (
         <Handle
           type="target"
@@ -388,12 +421,91 @@ function VerificationNodeCard({ data, selected }: NodeProps<FlowUiNode>) {
           {data.simulationOrder + 1}
         </span>
       )}
+      {data.hasBreakpoint && (
+        <span
+          title={data.breakpointLabel}
+          className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-rose-500 text-white shadow"
+        >
+          <CircleDot className="h-3.5 w-3.5" />
+        </span>
+      )}
     </div>
+  );
+}
+
+function FlowConnectionEdge({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+  markerEnd,
+  style,
+  selected,
+  data,
+}: EdgeProps<FlowUiEdge>) {
+  const [path, labelX, labelY] = getSmoothStepPath({
+    sourceX,
+    sourceY,
+    targetX,
+    targetY,
+    sourcePosition,
+    targetPosition,
+  });
+
+  return (
+    <>
+      <BaseEdge
+        id={id}
+        path={path}
+        markerEnd={markerEnd}
+        style={style}
+        interactionWidth={28}
+      />
+      <EdgeLabelRenderer>
+        <div
+          style={{
+            transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,
+          }}
+          className={`nodrag nopan pointer-events-auto absolute flex items-center gap-1 rounded-lg border bg-white p-1 shadow-sm transition ${
+            selected
+              ? 'border-[#AAB3FF] ring-2 ring-[#354CE1]/15'
+              : 'border-slate-200'
+          }`}
+        >
+          <span className={`type-label-compact px-1 font-bold ${
+            selected ? 'text-[#2739B8]' : 'text-slate-500'
+          }`}>
+            {data?.outcomeLabel}
+          </span>
+          <button
+            type="button"
+            aria-label={data?.quickInsertLabel}
+            title={data?.quickInsertLabel}
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={(event) => {
+              event.stopPropagation();
+              data?.onQuickInsert(id);
+            }}
+            className={`flex h-6 w-6 items-center justify-center rounded-md bg-[#EEF0FF] text-[#354CE1] transition hover:bg-[#DDE1FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] ${
+              selected ? 'opacity-100' : 'opacity-70 hover:opacity-100'
+            }`}
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      </EdgeLabelRenderer>
+    </>
   );
 }
 
 const NODE_TYPES = {
   verificationNode: VerificationNodeCard,
+};
+const EDGE_TYPES = {
+  flowConnection: FlowConnectionEdge,
 };
 const MINIMAP_MASK_COLOR = 'rgba(248, 250, 252, 0.78)';
 const ACCESSIBLE_LABEL_SEPARATOR = ': ';
@@ -467,7 +579,10 @@ export default function DynamicFlowWorkspace({
   const [simulatorOpen, setSimulatorOpen] = useState(false);
   const [scenarioSuiteOpen, setScenarioSuiteOpen] = useState(false);
   const [operationsOpen, setOperationsOpen] = useState(false);
+  const [insightsOpen, setInsightsOpen] = useState(false);
   const [customModuleOpen, setCustomModuleOpen] = useState(false);
+  const [quickInsertEdgeId, setQuickInsertEdgeId] = useState<string | null>(null);
+  const [quickInsertSearch, setQuickInsertSearch] = useState('');
   const simulatorDialogRef = useDialogFocus<HTMLDivElement>(
     simulatorOpen,
     () => setSimulatorOpen(false),
@@ -476,10 +591,17 @@ export default function DynamicFlowWorkspace({
     customModuleOpen,
     () => setCustomModuleOpen(false),
   );
+  const quickInsertDialogRef = useDialogFocus<HTMLDivElement>(
+    quickInsertEdgeId !== null,
+    () => setQuickInsertEdgeId(null),
+  );
   const [customForm, setCustomForm] = useState<CustomModuleForm>(EMPTY_CUSTOM_MODULE_FORM);
   const [schemaError, setSchemaError] = useState(false);
   const [simulatorOutcomes, setSimulatorOutcomes] = useState<Record<string, OutcomeId>>({});
   const [simulation, setSimulation] = useState<ScenarioExecutionResult | null>(null);
+  const [breakpointNodeIds, setBreakpointNodeIds] = useState<readonly string[]>([]);
+  const [debuggerSession, setDebuggerSession] = useState<FlowDebuggerSession | null>(null);
+  const [inspectedStepIndex, setInspectedStepIndex] = useState<number | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const noticeTimerRef = useRef<number | null>(null);
   const canvasSectionRef = useRef<HTMLElement | null>(null);
@@ -518,7 +640,12 @@ export default function DynamicFlowWorkspace({
       setSelectedNodeIds([]);
       setSelectedEdgeIds([]);
       setContextMenu(null);
+      setQuickInsertEdgeId(null);
+      setInsightsOpen(false);
       setSimulation(null);
+      setBreakpointNodeIds([]);
+      setDebuggerSession(null);
+      setInspectedStepIndex(null);
     }
   }, [project.flow, project.id]);
 
@@ -526,10 +653,26 @@ export default function DynamicFlowWorkspace({
     if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current);
   }, []);
 
+  useEffect(() => {
+    if (simulation) return;
+    setDebuggerSession(null);
+    setInspectedStepIndex(null);
+  }, [simulation]);
+
   const showNotice = useCallback((message: string) => {
     setNotice(message);
     if (noticeTimerRef.current !== null) window.clearTimeout(noticeTimerRef.current);
     noticeTimerRef.current = window.setTimeout(() => setNotice(null), 3200);
+  }, []);
+
+  const openQuickInsert = useCallback((edgeId: string) => {
+    setContextMenu(null);
+    setSelectedNodeId(null);
+    setSelectedNodeIds([]);
+    setSelectedEdgeIds([edgeId]);
+    setInspectorVisible(true);
+    setQuickInsertSearch('');
+    setQuickInsertEdgeId(edgeId);
   }, []);
 
   const validationIssues = useMemo(
@@ -541,9 +684,21 @@ export default function DynamicFlowWorkspace({
     [history.present, workspace.moduleCatalog, workspace.subflowCatalog],
   );
   const selectedNode = history.present.nodes.find((node) => node.id === selectedNodeId) ?? null;
+  const selectedEdge = selectedEdgeIds.length === 1
+    ? history.present.edges.find((edge) => edge.id === selectedEdgeIds[0]) ?? null
+    : null;
+  const revealedSimulationSteps = useMemo(
+    () => simulation
+      ? simulation.steps.slice(
+          0,
+          debuggerSession ? debuggerSession.activeStepIndex + 1 : simulation.steps.length,
+        )
+      : [],
+    [debuggerSession, simulation],
+  );
   const simulationOrder = useMemo(
-    () => new Map(simulation?.steps.map((step, index) => [step.nodeId, index]) ?? []),
-    [simulation],
+    () => new Map(revealedSimulationSteps.map((step, index) => [step.nodeId, index])),
+    [revealedSimulationSteps],
   );
 
   const toUiNode = useCallback((node: DynamicFlowNodeV2): FlowUiNode => ({
@@ -562,11 +717,18 @@ export default function DynamicFlowWorkspace({
       connectionLabel: copy.builder.connectionHandle,
       issueCount: validationIssues.filter((issue) => issue.nodeId === node.id).length,
       simulationOrder: simulationOrder.get(node.id),
+      hasBreakpoint: breakpointNodeIds.includes(node.id),
+      breakpointLabel: copy.debugger.removeBreakpoint,
+      debuggerActive: debuggerSession?.status === 'paused'
+        && simulation?.steps[debuggerSession.activeStepIndex]?.nodeId === node.id,
     },
     deletable: node.kind !== 'start' && node.kind !== 'terminal',
   }), [
     copy,
+    breakpointNodeIds,
+    debuggerSession,
     selectedNodeIds,
+    simulation,
     simulationOrder,
     validationIssues,
     workspace.moduleCatalog,
@@ -574,37 +736,33 @@ export default function DynamicFlowWorkspace({
   ]);
 
   const toUiEdge = useCallback((edge: DynamicFlowEdgeV2): FlowUiEdge => {
-    const simulated = simulation?.steps.some(
+    const simulated = revealedSimulationSteps.some(
         (step, index) => step.nodeId === edge.source
-          && simulation.steps[index + 1]?.nodeId === edge.target,
+          && revealedSimulationSteps[index + 1]?.nodeId === edge.target,
       ) ?? false;
     const selected = selectedEdgeIds.includes(edge.id);
     const stroke = simulated ? '#10B981' : selected ? '#354CE1' : '#94A3B8';
     return {
       id: edge.id,
+      type: 'flowConnection',
       source: edge.source,
       target: edge.target,
       sourceHandle: edge.outcome,
-      label: copy.outcomes[edge.outcome as keyof typeof copy.outcomes] ?? edge.outcome,
+      data: {
+        outcomeLabel: copy.outcomes[edge.outcome as keyof typeof copy.outcomes] ?? edge.outcome,
+        quickInsertLabel: copy.builder.quickInsert,
+        onQuickInsert: openQuickInsert,
+      },
       markerEnd: { type: MarkerType.ArrowClosed, color: stroke },
       style: {
         stroke,
         strokeWidth: selected ? 3.5 : 2,
         filter: selected ? 'drop-shadow(0 0 3px rgba(53, 76, 225, 0.35))' : undefined,
       },
-      labelStyle: {
-        fontSize: 9,
-        fontWeight: 700,
-        fill: selected ? '#2739B8' : '#64748B',
-      },
-      labelBgStyle: {
-        fill: selected ? '#EEF0FF' : '#FFFFFF',
-        fillOpacity: 0.96,
-      },
       interactionWidth: 28,
       selected,
     };
-  }, [copy, selectedEdgeIds, simulation]);
+  }, [copy, openQuickInsert, revealedSimulationSteps, selectedEdgeIds]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState<FlowUiNode>(
     history.present.nodes.map(toUiNode),
@@ -747,6 +905,59 @@ export default function DynamicFlowWorkspace({
     setSelectedNodeId(nextNode.id);
   }, [commitFlow, history.present]);
 
+  const insertNodeAtEdge = useCallback((
+    edgeId: string,
+    nextNode: DynamicFlowNodeV2,
+  ) => {
+    const outcomes = outcomesForNodeV2(nextNode, workspace.moduleCatalog);
+    const outgoingOutcome = outcomes.includes('success')
+      ? 'success'
+      : outcomes.includes('true')
+        ? 'true'
+        : outcomes[0];
+    if (!outgoingOutcome) return;
+
+    const result = insertNodeOnEdge(
+      history.present,
+      edgeId,
+      nextNode,
+      outgoingOutcome,
+      () => createEdgeId(),
+    );
+    if (!result.inserted) return;
+
+    commitFlow(result.flow);
+    setSelectedNodeId(nextNode.id);
+    setSelectedNodeIds([nextNode.id]);
+    setSelectedEdgeIds([]);
+    setQuickInsertEdgeId(null);
+    setQuickInsertSearch('');
+  }, [commitFlow, history.present, workspace.moduleCatalog]);
+
+  const quickInsertModule = useCallback((moduleId: string) => {
+    if (!quickInsertEdgeId) return;
+    const customModule = workspace.moduleCatalog.find((module) => module.id === moduleId);
+    const nextNode = createVerificationNodeV2(
+      {
+        packageId: moduleId,
+        version: BUILT_IN_MODULE_IDS.includes(moduleId as BuiltInModuleId)
+          ? '1'
+          : customModule?.activeVersion ?? '1.0.0',
+      },
+      { x: 0, y: 0 },
+      customModule?.name,
+    );
+    insertNodeAtEdge(quickInsertEdgeId, nextNode);
+  }, [insertNodeAtEdge, quickInsertEdgeId, workspace.moduleCatalog]);
+
+  const quickInsertCondition = useCallback(() => {
+    if (!quickInsertEdgeId) return;
+    insertNodeAtEdge(
+      quickInsertEdgeId,
+      createConditionNodeV2({ x: 0, y: 0 }),
+    );
+  }, [insertNodeAtEdge, quickInsertEdgeId]);
+
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const itemType = event.dataTransfer.getData('application/identra-item-type');
@@ -846,6 +1057,26 @@ export default function DynamicFlowWorkspace({
     });
   }, [flowInstance, nodes]);
 
+  const applyAutoLayout = useCallback(() => {
+    const nextFlow = autoLayoutDynamicFlow(history.present);
+    commitFlow(nextFlow);
+    showNotice(copy.builder.autoLayoutApplied);
+    window.requestAnimationFrame(() => {
+      void flowInstance?.fitView({
+        duration: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 0
+          : 280,
+        padding: 0.18,
+      });
+    });
+  }, [
+    commitFlow,
+    copy.builder.autoLayoutApplied,
+    flowInstance,
+    history.present,
+    showNotice,
+  ]);
+
   const openNodeContextMenu = useCallback((
     event: ReactMouseEvent,
     nodeId: string,
@@ -892,6 +1123,12 @@ export default function DynamicFlowWorkspace({
       edge.selected ? { ...edge, selected: false } : edge
     )));
   }, [setEdges, setNodes]);
+
+  const toggleBreakpoint = useCallback((nodeId: string) => {
+    setBreakpointNodeIds((current) => current.includes(nodeId)
+      ? current.filter((id) => id !== nodeId)
+      : [...current, nodeId]);
+  }, []);
 
   useEffect(() => {
     if (!contextMenu) return;
@@ -958,6 +1195,8 @@ export default function DynamicFlowWorkspace({
           && !removableNodeIds.has(edge.target),
       ),
     }, true);
+    setBreakpointNodeIds((current) =>
+      current.filter((nodeId) => !removableNodeIds.has(nodeId)));
     clearSelection();
   }, [clearSelection, commitFlow, copy.builder.protectedNode, history.present, showNotice]);
 
@@ -1003,7 +1242,9 @@ export default function DynamicFlowWorkspace({
         simulatorOpen
         || scenarioSuiteOpen
         || operationsOpen
+        || insightsOpen
         || customModuleOpen
+        || quickInsertEdgeId !== null
       ) {
         return;
       }
@@ -1048,7 +1289,9 @@ export default function DynamicFlowWorkspace({
     deleteSelection,
     duplicateSelection,
     flowInstance,
+    insightsOpen,
     operationsOpen,
+    quickInsertEdgeId,
     redo,
     scenarioSuiteOpen,
     selectAll,
@@ -1120,6 +1363,7 @@ export default function DynamicFlowWorkspace({
             { id: 'failure', terminal: false },
           ],
           uiCapabilities: {
+            requiresUserInteraction: true,
             supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
             supportsConsent: false,
             supportsCredentialRequest: true,
@@ -1169,6 +1413,22 @@ export default function DynamicFlowWorkspace({
         .find((version) => version.version === module.activeVersion)
         ?.definition?.description.toLocaleLowerCase().includes(query);
   });
+  const quickInsertBuiltIns = BUILT_IN_MODULE_IDS.filter((moduleId) => {
+    const query = quickInsertSearch.trim().toLocaleLowerCase();
+    return !query
+      || copy.modules[moduleId].name.toLocaleLowerCase().includes(query)
+      || copy.modules[moduleId].description.toLocaleLowerCase().includes(query);
+  });
+  const quickInsertCustomModules = workspace.moduleCatalog
+    .filter((module) => module.origin === 'custom')
+    .filter((module) => {
+      const query = quickInsertSearch.trim().toLocaleLowerCase();
+      return !query
+        || module.name.toLocaleLowerCase().includes(query)
+        || module.versions
+          .find((version) => version.version === module.activeVersion)
+          ?.definition?.description.toLocaleLowerCase().includes(query);
+    });
 
   const openSimulator = () => {
     const defaults: Record<string, OutcomeId> = {};
@@ -1182,15 +1442,47 @@ export default function DynamicFlowWorkspace({
     }
     setSimulatorOutcomes(defaults);
     setSimulation(null);
+    setDebuggerSession(null);
+    setInspectedStepIndex(null);
     setSimulatorOpen(true);
   };
 
   const runSimulation = () => {
-    setSimulation(simulateDynamicFlowV2(history.present, {
+    const result = simulateDynamicFlowV2(history.present, {
       quickOutcomes: simulatorOutcomes,
       moduleCatalog: workspace.moduleCatalog,
       subflowCatalog: workspace.subflowCatalog,
-    }));
+    });
+    const session = startFlowDebugger(result);
+    setSimulation(result);
+    setDebuggerSession(session);
+    setInspectedStepIndex(session.activeStepIndex >= 0 ? session.activeStepIndex : null);
+  };
+
+  const continueDebugger = () => {
+    if (!simulation || !debuggerSession) return;
+    const next = continueFlowDebugger(
+      simulation,
+      debuggerSession,
+      new Set(breakpointNodeIds),
+    );
+    setDebuggerSession(next);
+    setInspectedStepIndex(next.activeStepIndex >= 0 ? next.activeStepIndex : null);
+  };
+
+  const stepDebugger = () => {
+    if (!simulation || !debuggerSession) return;
+    const next = stepFlowDebugger(
+      simulation,
+      debuggerSession,
+      new Set(breakpointNodeIds),
+    );
+    setDebuggerSession(next);
+    setInspectedStepIndex(next.activeStepIndex >= 0 ? next.activeStepIndex : null);
+  };
+
+  const restartDebugger = () => {
+    runSimulation();
   };
 
   const contextNode = contextMenu?.kind === 'node'
@@ -1199,9 +1491,33 @@ export default function DynamicFlowWorkspace({
   const contextEdge = contextMenu?.kind === 'edge'
     ? history.present.edges.find((edge) => edge.id === contextMenu.edgeId) ?? null
     : null;
+  const selectedEdgeSource = selectedEdge
+    ? history.present.nodes.find((node) => node.id === selectedEdge.source) ?? null
+    : null;
+  const selectedEdgeTarget = selectedEdge
+    ? history.present.nodes.find((node) => node.id === selectedEdge.target) ?? null
+    : null;
+  const selectedEdgeOutcomes = selectedEdgeSource
+    ? outcomesForNodeV2(selectedEdgeSource, workspace.moduleCatalog)
+    : [];
+  const outcomesUsedBySiblingEdges = new Set(
+    selectedEdge
+      ? history.present.edges
+          .filter((edge) => edge.source === selectedEdge.source && edge.id !== selectedEdge.id)
+          .map((edge) => edge.outcome)
+      : [],
+  );
+  const executionExplanation = simulation && inspectedStepIndex !== null
+    ? explainSimulationStep(history.present, simulation, inspectedStepIndex)
+    : null;
+  const explanationTargetNode = executionExplanation?.targetNodeId
+    ? history.present.nodes.find(
+        (node) => node.id === executionExplanation.targetNodeId,
+      ) ?? null
+    : null;
 
   return (
-    <div className="flex min-h-[inherit] flex-col">
+    <div className="flex min-h-[inherit] flex-col xl:h-[100dvh] xl:max-h-[100dvh] xl:overflow-hidden">
       {toolbarVisible && (
         <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white px-4 py-3 sm:px-5">
         <div className="mr-auto min-w-0">
@@ -1227,6 +1543,24 @@ export default function DynamicFlowWorkspace({
           className="rounded-lg border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 disabled:opacity-40"
         >
           <Redo2 className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          aria-label={copy.builder.autoLayout}
+          title={copy.builder.autoLayout}
+          onClick={applyAutoLayout}
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+        >
+          <LayoutGrid className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">{copy.builder.autoLayout}</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setInsightsOpen(true)}
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+        >
+          <GitCompareArrows className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">{copy.insights.title}</span>
         </button>
         <details className="relative">
           <summary
@@ -1266,8 +1600,8 @@ export default function DynamicFlowWorkspace({
           onClick={openSimulator}
           className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
         >
-          <Play className="h-3.5 w-3.5" />
-          {copy.builder.simulate}
+          <Bug className="h-3.5 w-3.5" />
+          {copy.debugger.title}
         </button>
         <button
           type="button"
@@ -1305,7 +1639,7 @@ export default function DynamicFlowWorkspace({
       </div>
       )}
 
-      <div className={`grid min-h-0 flex-1 ${
+      <div className={`grid min-h-0 flex-1 xl:h-full xl:overflow-hidden ${
  libraryVisible && inspectorVisible
  ? 'xl:grid-cols-[276px_minmax(520px,1fr)_318px]'
  : libraryVisible
@@ -1315,7 +1649,7 @@ export default function DynamicFlowWorkspace({
  : 'xl:grid-cols-1'
  }`}>
         {libraryVisible && (
-          <aside className="border-b border-slate-200 bg-white p-4 xl:border-b-0 xl:border-r">
+          <aside className="sidebar-scrollbar min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain border-b border-slate-200 bg-white p-4 xl:h-full xl:max-h-none xl:border-b-0 xl:border-r">
           <div className="flex items-center gap-2">
             <h2 className="type-card-title-sm min-w-0 flex-1 text-slate-950">{copy.builder.moduleLibrary}</h2>
             <button
@@ -1341,7 +1675,7 @@ export default function DynamicFlowWorkspace({
             />
           </label>
 
-          <div className="sidebar-scrollbar mt-5 max-h-[calc(100vh-270px)] space-y-5 overflow-y-auto pr-1">
+          <div className="mt-5 space-y-5 pr-1">
             <div>
               <p className="type-label-compact px-1 font-bold uppercase text-slate-400">{copy.builder.controlCategory}</p>
               <button
@@ -1444,7 +1778,7 @@ export default function DynamicFlowWorkspace({
         </aside>
         )}
 
-        <section ref={canvasSectionRef} className="relative min-h-[620px] bg-[#F8FAFC]">
+        <section ref={canvasSectionRef} className="relative min-h-[620px] bg-[#F8FAFC] xl:h-full xl:min-h-0">
           <div className="absolute left-4 top-4 z-10">
             <div className={`type-label-compact inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-2 font-bold shadow-sm ${
  validationIssues.length === 0
@@ -1498,6 +1832,7 @@ export default function DynamicFlowWorkspace({
             nodes={nodes}
             edges={edges}
             nodeTypes={NODE_TYPES}
+            edgeTypes={EDGE_TYPES}
             onInit={setFlowInstance}
             onNodesChange={onNodesChange}
             onEdgesChange={handleEdgeChanges}
@@ -1534,7 +1869,7 @@ export default function DynamicFlowWorkspace({
               'minimap.ariaLabel': copy.builder.minimapLabel,
               'handle.ariaLabel': copy.builder.connectionHandle,
             }}
-            defaultEdgeOptions={{ type: 'smoothstep' }}
+            defaultEdgeOptions={{ type: 'flowConnection' }}
             connectionLineStyle={{ stroke: '#354CE1', strokeWidth: 2 }}
             proOptions={{ hideAttribution: true }}
           >
@@ -1552,9 +1887,11 @@ export default function DynamicFlowWorkspace({
         </section>
 
         {inspectorVisible && (
-          <aside id="flow-node-inspector" className="border-t border-slate-200 bg-white p-4 xl:border-l xl:border-t-0">
+          <aside id="flow-node-inspector" className="sidebar-scrollbar min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain border-t border-slate-200 bg-white p-4 xl:h-full xl:max-h-none xl:border-l xl:border-t-0">
           <div className="flex items-center gap-2">
-            <h2 className="type-card-title-sm min-w-0 flex-1 text-slate-950">{copy.builder.inspector}</h2>
+            <h2 className="type-card-title-sm min-w-0 flex-1 text-slate-950">
+              {selectedEdge ? copy.builder.edgeInspector : copy.builder.inspector}
+            </h2>
             <button
               type="button"
               aria-label={copy.hideRightPanel}
@@ -1600,12 +1937,121 @@ export default function DynamicFlowWorkspace({
 
               <button
                 type="button"
+                onClick={() => toggleBreakpoint(selectedNode.id)}
+                className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border px-3 py-2.5 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${
+                  breakpointNodeIds.includes(selectedNode.id)
+                    ? 'border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 focus-visible:ring-rose-500'
+                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 focus-visible:ring-[#354CE1]'
+                }`}
+              >
+                <CircleDot className="h-3.5 w-3.5" />
+                {breakpointNodeIds.includes(selectedNode.id)
+                  ? copy.debugger.removeBreakpoint
+                  : copy.debugger.addBreakpoint}
+              </button>
+              <button
+                type="button"
                 onClick={removeSelectedNode}
                 disabled={selectedNode.kind === 'start' || selectedNode.kind === 'terminal'}
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 px-3 py-2.5 text-xs font-bold text-rose-600 hover:bg-rose-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-300"
               >
                 <Trash2 className="h-3.5 w-3.5" />
                 {copy.builder.removeNode}
+              </button>
+            </div>
+          ) : selectedEdge && selectedEdgeSource && selectedEdgeTarget ? (
+            <div className="mt-4 space-y-4">
+              <div className="rounded-xl border border-[#DDE1FF] bg-[#F8F9FF] p-3">
+                <p className="type-body-sm leading-5 text-slate-600">
+                  {copy.builder.edgeInspectorDescription}
+                </p>
+              </div>
+
+              <dl className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <div>
+                  <dt className="type-label-compact font-bold uppercase text-slate-400">
+                    {copy.builder.edgeSource}
+                  </dt>
+                  <dd className="mt-1 text-xs font-bold text-slate-900">
+                    {nodeTitle(
+                      selectedEdgeSource,
+                      copy,
+                      workspace.moduleCatalog,
+                      workspace.subflowCatalog,
+                    )}
+                  </dd>
+                </div>
+                <div className="border-t border-slate-200 pt-3">
+                  <dt className="type-label-compact font-bold uppercase text-slate-400">
+                    {copy.builder.edgeTarget}
+                  </dt>
+                  <dd className="mt-1 text-xs font-bold text-slate-900">
+                    {nodeTitle(
+                      selectedEdgeTarget,
+                      copy,
+                      workspace.moduleCatalog,
+                      workspace.subflowCatalog,
+                    )}
+                  </dd>
+                </div>
+              </dl>
+
+              <label className="block">
+                <span className="type-label-compact font-bold uppercase text-slate-500">
+                  {copy.builder.edgeOutcome}
+                </span>
+                <select
+                  value={selectedEdge.outcome}
+                  onChange={(event) => {
+                    const outcome = event.target.value as OutcomeId;
+                    if (outcomesUsedBySiblingEdges.has(outcome)) return;
+                    commitFlow({
+                      ...history.present,
+                      edges: history.present.edges.map((edge) => edge.id === selectedEdge.id
+                        ? { ...edge, outcome }
+                        : edge),
+                    });
+                  }}
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-[#354CE1] focus:ring-2 focus:ring-[#354CE1]/10"
+                >
+                  {selectedEdgeOutcomes.map((outcome) => (
+                    <option
+                      key={outcome}
+                      value={outcome}
+                      disabled={outcomesUsedBySiblingEdges.has(outcome)}
+                    >
+                      {copy.outcomes[outcome as keyof typeof copy.outcomes] ?? outcome}
+                      {outcomesUsedBySiblingEdges.has(outcome)
+                        ? ` — ${copy.builder.edgeOutcomeInUse}`
+                        : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <button
+                type="button"
+                onClick={() => openQuickInsert(selectedEdge.id)}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#354CE1] px-3 py-2.5 text-xs font-bold text-white hover:bg-[#2739B8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
+              >
+                <Plus className="h-3.5 w-3.5" />
+                {copy.builder.quickInsert}
+              </button>
+              <button
+                type="button"
+                onClick={() => fitNodeIds([selectedEdge.source, selectedEdge.target])}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+              >
+                <Network className="h-3.5 w-3.5" />
+                {copy.builder.focusConnection}
+              </button>
+              <button
+                type="button"
+                onClick={() => deleteSelection([], [selectedEdge.id])}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-rose-200 px-3 py-2.5 text-xs font-bold text-rose-600 hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+                {copy.builder.removeConnection}
               </button>
             </div>
           ) : (
@@ -1714,6 +2160,24 @@ export default function DynamicFlowWorkspace({
               <button
                 type="button"
                 role="menuitem"
+                onClick={() => {
+                  toggleBreakpoint(contextNode.id);
+                  setContextMenu(null);
+                }}
+                className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+              >
+                <CircleDot className={`h-4 w-4 ${
+                  breakpointNodeIds.includes(contextNode.id)
+                    ? 'text-rose-500'
+                    : 'text-slate-400'
+                }`} />
+                {breakpointNodeIds.includes(contextNode.id)
+                  ? copy.debugger.removeBreakpoint
+                  : copy.debugger.addBreakpoint}
+              </button>
+              <button
+                type="button"
+                role="menuitem"
                 disabled={contextNode.kind === 'start' || contextNode.kind === 'terminal'}
                 onClick={() => {
                   duplicateSelection();
@@ -1748,6 +2212,15 @@ export default function DynamicFlowWorkspace({
               <button
                 type="button"
                 role="menuitem"
+                onClick={() => openQuickInsert(contextEdge.id)}
+                className="flex w-full items-center gap-2.5 rounded-xl px-2 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+              >
+                <Plus className="h-4 w-4 text-[#354CE1]" />
+                {copy.builder.quickInsert}
+              </button>
+              <button
+                type="button"
+                role="menuitem"
                 onClick={() => {
                   fitNodeIds([contextEdge.source, contextEdge.target]);
                   setContextMenu(null);
@@ -1775,6 +2248,129 @@ export default function DynamicFlowWorkspace({
         </div>
       ) : null}
 
+      {quickInsertEdgeId && (
+        <div className="fixed inset-0 z-[95] flex items-center justify-center p-4">
+          <button
+            type="button"
+            aria-label={copy.close}
+            onClick={() => setQuickInsertEdgeId(null)}
+            className="absolute inset-0 bg-slate-950/40 backdrop-blur-sm"
+          />
+          <div
+            ref={quickInsertDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quick-insert-title"
+            tabIndex={-1}
+            className="relative flex max-h-[86vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl"
+          >
+            <div className="border-b border-slate-200 p-5 sm:p-6">
+              <button
+                type="button"
+                aria-label={copy.close}
+                onClick={() => setQuickInsertEdgeId(null)}
+                className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+              >
+                <X className="h-4 w-4" />
+              </button>
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#354CE1]">
+                <Plus className="h-5 w-5" />
+              </span>
+              <h2 id="quick-insert-title" className="type-card-title-sm mt-4 text-slate-950">
+                {copy.builder.quickInsert}
+              </h2>
+              <p className="type-body-sm mt-1 leading-5 text-slate-500">
+                {copy.builder.quickInsertDescription}
+              </p>
+              <label className="relative mt-4 block">
+                <span className="sr-only">{copy.builder.searchModules}</span>
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="search"
+                  autoFocus
+                  value={quickInsertSearch}
+                  onChange={(event) => setQuickInsertSearch(event.target.value)}
+                  placeholder={copy.builder.searchModules}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-3 text-xs outline-none focus:border-[#354CE1] focus:bg-white focus:ring-2 focus:ring-[#354CE1]/10"
+                />
+              </label>
+            </div>
+
+            <div className="sidebar-scrollbar grid gap-2 overflow-y-auto p-4 sm:grid-cols-2 sm:p-6">
+              {(
+                !quickInsertSearch.trim()
+                || copy.builder.conditionName.toLocaleLowerCase()
+                  .includes(quickInsertSearch.trim().toLocaleLowerCase())
+              ) && (
+                <button
+                  type="button"
+                  onClick={quickInsertCondition}
+                  className="flex items-start gap-3 rounded-xl border border-violet-100 bg-violet-50/60 p-3 text-left transition hover:border-violet-300 hover:bg-violet-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-violet-600 shadow-sm">
+                    <GitBranch className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs font-bold text-slate-900">
+                      {copy.builder.conditionName}
+                    </span>
+                    <span className="type-caption mt-1 line-clamp-2 block leading-4 text-slate-500">
+                      {copy.builder.conditionDescription}
+                    </span>
+                  </span>
+                </button>
+              )}
+              {quickInsertBuiltIns.map((moduleId) => {
+                const Icon = MODULE_ICONS[moduleId];
+                const moduleCopy = copy.modules[moduleId];
+                return (
+                  <button
+                    key={moduleId}
+                    type="button"
+                    onClick={() => quickInsertModule(moduleId)}
+                    className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-indigo-300 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+                  >
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#EEF0FF] text-[#354CE1]">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-xs font-bold text-slate-900">
+                        {moduleCopy.name}
+                      </span>
+                      <span className="type-caption mt-1 line-clamp-2 block leading-4 text-slate-500">
+                        {moduleCopy.description}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+              {quickInsertCustomModules.map((module) => (
+                <button
+                  key={module.id}
+                  type="button"
+                  onClick={() => quickInsertModule(module.id)}
+                  className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50/50 p-3 text-left transition hover:border-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                >
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-emerald-600">
+                    <Braces className="h-4 w-4" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block truncate text-xs font-bold text-slate-900">
+                      {module.name}
+                    </span>
+                    <span className="type-caption mt-1 line-clamp-2 block leading-4 text-slate-500">
+                      {module.versions
+                        .find((version) => version.version === module.activeVersion)
+                        ?.definition?.description ?? copy.builder.customModuleDescription}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {notice && (
         <div role="status" className="fixed bottom-5 left-1/2 z-[80] -translate-x-1/2 rounded-xl bg-slate-950 px-4 py-3 text-xs font-bold text-white shadow-2xl">
           {notice}
@@ -1789,16 +2385,20 @@ export default function DynamicFlowWorkspace({
             role="dialog"
             aria-modal="true"
             tabIndex={-1}
-            className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl sm:p-7"
+            className="relative max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl sm:p-7"
           >
             <button type="button" aria-label={copy.close} onClick={() => setSimulatorOpen(false)} className="absolute right-4 top-4 rounded-lg p-2 text-slate-400 hover:bg-slate-100">
               <X className="h-4 w-4" />
             </button>
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#EEF0FF] text-[#354CE1]">
-              <Play className="h-5 w-5" />
+              <Bug className="h-5 w-5" />
             </span>
-            <h2 className="type-card-title-sm type-document-heading mt-4 text-slate-950">{copy.builder.simulatorTitle}</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-500">{copy.builder.simulatorDescription}</p>
+            <h2 className="type-card-title-sm type-document-heading mt-4 text-slate-950">
+              {copy.debugger.title}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              {copy.debugger.description}
+            </p>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {history.present.nodes
@@ -1808,87 +2408,251 @@ export default function DynamicFlowWorkspace({
                     (outcome) => outcome !== 'next',
                   );
                   return (
-                    <label key={node.id} className="rounded-xl border border-slate-200 p-3">
-                      <span className="type-label-compact block font-bold text-slate-500">
-                        {copy.builder.outcomeFor}{' '}
-                        {nodeTitle(node, copy, workspace.moduleCatalog, workspace.subflowCatalog)}
-                      </span>
-                      <select
-                        value={simulatorOutcomes[node.id] ?? outcomes[0]}
-                        onChange={(event) => setSimulatorOutcomes((current) => ({
-                          ...current,
-                          [node.id]: event.target.value as OutcomeId,
-                        }))}
-                        className="mt-2 w-full rounded-lg border border-slate-200 px-2.5 py-2 text-xs font-semibold outline-none focus:border-[#354CE1]"
-                      >
-                        {outcomes.map((outcome) => (
-                          <option key={outcome} value={outcome}>
-                            {copy.outcomes[outcome as keyof typeof copy.outcomes] ?? outcome}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
+                    <div key={node.id} className="rounded-xl border border-slate-200 p-3">
+                      <div className="flex items-start gap-2">
+                        <p className="type-label-compact min-w-0 flex-1 font-bold text-slate-500">
+                          {copy.builder.outcomeFor}{' '}
+                          {nodeTitle(node, copy, workspace.moduleCatalog, workspace.subflowCatalog)}
+                        </p>
+                        <button
+                          type="button"
+                          aria-label={breakpointNodeIds.includes(node.id)
+                            ? copy.debugger.removeBreakpoint
+                            : copy.debugger.addBreakpoint}
+                          title={breakpointNodeIds.includes(node.id)
+                            ? copy.debugger.removeBreakpoint
+                            : copy.debugger.addBreakpoint}
+                          onClick={() => toggleBreakpoint(node.id)}
+                          className={`rounded-lg p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
+                            breakpointNodeIds.includes(node.id)
+                              ? 'bg-rose-50 text-rose-500'
+                              : 'text-slate-400 hover:bg-slate-100 hover:text-rose-500'
+                          }`}
+                        >
+                          <CircleDot className="h-4 w-4" />
+                        </button>
+                      </div>
+                      <label className="mt-2 block">
+                        <span className="sr-only">
+                          {copy.builder.outcomeFor}{' '}
+                          {nodeTitle(node, copy, workspace.moduleCatalog, workspace.subflowCatalog)}
+                        </span>
+                        <select
+                          value={simulatorOutcomes[node.id] ?? outcomes[0]}
+                          onChange={(event) => setSimulatorOutcomes((current) => ({
+                            ...current,
+                            [node.id]: event.target.value as OutcomeId,
+                          }))}
+                          className="w-full rounded-lg border border-slate-200 px-2.5 py-2 text-xs font-semibold outline-none focus:border-[#354CE1]"
+                        >
+                          {outcomes.map((outcome) => (
+                            <option key={outcome} value={outcome}>
+                              {copy.outcomes[outcome as keyof typeof copy.outcomes] ?? outcome}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
                   );
                 })}
             </div>
+            <p className="type-caption mt-3 leading-5 text-slate-500">
+              {copy.debugger.breakpointHint}
+            </p>
 
             <button
               type="button"
               onClick={runSimulation}
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#354CE1] px-4 py-3 text-sm font-bold text-white hover:bg-[#2739B8]"
             >
-              <Play className="h-4 w-4" />
-              {copy.builder.runSimulation}
+              <Bug className="h-4 w-4" />
+              {copy.debugger.start}
             </button>
 
-            <div className="mt-6 rounded-2xl bg-slate-950 p-4 text-white">
-              <p className="type-label-compact font-bold uppercase text-slate-400">{copy.builder.executionPath}</p>
-              {simulation ? (
-                <>
-                  <div className="mt-4 space-y-2">
-                    {simulation.steps.map((step, index) => {
-                      const node = history.present.nodes.find((candidate) => candidate.id === step.nodeId);
-                      return (
-                        <div key={`${step.nodeId}-${index}`} className="flex items-center gap-3">
-                          <span className="type-label-compact flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/10 font-bold">{index + 1}</span>
-                          <span className="min-w-0 flex-1 truncate text-xs font-semibold">
-                            {node
-                              ? nodeTitle(
-                                  node,
-                                  copy,
-                                  workspace.moduleCatalog,
-                                  workspace.subflowCatalog,
-                                )
-                              : step.nodeId}
-                          </span>
-                          {step.outcome && (
-                            <span className="type-label-compact font-bold text-[#AAB3FF]">
-                              {copy.outcomes[step.outcome as keyof typeof copy.outcomes]
-                                ?? step.outcome}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
+            {simulation && debuggerSession ? (
+              <div className="mt-6">
+                <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+                  <div className={`mr-auto inline-flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-bold ${
+                    debuggerSession.status === 'completed'
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : debuggerSession.pauseReason === 'breakpoint'
+                        ? 'bg-rose-100 text-rose-700'
+                        : 'bg-amber-100 text-amber-700'
+                  }`}>
+                    {debuggerSession.status === 'completed'
+                      ? <Check className="h-3.5 w-3.5" />
+                      : <Pause className="h-3.5 w-3.5" />}
+                    {debuggerSession.status === 'completed'
+                      ? copy.debugger.completed
+                      : debuggerSession.pauseReason === 'breakpoint'
+                        ? copy.debugger.pausedAtBreakpoint
+                        : debuggerSession.pauseReason === 'step'
+                          ? copy.debugger.pausedAfterStep
+                          : copy.debugger.pausedAtEntry}
                   </div>
-                  <p className={`mt-4 rounded-xl px-3 py-2.5 text-xs font-bold ${
- simulation.completed
- ? simulation.terminalOutcome === 'success'
- ? 'bg-emerald-500/15 text-emerald-300'
- : 'bg-rose-500/15 text-rose-300'
- : 'bg-amber-500/15 text-amber-300'
- }`}>
-                    {simulation.completed
-                      ? simulation.terminalOutcome === 'success'
-                        ? copy.builder.completedSuccess
-                        : copy.builder.completedFailure
-                      : copy.builder.incompleteSimulation}
-                  </p>
-                </>
-              ) : (
-                <p className="mt-3 text-xs text-slate-400">{copy.builder.noSimulation}</p>
-              )}
-            </div>
+                  <button
+                    type="button"
+                    onClick={continueDebugger}
+                    disabled={debuggerSession.status === 'completed'}
+                    className="inline-flex items-center gap-2 rounded-xl bg-[#354CE1] px-3 py-2 text-xs font-bold text-white hover:bg-[#2739B8] disabled:cursor-not-allowed disabled:bg-slate-300"
+                  >
+                    <Play className="h-3.5 w-3.5" />
+                    {copy.debugger.continue}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={stepDebugger}
+                    disabled={debuggerSession.status === 'completed'}
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-300"
+                  >
+                    <StepForward className="h-3.5 w-3.5" />
+                    {copy.debugger.step}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={restartDebugger}
+                    className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    {copy.debugger.restart}
+                  </button>
+                </div>
+
+                <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+                  <div className="rounded-2xl bg-slate-950 p-4 text-white">
+                    <p className="type-label-compact font-bold uppercase text-slate-400">
+                      {copy.builder.executionPath}
+                    </p>
+                    <div className="mt-4 space-y-2">
+                      {revealedSimulationSteps.map((step, index) => {
+                        const node = history.present.nodes.find(
+                          (candidate) => candidate.id === step.nodeId,
+                        );
+                        const active = debuggerSession.activeStepIndex === index;
+                        const inspected = inspectedStepIndex === index;
+                        return (
+                          <button
+                            key={`${step.nodeId}-${index}`}
+                            type="button"
+                            onClick={() => setInspectedStepIndex(index)}
+                            className={`flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#AAB3FF] ${
+                              inspected
+                                ? 'bg-white/15'
+                                : 'hover:bg-white/10'
+                            }`}
+                          >
+                            <span className={`type-label-compact flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-bold ${
+                              active ? 'bg-amber-400 text-slate-950' : 'bg-white/10'
+                            }`}>
+                              {index + 1}
+                            </span>
+                            <span className="min-w-0 flex-1 truncate text-xs font-semibold">
+                              {node
+                                ? nodeTitle(
+                                    node,
+                                    copy,
+                                    workspace.moduleCatalog,
+                                    workspace.subflowCatalog,
+                                  )
+                                : step.nodeId}
+                            </span>
+                            {breakpointNodeIds.includes(step.nodeId) && (
+                              <CircleDot className="h-3.5 w-3.5 shrink-0 text-rose-400" />
+                            )}
+                            {step.outcome && (
+                              <span className="type-label-compact shrink-0 font-bold text-[#AAB3FF]">
+                                {copy.outcomes[step.outcome as keyof typeof copy.outcomes]
+                                  ?? step.outcome}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {debuggerSession.status === 'completed' && (
+                      <p className={`mt-4 rounded-xl px-3 py-2.5 text-xs font-bold ${
+                        simulation.completed
+                          ? simulation.terminalOutcome === 'success'
+                            ? 'bg-emerald-500/15 text-emerald-300'
+                            : 'bg-rose-500/15 text-rose-300'
+                          : 'bg-amber-500/15 text-amber-300'
+                      }`}>
+                        {simulation.completed
+                          ? simulation.terminalOutcome === 'success'
+                            ? copy.builder.completedSuccess
+                            : copy.builder.completedFailure
+                          : copy.builder.incompleteSimulation}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+                    <p className="type-label-compact font-bold uppercase text-[#354CE1]">
+                      {copy.debugger.explanation}
+                    </p>
+                    {executionExplanation ? (
+                      <div className="mt-4 space-y-4">
+                        <p className="type-body-sm rounded-xl bg-[#F8F9FF] p-3 leading-6 text-slate-700">
+                          {copy.debugger.reasons[executionExplanation.reason]}
+                        </p>
+                        {executionExplanation.step.outcome && (
+                          <div>
+                            <p className="type-label-compact font-bold uppercase text-slate-400">
+                              {copy.debugger.chosenOutcome}
+                            </p>
+                            <p className="mt-1 text-sm font-bold text-slate-950">
+                              {copy.outcomes[
+                                executionExplanation.step.outcome as keyof typeof copy.outcomes
+                              ] ?? executionExplanation.step.outcome}
+                            </p>
+                          </div>
+                        )}
+                        {explanationTargetNode ? (
+                          <div>
+                            <p className="type-label-compact font-bold uppercase text-slate-400">
+                              {copy.debugger.selectedConnection}
+                            </p>
+                            <p className="mt-1 text-sm font-bold text-slate-950">
+                              {nodeTitle(
+                                explanationTargetNode,
+                                copy,
+                                workspace.moduleCatalog,
+                                workspace.subflowCatalog,
+                              )}
+                            </p>
+                          </div>
+                        ) : !executionExplanation.hasMatchingConnection ? (
+                          <p className="type-body-sm rounded-xl border border-amber-200 bg-amber-50 p-3 leading-5 text-amber-800">
+                            {copy.debugger.noMatchingConnection}
+                          </p>
+                        ) : null}
+                        {executionExplanation.metadata && (
+                          <details className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                            <summary className="type-label-compact cursor-pointer font-bold uppercase text-slate-500">
+                              {copy.debugger.metadata}
+                            </summary>
+                            <pre className="type-technical mt-3 max-h-48 overflow-auto whitespace-pre-wrap break-words font-mono leading-5 text-slate-600">
+                              {JSON.stringify(executionExplanation.metadata, null, 2)}
+                            </pre>
+                          </details>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="type-body-sm mt-4 leading-5 text-slate-400">
+                        {copy.builder.noSimulation}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-6 rounded-2xl border border-dashed border-slate-200 p-6 text-center">
+                <Bug className="mx-auto h-6 w-6 text-slate-300" />
+                <p className="type-body-sm mt-3 text-slate-400">
+                  {copy.builder.noSimulation}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -2006,6 +2770,17 @@ export default function DynamicFlowWorkspace({
         </div>
       )}
 
+      <FlowInsightsDialog
+        open={insightsOpen}
+        copy={copy}
+        project={{ ...project, flow: history.present }}
+        workspace={workspace}
+        onClose={() => setInsightsOpen(false)}
+        onFocusNode={(nodeId) => {
+          selectOnlyNode(nodeId);
+          window.requestAnimationFrame(() => fitNodeIds([nodeId]));
+        }}
+      />
       <ScenarioSuiteDialog
         open={scenarioSuiteOpen}
         copy={copy}

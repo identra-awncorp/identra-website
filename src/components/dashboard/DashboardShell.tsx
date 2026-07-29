@@ -210,7 +210,7 @@ export default function DashboardShell({
   return (
     <div className="min-h-screen bg-[#F5F7FB] font-sans text-slate-800 antialiased">
       {navigationVisible && (
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-slate-200/80 bg-white lg:flex">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden min-h-0 w-[248px] flex-col overflow-hidden border-r border-slate-200/80 bg-white lg:flex">
           <div className="flex h-[72px] items-center gap-2 border-b border-slate-100 px-3">
             <button
               type="button"
@@ -234,7 +234,7 @@ export default function DashboardShell({
             </button>
           </div>
           {workspaceContext}
-          <nav className="sidebar-scrollbar flex-1 overflow-y-auto px-3 py-5">
+          <nav className="sidebar-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-5">
             {navigation}
           </nav>
           {sidebarUtilities}
@@ -254,7 +254,7 @@ export default function DashboardShell({
             role="dialog"
             aria-modal="true"
             aria-label={copy.platformToolsLabel}
-            className="relative flex h-full w-[286px] flex-col bg-white shadow-2xl"
+            className="relative flex h-full min-h-0 w-[286px] flex-col overflow-hidden bg-white shadow-2xl"
           >
             <div className="flex h-[72px] items-center justify-between border-b border-slate-100 px-4">
               <div className="flex items-center gap-3">
@@ -271,7 +271,7 @@ export default function DashboardShell({
               </button>
             </div>
             {workspaceContext}
-            <nav className="flex-1 overflow-y-auto px-3 py-5">{navigation}</nav>
+            <nav className="sidebar-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-5">{navigation}</nav>
             {sidebarUtilities}
           </aside>
         </div>

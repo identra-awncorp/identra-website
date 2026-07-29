@@ -660,8 +660,8 @@ export default function ScenarioSuiteDialog({
           </button>
         </header>
 
-        <div className="grid min-h-0 flex-1 lg:grid-cols-[270px_minmax(0,1fr)_300px]">
-          <aside className="min-h-0 overflow-y-auto border-b border-slate-200 bg-slate-50/80 p-3 lg:border-b-0 lg:border-r">
+        <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[270px_minmax(0,1fr)_300px]">
+          <aside className="sidebar-scrollbar min-h-0 overflow-y-auto overscroll-contain border-b border-slate-200 bg-slate-50/80 p-3 lg:border-b-0 lg:border-r">
             {project.scenarios.length > 0 ? (
               <div className="space-y-2">
                 {project.scenarios.map((scenario) => {
@@ -1215,7 +1215,7 @@ export default function ScenarioSuiteDialog({
 
           <aside
             aria-label={advancedCopy.aria.scenarioResults}
-            className="min-h-0 overflow-y-auto border-t border-slate-200 bg-slate-50/80 p-4 lg:border-l lg:border-t-0"
+            className="sidebar-scrollbar min-h-0 overflow-y-auto overscroll-contain border-t border-slate-200 bg-slate-50/80 p-4 lg:border-l lg:border-t-0"
           >
             <section>
               <p className="type-label-compact font-bold uppercase text-slate-500">

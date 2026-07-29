@@ -438,6 +438,7 @@ const migrateModuleVersion = (
       { id: 'failure', terminal: false },
     ],
     uiCapabilities: {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -635,6 +636,7 @@ const migrateInterface = (
     enabledLocales: [locale],
     contentLocaleReviewRequired: hasOverrides,
     layout: manifest.layout,
+    responsiveOverrides: {},
     theme: {
       ...structuredClone(DEFAULT_SEMANTIC_THEME),
       light: {
@@ -676,6 +678,7 @@ const migrateProject = (
   description: project.description ?? '',
   createdAt: project.createdAt,
   updatedAt: project.updatedAt,
+  visualRegressionBaselines: [],
   flow: migrateFlow(project.flow, modulePackages),
   interface: migrateInterface(project.interface, locale),
   scenarios: [],

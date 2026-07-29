@@ -174,6 +174,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
 
   assert.deepEqual(capabilities, {
     'citizen-id': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -182,6 +183,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'driver-license': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -190,6 +192,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'health-insurance': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'permission', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: true,
       supportsCredentialRequest: true,
@@ -198,6 +201,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'phone-verification': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -206,6 +210,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'nfc-scan': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'permission', 'capture', 'processing', 'success', 'error', 'retry'],
       supportsConsent: true,
       supportsCredentialRequest: false,
@@ -214,6 +219,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: true,
     },
     'education-issuer': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -222,6 +228,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'education-trust-framework': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'input', 'processing', 'success', 'error', 'retry'],
       supportsConsent: false,
       supportsCredentialRequest: true,
@@ -230,6 +237,7 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: false,
     },
     'face-liveness': {
+      requiresUserInteraction: true,
       supportedStates: ['intro', 'permission', 'capture', 'processing', 'success', 'error', 'retry'],
       supportsConsent: true,
       supportsCredentialRequest: false,
@@ -238,26 +246,20 @@ test('built-in module contracts expose stable interface capabilities', () => {
       supportsCapture: true,
     },
     'face-data-match': {
-      supportedStates: ['intro', 'processing', 'success', 'error', 'retry'],
+      requiresUserInteraction: false,
+      supportedStates: [],
       supportsConsent: false,
       supportsCredentialRequest: false,
-      supportsFieldSummary: true,
+      supportsFieldSummary: false,
       supportsDevicePermission: false,
       supportsCapture: false,
     },
     'database-cross-check': {
-      supportedStates: [
-        'intro',
-        'processing',
-        'matched',
-        'notMatched',
-        'inconclusive',
-        'sourceUnavailable',
-        'retry',
-      ],
+      requiresUserInteraction: false,
+      supportedStates: [],
       supportsConsent: false,
       supportsCredentialRequest: false,
-      supportsFieldSummary: true,
+      supportsFieldSummary: false,
       supportsDevicePermission: false,
       supportsCapture: false,
     },

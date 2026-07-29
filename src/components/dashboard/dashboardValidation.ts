@@ -652,6 +652,33 @@ const isLocalizedContentShape = (value: unknown): boolean =>
     ([locale, content]) => isLocale(locale) && isString(content),
   );
 
+const isDynamicContentBindingShape = (value: unknown): boolean => {
+  if (
+    !isRecord(value)
+    || !hasOnlyKeys(value, ['source'])
+    || !isRecord(value.source)
+  ) {
+    return false;
+  }
+  if (value.source.kind === 'flowInput') {
+    return hasOnlyKeys(value.source, ['kind', 'fieldId'])
+      && isString(value.source.fieldId);
+  }
+  if (value.source.kind === 'nodeOutput') {
+    return hasOnlyKeys(value.source, ['kind', 'nodeId', 'fieldId'])
+      && isString(value.source.nodeId)
+      && isString(value.source.fieldId);
+  }
+  return value.source.kind === 'system'
+    && hasOnlyKeys(value.source, ['kind', 'fieldId'])
+    && isOneOf(value.source.fieldId, [
+      'flowName',
+      'currentStep',
+      'totalSteps',
+      'outcome',
+    ]);
+};
+
 const isInterfaceBlockStorageShape = (
   value: unknown,
 ): value is InterfaceBlock => {
@@ -669,10 +696,21 @@ const isInterfaceBlockStorageShape = (
         || !isConditionGroupStorageShape(value.visibility.condition)
       )
     )
+    || (
+      value.contentBinding !== undefined
+      && !isDynamicContentBindingShape(value.contentBinding)
+    )
   ) {
     return false;
   }
-  const base = ['id', 'kind', 'hidden', 'required', 'visibility'];
+  const base = [
+    'id',
+    'kind',
+    'hidden',
+    'required',
+    'visibility',
+    'contentBinding',
+  ];
   if (value.kind === 'heading') {
     return hasOnlyKeys(value, [...base, 'level', 'content'])
       && isOneOf(value.level, [1, 2, 3])
@@ -814,6 +852,56 @@ const isSafeAreaShape = (value: unknown): boolean =>
   && hasOnlyKeys(value, ['top', 'right', 'bottom', 'left'])
   && Object.values(value).every(isFiniteNumber);
 
+const isResponsiveOverrideShape = (value: unknown): boolean =>
+  isRecord(value)
+  && hasOnlyKeys(value, [
+    'layout',
+    'spacingScale',
+    'borderRadius',
+    'headingScale',
+    'bodyScale',
+  ])
+  && (
+    value.layout === undefined
+    || isOneOf(value.layout, ['card', 'split', 'fullscreen'])
+  )
+  && (
+    value.spacingScale === undefined
+    || isFiniteNumber(value.spacingScale)
+  )
+  && (
+    value.borderRadius === undefined
+    || isFiniteNumber(value.borderRadius)
+  )
+  && (
+    value.headingScale === undefined
+    || isFiniteNumber(value.headingScale)
+  )
+  && (
+    value.bodyScale === undefined
+    || isFiniteNumber(value.bodyScale)
+  );
+
+const isResponsiveOverridesShape = (value: unknown): boolean =>
+  isRecord(value)
+  && hasOnlyKeys(value, ['mobile', 'tablet', 'desktop'])
+  && Object.values(value).every(isResponsiveOverrideShape);
+
+const isImportedDesignSystemShape = (value: unknown): boolean =>
+  isRecord(value)
+  && hasOnlyKeys(value, [
+    'name',
+    'version',
+    'format',
+    'importedAt',
+    'sourceHash',
+  ])
+  && isString(value.name)
+  && isString(value.version)
+  && value.format === 'identra-design-system-v1'
+  && isString(value.importedAt)
+  && isString(value.sourceHash);
+
 const isInterfaceStorageShape = (
   value: unknown,
 ): value is InterfaceManifestV2 => {
@@ -825,6 +913,8 @@ const isInterfaceStorageShape = (
       'enabledLocales',
       'contentLocaleReviewRequired',
       'layout',
+      'responsiveOverrides',
+      'designSystem',
       'theme',
       'screens',
       'orphanedScreens',
@@ -838,6 +928,14 @@ const isInterfaceStorageShape = (
     )
     || !isBoolean(value.contentLocaleReviewRequired)
     || !isOneOf(value.layout, ['card', 'split', 'fullscreen'])
+    || (
+      value.responsiveOverrides !== undefined
+      && !isResponsiveOverridesShape(value.responsiveOverrides)
+    )
+    || (
+      value.designSystem !== undefined
+      && !isImportedDesignSystemShape(value.designSystem)
+    )
     || !isRecord(value.theme)
     || !hasOnlyKeys(value.theme, [
       'light',
@@ -1003,6 +1101,39 @@ const isIntegrationStorageShape = (value: unknown): boolean =>
   && isStringArray(value.resultFieldIds)
   && value.includePii === false;
 
+const isVisualRegressionSnapshotShape = (value: unknown): boolean =>
+  isRecord(value)
+  && hasOnlyKeys(value, [
+    'signature',
+    'layoutSignature',
+    'themeSignature',
+    'structureSignature',
+    'contentSignature',
+  ])
+  && Object.values(value).every(isString);
+
+const isVisualRegressionBaselineShape = (value: unknown): boolean =>
+  isRecord(value)
+  && hasOnlyKeys(value, [
+    'id',
+    'capturedAt',
+    'screenId',
+    'variantId',
+    'breakpoint',
+    'themeMode',
+    'locale',
+    'snapshot',
+  ])
+  && isString(value.id)
+  && isString(value.capturedAt)
+  && isString(value.screenId)
+  && isString(value.variantId)
+  && isOneOf(value.breakpoint, ['mobile', 'tablet', 'desktop'])
+  && isOneOf(value.themeMode, ['light', 'dark'])
+  && isString(value.locale)
+  && isLocale(value.locale)
+  && isVisualRegressionSnapshotShape(value.snapshot);
+
 const isProjectContentStorageShape = (
   value: unknown,
 ): value is FlowProjectContentV2 =>
@@ -1026,12 +1157,22 @@ const isProjectStorageShape = (value: unknown): boolean =>
     'interface',
     'scenarios',
     'integration',
+    'visualRegressionBaselines',
   ])
   && isString(value.id)
   && isString(value.name)
   && isString(value.description)
   && isString(value.createdAt)
   && isString(value.updatedAt)
+  && (
+    value.visualRegressionBaselines === undefined
+    || (
+      Array.isArray(value.visualRegressionBaselines)
+      && value.visualRegressionBaselines.every(
+        isVisualRegressionBaselineShape,
+      )
+    )
+  )
   && isProjectContentStorageShape({
     flow: value.flow,
     interface: value.interface,
@@ -1077,6 +1218,7 @@ const isModuleContractStorageShape = (
     && isBoolean(outcome.terminal))
   && isRecord(value.uiCapabilities)
   && hasOnlyKeys(value.uiCapabilities, [
+    'requiresUserInteraction',
     'supportedStates',
     'supportsConsent',
     'supportsCredentialRequest',
@@ -1084,9 +1226,13 @@ const isModuleContractStorageShape = (
     'supportsDevicePermission',
     'supportsCapture',
   ])
+  && (
+    value.uiCapabilities.requiresUserInteraction === undefined
+    || isBoolean(value.uiCapabilities.requiresUserInteraction)
+  )
   && isStringArray(value.uiCapabilities.supportedStates)
   && Object.entries(value.uiCapabilities)
-    .filter(([key]) => key !== 'supportedStates')
+    .filter(([key]) => key !== 'supportedStates' && key !== 'requiresUserInteraction')
     .every(([, item]) => isBoolean(item))
   && isOneOf(value.evidenceGroup, [
     'identity',

@@ -77,13 +77,15 @@ const genericStates = [
 
 const capabilities = (
   supportedStates: readonly InterfaceVariantState[],
+  requiresUserInteraction = true,
 ): ModuleUiCapabilities => ({
-  supportedStates,
-  supportsConsent: supportedStates.includes('permission'),
-  supportsCredentialRequest: supportedStates.includes('input'),
-  supportsFieldSummary: true,
-  supportsDevicePermission: supportedStates.includes('permission'),
-  supportsCapture: supportedStates.includes('capture'),
+  requiresUserInteraction,
+  supportedStates: requiresUserInteraction ? supportedStates : [],
+  supportsConsent: requiresUserInteraction && supportedStates.includes('permission'),
+  supportsCredentialRequest: requiresUserInteraction && supportedStates.includes('input'),
+  supportsFieldSummary: requiresUserInteraction,
+  supportsDevicePermission: requiresUserInteraction && supportedStates.includes('permission'),
+  supportsCapture: requiresUserInteraction && supportedStates.includes('capture'),
 });
 
 const outcomeContracts = (outcomes: readonly OutcomeId[]) =>
@@ -98,6 +100,7 @@ const define = (
   estimatedDurationMs = 8_000,
   outcomes: readonly OutcomeId[] = ['success', 'failure'],
   evidenceGroup: ModuleContract['evidenceGroup'] = 'other',
+  requiresUserInteraction = true,
 ): ModuleContract => ({
   ref: { packageId: id, version: '1' },
   origin: 'builtIn',
@@ -105,7 +108,7 @@ const define = (
   inputFields,
   outputFields,
   outcomes: outcomeContracts(outcomes),
-  uiCapabilities: capabilities(supportedStates),
+  uiCapabilities: capabilities(supportedStates, requiresUserInteraction),
   evidenceGroup,
   estimatedDurationMs,
 });
@@ -237,6 +240,7 @@ export const BUILT_IN_MODULES: Readonly<Record<BuiltInModuleId, ModuleContract>>
     7_000,
     ['success', 'failure'],
     'biometric',
+    false,
   ),
   'database-cross-check': define(
     'database-cross-check',
@@ -257,6 +261,7 @@ export const BUILT_IN_MODULES: Readonly<Record<BuiltInModuleId, ModuleContract>>
     14_000,
     ['matched', 'notMatched', 'inconclusive', 'sourceUnavailable'],
     'risk',
+    false,
   ),
 };
 
@@ -318,3 +323,19 @@ export const isBuiltInModuleId = (value: string): value is BuiltInModuleId =>
 
 export const getBuiltInModuleContract = (moduleId: string): ModuleContract | null =>
   isBuiltInModuleId(moduleId) ? BUILT_IN_MODULES[moduleId] : null;
+
+export const moduleRequiresUserInteraction = (
+  contract: Pick<ModuleContract, 'uiCapabilities'>,
+): boolean => {
+  const capabilities = contract.uiCapabilities;
+  if (capabilities.requiresUserInteraction !== undefined) {
+    return capabilities.requiresUserInteraction;
+  }
+  return capabilities.supportsConsent
+    || capabilities.supportsCredentialRequest
+    || capabilities.supportsDevicePermission
+    || capabilities.supportsCapture
+    || capabilities.supportedStates.some(
+      (state) => state === 'permission' || state === 'input' || state === 'capture',
+    );
+};

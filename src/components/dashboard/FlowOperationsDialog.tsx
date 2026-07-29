@@ -282,6 +282,10 @@ const isModuleContract = (value: unknown): value is ModuleContract => {
         state as typeof INTERFACE_STATES[number],
       ),
     )
+    || (
+      value.uiCapabilities.requiresUserInteraction !== undefined
+      && typeof value.uiCapabilities.requiresUserInteraction !== 'boolean'
+    )
     || typeof value.uiCapabilities.supportsConsent !== 'boolean'
     || typeof value.uiCapabilities.supportsCredentialRequest !== 'boolean'
     || typeof value.uiCapabilities.supportsFieldSummary !== 'boolean'

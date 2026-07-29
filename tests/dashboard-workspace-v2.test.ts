@@ -294,6 +294,74 @@ test('supports CRUD, duplicate, cascading delete, and reload from stable storage
   assert.equal(reloaded.getProject(original.id), null);
 });
 
+test('persists responsive overrides and binding references without runtime values', () => {
+  const { storage, values } = createStorage();
+  const repository = createDashboardWorkspaceRepository(storage, 'vi');
+  const project = createFlowProjectV2('Responsive synthetic flow');
+  const firstScreen = project.interface.screens[0];
+  assert.ok(firstScreen);
+  const firstVariant = firstScreen.variants[0];
+  assert.ok(firstVariant);
+  const firstBlock = firstVariant.blocks[0];
+  assert.ok(firstBlock);
+
+  repository.createProject({
+    ...project,
+    interface: {
+      ...project.interface,
+      responsiveOverrides: {
+        mobile: {
+          layout: 'fullscreen',
+          spacingScale: 0.8,
+          borderRadius: 12,
+          headingScale: 0.9,
+          bodyScale: 0.95,
+        },
+      },
+      screens: project.interface.screens.map((screen, screenIndex) =>
+        screenIndex === 0
+          ? {
+              ...screen,
+              variants: screen.variants.map((variant, variantIndex) =>
+                variantIndex === 0
+                  ? {
+                      ...variant,
+                      blocks: variant.blocks.map((block, blockIndex) =>
+                        blockIndex === 0
+                          ? {
+                              ...block,
+                              contentBinding: {
+                                source: {
+                                  kind: 'system',
+                                  fieldId: 'flowName',
+                                },
+                              },
+                            }
+                          : block),
+                    }
+                  : variant),
+            }
+          : screen),
+    },
+  });
+
+  const reloaded = createDashboardWorkspaceRepository(storage, 'en');
+  const persisted = reloaded.getProject(project.id);
+  assert.equal(persisted?.interface.responsiveOverrides?.mobile?.spacingScale, 0.8);
+  assert.deepEqual(
+    persisted?.interface.screens[0]?.variants[0]?.blocks[0]?.contentBinding,
+    { source: { kind: 'system', fieldId: 'flowName' } },
+  );
+  assert.equal(
+    values.get(DASHBOARD_WORKSPACE_STORAGE_KEY)?.includes('bindingApplied'),
+    false,
+  );
+  assert.equal(
+    values.get(DASHBOARD_WORKSPACE_STORAGE_KEY)?.includes('runtimeValue'),
+    false,
+  );
+});
+
 test('surfaces storage errors and a failed quota write does not mutate memory', () => {
   const readFailure = createStorage({}, { throwOnGet: true });
   const unavailable = createDashboardWorkspaceRepository(readFailure.storage, 'en');

@@ -8,6 +8,7 @@ import {
   BUILT_IN_MODULES,
   getBuiltInModuleContract,
   isBuiltInModuleId,
+  moduleRequiresUserInteraction,
 } from './dashboardModuleRegistry';
 import { reconcileInterfaceStudioManifest } from './interfaceStudioEngine';
 import {
@@ -153,6 +154,7 @@ export const createDefaultInterfaceV2 = (
   enabledLocales: [locale],
   contentLocaleReviewRequired: false,
   layout: 'card',
+  responsiveOverrides: {},
   theme: structuredClone(DEFAULT_SEMANTIC_THEME),
   screens: [
     createStaticScreen('welcome', 'welcome', 'intro', locale, [], defaults.welcome),
@@ -306,6 +308,7 @@ export const createFlowProjectV2 = (
     description,
     createdAt: timestamp,
     updatedAt: timestamp,
+    visualRegressionBaselines: [],
     flow: createDefaultFlowV2(),
     interface: createDefaultInterfaceV2(locale, interfaceDefaults),
     scenarios: [],
@@ -440,10 +443,17 @@ export const createModuleScreenV2 = (
   locale: Locale,
   moduleCatalog: readonly ModulePackage[] = [],
   subflowCatalog: readonly SubflowPackage[] = [],
-): InterfaceScreenV2 => {
+): InterfaceScreenV2 | null => {
   const contract = node.kind === 'verification'
     ? resolveModuleContract(node.moduleRef, moduleCatalog)
     : null;
+  if (
+    node.kind === 'verification'
+    && contract
+    && !moduleRequiresUserInteraction(contract)
+  ) {
+    return null;
+  }
   const fallbackStates: readonly InterfaceVariantState[] = node.kind === 'subflow'
     ? ['intro', 'processing', 'success', 'error']
     : ['default'];

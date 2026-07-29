@@ -5,24 +5,33 @@
 
 import type { Locale } from '../../types/routes';
 import { isConditionOperatorCompatible } from './conditionEngine';
-import { getBuiltInModuleContract } from './dashboardModuleRegistry';
+import {
+  getBuiltInModuleContract,
+  moduleRequiresUserInteraction,
+} from './dashboardModuleRegistry';
 import type {
   AccessibilityIssue,
   AccessibilityIssueCode,
   AccessibilityReport,
   ConditionGroup,
   ConditionOperator,
+  DynamicContentBinding,
+  DynamicContentReference,
+  DynamicFlowManifestV2,
   DynamicFlowNodeV2,
   FlowField,
   FlowFieldType,
   FlowProjectV2,
   IntegrationSettings,
   InterfaceBlock,
+  InterfaceBreakpoint,
+  InterfaceLayout,
   InterfaceManifestV2,
   InterfaceScreenV2,
   InterfaceScreenVariant,
   InterfaceVariantState,
   LocalizedContent,
+  JsonValue,
   ModuleContract,
   ModulePackage,
   OutcomeId,
@@ -122,6 +131,7 @@ const stateForOutcome = (outcome: OutcomeId | undefined): InterfaceVariantState 
 };
 
 type NodeInterfaceContract = {
+  readonly hasUserInterface: boolean;
   readonly states: readonly InterfaceVariantState[];
   readonly outcomes: readonly OutcomeId[];
   readonly dependencyMissing: boolean;
@@ -137,6 +147,7 @@ const interfaceContractForNode = (
 ): NodeInterfaceContract => {
   if (node.kind === 'subflow') {
     return {
+      hasUserInterface: true,
       states: ['intro', 'processing', 'success', 'error'],
       outcomes: ['success', 'failure'],
       dependencyMissing: !resolveSubflow(node, subflowCatalog),
@@ -144,6 +155,7 @@ const interfaceContractForNode = (
   }
   const contract = resolveModuleContract(node, moduleCatalog);
   return {
+    hasUserInterface: contract ? moduleRequiresUserInteraction(contract) : true,
     states: contract
       ? normalizeSupportedStates(contract.uiCapabilities.supportedStates)
       : ['default'],
@@ -156,6 +168,18 @@ const localizedNodeName = (
   node: DynamicFlowNodeV2,
   locale: Locale,
 ): LocalizedContent => node.name ? { [locale]: node.name } : {};
+
+const defaultStatusTone = (
+  state: InterfaceVariantState,
+): Extract<InterfaceBlock, { readonly kind: 'status' }>['tone'] => {
+  if (state === 'success' || state === 'notMatched') return 'success';
+  if (state === 'error' || state === 'sourceUnavailable') return 'error';
+  if (state === 'retry' || state === 'inconclusive' || state === 'matched') {
+    return 'warning';
+  }
+  if (state === 'processing') return 'neutral';
+  return 'info';
+};
 
 const createDefaultVariantBlocks = (
   node: DynamicFlowNodeV2,
@@ -170,9 +194,53 @@ const createDefaultVariantBlocks = (
     hidden: false,
     required: true,
   };
+  const status: InterfaceBlock = {
+    id: `block:${node.id}:${state}:status`,
+    kind: 'status',
+    tone: defaultStatusTone(state),
+    content: {},
+    hidden: false,
+    required: false,
+  };
+  const description: InterfaceBlock = {
+    id: `block:${node.id}:${state}:description`,
+    kind: 'text',
+    content: {},
+    hidden: false,
+    required: false,
+  };
+  const instruction: InterfaceBlock = {
+    id: `block:${node.id}:${state}:instruction`,
+    kind: 'instruction',
+    content: {},
+    hidden: false,
+    required: false,
+  };
+  const actions = (
+    includeCancel = false,
+  ): InterfaceBlock => ({
+    id: `block:${node.id}:${state}:actions`,
+    kind: 'actionGroup',
+    hidden: false,
+    required: true,
+    actions: [
+      {
+        id: `action:${node.id}:${state}:continue`,
+        intent: state === 'retry' || state === 'error' ? 'retry' : 'continue',
+        label: {},
+      },
+      ...(includeCancel ? [{
+        id: `action:${node.id}:${state}:cancel`,
+        intent: 'cancel' as const,
+        label: {},
+      }] : []),
+    ],
+  });
   if (state === 'processing') {
     return [
+      status,
       heading,
+      description,
       {
         id: `block:${node.id}:${state}:progress`,
         kind: 'progress',
@@ -182,20 +250,50 @@ const createDefaultVariantBlocks = (
       },
     ];
   }
-  return [
-    heading,
-    {
-      id: `block:${node.id}:${state}:actions`,
-      kind: 'actionGroup',
-      hidden: false,
-      required: true,
-      actions: [{
-        id: `action:${node.id}:${state}:continue`,
-        intent: state === 'retry' ? 'retry' : 'continue',
-        label: {},
-      }],
-    },
-  ];
+  if (state === 'permission') {
+    return [
+      status,
+      heading,
+      description,
+      {
+        id: `block:${node.id}:${state}:consent`,
+        kind: 'consent',
+        scopeIds: [node.id],
+        content: {},
+        consentRequired: true,
+        hidden: false,
+        required: true,
+      },
+      actions(),
+    ];
+  }
+  if (state === 'input') {
+    return [
+      status,
+      heading,
+      {
+        id: `block:${node.id}:${state}:credential-request`,
+        kind: 'credentialRequest',
+        credentialType: node.name || node.id,
+        content: {},
+        hidden: false,
+        required: true,
+      },
+      actions(),
+    ];
+  }
+  if (state === 'capture') {
+    return [status, heading, instruction, actions()];
+  }
+  if (state === 'error' || state === 'retry') {
+    return [
+      status,
+      heading,
+      instruction,
+      actions(state === 'error'),
+    ];
+  }
+  return [status, heading, description, actions()];
 };
 
 const createVariant = (
@@ -212,6 +310,66 @@ const createVariant = (
   blocks: createDefaultVariantBlocks(node, state, locale),
 });
 
+const isLegacyGeneratedVariant = (
+  variant: InterfaceScreenVariant,
+  nodeId: string,
+): boolean => {
+  const headingId = `block:${nodeId}:${variant.state}:heading`;
+  if (variant.state === 'processing') {
+    return variant.blocks.length === 2
+      && variant.blocks[0]?.id === headingId
+      && variant.blocks[0]?.kind === 'heading'
+      && variant.blocks[1]?.id === `block:${nodeId}:${variant.state}:progress`
+      && variant.blocks[1]?.kind === 'progress';
+  }
+  const actions = variant.blocks[1];
+  return variant.blocks.length === 2
+    && variant.blocks[0]?.id === headingId
+    && variant.blocks[0]?.kind === 'heading'
+    && actions?.id === `block:${nodeId}:${variant.state}:actions`
+    && actions.kind === 'actionGroup'
+    && actions.actions.length === 1
+    && actions.actions[0]?.id === `action:${nodeId}:${variant.state}:continue`;
+};
+
+const upgradeLegacyGeneratedVariant = (
+  variant: InterfaceScreenVariant,
+  node: Extract<
+    DynamicFlowNodeV2,
+    { readonly kind: 'verification' | 'subflow' }
+  >,
+  contract: NodeInterfaceContract,
+  locale: Locale,
+): InterfaceScreenVariant => {
+  if (!isLegacyGeneratedVariant(variant, node.id)) return variant;
+  const generated = createVariant(
+    node,
+    variant.state,
+    contract.outcomes,
+    locale,
+  );
+  const legacyById = new Map(variant.blocks.map((block) => [block.id, block]));
+  return {
+    ...variant,
+    blocks: generated.blocks.map((block) => {
+      const legacy = legacyById.get(block.id);
+      if (!legacy || legacy.kind !== block.kind) return block;
+      if (legacy.kind === 'actionGroup' && block.kind === 'actionGroup') {
+        return {
+          ...block,
+          ...legacy,
+          actions: block.actions.map(
+            (action, index) => index === 0
+              ? legacy.actions[0] ?? action
+              : action,
+          ),
+        };
+      }
+      return legacy;
+    }),
+  };
+};
+
 const reconcileVariants = (
   screen: InterfaceScreenV2,
   node: Extract<
@@ -221,15 +379,26 @@ const reconcileVariants = (
   contract: NodeInterfaceContract,
   locale: Locale,
 ): InterfaceScreenV2 => {
-  const existingStates = new Set(screen.variants.map((variant) => variant.state));
+  const upgradedVariants = screen.variants.map((variant) => (
+    upgradeLegacyGeneratedVariant(
+      variant,
+      node,
+      contract,
+      locale,
+    )
+  ));
+  const existingStates = new Set(upgradedVariants.map((variant) => variant.state));
   const missing = contract.states
     .filter((state) => !existingStates.has(state))
     .map((state) => createVariant(node, state, contract.outcomes, locale));
-  return missing.length === 0
+  const variantsChanged = upgradedVariants.some(
+    (variant, index) => variant !== screen.variants[index],
+  );
+  return missing.length === 0 && !variantsChanged
     ? screen
     : {
         ...screen,
-        variants: [...screen.variants, ...missing],
+        variants: [...upgradedVariants, ...missing],
       };
 };
 
@@ -255,6 +424,8 @@ const createModuleScreen = (
  * Existing screens and variants win over generated defaults, so customized block
  * identities remain stable. Removed-node screens are retained as orphans and an
  * orphan is restored before a new screen is generated when its node ID reappears.
+ * Screens attached to an explicit background module are removed because that
+ * contract cannot participate in the user-facing interface.
  */
 export const reconcileInterfaceStudioManifest = (
   manifest: InterfaceManifestV2,
@@ -262,7 +433,7 @@ export const reconcileInterfaceStudioManifest = (
   moduleCatalog: readonly ModulePackage[] = [],
   subflowCatalog: readonly SubflowPackage[] = [],
 ): InterfaceManifestV2 => {
-  const interactiveNodes = project.flow.nodes.filter(
+  const candidateNodes = project.flow.nodes.filter(
     (
       node,
     ): node is Extract<
@@ -270,7 +441,23 @@ export const reconcileInterfaceStudioManifest = (
       { readonly kind: 'verification' | 'subflow' }
     > => node.kind === 'verification' || node.kind === 'subflow',
   );
+  const contractsByNodeId = new Map(candidateNodes.map((node) => [
+    node.id,
+    interfaceContractForNode(
+      node,
+      moduleCatalog,
+      subflowCatalog,
+    ),
+  ]));
+  const interactiveNodes = candidateNodes.filter(
+    (node) => contractsByNodeId.get(node.id)?.hasUserInterface,
+  );
   const interactiveNodeIds = new Set(interactiveNodes.map((node) => node.id));
+  const backgroundNodeIds = new Set(
+    candidateNodes
+      .filter((node) => !contractsByNodeId.get(node.id)?.hasUserInterface)
+      .map((node) => node.id),
+  );
   const moduleScreens = manifest.screens.filter((screen) => screen.kind === 'module');
   const staticScreens = manifest.screens.filter((screen) => screen.kind !== 'module');
   const selectedActiveIdentities = new Set<string>();
@@ -278,11 +465,7 @@ export const reconcileInterfaceStudioManifest = (
   const reconciledModuleScreens: InterfaceScreenV2[] = [];
 
   for (const node of interactiveNodes) {
-    const contract = interfaceContractForNode(
-      node,
-      moduleCatalog,
-      subflowCatalog,
-    );
+    const contract = contractsByNodeId.get(node.id)!;
     const active = moduleScreens.find(
       (screen) => (
         screen.sourceNodeId === node.id
@@ -313,15 +496,25 @@ export const reconcileInterfaceStudioManifest = (
   const orphanedScreens = uniqueScreens([
     ...moduleScreens.filter(
       (screen) => (
-        !selectedActiveIdentities.has(screenIdentity(screen))
-        || !screen.sourceNodeId
-        || !interactiveNodeIds.has(screen.sourceNodeId)
+        (
+          !selectedActiveIdentities.has(screenIdentity(screen))
+          || !screen.sourceNodeId
+          || !interactiveNodeIds.has(screen.sourceNodeId)
+        )
+        && (
+          !screen.sourceNodeId
+          || !backgroundNodeIds.has(screen.sourceNodeId)
+        )
       ),
     ),
     ...manifest.orphanedScreens.filter(
       (screen) => (
         !restoredOrphanIdentities.has(screenIdentity(screen))
         && !activeScreenIdentities.has(screenIdentity(screen))
+        && (
+          !screen.sourceNodeId
+          || !backgroundNodeIds.has(screen.sourceNodeId)
+        )
       ),
     ),
   ]).filter((screen) => !activeScreenIdentities.has(screenIdentity(screen)));
@@ -521,6 +714,7 @@ export const buildPreviewJourney = (
         nodeId: node.id,
       });
     }
+    if (!contract.hasUserInterface) return;
     const screen = manifest.screens.find(
       (candidate) => (
         candidate.kind === 'module'
@@ -853,6 +1047,115 @@ export const resolveLocalizedContent = (
   };
 };
 
+export type ResolvedResponsiveInterface = {
+  readonly layout: InterfaceLayout;
+  readonly spacingScale: number;
+  readonly borderRadius: number;
+  readonly headingScale: number;
+  readonly bodyScale: number;
+};
+
+/**
+ * Resolves a sparse device override against the semantic base theme. This is
+ * intentionally pure so the preview, export adapter and a future hosted
+ * renderer all use the same inheritance rules.
+ */
+export const resolveResponsiveInterface = (
+  manifest: InterfaceManifestV2,
+  breakpoint: InterfaceBreakpoint,
+): ResolvedResponsiveInterface => {
+  const override = manifest.responsiveOverrides?.[breakpoint];
+  return {
+    layout: override?.layout ?? manifest.layout,
+    spacingScale: override?.spacingScale ?? manifest.theme.spacingScale,
+    borderRadius: override?.borderRadius ?? manifest.theme.borderRadius,
+    headingScale:
+      override?.headingScale ?? manifest.theme.typography.headingScale,
+    bodyScale: override?.bodyScale ?? manifest.theme.typography.bodyScale,
+  };
+};
+
+export type DynamicContentContext = {
+  readonly flowInputs: Readonly<Record<string, JsonValue>>;
+  readonly nodeOutputs: Readonly<Record<
+    string,
+    Readonly<Record<string, JsonValue>>
+  >>;
+  readonly system: Readonly<{
+    flowName: string;
+    currentStep: number;
+    totalSteps: number;
+    outcome: string;
+  }>;
+};
+
+export type DynamicContentResolution = LocalizedContentResolution & {
+  readonly bindingApplied: boolean;
+  readonly bindingFallbackUsed: boolean;
+};
+
+const dynamicContentValue = (
+  reference: DynamicContentReference,
+  context: DynamicContentContext,
+): JsonValue | undefined => {
+  if (reference.kind === 'flowInput') {
+    return context.flowInputs[reference.fieldId];
+  }
+  if (reference.kind === 'nodeOutput') {
+    return context.nodeOutputs[reference.nodeId]?.[reference.fieldId];
+  }
+  return context.system[reference.fieldId];
+};
+
+/**
+ * Dynamic binding accepts only primitive values. Missing, stale or composite
+ * values fall back to the localized block content without mutating the
+ * manifest or executing template code.
+ */
+export const resolveDynamicContent = (
+  content: LocalizedContent,
+  binding: DynamicContentBinding | undefined,
+  context: DynamicContentContext,
+  requestedLocale: Locale,
+  defaultLocale: Locale,
+): DynamicContentResolution => {
+  const fallback = resolveLocalizedContent(
+    content,
+    requestedLocale,
+    defaultLocale,
+  );
+  if (!binding) {
+    return {
+      ...fallback,
+      bindingApplied: false,
+      bindingFallbackUsed: false,
+    };
+  }
+  const value = dynamicContentValue(binding.source, context);
+  if (
+    (typeof value !== 'string'
+      && typeof value !== 'number'
+      && typeof value !== 'boolean')
+    || (typeof value === 'string' && !value.trim())
+    || (typeof value === 'number' && !Number.isFinite(value))
+  ) {
+    return {
+      ...fallback,
+      bindingApplied: false,
+      bindingFallbackUsed: true,
+    };
+  }
+  return {
+    value: String(value),
+    requestedLocale,
+    missing: false,
+    fallbackUsed: false,
+    badge: null,
+    bindingApplied: true,
+    bindingFallbackUsed: false,
+  };
+};
+
 export type InterfaceStudioValidationIssueCode =
   | AccessibilityIssueCode
   | 'duplicateScreenId'
@@ -865,6 +1168,11 @@ export type InterfaceStudioValidationIssueCode =
   | 'emptyVisibilityCondition'
   | 'invalidVisibilityCondition'
   | 'invalidSafeArea'
+  | 'invalidResponsiveOverride'
+  | 'staleContentBinding'
+  | 'unsafeContentBinding'
+  | 'unsupportedContentBindingType'
+  | 'unsupportedContentBindingBlock'
   | 'missingRequiredTranslation'
   | 'requiredBlockHidden'
   | 'requiredBlockConditional'
@@ -912,6 +1220,98 @@ const duplicateStrings = (values: readonly string[]): ReadonlySet<string> => {
     seen.add(value);
   }
   return duplicates;
+};
+
+export type InterfaceStudioValidationContext = {
+  readonly flow: DynamicFlowManifestV2;
+  readonly moduleCatalog: readonly ModulePackage[];
+  readonly subflowCatalog: readonly SubflowPackage[];
+};
+
+const fieldForContentReference = (
+  reference: DynamicContentReference,
+  context: InterfaceStudioValidationContext,
+): FlowField | null => {
+  if (reference.kind === 'system') return null;
+  if (reference.kind === 'flowInput') {
+    return context.flow.inputSchema.fields.find(
+      (field) => field.id === reference.fieldId,
+    ) ?? null;
+  }
+  const node = context.flow.nodes.find(
+    (candidate) => candidate.id === reference.nodeId,
+  );
+  if (!node) return null;
+  if (node.kind === 'verification') {
+    return resolveModuleContract(node, context.moduleCatalog)
+      ?.outputFields.find((field) => field.id === reference.fieldId) ?? null;
+  }
+  if (node.kind === 'subflow') {
+    return context.subflowCatalog
+      .find((item) => item.id === node.subflowRef.packageId)
+      ?.versions.find(
+        (version) => version.version === node.subflowRef.version,
+      )
+      ?.contract.outputFields.find(
+        (field) => field.id === reference.fieldId,
+      ) ?? null;
+  }
+  return null;
+};
+
+const supportsContentBinding = (block: InterfaceBlock): boolean =>
+  localizedContentForBlock(block) !== null;
+
+const contentBindingIssues = (
+  block: InterfaceBlock,
+  screenId: string,
+  variantId: string,
+  context: InterfaceStudioValidationContext | undefined,
+): readonly InterfaceStudioValidationIssue[] => {
+  if (!block.contentBinding) return [];
+  if (!supportsContentBinding(block)) {
+    return [{
+      code: 'unsupportedContentBindingBlock',
+      severity: 'error',
+      screenId,
+      variantId,
+      blockId: block.id,
+    }];
+  }
+  if (block.contentBinding.source.kind === 'system' || !context) return [];
+  const field = fieldForContentReference(block.contentBinding.source, context);
+  if (!field) {
+    return [{
+      code: 'staleContentBinding',
+      severity: 'error',
+      screenId,
+      variantId,
+      blockId: block.id,
+    }];
+  }
+  if (field.type !== 'string' && field.type !== 'number' && field.type !== 'boolean') {
+    return [{
+      code: 'unsupportedContentBindingType',
+      severity: 'error',
+      screenId,
+      variantId,
+      blockId: block.id,
+    }];
+  }
+  if (
+    field.classification === 'sensitivePii'
+    || field.classification === 'biometric'
+    || field.classification === 'secret'
+  ) {
+    return [{
+      code: 'unsafeContentBinding',
+      severity: 'error',
+      screenId,
+      variantId,
+      blockId: block.id,
+    }];
+  }
+  return [];
 };
 
 const isRecord = (value: unknown): value is Readonly<Record<string, unknown>> =>
@@ -1230,6 +1630,7 @@ export const validateInterfaceAccessibility = (
 
 const structuralInterfaceIssues = (
   manifest: InterfaceManifestV2,
+  context?: InterfaceStudioValidationContext,
 ): readonly InterfaceStudioValidationIssue[] => {
   const issues: InterfaceStudioValidationIssue[] = [];
   if (!manifest.enabledLocales.includes(manifest.defaultLocale)) {
@@ -1255,6 +1656,50 @@ const structuralInterfaceIssues = (
     ) {
       issues.push({
         code: 'invalidSafeArea',
+        severity: 'error',
+        breakpoint,
+      });
+    }
+    const override = manifest.responsiveOverrides?.[breakpoint];
+    if (
+      override
+      && (
+        (
+          override.spacingScale !== undefined
+          && (
+            !Number.isFinite(override.spacingScale)
+            || override.spacingScale < 0.5
+            || override.spacingScale > 2
+          )
+        )
+        || (
+          override.borderRadius !== undefined
+          && (
+            !Number.isFinite(override.borderRadius)
+            || override.borderRadius < 0
+            || override.borderRadius > 64
+          )
+        )
+        || (
+          override.headingScale !== undefined
+          && (
+            !Number.isFinite(override.headingScale)
+            || override.headingScale < 0.75
+            || override.headingScale > 2
+          )
+        )
+        || (
+          override.bodyScale !== undefined
+          && (
+            !Number.isFinite(override.bodyScale)
+            || override.bodyScale < 0.75
+            || override.bodyScale > 2
+          )
+        )
+      )
+    ) {
+      issues.push({
+        code: 'invalidResponsiveOverride',
         severity: 'error',
         breakpoint,
       });
@@ -1295,6 +1740,12 @@ const structuralInterfaceIssues = (
         });
       }
       for (const block of variant.blocks) {
+        issues.push(...contentBindingIssues(
+          block,
+          screen.id,
+          variant.id,
+          context,
+        ));
         if (block.required && block.hidden) {
           issues.push({
             code: 'requiredBlockHidden',
@@ -1373,10 +1824,11 @@ const structuralInterfaceIssues = (
 
 export const validateInterfaceStudioManifest = (
   manifest: InterfaceManifestV2,
+  context?: InterfaceStudioValidationContext,
 ): InterfaceStudioValidationReport => {
   const accessibility = validateInterfaceAccessibility(manifest);
   const issues: InterfaceStudioValidationIssue[] = [
-    ...structuralInterfaceIssues(manifest),
+    ...structuralInterfaceIssues(manifest, context),
     ...accessibility.issues,
   ];
   return {

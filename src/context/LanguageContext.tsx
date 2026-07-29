@@ -10,6 +10,7 @@ import {
   isLocale,
   localizePath,
   pathToLocale,
+  pathToView,
   replacePathLocale,
   type Locale,
 } from '../types/routes';
@@ -56,6 +57,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
   const language = pathToLocale(location.pathname) ?? getPreferredLanguage();
+  // Editor selections are local UI state, so locale changes must not remount dashboard tools.
+  const providerKey = pathToView(location.pathname) === 'dashboard'
+    ? 'dashboard'
+    : language;
 
   useEffect(() => {
     try {
@@ -83,7 +88,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [location.hash, location.pathname, location.search, navigate]);
 
   return (
-    <LanguageContext.Provider key={language} value={{ language, setLanguage }}>
+    <LanguageContext.Provider key={providerKey} value={{ language, setLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

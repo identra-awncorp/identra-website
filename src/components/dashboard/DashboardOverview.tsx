@@ -20,39 +20,44 @@ import {
 } from 'lucide-react';
 import type { Language } from '../../context/LanguageContext';
 import type { DashboardCopy } from '../../translations/dashboard/DashboardPageTranslations';
-import {
-  createFlowProject,
-  validateDynamicFlow,
-  type FlowProject,
-} from './dashboardModel';
+import { createFlowProjectV2 } from './dashboardV2Model';
+import { validateDynamicFlowV2 } from './dashboardValidation';
+import type { FlowProjectV2, ModulePackage, SubflowPackage } from './dashboardV2Types';
 import { useDialogFocus } from './useDialogFocus';
 
 type FlowFilter = 'all' | 'draft' | 'ready';
 type ModalState =
   | { readonly type: 'create' }
-  | { readonly type: 'rename'; readonly project: FlowProject }
-  | { readonly type: 'delete'; readonly project: FlowProject }
+  | { readonly type: 'rename'; readonly project: FlowProjectV2 }
+  | { readonly type: 'delete'; readonly project: FlowProjectV2 }
   | null;
 
 type DashboardOverviewProps = {
   readonly copy: DashboardCopy;
   readonly language: Language;
-  readonly projects: readonly FlowProject[];
+  readonly projects: readonly FlowProjectV2[];
+  readonly moduleCatalog: readonly ModulePackage[];
+  readonly subflowCatalog: readonly SubflowPackage[];
   readonly recoveredCorruptData: boolean;
-  readonly onCreate: (project: FlowProject) => void;
-  readonly onRename: (project: FlowProject, name: string) => void;
-  readonly onDuplicate: (project: FlowProject) => void;
-  readonly onDelete: (project: FlowProject) => void;
-  readonly onOpen: (project: FlowProject) => void;
+  readonly onCreate: (project: FlowProjectV2) => void;
+  readonly onRename: (project: FlowProjectV2, name: string) => void;
+  readonly onDuplicate: (project: FlowProjectV2) => void;
+  readonly onDelete: (project: FlowProjectV2) => void;
+  readonly onOpen: (project: FlowProjectV2) => void;
 };
 
-const projectIsReady = (project: FlowProject) =>
-  validateDynamicFlow(project.flow, project.customModules).length === 0;
+const projectIsReady = (
+  project: FlowProjectV2,
+  moduleCatalog: readonly ModulePackage[],
+  subflowCatalog: readonly SubflowPackage[],
+) => validateDynamicFlowV2(project.flow, moduleCatalog, subflowCatalog).length === 0;
 
 export default function DashboardOverview({
   copy,
   language,
   projects,
+  moduleCatalog,
+  subflowCatalog,
   recoveredCorruptData,
   onCreate,
   onRename,
@@ -66,15 +71,16 @@ export default function DashboardOverview({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const readyCount = projects.filter(projectIsReady).length;
-  const customModuleCount = projects.reduce(
-    (count, project) => count + project.customModules.length,
-    0,
-  );
+  const readyCount = projects.filter(
+    (project) => projectIsReady(project, moduleCatalog, subflowCatalog),
+  ).length;
+  const customModuleCount = moduleCatalog.filter(
+    (modulePackage) => modulePackage.origin === 'custom',
+  ).length;
   const filteredProjects = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase(language);
     return projects.filter((project) => {
-      const ready = projectIsReady(project);
+      const ready = projectIsReady(project, moduleCatalog, subflowCatalog);
       const matchesFilter = filter === 'all'
         || (filter === 'ready' && ready)
         || (filter === 'draft' && !ready);
@@ -83,7 +89,7 @@ export default function DashboardOverview({
         || project.description.toLocaleLowerCase(language).includes(normalizedQuery);
       return matchesFilter && matchesQuery;
     });
-  }, [filter, language, projects, query]);
+  }, [filter, language, moduleCatalog, projects, query, subflowCatalog]);
 
   const openCreateModal = () => {
     setName('');
@@ -91,7 +97,7 @@ export default function DashboardOverview({
     setModal({ type: 'create' });
   };
 
-  const openRenameModal = (project: FlowProject) => {
+  const openRenameModal = (project: FlowProjectV2) => {
     setName(project.name);
     setDescription('');
     setModal({ type: 'rename', project });
@@ -110,7 +116,13 @@ export default function DashboardOverview({
     if (!normalizedName || !modal) return;
 
     if (modal.type === 'create') {
-      onCreate(createFlowProject(normalizedName, description.trim()));
+      onCreate(createFlowProjectV2(
+        normalizedName,
+        description.trim(),
+        language,
+        new Date(),
+        copy.screenDefaults,
+      ));
     } else if (modal.type === 'rename') {
       onRename(modal.project, normalizedName);
     }
@@ -138,10 +150,10 @@ export default function DashboardOverview({
         <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,rgba(82,101,255,0.34),transparent_68%)]" />
         <div className="relative flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#9DA9FF]">
+            <p className="type-label-compact font-bold uppercase text-[#9DA9FF]">
               {copy.overview.eyebrow}
             </p>
-            <h1 className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+            <h1 className="type-featured-title type-page-title mt-4 max-w-2xl ">
               {copy.overview.title}
             </h1>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">
@@ -204,10 +216,10 @@ export default function DashboardOverview({
                 type="button"
                 onClick={() => setFilter(value)}
                 className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
-                  filter === value
-                    ? 'bg-white text-slate-950 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
+ filter === value
+ ? 'bg-white text-slate-950 shadow-sm'
+ : 'text-slate-500 hover:text-slate-800'
+ }`}
               >
                 {label}
               </button>
@@ -220,7 +232,7 @@ export default function DashboardOverview({
             <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#EEF0FF] text-[#354CE1]">
               <GitBranch className="h-6 w-6" />
             </span>
-            <h2 className="mt-5 font-display text-lg font-bold text-slate-950">
+            <h2 className="type-card-title-sm mt-5 text-slate-950">
               {projects.length === 0 ? copy.overview.emptyTitle : copy.overview.noResultsTitle}
             </h2>
             <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">
@@ -243,7 +255,7 @@ export default function DashboardOverview({
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px]">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/70 text-left text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                <tr className="type-label-compact border-b border-slate-100 bg-slate-50/70 text-left font-bold uppercase text-slate-400">
                   <th className="px-5 py-3.5">{copy.overview.flowColumn}</th>
                   <th className="px-5 py-3.5">{copy.overview.statusColumn}</th>
                   <th className="px-5 py-3.5">{copy.overview.modulesColumn}</th>
@@ -253,7 +265,7 @@ export default function DashboardOverview({
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredProjects.map((project) => {
-                  const ready = projectIsReady(project);
+                  const ready = projectIsReady(project, moduleCatalog, subflowCatalog);
                   const moduleCount = project.flow.nodes.filter((node) => node.kind === 'verification').length;
                   return (
                     <tr key={project.id} className="group transition hover:bg-slate-50/60">
@@ -264,11 +276,11 @@ export default function DashboardOverview({
                         </button>
                       </td>
                       <td className="px-5 py-4">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold ${
-                          ready
-                            ? 'bg-emerald-50 text-emerald-700'
-                            : 'bg-amber-50 text-amber-700'
-                        }`}>
+                        <span className={`type-label-compact inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-bold ${
+ ready
+ ? 'bg-emerald-50 text-emerald-700'
+ : 'bg-amber-50 text-amber-700'
+ }`}>
                           {ready ? <CheckCircle2 className="h-3 w-3" /> : <FilePenLine className="h-3 w-3" />}
                           {ready ? copy.overview.readyStatus : copy.overview.draftStatus}
                         </span>
@@ -352,7 +364,7 @@ export default function DashboardOverview({
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
                   <Trash2 className="h-5 w-5" />
                 </span>
-                <h2 className="mt-5 font-display text-xl font-bold text-slate-950">{copy.overview.deleteTitle}</h2>
+                <h2 className="type-card-title-sm type-document-heading mt-5 text-slate-950">{copy.overview.deleteTitle}</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-500">{copy.overview.deleteDescription}</p>
                 <div className="mt-7 flex justify-end gap-3">
                   <button type="button" onClick={closeModal} className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-600 hover:bg-slate-50">
@@ -372,7 +384,7 @@ export default function DashboardOverview({
               </>
             ) : (
               <form onSubmit={handleSubmit}>
-                <h2 className="pr-10 font-display text-xl font-bold text-slate-950">
+                <h2 className="type-card-title-sm type-document-heading pr-10 text-slate-950">
                   {modal.type === 'create' ? copy.overview.createTitle : copy.overview.renameTitle}
                 </h2>
                 {modal.type === 'create' && (

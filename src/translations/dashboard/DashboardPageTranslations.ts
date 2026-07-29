@@ -32,6 +32,14 @@ export type DashboardCopy = {
   readonly close: string;
   readonly cancel: string;
   readonly confirm: string;
+  readonly hideNavigation: string;
+  readonly showNavigation: string;
+  readonly hideToolbar: string;
+  readonly showToolbar: string;
+  readonly hideLeftPanel: string;
+  readonly showLeftPanel: string;
+  readonly hideRightPanel: string;
+  readonly showRightPanel: string;
   readonly overview: {
     readonly eyebrow: string;
     readonly title: string;
@@ -103,6 +111,15 @@ export type DashboardCopy = {
     readonly connectionHandle: string;
     readonly undo: string;
     readonly redo: string;
+    readonly keyboardShortcuts: string;
+    readonly selectAll: string;
+    readonly clearSelection: string;
+    readonly nodeActions: string;
+    readonly connectionActions: string;
+    readonly configureNode: string;
+    readonly focusNode: string;
+    readonly focusConnection: string;
+    readonly removeConnection: string;
     readonly validate: string;
     readonly validFlow: string;
     readonly issueCount: string;
@@ -237,6 +254,14 @@ const en: DashboardCopy = {
   close: 'Close',
   cancel: 'Cancel',
   confirm: 'Confirm',
+  hideNavigation: 'Hide navigation',
+  showNavigation: 'Show navigation',
+  hideToolbar: 'Hide toolbar',
+  showToolbar: 'Show toolbar',
+  hideLeftPanel: 'Hide left panel',
+  showLeftPanel: 'Show left panel',
+  hideRightPanel: 'Hide right panel',
+  showRightPanel: 'Show right panel',
   overview: {
     eyebrow: 'SSI verification operations',
     title: 'Build verification journeys that fit your business',
@@ -278,7 +303,7 @@ const en: DashboardCopy = {
     renameTitle: 'Rename flow',
     renameAction: 'Save name',
     deleteTitle: 'Delete this flow?',
-    deleteDescription: 'This removes the local flow, its custom modules, and interface configuration from this browser.',
+    deleteDescription: 'This removes the local flow, its draft revisions, releases, and interface configuration from this browser. Shared module packages are kept.',
     deleteAction: 'Delete flow',
     copySuffix: 'Copy',
   },
@@ -308,6 +333,15 @@ const en: DashboardCopy = {
     connectionHandle: 'Connection handle',
     undo: 'Undo',
     redo: 'Redo',
+    keyboardShortcuts: 'Keyboard shortcuts',
+    selectAll: 'Select all',
+    clearSelection: 'Clear selection',
+    nodeActions: 'Node actions',
+    connectionActions: 'Connection actions',
+    configureNode: 'Configure node',
+    focusNode: 'Focus node',
+    focusConnection: 'Focus connection',
+    removeConnection: 'Remove connection',
     validate: 'Validation',
     validFlow: 'Flow is valid',
     issueCount: 'issues',
@@ -491,6 +525,14 @@ const vi: DashboardCopy = {
   close: 'Đóng',
   cancel: 'Hủy',
   confirm: 'Xác nhận',
+  hideNavigation: 'Ẩn menu điều hướng',
+  showNavigation: 'Hiện menu điều hướng',
+  hideToolbar: 'Ẩn thanh công cụ',
+  showToolbar: 'Hiện thanh công cụ',
+  hideLeftPanel: 'Ẩn bảng bên trái',
+  showLeftPanel: 'Hiện bảng bên trái',
+  hideRightPanel: 'Ẩn bảng bên phải',
+  showRightPanel: 'Hiện bảng bên phải',
   overview: {
     eyebrow: 'Vận hành xác thực SSI',
     title: 'Xây dựng hành trình xác thực phù hợp nghiệp vụ',
@@ -532,7 +574,7 @@ const vi: DashboardCopy = {
     renameTitle: 'Đổi tên flow',
     renameAction: 'Lưu tên',
     deleteTitle: 'Xóa flow này?',
-    deleteDescription: 'Flow cục bộ, các module tùy chỉnh và cấu hình giao diện sẽ bị xóa khỏi trình duyệt này.',
+    deleteDescription: 'Flow cục bộ, các bản nháp, bản phát hành và cấu hình giao diện sẽ bị xóa khỏi trình duyệt này. Các gói module dùng chung vẫn được giữ lại.',
     deleteAction: 'Xóa flow',
     copySuffix: 'Bản sao',
   },
@@ -562,6 +604,15 @@ const vi: DashboardCopy = {
     connectionHandle: 'Điểm nối',
     undo: 'Hoàn tác',
     redo: 'Làm lại',
+    keyboardShortcuts: 'Phím tắt',
+    selectAll: 'Chọn tất cả',
+    clearSelection: 'Bỏ chọn',
+    nodeActions: 'Thao tác với node',
+    connectionActions: 'Thao tác với đường nối',
+    configureNode: 'Cấu hình node',
+    focusNode: 'Tập trung vào node',
+    focusConnection: 'Tập trung vào đường nối',
+    removeConnection: 'Xóa đường nối',
     validate: 'Kiểm tra',
     validFlow: 'Flow hợp lệ',
     issueCount: 'vấn đề',
@@ -745,6 +796,14 @@ const es: DashboardCopy = {
   close: 'Cerrar',
   cancel: 'Cancelar',
   confirm: 'Confirmar',
+  hideNavigation: 'Ocultar navegación',
+  showNavigation: 'Mostrar navegación',
+  hideToolbar: 'Ocultar barra de herramientas',
+  showToolbar: 'Mostrar barra de herramientas',
+  hideLeftPanel: 'Ocultar panel izquierdo',
+  showLeftPanel: 'Mostrar panel izquierdo',
+  hideRightPanel: 'Ocultar panel derecho',
+  showRightPanel: 'Mostrar panel derecho',
   overview: {
     eyebrow: 'Operaciones de verificación SSI',
     title: 'Crea recorridos de verificación adaptados a tu negocio',
@@ -786,7 +845,7 @@ const es: DashboardCopy = {
     renameTitle: 'Renombrar flujo',
     renameAction: 'Guardar nombre',
     deleteTitle: '¿Eliminar este flujo?',
-    deleteDescription: 'Se eliminarán de este navegador el flujo local, sus módulos y la configuración de interfaz.',
+    deleteDescription: 'Se eliminarán de este navegador el flujo local, sus revisiones de borrador, versiones publicadas y la configuración de interfaz. Los paquetes de módulos compartidos se conservarán.',
     deleteAction: 'Eliminar flujo',
     copySuffix: 'Copia',
   },
@@ -816,6 +875,15 @@ const es: DashboardCopy = {
     connectionHandle: 'Punto de conexión',
     undo: 'Deshacer',
     redo: 'Rehacer',
+    keyboardShortcuts: 'Atajos de teclado',
+    selectAll: 'Seleccionar todo',
+    clearSelection: 'Borrar selección',
+    nodeActions: 'Acciones del nodo',
+    connectionActions: 'Acciones de la conexión',
+    configureNode: 'Configurar nodo',
+    focusNode: 'Enfocar nodo',
+    focusConnection: 'Enfocar conexión',
+    removeConnection: 'Eliminar conexión',
     validate: 'Validación',
     validFlow: 'El flujo es válido',
     issueCount: 'problemas',
@@ -999,6 +1067,14 @@ const de: DashboardCopy = {
   close: 'Schließen',
   cancel: 'Abbrechen',
   confirm: 'Bestätigen',
+  hideNavigation: 'Navigation ausblenden',
+  showNavigation: 'Navigation anzeigen',
+  hideToolbar: 'Werkzeugleiste ausblenden',
+  showToolbar: 'Werkzeugleiste anzeigen',
+  hideLeftPanel: 'Linkes Panel ausblenden',
+  showLeftPanel: 'Linkes Panel anzeigen',
+  hideRightPanel: 'Rechtes Panel ausblenden',
+  showRightPanel: 'Rechtes Panel anzeigen',
   overview: {
     eyebrow: 'SSI-Verifizierungsbetrieb',
     title: 'Verifizierungsabläufe passend zum Unternehmen erstellen',
@@ -1040,7 +1116,7 @@ const de: DashboardCopy = {
     renameTitle: 'Flow umbenennen',
     renameAction: 'Namen speichern',
     deleteTitle: 'Diesen Flow löschen?',
-    deleteDescription: 'Der lokale Flow, seine Module und die Oberflächenkonfiguration werden aus diesem Browser entfernt.',
+    deleteDescription: 'Der lokale Flow, seine Entwurfsrevisionen, Releases und die Oberflächenkonfiguration werden aus diesem Browser entfernt. Gemeinsam genutzte Modulpakete bleiben erhalten.',
     deleteAction: 'Flow löschen',
     copySuffix: 'Kopie',
   },
@@ -1070,6 +1146,15 @@ const de: DashboardCopy = {
     connectionHandle: 'Verbindungspunkt',
     undo: 'Rückgängig',
     redo: 'Wiederholen',
+    keyboardShortcuts: 'Tastenkürzel',
+    selectAll: 'Alles auswählen',
+    clearSelection: 'Auswahl aufheben',
+    nodeActions: 'Knotenaktionen',
+    connectionActions: 'Verbindungsaktionen',
+    configureNode: 'Knoten konfigurieren',
+    focusNode: 'Knoten fokussieren',
+    focusConnection: 'Verbindung fokussieren',
+    removeConnection: 'Verbindung entfernen',
     validate: 'Validierung',
     validFlow: 'Flow ist gültig',
     issueCount: 'Probleme',
@@ -1253,6 +1338,14 @@ const ja: DashboardCopy = {
   close: '閉じる',
   cancel: 'キャンセル',
   confirm: '確認',
+  hideNavigation: 'ナビゲーションを隠す',
+  showNavigation: 'ナビゲーションを表示',
+  hideToolbar: 'ツールバーを隠す',
+  showToolbar: 'ツールバーを表示',
+  hideLeftPanel: '左パネルを隠す',
+  showLeftPanel: '左パネルを表示',
+  hideRightPanel: '右パネルを隠す',
+  showRightPanel: '右パネルを表示',
   overview: {
     eyebrow: 'SSI検証オペレーション',
     title: '業務に合った検証ジャーニーを構築',
@@ -1294,7 +1387,7 @@ const ja: DashboardCopy = {
     renameTitle: 'フロー名を変更',
     renameAction: '名前を保存',
     deleteTitle: 'このフローを削除しますか？',
-    deleteDescription: 'ローカルフロー、カスタムモジュール、画面設定がこのブラウザーから削除されます。',
+    deleteDescription: 'ローカルフロー、下書きリビジョン、リリース、画面設定がこのブラウザーから削除されます。共有モジュールパッケージは保持されます。',
     deleteAction: 'フローを削除',
     copySuffix: 'コピー',
   },
@@ -1324,6 +1417,15 @@ const ja: DashboardCopy = {
     connectionHandle: '接続ポイント',
     undo: '元に戻す',
     redo: 'やり直す',
+    keyboardShortcuts: 'キーボードショートカット',
+    selectAll: 'すべて選択',
+    clearSelection: '選択を解除',
+    nodeActions: 'ノード操作',
+    connectionActions: '接続操作',
+    configureNode: 'ノードを設定',
+    focusNode: 'ノードにフォーカス',
+    focusConnection: '接続にフォーカス',
+    removeConnection: '接続を削除',
     validate: '検証',
     validFlow: 'フローは有効です',
     issueCount: '件の問題',

@@ -14,8 +14,9 @@ import {
   DatabaseZap,
   GitBranch,
   LayoutDashboard,
-  Menu,
   Network,
+  PanelLeftClose,
+  PanelLeftOpen,
   RadioTower,
   Store,
   Workflow,
@@ -27,6 +28,7 @@ import type { PlatformProductId } from '../../types/platformProducts';
 import type { DashboardCopy } from '../../translations/dashboard/DashboardPageTranslations';
 import type { Language } from '../../context/LanguageContext';
 import { DASHBOARD_PRODUCTS } from './dashboardRegistry';
+import { useDialogFocus } from './useDialogFocus';
 import identraLogo from '../../assets/images/identra-logo.svg';
 
 const PRODUCT_ICONS: Record<PlatformProductId, LucideIcon> = {
@@ -69,6 +71,11 @@ export default function DashboardShell({
   onBackToSite,
 }: DashboardShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [navigationVisible, setNavigationVisible] = useState(true);
+  const mobileDialogRef = useDialogFocus<HTMLElement>(
+    mobileOpen,
+    () => setMobileOpen(false),
+  );
 
   const navigation = (
     <>
@@ -79,16 +86,16 @@ export default function DashboardShell({
           setMobileOpen(false);
         }}
         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${
-          !activeTool
-            ? 'bg-[#EEF0FF] text-[#354CE1]'
-            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
-        }`}
+ !activeTool
+ ? 'bg-[#EEF0FF] text-[#354CE1]'
+ : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
+ }`}
       >
         <LayoutDashboard className="h-4 w-4" />
         <span>{copy.overviewLabel}</span>
       </button>
 
-      <div className="mt-7 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
+      <div className="type-label-compact mt-7 px-3 font-bold uppercase text-slate-400">
         {copy.platformToolsLabel}
       </div>
       <div className="mt-2 space-y-1">
@@ -108,19 +115,19 @@ export default function DashboardShell({
                 setMobileOpen(false);
               }}
               className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
-                isActive
-                  ? 'bg-[#EEF0FF] text-[#354CE1]'
-                  : isDisabled
-                    ? 'cursor-not-allowed text-slate-400'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
-              }`}
+ isActive
+ ? 'bg-[#EEF0FF] text-[#354CE1]'
+ : isDisabled
+ ? 'cursor-not-allowed text-slate-400'
+ : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
+ }`}
             >
               <Icon className="h-4 w-4 shrink-0" />
               <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                 {copy.products[product.id]}
               </span>
               {product.status === 'comingSoon' && (
-                <span className="rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-slate-400">
+                <span className="type-label-compact rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-bold uppercase text-slate-400">
                   {copy.comingSoon}
                 </span>
               )}
@@ -137,34 +144,102 @@ export default function DashboardShell({
       ? copy.saveError
       : copy.saved;
 
-  return (
-    <div className="min-h-screen bg-[#F5F7FB] font-sans text-slate-800 antialiased">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] border-r border-slate-200/80 bg-white lg:flex lg:flex-col">
+  const workspaceContext = (
+    <div className="border-b border-slate-100 px-4 py-4">
+      <p className="type-label-compact uppercase text-slate-400">
+        {copy.workspaceName}
+      </p>
+      <p className="type-card-title-sm mt-1 truncate text-slate-950">
+        {projectName ?? copy.overviewLabel}
+      </p>
+      {projectName && (
+        <div
+          className={`type-label mt-2 flex items-center gap-2 ${
+            saveStatus === 'error' ? 'text-rose-600' : 'text-slate-400'
+          }`}
+        >
+          <span className={`h-1.5 w-1.5 rounded-full ${
+            saveStatus === 'saving'
+              ? 'animate-pulse bg-amber-400'
+              : saveStatus === 'error'
+                ? 'bg-rose-500'
+                : 'bg-emerald-500'
+          }`} />
+          {statusLabel}
+        </div>
+      )}
+    </div>
+  );
+
+  const sidebarUtilities = (
+    <div className="border-t border-slate-100 p-3">
+      <div className="flex items-center gap-2 px-1">
+        <label className="relative min-w-0 flex-1">
+          <span className="sr-only">{copy.languageLabel}</span>
+          <select
+            value={language}
+            onChange={(event) => onLanguageChange(event.target.value as Language)}
+            className="type-control-compact w-full appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 font-bold uppercase text-slate-600 outline-none transition focus:border-[#354CE1] focus:ring-2 focus:ring-[#354CE1]/15"
+          >
+            {SUPPORTED_LOCALES.map((locale) => (
+              <option key={locale} value={locale}>{locale}</option>
+            ))}
+          </select>
+          <ChevronRight className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-90 text-slate-400" />
+        </label>
         <button
           type="button"
-          onClick={onOpenOverview}
-          className="flex h-[72px] items-center gap-3 border-b border-slate-100 px-5 text-left"
+          aria-label={copy.accountLabel}
+          title={copy.accountLabel}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950 text-xs font-bold text-white"
         >
-          <img src={identraLogo} alt={copy.brandAlt} className="h-8 w-8" />
-          <div className="min-w-0">
-            <p className="font-display text-base font-bold tracking-tight text-slate-950">Identra</p>
-            <p className="truncate text-[10px] font-semibold text-slate-400">{copy.workspaceName}</p>
-          </div>
+          ID
         </button>
-        <nav className="sidebar-scrollbar flex-1 overflow-y-auto px-3 py-5">
-          {navigation}
-        </nav>
-        <div className="border-t border-slate-100 p-3">
-          <button
-            type="button"
-            onClick={onBackToSite}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-950"
-          >
-            <Braces className="h-4 w-4" />
-            <span>{copy.backToSite}</span>
-          </button>
-        </div>
-      </aside>
+      </div>
+      <button
+        type="button"
+        onClick={onBackToSite}
+        className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-500 transition hover:bg-slate-50 hover:text-slate-950"
+      >
+        <Braces className="h-4 w-4" />
+        <span>{copy.backToSite}</span>
+      </button>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#F5F7FB] font-sans text-slate-800 antialiased">
+      {navigationVisible && (
+        <aside className="fixed inset-y-0 left-0 z-40 hidden w-[248px] flex-col border-r border-slate-200/80 bg-white lg:flex">
+          <div className="flex h-[72px] items-center gap-2 border-b border-slate-100 px-3">
+            <button
+              type="button"
+              onClick={onOpenOverview}
+              className="flex min-w-0 flex-1 items-center gap-3 rounded-xl px-2 py-2 text-left hover:bg-slate-50"
+            >
+              <img src={identraLogo} alt={copy.brandAlt} className="h-8 w-8" />
+              <div className="min-w-0">
+                <p className="font-display text-base font-bold text-slate-950">Identra</p>
+                <p className="type-label-compact truncate font-semibold text-slate-400">{copy.workspaceName}</p>
+              </div>
+            </button>
+            <button
+              type="button"
+              aria-label={copy.hideNavigation}
+              title={copy.hideNavigation}
+              onClick={() => setNavigationVisible(false)}
+              className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1]"
+            >
+              <PanelLeftClose className="h-4 w-4" />
+            </button>
+          </div>
+          {workspaceContext}
+          <nav className="sidebar-scrollbar flex-1 overflow-y-auto px-3 py-5">
+            {navigation}
+          </nav>
+          {sidebarUtilities}
+        </aside>
+      )}
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
@@ -174,7 +249,13 @@ export default function DashboardShell({
             onClick={() => setMobileOpen(false)}
             className="absolute inset-0 bg-slate-950/30 backdrop-blur-sm"
           />
-          <aside className="relative flex h-full w-[286px] flex-col bg-white shadow-2xl">
+          <aside
+            ref={mobileDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={copy.platformToolsLabel}
+            className="relative flex h-full w-[286px] flex-col bg-white shadow-2xl"
+          >
             <div className="flex h-[72px] items-center justify-between border-b border-slate-100 px-4">
               <div className="flex items-center gap-3">
                 <img src={identraLogo} alt={copy.brandAlt} className="h-8 w-8" />
@@ -189,78 +270,40 @@ export default function DashboardShell({
                 <X className="h-5 w-5" />
               </button>
             </div>
+            {workspaceContext}
             <nav className="flex-1 overflow-y-auto px-3 py-5">{navigation}</nav>
+            {sidebarUtilities}
           </aside>
         </div>
       )}
 
-      <div className="lg:pl-[248px]">
-        <header className="sticky top-0 z-30 flex h-[72px] items-center gap-3 border-b border-slate-200/80 bg-white/95 px-4 backdrop-blur-xl sm:px-6">
-          <button
-            type="button"
-            aria-label={copy.platformToolsLabel}
-            onClick={() => setMobileOpen(true)}
-            className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
-
-          <div className="flex min-w-0 flex-1 items-center gap-2">
-            <span className="truncate text-xs font-semibold text-slate-400">
-              {copy.workspaceName}
-            </span>
-            {projectName && (
-              <>
-                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300" />
-                <span className="truncate text-sm font-bold text-slate-900">{projectName}</span>
-              </>
-            )}
-          </div>
-
-          {projectName && (
-            <div
-              className={`hidden items-center gap-2 text-[11px] font-semibold sm:flex ${
-                saveStatus === 'error' ? 'text-rose-600' : 'text-slate-400'
-              }`}
-            >
-              <span className={`h-1.5 w-1.5 rounded-full ${
-                saveStatus === 'saving'
-                  ? 'animate-pulse bg-amber-400'
-                  : saveStatus === 'error'
-                    ? 'bg-rose-500'
-                    : 'bg-emerald-500'
-              }`} />
-              {statusLabel}
-            </div>
-          )}
-
-          <label className="relative">
-            <span className="sr-only">{copy.languageLabel}</span>
-            <select
-              value={language}
-              onChange={(event) => onLanguageChange(event.target.value as Language)}
-              className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-xs font-bold uppercase text-slate-600 outline-none transition focus:border-[#354CE1] focus:ring-2 focus:ring-[#354CE1]/15"
-            >
-              {SUPPORTED_LOCALES.map((locale) => (
-                <option key={locale} value={locale}>{locale}</option>
-              ))}
-            </select>
-            <ChevronRight className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-90 text-slate-400" />
-          </label>
-
-          <button
-            type="button"
-            aria-label={copy.accountLabel}
-            title={copy.accountLabel}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-950 text-xs font-bold text-white"
-          >
-            ID
-          </button>
-        </header>
-
-        <main>{children}</main>
+      <div
+        className={`transition-[padding] duration-200 motion-reduce:transition-none ${
+          navigationVisible ? 'lg:pl-[248px]' : 'lg:pl-0'
+        }`}
+      >
+        <main className="min-h-screen">{children}</main>
       </div>
+
+      {!mobileOpen && (
+        <button
+          type="button"
+          aria-label={copy.showNavigation}
+          title={copy.showNavigation}
+          onClick={() => {
+            if (window.matchMedia('(min-width: 1024px)').matches) {
+              setNavigationVisible(true);
+            } else {
+              setMobileOpen(true);
+            }
+          }}
+          className={`fixed left-3 top-3 z-50 rounded-xl border border-slate-200 bg-white/95 p-2.5 text-slate-500 shadow-xl shadow-slate-900/10 backdrop-blur hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] ${
+            navigationVisible ? 'lg:hidden' : ''
+          }`}
+        >
+          <PanelLeftOpen className="h-5 w-5" />
+        </button>
+      )}
     </div>
   );
 }
-

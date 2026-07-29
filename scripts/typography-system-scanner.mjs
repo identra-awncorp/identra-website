@@ -29,6 +29,14 @@ const migratedComponents = [
   'src/components/docs/DocsArticleLayout.tsx',
   'src/components/docs/DocsApiReferenceCodeExplorer.tsx',
   'src/components/docs/DocsSdkFlowCodeExplorer.tsx',
+  'src/components/dashboard/DashboardPage.tsx',
+  'src/components/dashboard/DashboardShell.tsx',
+  'src/components/dashboard/DashboardOverview.tsx',
+  'src/components/dashboard/DynamicFlowWorkspace.tsx',
+  'src/components/dashboard/FlowInspectorAdvanced.tsx',
+  'src/components/dashboard/InterfaceStudioWorkspace.tsx',
+  'src/components/dashboard/ScenarioSuiteDialog.tsx',
+  'src/components/dashboard/FlowOperationsDialog.tsx',
 ];
 
 const forbiddenPatterns = [

@@ -20,11 +20,12 @@ import identraLogo from '../assets/images/identra-logo.svg';
 
 interface LoginPageProps {
   onBackToLanding: () => void;
+  onAuthenticated: () => void;
 }
 
 type AuthMode = 'signin' | 'signup' | 'forgot' | 'sso';
 
-export default function LoginPage({ onBackToLanding }: LoginPageProps) {
+export default function LoginPage({ onBackToLanding, onAuthenticated }: LoginPageProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(LOGIN_PAGE_TRANSLATIONS, language as keyof typeof LOGIN_PAGE_TRANSLATIONS, 'LOGIN_PAGE_TRANSLATIONS');
 
@@ -58,7 +59,7 @@ export default function LoginPage({ onBackToLanding }: LoginPageProps) {
       setIsLoading(false);
       setSuccessMessage(t.success.signedIn);
       setTimeout(() => {
-        onBackToLanding();
+        onAuthenticated();
       }, 1500);
     }, 1500);
   };
@@ -115,7 +116,7 @@ export default function LoginPage({ onBackToLanding }: LoginPageProps) {
       setIsLoading(false);
       setSuccessMessage(`${t.success.ssoPrefix} ${provider}! ${t.success.ssoSuffix}`);
       setTimeout(() => {
-        onBackToLanding();
+        onAuthenticated();
       }, 1200);
     }, 1200);
   };

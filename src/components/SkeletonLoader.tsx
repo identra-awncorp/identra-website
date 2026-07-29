@@ -27,7 +27,7 @@ export default function SkeletonLoader({ view }: SkeletonLoaderProps) {
     layoutType = 'landing';
   } else if (viewLower === 'login') {
     layoutType = 'login';
-  } else if (viewLower === 'docs') {
+  } else if (viewLower === 'docs' || viewLower === 'dashboard') {
     layoutType = 'dashboard';
   } else if (
     ['blog', 'ebooks', 'events', 'careers', 'research', 'resource-center', 'academy'].includes(viewLower)

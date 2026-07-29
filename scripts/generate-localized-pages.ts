@@ -124,7 +124,9 @@ const renderLocalizedHtml = (
   const routeTitle = seo.routeTitles[route.view];
   const routeGroup = SEO_ROUTE_GROUPS[route.view];
   const currentBlogId = route.blogId ?? DEFAULT_BLOG_DETAIL_ID;
-  const structuredArticle = getStructuredBlogArticle(currentBlogId);
+  const structuredArticle = route.view === 'blog-detail'
+    ? getStructuredBlogArticle(currentBlogId)
+    : null;
   const blogPost = route.view === 'blog-detail'
     ? structuredArticle
       ? getStructuredBlogSeoMetadata(structuredArticle)

@@ -11,7 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SeoMetadata from './components/SeoMetadata';
 import type { AppView, BlogDetailId, DemoScenarioId } from './types/routes';
-import { blogDetailPath, localizePath, pathToBlogDetailId, pathToDemoScenarioId, pathToView, viewToPath } from './types/routes';
+import { blogDetailPath, dashboardPath, localizePath, pathToBlogDetailId, pathToDemoScenarioId, pathToView, viewToPath } from './types/routes';
 
 type DemoScenarioPageProps = {
   onBackToList: () => void;
@@ -41,6 +41,7 @@ const GovernmentIdPage = lazy(() => import('./components/GovernmentIdPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
 const PricingPage = lazy(() => import('./components/PricingPage'));
 const LoginPage = lazy(() => import('./components/LoginPage'));
+const DashboardPage = lazy(() => import('./components/dashboard/DashboardPage'));
 const BlogPage = lazy(() => import('./components/BlogPage'));
 const EbooksPage = lazy(() => import('./components/EbooksPage'));
 const BlogDetailPage = lazy(() => import('./components/BlogDetailPage'));
@@ -256,7 +257,7 @@ export default function App() {
 
   const activeView = currentView;
   const headerView = activeView === 'blog-detail' ? 'blog' : activeView;
-  const isStandaloneView = activeView === 'login' || activeView === 'docs';
+  const isStandaloneView = activeView === 'login' || activeView === 'docs' || activeView === 'dashboard';
   const markInitialLoadComplete = () => setHasCompletedInitialLoad(true);
   const DemoScenarioPage = resolvedDemoScenarioId
     ? DEMO_SCENARIO_PAGE_COMPONENTS[resolvedDemoScenarioId]
@@ -285,7 +286,19 @@ export default function App() {
           return (
             <>
               {!hasCompletedInitialLoad && <InitialLoadMarker onReady={markInitialLoadComplete} />}
-              <LoginPage onBackToLanding={() => handleBackNavigation('landing')} />
+              <LoginPage
+                onBackToLanding={() => handleBackNavigation('landing')}
+                onAuthenticated={() => navigate(dashboardPath(language), { state: IN_APP_NAVIGATION_STATE })}
+              />
+            </>
+          );
+        }
+
+        if (currentView === 'dashboard') {
+          return (
+            <>
+              {!hasCompletedInitialLoad && <InitialLoadMarker onReady={markInitialLoadComplete} />}
+              <DashboardPage />
             </>
           );
         }

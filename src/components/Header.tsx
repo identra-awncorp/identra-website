@@ -26,9 +26,9 @@ import eventNetworkingImage from '../assets/images/identra_event_networking_1783
 import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 const PLATFORM_ITEMS = [
-  { label: HEADER_COPY_KEYS.interfaceStudio, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
   { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#dynamic-flow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
   { label: HEADER_COPY_KEYS.relay, subtitle: HEADER_COPY_KEYS.eligibilityAssurance, icon: 'ShieldCheck', href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
+  { label: HEADER_COPY_KEYS.interfaceStudio, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
   { label: HEADER_COPY_KEYS.workflows, subtitle: HEADER_COPY_KEYS.processAutomation, icon: 'Shuffle', href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
   { label: HEADER_COPY_KEYS.caseManagement, subtitle: HEADER_COPY_KEYS.manualReviewHub, icon: 'FolderHeart', href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
   { label: HEADER_COPY_KEYS.copilot, subtitle: HEADER_COPY_KEYS.aiDrivenAgents, icon: 'Sparkles', href: '#copilot', view: PLATFORM_PRODUCT_VIEWS.copilot },

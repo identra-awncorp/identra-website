@@ -10,6 +10,7 @@ export const APP_VIEWS = [
   'about',
   'pricing',
   'login',
+  'dashboard',
   'blog',
   'ebooks',
   'blog-detail',
@@ -152,6 +153,23 @@ export const DEMO_SCENARIO_IDS = [
 
 export type DemoScenarioId = typeof DEMO_SCENARIO_IDS[number];
 
+export const DASHBOARD_TOOL_IDS = [
+  'dynamic-flow',
+  'interface-studio',
+] as const;
+
+export type DashboardToolId = typeof DASHBOARD_TOOL_IDS[number];
+
+export type DashboardRoute =
+  | {
+      readonly page: 'overview';
+    }
+  | {
+      readonly page: 'flow';
+      readonly flowId: string;
+      readonly tool: DashboardToolId;
+    };
+
 export const VALID_VIEWS = new Set<AppView>(APP_VIEWS);
 export const VALID_BLOG_DETAIL_IDS = new Set<BlogDetailId>(PUBLIC_BLOG_DETAIL_IDS);
 export const VALID_DEMO_SCENARIO_IDS = new Set<DemoScenarioId>(DEMO_SCENARIO_IDS);
@@ -165,6 +183,9 @@ export const isBlogDetailId = (value: string): value is BlogDetailId =>
 
 export const isDemoScenarioId = (value: string): value is DemoScenarioId =>
   VALID_DEMO_SCENARIO_IDS.has(value as DemoScenarioId);
+
+export const isDashboardToolId = (value: string): value is DashboardToolId =>
+  DASHBOARD_TOOL_IDS.includes(value as DashboardToolId);
 
 export const isLocale = (value: string): value is Locale =>
   VALID_LOCALES.has(value as Locale);
@@ -210,9 +231,45 @@ export const pathToView = (pathname: string): AppView | null => {
     }
   }
 
+  if (resolvedView === 'dashboard') {
+    return pathToDashboardRoute(pathname) ? resolvedView : null;
+  }
+
   if (resolvedView !== 'blog-detail' && extraSegments.length > 0) return null;
 
   return resolvedView;
+};
+
+export const pathToDashboardRoute = (pathname: string): DashboardRoute | null => {
+  const cleanPath = stripLocaleFromPath(pathname).replace(/^\/+/, '').replace(/\/+$/, '');
+  const [viewSegment, collectionSegment, encodedFlowId, toolSegment, ...extraSegments] =
+    cleanPath.split('/');
+
+  if (viewSegment !== 'dashboard') return null;
+  if (!collectionSegment && !encodedFlowId && !toolSegment) {
+    return { page: 'overview' };
+  }
+  if (
+    collectionSegment !== 'flows'
+    || !encodedFlowId
+    || !toolSegment
+    || extraSegments.length > 0
+    || !isDashboardToolId(toolSegment)
+  ) {
+    return null;
+  }
+
+  try {
+    const flowId = decodeURIComponent(encodedFlowId);
+    if (!flowId.trim() || flowId.includes('/')) return null;
+    return {
+      page: 'flow',
+      flowId,
+      tool: toolSegment,
+    };
+  } catch {
+    return null;
+  }
 };
 
 export const pathToBlogDetailId = (pathname: string): BlogDetailId | null => {
@@ -247,6 +304,15 @@ export const pathToDemoScenarioId = (pathname: string): DemoScenarioId | null =>
 export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
   `/${locale}/demo/${encodeURIComponent(id)}`;
 
+export const dashboardPath = (locale: Locale) =>
+  `/${locale}/dashboard`;
+
+export const dashboardFlowPath = (
+  flowId: string,
+  tool: DashboardToolId,
+  locale: Locale,
+) => `/${locale}/dashboard/flows/${encodeURIComponent(flowId)}/${tool}`;
+
 export const legacyViewAliasPath = (alias: LegacyViewAlias, locale: Locale) =>
   `/${locale}/${alias}`;
 
@@ -265,6 +331,14 @@ export const localizePath = (pathname: string, locale: Locale): string | null =>
   if (view === 'blog-detail') {
     const blogId = pathToBlogDetailId(pathname);
     return blogId ? blogDetailPath(blogId, locale) : null;
+  }
+
+  if (view === 'dashboard') {
+    const dashboardRoute = pathToDashboardRoute(pathname);
+    if (!dashboardRoute) return null;
+    return dashboardRoute.page === 'overview'
+      ? dashboardPath(locale)
+      : dashboardFlowPath(dashboardRoute.flowId, dashboardRoute.tool, locale);
   }
 
   if (view === 'demo') {

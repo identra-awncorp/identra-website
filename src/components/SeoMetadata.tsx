@@ -150,7 +150,9 @@ export default function SeoMetadata({
     const siteUrl = normalizeSiteUrl(import.meta.env.VITE_SITE_URL);
     const localeMeta = LANGUAGE_META[language];
     const currentBlogId = blogId ?? DEFAULT_BLOG_DETAIL_ID;
-    const structuredArticle = getStructuredBlogArticle(currentBlogId);
+    const structuredArticle = currentView === 'blog-detail'
+      ? getStructuredBlogArticle(currentBlogId)
+      : null;
     const routeTitle = isNotFound
       ? seo.notFoundTitle
       : seo.routeTitles[currentView];

@@ -8,10 +8,13 @@ import {
   PUBLIC_BLOG_DETAIL_IDS,
   SUPPORTED_LOCALES,
   blogDetailPath,
+  dashboardFlowPath,
+  dashboardPath,
   getBlogDetailLocales,
   getViewLocales,
   localizePath,
   pathToBlogDetailId,
+  pathToDashboardRoute,
   pathToView,
   resolveViewLocale,
   viewToPath,
@@ -42,6 +45,31 @@ test('Interface Studio and Relay publish independent canonical routes', () => {
   assert.equal(pathToView('/de/relay'), 'relay');
   assert.equal(localizePath('/de/relay', 'vi'), '/vi/relay');
   assert.equal(pathToView('/vi/relay/unexpected'), null);
+});
+
+test('dashboard routes are canonical, localized, and preserve nested flow tools', () => {
+  assert.ok(APP_VIEWS.includes('dashboard'));
+  assert.equal(dashboardPath('vi'), '/vi/dashboard');
+  assert.equal(
+    dashboardFlowPath('flow 01', 'dynamic-flow', 'en'),
+    '/en/dashboard/flows/flow%2001/dynamic-flow',
+  );
+  assert.deepEqual(pathToDashboardRoute('/vi/dashboard'), { page: 'overview' });
+  assert.deepEqual(
+    pathToDashboardRoute('/de/dashboard/flows/flow%2001/interface-studio'),
+    {
+      page: 'flow',
+      flowId: 'flow 01',
+      tool: 'interface-studio',
+    },
+  );
+  assert.equal(
+    localizePath('/de/dashboard/flows/flow%2001/interface-studio', 'ja'),
+    '/ja/dashboard/flows/flow%2001/interface-studio',
+  );
+  assert.equal(pathToView('/en/dashboard/flows/flow-1/dynamic-flow'), 'dashboard');
+  assert.equal(pathToView('/en/dashboard/flows/flow-1/unknown-tool'), null);
+  assert.equal(pathToView('/en/dashboard/unexpected'), null);
 });
 
 test('Vietnamese-only structured articles canonicalize every locale to Vietnamese', () => {

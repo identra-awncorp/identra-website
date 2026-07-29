@@ -46,7 +46,7 @@ const escapeXml = (value: string) =>
 
 const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL ?? process.env.SITE_URL);
 const staticRoutes = APP_VIEWS
-  .filter((view) => view !== 'blog-detail' && view !== 'login')
+  .filter((view) => view !== 'blog-detail' && view !== 'login' && view !== 'dashboard')
   .map((view) => ({
     basePath: stripLocaleFromPath(viewToPath(view, DEFAULT_LOCALE)),
     locales: getViewLocales(view),
@@ -112,12 +112,15 @@ ${alternateLinks.join('\n')}
 </urlset>
 `;
 
-const disallowedLoginPaths = SUPPORTED_LOCALES
-  .map((locale) => `Disallow: /${locale}/login`)
+const disallowedPrivatePaths = SUPPORTED_LOCALES
+  .flatMap((locale) => [
+    `Disallow: /${locale}/login`,
+    `Disallow: /${locale}/dashboard`,
+  ])
   .join('\n');
 const robotsTxt = `User-agent: *
 Allow: /
-${disallowedLoginPaths}
+${disallowedPrivatePaths}
 
 Sitemap: ${siteUrl}/sitemap.xml
 `;

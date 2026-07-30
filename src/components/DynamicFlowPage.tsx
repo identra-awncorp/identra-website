@@ -29,7 +29,6 @@ import {
   Workflow,
   Zap,
   Sliders,
-  Layers,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import TechGridBg from './TechGridBg';
@@ -141,7 +140,7 @@ function HeroFlowVisual({ copy }: { copy: DynamicFlowPageCopy }) {
   return (
     <figure
       aria-label={copy.hero.visualAriaLabel}
-      className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-5 shadow-2xl shadow-[#0F1E36]/10 backdrop-blur-xl sm:p-7"
+      className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-5 text-left shadow-2xl shadow-[#0F1E36]/10 backdrop-blur-xl sm:p-7"
     >
       {/* Ambient background glows */}
       <div
@@ -153,42 +152,43 @@ function HeroFlowVisual({ copy }: { copy: DynamicFlowPageCopy }) {
         aria-hidden="true"
       />
 
-      {/* Header & Preset Switcher */}
-      <figcaption className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <p className="type-label text-[#354CE1] uppercase tracking-wider">{copy.hero.visualEyebrow}</p>
+      <>
+        {/* Header & Preset Switcher */}
+        <figcaption className="relative flex flex-col gap-4 border-b border-slate-100 pb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <p className="type-label text-[#354CE1] uppercase tracking-wider">{copy.hero.visualEyebrow}</p>
+            </div>
+            <h4 className="type-card-title mt-1 text-[#0F1E36] font-bold">
+              {activePreset === 'fintech'
+                ? simCopy.presetFintech
+                : activePreset === 'crypto'
+                  ? simCopy.presetCrypto
+                  : simCopy.presetAge}
+            </h4>
           </div>
-          <h4 className="type-card-title mt-1 text-[#0F1E36] font-bold">
-            {activePreset === 'fintech'
-              ? simCopy.presetFintech
-              : activePreset === 'crypto'
-                ? simCopy.presetCrypto
-                : simCopy.presetAge}
-          </h4>
-        </div>
 
-        <div className="flex items-center gap-1.5 rounded-full bg-slate-100/90 p-1 backdrop-blur-sm">
-          {DYNAMIC_FLOW_PRESET_IDS.map((preset) => (
-            <button
-              key={preset}
-              type="button"
-              onClick={() => setActivePreset(preset)}
-              className={`rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 ${
-                activePreset === preset
-                  ? 'bg-white text-[#354CE1] shadow-sm'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {simCopy.presetTabs[preset]}
-            </button>
-          ))}
-        </div>
-      </figcaption>
+          <div className="flex items-center gap-1.5 rounded-full bg-slate-100/90 p-1 backdrop-blur-sm">
+            {DYNAMIC_FLOW_PRESET_IDS.map((preset) => (
+              <button
+                key={preset}
+                type="button"
+                onClick={() => setActivePreset(preset)}
+                className={`rounded-full px-3 py-1 text-xs font-semibold transition-all duration-200 ${
+                  activePreset === preset
+                    ? 'bg-white text-[#354CE1] shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {simCopy.presetTabs[preset]}
+              </button>
+            ))}
+          </div>
+        </figcaption>
 
-      {/* Interactive Flow Canvas */}
-      <div className="relative mt-6 space-y-3.5">
+        {/* Interactive Flow Canvas */}
+        <div className="relative mx-auto mt-6 max-w-3xl space-y-3.5">
         {/* Step 1: Customer Input */}
         <div
           className={`flex items-center justify-between rounded-2xl border p-3.5 transition-all duration-300 ${
@@ -315,33 +315,34 @@ function HeroFlowVisual({ copy }: { copy: DynamicFlowPageCopy }) {
             <span className="text-[10px] text-slate-500 mt-0.5">{simCopy.routeMeta.flagged}</span>
           </div>
         </div>
-      </div>
+        </div>
 
-      {/* Simulation Trigger Bar */}
-      <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
-        <span className="type-caption text-slate-500 flex items-center gap-1.5">
-          <Zap className="h-3.5 w-3.5 text-[#354CE1]" />
-          {simCopy.engineLabel}
-        </span>
-        <button
-          type="button"
-          onClick={handleRunSimulation}
-          disabled={isSimulating}
-          className="type-control inline-flex items-center gap-2 rounded-xl bg-[#354CE1] px-4 py-2 text-xs font-semibold text-white shadow-md transition-all hover:bg-[#283DBF] active:scale-98 disabled:opacity-75"
-        >
-          {isSimulating ? (
-            <>
-              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-              {simCopy.running}
-            </>
-          ) : (
-            <>
-              <Play className="h-3.5 w-3.5 fill-current" />
-              {simCopy.runSim}
-            </>
-          )}
-        </button>
-      </div>
+        {/* Simulation Trigger Bar */}
+        <div className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+          <span className="type-caption text-slate-500 flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-[#354CE1]" />
+            {simCopy.engineLabel}
+          </span>
+          <button
+            type="button"
+            onClick={handleRunSimulation}
+            disabled={isSimulating}
+            className="type-control inline-flex items-center gap-2 rounded-xl bg-[#354CE1] px-4 py-2 text-xs font-semibold text-white shadow-md transition-all hover:bg-[#283DBF] active:scale-98 disabled:opacity-75"
+          >
+            {isSimulating ? (
+              <>
+                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                {simCopy.running}
+              </>
+            ) : (
+              <>
+                <Play className="h-3.5 w-3.5 fill-current" />
+                {simCopy.runSim}
+              </>
+            )}
+          </button>
+        </div>
+      </>
     </figure>
   );
 }
@@ -536,7 +537,7 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
       className="min-h-screen overflow-hidden bg-[#FAFBFD] text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]"
     >
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-white py-20 lg:py-28">
+      <section className="relative overflow-hidden bg-white pb-24 pt-16 md:pb-32 md:pt-20">
         <TechGridBg />
         <div
           className="pointer-events-none absolute left-1/2 top-0 h-96 w-[56rem] -translate-x-1/2 rounded-full bg-[#354CE1]/10 blur-3xl"
@@ -546,30 +547,23 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
           className="pointer-events-none absolute -left-32 top-32 h-72 w-72 rounded-full bg-[#5B6DFF]/15 blur-3xl"
           aria-hidden="true"
         />
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-6">
-            {/* Pill Eyebrow */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#354CE1]/20 bg-[#354CE1]/5 px-3.5 py-1.5 backdrop-blur-md">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#354CE1] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#354CE1]" />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
+          <div className="stack-hero">
+            <h1 className="type-page-title mx-auto max-w-5xl text-balance text-[#0F1E36]">
+              <span className="block md:whitespace-nowrap">
+                {copy.hero.titleLines[0]}
               </span>
-              <span className="type-caption font-bold tracking-wider text-[#354CE1] uppercase">
-                {copy.hero.eyebrow} // {copy.hero.orchestrationLabel}
+              <span className="block bg-gradient-to-r from-[#354CE1] via-[#5F3CF3] to-[#00D4B2] bg-clip-text text-transparent md:whitespace-nowrap">
+                {copy.hero.titleLines[1]}
               </span>
-            </div>
-
-            {/* Title */}
-            <h1 className="type-page-title measure-display mt-5 text-balance font-extrabold text-[#0F1E36]">
-              {copy.hero.title}
             </h1>
 
-            <p className="type-lead measure-lead mt-6 text-slate-600">
+            <p className="type-lead measure-lead mx-auto text-slate-600">
               {copy.hero.description}
             </p>
 
             {/* CTAs */}
-            <div className="mt-8 flex flex-col gap-3.5 sm:flex-row">
+            <div className="flex flex-col items-center justify-center gap-3.5 pt-2 sm:flex-row sm:gap-6">
               <button
                 id="dynamic-flow-open-dashboard"
                 type="button"
@@ -589,46 +583,46 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
                 {copy.hero.secondaryCta}
               </button>
             </div>
-
-            {/* Metrics Bar */}
-            <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-slate-100 pt-8">
-              <div className="min-w-0">
-                <p className="type-page-title text-2xl font-black text-[#354CE1]">
-                  {metricsCopy.passRateVal}
-                </p>
-                <p className="type-caption mt-1 break-words text-slate-500">
-                  {metricsCopy.passRateLabel}
-                </p>
-              </div>
-              <div className="min-w-0">
-                <p className="type-page-title text-2xl font-black text-[#0F1E36]">
-                  {metricsCopy.speedVal}
-                </p>
-                <p className="type-caption mt-1 break-words text-slate-500">
-                  {metricsCopy.speedLabel}
-                </p>
-              </div>
-              <div className="min-w-0">
-                <p className="type-page-title text-2xl font-black text-[#0F1E36]">
-                  {metricsCopy.activeFlowsVal}
-                </p>
-                <p className="type-caption mt-1 break-words text-slate-500">
-                  {metricsCopy.activeFlowsLabel}
-                </p>
-              </div>
-              <div className="min-w-0">
-                <p className="type-page-title text-2xl font-black text-emerald-600">
-                  {metricsCopy.zeroCodeVal}
-                </p>
-                <p className="type-caption mt-1 break-words text-slate-500">
-                  {metricsCopy.zeroCodeLabel}
-                </p>
-              </div>
-            </div>
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="mt-16 md:mt-24">
             <HeroFlowVisual copy={copy} />
+          </div>
+
+          {/* Metrics Bar */}
+          <div className="mx-auto mt-12 grid max-w-5xl grid-cols-4 gap-3 border-t border-slate-100 pt-8 text-center sm:gap-6 lg:gap-10">
+            <div className="min-w-0">
+              <p className="type-metric whitespace-nowrap text-lg text-[#354CE1] sm:text-2xl lg:text-3xl">
+                {metricsCopy.passRateVal}
+              </p>
+              <p className="type-caption mt-1 break-words text-slate-500">
+                {metricsCopy.passRateLabel}
+              </p>
+            </div>
+            <div className="min-w-0">
+              <p className="type-metric whitespace-nowrap text-lg text-[#0F1E36] sm:text-2xl lg:text-3xl">
+                {metricsCopy.speedVal}
+              </p>
+              <p className="type-caption mt-1 break-words text-slate-500">
+                {metricsCopy.speedLabel}
+              </p>
+            </div>
+            <div className="min-w-0">
+              <p className="type-metric whitespace-nowrap text-lg text-[#0F1E36] sm:text-2xl lg:text-3xl">
+                {metricsCopy.activeFlowsVal}
+              </p>
+              <p className="type-caption mt-1 break-words text-slate-500">
+                {metricsCopy.activeFlowsLabel}
+              </p>
+            </div>
+            <div className="min-w-0">
+              <p className="type-metric whitespace-nowrap text-lg text-emerald-600 sm:text-2xl lg:text-3xl">
+                {metricsCopy.zeroCodeVal}
+              </p>
+              <p className="type-caption mt-1 break-words text-slate-500">
+                {metricsCopy.zeroCodeLabel}
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -737,61 +731,82 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
       </section>
 
       {/* SYNERGY WITH INTERFACE STUDIO SECTION */}
-      <section className="relative overflow-hidden border-y border-[#354CE1]/15 bg-[#EEF1FF]/70 py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-xs font-bold text-[#354CE1] shadow-xs">
-              <Layers className="h-3.5 w-3.5" />
+      <section className="relative overflow-hidden bg-[#5B6DFF] py-20 text-white lg:py-28">
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-28 -left-20 h-80 w-80 rounded-full bg-[#354CE1]/45 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-5xl text-center">
+            <span className="type-label inline-flex rounded-full bg-white/12 px-3.5 py-2 uppercase text-white ring-1 ring-white/20">
               {copy.studio.ecosystemLabel}
             </span>
-            <p className="type-label mt-4 text-[#354CE1] uppercase tracking-wider">{copy.studio.eyebrow}</p>
-            <h2 className="type-section-title mt-3 text-balance text-[#0F1E36] font-extrabold">
+            <p className="type-label mt-6 uppercase text-white/70">
+              {copy.studio.eyebrow}
+            </p>
+            <h2 className="type-section-title mt-4 text-balance text-white">
               {copy.studio.title}
             </h2>
-            <p className="type-body mx-auto mt-5 max-w-3xl text-slate-600">
+            <p className="type-body mx-auto mt-5 max-w-3xl text-white/80">
               {copy.studio.description}
             </p>
           </div>
 
-          <div className="relative mx-auto mt-14 grid max-w-5xl gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-stretch">
-            <article className="rounded-3xl border border-white/80 bg-white p-8 shadow-xl shadow-[#354CE1]/8">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1]">
-                <Network className="h-6 w-6" aria-hidden="true" />
+          <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-5 lg:grid-cols-[1fr_auto_1fr]">
+            <article className="rounded-[1.75rem] bg-white p-7 text-[#0F1E36] shadow-xl shadow-[#354CE1]/15">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1]">
+                <Network className="h-5 w-5" aria-hidden="true" />
               </span>
-              <p className="type-label mt-6 text-[#354CE1] font-bold">{copy.studio.flowLabel}</p>
-              <h3 className="type-card-title mt-2 text-[#0F1E36] font-bold">{copy.studio.flowTitle}</h3>
-              <p className="type-body-sm mt-3 text-slate-600 leading-relaxed">{copy.studio.flowDescription}</p>
+              <p className="type-label mt-6 uppercase text-[#354CE1]">
+                {copy.studio.flowLabel}
+              </p>
+              <h3 className="type-card-title mt-2">
+                {copy.studio.flowTitle}
+              </h3>
+              <p className="type-body-sm mt-3 leading-relaxed text-slate-600">
+                {copy.studio.flowDescription}
+              </p>
               <button
                 type="button"
                 onClick={() => onViewChange('dynamic-flow')}
-                className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-[#354CE1] hover:underline"
+                className="type-control mt-6 inline-flex items-center gap-2 font-semibold text-[#354CE1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#354CE1]"
               >
-                {copy.studio.flowCta} <ArrowUpRight className="h-3.5 w-3.5" />
+                {copy.studio.flowCta}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </article>
 
-            <div className="flex items-center justify-center py-2 lg:py-0">
-              <div className="flex flex-col items-center gap-2 rounded-full bg-[#354CE1] px-5 py-3 text-white shadow-lg shadow-[#354CE1]/30">
-                <RefreshCw className="h-5 w-5 animate-spin" style={{ animationDuration: '8s' }} aria-hidden="true" />
-                <span className="type-caption font-bold tracking-wider uppercase text-[11px]">
-                  {copy.studio.connectionLabel}
-                </span>
-              </div>
+            <div className="flex items-center justify-center py-1 lg:py-0">
+              <span className="type-caption inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 font-semibold text-[#354CE1] shadow-lg">
+                <RefreshCw className="h-4 w-4" aria-hidden="true" />
+                {copy.studio.connectionLabel}
+              </span>
             </div>
 
-            <article className="rounded-3xl border border-white/80 bg-white p-8 shadow-xl shadow-[#354CE1]/8">
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-50 text-violet-700">
-                <LayoutDashboard className="h-6 w-6" aria-hidden="true" />
+            <article className="rounded-[1.75rem] bg-[#0F1E36] p-7 text-white shadow-xl shadow-[#354CE1]/15 ring-1 ring-white/10">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-[#AAB3FF]">
+                <LayoutDashboard className="h-5 w-5" aria-hidden="true" />
               </span>
-              <p className="type-label mt-6 font-bold text-violet-700">{copy.studio.studioLabel}</p>
-              <h3 className="type-card-title mt-2 text-[#0F1E36] font-bold">{copy.studio.studioTitle}</h3>
-              <p className="type-body-sm mt-3 text-slate-600 leading-relaxed">{copy.studio.studioDescription}</p>
+              <p className="type-label mt-6 uppercase text-[#AAB3FF]">
+                {copy.studio.studioLabel}
+              </p>
+              <h3 className="type-card-title mt-2">
+                {copy.studio.studioTitle}
+              </h3>
+              <p className="type-body-sm mt-3 leading-relaxed text-white/70">
+                {copy.studio.studioDescription}
+              </p>
               <button
                 type="button"
                 onClick={() => onViewChange('interface-studio')}
-                className="mt-6 inline-flex items-center gap-1.5 text-xs font-bold text-violet-700 hover:underline"
+                className="type-control mt-6 inline-flex items-center gap-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                {copy.studio.studioCta} <ArrowUpRight className="h-3.5 w-3.5" />
+                {copy.studio.studioCta}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </article>
           </div>

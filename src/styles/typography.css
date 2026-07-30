@@ -165,6 +165,14 @@
   line-height: 1.4;
 }
 
+.type-brand-wordmark {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+
 .measure-display {
   max-inline-size: var(--type-measure-display);
 }

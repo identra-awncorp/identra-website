@@ -3,1964 +3,1496 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { AppView } from '../types/routes';
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  ArrowLeft, ArrowRight, Play, RefreshCw, Settings, Sparkles, Check, 
-  Smartphone, Eye, Layers, Split, Palette, Code, Sliders, CheckCircle, 
-  CheckCircle2, AlertTriangle, UserCheck, Shield, ShieldCheck, Database, 
-  SlidersHorizontal, Layout, Zap, Users, BarChart3, HelpCircle, ChevronDown, 
-  ChevronUp, Lock, MapPin, Mail, Phone, MessageSquare, Trash2, Send, Terminal,
-  Maximize2, Laptop, Monitor, Undo, Redo, Plus, Trash
+import { useState } from 'react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Blocks,
+  Braces,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  Code,
+  Component,
+  Copy,
+  Cpu,
+  Eye,
+  FileCheck,
+  FileCheck2,
+  GitBranch,
+  Globe,
+  Globe2,
+  Languages,
+  Layers,
+  LayoutDashboard,
+  Monitor,
+  Network,
+  Palette,
+  Phone,
+  RefreshCw,
+  Route,
+  Scan,
+  ScanSearch,
+  ShieldCheck,
+  Smartphone,
+  Sparkles,
+  Tablet,
+  Type,
+  UserCheck,
+  Wand2,
+  Workflow,
+  XCircle,
+  Zap,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
-import { interfaceStudioPageTranslations } from '../translations/InterfaceStudioPageTranslations';
+import {
+  INTERFACE_STUDIO_BENEFIT_IDS,
+  INTERFACE_STUDIO_FAQ_IDS,
+  INTERFACE_STUDIO_SCREEN_IDS,
+  INTERFACE_STUDIO_STAGE_IDS,
+  INTERFACE_STUDIO_TRANSLATIONS,
+} from '../translations/InterfaceStudioPageTranslations';
+import type {
+  InterfaceStudioBenefitId,
+  InterfaceStudioPageCopy,
+  InterfaceStudioScreenId,
+  InterfaceStudioStageId,
+} from '../translations/InterfaceStudioPageTranslations';
+import type { AppView } from '../types/routes';
+import { getLocalizedRecord } from '../utils/i18nRuntime';
+import TechGridBg from './TechGridBg';
 
 interface InterfaceStudioPageProps {
-  onOpenSandbox: () => void;
-  onBackToLanding: () => void;
-  onViewChange?: (view: AppView) => void;
+  readonly onViewChange: (view: AppView) => void;
 }
 
-type NodeID = 'start' | 'id_verify' | 'selfie_check' | 'db_screen' | 'outcome';
+type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
+type BrandPreset = 'fintech' | 'crypto' | 'retail';
+type BorderRadiusOption = 'sharp' | 'rounded' | 'pill';
 
-interface StartConfig {
-  title: string;
-  buttonText: string;
+interface StudioEditorState {
   brandColor: string;
-  borderRadius: 'sharp' | 'rounded' | 'pill';
+  borderRadius: BorderRadiusOption;
   showLogo: boolean;
+  fontFamily: string;
+  themeMode: 'light' | 'dark';
+  currentScreen: InterfaceStudioScreenId;
+  device: PreviewDevice;
+  preset: BrandPreset;
 }
 
-interface IdVerifyConfig {
-  skip: boolean;
-  requireBack: boolean;
-  allowUploads: boolean;
-  docType: 'all' | 'passport' | 'dl';
-}
+const BENEFIT_ICONS: Record<InterfaceStudioBenefitId, LucideIcon> = {
+  compose: Blocks,
+  personalize: Wand2,
+  adapt: Globe2,
+  release: ShieldCheck,
+};
 
-interface SelfieConfig {
-  skip: boolean;
-  strictLiveness: boolean;
-  maskOverlay: 'oval' | 'grid' | 'none';
-}
+const DEVICE_WIDTHS: Record<PreviewDevice, string> = {
+  mobile: 'max-w-[320px]',
+  tablet: 'max-w-[420px]',
+  desktop: 'max-w-[540px]',
+};
 
-interface DbScreenConfig {
-  skip: boolean;
-  runSanctions: boolean;
-  runPep: boolean;
-  runAdverseMedia: boolean;
-}
+const SDK_SYNTAX = {
+  importKeyword: 'import',
+  namedExport: '{ IdentraVerifySDK }',
+  packageImport: "from '@identra/sdk';",
+  componentOpen: '<IdentraVerifySDK',
+  brandColorProp: 'brandColor=',
+  borderRadiusProp: 'borderRadius=',
+  showLogoProp: 'showLogo={',
+  themeProp: 'theme=',
+  componentClose: '/>',
+  brandToken: '--brand-primary:',
+  cornerToken: '--corner-radius:',
+} as const;
 
-interface OutcomeConfig {
-  title: string;
-  autoApprove: boolean;
-  redirectUrl: string;
-}
-
-type InterfaceStudioLanguage = keyof typeof interfaceStudioPageTranslations;
-type InterfaceStudioPageTranslationKey = keyof typeof interfaceStudioPageTranslations.en;
-
-const interfaceStudioStartTitleKeys: readonly InterfaceStudioPageTranslationKey[] = [
-  'defaultStartTitle',
-  'presetFintechStartTitle',
-  'presetGigStartTitle',
-  'presetAgeStartTitle'
-];
-
-const interfaceStudioStartButtonKeys: readonly InterfaceStudioPageTranslationKey[] = [
-  'defaultStartButton',
-  'presetFintechButton',
-  'presetGigButton',
-  'presetAgeButton'
-];
-
-const interfaceStudioOutcomeTitleKeys: readonly InterfaceStudioPageTranslationKey[] = [
-  'defaultOutcomeTitle',
-  'presetFintechOutcomeTitle',
-  'presetGigOutcomeTitle',
-  'presetAgeOutcomeTitle'
-];
-
-const interfaceStudioFlowNameKeys: readonly InterfaceStudioPageTranslationKey[] = [
-  'defaultFlowName'
-];
-
-const findInterfaceStudioTranslationKey = (
-  value: string,
-  keys: readonly InterfaceStudioPageTranslationKey[]
-): InterfaceStudioPageTranslationKey | null => (
-  keys.find((key) => Object.values(interfaceStudioPageTranslations).some((translations) => translations[key] === value)) ?? null
-);
-
-export default function InterfaceStudioPage({ onOpenSandbox, onBackToLanding, onViewChange }: InterfaceStudioPageProps) {
-  const { language } = useLanguage();
-  const t = (key: InterfaceStudioPageTranslationKey) => {
-    const lang = language as InterfaceStudioLanguage;
-    return getLocalizedValue(getLocalizedRecord(interfaceStudioPageTranslations, lang as keyof typeof interfaceStudioPageTranslations, 'interfaceStudioPageTranslations'), key, lang, 'interfaceStudioPageTranslations');
-  };
-
-  // 1. Interface Studio State Configuration
-  const [activeNode, setActiveNode] = useState<NodeID>('start');
-  const [activeTab, setActiveTab] = useState<'collect' | 'verify' | 'route' | 'refine'>('collect');
-  const [useCasePreset, setUseCasePreset] = useState<'fintech' | 'gig' | 'age_gate'>('fintech');
-
-  // Node configurations
-  const [startConfig, setStartConfig] = useState<StartConfig>({
-    title: t('defaultStartTitle'),
-    buttonText: t('defaultStartButton'),
+function InteractiveStudioWorkspace({ copy }: { readonly copy: InterfaceStudioPageCopy }) {
+  const [editorState, setEditorState] = useState<StudioEditorState>({
     brandColor: '#354CE1',
     borderRadius: 'rounded',
-    showLogo: true
+    showLogo: true,
+    fontFamily: 'Space Grotesk',
+    themeMode: 'light',
+    currentScreen: 'welcome',
+    device: 'mobile',
+    preset: 'fintech',
   });
 
-  const [idVerifyConfig, setIdVerifyConfig] = useState<IdVerifyConfig>({
-    skip: false,
-    requireBack: true,
-    allowUploads: true,
-    docType: 'all'
-  });
+  const [copiedCode, setCopiedCode] = useState(false);
+  const workspaceCopy = copy.hero.workspace;
 
-  const [selfieConfig, setSelfieConfig] = useState<SelfieConfig>({
-    skip: false,
-    strictLiveness: true,
-    maskOverlay: 'oval'
-  });
-
-  const [dbScreenConfig, setDbScreenConfig] = useState<DbScreenConfig>({
-    skip: false,
-    runSanctions: true,
-    runPep: true,
-    runAdverseMedia: false
-  });
-
-  const [outcomeConfig, setOutcomeConfig] = useState<OutcomeConfig>({
-    title: t('defaultOutcomeTitle'),
-    autoApprove: true,
-    redirectUrl: 'https://acme-fintech.com/dashboard'
-  });
-
-  // 4. Sandbox Credentials Generator
-  const [flowName, setFlowName] = useState<string>(t('defaultFlowName'));
-  const [environment, setEnvironment] = useState<'sandbox' | 'production'>('sandbox');
-  const [generatedSnippet, setGeneratedSnippet] = useState<boolean>(false);
-  const [snippetLanguage, setSnippetLanguage] = useState<'react' | 'html' | 'node' | 'curl'>('react');
-
-  // Sync state values with language changes when they are at their defaults
-  useEffect(() => {
-    const startTitleKey = findInterfaceStudioTranslationKey(startConfig.title, interfaceStudioStartTitleKeys);
-    const startButtonKey = findInterfaceStudioTranslationKey(startConfig.buttonText, interfaceStudioStartButtonKeys);
-    const outcomeTitleKey = findInterfaceStudioTranslationKey(outcomeConfig.title, interfaceStudioOutcomeTitleKeys);
-    const flowNameKey = findInterfaceStudioTranslationKey(flowName, interfaceStudioFlowNameKeys);
-
-    if (startTitleKey || startButtonKey) {
-      setStartConfig(prev => ({
+  const applyPreset = (preset: BrandPreset) => {
+    if (preset === 'fintech') {
+      setEditorState((prev) => ({
         ...prev,
-        title: startTitleKey ? t(startTitleKey) : prev.title,
-        buttonText: startButtonKey ? t(startButtonKey) : prev.buttonText
-      }));
-    }
-    if (outcomeTitleKey) {
-      setOutcomeConfig(prev => ({
-        ...prev,
-        title: t(outcomeTitleKey)
-      }));
-    }
-    if (flowNameKey) {
-      setFlowName(t(flowNameKey));
-    }
-  }, [language]);
-
-  // 2. Mobile Simulator States
-  const [simStep, setSimStep] = useState<'start' | 'id_verify' | 'selfie_check' | 'db_screen' | 'complete'>('start');
-  const [isSimulating, setIsSimulating] = useState<boolean>(false);
-  const [simProgress, setSimProgress] = useState<number>(0);
-  const [idCapturedFront, setIdCapturedFront] = useState<boolean>(false);
-  const [idCapturedBack, setIdCapturedBack] = useState<boolean>(false);
-  const [isCapturing, setIsCapturing] = useState<boolean>(false);
-  const [selfieStatus, setSelfieStatus] = useState<'idle' | 'scanning' | 'analyzing' | 'done'>('idle');
-  const [dbScanStatus, setDbScanStatus] = useState<'idle' | 'checking_sanctions' | 'checking_pep' | 'analyzing_ip' | 'done'>('idle');
-
-  // 3. Dropdown FAQs State
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
-
-  // Apply use case presets
-  useEffect(() => {
-    if (useCasePreset === 'fintech') {
-      setStartConfig({
-        title: t('presetFintechStartTitle'),
-        buttonText: t('presetFintechButton'),
-        brandColor: '#10B981', // emerald-500
+        preset: 'fintech',
+        brandColor: '#354CE1',
         borderRadius: 'rounded',
-        showLogo: true
-      });
-      setIdVerifyConfig({
-        skip: false,
-        requireBack: true,
-        allowUploads: false,
-        docType: 'all'
-      });
-      setSelfieConfig({
-        skip: false,
-        strictLiveness: true,
-        maskOverlay: 'oval'
-      });
-      setDbScreenConfig({
-        skip: false,
-        runSanctions: true,
-        runPep: true,
-        runAdverseMedia: true
-      });
-      setOutcomeConfig({
-        title: t('presetFintechOutcomeTitle'),
-        autoApprove: true,
-        redirectUrl: 'https://acme-bank.com/dashboard'
-      });
-    } else if (useCasePreset === 'gig') {
-      setStartConfig({
-        title: t('presetGigStartTitle'),
-        buttonText: t('presetGigButton'),
-        brandColor: '#F59E0B', // amber-500
+        themeMode: 'light',
+        fontFamily: 'Space Grotesk',
+      }));
+    } else if (preset === 'crypto') {
+      setEditorState((prev) => ({
+        ...prev,
+        preset: 'crypto',
+        brandColor: '#00D4B2',
         borderRadius: 'pill',
-        showLogo: false
-      });
-      setIdVerifyConfig({
-        skip: false,
-        requireBack: false,
-        allowUploads: true,
-        docType: 'dl'
-      });
-      setSelfieConfig({
-        skip: false,
-        strictLiveness: false,
-        maskOverlay: 'grid'
-      });
-      setDbScreenConfig({
-        skip: true,
-        runSanctions: false,
-        runPep: false,
-        runAdverseMedia: false
-      });
-      setOutcomeConfig({
-        title: t('presetGigOutcomeTitle'),
-        autoApprove: true,
-        redirectUrl: 'https://gigforce.app/dashboard'
-      });
-    } else if (useCasePreset === 'age_gate') {
-      setStartConfig({
-        title: t('presetAgeStartTitle'),
-        buttonText: t('presetAgeButton'),
-        brandColor: '#3B82F6', // blue-500
-        borderRadius: 'sharp',
-        showLogo: true
-      });
-      setIdVerifyConfig({
-        skip: true,
-        requireBack: false,
-        allowUploads: false,
-        docType: 'all'
-      });
-      setSelfieConfig({
-        skip: false,
-        strictLiveness: true,
-        maskOverlay: 'oval'
-      });
-      setDbScreenConfig({
-        skip: false,
-        runSanctions: false,
-        runPep: false,
-        runAdverseMedia: false
-      });
-      setOutcomeConfig({
-        title: t('presetAgeOutcomeTitle'),
-        autoApprove: true,
-        redirectUrl: 'https://restricted-media.net/home'
-      });
+        themeMode: 'dark',
+        fontFamily: 'Inter',
+      }));
+    } else {
+      setEditorState((prev) => ({
+        ...prev,
+        preset: 'retail',
+        brandColor: '#10B981',
+        borderRadius: 'rounded',
+        themeMode: 'light',
+        fontFamily: 'Plus Jakarta Sans',
+      }));
     }
-  }, [useCasePreset]);
-
-  // Handle flow simulator animation run
-  const runOnboardingSimulation = () => {
-    if (isSimulating) return;
-    setIsSimulating(true);
-    setSimStep('start');
-    setSimProgress(0);
-    setIdCapturedFront(false);
-    setIdCapturedBack(false);
-    setSelfieStatus('idle');
-    setDbScanStatus('idle');
-
-    // Interval timers to step through the sequence, skipping skipped steps
-    let current = 'start';
-    let progress = 10;
-    setSimProgress(progress);
-
-    const runNext = () => {
-      if (current === 'start') {
-        if (!idVerifyConfig.skip) {
-          current = 'id_verify';
-          setSimStep('id_verify');
-          progress = 30;
-          setSimProgress(progress);
-        } else if (!selfieConfig.skip) {
-          current = 'selfie_check';
-          setSimStep('selfie_check');
-          progress = 55;
-          setSimProgress(progress);
-        } else if (!dbScreenConfig.skip) {
-          current = 'db_screen';
-          setSimStep('db_screen');
-          progress = 80;
-          setSimProgress(progress);
-        } else {
-          current = 'complete';
-          setSimStep('complete');
-          progress = 100;
-          setSimProgress(progress);
-          setIsSimulating(false);
-        }
-      } else if (current === 'id_verify') {
-        // Trigger capture front
-        setIsCapturing(true);
-        setTimeout(() => {
-          setIdCapturedFront(true);
-          setIsCapturing(false);
-          
-          if (idVerifyConfig.requireBack) {
-            setTimeout(() => {
-              setIsCapturing(true);
-              setTimeout(() => {
-                setIdCapturedBack(true);
-                setIsCapturing(false);
-                goToPostId();
-              }, 1000);
-            }, 1000);
-          } else {
-            goToPostId();
-          }
-        }, 1000);
-
-        const goToPostId = () => {
-          setTimeout(() => {
-            if (!selfieConfig.skip) {
-              current = 'selfie_check';
-              setSimStep('selfie_check');
-              progress = 55;
-              setSimProgress(progress);
-            } else if (!dbScreenConfig.skip) {
-              current = 'db_screen';
-              setSimStep('db_screen');
-              progress = 80;
-              setSimProgress(progress);
-            } else {
-              current = 'complete';
-              setSimStep('complete');
-              progress = 100;
-              setSimProgress(progress);
-              setIsSimulating(false);
-            }
-          }, 1200);
-        };
-      } else if (current === 'selfie_check') {
-        setSelfieStatus('scanning');
-        setTimeout(() => {
-          setSelfieStatus('analyzing');
-          setTimeout(() => {
-            setSelfieStatus('done');
-            setTimeout(() => {
-              if (!dbScreenConfig.skip) {
-                current = 'db_screen';
-                setSimStep('db_screen');
-                progress = 80;
-                setSimProgress(progress);
-              } else {
-                current = 'complete';
-                setSimStep('complete');
-                progress = 100;
-                setSimProgress(progress);
-                setIsSimulating(false);
-              }
-            }, 1200);
-          }, 1200);
-        }, 1200);
-      } else if (current === 'db_screen') {
-        setDbScanStatus('checking_sanctions');
-        setTimeout(() => {
-          setDbScanStatus('checking_pep');
-          setTimeout(() => {
-            setDbScanStatus('analyzing_ip');
-            setTimeout(() => {
-              setDbScanStatus('done');
-              setTimeout(() => {
-                current = 'complete';
-                setSimStep('complete');
-                progress = 100;
-                setSimProgress(progress);
-                setIsSimulating(false);
-              }, 1200);
-            }, 1000);
-          }, 1000);
-        }, 1000);
-      }
-    };
-
-    // Kick off intervals manually
-    setTimeout(() => {
-      runNext();
-    }, 1500);
   };
 
-  useEffect(() => {
-    // Keep simulation step aligned with activeNode if user is configuring manually
-    if (!isSimulating) {
-      if (activeNode === 'start') setSimStep('start');
-      else if (activeNode === 'id_verify' && !idVerifyConfig.skip) setSimStep('id_verify');
-      else if (activeNode === 'selfie_check' && !selfieConfig.skip) setSimStep('selfie_check');
-      else if (activeNode === 'db_screen' && !dbScreenConfig.skip) setSimStep('db_screen');
-      else if (activeNode === 'outcome') setSimStep('complete');
-    }
-  }, [activeNode, isSimulating, idVerifyConfig.skip, selfieConfig.skip, dbScreenConfig.skip]);
-
-  const toggleFaq = (index: number) => {
-    setExpandedFaq(prev => (prev === index ? null : index));
+  const handleCopyCode = () => {
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
   };
 
-  const handleCreateFlow = (e: React.FormEvent) => {
-    e.preventDefault();
-    setGeneratedSnippet(true);
-  };
-
-  // Helper styles for phone radius configuration
-  const getRadiusClass = (type: 'sharp' | 'rounded' | 'pill') => {
-    if (type === 'sharp') return 'rounded-none';
-    if (type === 'pill') return 'rounded-3xl';
+  const getRadiusClass = (opt: BorderRadiusOption) => {
+    if (opt === 'sharp') return 'rounded-none';
+    if (opt === 'pill') return 'rounded-full';
     return 'rounded-xl';
   };
 
-  const getButtonRadiusClass = (type: 'sharp' | 'rounded' | 'pill') => {
-    if (type === 'sharp') return 'rounded-none';
-    if (type === 'pill') return 'rounded-full';
-    return 'rounded-lg';
-  };
-
-  const getCodeSnippet = () => {
-    const activeSteps = [
-      'InquiryStartStep',
-      !idVerifyConfig.skip ? 'GovernmentIdStep' : null,
-      !selfieConfig.skip ? 'SelfieLivenessStep' : null,
-      !dbScreenConfig.skip ? 'DatabaseWatchlistStep' : null,
-      'InquiryOutcomeStep'
-    ].filter(Boolean);
-
-    if (snippetLanguage === 'react') {
-      return `import React from 'react';
-import Identra from 'identra-react';
-
-export default function IdentityOnboarding() {
   return (
-    <Identra.Inquiry
-      templateId="itmpl_interface_studio_live"
-      environment="${environment}"
-      onComplete={({ inquiryId, status }) => {
-        console.log(\`${t('codeVerifiedLog')} \${inquiryId} ${t('codeWithStateLog')} \${status}\`);
-        window.location.href = "${outcomeConfig.redirectUrl}";
-      }}
-      theme={{
-        brandColor: "${startConfig.brandColor}",
-        borderRadius: "${startConfig.borderRadius === 'sharp' ? 0 : startConfig.borderRadius === 'pill' ? 24 : 12}",
-        fontFamily: "system-ui, sans-serif"
-      }}
-      config={{
-        steps: ${JSON.stringify(activeSteps, null, 8)}
-      }}
-    />
-  );
-}`;
-    }
-    if (snippetLanguage === 'node') {
-      return `const Identra = require('@identra/node');
-const client = new Identra.Client({
-  apiKey: process.env.IDENTRA_API_KEY,
-  environment: '${environment}'
-});
-
-async function configureInquiryFlow() {
-  const template = await client.templates.update('itmpl_interface_studio_live', {
-    name: "${flowName}",
-    config: {
-      steps: ${JSON.stringify(activeSteps)}
-    },
-    theme: {
-      primary_color: "${startConfig.brandColor}",
-      border_radius: "${startConfig.borderRadius}"
-    }
-  });
-  console.log('${t('codeFlowConfiguredLog')}', template.id);
-}`;
-    }
-    if (snippetLanguage === 'html') {
-      return `<!-- ${t('codeIncludeSdkComment')} -->
-<script src="https://cdn.withidentra.com/dist/identra-v4.js"></script>
-
-<button id="verify-btn" style="background: ${startConfig.brandColor}; border-radius: ${startConfig.borderRadius === 'pill' ? '24px' : startConfig.borderRadius === 'rounded' ? '8px' : '0px'}">
-  ${startConfig.buttonText}
-</button>
-
-<script>
-  const client = new Identra.Client({
-    templateId: "itmpl_interface_studio_live",
-    environment: "${environment}",
-    onComplete: (data) => {
-      window.location.href = "${outcomeConfig.redirectUrl}";
-    }
-  });
-  
-  document.getElementById('verify-btn').addEventListener('click', () => {
-    client.open();
-  });
-</script>`;
-    }
-    return `curl -X POST https://api.withidentra.com/v1/inquiry-templates \\
-  -H "Authorization: Bearer $IDENTRA_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "data": {
-      "type": "inquiry-template",
-      "attributes": {
-        "name": "${flowName}",
-        "environment": "${environment}",
-        "steps": ${JSON.stringify(activeSteps)},
-        "theme": {
-          "brand_color": "${startConfig.brandColor}",
-          "border_shape": "${startConfig.borderRadius}"
-        }
-      }
-    }
-  }'`;
-  };
-
-  return (
-    <div className="bg-[#FAFBFD] min-h-screen text-slate-800 antialiased font-sans">
-      
-      {/* Top Breadcrumb Header Navigation */}
-      <div className="max-w-7xl mx-auto px-6 pt-8 pb-4">
-        <button 
-          onClick={onBackToLanding}
-          className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-950 transition font-medium group"
-          id="interface_studio_back_btn"
-        >
-          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          <span>{t('backToLanding')}</span>
-        </button>
-      </div>
-
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-6 pt-4 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Hero Left Content */}
-          <div className="lg:col-span-6 space-y-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#354CE1]/10 text-[#354CE1] rounded-full text-xs font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-[#354CE1]" />
-              <span>{t('interfaceStudio')}</span>
-            </div>
-            
-            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950 leading-[1.05]" id="interface_studio_hero_title">
-              {t('heroTitle')}
-            </h1>
-            
-            <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl">
-              {t('heroDesc')}
-            </p>
-
-            {/* Quick Presets */}
-            <div className="space-y-3 pt-2">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">{t('loadTemplate')}</span>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={() => setUseCasePreset('fintech')}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold border transition ${
-                    useCasePreset === 'fintech' 
-                      ? 'bg-slate-900 border-transparent text-white' 
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
-                  }`}
-                >
-                  {t('fintechKyc')}
-                </button>
-                <button
-                  onClick={() => setUseCasePreset('gig')}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold border transition ${
-                    useCasePreset === 'gig' 
-                      ? 'bg-slate-900 border-transparent text-white' 
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
-                  }`}
-                >
-                  {t('gigSignup')}
-                </button>
-                <button
-                  onClick={() => setUseCasePreset('age_gate')}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold border transition ${
-                    useCasePreset === 'age_gate' 
-                      ? 'bg-slate-900 border-transparent text-white' 
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
-                  }`}
-                >
-                  {t('ageAssurance')}
-                </button>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 pt-4">
-              <button 
-                onClick={onOpenSandbox}
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#354CE1] hover:bg-[#2A3EB3] text-white font-bold rounded-full text-sm shadow-md transition"
-                id="interface_studio_hero_cta_sandbox"
-              >
-                <span>{t('requestApiCreds')}</span>
-                <ArrowRight className="w-4 h-4 text-white" />
-              </button>
-              <button 
-                onClick={() => {
-                  const el = document.getElementById('interface_studio_workspace');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="inline-flex items-center gap-1.5 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-sm rounded-full transition"
-                id="interface_studio_hero_cta_workspace"
-              >
-                <span>{t('enterInteractiveEditor')}</span>
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Hero Right Visual: Isometric Layout Mockup */}
-          <div className="lg:col-span-6 flex justify-center">
-            <div className="relative w-full max-w-[480px] h-[340px] bg-white border border-slate-200 rounded-[32px] p-6 shadow-xl overflow-hidden flex flex-col justify-between">
-              <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px] opacity-60" />
-              
-              {/* Isometric blocks graphic */}
-              <div className="relative z-10 flex items-center justify-between border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                </div>
-                <span className="text-[10px] font-bold text-slate-400 font-mono">{t('flowTemplateProd')}</span>
-              </div>
-
-              {/* Graphic Flow Nodes stacked */}
-              <div className="relative z-10 space-y-3.5 flex-1 flex flex-col justify-center py-4">
-                
-                {/* Node item 1 */}
-                <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/80 rounded-xl max-w-sm ml-0 shadow-sm">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-[#354CE1]">
-                      <Layout className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-extrabold text-slate-900">{t('startScreen')}</h4>
-                      <p className="text-[10px] text-slate-400">{t('startScreenDesc')}</p>
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">{t('active')}</span>
-                </div>
-
-                {/* Node item 2 */}
-                <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/80 rounded-xl max-w-sm ml-8 shadow-sm relative">
-                  {/* Connection Line */}
-                  <div className="absolute -left-4 -top-3 w-4 h-6 border-l-2 border-b-2 border-dashed border-slate-300 rounded-bl-lg" />
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-[#354CE1]">
-                      <Smartphone className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-extrabold text-slate-900">{t('idScanSelfie')}</h4>
-                      <p className="text-[10px] text-slate-400">{t('idScanSelfieDesc')}</p>
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-mono bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">{t('active')}</span>
-                </div>
-
-                {/* Node item 3 */}
-                <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/80 rounded-xl max-w-sm ml-16 shadow-sm relative">
-                  {/* Connection Line */}
-                  <div className="absolute -left-4 -top-3 w-4 h-6 border-l-2 border-b-2 border-dashed border-slate-300 rounded-bl-lg" />
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
-                      <Split className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-extrabold text-slate-900">{t('smartRiskCheck')}</h4>
-                      <p className="text-[10px] text-slate-400">{t('smartRiskCheckDesc')}</p>
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-mono bg-[#354CE1]/10 text-[#354CE1] px-1.5 py-0.5 rounded font-bold">{t('conditional')}</span>
-                </div>
-
-              </div>
-
-              {/* Stat footer */}
-              <div className="relative z-10 pt-3 border-t border-slate-100 flex items-center justify-between text-slate-500 text-[10px] font-mono">
-                <span>{t('systemSpeed')}</span>
-                <span className="flex items-center gap-1"><Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {t('instantHotReloadBadge')}</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Main Feature Area: The Visual Flow Workspace */}
-      <div className="bg-slate-900 text-white border-y border-slate-950 py-20" id="interface_studio_workspace">
-        <div className="max-w-7xl mx-auto px-6">
-          
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-              {t('interactiveFlowWorkspace')}
-            </h2>
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              {t('workspaceDesc')}
-            </p>
-          </div>
-
-          {/* Interactive Workbench */}
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
-            
-            {/* Left: Dynamic visual node graph editor (6 cols) */}
-            <div className="xl:col-span-7 flex flex-col justify-between bg-slate-950 border border-slate-800 rounded-3xl p-6 shadow-2xl relative">
-              
-              <div className="space-y-6">
-                {/* Header Actions */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-xs font-bold text-slate-400 font-mono">{t('flowBuilderCanvas')}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={() => setUseCasePreset('fintech')} 
-                      className="p-1 bg-slate-900 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition"
-                      title={t('resetParams')}
-                    >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="text-[10px] text-slate-500 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded font-mono">{t('builderVersion')}</span>
-                  </div>
-                </div>
-
-                {/* Node Stack Panel */}
-                <div className="space-y-3">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">{t('flowPathSteps')}</span>
-                  
-                  {/* 1. Start Screen Node */}
-                  <button type="button"
-                    onClick={() => setActiveNode('start')}
-                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      activeNode === 'start' 
-                        ? 'bg-[#354CE1]/15 border-[#354CE1] shadow-[0_0_15px_rgba(53,76,225,0.15)]' 
-                        : 'bg-slate-900 border-slate-800/80 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeNode === 'start' ? 'bg-[#354CE1] text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        <Layout className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-extrabold text-white">{t('startScreenNode')}</h4>
-                        <p className="text-xs text-slate-400">{t('startScreenNodeDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono bg-emerald-950 text-emerald-400 px-2 py-0.5 border border-emerald-900/30 rounded">{t('required')}</span>
-                    </div>
-                  </button>
-
-                  {/* 2. Gov ID Node */}
-                  <button type="button"
-                    onClick={() => setActiveNode('id_verify')}
-                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      activeNode === 'id_verify' 
-                        ? 'bg-[#354CE1]/15 border-[#354CE1] shadow-[0_0_15px_rgba(53,76,225,0.15)]' 
-                        : 'bg-slate-900 border-slate-800/80 hover:border-slate-700'
-                    } ${idVerifyConfig.skip ? 'opacity-50' : ''}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeNode === 'id_verify' ? 'bg-[#354CE1] text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        <Smartphone className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-extrabold text-white flex items-center gap-1.5">
-                          <span>{t('governmentIdScan')}</span>
-                          {idVerifyConfig.skip && <span className="text-[10px] font-normal text-slate-500">({t('bypassed')})</span>}
-                        </h4>
-                        <p className="text-xs text-slate-400">{t('governmentIdScanDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${idVerifyConfig.skip ? 'bg-slate-900 text-slate-500 border-slate-800' : 'bg-[#354CE1]/10 text-[#7185FF] border-[#354CE1]/20'}`}>
-                        {idVerifyConfig.skip ? t('disabled') : t('active')}
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* 3. Selfie Match Node */}
-                  <button type="button"
-                    onClick={() => setActiveNode('selfie_check')}
-                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      activeNode === 'selfie_check' 
-                        ? 'bg-[#354CE1]/15 border-[#354CE1] shadow-[0_0_15px_rgba(53,76,225,0.15)]' 
-                        : 'bg-slate-900 border-slate-800/80 hover:border-slate-700'
-                    } ${selfieConfig.skip ? 'opacity-50' : ''}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeNode === 'selfie_check' ? 'bg-[#354CE1] text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        <UserCheck className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-extrabold text-white flex items-center gap-1.5">
-                          <span>{t('selfieLivenessCheck')}</span>
-                          {selfieConfig.skip && <span className="text-[10px] font-normal text-slate-500">({t('bypassed')})</span>}
-                        </h4>
-                        <p className="text-xs text-slate-400">{t('selfieLivenessCheckDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${selfieConfig.skip ? 'bg-slate-900 text-slate-500 border-slate-800' : 'bg-[#354CE1]/10 text-[#7185FF] border-[#354CE1]/20'}`}>
-                        {selfieConfig.skip ? t('disabled') : t('active')}
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* 4. DB Screening Node */}
-                  <button type="button"
-                    onClick={() => setActiveNode('db_screen')}
-                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      activeNode === 'db_screen' 
-                        ? 'bg-[#354CE1]/15 border-[#354CE1] shadow-[0_0_15px_rgba(53,76,225,0.15)]' 
-                        : 'bg-slate-900 border-slate-800/80 hover:border-slate-700'
-                    } ${dbScreenConfig.skip ? 'opacity-50' : ''}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeNode === 'db_screen' ? 'bg-[#354CE1] text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        <Database className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-extrabold text-white flex items-center gap-1.5">
-                          <span>{t('databaseScreening')}</span>
-                          {dbScreenConfig.skip && <span className="text-[10px] font-normal text-slate-500">({t('bypassed')})</span>}
-                        </h4>
-                        <p className="text-xs text-slate-400">{t('databaseScreeningDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded border ${dbScreenConfig.skip ? 'bg-slate-900 text-slate-500 border-slate-800' : 'bg-[#354CE1]/10 text-[#7185FF] border-[#354CE1]/20'}`}>
-                        {dbScreenConfig.skip ? t('disabled') : t('active')}
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* 5. Outcome Node */}
-                  <button type="button"
-                    onClick={() => setActiveNode('outcome')}
-                    className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
-                      activeNode === 'outcome' 
-                        ? 'bg-[#354CE1]/15 border-[#354CE1] shadow-[0_0_15px_rgba(53,76,225,0.15)]' 
-                        : 'bg-slate-900 border-slate-800/80 hover:border-slate-700'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeNode === 'outcome' ? 'bg-[#354CE1] text-white' : 'bg-slate-800 text-slate-400'}`}>
-                        <CheckCircle2 className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-extrabold text-white">{t('inquiryOutcomeNode')}</h4>
-                        <p className="text-xs text-slate-400">{t('inquiryOutcomeNodeDesc')}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono bg-[#354CE1]/10 text-[#7185FF] border border-[#354CE1]/20 px-2 py-0.5 rounded">{t('outcome')}</span>
-                    </div>
-                  </button>
-
-                </div>
-              </div>
-
-              {/* Dynamic Editor Panel underneath based on active node */}
-              <div className="mt-8 pt-6 border-t border-slate-800/80 bg-slate-900/40 p-5 rounded-2xl border border-slate-850">
-                <div className="flex items-center gap-2 mb-4">
-                  <SlidersHorizontal className="w-4 h-4 text-slate-400" />
-                  <span className="text-xs font-bold text-slate-300 uppercase tracking-wider font-mono">
-                    {activeNode === 'start' && t('configStartScreen')}
-                    {activeNode === 'id_verify' && t('configGovId')}
-                    {activeNode === 'selfie_check' && t('configSelfie')}
-                    {activeNode === 'db_screen' && t('configDatabase')}
-                    {activeNode === 'outcome' && t('configOutcome')}
-                  </span>
-                </div>
-
-                {/* Sub-panels for configurations */}
-                {activeNode === 'start' && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('customScreenTitle')}</label>
-                      <input 
-                        type="text" 
-                        value={startConfig.title}
-                        onChange={(e) => setStartConfig(prev => ({ ...prev, title: e.target.value }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1]"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('customCtaButton')}</label>
-                      <input 
-                        type="text" 
-                        value={startConfig.buttonText}
-                        onChange={(e) => setStartConfig(prev => ({ ...prev, buttonText: e.target.value }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1]"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('brandAccentColor')}</label>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="color" 
-                          value={startConfig.brandColor}
-                          onChange={(e) => setStartConfig(prev => ({ ...prev, brandColor: e.target.value }))}
-                          className="w-10 h-8 bg-slate-950 border border-slate-850 p-1 rounded cursor-pointer"
-                        />
-                        <span className="text-xs font-mono text-slate-400">{startConfig.brandColor}</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('borderRadiusStyle')}</label>
-                      <select 
-                        value={startConfig.borderRadius}
-                        onChange={(e) => setStartConfig(prev => ({ ...prev, borderRadius: e.target.value as 'sharp' | 'rounded' | 'pill' }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1]"
-                      >
-                        <option value="sharp">{t('sharpEdges')}</option>
-                        <option value="rounded">{t('roundedCorners')}</option>
-                        <option value="pill">{t('pillCurves')}</option>
-                      </select>
-                    </div>
-                    <div className="col-span-1 md:col-span-2 flex items-center gap-2 pt-2">
-                      <input 
-                        type="checkbox" 
-                        id="show_logo_chk" 
-                        checked={startConfig.showLogo}
-                        onChange={(e) => setStartConfig(prev => ({ ...prev, showLogo: e.target.checked }))}
-                        className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1]"
-                      />
-                      <label htmlFor="show_logo_chk" className="text-xs text-slate-300">{t('displayShieldLogo')}</label>
-                    </div>
-                  </div>
-                )}
-
-                {activeNode === 'id_verify' && (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="id_skip_chk" 
-                          checked={idVerifyConfig.skip}
-                          onChange={(e) => setIdVerifyConfig(prev => ({ ...prev, skip: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1]"
-                        />
-                        <label htmlFor="id_skip_chk" className="text-xs text-slate-300 font-bold">{t('skipIdStep')}</label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="id_back_chk" 
-                          disabled={idVerifyConfig.skip}
-                          checked={idVerifyConfig.requireBack}
-                          onChange={(e) => setIdVerifyConfig(prev => ({ ...prev, requireBack: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="id_back_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('requireIdBack')}</label>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="space-y-2">
-                        <label className="text-[11px] font-bold text-slate-400 block disabled:opacity-50">{t('allowedDocTypes')}</label>
-                        <select 
-                          disabled={idVerifyConfig.skip}
-                          value={idVerifyConfig.docType}
-                          onChange={(e) => setIdVerifyConfig(prev => ({ ...prev, docType: e.target.value as 'all' | 'passport' | 'dl' }))}
-                          className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1] disabled:opacity-50"
-                        >
-                          <option value="all">{t('acceptAllDocs')}</option>
-                          <option value="passport">{t('passportsOnly')}</option>
-                          <option value="dl">{t('dlOnly')}</option>
-                        </select>
-                      </div>
-                      <div className="flex items-center gap-2 pt-6">
-                        <input 
-                          type="checkbox" 
-                          id="id_upload_chk" 
-                          disabled={idVerifyConfig.skip}
-                          checked={idVerifyConfig.allowUploads}
-                          onChange={(e) => setIdVerifyConfig(prev => ({ ...prev, allowUploads: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="id_upload_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('allowUploads')}</label>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeNode === 'selfie_check' && (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-6">
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="selfie_skip_chk" 
-                          checked={selfieConfig.skip}
-                          onChange={(e) => setSelfieConfig(prev => ({ ...prev, skip: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1]"
-                        />
-                        <label htmlFor="selfie_skip_chk" className="text-xs text-slate-300 font-bold">{t('skipSelfieStep')}</label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="strict_live_chk" 
-                          disabled={selfieConfig.skip}
-                          checked={selfieConfig.strictLiveness}
-                          onChange={(e) => setSelfieConfig(prev => ({ ...prev, strictLiveness: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="strict_live_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('enforceStrictLiveness')}</label>
-                      </div>
-                    </div>
-                    <div className="space-y-2 pt-2 max-w-sm">
-                      <label className="text-[11px] font-bold text-slate-400 block disabled:opacity-50">{t('cameraGuideMask')}</label>
-                      <select 
-                        disabled={selfieConfig.skip}
-                        value={selfieConfig.maskOverlay}
-                        onChange={(e) => setSelfieConfig(prev => ({ ...prev, maskOverlay: e.target.value as 'oval' | 'grid' | 'none' }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1] disabled:opacity-50"
-                      >
-                        <option value="oval">{t('silhouetteOval')}</option>
-                        <option value="grid">{t('meshGrid')}</option>
-                        <option value="none">{t('noLayoutMask')}</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-
-                {activeNode === 'db_screen' && (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <input 
-                        type="checkbox" 
-                        id="db_skip_chk" 
-                        checked={dbScreenConfig.skip}
-                        onChange={(e) => setDbScreenConfig(prev => ({ ...prev, skip: e.target.checked }))}
-                        className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1]"
-                      />
-                      <label htmlFor="db_skip_chk" className="text-xs text-slate-300 font-bold">{t('skipDbStep')}</label>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="sanctions_chk" 
-                          disabled={dbScreenConfig.skip}
-                          checked={dbScreenConfig.runSanctions}
-                          onChange={(e) => setDbScreenConfig(prev => ({ ...prev, runSanctions: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="sanctions_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('ofacSanctions')}</label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="pep_chk" 
-                          disabled={dbScreenConfig.skip}
-                          checked={dbScreenConfig.runPep}
-                          onChange={(e) => setDbScreenConfig(prev => ({ ...prev, runPep: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="pep_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('screenPep')}</label>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input 
-                          type="checkbox" 
-                          id="adv_chk" 
-                          disabled={dbScreenConfig.skip}
-                          checked={dbScreenConfig.runAdverseMedia}
-                          onChange={(e) => setDbScreenConfig(prev => ({ ...prev, runAdverseMedia: e.target.checked }))}
-                          className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1] disabled:opacity-50"
-                        />
-                        <label htmlFor="adv_chk" className="text-xs text-slate-300 disabled:opacity-50">{t('adverseMedia')}</label>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeNode === 'outcome' && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('outcomeScreenTitle')}</label>
-                      <input 
-                        type="text" 
-                        value={outcomeConfig.title}
-                        onChange={(e) => setOutcomeConfig(prev => ({ ...prev, title: e.target.value }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs text-white focus:outline-none focus:border-[#354CE1]"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[11px] font-bold text-slate-400 block">{t('postVerifyRedirect')}</label>
-                      <input 
-                        type="text" 
-                        value={outcomeConfig.redirectUrl}
-                        onChange={(e) => setOutcomeConfig(prev => ({ ...prev, redirectUrl: e.target.value }))}
-                        className="w-full bg-slate-950 border border-slate-850 px-3 py-1.5 rounded-xl text-xs font-mono text-white focus:outline-none focus:border-[#354CE1]"
-                      />
-                    </div>
-                    <div className="col-span-1 md:col-span-2 flex items-center gap-2 pt-2">
-                      <input 
-                        type="checkbox" 
-                        id="auto_approve_chk" 
-                        checked={outcomeConfig.autoApprove}
-                        onChange={(e) => setOutcomeConfig(prev => ({ ...prev, autoApprove: e.target.checked }))}
-                        className="rounded bg-slate-950 border-slate-800 text-[#354CE1] focus:ring-[#354CE1]"
-                      />
-                      <label htmlFor="auto_approve_chk" className="text-xs text-slate-300">{t('autoApproveInquiry')}</label>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-            </div>
-
-            {/* Right: Live user onboarding emulator (5 cols) */}
-            <div className="xl:col-span-5 flex flex-col items-center justify-between bg-slate-950 border border-slate-800 rounded-3xl p-6 relative">
-              
-              <div className="w-full space-y-4">
-                {/* Emulator control bar */}
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <div className="flex items-center gap-2 text-xs font-bold text-slate-400 font-mono">
-                    <Smartphone className="w-4 h-4" />
-                    <span>{t('emulatorPreview')}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-                    <span>{t('liveConnected')}</span>
-                  </div>
-                </div>
-
-                {/* Simulated Step Progress Indicator */}
-                <div className="bg-slate-900 border border-slate-800/60 p-2.5 rounded-2xl flex items-center justify-between gap-2.5">
-                  <span className="text-[10px] font-bold text-slate-400 font-mono">{t('stepState')}{simStep.toUpperCase()}</span>
-                  <div className="flex-1 max-w-[140px] h-1.5 bg-slate-950 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-[#354CE1] transition-all duration-500"
-                      style={{ width: `${isSimulating ? simProgress : simStep === 'start' ? 10 : simStep === 'id_verify' ? 30 : simStep === 'selfie_check' ? 55 : simStep === 'db_screen' ? 80 : 100}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#7185FF] font-mono">
-                    {isSimulating ? `${simProgress}%` : simStep === 'start' ? '10%' : simStep === 'id_verify' ? '30%' : simStep === 'selfie_check' ? '55%' : simStep === 'db_screen' ? '80%' : '100%'}
-                  </span>
-                </div>
-              </div>
-
-              {/* Mobile device frame casing */}
-              <div className="my-6 w-full max-w-[290px] aspect-[9/18] bg-slate-900 border-[6px] border-slate-800 rounded-[38px] overflow-hidden shadow-2xl relative">
-                
-                {/* Speaker top detail */}
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-800 rounded-full z-20 flex items-center justify-center">
-                  <div className="w-10 h-0.5 bg-slate-950 rounded-full" />
-                </div>
-
-                {/* Device Screen Area */}
-                <div className="bg-slate-950 p-5 pt-10 h-full text-slate-800 flex flex-col justify-between">
-                  
-                  {/* Status Bar */}
-                  <div className="flex items-center justify-between text-[9px] text-slate-500 font-mono mb-4">
-                    <span>{t('mockTime')}</span>
-                    <div className="flex items-center gap-1">
-                      <span>{t('mockNetwork')}</span>
-                      <div className="w-3.5 h-1.5 border border-slate-500 rounded bg-slate-500" />
-                    </div>
-                  </div>
-
-                  {/* SCREEN 1: Start Screen */}
-                  {simStep === 'start' && (
-                    <div className="flex-1 flex flex-col justify-between py-2 text-center">
-                      <div className="space-y-4">
-                        {startConfig.showLogo && (
-                          <div className="mx-auto w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-[#354CE1] shadow-inner">
-                            <Shield className="w-5.5 h-5.5" />
-                          </div>
-                        )}
-                        <h4 className="font-display font-black text-lg text-white leading-tight">
-                          {startConfig.title || t('outcomeCompleteTitle')}
-                        </h4>
-                        <p className="text-[10px] text-slate-400 leading-relaxed">
-                          {t('protectAssetsTip')}
-                        </p>
-                      </div>
-
-                      <div className="space-y-3 pt-6 border-t border-slate-900">
-                        <button 
-                          onClick={() => {
-                            if (!idVerifyConfig.skip) setSimStep('id_verify');
-                            else if (!selfieConfig.skip) setSimStep('selfie_check');
-                            else if (!dbScreenConfig.skip) setSimStep('db_screen');
-                            else setSimStep('complete');
-                          }}
-                          className={`w-full py-2.5 font-extrabold text-xs text-white shadow transition-transform active:scale-95 flex items-center justify-center gap-1`}
-                          style={{ 
-                            backgroundColor: startConfig.brandColor,
-                            borderRadius: startConfig.borderRadius === 'sharp' ? '0px' : startConfig.borderRadius === 'pill' ? '9999px' : '10px'
-                          }}
-                        >
-                          <span>{startConfig.buttonText || t('getStartedDefault')}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                        <p className="text-[8px] text-slate-500">
-                          {t('authorizetip')}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* SCREEN 2: Government ID Capture */}
-                  {simStep === 'id_verify' && (
-                    <div className="flex-1 flex flex-col justify-between py-1 text-slate-300">
-                      <div className="space-y-3">
-                        <h4 className="font-bold text-sm text-white text-center">{t('scanGovId')}</h4>
-                        <p className="text-[9px] text-slate-400 text-center leading-normal">
-                          {t('scanGovIdDesc')}
-                        </p>
-
-                        {/* Scanner Frame Viewport */}
-                        <div className="border border-slate-800 rounded-xl bg-slate-900 aspect-video relative overflow-hidden flex flex-col items-center justify-center text-slate-500">
-                          
-                          {/* Animated scanner line */}
-                          <div className="absolute top-0 left-0 w-full h-0.5 bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)] animate-[bounce_2.5s_infinite]" />
-
-                          {isCapturing ? (
-                            <div className="flex flex-col items-center gap-1 text-indigo-400 animate-pulse">
-                              <RefreshCw className="w-5 h-5 animate-spin" />
-                              <span className="text-[8px] font-bold uppercase tracking-wider">{t('capturingDoc')}</span>
-                            </div>
-                          ) : (
-                            <div className="space-y-1.5 text-center px-4">
-                              <span className="text-[10px] font-bold text-slate-300">
-                                {idCapturedFront ? t('idFrontCaptured') : t('scanIdFront')}
-                              </span>
-                              {idVerifyConfig.requireBack && (
-                                <p className="text-[8px] text-slate-500">
-                                  {idCapturedBack ? t('idBackCaptured') : t('scanIdBackRequired')}
-                                </p>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Silhouette framing corners */}
-                          <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t border-l border-indigo-400" />
-                          <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t border-r border-indigo-400" />
-                          <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b border-l border-indigo-400" />
-                          <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b border-r border-indigo-400" />
-                        </div>
-                      </div>
-
-                      {/* Control buttons */}
-                      <div className="space-y-2 pt-3 border-t border-slate-900">
-                        {idVerifyConfig.allowUploads && !idCapturedFront && (
-                          <button 
-                            onClick={() => setIdCapturedFront(true)}
-                            className="w-full py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg text-[9px] text-slate-400 hover:text-white transition"
-                          >
-                            {t('uploadImageFile')}
-                          </button>
-                        )}
-                        <button 
-                          onClick={() => {
-                            if (!selfieConfig.skip) setSimStep('selfie_check');
-                            else if (!dbScreenConfig.skip) setSimStep('db_screen');
-                            else setSimStep('complete');
-                          }}
-                          className="w-full py-2 bg-[#354CE1] hover:bg-[#2A3EB3] rounded-lg text-[10px] font-extrabold text-white transition active:scale-95 flex items-center justify-center gap-1"
-                        >
-                          <span>{t('skipNextStep')}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* SCREEN 3: Selfie Liveness Check */}
-                  {simStep === 'selfie_check' && (
-                    <div className="flex-1 flex flex-col justify-between py-1 text-slate-300">
-                      <div className="space-y-3">
-                        <h4 className="font-bold text-sm text-white text-center">{t('selfieLivenessVerify')}</h4>
-                        <p className="text-[9px] text-slate-400 text-center leading-normal">
-                          {t('selfieLivenessVerifyDesc')}
-                        </p>
-
-                        {/* Camera Silhouette overlay */}
-                        <div className="aspect-square bg-slate-900 rounded-2xl border border-slate-800 relative overflow-hidden flex flex-col items-center justify-center text-slate-500">
-                          
-                          {/* Silhouette Oval Mask */}
-                          {selfieConfig.maskOverlay === 'oval' && (
-                            <div className="absolute w-2/3 h-4/5 rounded-[50%/60%] border-2 border-dashed border-indigo-400/40 flex items-center justify-center" />
-                          )}
-
-                          {/* wireframe 3D mesh grid */}
-                          {selfieConfig.maskOverlay === 'grid' && (
-                            <div className="absolute inset-2 grid grid-cols-6 grid-rows-6 gap-1 opacity-25">
-                              {Array.from({ length: 36 }).map((_, idx) => (
-                                <div key={idx} className="border border-indigo-500/30 rounded-xs" />
-                              ))}
-                            </div>
-                          )}
-
-                          {selfieStatus === 'idle' && (
-                            <span className="text-[9px] text-slate-400 font-mono">{t('cameraFeedIdle')}</span>
-                          )}
-                          {selfieStatus === 'scanning' && (
-                            <div className="flex flex-col items-center gap-1.5 text-indigo-400">
-                              <div className="w-5 h-5 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin" />
-                              <span className="text-[8px] font-bold uppercase tracking-wider">{t('detectingLiveness')}</span>
-                            </div>
-                          )}
-                          {selfieStatus === 'analyzing' && (
-                            <div className="flex flex-col items-center gap-1.5 text-amber-400 animate-pulse">
-                              <ShieldCheck className="w-6 h-6 text-amber-500" />
-                              <span className="text-[8px] font-bold uppercase tracking-wider font-mono">{t('analyzingHeadRotation')}</span>
-                            </div>
-                          )}
-                          {selfieStatus === 'done' && (
-                            <div className="flex flex-col items-center gap-1.5 text-emerald-400">
-                              <Check className="w-6 h-6 text-emerald-500 border border-emerald-500/20 rounded-full p-0.5 bg-emerald-950/20" />
-                              <span className="text-[8px] font-bold uppercase tracking-wider">{t('faceBiometricConfirmed')}</span>
-                            </div>
-                          )}
-
-                        </div>
-                      </div>
-
-                      {/* Control buttons */}
-                      <div className="pt-3 border-t border-slate-900">
-                        <button 
-                          onClick={() => {
-                            if (!dbScreenConfig.skip) setSimStep('db_screen');
-                            else setSimStep('complete');
-                          }}
-                          className="w-full py-2 bg-[#354CE1] hover:bg-[#2A3EB3] rounded-lg text-[10px] font-extrabold text-white transition active:scale-95 flex items-center justify-center gap-1"
-                        >
-                          <span>{t('skipNextStep')}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* SCREEN 4: Database background checks */}
-                  {simStep === 'db_screen' && (
-                    <div className="flex-1 flex flex-col justify-between py-1 text-slate-300">
-                      <div className="space-y-4">
-                        <h4 className="font-bold text-sm text-white text-center">{t('bgDbScreening')}</h4>
-                        
-                        <div className="space-y-2.5">
-                          {/* OFAC Check line */}
-                          <div className="p-2 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-[10px]">
-                            <div className="flex items-center gap-2">
-                              <Database className="w-3.5 h-3.5 text-slate-400" />
-                              <span>{t('ofacSanctionsLabel')}</span>
-                            </div>
-                            {dbScanStatus === 'idle' && <span className="text-slate-500 font-mono">{t('pending')}</span>}
-                            {dbScanStatus === 'checking_sanctions' && <span className="text-indigo-400 font-bold animate-pulse font-mono">{t('screeningProgress')}</span>}
-                            {['checking_pep', 'analyzing_ip', 'done'].includes(dbScanStatus) && <span className="text-emerald-400 font-bold font-mono">{t('pass')}</span>}
-                          </div>
-
-                          {/* PEP check line */}
-                          <div className="p-2 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-[10px]">
-                            <div className="flex items-center gap-2">
-                              <UserCheck className="w-3.5 h-3.5 text-slate-400" />
-                              <span>{t('pepLabel')}</span>
-                            </div>
-                            {['idle', 'checking_sanctions'].includes(dbScanStatus) && <span className="text-slate-500 font-mono">{t('pending')}</span>}
-                            {dbScanStatus === 'checking_pep' && <span className="text-indigo-400 font-bold animate-pulse font-mono">{t('screeningProgress')}</span>}
-                            {['analyzing_ip', 'done'].includes(dbScanStatus) && <span className="text-emerald-400 font-bold font-mono">{t('pass')}</span>}
-                          </div>
-
-                          {/* Risk IP check line */}
-                          <div className="p-2 bg-slate-900 border border-slate-800 rounded-xl flex items-center justify-between text-[10px]">
-                            <div className="flex items-center gap-2">
-                              <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                              <span>{t('ipDeviceRiskAudit')}</span>
-                            </div>
-                            {['idle', 'checking_sanctions', 'checking_pep'].includes(dbScanStatus) && <span className="text-slate-500 font-mono">{t('pending')}</span>}
-                            {dbScanStatus === 'analyzing_ip' && <span className="text-indigo-400 font-bold animate-pulse font-mono">{t('analyzingProgress')}</span>}
-                            {dbScanStatus === 'done' && <span className="text-emerald-400 font-bold font-mono">{t('pass')}</span>}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Control buttons */}
-                      <div className="pt-3 border-t border-slate-900">
-                        <button 
-                          onClick={() => setSimStep('complete')}
-                          className="w-full py-2 bg-[#354CE1] hover:bg-[#2A3EB3] rounded-lg text-[10px] font-extrabold text-white transition active:scale-95 flex items-center justify-center gap-1"
-                        >
-                          <span>{t('completeScreening')}</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* SCREEN 5: Onboarding Outcome Complete */}
-                  {simStep === 'complete' && (
-                    <div className="flex-1 flex flex-col justify-between py-2 text-center text-slate-300">
-                      <div className="space-y-4">
-                        <div className="mx-auto w-12 h-12 rounded-full bg-emerald-950/40 border border-emerald-900/30 flex items-center justify-center text-emerald-400">
-                          <Check className="w-7 h-7" />
-                        </div>
-                        <h4 className="font-display font-black text-lg text-white leading-tight">
-                          {outcomeConfig.title || t('outcomeCompleteTitle')}
-                        </h4>
-                        <p className="text-[10px] text-slate-400 leading-relaxed px-2">
-                          {t('outcomeCompleteDesc')}
-                        </p>
-                      </div>
-
-                      <div className="space-y-2 pt-4 border-t border-slate-900">
-                        <a 
-                          href={outcomeConfig.redirectUrl} 
-                          target="_blank" 
-                          referrerPolicy="no-referrer"
-                          className="w-full py-2 bg-emerald-500 hover:bg-emerald-600 rounded-lg text-[10px] font-extrabold text-white transition active:scale-95 block text-center"
-                        >
-                          {t('goToDashboard')}
-                        </a>
-                        <button 
-                          onClick={() => {
-                            setSimStep('start');
-                            setSimProgress(0);
-                            setIdCapturedFront(false);
-                            setIdCapturedBack(false);
-                          }}
-                          className="w-full py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg text-[9px] text-slate-400 hover:text-white transition"
-                        >
-                          {t('testSimulateAgain')}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                </div>
-              </div>
-
-              {/* Run Simulation CTA */}
-              <button 
-                onClick={runOnboardingSimulation}
-                disabled={isSimulating}
-                className="w-full py-3.5 bg-[#354CE1] hover:bg-[#2A3EB3] text-white font-bold text-xs rounded-2xl uppercase tracking-wider transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                id="interface_studio_run_sim_btn"
-              >
-                {isSimulating ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>{t('executingRun')}</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-4 h-4 text-white fill-white" />
-                    <span>{t('runFlowSim')}</span>
-                  </>
-                )}
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      {/* Key Capabilities Bento Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-          <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
-            {t('keyCapabilitiesTitle')}
-          </h2>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-            {t('keyCapabilitiesDesc')}
-          </p>
+    <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white/95 text-left shadow-2xl shadow-[#0F1E36]/10 backdrop-blur-md">
+      {/* Top Workspace Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-slate-50/80 px-6 py-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-3 w-3 rounded-full bg-[#354CE1] animate-ping" />
+          <span className="type-label uppercase text-[#354CE1]">
+            {workspaceCopy.title}
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Card 1 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-[#354CE1]">
-              <Layout className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('visualDragDrop')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('visualDragDropDesc')}
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-600">
-              <Split className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('smartRoutingRules')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('smartRoutingRulesDesc')}
-            </p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
-              <Palette className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('noCodeBrandStyling')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('noCodeBrandStylingDesc')}
-            </p>
-          </div>
-
-          {/* Card 4 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600">
-              <Zap className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('instantHotReload')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('instantHotReloadDesc')}
-            </p>
-          </div>
-
-          {/* Card 5 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
-              <Users className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('builtInLoc')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('builtInLocDesc')}
-            </p>
-          </div>
-
-          {/* Card 6 */}
-          <div className="bg-white border border-slate-200/80 p-6 rounded-3xl space-y-4 hover:shadow-lg transition">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#354CE1]">
-              <BarChart3 className="w-5 h-5" />
-            </div>
-            <h3 className="font-extrabold text-slate-900 text-lg">{t('abTestingExps')}</h3>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {t('abTestingExpsDesc')}
-            </p>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Interactive Tabs: How Interface Studio helps different stages */}
-      <div className="bg-slate-100/50 border-y border-slate-200 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Column: Description & Selectors */}
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold text-[#354CE1] uppercase tracking-wider block">{t('flowLifecycle')}</span>
-              <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
-                {t('optimizePhaseTitle')}
-              </h2>
-              <p className="text-slate-600 text-sm leading-relaxed">
-                {t('optimizePhaseDesc')}
-              </p>
-
-              {/* Selector list */}
-              <div className="space-y-3 pt-4">
-                {[
-                  { id: 'collect', title: t('collect'), desc: t('collectSub') },
-                  { id: 'verify', title: t('verify'), desc: t('verifySub') },
-                  { id: 'route', title: t('route'), desc: t('routeSub') },
-                  { id: 'refine', title: t('refine'), desc: t('refineSub') }
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as 'collect' | 'verify' | 'route' | 'refine')}
-                    className={`w-full p-4 rounded-2xl border text-left transition-all flex items-center justify-between ${
-                      activeTab === tab.id 
-                        ? 'bg-white border-transparent shadow-md' 
-                        : 'bg-transparent border-slate-200 text-slate-600 hover:bg-slate-100'
-                    }`}
-                  >
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-sm">{tab.title}</h4>
-                      <p className="text-xs text-slate-400">{tab.desc}</p>
-                    </div>
-                    <ArrowRight className={`w-4 h-4 transition-transform ${activeTab === tab.id ? 'translate-x-1 text-[#354CE1]' : 'text-slate-400'}`} />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Visualizer panel reflecting active tab */}
-            <div className="lg:col-span-7 bg-slate-950 border border-slate-850 p-8 rounded-[32px] text-white min-h-[380px] flex flex-col justify-between shadow-2xl relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-45" />
-
-              <div className="relative z-10 flex items-center justify-between pb-4 border-b border-slate-800">
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider font-mono">{t('flowPhaseLabel')}: {activeTab.toUpperCase()}</span>
-                <span className="text-[10px] text-slate-500 font-mono">{t('codeLabel')}: PL_ENG_v4</span>
-              </div>
-
-              {activeTab === 'collect' && (
-                <div className="relative z-10 py-6 space-y-4">
-                  <h3 className="font-extrabold text-lg text-white">{t('dynamicFieldCollection')}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {t('dynamicFieldCollectionDesc')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-xs pt-2">
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('ocrExtraction')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('ocrExtractionDesc')}</p>
-                    </div>
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('uploadFallbacks')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('uploadFallbacksDesc')}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'verify' && (
-                <div className="relative z-10 py-6 space-y-4">
-                  <h3 className="font-extrabold text-lg text-white">{t('advBiometricLiveness')}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {t('advBiometricLivenessDesc')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-xs pt-2">
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('biometricSelfieMatch')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('biometricSelfieMatchDesc')}</p>
-                    </div>
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('instantDbRouting')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('instantDbRoutingDesc')}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'route' && (
-                <div className="relative z-10 py-6 space-y-4">
-                  <h3 className="font-extrabold text-lg text-white">{t('riskLogicBranches')}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {t('riskLogicBranchesDesc')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-xs pt-2">
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('deviceFingerprinting')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('deviceFingerprintingDesc')}</p>
-                    </div>
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('txSizeGates')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('txSizeGatesDesc')}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'refine' && (
-                <div className="relative z-10 py-6 space-y-4">
-                  <h3 className="font-extrabold text-lg text-white">{t('dynamicThemeUpdates')}</h3>
-                  <p className="text-sm text-slate-400 leading-relaxed">
-                    {t('dynamicThemeUpdatesDesc')}
-                  </p>
-                  <div className="grid grid-cols-2 gap-4 text-xs pt-2">
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('builtInLoc')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('globalLocDesc')}</p>
-                    </div>
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl">
-                      <h4 className="font-bold text-white mb-1">{t('dropoffAnalytics')}</h4>
-                      <p className="text-[11px] text-slate-400">{t('dropoffAnalyticsDesc')}</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              <div className="relative z-10 pt-4 border-t border-slate-800 text-[10px] text-slate-500 font-mono flex items-center justify-between">
-                <span>{t('configureStepsNotice')}</span>
-                <button type="button" className="text-indigo-400 hover:underline" onClick={onOpenSandbox}>{t('openCoreSdkDoc')}</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      {/* Analytical Insights & Mock Metrics */}
-      <div className="max-w-7xl mx-auto px-6 py-24 border-b border-slate-200">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Left panel graph layout */}
-          <div className="lg:col-span-7 bg-white border border-slate-200 p-6 rounded-[32px] shadow-lg space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-              <div>
-                <span className="text-[10px] font-bold text-slate-400 font-mono">{t('metricConversionOptimizer')}</span>
-                <h3 className="text-base font-extrabold text-slate-950">{t('activeAbTest')}</h3>
-              </div>
-              <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-mono font-bold">{t('conversionLift')}</span>
-            </div>
-
-            {/* Mock chart blocks */}
-            <div className="space-y-4">
-              
-              {/* Flow A */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-bold text-slate-800">{t('flowA')}</span>
-                  <span className="font-mono font-bold">{t('conversion965')}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden relative">
-                  <div className="h-full bg-emerald-500 rounded-lg" style={{ width: '96.5%' }} />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-white">{t('flowAOTPDesc')}</span>
-                </div>
-              </div>
-
-              {/* Flow B */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-bold text-slate-800">{t('flowB')}</span>
-                  <span className="font-mono font-bold">{t('conversion781')}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden relative">
-                  <div className="h-full bg-[#354CE1] rounded-lg animate-pulse" style={{ width: '78.1%' }} />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-white">{t('flowBStrictDesc')}</span>
-                </div>
-              </div>
-
-              {/* Flow C */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-bold text-slate-800">{t('flowC')}</span>
-                  <span className="font-mono font-bold text-emerald-600">{t('conversion924')}</span>
-                </div>
-                <div className="w-full h-8 bg-slate-100 rounded-lg overflow-hidden relative">
-                  <div className="h-full bg-gradient-to-r from-[#354CE1] to-indigo-500 rounded-lg" style={{ width: '92.4%' }} />
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-white">{t('flowCDynamicDesc')}</span>
-                </div>
-              </div>
-
-            </div>
-
-            <p className="text-[10px] text-slate-400 font-mono leading-normal pt-2">
-              {t('flowCNotice')}
-            </p>
-          </div>
-
-          {/* Right panel text layout */}
-          <div className="lg:col-span-5 space-y-6">
-            <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
-              {t('optimizeConversionTitle')}
-            </h2>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              {t('optimizeConversionDesc')}
-            </p>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              {t('optimizeConversionDetail')}
-            </p>
-            <div className="pt-4 border-t border-slate-200 flex items-center gap-6">
-              <div>
-                <p className="font-display text-2xl font-black text-slate-950">+24%</p>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">{t('completionRate')}</p>
-              </div>
-              <div>
-                <p className="font-display text-2xl font-black text-[#354CE1]">{t('under10s')}</p>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">{t('avgRunTime')}</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Corporate FAQ Accordion */}
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="font-display text-3xl font-extrabold text-slate-950 tracking-tight">
-            {t('faqTitle')}
-          </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
-            {t('faqDesc')}
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          {[
-            {
-              q: t('faq1Q'),
-              a: t('faq1A')
-            },
-            {
-              q: t('faq2Q'),
-              a: t('faq2A')
-            },
-            {
-              q: t('faq3Q'),
-              a: t('faq3A')
-            },
-            {
-              q: t('faq4Q'),
-              a: t('faq4A')
-            }
-          ].map((faq, idx) => (
-            <div 
-              key={idx}
-              className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden transition-all"
-            >
+        {/* Preset Selector */}
+        <div className="flex items-center gap-2">
+          <span className="type-label hidden uppercase text-slate-500 sm:inline">
+            {workspaceCopy.presetsLabel}
+          </span>
+          <div className="flex rounded-lg bg-slate-200/70 p-0.5">
+            {[
+              { id: 'fintech', label: workspaceCopy.presets.fintech },
+              { id: 'crypto', label: workspaceCopy.presets.crypto },
+              { id: 'retail', label: workspaceCopy.presets.retail },
+            ].map((p) => (
               <button
-                onClick={() => toggleFaq(idx)}
-                className="w-full p-5 text-left font-bold text-slate-950 flex items-center justify-between text-sm sm:text-base hover:bg-slate-50 transition"
+                key={p.id}
+                type="button"
+                onClick={() => applyPreset(p.id as BrandPreset)}
+                className={`type-control-compact cursor-pointer rounded-md px-2.5 py-1 transition-all ${
+                  editorState.preset === p.id
+                    ? 'bg-white text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
               >
-                <span>{faq.q}</span>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${expandedFaq === idx ? 'rotate-180 text-[#354CE1]' : ''}`} />
+                {p.label}
               </button>
-              {expandedFaq === idx && (
-                <div className="p-5 pt-0 border-t border-slate-100 text-xs sm:text-sm text-slate-500 leading-relaxed bg-slate-50/50">
-                  {faq.a}
+            ))}
+          </div>
+        </div>
+
+        {/* Device Switcher */}
+        <div className="flex items-center gap-1 rounded-lg bg-slate-200/70 p-0.5">
+          {[
+            { id: 'mobile', icon: Smartphone, label: copy.hero.devices.mobile },
+            { id: 'tablet', icon: Tablet, label: copy.hero.devices.tablet },
+            { id: 'desktop', icon: Monitor, label: copy.hero.devices.desktop },
+          ].map((d) => {
+            const IconComp = d.icon;
+            return (
+              <button
+                key={d.id}
+                type="button"
+                onClick={() => setEditorState((prev) => ({ ...prev, device: d.id as PreviewDevice }))}
+                className={`rounded-md p-1.5 transition-all cursor-pointer ${
+                  editorState.device === d.id
+                    ? 'bg-white text-[#354CE1] shadow-xs'
+                    : 'text-slate-400 hover:text-slate-700'
+                }`}
+                title={d.label}
+              >
+                <IconComp className="h-3.5 w-3.5" />
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Main Studio Grid Layout (Controls | Live Canvas | Code Inspector) */}
+      <div className="grid grid-cols-1 divide-y divide-slate-100 lg:grid-cols-12 lg:divide-x lg:divide-y-0">
+        {/* Left Column: Design Controls */}
+        <div className="p-5 lg:col-span-3 space-y-5 bg-slate-50/50">
+          <div>
+            <label className="type-label-compact mb-2 block uppercase text-slate-400">
+              {workspaceCopy.brandColorLabel}
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {['#354CE1', '#5F3CF3', '#00D4B2', '#10B981', '#F59E0B', '#EF4444'].map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setEditorState((prev) => ({ ...prev, brandColor: color }))}
+                  className={`h-7 w-7 rounded-full border-2 transition-all cursor-pointer ${
+                    editorState.brandColor === color ? 'border-slate-900 scale-110 shadow-sm' : 'border-white'
+                  }`}
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="type-label-compact mb-2 block uppercase text-slate-400">
+              {workspaceCopy.cornerStyleLabel}
+            </label>
+            <div className="grid grid-cols-3 gap-1.5 bg-slate-200/60 p-1 rounded-xl">
+              {[
+                { id: 'sharp', label: workspaceCopy.cornerStyles.sharp },
+                { id: 'rounded', label: workspaceCopy.cornerStyles.rounded },
+                { id: 'pill', label: workspaceCopy.cornerStyles.pill },
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => setEditorState((prev) => ({ ...prev, borderRadius: opt.id as BorderRadiusOption }))}
+                  className={`type-control-compact cursor-pointer rounded-lg py-1.5 transition-all ${
+                    editorState.borderRadius === opt.id
+                      ? 'bg-white text-slate-900 shadow-xs'
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="type-label-compact mb-2 block uppercase text-slate-400">
+              {workspaceCopy.screenStepLabel}
+            </label>
+            <div className="space-y-1">
+              {INTERFACE_STUDIO_SCREEN_IDS.map((screenId, idx) => (
+                <button
+                  key={screenId}
+                  type="button"
+                  onClick={() => setEditorState((prev) => ({ ...prev, currentScreen: screenId }))}
+                  className={`type-control-compact flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 transition-all ${
+                    editorState.currentScreen === screenId
+                      ? 'bg-[#EEF1FF] text-[#354CE1]'
+                      : 'bg-white text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <span>0{idx + 1}. {copy.hero.screens[screenId].label}</span>
+                  {editorState.currentScreen === screenId && <Check className="h-3.5 w-3.5 text-[#354CE1]" />}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between">
+            <span className="type-control-compact text-slate-700">{workspaceCopy.displayLogoLabel}</span>
+            <button
+              type="button"
+              onClick={() => setEditorState((prev) => ({ ...prev, showLogo: !prev.showLogo }))}
+              className={`h-5 w-9 rounded-full transition-colors p-0.5 cursor-pointer ${
+                editorState.showLogo ? 'bg-[#354CE1]' : 'bg-slate-300'
+              }`}
+            >
+              <div className={`h-4 w-4 rounded-full bg-white transition-transform ${editorState.showLogo ? 'translate-x-4' : ''}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* Center Column: Live Device Canvas */}
+        <div className="p-6 md:p-12 lg:col-span-6 flex flex-col items-center justify-center bg-slate-100/60 min-h-[620px] lg:min-h-[720px]">
+          <div className="text-center mb-4">
+            <span className="type-technical uppercase text-slate-400">
+              {workspaceCopy.liveCanvasLabel} ({editorState.themeMode === 'dark'
+                ? workspaceCopy.darkModeLabel
+                : workspaceCopy.lightModeLabel})
+            </span>
+          </div>
+
+          {/* Render Mobile/Tablet/Desktop Screen */}
+          <div
+            className={`w-full ${DEVICE_WIDTHS[editorState.device]} transition-all duration-300 shadow-2xl rounded-2xl overflow-hidden border ${
+              editorState.themeMode === 'dark' ? 'bg-[#0F1E36] text-white border-slate-800' : 'bg-white text-slate-900 border-slate-200'
+            }`}
+          >
+            {/* Screen Header Bar */}
+            <div className={`p-4 sm:p-5 flex items-center justify-between border-b ${editorState.themeMode === 'dark' ? 'border-slate-800' : 'border-slate-100'}`}>
+              {editorState.showLogo ? (
+                <div className="flex items-center gap-2">
+                  <span className="type-label flex h-6 w-6 items-center justify-center rounded-lg text-white" style={{ backgroundColor: editorState.brandColor }}>
+                    ID
+                  </span>
+                  <span className="type-brand-wordmark">IDENTRA</span>
                 </div>
+              ) : (
+                <span className="type-label opacity-60">{workspaceCopy.fallbackBrandLabel}</span>
               )}
+              <span className="type-technical opacity-50">
+                {workspaceCopy.stepLabel} {copy.hero.screens[editorState.currentScreen].label}
+              </span>
+            </div>
+
+            {/* Screen Content Body */}
+            <div className="p-7 sm:p-9 space-y-6 min-h-[440px] flex flex-col justify-center">
+              {editorState.currentScreen === 'welcome' && (
+                <>
+                  <div className="flex justify-center my-2">
+                    <div className="h-12 w-12 rounded-2xl flex items-center justify-center text-white shadow-md" style={{ backgroundColor: editorState.brandColor }}>
+                      <ShieldCheck className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h4 className="type-card-title-sm text-center">
+                    {copy.hero.screens.welcome.title}
+                  </h4>
+                  <p className="type-body-sm text-center opacity-70">
+                    {copy.hero.screens.welcome.body}
+                  </p>
+                  <button
+                    type="button"
+                    className={`type-control w-full py-2.5 text-white shadow-md transition-all ${getRadiusClass(editorState.borderRadius)}`}
+                    style={{ backgroundColor: editorState.brandColor }}
+                  >
+                    {copy.hero.screens.welcome.action}
+                  </button>
+                </>
+              )}
+
+              {editorState.currentScreen === 'consent' && (
+                <>
+                  <h4 className="type-card-title-sm">{copy.hero.screens.consent.title}</h4>
+                  <p className="type-body-sm opacity-70">
+                    {copy.hero.screens.consent.body}
+                  </p>
+                  <div className="type-body-sm space-y-1.5 rounded-xl border border-slate-500/20 bg-slate-500/10 p-3">
+                    {workspaceCopy.securityItems.map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className={`type-control w-full py-2.5 text-white shadow-md ${getRadiusClass(editorState.borderRadius)}`}
+                    style={{ backgroundColor: editorState.brandColor }}
+                  >
+                    {copy.hero.screens.consent.action}
+                  </button>
+                </>
+              )}
+
+              {editorState.currentScreen === 'verification' && (
+                <>
+                  <h4 className="type-card-title-sm">{copy.hero.screens.verification.title}</h4>
+                  <div className="p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-center space-y-2">
+                    <Scan className="h-8 w-8 mx-auto text-slate-400 animate-pulse" />
+                    <p className="type-body-sm font-semibold">{workspaceCopy.scanInstruction}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className={`type-control w-full py-2.5 text-white shadow-md ${getRadiusClass(editorState.borderRadius)}`}
+                    style={{ backgroundColor: editorState.brandColor }}
+                  >
+                    {copy.hero.screens.verification.action}
+                  </button>
+                </>
+              )}
+
+              {editorState.currentScreen === 'success' && (
+                <>
+                  <div className="flex justify-center my-2">
+                    <div className="h-12 w-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                      <CheckCircle2 className="h-7 w-7" />
+                    </div>
+                  </div>
+                  <h4 className="type-card-title-sm text-center">{copy.hero.screens.success.title}</h4>
+                  <p className="type-body-sm text-center opacity-70">
+                    {copy.hero.screens.success.body}
+                  </p>
+                  <button
+                    type="button"
+                    className={`type-control w-full py-2.5 text-white shadow-md ${getRadiusClass(editorState.borderRadius)}`}
+                    style={{ backgroundColor: editorState.brandColor }}
+                  >
+                    {copy.hero.screens.success.action}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Code & Design Token Export */}
+        <div className="type-technical space-y-4 bg-slate-900 p-5 text-white lg:col-span-3">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span className="type-label-compact flex items-center gap-1.5 uppercase text-slate-400">
+              <Code className="h-3.5 w-3.5 text-[#00D4B2]" />
+              {workspaceCopy.codePanelLabel}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyCode}
+              className="type-control-compact flex cursor-pointer items-center gap-1 text-[#00D4B2] hover:underline"
+            >
+              <Copy className="h-3 w-3" />
+              {copiedCode ? workspaceCopy.copiedLabel : workspaceCopy.copyLabel}
+            </button>
+          </div>
+
+          <div className="type-technical space-y-1 overflow-x-auto rounded-xl bg-slate-950 p-3 text-slate-300">
+            <p className="text-slate-500">{workspaceCopy.generatedCodeComment}</p>
+            <p className="text-[#00D4B2]">
+              {SDK_SYNTAX.importKeyword}{' '}
+              <span className="text-white">{SDK_SYNTAX.namedExport}</span>{' '}
+              {SDK_SYNTAX.packageImport}
+            </p>
+            <br />
+            <p className="text-purple-400">{SDK_SYNTAX.componentOpen}</p>
+            <p className="pl-4 text-slate-300">
+              {SDK_SYNTAX.brandColorProp}
+              <span className="text-amber-300">&quot;{editorState.brandColor}&quot;</span>
+            </p>
+            <p className="pl-4 text-slate-300">
+              {SDK_SYNTAX.borderRadiusProp}
+              <span className="text-amber-300">&quot;{editorState.borderRadius}&quot;</span>
+            </p>
+            <p className="pl-4 text-slate-300">
+              {SDK_SYNTAX.showLogoProp}
+              <span className="text-blue-400">{String(editorState.showLogo)}</span>
+              {'}'}
+            </p>
+            <p className="pl-4 text-slate-300">
+              {SDK_SYNTAX.themeProp}
+              <span className="text-amber-300">&quot;{editorState.themeMode}&quot;</span>
+            </p>
+            <p className="text-purple-400">{SDK_SYNTAX.componentClose}</p>
+          </div>
+
+          <div className="pt-3 border-t border-slate-800 space-y-2">
+            <span className="type-label-compact block uppercase text-slate-400">
+              {workspaceCopy.cssVariablesLabel}
+            </span>
+            <div className="type-technical space-y-1 text-slate-400">
+              <p>
+                {SDK_SYNTAX.brandToken}{' '}
+                <span className="text-emerald-400">{editorState.brandColor}</span>;
+              </p>
+              <p>
+                {SDK_SYNTAX.cornerToken}{' '}
+                <span className="text-emerald-400">
+                  {editorState.borderRadius === 'pill' ? '999px' : editorState.borderRadius === 'rounded' ? '12px' : '0px'}
+                </span>;
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const STAGE_ICONS: Record<InterfaceStudioStageId, LucideIcon> = {
+  connect: Network,
+  build: Component,
+  localize: Languages,
+  validate: FileCheck2,
+};
+
+const STAGE_STYLES: Record<
+  InterfaceStudioStageId,
+  {
+    readonly icon: string;
+    readonly soft: string;
+    readonly badge: string;
+  }
+> = {
+  connect: {
+    icon: 'text-[#354CE1]',
+    soft: 'bg-[#EEF1FF]',
+    badge: 'bg-[#EEF1FF] text-[#354CE1]',
+  },
+  build: {
+    icon: 'text-violet-700',
+    soft: 'bg-violet-50',
+    badge: 'bg-violet-50 text-violet-700',
+  },
+  localize: {
+    icon: 'text-cyan-700',
+    soft: 'bg-cyan-50',
+    badge: 'bg-cyan-50 text-cyan-700',
+  },
+  validate: {
+    icon: 'text-emerald-700',
+    soft: 'bg-emerald-50',
+    badge: 'bg-emerald-50 text-emerald-700',
+  },
+};
+
+function StageVisual({
+  stageId,
+  stage,
+}: {
+  readonly stageId: InterfaceStudioStageId;
+  readonly stage: InterfaceStudioPageCopy['workflow']['stages'][InterfaceStudioStageId];
+}) {
+  const style = STAGE_STYLES[stageId];
+
+  if (stageId === 'connect') {
+    return (
+      <div className="rounded-[1.75rem] bg-slate-50 p-5 shadow-lg shadow-[#0F1E36]/5 sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="type-label uppercase text-slate-400">
+            {stage.visualTitle}
+          </p>
+          <span className={`type-caption rounded-full px-2.5 py-1 font-semibold ${style.badge}`}>
+            {stage.visualStatus}
+          </span>
+        </div>
+        <div className="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="space-y-2">
+            {stage.visualItems.slice(0, 2).map((item, index) => (
+              <div
+                key={item}
+                className="rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200/60"
+              >
+                <span className="type-caption flex items-center gap-2 font-semibold text-[#0F1E36]">
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      index === 0 ? 'bg-[#354CE1]' : 'bg-violet-500'
+                    }`}
+                  />
+                  {item}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center text-[#354CE1]">
+            <span className="h-px w-3 bg-[#354CE1]/30 sm:w-5" />
+            <RefreshCw className="h-5 w-5" aria-hidden="true" />
+            <span className="h-px w-3 bg-[#354CE1]/30 sm:w-5" />
+          </div>
+          <div className="rounded-2xl bg-[#0F1E36] p-4 text-white shadow-md">
+            <LayoutDashboard className="h-5 w-5 text-[#8D9AFF]" aria-hidden="true" />
+            <p className="type-caption mt-3 font-semibold">
+              {stage.visualItems[2]}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (stageId === 'build') {
+    return (
+      <div className="rounded-[1.75rem] bg-slate-50 p-5 shadow-lg shadow-[#0F1E36]/5 sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="type-label uppercase text-slate-400">
+            {stage.visualTitle}
+          </p>
+          <span className={`type-caption rounded-full px-2.5 py-1 font-semibold ${style.badge}`}>
+            {stage.visualStatus}
+          </span>
+        </div>
+        <div className="mt-5 space-y-2.5">
+          {stage.visualItems.map((item, index) => (
+            <div
+              key={item}
+              className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200/60"
+            >
+              <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${style.soft} ${style.icon}`}>
+                {index === 0 ? (
+                  <Type className="h-4 w-4" aria-hidden="true" />
+                ) : index === 1 ? (
+                  <Braces className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Route className="h-4 w-4" aria-hidden="true" />
+                )}
+              </span>
+              <span className="type-caption min-w-0 font-semibold text-[#0F1E36]">
+                {item}
+              </span>
+              <span className="ml-auto h-2 w-8 rounded-full bg-slate-100" aria-hidden="true" />
             </div>
           ))}
         </div>
       </div>
+    );
+  }
 
-      {/* API Sandbox Credentials Generator CTA Section */}
-      <div className="bg-slate-950 border-t border-slate-900 py-24 text-white" id="interface_studio_early_access_section">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            
-            {/* Left panel: form */}
-            <div className="lg:col-span-5 space-y-8">
-              <div className="space-y-3">
-                <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider block font-mono">{t('sandboxEngine')}</span>
-                <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                  {t('generateSnippetTitle')}
-                </h2>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  {t('generateSnippetDesc')}
-                </p>
-              </div>
-
-              <form onSubmit={handleCreateFlow} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 block font-mono">{t('flowNameLabel')}</label>
-                  <input 
-                     type="text" 
-                     value={flowName}
-                     onChange={(e) => setFlowName(e.target.value)}
-                     required
-                     className="w-full bg-slate-900 border border-slate-800 px-4 py-3 rounded-2xl text-xs text-white focus:outline-none focus:border-indigo-500"
-                     placeholder={t('placeholderFlowName')}
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-400 block font-mono">{t('envTargetLabel')}</label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setEnvironment('sandbox')}
-                      className={`px-4 py-3 rounded-2xl text-xs font-bold transition border ${
-                        environment === 'sandbox' 
-                          ? 'bg-indigo-600 text-white border-transparent' 
-                          : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
-                      }`}
-                    >
-                      🧪 {t('sandboxEnvButton')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEnvironment('production')}
-                      className={`px-4 py-3 rounded-2xl text-xs font-bold transition border ${
-                        environment === 'production' 
-                          ? 'bg-indigo-600 text-white border-transparent' 
-                          : 'bg-slate-900 text-slate-400 border-slate-800 hover:text-white'
-                      }`}
-                    >
-                      🚀 {t('productionEnvButton')}
-                    </button>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-white hover:bg-slate-100 text-slate-950 font-bold rounded-2xl text-xs uppercase tracking-wider transition-all"
-                >
-                  {t('generateSnippetButton')}
-                </button>
-              </form>
+  if (stageId === 'localize') {
+    return (
+      <div className="rounded-[1.75rem] bg-slate-50 p-5 shadow-lg shadow-[#0F1E36]/5 sm:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="type-label uppercase text-slate-400">
+            {stage.visualTitle}
+          </p>
+          <span className={`type-caption rounded-full px-2.5 py-1 font-semibold ${style.badge}`}>
+            {stage.visualStatus}
+          </span>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {stage.visualItems.map((item, index) => (
+            <div
+              key={item}
+              className="rounded-2xl bg-white p-4 text-center shadow-sm ring-1 ring-slate-200/60"
+            >
+              {index === 0 ? (
+                <Languages className="mx-auto h-5 w-5 text-cyan-700" aria-hidden="true" />
+              ) : index === 1 ? (
+                <Smartphone className="mx-auto h-5 w-5 text-cyan-700" aria-hidden="true" />
+              ) : (
+                <Palette className="mx-auto h-5 w-5 text-cyan-700" aria-hidden="true" />
+              )}
+              <p className="type-caption mt-3 font-semibold text-[#0F1E36]">
+                {item}
+              </p>
             </div>
-
-            {/* Right panel: code terminal showing dynamic generated snippet */}
-            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-[32px] p-6 shadow-2xl space-y-4 min-h-[360px] flex flex-col justify-between">
-              
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                <div className="flex items-center gap-2">
-                  <Terminal className="w-4.5 h-4.5 text-indigo-400" />
-                  <span className="text-[11px] text-slate-400 font-mono font-bold">{t('sdkSnippetBuilder')}</span>
-                </div>
-                <div className="flex gap-2">
-                  {(['react', 'html', 'node', 'curl'] as const).map((lang) => (
-                    <button
-                      key={lang}
-                      onClick={() => setSnippetLanguage(lang)}
-                      className={`text-[9px] font-mono px-2 py-0.5 rounded transition ${
-                        snippetLanguage === lang 
-                          ? 'bg-indigo-600 text-white font-bold' 
-                          : 'bg-slate-950 text-slate-400 border border-slate-850 hover:text-white'
-                      }`}
-                    >
-                      {lang.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Snippet Code block */}
-              <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-900 font-mono text-[10px] leading-relaxed text-slate-300 overflow-x-auto min-h-[220px]">
-                {generatedSnippet ? (
-                  <pre className="text-indigo-300">
-                    {getCodeSnippet()}
-                  </pre>
-                ) : (
-                  <div className="h-full min-h-[220px] flex flex-col items-center justify-center text-center text-slate-500 space-y-2">
-                    <Code className="w-8 h-8 text-slate-600 animate-pulse" />
-                    <p className="text-xs">{t('submitFormPrompt')}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Notice text */}
-              <div className="pt-4 border-t border-slate-800 text-[10px] text-slate-500 leading-normal flex items-center justify-between">
-                <span>{t('snippetNotice')}</span>
-                <button type="button" className="text-slate-400 hover:text-white underline" onClick={onOpenSandbox}>{t('readSdkApiDoc')}</button>
-              </div>
-
-            </div>
-
-          </div>
+          ))}
         </div>
       </div>
+    );
+  }
 
+  return (
+    <div className="rounded-[1.75rem] bg-slate-50 p-5 shadow-lg shadow-[#0F1E36]/5 sm:p-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="type-label uppercase text-slate-400">
+          {stage.visualTitle}
+        </p>
+        <span className={`type-caption rounded-full px-2.5 py-1 font-semibold ${style.badge}`}>
+          {stage.visualStatus}
+        </span>
+      </div>
+      <div className="mt-5 space-y-2.5">
+        {stage.visualItems.map((item, index) => (
+          <div
+            key={item}
+            className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200/60"
+          >
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+              <Check className="h-4 w-4" aria-hidden="true" />
+            </span>
+            <span className="type-caption min-w-0 font-semibold text-[#0F1E36]">
+              {item}
+            </span>
+            <span className="type-technical ml-auto text-slate-400" aria-hidden="true">
+              0{index + 1}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
+  );
+}
+
+export default function InterfaceStudioPage({ onViewChange }: InterfaceStudioPageProps) {
+  const { language } = useLanguage();
+  const copy = getLocalizedRecord(
+    INTERFACE_STUDIO_TRANSLATIONS,
+    language,
+    'INTERFACE_STUDIO_TRANSLATIONS',
+  );
+  const [expandedFaq, setExpandedFaq] = useState<
+    (typeof INTERFACE_STUDIO_FAQ_IDS)[number] | null
+  >(INTERFACE_STUDIO_FAQ_IDS[0]);
+  const [activeScreenTab, setActiveScreenTab] =
+    useState<InterfaceStudioScreenId>('welcome');
+  const showLegacySections = false;
+
+  return (
+    <main
+      id="interface-studio-page-root"
+      className="min-h-screen overflow-hidden bg-[#FAFBFD] text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]"
+    >
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-white pb-24 pt-16 md:pb-32 md:pt-20">
+        <TechGridBg />
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-96 w-[56rem] -translate-x-1/2 rounded-full bg-[#354CE1]/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -left-32 top-32 h-72 w-72 rounded-full bg-[#5B6DFF]/15 blur-3xl"
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
+          <div>
+            {/* Header Title Block - Centered */}
+            <div className="stack-hero">
+              <h1 className="type-page-title mx-auto max-w-5xl text-balance text-slate-900">
+                <span className="block md:whitespace-nowrap">
+                  {copy.hero.titleLines[0]}
+                </span>
+                <span className="block bg-gradient-to-r from-[#354CE1] via-[#5F3CF3] to-[#00D4B2] bg-clip-text text-transparent md:whitespace-nowrap">
+                  {copy.hero.titleLines[1]}
+                </span>
+              </h1>
+
+              <p className="type-lead measure-lead mx-auto text-slate-600">
+                <span className="block md:whitespace-nowrap">
+                  {copy.hero.descriptionLines[0]}
+                </span>
+                <span className="block md:whitespace-nowrap">
+                  {copy.hero.descriptionLines[1]}
+                </span>
+              </p>
+
+              <div className="flex flex-col items-center justify-center gap-3.5 pt-2 sm:flex-row sm:gap-6">
+                <button
+                  id="interface-studio-open-dashboard"
+                  type="button"
+                  onClick={() => onViewChange('dashboard')}
+                  className="type-control inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#354CE1] px-7 py-3 text-white shadow-lg shadow-[#354CE1]/20 transition-all hover:scale-[1.02] hover:bg-[#283DBF]"
+                >
+                  {copy.hero.primaryCta}
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+                <button
+                  id="interface-studio-contact"
+                  type="button"
+                  onClick={() => onViewChange('contact')}
+                  className="type-control inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border border-slate-200/80 bg-white px-7 py-3 text-slate-800 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50"
+                >
+                  {copy.hero.secondaryCta}
+                </button>
+              </div>
+            </div>
+
+            {/* Hero Studio Interactive Workspace Component */}
+            <div className="mt-16 md:mt-24">
+              <InteractiveStudioWorkspace copy={copy} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#F4F6FA] py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <p className="type-label uppercase text-[#354CE1]">
+              {copy.benefits.eyebrow}
+            </p>
+            <h2 className="type-section-title mt-4 text-balance text-[#0F1E36]">
+              {copy.benefits.title}
+            </h2>
+            <p className="type-body mt-5 text-slate-600">
+              {copy.benefits.description}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {INTERFACE_STUDIO_BENEFIT_IDS.map((benefitId) => {
+              const Icon = BENEFIT_ICONS[benefitId];
+              const benefit = copy.benefits.items[benefitId];
+
+              return (
+                <article
+                  key={benefitId}
+                  className="group relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-7 shadow-xs backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#354CE1]/30 hover:shadow-xl motion-reduce:transform-none motion-reduce:transition-none"
+                >
+                  <div
+                    className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#354CE1]/5 blur-2xl transition-all group-hover:bg-[#354CE1]/15"
+                    aria-hidden="true"
+                  />
+                  <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1] transition-transform duration-300 group-hover:scale-110 motion-reduce:transform-none motion-reduce:transition-none">
+                    <Icon className="h-6 w-6" aria-hidden="true" />
+                  </span>
+                  <h3 className="type-card-title relative mt-6 font-bold text-[#0F1E36]">
+                    {benefit.title}
+                  </h3>
+                  <p className="type-body-sm relative mt-3 leading-relaxed text-slate-600">
+                    {benefit.description}
+                  </p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="type-label uppercase text-[#354CE1]">
+              {copy.workflow.eyebrow}
+            </p>
+            <h2 className="type-section-title mt-4 text-balance text-[#0F1E36]">
+              {copy.workflow.title}
+            </h2>
+            <p className="type-body mx-auto mt-5 max-w-3xl text-slate-600">
+              {copy.workflow.description}
+            </p>
+          </div>
+
+          <div className="mt-14 space-y-8 lg:space-y-10">
+            {INTERFACE_STUDIO_STAGE_IDS.map((stageId, index) => {
+              const stage = copy.workflow.stages[stageId];
+              const Icon = STAGE_ICONS[stageId];
+              const style = STAGE_STYLES[stageId];
+              const visualFirst = index % 2 === 1;
+
+              return (
+                <article
+                  key={stageId}
+                  className="grid items-center gap-8 rounded-[2rem] bg-[#FAFBFD] p-6 shadow-sm shadow-[#0F1E36]/5 sm:p-8 lg:grid-cols-2 lg:gap-14 lg:p-10"
+                >
+                  <div className={visualFirst ? 'lg:order-2' : undefined}>
+                    <div className="flex items-center gap-4">
+                      <span className={`flex h-12 w-12 items-center justify-center rounded-2xl ${style.soft} ${style.icon}`}>
+                        <Icon className="h-6 w-6" aria-hidden="true" />
+                      </span>
+                      <p className="type-label uppercase text-slate-500">
+                        0{index + 1} / {stage.eyebrow}
+                      </p>
+                    </div>
+                    <h3 className="type-section-title-compact mt-6 text-[#0F1E36]">
+                      {stage.title}
+                    </h3>
+                    <p className="type-body mt-4 leading-relaxed text-slate-600">
+                      {stage.description}
+                    </p>
+                    <ul className="mt-6 space-y-3">
+                      {stage.points.map((point) => (
+                        <li key={point} className="flex items-start gap-3">
+                          <span className={`mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${style.soft} ${style.icon}`}>
+                            <Check className="h-3 w-3" aria-hidden="true" />
+                          </span>
+                          <span className="type-body-sm leading-relaxed text-slate-600">
+                            {point}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className={visualFirst ? 'lg:order-1' : undefined}>
+                    <StageVisual stageId={stageId} stage={stage} />
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[#5B6DFF] py-20 text-white lg:py-28">
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-28 -left-20 h-80 w-80 rounded-full bg-[#354CE1]/45 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="type-label inline-flex rounded-full bg-white/12 px-3.5 py-2 uppercase text-white ring-1 ring-white/20">
+              {copy.sync.ecosystemLabel}
+            </span>
+            <p className="type-label mt-6 uppercase text-white/70">
+              {copy.sync.eyebrow}
+            </p>
+            <h2 className="type-section-title mt-4 text-balance text-white">
+              {copy.sync.title}
+            </h2>
+            <p className="type-body mx-auto mt-5 max-w-3xl text-white/80">
+              {copy.sync.description}
+            </p>
+          </div>
+
+          <div className="mx-auto mt-12 grid max-w-5xl items-stretch gap-5 lg:grid-cols-[1fr_auto_1fr]">
+            <article className="rounded-[1.75rem] bg-white p-7 text-[#0F1E36] shadow-xl shadow-[#354CE1]/15">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1]">
+                <Network className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <p className="type-label mt-6 uppercase text-[#354CE1]">
+                {copy.sync.flowLabel}
+              </p>
+              <h3 className="type-card-title mt-2">
+                {copy.sync.flowTitle}
+              </h3>
+              <p className="type-body-sm mt-3 leading-relaxed text-slate-600">
+                {copy.sync.flowDescription}
+              </p>
+              <button
+                type="button"
+                onClick={() => onViewChange('dynamic-flow')}
+                className="type-control mt-6 inline-flex items-center gap-2 font-semibold text-[#354CE1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#354CE1]"
+              >
+                {copy.sync.flowCta}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </article>
+
+            <div className="flex items-center justify-center py-1 lg:py-0">
+              <span className="type-caption inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-2 font-semibold text-[#354CE1] shadow-lg">
+                <RefreshCw className="h-4 w-4" aria-hidden="true" />
+                {copy.sync.connectionLabel}
+              </span>
+            </div>
+
+            <article className="rounded-[1.75rem] bg-[#0F1E36] p-7 text-white shadow-xl shadow-[#354CE1]/15 ring-1 ring-white/10">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-[#AAB3FF]">
+                <LayoutDashboard className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <p className="type-label mt-6 uppercase text-[#AAB3FF]">
+                {copy.sync.studioLabel}
+              </p>
+              <h3 className="type-card-title mt-2">
+                {copy.sync.studioTitle}
+              </h3>
+              <p className="type-body-sm mt-3 leading-relaxed text-white/70">
+                {copy.sync.studioDescription}
+              </p>
+              <button
+                type="button"
+                onClick={() => onViewChange('dashboard')}
+                className="type-control mt-6 inline-flex items-center gap-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                {copy.sync.studioCta}
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <p className="type-label uppercase text-[#354CE1]">
+              {copy.quality.eyebrow}
+            </p>
+            <h2 className="type-section-title mt-4 text-balance text-[#0F1E36]">
+              {copy.quality.title}
+            </h2>
+            <p className="type-body mt-5 text-slate-600">
+              {copy.quality.description}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {copy.quality.items.map((item, index) => (
+              <article
+                key={item.title}
+                className="rounded-[1.75rem] bg-[#FAFBFD] p-7 shadow-sm shadow-[#0F1E36]/5"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1]">
+                    {index === 0 ? (
+                      <ScanSearch className="h-5 w-5" aria-hidden="true" />
+                    ) : index === 1 ? (
+                      <Layers className="h-5 w-5" aria-hidden="true" />
+                    ) : (
+                      <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                    )}
+                  </span>
+                  <span className="type-technical text-slate-400" aria-hidden="true">
+                    0{index + 1}
+                  </span>
+                </div>
+                <h3 className="type-card-title mt-6 text-[#0F1E36]">
+                  {item.title}
+                </h3>
+                <p className="type-body-sm mt-3 leading-relaxed text-slate-600">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-20 lg:py-28">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-4">
+            <p className="type-label uppercase text-[#354CE1]">
+              {copy.faq.eyebrow}
+            </p>
+            <h2 className="type-section-title-compact mt-4 text-balance text-[#0F1E36]">
+              {copy.faq.title}
+            </h2>
+            <p className="type-body mt-4 leading-relaxed text-slate-600">
+              {copy.faq.description}
+            </p>
+          </div>
+
+          <div className="lg:col-span-8">
+            {INTERFACE_STUDIO_FAQ_IDS.map((faqId) => {
+              const item = copy.faq.items[faqId];
+              const isOpen = expandedFaq === faqId;
+              const buttonId = `interface-studio-faq-button-${faqId}`;
+              const panelId = `interface-studio-faq-panel-${faqId}`;
+
+              return (
+                <div
+                  key={faqId}
+                  className="border-b border-slate-200/80 py-2 last:border-b-0"
+                >
+                  <h3 className="type-card-title">
+                    <button
+                      id={buttonId}
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => setExpandedFaq(isOpen ? null : faqId)}
+                      className="flex w-full items-center justify-between gap-5 py-4 text-left text-[#0F1E36] transition-colors hover:text-[#354CE1] motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#354CE1]"
+                    >
+                      <span>{item.question}</span>
+                      <ChevronDown
+                        className={`h-5 w-5 shrink-0 text-slate-400 transition-transform duration-200 motion-reduce:transition-none ${
+                          isOpen ? 'rotate-180 text-[#354CE1]' : ''
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </h3>
+                  {isOpen && (
+                    <div
+                      id={panelId}
+                      role="region"
+                      aria-labelledby={buttonId}
+                      className="pb-6"
+                    >
+                      <p className="type-body max-w-3xl leading-relaxed text-slate-600">
+                        {item.answer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#FAFBFD] pb-20 lg:pb-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="relative overflow-hidden rounded-[2rem] bg-[#5B6DFF] px-7 py-10 text-white shadow-xl shadow-[#354CE1]/15 sm:px-10 lg:px-14 lg:py-14">
+            <div
+              className="pointer-events-none absolute -right-16 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative max-w-3xl">
+              <p className="type-label uppercase text-white/75">
+                {copy.cta.eyebrow}
+              </p>
+              <h2 className="type-section-title mt-4 text-balance text-white">
+                {copy.cta.title}
+              </h2>
+              <p className="type-body mt-5 max-w-2xl text-white/80">
+                {copy.cta.description}
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <button
+                  id="interface-studio-restored-cta-dashboard"
+                  type="button"
+                  onClick={() => onViewChange('dashboard')}
+                  className="type-control inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-semibold text-[#354CE1] shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  {copy.cta.primaryCta}
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button
+                  id="interface-studio-restored-cta-contact"
+                  type="button"
+                  onClick={() => onViewChange('contact')}
+                  className="type-control inline-flex min-h-12 items-center justify-center rounded-full bg-white/10 px-7 py-3.5 font-semibold text-white ring-1 ring-white/25 transition-colors hover:bg-white/15 motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                >
+                  {copy.cta.secondaryCta}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {showLegacySections && (
+        <>
+      {/* Screen Gallery & Interactive Preview Showcase */}
+      <section className="bg-white py-20 lg:py-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="type-label uppercase text-[#354CE1] bg-[#EEF1FF] px-3.5 py-1.5 rounded-full font-bold text-xs">
+              {copy.hero.gallery.eyebrow}
+            </span>
+            <h2 className="type-section-title mt-4 text-slate-900 font-bold">
+              {copy.hero.gallery.title}
+            </h2>
+            <p className="type-body mt-4 text-slate-600">
+              {copy.hero.gallery.description}
+            </p>
+
+            {/* Screen Tabs */}
+            <div className="mt-8 flex flex-wrap justify-center gap-2 border-b border-slate-200 pb-4">
+              {INTERFACE_STUDIO_SCREEN_IDS.map((screenId) => {
+                const isSelected = activeScreenTab === screenId;
+                const scr = copy.hero.screens[screenId];
+                return (
+                  <button
+                    key={screenId}
+                    type="button"
+                    onClick={() => setActiveScreenTab(screenId)}
+                    className={`type-control rounded-full px-5 py-2 text-xs font-bold transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-[#354CE1] text-white shadow-md'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {scr.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Active Screen Tab Detail */}
+          {(() => {
+            const screenId = activeScreenTab;
+            const scr = copy.hero.screens[screenId];
+
+            return (
+              <div className="mt-12 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 bg-[#FAFBFD] p-8 md:p-12 rounded-3xl border border-slate-200/80 shadow-sm">
+                <div className="lg:col-span-6 space-y-4">
+                  <span className="type-label uppercase text-[#354CE1] font-bold text-xs bg-[#EEF1FF] px-3 py-1 rounded-full">
+                    {scr.label} {copy.hero.gallery.screenModelLabel}
+                  </span>
+                  <h3 className="type-section-title-compact text-slate-900 font-bold">
+                    {scr.title}
+                  </h3>
+                  <p className="type-body text-slate-600 leading-relaxed">
+                    {scr.body}
+                  </p>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => onViewChange('dashboard')}
+                      className="type-control inline-flex items-center gap-2 text-xs font-bold text-[#354CE1] hover:underline cursor-pointer"
+                    >
+                      {scr.action}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 flex justify-center">
+                  <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-slate-200/80 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                      <span className="text-xs font-bold text-slate-900">
+                        {copy.hero.gallery.previewBrandLabel}
+                      </span>
+                      <span className="type-caption-compact bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded">
+                        {copy.hero.gallery.previewStatus}
+                      </span>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 space-y-2">
+                      <h4 className="text-sm font-bold text-slate-900">{scr.title}</h4>
+                      <p className="text-xs text-slate-600">{scr.body}</p>
+                    </div>
+                    <button type="button" className="w-full py-2.5 rounded-xl bg-[#354CE1] text-white text-xs font-bold shadow-md">
+                      {scr.action}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      </section>
+
+      {/* Core Studio Capabilities Matrix */}
+      <section className="bg-[#FAFBFD] py-20 lg:py-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <span className="type-label uppercase text-[#354CE1] bg-[#EEF1FF] px-3.5 py-1.5 rounded-full font-bold text-xs">
+              {copy.benefits.eyebrow}
+            </span>
+            <h2 className="type-section-title mt-4 text-slate-900 font-bold">
+              {copy.benefits.title}
+            </h2>
+            <p className="type-body mt-4 text-slate-600 leading-relaxed">
+              {copy.benefits.description}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {INTERFACE_STUDIO_BENEFIT_IDS.map((benefitId) => {
+              const Icon = BENEFIT_ICONS[benefitId];
+              const benefit = copy.benefits.items[benefitId];
+
+              return (
+                <article
+                  key={benefitId}
+                  className="rounded-3xl border border-slate-200/70 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#354CE1]/40 hover:shadow-xl hover:shadow-[#354CE1]/5 group"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1] group-hover:bg-[#354CE1] group-hover:text-white transition-colors duration-300">
+                    <Icon className="h-6 w-6" />
+                  </span>
+                  <h3 className="type-card-title mt-6 text-slate-900 font-bold">{benefit.title}</h3>
+                  <p className="type-body-sm mt-3 text-slate-600 leading-relaxed">{benefit.description}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* UI Development Comparison Matrix (Hardcoded Frontend vs Identra Studio) */}
+      <section className="bg-white py-20 lg:py-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="type-label uppercase text-[#354CE1] bg-[#EEF1FF] px-3.5 py-1.5 rounded-full font-bold text-xs">
+              {copy.comparison.eyebrow}
+            </span>
+            <h2 className="type-section-title mt-4 text-slate-900 font-bold">
+              {copy.comparison.title}
+            </h2>
+            <p className="type-body mt-4 text-slate-600">
+              {copy.comparison.description}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            {/* Hardcoded Dev Card */}
+            <div className="rounded-3xl border border-slate-200 bg-slate-50/70 p-8 shadow-sm">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+                <h3 className="type-card-title text-slate-700 font-bold">
+                  {copy.comparison.traditionalTitle}
+                </h3>
+                <XCircle className="h-6 w-6 text-rose-500" />
+              </div>
+              <ul className="mt-6 space-y-4 text-sm text-slate-600">
+                {copy.comparison.traditionalItems.map((item) => (
+                  <li key={item.title} className="flex items-start gap-3">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-rose-500 shrink-0" />
+                    <span><strong>{item.title}:</strong> {item.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Identra Studio Card */}
+            <div className="rounded-3xl border-2 border-[#354CE1] bg-white p-8 shadow-xl shadow-[#354CE1]/10 relative">
+              <div className="type-label-compact absolute -top-3.5 left-8 bg-[#354CE1] text-white font-bold px-3 py-1 rounded-full uppercase">
+                {copy.comparison.solutionBadge}
+              </div>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 className="type-card-title text-[#354CE1] font-bold">
+                  {copy.comparison.studioTitle}
+                </h3>
+                <CheckCircle2 className="h-6 w-6 text-[#354CE1]" />
+              </div>
+              <ul className="mt-6 space-y-4 text-sm text-slate-800">
+                {copy.comparison.studioItems.map((item) => (
+                  <li key={item.title} className="flex items-start gap-3">
+                    <Check className="h-5 w-5 text-emerald-600 shrink-0" />
+                    <span><strong>{item.title}:</strong> {item.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quality Control & Accessibility Section */}
+      <section className="bg-[#FAFBFD] py-20 lg:py-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="max-w-3xl">
+            <span className="type-label uppercase text-[#354CE1] bg-[#EEF1FF] px-3.5 py-1.5 rounded-full font-bold text-xs">
+              {copy.quality.eyebrow}
+            </span>
+            <h2 className="type-section-title mt-4 text-slate-900 font-bold">
+              {copy.quality.title}
+            </h2>
+            <p className="type-body mt-4 text-slate-600">
+              {copy.quality.description}
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {copy.quality.items.map((item, idx) => (
+              <div key={idx} className="rounded-2xl bg-white p-6 border border-slate-200/80 shadow-sm space-y-3">
+                <span className="type-technical text-xs font-mono font-bold text-[#354CE1] bg-[#EEF1FF] px-2.5 py-1 rounded">
+                  QC CHECK 0{idx + 1}
+                </span>
+                <h3 className="type-card-title-sm text-slate-900">{item.title}</h3>
+                <p className="type-body-sm text-slate-600">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ecosystem Synergy Section (Studio + Flow) */}
+      <section className="bg-[#EEF1FF] py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="type-label text-[#354CE1] bg-white px-3.5 py-1.5 rounded-full font-bold text-xs border border-[#354CE1]/20">
+              {copy.sync.ecosystemLabel}
+            </span>
+            <h2 className="type-section-title mt-4 text-slate-900 font-bold">
+              {copy.sync.title}
+            </h2>
+            <p className="type-body mt-4 text-slate-600 leading-relaxed">
+              {copy.sync.description}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            {/* Dynamic Flow Card */}
+            <div className="rounded-3xl bg-white p-8 shadow-md border border-slate-200/80">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#354CE1]">
+                <Network className="h-6 w-6" />
+              </span>
+              <p className="type-label mt-6 text-[#354CE1] font-bold">{copy.sync.flowLabel}</p>
+              <h3 className="type-card-title mt-2 text-slate-900 font-bold">{copy.sync.flowTitle}</h3>
+              <p className="type-body-sm mt-3 text-slate-600">{copy.sync.flowDescription}</p>
+              <button
+                type="button"
+                onClick={() => onViewChange('dynamic-flow')}
+                className="mt-6 type-control inline-flex items-center gap-2 text-xs font-bold text-[#354CE1] hover:underline cursor-pointer"
+              >
+                {copy.sync.flowCta}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+
+            {/* Interface Studio Card */}
+            <div className="rounded-3xl bg-white p-8 shadow-md border border-slate-200/80">
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#7C3AED]/10 text-[#7C3AED]">
+                <LayoutDashboard className="h-6 w-6" />
+              </span>
+              <p className="type-label mt-6 text-[#7C3AED] font-bold">{copy.sync.studioLabel}</p>
+              <h3 className="type-card-title mt-2 text-slate-900 font-bold">{copy.sync.studioTitle}</h3>
+              <p className="type-body-sm mt-3 text-slate-600">{copy.sync.studioDescription}</p>
+              <button
+                type="button"
+                onClick={() => onViewChange('dashboard')}
+                className="mt-6 type-control inline-flex items-center gap-2 text-xs font-bold text-[#7C3AED] hover:underline cursor-pointer"
+              >
+                {copy.sync.studioCta}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Accordion Section */}
+      <section className="bg-white py-20 lg:py-24 border-b border-slate-100">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-4 space-y-4">
+              <span className="type-label uppercase text-[#354CE1] bg-[#EEF1FF] px-3.5 py-1.5 rounded-full font-bold text-xs">
+                {copy.faq.eyebrow}
+              </span>
+              <h2 className="type-section-title-compact text-slate-900 font-bold">
+                {copy.faq.title}
+              </h2>
+              <p className="type-body text-slate-600">{copy.faq.description}</p>
+            </div>
+
+            <div className="lg:col-span-8 space-y-4">
+              {INTERFACE_STUDIO_FAQ_IDS.map((faqId) => {
+                const item = copy.faq.items[faqId];
+                const isOpen = expandedFaq === faqId;
+                const buttonId = `interface-studio-faq-button-${faqId}`;
+                const panelId = `interface-studio-faq-panel-${faqId}`;
+
+                return (
+                  <div key={faqId} className="rounded-2xl border border-slate-200/80 bg-[#FAFBFD] p-5 transition-colors hover:border-slate-300">
+                    <h3 className="type-card-title">
+                      <button
+                        id={buttonId}
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-controls={panelId}
+                        onClick={() => setExpandedFaq(isOpen ? null : faqId)}
+                        className="flex w-full items-center justify-between gap-5 text-left text-slate-900 transition-colors hover:text-[#354CE1] cursor-pointer"
+                      >
+                        <span>{item.question}</span>
+                        <ChevronDown
+                          className={`h-5 w-5 shrink-0 text-slate-500 transition-transform ${
+                            isOpen ? 'rotate-180 text-[#354CE1]' : ''
+                          }`}
+                        />
+                      </button>
+                    </h3>
+                    {isOpen && (
+                      <div id={panelId} role="region" aria-labelledby={buttonId} className="pt-4 border-t border-slate-200/60 mt-3">
+                        <p className="type-body text-slate-600 leading-relaxed">{item.answer}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-[#FAFBFD] py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#7C3AED] via-[#354CE1] to-[#0F1E36] px-8 py-14 text-white shadow-2xl sm:px-12 lg:px-16 lg:py-16">
+            <div
+              className="pointer-events-none absolute -right-16 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
+              aria-hidden="true"
+            />
+            <div className="relative max-w-3xl space-y-6">
+              <span className="type-label text-white/80 font-bold uppercase text-xs bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                {copy.cta.eyebrow}
+              </span>
+              <h2 className="type-section-title text-white font-bold text-balance">
+                {copy.cta.title}
+              </h2>
+              <p className="type-body text-white/80 leading-relaxed max-w-2xl">
+                {copy.cta.description}
+              </p>
+              <div className="pt-4 flex flex-col gap-4 sm:flex-row">
+                <button
+                  id="interface-studio-cta-dashboard"
+                  type="button"
+                  onClick={() => onViewChange('dashboard')}
+                  className="type-control inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white hover:bg-slate-50 px-8 py-3.5 text-[#7C3AED] font-bold shadow-lg transition-all hover:scale-[1.02] cursor-pointer"
+                >
+                  {copy.cta.primaryCta}
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+                <button
+                  id="interface-studio-cta-contact"
+                  type="button"
+                  onClick={() => onViewChange('contact')}
+                  className="type-control inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/20 px-8 py-3.5 text-white font-bold border border-white/30 transition-all cursor-pointer"
+                >
+                  {copy.cta.secondaryCta}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+        </>
+      )}
+    </main>
   );
 }

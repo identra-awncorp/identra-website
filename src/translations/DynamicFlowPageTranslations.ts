@@ -62,6 +62,7 @@ export type DynamicFlowPageCopy = {
   readonly hero: {
     readonly eyebrow: string;
     readonly title: string;
+    readonly titleLines: readonly [string, string];
     readonly description: string;
     readonly primaryCta: string;
     readonly secondaryCta: string;
@@ -174,6 +175,10 @@ const en: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: 'Build verification journeys that change with every situation.',
+    titleLines: [
+      'Build verification journeys',
+      'that change with every situation',
+    ],
     description: 'Bring identity checks, decisions, and follow-up actions into one visual flow. Start simple, adapt as requirements grow, and keep every path easy to understand.',
     primaryCta: 'Open Dynamic Flow',
     secondaryCta: 'Talk to an expert',
@@ -381,6 +386,10 @@ const es: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: 'Cree recorridos de verificación que se adapten a cada situación.',
+    titleLines: [
+      'Cree recorridos de verificación',
+      'que se adapten a cada situación',
+    ],
     description: 'Reúna verificaciones de identidad, decisiones y acciones posteriores en un único flujo visual. Empiece de forma sencilla, adáptelo a medida que crecen sus necesidades y mantenga cada ruta fácil de entender.',
     primaryCta: 'Abrir Dynamic Flow',
     secondaryCta: 'Hablar con un experto',
@@ -588,6 +597,10 @@ const ja: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: '状況に合わせて変化する本人確認ジャーニーを構築。',
+    titleLines: [
+      '状況に合わせて変化する',
+      '本人確認ジャーニーを構築',
+    ],
     description: '本人確認、判断、その後のアクションを一つのビジュアルフローにまとめます。シンプルに始め、要件の成長に合わせて調整し、すべての経路を分かりやすく保てます。',
     primaryCta: 'Dynamic Flowを開く',
     secondaryCta: '専門家に相談',
@@ -795,6 +808,10 @@ const de: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: 'Erstellen Sie Verifizierungsabläufe, die sich jeder Situation anpassen.',
+    titleLines: [
+      'Verifizierungsabläufe gestalten,',
+      'die sich jeder Situation anpassen',
+    ],
     description: 'Bündeln Sie Identitätsprüfungen, Entscheidungen und Folgeaktionen in einem visuellen Flow. Starten Sie einfach, passen Sie ihn an neue Anforderungen an und halten Sie jeden Pfad verständlich.',
     primaryCta: 'Dynamic Flow öffnen',
     secondaryCta: 'Mit Experten sprechen',
@@ -1002,6 +1019,10 @@ const vi: DynamicFlowPageCopy = {
   hero: {
     eyebrow: 'DYNAMIC FLOW',
     title: 'Xây dựng hành trình xác minh linh hoạt cho mọi tình huống.',
+    titleLines: [
+      'Xây dựng hành trình xác minh',
+      'linh hoạt cho mọi tình huống',
+    ],
     description: 'Kết nối các bước xác minh, quyết định và hành động tiếp theo trong một luồng trực quan. Doanh nghiệp có thể bắt đầu đơn giản, mở rộng theo nhu cầu và luôn nhìn rõ từng hướng xử lý.',
     primaryCta: 'Mở Dynamic Flow',
     secondaryCta: 'Liên hệ tư vấn',

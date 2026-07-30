@@ -447,11 +447,7 @@ export default function App() {
             onViewChange={handleViewChange}
           />
         ) : currentView === 'relay' ? (
-          <RelayPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onViewChange={handleViewChange}
-          />
+          <RelayPage onViewChange={handleViewChange} />
         ) : currentView === 'platform' ? (
           <PlatformPage
             onOpenSandbox={handleOpenSandbox}
@@ -475,11 +471,7 @@ export default function App() {
             onViewChange={handleViewChange}
           />
         ) : currentView === 'interface-studio' ? (
-          <InterfaceStudioPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onViewChange={handleViewChange}
-          />
+          <InterfaceStudioPage onViewChange={handleViewChange} />
         ) : currentView === 'kyb' ? (
           <KybPage
             onOpenSandbox={handleOpenSandbox}

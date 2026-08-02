@@ -802,8 +802,17 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     <header className="w-full z-40 bg-white">
       {/* Top Banner Bar */}
       <a 
-        href="#shipped" 
-        onClick={(e) => { e.preventDefault(); showUnavailableNotice(); }}
+        href="#blog" 
+        onClick={(event) => {
+          event.preventDefault();
+
+          if (onViewChange) {
+            onViewChange('blog');
+            return;
+          }
+
+          handleUnavailableNavigation();
+        }}
         className="w-full bg-[#E5E9FF] hover:bg-[#D9E0FF] py-2 px-4 flex items-center justify-center gap-2 text-xs text-[#06184C] font-semibold tracking-wide transition text-center"
       >
         <span>{tm(HEADER_COPY_KEYS.shippedBanner)}</span>

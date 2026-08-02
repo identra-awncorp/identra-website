@@ -161,7 +161,11 @@ export default function StructuredBlogDetailPage({
         );
       }
 
-      return <p>{children}</p>;
+      return (
+        <p className="hyphens-auto text-justify [text-justify:inter-word]">
+          {children}
+        </p>
+      );
     },
     ul: ({ children }: { children?: React.ReactNode }) => (
       <ul className="ml-5 list-disc space-y-2 marker:text-[#354CE1]">{children}</ul>

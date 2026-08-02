@@ -210,14 +210,14 @@ export default function BlogDetailPage({
             
             {/* Intro Paragraphs */}
             <div className="space-y-4">
-              <p className="type-lead text-slate-800">{t.copy.youveBuiltRigorousIdentityVerificationFlowsYoureRunning}</p>
-              <p>{t.copy.sentinelExtendsPassiveSignalCollectionToAnyMoment}</p>
+              <p className="type-lead hyphens-auto text-justify text-slate-800 [text-justify:inter-word]">{t.copy.youveBuiltRigorousIdentityVerificationFlowsYoureRunning}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.sentinelExtendsPassiveSignalCollectionToAnyMoment}</p>
             </div>
 
             {/* Section 1: How Sentinel works */}
             <div ref={secHowItWorks} id="how-sentinel-works" className="pt-2 scroll-mt-24 space-y-4">
               <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.howSentinelWorks}</h2>
-              <p>{t.copy.sentinelIsALightweightToolkitThatYouCan}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.sentinelIsALightweightToolkitThatYouCan}</p>
               
               {/* Bullet list of collected signals */}
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-5 rounded-2xl border border-slate-150/80 shadow-xs">
@@ -229,7 +229,7 @@ export default function BlogDetailPage({
                 ))}
               </ul>
 
-              <p>{t.copy.youCanUseSentinelTo}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.youCanUseSentinelTo}</p>
 
               {/* Sentinel capabilities breakdown */}
               <div className="space-y-4">
@@ -241,7 +241,7 @@ export default function BlogDetailPage({
                       </span>
                       {item.title}
                     </h4>
-                    <p className="type-body-sm text-slate-500 pl-7">
+                    <p className="type-body-sm hyphens-auto pl-7 text-justify text-slate-500 [text-justify:inter-word]">
                       {item.desc}
                     </p>
                   </div>
@@ -334,18 +334,18 @@ export default function BlogDetailPage({
             {/* Section 2: Sentinel builds on Identra's comprehensive identity platform */}
             <div ref={secComprehensive} id="sentinel-comprehensive" className="pt-2 scroll-mt-24 space-y-4">
               <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.sentinelBuildsOnIdentrasComprehensiveIdentityPlatform}</h2>
-              <p>{t.copy.oneOfIdentrasEarliestInnovationsWasTheCreation}</p>
-              <p>{t.copy.asIdentrasPlatformExpandedWeCreatedNewBuilding}</p>
-              <p>{t.copy.butExperiencedFraudstersKnowThatManyFraudDetection}</p>
-              <p>{t.copy.sentinelHelpsYouCatchTheseMistakesMoreImportantly}</p>
-              <p>{t.copy.unlikePointSolutionsItNativelyWorksAlongsideIdentras}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.oneOfIdentrasEarliestInnovationsWasTheCreation}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.asIdentrasPlatformExpandedWeCreatedNewBuilding}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.butExperiencedFraudstersKnowThatManyFraudDetection}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.sentinelHelpsYouCatchTheseMistakesMoreImportantly}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.unlikePointSolutionsItNativelyWorksAlongsideIdentras}</p>
             </div>
 
             {/* Section 3: 5 ways Sentinel helps fraud fighters */}
             <div ref={secFiveWays} id="five-ways-sentinel" className="pt-2 scroll-mt-24 space-y-4">
               <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.text5WaysSentinelHelpsFraudFightersMakeMore}</h2>
-              <p>{t.copy.whenAHighRiskSignalSurfacesOutsideOf}</p>
-              <p>{t.copy.someOfTheCommonUseCasesForSentinel}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.whenAHighRiskSignalSurfacesOutsideOf}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.someOfTheCommonUseCasesForSentinel}</p>
 
               {/* Five Ways details cards */}
               <div className="space-y-6">
@@ -359,7 +359,7 @@ export default function BlogDetailPage({
                         {item.title}
                       </h3>
                     </div>
-                    <p className="type-body-sm text-slate-600 pl-11">
+                    <p className="type-body-sm hyphens-auto pl-11 text-justify text-slate-600 [text-justify:inter-word]">
                       {item.body}
                     </p>
                   </div>
@@ -370,8 +370,8 @@ export default function BlogDetailPage({
             {/* Section 4: Sentinel is now available for all Identra customers */}
             <div ref={secAvailable} id="sentinel-available" className="pt-2 scroll-mt-24 space-y-4">
               <h2 className="type-document-heading text-slate-900 border-b border-slate-100 pb-2">{t.copy.sentinelIsNowAvailableForAllIdentraCustomers}</h2>
-              <p>{t.copy.weWorkedWithSeveralCustomersWhoFrequentlyExperience}</p>
-              <p>{t.copy.buildComprehensiveRiskProfilesByCapturingSignalsAt}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.weWorkedWithSeveralCustomersWhoFrequentlyExperience}</p>
+              <p className="hyphens-auto text-justify [text-justify:inter-word]">{t.copy.buildComprehensiveRiskProfilesByCapturingSignalsAt}</p>
               <p className="font-medium text-slate-900">{t.copy.learnMoreAboutPassiveSignalsFromIdentraOr}</p>
 
               <div className="text-slate-400 text-xs leading-relaxed space-y-2 pt-6 border-t border-slate-200/60 font-normal">

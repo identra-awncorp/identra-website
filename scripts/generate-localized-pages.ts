@@ -9,7 +9,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import {
   getSeoRouteDescription,
@@ -89,6 +89,15 @@ const escapeHtml = (value: string): string =>
 const absoluteUrl = (path: string, siteUrl: string): string =>
   new URL(path, `${siteUrl}/`).toString();
 
+const countMarkdownWords = (markdown: string): number =>
+  markdown
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[-`*_>#|~]+/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .length;
+
 const routePath = (route: LocalizedRoute, locale: Locale): string =>
   route.view === 'blog-detail'
     ? blogDetailPath(route.blogId ?? DEFAULT_BLOG_DETAIL_ID, locale)
@@ -123,9 +132,26 @@ const renderStructuredBlogFallback = (
   article: StructuredBlogArticle,
 ): string => {
   const content = article.content.vi;
+  const markdownComponents: Components = {
+    img: ({ alt, src }) => {
+      const image = src ? article.images[src] : undefined;
+
+      return createElement('img', {
+        src: image?.src ?? src,
+        srcSet: image?.srcSet,
+        sizes: image?.sizes,
+        width: image?.width,
+        height: image?.height,
+        alt: alt ?? '',
+        loading: 'lazy',
+        decoding: 'async',
+      });
+    },
+  };
   const articleBody = renderToStaticMarkup(
     createElement(ReactMarkdown, {
       remarkPlugins: [remarkGfm],
+      components: markdownComponents,
       children: content.markdown,
     }),
   );
@@ -198,6 +224,18 @@ const renderLocalizedHtml = (
   const imageWidth = String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH);
   const imageHeight = String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT);
   const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
+  const articleOpenGraphMeta = structuredArticle
+    ? [
+        `    <meta name="author" content="${escapeHtml(structuredArticle.author.name)}" />`,
+        `    <meta property="article:published_time" content="${escapeHtml(structuredArticle.publishedAt)}" />`,
+        `    <meta property="article:modified_time" content="${escapeHtml(structuredArticle.modifiedAt)}" />`,
+        `    <meta property="article:author" content="${escapeHtml(siteUrl)}" />`,
+        `    <meta property="article:section" content="${escapeHtml(structuredArticle.content.vi.category)}" />`,
+        ...structuredArticle.content.vi.tags.map(
+          (tag) => `    <meta property="article:tag" content="${escapeHtml(tag)}" />`,
+        ),
+      ].join('\n')
+    : '';
   const routeLocales = localesForRoute(route);
   const alternateLinks = routeLocales.map((alternateLocale) => {
     const href = absoluteUrl(routePath(route, alternateLocale), siteUrl);
@@ -226,7 +264,16 @@ const renderLocalizedHtml = (
     headline: structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
     description,
     url: canonicalUrl,
-    image: imageUrl,
+    image: structuredArticle
+      ? {
+          '@type': 'ImageObject',
+          url: imageUrl,
+          width: structuredArticle.socialImage.width,
+          height: structuredArticle.socialImage.height,
+          caption: structuredArticle.content.vi.title,
+        }
+      : imageUrl,
+    thumbnailUrl: imageUrl,
     inLanguage: localeMeta.htmlLang,
     isPartOf: {
       '@type': 'WebSite',
@@ -236,6 +283,7 @@ const renderLocalizedHtml = (
     publisher: {
       '@type': 'Organization',
       name: 'Identra',
+      url: siteUrl,
       logo: {
         '@type': 'ImageObject',
         url: logoUrl,
@@ -247,9 +295,17 @@ const renderLocalizedHtml = (
           author: {
             '@type': structuredArticle?.author.type ?? 'Person',
             name: structuredArticle?.author.name ?? 'Brandon Chen',
+            url: siteUrl,
           },
           datePublished: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
           dateModified: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
+          ...(structuredArticle
+            ? {
+                articleSection: structuredArticle.content.vi.category,
+                keywords: structuredArticle.content.vi.tags.join(', '),
+                wordCount: countMarkdownWords(structuredArticle.content.vi.markdown),
+              }
+            : {}),
         }
       : {}),
   };
@@ -306,6 +362,10 @@ const renderLocalizedHtml = (
   html = replaceMeta(html, 'name', 'twitter:description', description);
   html = replaceMeta(html, 'name', 'twitter:image', imageUrl);
   html = replaceMeta(html, 'name', 'twitter:image:alt', imageAlt);
+
+  if (articleOpenGraphMeta) {
+    html = html.replace('</head>', `${articleOpenGraphMeta}\n  </head>`);
+  }
 
   return html;
 };

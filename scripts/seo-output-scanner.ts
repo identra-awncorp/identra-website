@@ -40,6 +40,29 @@ const expect = (condition: boolean, message: string) => {
   if (!condition) failures.push(message);
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const getSchemaObjects = (html: string, articleId: string): Record<string, unknown>[] => {
+  const schemaJson = html.match(
+    /<script id="identra-seo-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/,
+  )?.[1];
+
+  if (!schemaJson) {
+    failures.push(`${articleId} is missing its JSON-LD schema.`);
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(schemaJson) as unknown;
+    const values = Array.isArray(parsed) ? parsed : [parsed];
+    return values.filter(isRecord);
+  } catch {
+    failures.push(`${articleId} contains invalid JSON-LD.`);
+    return [];
+  }
+};
+
 expect(
   siteUrl === DEFAULT_SITE_URL,
   `Configured canonical origin is ${siteUrl}; expected the production host ${DEFAULT_SITE_URL}.`,
@@ -49,6 +72,12 @@ const blogIndexHtml = readDistFile('vi/blog/index.html');
 expect(
   blogIndexHtml.includes(`<link rel="canonical" href="${siteUrl}/vi/blog" />`),
   'Vietnamese Blog index does not use the configured canonical origin.',
+);
+expect(
+  blogIndexHtml.includes(
+    '<link rel="alternate" type="application/rss+xml" title="Identra Blog" href="/blog-feed.xml" />',
+  ),
+  'Vietnamese Blog index does not advertise the Blog RSS feed.',
 );
 
 const vietnameseDescriptions = new Map<string, string>();
@@ -104,6 +133,10 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const html = readDistFile(`${routePath.replace(/^\/+/, '')}/index.html`);
   const paragraphCount = html.match(/<p(?:\s|>)/g)?.length ?? 0;
   const headingCount = html.match(/<h[23](?:\s|>)/g)?.length ?? 0;
+  const schemaObjects = getSchemaObjects(html, articleId);
+  const blogPosting = schemaObjects.find((schema) => schema['@type'] === 'BlogPosting');
+  const schemaAuthor = isRecord(blogPosting?.author) ? blogPosting.author : null;
+  const schemaImage = isRecord(blogPosting?.image) ? blogPosting.image : null;
 
   expect(
     html.includes(`<link rel="canonical" href="${siteUrl}${routePath}" />`),
@@ -122,12 +155,47 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
     `${articleId} contains too few static article headings (${headingCount}).`,
   );
   expect(
+    !html.includes('<link rel="preload" as="image"'),
+    `${articleId} preloads every fallback article image instead of preserving lazy loading.`,
+  );
+  expect(
+    html.includes('loading="lazy"') && html.includes('decoding="async"'),
+    `${articleId} does not lazy-load images in its static fallback.`,
+  );
+  expect(
+    html.includes(`<meta name="author" content="${article.author.name}" />`)
+      && html.includes(`<meta property="article:published_time" content="${article.publishedAt}" />`)
+      && html.includes(`<meta property="article:modified_time" content="${article.modifiedAt}" />`)
+      && html.includes(`<meta property="article:section" content="${article.content.vi.category}" />`),
+    `${articleId} is missing article-specific author, date, or section metadata.`,
+  );
+  expect(
+    article.content.vi.tags.every((tag) =>
+      html.includes(`<meta property="article:tag" content="${tag}" />`)),
+    `${articleId} is missing an Open Graph article tag.`,
+  );
+  expect(
+    Boolean(
+      blogPosting
+      && schemaAuthor?.url === siteUrl
+      && schemaImage?.url === `${siteUrl}${article.socialImage.src}`
+      && schemaImage?.width === article.socialImage.width
+      && schemaImage?.height === article.socialImage.height
+      && blogPosting.articleSection === article.content.vi.category
+      && blogPosting.keywords === article.content.vi.tags.join(', ')
+      && typeof blogPosting.wordCount === 'number'
+      && blogPosting.wordCount > 0
+    ),
+    `${articleId} has incomplete BlogPosting author, image, category, tags, or word count metadata.`,
+  );
+  expect(
     blogIndexHtml.includes(`href="${routePath}"`),
     `Blog index does not expose a crawlable link to ${articleId}.`,
   );
 }
 
 const sitemapXml = readDistFile('sitemap.xml');
+const blogFeedXml = readDistFile('blog-feed.xml');
 const robotsTxt = readDistFile('robots.txt');
 expect(
   sitemapXml.includes(`<loc>${siteUrl}/vi/blog</loc>`),
@@ -147,6 +215,34 @@ expect(
 expect(
   !sitemapXml.includes('<changefreq>') && !sitemapXml.includes('<priority>'),
   'Sitemap still contains ignored changefreq or priority hints.',
+);
+expect(
+  sitemapXml.includes('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')
+    && PUBLIC_BLOG_DETAIL_IDS.every((articleId) => {
+      const article = getStructuredBlogArticle(articleId);
+      return Boolean(
+        article
+        && sitemapXml.includes(
+          `<image:loc>${siteUrl}${article.socialImage.src}</image:loc>`,
+        )
+        && sitemapXml.includes(
+          `<image:loc>${siteUrl}${article.coverImage.src}</image:loc>`,
+        )
+      );
+    }),
+  'Image sitemap entries are missing for a Blog social or cover image.',
+);
+expect(
+  blogFeedXml.includes(`<atom:link href="${siteUrl}/blog-feed.xml" rel="self" type="application/rss+xml" />`)
+    && PUBLIC_BLOG_DETAIL_IDS.every((articleId) => {
+      const article = getStructuredBlogArticle(articleId);
+      return Boolean(
+        article
+        && blogFeedXml.includes(`<guid isPermaLink="true">${siteUrl}${blogDetailPath(articleId, 'vi')}</guid>`)
+        && blogFeedXml.includes(`<pubDate>${new Date(`${article.publishedAt}T00:00:00Z`).toUTCString()}</pubDate>`)
+      );
+    }),
+  'Blog RSS feed is missing an article URL or publication date.',
 );
 expect(
   robotsTxt.includes(`Sitemap: ${siteUrl}/sitemap.xml`),

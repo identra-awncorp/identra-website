@@ -29,9 +29,10 @@ test('international hiring article exposes localized listing metadata and Vietna
     getStructuredBlogArticle(INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE_ID),
     INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE,
   );
-  assert.equal(
-    STRUCTURED_BLOG_ARTICLES[0],
-    INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE,
+  assert.ok(
+    STRUCTURED_BLOG_ARTICLES.includes(
+      INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE,
+    ),
   );
   assert.deepEqual(
     STRUCTURED_BLOG_ARTICLES.map((article) => article.publishedAt),

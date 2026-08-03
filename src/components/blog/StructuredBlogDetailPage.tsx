@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowRight,
   Bookmark,
@@ -72,6 +72,7 @@ export default function StructuredBlogDetailPage({
   const [activeSection, setActiveSection] = useState(content.tableOfContents[0]?.id ?? '');
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const tableOfContentsRef = useRef<HTMLElement>(null);
 
   const publishedDate = new Date(`${article.publishedAt}T00:00:00Z`);
   const formattedDate = `${publishedDate.getUTCDate()} tháng ${
@@ -79,31 +80,77 @@ export default function StructuredBlogDetailPage({
   } năm ${publishedDate.getUTCFullYear()}`;
 
   useEffect(() => {
-    const sections = content.tableOfContents
-      .map((item) => document.getElementById(item.id))
-      .filter((element): element is HTMLElement => element !== null);
+    let animationFrameId: number | null = null;
 
-    if (sections.length === 0) return;
+    const updateActiveSection = () => {
+      animationFrameId = null;
+      const sections = content.tableOfContents
+        .map((item) => document.getElementById(item.id))
+        .filter((element): element is HTMLElement => element !== null);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (sections.length === 0) return;
 
-        if (visibleEntry?.target.id) {
-          setActiveSection(visibleEntry.target.id);
-        }
-      },
-      {
-        rootMargin: '-120px 0px -65% 0px',
-        threshold: [0, 1],
-      },
+      const activationLine = Math.min(window.innerHeight * 0.3, 180);
+      let nextActiveSection = sections[0].id;
+
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top > activationLine) break;
+        nextActiveSection = section.id;
+      }
+
+      setActiveSection((current) => (
+        current === nextActiveSection ? current : nextActiveSection
+      ));
+    };
+
+    const scheduleActiveSectionUpdate = () => {
+      if (animationFrameId !== null) return;
+      animationFrameId = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', scheduleActiveSectionUpdate, { passive: true });
+    window.addEventListener('resize', scheduleActiveSectionUpdate);
+    document.addEventListener('scroll', scheduleActiveSectionUpdate, {
+      capture: true,
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener('scroll', scheduleActiveSectionUpdate);
+      window.removeEventListener('resize', scheduleActiveSectionUpdate);
+      document.removeEventListener('scroll', scheduleActiveSectionUpdate, true);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [article.id, content.tableOfContents]);
+
+  useEffect(() => {
+    const tableOfContents = tableOfContentsRef.current;
+    const activeItem = tableOfContents?.querySelector<HTMLElement>(
+      `[data-toc-id="${activeSection}"]`,
     );
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [content.tableOfContents]);
+    if (!tableOfContents || !activeItem) return;
+    if (window.getComputedStyle(tableOfContents).display === 'contents') return;
+
+    const containerBounds = tableOfContents.getBoundingClientRect();
+    const itemBounds = activeItem.getBoundingClientRect();
+    const visibilityPadding = 16;
+
+    if (itemBounds.top < containerBounds.top + visibilityPadding) {
+      tableOfContents.scrollBy({
+        top: itemBounds.top - containerBounds.top - visibilityPadding,
+        behavior: 'smooth',
+      });
+    } else if (itemBounds.bottom > containerBounds.bottom - visibilityPadding) {
+      tableOfContents.scrollBy({
+        top: itemBounds.bottom - containerBounds.bottom + visibilityPadding,
+        behavior: 'smooth',
+      });
+    }
+  }, [activeSection]);
 
   const scrollToSection = (id: string) => {
     const target = document.getElementById(id);
@@ -181,7 +228,7 @@ export default function StructuredBlogDetailPage({
 
       if (isCaptionParagraph(children)) {
         return (
-          <p className="-mt-5 rounded-xl border border-slate-200/40 bg-white/50 p-3 text-center text-xs italic leading-relaxed text-slate-500">
+          <p className="-mt-5 rounded-xl border border-slate-200/40 bg-white/50 p-3 text-center text-sm italic leading-relaxed text-slate-500">
             {children}
           </p>
         );
@@ -376,15 +423,18 @@ export default function StructuredBlogDetailPage({
 
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-          <article className="space-y-4 text-base font-normal leading-relaxed text-slate-700 lg:col-span-8 [&>p:first-child]:text-lg [&>p:first-child]:leading-relaxed [&>p:first-child]:text-slate-800">
+          <article className="order-2 space-y-4 text-lg font-normal leading-relaxed text-slate-700 lg:order-1 lg:col-span-8 [&>p:first-child]:text-slate-800">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {content.markdown}
             </ReactMarkdown>
           </article>
 
-          <aside className="space-y-8 lg:sticky lg:top-6 lg:col-span-4 lg:h-[calc(100vh-3rem)] lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-3">
-            <div className="rounded-2xl bg-white p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)]">
-              <h3 className="type-label mb-4 uppercase text-slate-400">
+          <aside
+            ref={tableOfContentsRef}
+            className="contents order-1 space-y-0 lg:sticky lg:top-6 lg:order-2 lg:col-span-4 lg:block lg:h-[calc(100vh-3rem)] lg:space-y-8 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-3"
+          >
+            <div className="order-1 rounded-2xl bg-white p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)] lg:order-none">
+              <h3 className="mb-4 text-base font-bold uppercase text-slate-400">
                 {content.ui.tableOfContents}
               </h3>
               <nav aria-label={content.ui.tableOfContents} className="flex flex-col gap-1">
@@ -392,8 +442,9 @@ export default function StructuredBlogDetailPage({
                   <button
                     key={item.id}
                     type="button"
+                    data-toc-id={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className={`rounded-lg border-l-2 px-3 py-2 text-left text-xs font-semibold leading-snug transition-all ${
+                    className={`rounded-lg border-l-2 px-3 py-2 text-left text-base font-semibold leading-snug transition-all ${
                       item.level === 3 ? 'pl-6' : ''
                     } ${
                       activeSection === item.id
@@ -407,7 +458,7 @@ export default function StructuredBlogDetailPage({
               </nav>
             </div>
 
-            <div className="space-y-4 rounded-2xl bg-gradient-to-b from-indigo-900 to-[#12183A] p-6 text-white shadow-md">
+            <div className="order-3 space-y-4 rounded-2xl bg-gradient-to-b from-indigo-900 to-[#12183A] p-6 text-white shadow-md lg:order-none">
               <Sparkles className="h-8 w-8 text-[#4F6CFF]" />
               <div className="space-y-1">
                 <h4 className="type-card-title">{content.ui.ctaTitle}</h4>
@@ -452,17 +503,17 @@ export default function StructuredBlogDetailPage({
                       <span aria-hidden="true">&middot;</span>
                       <span>{relatedArticle.listing.vi.duration}</span>
                     </div>
-                    <h4 className="line-clamp-2 text-sm font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#354CE1]">
+                    <h4 className="line-clamp-2 text-base font-bold leading-snug text-slate-900 transition-colors group-hover:text-[#354CE1]">
                       {relatedContent.title}
                     </h4>
-                    <p className="line-clamp-3 text-xs font-normal leading-relaxed text-slate-500">
+                    <p className="line-clamp-3 text-sm font-normal leading-relaxed text-slate-500">
                       {relatedContent.description}
                     </p>
                   </div>
 
-                  <div className="mt-5 flex items-center gap-1.5 text-xs font-bold text-[#354CE1]">
+                  <div className="mt-5 flex items-center gap-1.5 text-sm font-bold text-[#354CE1]">
                     <span>{commonCopy.readArticle}</span>
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </div>
                 </a>
               );

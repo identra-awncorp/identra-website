@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.identra.id.vn/en</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en" />
@@ -189,7 +190,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-07-27</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/es/blog</loc>
@@ -199,7 +200,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-07-27</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/ja/blog</loc>
@@ -209,7 +210,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-07-27</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/de/blog</loc>
@@ -219,7 +220,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-07-27</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog</loc>
@@ -229,7 +230,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-07-27</lastmod>
+    <lastmod>2026-08-03</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/ebooks</loc>
@@ -3211,29 +3212,65 @@
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi" />
     <lastmod>2026-07-26</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/dinh-danh-tu-chu-ssi-la-gi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/self-sovereign-identity-explained-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/self-sovereign-identity-user-data-control-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/digital-diploma-education-credential-trends-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/decentralized-identity-trust-triangle-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</loc>
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc" />
     <lastmod>2026-07-26</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/learning-passport-digital-education-records-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/cross-border-student-self-sovereign-identity-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/ebsi-blockchain-european-digital-education-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/selective-disclosure-private-data-sharing-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</loc>
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc" />
     <lastmod>2026-07-26</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/digital-credentials-future-academic-records-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/ssi-digital-degrees-skills-verification-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/selective-disclosure-private-data-sharing-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/learning-passport-digital-education-records-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</loc>
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc" />
     <lastmod>2026-07-26</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/mit-blockchain-digital-diplomas-cover-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/mit-blockchain-digital-diplomas-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/digital-diploma-education-credential-trends-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/ebsi-blockchain-european-digital-education-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</loc>
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao" />
     <lastmod>2026-07-27</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/cross-border-remote-work-cover-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/verifiable-credentials-hiring-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/eu-digital-identity-wallet-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/selective-disclosure-hiring-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app" />
+    <lastmod>2026-08-03</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/vuot-xa-super-app-ky-nguyen-ultra-app-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/ultra-app-agent-orchestration-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/ai-agent-trust-infrastructure-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/ssi-agent-verifiable-trust-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/programmable-digital-transactions-1440.webp</image:loc></image:image>
   </url>
 </urlset>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+  <channel>
+    <title>Identra Blog</title>
+    <link>https://www.identra.id.vn/vi/blog</link>
+    <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
+    <language>vi</language>
+    <lastBuildDate>Mon, 03 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vượt xa Super App: Kỷ nguyên Ultra App</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</guid>
+      <description>AI Agent, SSI, blockchain và hợp đồng thông minh có thể đưa ứng dụng từ nơi tập hợp dịch vụ thành lớp điều phối mới cho đời sống số như thế nào?</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Ultra App</category>
+      <category>AI Agent</category>
+      <category>SSI</category>
+      <category>Blockchain</category>
+      <category>Hợp đồng thông minh</category>
+      <media:content url="https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/vuot-xa-super-app-ky-nguyen-ultra-app-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Rào cản pháp lý trong tuyển dụng quốc tế: SSI mở đường cho nhân sự remote như thế nào?</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</guid>
+      <description>Phân tích cách SSI hỗ trợ xác minh danh tính, năng lực và lý lịch trong tuyển dụng Việt Nam–EU mà vẫn tôn trọng GDPR cùng chủ quyền pháp lý.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+      <category>Tuyển dụng quốc tế</category>
+      <category>Nhân sự remote</category>
+      <category>SSI</category>
+      <category>GDPR</category>
+      <category>Thực chứng</category>
+      <media:content url="https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Từ thí điểm của MIT đến làn sóng số hóa bằng cấp không thể đảo ngược</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</guid>
+      <description>Nhìn lại thí điểm bằng số của MIT năm 2017 và hành trình đưa thực chứng giáo dục từ một thử nghiệm blockchain đến tiêu chuẩn mở cùng hạ tầng liên thông.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+      <category>MIT</category>
+      <category>Bằng cấp số</category>
+      <category>Thực chứng</category>
+      <category>SSI</category>
+      <category>Giáo dục số</category>
+      <media:content url="https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Hồ sơ học tập suốt đời: Lợi ích của mô hình định danh tự chủ cho người học</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</guid>
+      <description>Tìm hiểu cách SSI giúp người học trực tiếp nắm giữ, kết hợp và sử dụng những thành tích có thể kiểm chứng trong suốt hành trình học tập và nghề nghiệp.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+      <category>SSI</category>
+      <category>Hồ sơ học tập suốt đời</category>
+      <category>Giáo dục số</category>
+      <category>Thực chứng</category>
+      <category>Quyền dữ liệu</category>
+      <media:content url="https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>SSI trong giáo dục: Giải pháp số hóa bằng cấp và xác minh năng lực</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</guid>
+      <description>Tìm hiểu cách SSI biến bằng cấp và kết quả học tập thành thực chứng có thể kiểm tra, giúp trường học, người học và nhà tuyển dụng trao đổi dữ liệu đáng tin cậy hơn.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+      <category>SSI</category>
+      <category>Giáo dục số</category>
+      <category>Thực chứng</category>
+      <category>Bằng cấp số</category>
+      <category>Xác minh năng lực</category>
+      <media:content url="https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Định danh tự chủ (SSI) là gì? Từ giới hạn của định danh số hiện nay đến một mô hình mới</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</guid>
+      <description>Vì sao các mô hình định danh số hiện nay còn nhiều giới hạn, định danh tự chủ ra đời để giải quyết điều gì và SSI vận hành như thế nào?</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+      <category>SSI</category>
+      <category>Định danh tự chủ</category>
+      <category>Danh tính số</category>
+      <category>Verifiable Credentials</category>
+      <category>DID</category>
+      <media:content url="https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/dinh-danh-tu-chu-ssi-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+  </channel>
+</rss>

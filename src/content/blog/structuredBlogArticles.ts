@@ -9,8 +9,10 @@ import { INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE } from './rao-can-phap-ly-trong-t
 import { SSI_EDUCATION_BLOG_ARTICLE } from './ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc';
 import type { StructuredBlogArticle } from './structuredBlogArticleModel';
 import { MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE } from './tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc';
+import { ULTRA_APP_BLOG_ARTICLE } from './vuot-xa-super-app-ky-nguyen-ultra-app';
 
 export const STRUCTURED_BLOG_ARTICLES = [
+  ULTRA_APP_BLOG_ARTICLE,
   INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE,
   MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE,
   LIFELONG_LEARNING_BLOG_ARTICLE,

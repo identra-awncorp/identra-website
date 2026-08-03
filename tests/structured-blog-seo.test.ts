@@ -37,3 +37,22 @@ test('SSI sharing metadata preserves the original academic title and description
     description: SSI_DESCRIPTION,
   });
 });
+
+test('structured article images use consistent standalone captions', () => {
+  for (const article of STRUCTURED_BLOG_ARTICLES) {
+    const lines = article.content.vi.markdown.split(/\r?\n/);
+    const imageLineIndexes = lines
+      .map((line, index) => (line.startsWith('![') ? index : -1))
+      .filter((index) => index >= 0);
+
+    assert.equal(imageLineIndexes.length, Object.keys(article.images).length);
+
+    imageLineIndexes.forEach((imageLineIndex, imageIndex) => {
+      assert.equal(lines[imageLineIndex + 1], '');
+      assert.match(
+        lines[imageLineIndex + 2] ?? '',
+        new RegExp(`^\\*Hình ${imageIndex + 1}\\. .+\\*$`),
+      );
+    });
+  }
+});

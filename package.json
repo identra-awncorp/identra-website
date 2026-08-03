@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "npm run generate:seo && vite build && npm run generate:localized-pages",
+    "build": "npm run generate:seo && vite build && npm run generate:localized-pages && npm run scan:seo-output",
     "preview": "vite preview",
     "clean": "node scripts/clean.mjs",
     "generate:seo": "tsx scripts/generate-seo-assets.ts",
@@ -24,7 +24,8 @@
     "scan:routing-types": "node scripts/routing-type-scanner.mjs --path src --summary",
     "scan:translation-encoding": "node scripts/translation-encoding-scanner.mjs --path src --extra vite.config.ts --summary",
     "scan:translation-inheritance": "node scripts/translation-inheritance-scanner.mjs --path src/translations --summary",
-    "scan:typography": "node scripts/typography-system-scanner.mjs"
+    "scan:typography": "node scripts/typography-system-scanner.mjs",
+    "scan:seo-output": "tsx scripts/seo-output-scanner.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type { AppView } from '../types/routes';
+import { type AppView, viewToPath } from '../types/routes';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Instagram, Linkedin, Smile, Star, Twitter } from 'lucide-react';
@@ -51,6 +51,20 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
   };
 
   const navigate = (event: React.MouseEvent<HTMLAnchorElement>, view?: string) => {
+    if (
+      view
+      && (
+        !onViewChange
+        || event.button !== 0
+        || event.metaKey
+        || event.ctrlKey
+        || event.shiftKey
+        || event.altKey
+      )
+    ) {
+      return;
+    }
+
     event.preventDefault();
 
     if (view && onViewChange) {
@@ -60,6 +74,10 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
 
     showUnavailableNotice();
   };
+
+  const hrefForView = (view?: string) => view
+    ? viewToPath(view as FooterView, language)
+    : '#';
 
   return (
     <>
@@ -126,7 +144,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
                 <h4 className="font-bold text-white uppercase tracking-wider text-[10px]">
                   {titleView ? (
                     <a
-                      href="#"
+                      href={hrefForView(titleView)}
                       onClick={(event) => navigate(event, titleView)}
                       className="hover:underline transition"
                     >
@@ -143,7 +161,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
                     return (
                       <li key={link.key}>
                         <a
-                          href="#"
+                          href={hrefForView(view)}
                           onClick={(event) => navigate(event, view)}
                           className="hover:text-white transition"
                         >
@@ -202,7 +220,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
                 return (
                   <a
                     key={link.key}
-                    href="#"
+                    href={hrefForView(view)}
                     onClick={(event) => navigate(event, view)}
                     className="hover:text-white transition underline underline-offset-2"
                   >

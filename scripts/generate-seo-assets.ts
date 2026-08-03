@@ -16,11 +16,14 @@ import {
   demoScenarioPath,
   getBlogDetailLocales,
   getViewLocales,
-  stripLocaleFromPath,
   SUPPORTED_LOCALES,
   type Locale,
   viewToPath,
 } from '../src/types/routes';
+import {
+  getStructuredBlogArticle,
+  STRUCTURED_BLOG_ARTICLES,
+} from '../src/content/blog/structuredBlogArticles';
 import { DEFAULT_SITE_URL } from '../src/utils/seo';
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const publicDir = resolve(projectRoot, 'public');
@@ -45,47 +48,36 @@ const escapeXml = (value: string) =>
     .replace(/'/g, '&apos;');
 
 const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL ?? process.env.SITE_URL);
+const latestBlogModifiedAt = STRUCTURED_BLOG_ARTICLES.reduce(
+  (latestDate, article) => article.modifiedAt > latestDate
+    ? article.modifiedAt
+    : latestDate,
+  '',
+);
 const staticRoutes = APP_VIEWS
   .filter((view) => view !== 'blog-detail' && view !== 'login' && view !== 'dashboard')
   .map((view) => ({
-    basePath: stripLocaleFromPath(viewToPath(view, DEFAULT_LOCALE)),
     locales: getViewLocales(view),
     pathForLocale: (locale: Locale) => viewToPath(view, locale),
+    lastModified: view === 'blog' ? latestBlogModifiedAt : undefined,
   }));
 const blogDetailRoutes = PUBLIC_BLOG_DETAIL_IDS.map((id) => ({
-  basePath: stripLocaleFromPath(blogDetailPath(id, DEFAULT_LOCALE)),
   locales: getBlogDetailLocales(id),
   pathForLocale: (locale: Locale) => blogDetailPath(id, locale),
+  lastModified: getStructuredBlogArticle(id)?.modifiedAt,
 }));
 const demoScenarioRoutes = DEMO_SCENARIO_IDS.map((id) => ({
-  basePath: stripLocaleFromPath(demoScenarioPath(id, DEFAULT_LOCALE)),
   locales: SUPPORTED_LOCALES,
   pathForLocale: (locale: Locale) => demoScenarioPath(id, locale),
+  lastModified: undefined,
 }));
 const routes = [...staticRoutes, ...demoScenarioRoutes, ...blogDetailRoutes];
-
-const priorityForPath = (path: string) => {
-  if (path === '/') return '1.0';
-  if (path === '/platform') return '0.9';
-  if (path === '/pricing' || path === '/contact' || path === '/demo') return '0.8';
-  if (path.startsWith('/demo/')) return '0.7';
-  if (path.startsWith('/blog-detail/')) return '0.6';
-
-  return '0.7';
-};
-
-const changeFrequencyForPath = (path: string) => {
-  if (path === '/' || path === '/blog' || path === '/resource-center') return 'weekly';
-  if (path.startsWith('/blog-detail/')) return 'monthly';
-
-  return 'monthly';
-};
 
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${routes
-  .flatMap(({ basePath, locales, pathForLocale }) => {
+  .flatMap(({ locales, pathForLocale, lastModified }) => {
     const alternateLinks = locales.map((locale) => {
       const alternateUrl = new URL(pathForLocale(locale), `${siteUrl}/`).toString();
 
@@ -103,9 +95,7 @@ ${routes
       return `  <url>
     <loc>${escapeXml(url)}</loc>
 ${alternateLinks.join('\n')}
-    <changefreq>${changeFrequencyForPath(basePath)}</changefreq>
-    <priority>${priorityForPath(basePath)}</priority>
-  </url>`;
+${lastModified ? `    <lastmod>${escapeXml(lastModified)}</lastmod>\n` : ''}  </url>`;
     });
   })
   .join('\n')}

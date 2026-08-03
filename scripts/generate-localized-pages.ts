@@ -7,7 +7,12 @@ import 'dotenv/config';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import {
+  getSeoRouteDescription,
   SEO_ROUTE_GROUPS,
   SEO_TRANSLATIONS,
 } from '../src/translations/SeoTranslations';
@@ -35,7 +40,9 @@ import {
 import {
   getStructuredBlogArticle,
   getStructuredBlogSeoMetadata,
+  STRUCTURED_BLOG_ARTICLES,
 } from '../src/content/blog/structuredBlogArticles';
+import type { StructuredBlogArticle } from '../src/content/blog/structuredBlogArticleModel';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -97,6 +104,43 @@ const localesForRoute = (route: LocalizedRoute): readonly Locale[] =>
 const renderSeoFallback = (headline: string, description: string): string =>
   `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main></div>`;
 
+const renderBlogIndexFallback = (
+  headline: string,
+  description: string,
+  locale: Locale,
+): string => {
+  const articleLinks = STRUCTURED_BLOG_ARTICLES.map((article) => {
+    const listing = article.listing[locale];
+    const href = blogDetailPath(article.id, locale);
+
+    return `<li><article><h2><a href="${escapeHtml(href)}">${escapeHtml(listing.title)}</a></h2><p>${escapeHtml(listing.description)}</p></article></li>`;
+  }).join('');
+
+  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p><section aria-label="Blog" style="margin-top:3rem"><ul>${articleLinks}</ul></section></main></div>`;
+};
+
+const renderStructuredBlogFallback = (
+  article: StructuredBlogArticle,
+): string => {
+  const content = article.content.vi;
+  const articleBody = renderToStaticMarkup(
+    createElement(ReactMarkdown, {
+      remarkPlugins: [remarkGfm],
+      children: content.markdown,
+    }),
+  );
+  const relatedLinks = article.relatedArticleIds.flatMap((relatedArticleId) => {
+    const relatedArticle = getStructuredBlogArticle(relatedArticleId);
+    if (!relatedArticle) return [];
+
+    return [
+      `<li><a href="${escapeHtml(blogDetailPath(relatedArticle.id, 'vi'))}">${escapeHtml(relatedArticle.content.vi.title)}</a></li>`,
+    ];
+  }).join('');
+
+  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><article><header><h1 style="max-width:56rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(content.title)}</h1><p style="max-width:48rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(content.description)}</p></header><div style="margin-top:3rem;line-height:1.75">${articleBody}</div></article><nav aria-label="Related articles" style="margin-top:3rem"><ul>${relatedLinks}</ul></nav></main></div>`;
+};
+
 const replaceMeta = (
   html: string,
   attribute: 'name' | 'property',
@@ -144,7 +188,7 @@ const renderLocalizedHtml = (
     : formatSeoDescription(
         blogPost
           ? blogPost.description
-          : seo.descriptionTemplates[routeGroup].replace(/\{page\}/g, routeTitle),
+          : getSeoRouteDescription(seo, route.view),
       );
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
   const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
@@ -211,6 +255,11 @@ const renderLocalizedHtml = (
   };
   const schemaJson = JSON.stringify([organizationSchema, pageSchema])
     .replace(/</g, '\\u003c');
+  const fallbackMarkup = structuredArticle
+    ? renderStructuredBlogFallback(structuredArticle)
+    : route.view === 'blog'
+      ? renderBlogIndexFallback(routeTitle, description, locale)
+      : renderSeoFallback(blogPost?.title ?? routeTitle, description);
 
   let html = sourceHtml
     .replace(/<html lang="[^"]*">/, `<html lang="${localeMeta.htmlLang}">`)
@@ -230,7 +279,7 @@ const renderLocalizedHtml = (
     )
     .replace(
       '<div id="root"></div>',
-      renderSeoFallback(blogPost?.title ?? routeTitle, description),
+      fallbackMarkup,
     );
 
   html = replaceMeta(html, 'name', 'description', description);

@@ -20,7 +20,7 @@ import { getRelatedStructuredBlogArticles } from '../../content/blog/structuredB
 import {
   BLOG_DETAIL_PAGE_TRANSLATIONS,
 } from '../../translations/BlogDetailPageTranslations';
-import { blogDetailPath, type BlogDetailId } from '../../types/routes';
+import { blogDetailPath, type BlogDetailId, viewToPath } from '../../types/routes';
 import { copyTextToClipboard } from '../../utils/clipboard';
 
 interface StructuredBlogDetailPageProps {
@@ -119,6 +119,32 @@ export default function StructuredBlogDetailPage({
     );
     setCopyStatus(copied ? 'success' : 'error');
     window.setTimeout(() => setCopyStatus('idle'), 2000);
+  };
+
+  const shouldUseNativeLinkNavigation = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+  ) => event.defaultPrevented
+    || event.button !== 0
+    || event.metaKey
+    || event.ctrlKey
+    || event.shiftKey
+    || event.altKey;
+
+  const handleBackLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (shouldUseNativeLinkNavigation(event)) return;
+
+    event.preventDefault();
+    onBack();
+  };
+
+  const handleRelatedArticleLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    articleId: BlogDetailId,
+  ) => {
+    if (shouldUseNativeLinkNavigation(event)) return;
+
+    event.preventDefault();
+    onOpenArticle(articleId);
   };
 
   const markdownComponents = {
@@ -249,15 +275,15 @@ export default function StructuredBlogDetailPage({
     <div className="min-h-screen bg-[#FAFBFD] font-sans text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]">
       <div className="mx-auto max-w-7xl px-6 pb-2 pt-6">
         <div className="flex items-center justify-between">
-          <button
+          <a
             id="btn-back-to-blog"
-            type="button"
-            onClick={onBack}
+            href={viewToPath('blog', 'vi')}
+            onClick={handleBackLinkClick}
             className="group flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-[#354CE1]"
           >
             <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             <span>{commonCopy.backToBlog}</span>
-          </button>
+          </a>
 
           <div className="flex items-center gap-3">
             <button
@@ -413,10 +439,10 @@ export default function StructuredBlogDetailPage({
               const relatedContent = relatedArticle.content.vi;
 
               return (
-                <button
+                <a
                   key={relatedArticle.id}
-                  type="button"
-                  onClick={() => onOpenArticle(relatedArticle.id)}
+                  href={blogDetailPath(relatedArticle.id, 'vi')}
+                  onClick={(event) => handleRelatedArticleLinkClick(event, relatedArticle.id)}
                   aria-label={relatedContent.title}
                   className="group flex w-full cursor-pointer flex-col justify-between rounded-2xl p-5 text-left shadow-[0_0_18px_rgba(15,23,42,0.08)] transition-all duration-200 hover:shadow-md hover:ring-1 hover:ring-[#354CE1]/50"
                 >
@@ -438,7 +464,7 @@ export default function StructuredBlogDetailPage({
                     <span>{commonCopy.readArticle}</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                   </div>
-                </button>
+                </a>
               );
             })}
           </div>

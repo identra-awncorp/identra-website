@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { BLOG_PAGE_TRANSLATIONS } from '../translations/BlogPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
-import type { BlogDetailId } from '../types/routes';
+import { blogDetailPath, type BlogDetailId } from '../types/routes';
 import {
   getStructuredBlogArticle,
   STRUCTURED_BLOG_ARTICLES,
@@ -143,6 +143,25 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     onOpenBlogDetail(post.id);
   };
 
+  const handleBlogDetailLinkClick = (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    post: BlogPost,
+  ) => {
+    if (
+      event.defaultPrevented
+      || event.button !== 0
+      || event.metaKey
+      || event.ctrlKey
+      || event.shiftKey
+      || event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    openBlogDetail(post);
+  };
+
   // Filter lists
   const topicsList: { id: TopicId }[] = [
     { id: 'age-assurance',},
@@ -230,8 +249,9 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             {/* Left featured large card: Gartner Quadrant */}
-            <button type="button"
-              onClick={() => openBlogDetail(featuredPost)}
+            <a
+              href={blogDetailPath(featuredPost.id, language)}
+              onClick={(event) => handleBlogDetailLinkClick(event, featuredPost)}
               className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden text-left"
             >
               {/* Outer light glow */}
@@ -314,14 +334,15 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
-            </button>
+            </a>
 
             {/* Right featured sidebar: 3 small items */}
             <div className="lg:col-span-5 flex flex-col justify-between gap-4">
               {featuredSidebarPosts.map((item) => (
-                <button type="button"
+                <a
                   key={item.id}
-                  onClick={() => openBlogDetail(item)}
+                  href={blogDetailPath(item.id, language)}
+                  onClick={(event) => handleBlogDetailLinkClick(event, item)}
                   className="bg-[#0B1230]/60 hover:bg-[#101B42]/80 border border-[#1E2E72]/50 hover:border-[#2B3D8A] p-5 rounded-2xl cursor-pointer group flex items-center justify-between gap-4 transition-all duration-200 text-left"
                 >
                   <div className="space-y-1.5">
@@ -344,7 +365,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   <div className="w-8 h-8 rounded-full bg-[#182559] group-hover:bg-[#354CE1] flex items-center justify-center shrink-0 transition">
                     <ArrowRight className="w-3.5 h-3.5 text-[#4F6CFF] group-hover:text-white transition" />
                   </div>
-                </button>
+                </a>
               ))}
             </div>
           </div>
@@ -486,9 +507,10 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                   className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
                 >
                   {filteredBlogPosts.map((post) => (
-                    <button type="button"
+                    <a
                       key={post.id}
-                      onClick={() => openBlogDetail(post)}
+                      href={blogDetailPath(post.id, language)}
+                      onClick={(event) => handleBlogDetailLinkClick(event, post)}
                       className="bg-white rounded-2xl border border-slate-100 overflow-hidden cursor-pointer group hover:shadow-xl hover:border-slate-200/60 transition-all duration-300 flex flex-col h-full text-left"
                     >
                       {post.coverImage ? (
@@ -554,7 +576,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                           {postCopy(post).description}
                         </p>
                       </div>
-                    </button>
+                    </a>
                   ))}
                 </motion.div>
               </AnimatePresence>

@@ -11,4 +11,4 @@ Disallow: /de/dashboard
 Disallow: /vi/login
 Disallow: /vi/dashboard
 
-Sitemap: https://identra.id.vn/sitemap.xml
+Sitemap: https://www.identra.id.vn/sitemap.xml

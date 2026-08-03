@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { SUPPORTED_LOCALES, type AppView, type Locale } from '../types/routes';
+import { SUPPORTED_LOCALES, type AppView, type Locale, viewToPath } from '../types/routes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
@@ -802,8 +802,18 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     <header className="w-full z-40 bg-white">
       {/* Top Banner Bar */}
       <a 
-        href="#blog" 
+        href={viewToPath('blog', language)}
         onClick={(event) => {
+          if (
+            event.button !== 0
+            || event.metaKey
+            || event.ctrlKey
+            || event.shiftKey
+            || event.altKey
+          ) {
+            return;
+          }
+
           event.preventDefault();
 
           if (onViewChange) {

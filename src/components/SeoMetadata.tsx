@@ -6,6 +6,7 @@
 import { useEffect, useMemo } from 'react';
 import { useLanguage, type Language } from '../context/LanguageContext';
 import {
+  getSeoRouteDescription,
   SEO_ROUTE_GROUPS,
   SEO_TRANSLATIONS,
 } from '../translations/SeoTranslations';
@@ -75,9 +76,6 @@ const normalizeSiteUrl = (siteUrl: string | undefined): string => {
 
 const absoluteUrl = (path: string, siteUrl: string): string =>
   new URL(path, `${siteUrl}/`).toString();
-
-const templateDescription = (template: string, pageTitle: string): string =>
-  template.replace(/\{page\}/g, pageTitle);
 
 const upsertMeta = (
   attribute: 'name' | 'property',
@@ -202,7 +200,7 @@ export default function SeoMetadata({
             ? seo.notFoundDescription
             : isBlogDetail && blogPost
               ? blogPost.description
-              : templateDescription(seo.descriptionTemplates[routeGroup], routeTitle),
+              : getSeoRouteDescription(seo, currentView),
         );
 
     return {

@@ -434,7 +434,7 @@ export default function StructuredBlogDetailPage({
             className="contents order-1 space-y-0 lg:sticky lg:top-6 lg:order-2 lg:col-span-4 lg:block lg:h-[calc(100vh-3rem)] lg:space-y-8 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-3"
           >
             <div className="order-1 rounded-2xl bg-white p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)] lg:order-none">
-              <h3 className="mb-4 text-base font-bold uppercase text-slate-400">
+              <h3 className="mb-4 text-sm font-bold uppercase text-slate-400">
                 {content.ui.tableOfContents}
               </h3>
               <nav aria-label={content.ui.tableOfContents} className="flex flex-col gap-1">
@@ -444,7 +444,7 @@ export default function StructuredBlogDetailPage({
                     type="button"
                     data-toc-id={item.id}
                     onClick={() => scrollToSection(item.id)}
-                    className={`rounded-lg border-l-2 px-3 py-2 text-left text-base font-semibold leading-snug transition-all ${
+                    className={`rounded-lg border-l-2 px-3 py-2 text-left text-sm font-semibold leading-snug transition-all ${
                       item.level === 3 ? 'pl-6' : ''
                     } ${
                       activeSection === item.id

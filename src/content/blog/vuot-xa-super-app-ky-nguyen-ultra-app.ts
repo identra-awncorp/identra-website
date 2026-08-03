@@ -30,8 +30,8 @@ export const ULTRA_APP_BLOG_ARTICLE = {
   contentLocales: ['vi'],
   relatedArticleIds: [
     'dinh-danh-tu-chu-ssi-la-gi',
+    'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham',
     'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
-    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
   ],
   coverImage: {
     src: `${assetRoot}/ultra-app-agent-orchestration-1440.webp`,

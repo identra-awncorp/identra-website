@@ -9,6 +9,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   APP_VIEWS,
+  DEFAULT_LOCALE,
   PUBLIC_BLOG_DETAIL_IDS,
   blogDetailPath,
   viewToPath,
@@ -66,6 +67,40 @@ const getSchemaObjects = (html: string, articleId: string): Record<string, unkno
 expect(
   siteUrl === DEFAULT_SITE_URL,
   `Configured canonical origin is ${siteUrl}; expected the production host ${DEFAULT_SITE_URL}.`,
+);
+
+const defaultLandingPath = viewToPath('landing', DEFAULT_LOCALE);
+const rootHtml = readDistFile('index.html');
+const vercelConfig = JSON.parse(
+  readFileSync(resolve(projectRoot, 'vercel.json'), 'utf8'),
+) as {
+  redirects?: Array<{
+    source?: string;
+    destination?: string;
+    permanent?: boolean;
+  }>;
+};
+
+expect(
+  Boolean(vercelConfig.redirects?.some((redirect) =>
+    redirect.source === '/'
+    && redirect.destination === defaultLandingPath
+    && redirect.permanent === true)),
+  `Vercel must permanently redirect / to ${defaultLandingPath}.`,
+);
+expect(
+  rootHtml.includes(`<meta http-equiv="refresh" content="0;url=${defaultLandingPath}" />`)
+    && rootHtml.includes(`window.location.replace("${defaultLandingPath}"`),
+  `The static root fallback does not redirect to ${defaultLandingPath}.`,
+);
+expect(
+  rootHtml.includes(`<link rel="canonical" href="${siteUrl}${defaultLandingPath}" />`),
+  'The static root fallback does not point canonical signals at the default locale.',
+);
+expect(
+  rootHtml.includes('<meta name="robots" content="index, follow, max-image-preview:large" />')
+    && !rootHtml.includes('content="noindex'),
+  'The static root fallback still exposes a noindex robots directive.',
 );
 
 const blogIndexHtml = readDistFile('vi/blog/index.html');

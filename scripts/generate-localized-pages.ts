@@ -512,15 +512,12 @@ writeFileSync(
   'utf8',
 );
 
-let rootHtml = renderLocalizedHtml(
-  sourceHtml,
-  { view: 'landing' },
-  DEFAULT_LOCALE,
-  siteUrl,
-)
-  .replace(/\s*<link rel="canonical" href="[^"]*" \/>/g, '')
-  .replace(/\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>/g, '');
-rootHtml = replaceMeta(rootHtml, 'name', 'robots', 'noindex, nofollow');
+const rootHtml = replaceMeta(
+  renderLegacyRedirectHtml(sourceHtml, 'landing', DEFAULT_LOCALE, siteUrl),
+  'name',
+  'robots',
+  'index, follow, max-image-preview:large',
+);
 
 writeFileSync(resolve(distDir, 'index.html'), rootHtml, 'utf8');
 

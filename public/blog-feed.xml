@@ -8,8 +8,35 @@
     <link>https://www.identra.id.vn/vi/blog</link>
     <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
     <language>vi</language>
-    <lastBuildDate>Mon, 03 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 04 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Châu Âu đang dẫn đầu cuộc chuyển dịch sang định danh tự chủ</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</guid>
+      <description>Liên minh châu Âu đang đưa các nguyên tắc của định danh tự chủ từ nghiên cứu và thử nghiệm vào khuôn khổ pháp lý, tiêu chuẩn và hạ tầng số quy mô lớn.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Định danh tự chủ</category>
+      <category>EUDI Wallet</category>
+      <category>Liên minh châu Âu</category>
+      <category>Thực chứng</category>
+      <media:content url="https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>SSI, blockchain và tương lai xuất khẩu hàng hóa Việt Nam sang EU</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</guid>
+      <description>Năng lực cung cấp dữ liệu sản phẩm đáng tin cậy đang dần trở thành một phần của năng lực xuất khẩu hàng hóa Việt Nam sang thị trường EU.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Xuất khẩu</category>
+      <category>Liên minh châu Âu</category>
+      <category>SSI</category>
+      <category>Blockchain</category>
+      <category>Hộ chiếu Sản phẩm Số</category>
+      <media:content url="https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
     <item>
       <title>Vượt xa Super App: Kỷ nguyên Ultra App</title>
       <link>https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</link>

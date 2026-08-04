@@ -29,9 +29,9 @@ export const PRODUCT_TRACEABILITY_BLOG_ARTICLE = {
   industries: ['retail-ecommerce', 'marketplaces'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
     'dinh-danh-tu-chu-ssi-la-gi',
     'vuot-xa-super-app-ky-nguyen-ultra-app',
-    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
   ],
   coverImage: {
     src: `${assetRoot}/verifiable-supply-chain-cover-1440.webp`,
@@ -286,4 +286,3 @@ function responsiveImage(name: string): BlogArticleImage {
     height: 810,
   };
 }
-

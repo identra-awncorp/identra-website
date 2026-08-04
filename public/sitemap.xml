@@ -190,7 +190,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/es/blog</loc>
@@ -200,7 +200,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/ja/blog</loc>
@@ -210,7 +210,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/de/blog</loc>
@@ -220,7 +220,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog</loc>
@@ -230,7 +230,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-04</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/ebooks</loc>
@@ -3283,5 +3283,26 @@
     <image:image><image:loc>https://www.identra.id.vn/blog/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham/product-credential-verification-1440.webp</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham/supply-chain-trust-network-1440.webp</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham/cryptographic-product-verification-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu" />
+    <lastmod>2026-08-04</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/eu-ssi-trade-infrastructure-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/vietnam-product-data-ecosystem-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/ssi-blockchain-verifiable-evidence-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/vietnam-digital-trust-policy-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu" />
+    <lastmod>2026-08-04</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/eudi-wallet-europe-identity-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/verifiable-credentials-user-control-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/cross-border-eu-digital-identity-1440.webp</image:loc></image:image>
   </url>
 </urlset>

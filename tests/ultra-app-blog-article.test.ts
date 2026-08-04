@@ -23,7 +23,7 @@ test('Ultra App article exposes localized listing metadata and Vietnamese conten
     getStructuredBlogArticle(ULTRA_APP_BLOG_ARTICLE_ID),
     ULTRA_APP_BLOG_ARTICLE,
   );
-  assert.equal(STRUCTURED_BLOG_ARTICLES[0], ULTRA_APP_BLOG_ARTICLE);
+  assert.equal(STRUCTURED_BLOG_ARTICLES.includes(ULTRA_APP_BLOG_ARTICLE), true);
   assert.deepEqual(
     STRUCTURED_BLOG_ARTICLES.map((article) => article.publishedAt),
     STRUCTURED_BLOG_ARTICLES

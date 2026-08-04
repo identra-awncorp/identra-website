@@ -113,6 +113,8 @@ export const BLOG_DETAIL_IDS = [
   'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
   'vuot-xa-super-app-ky-nguyen-ultra-app',
   'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham',
+  'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
+  'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
 ] as const;
 
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
@@ -125,6 +127,8 @@ export const PUBLIC_BLOG_DETAIL_IDS = [
   'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
   'vuot-xa-super-app-ky-nguyen-ultra-app',
   'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham',
+  'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
+  'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
 ] as const satisfies readonly BlogDetailId[];
 
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'dinh-danh-tu-chu-ssi-la-gi';
@@ -137,6 +141,8 @@ const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale
   'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao': ['vi'],
   'vuot-xa-super-app-ky-nguyen-ultra-app': ['vi'],
   'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham': ['vi'],
+  'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu': ['vi'],
+  'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu': ['vi'],
 };
 
 export const getBlogDetailLocales = (id: BlogDetailId): readonly Locale[] =>

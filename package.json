@@ -25,7 +25,8 @@
     "scan:translation-encoding": "node scripts/translation-encoding-scanner.mjs --path src --extra vite.config.ts --summary",
     "scan:translation-inheritance": "node scripts/translation-inheritance-scanner.mjs --path src/translations --summary",
     "scan:typography": "node scripts/typography-system-scanner.mjs",
-    "scan:seo-output": "tsx scripts/seo-output-scanner.ts"
+    "scan:seo-output": "tsx scripts/seo-output-scanner.ts",
+    "audit:seo-live": "tsx scripts/seo-live-audit.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.14",

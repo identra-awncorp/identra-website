@@ -4,14 +4,24 @@
  */
 
 import 'dotenv/config';
-import { readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   APP_VIEWS,
   DEFAULT_LOCALE,
+  DEMO_SCENARIO_IDS,
+  LEGACY_VIEW_ALIASES,
   PUBLIC_BLOG_DETAIL_IDS,
+  SUPPORTED_LOCALES,
   blogDetailPath,
+  demoScenarioPath,
+  getBlogDetailLocales,
+  getViewLocales,
+  legacyViewAliasPath,
+  type AppView,
+  type LegacyViewAlias,
+  type Locale,
   viewToPath,
 } from '../src/types/routes';
 import {
@@ -40,6 +50,97 @@ const readDistFile = (relativePath: string): string =>
 const expect = (condition: boolean, message: string) => {
   if (!condition) failures.push(message);
 };
+
+const absoluteUrl = (path: string): string =>
+  new URL(path, `${siteUrl}/`).toString();
+
+const routeFile = (path: string): string =>
+  `${path.replace(/^\/+/, '')}/index.html`;
+
+const metaContent = (
+  html: string,
+  attribute: 'name' | 'property',
+  key: string,
+): string | null => html.match(
+  new RegExp(`<meta ${attribute}="${key}" content="([^"]*)" \\/>`),
+)?.[1] ?? null;
+
+const canonicalLinks = (html: string): string[] => [
+  ...html.matchAll(/<link rel="canonical" href="([^"]+)" \/>/g),
+].map((match) => match[1]);
+
+const alternateLinks = (html: string): Map<string, string> => new Map(
+  [...html.matchAll(
+    /<link rel="alternate" hreflang="([^"]+)" href="([^"]+)" \/>/g,
+  )].map((match) => [match[1], match[2]]),
+);
+
+const collectHtmlFiles = (
+  directory: string,
+  relativeDirectory = '',
+): string[] => readdirSync(resolve(directory, relativeDirectory), { withFileTypes: true })
+  .flatMap((entry) => {
+    const relativePath = relativeDirectory
+      ? `${relativeDirectory}/${entry.name}`
+      : entry.name;
+
+    if (entry.isDirectory()) {
+      return collectHtmlFiles(directory, relativePath);
+    }
+
+    return entry.isFile() && entry.name.endsWith('.html') ? [relativePath] : [];
+  });
+
+type IndexableRouteDefinition = {
+  readonly locales: readonly Locale[];
+  readonly pathForLocale: (locale: Locale) => string;
+};
+
+const indexableRouteDefinitions: IndexableRouteDefinition[] = [
+  ...APP_VIEWS
+    .filter((view) => view !== 'blog-detail' && SEO_ROUTE_GROUPS[view] !== 'account')
+    .map((view) => ({
+      locales: getViewLocales(view),
+      pathForLocale: (locale: Locale) => viewToPath(view, locale),
+    })),
+  ...DEMO_SCENARIO_IDS.map((scenarioId) => ({
+    locales: SUPPORTED_LOCALES,
+    pathForLocale: (locale: Locale) => demoScenarioPath(scenarioId, locale),
+  })),
+  ...PUBLIC_BLOG_DETAIL_IDS.map((articleId) => ({
+    locales: getBlogDetailLocales(articleId),
+    pathForLocale: (locale: Locale) => blogDetailPath(articleId, locale),
+  })),
+];
+
+const indexablePages = indexableRouteDefinitions.flatMap((definition) => {
+  const defaultLocale = definition.locales.includes(DEFAULT_LOCALE)
+    ? DEFAULT_LOCALE
+    : definition.locales[0];
+  const expectedAlternates = new Map<string, string>(
+    definition.locales.map((locale) => [locale, absoluteUrl(definition.pathForLocale(locale))]),
+  );
+  expectedAlternates.set(
+    'x-default',
+    absoluteUrl(definition.pathForLocale(defaultLocale)),
+  );
+
+  return definition.locales.map((locale) => ({
+    expectedAlternates,
+    path: definition.pathForLocale(locale),
+  }));
+});
+
+const privatePages = APP_VIEWS
+  .filter((view) => SEO_ROUTE_GROUPS[view] === 'account')
+  .flatMap((view) => getViewLocales(view).map((locale) => viewToPath(view, locale)));
+
+const legacyPages = (
+  Object.entries(LEGACY_VIEW_ALIASES) as Array<[LegacyViewAlias, AppView]>
+).flatMap(([alias, targetView]) => getViewLocales(targetView).map((locale) => ({
+  path: legacyViewAliasPath(alias, locale),
+  targetPath: viewToPath(targetView, locale),
+})));
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -80,14 +181,53 @@ const vercelConfig = JSON.parse(
     permanent?: boolean;
   }>;
 };
+const configuredRedirects = vercelConfig.redirects ?? [];
+const redirectBySource = new Map(
+  configuredRedirects.flatMap((redirect) =>
+    redirect.source && redirect.destination
+      ? [[redirect.source, redirect.destination] as const]
+      : []),
+);
 
 expect(
-  Boolean(vercelConfig.redirects?.some((redirect) =>
+  Boolean(configuredRedirects.some((redirect) =>
     redirect.source === '/'
     && redirect.destination === defaultLandingPath
     && redirect.permanent === true)),
   `Vercel must permanently redirect / to ${defaultLandingPath}.`,
 );
+expect(
+  redirectBySource.size === configuredRedirects.length,
+  'Vercel contains a redirect without a source or destination, or repeats a redirect source.',
+);
+
+for (const redirect of configuredRedirects) {
+  if (!redirect.source || !redirect.destination) continue;
+
+  expect(
+    redirect.source.startsWith('/')
+      && redirect.destination.startsWith('/')
+      && redirect.source !== redirect.destination,
+    `Vercel redirect ${redirect.source} -> ${redirect.destination} is invalid or self-referencing.`,
+  );
+
+  const visited = new Set([redirect.source]);
+  let destination: string | undefined = redirect.destination;
+  let redirectCount = 1;
+  while (destination && redirectBySource.has(destination)) {
+    if (visited.has(destination)) {
+      failures.push(`Vercel redirect ${redirect.source} enters a loop at ${destination}.`);
+      break;
+    }
+    visited.add(destination);
+    destination = redirectBySource.get(destination);
+    redirectCount += 1;
+  }
+  expect(
+    redirectCount <= 3,
+    `Vercel redirect ${redirect.source} creates an unnecessarily long redirect chain.`,
+  );
+}
 expect(
   rootHtml.includes(`<meta http-equiv="refresh" content="0;url=${defaultLandingPath}" />`)
     && rootHtml.includes(`window.location.replace("${defaultLandingPath}"`),
@@ -98,9 +238,8 @@ expect(
   'The static root fallback does not point canonical signals at the default locale.',
 );
 expect(
-  rootHtml.includes('<meta name="robots" content="index, follow, max-image-preview:large" />')
-    && !rootHtml.includes('content="noindex'),
-  'The static root fallback still exposes a noindex robots directive.',
+  rootHtml.includes('<meta name="robots" content="noindex, follow" />'),
+  'The static root redirect fallback must be noindex, follow.',
 );
 
 const blogIndexHtml = readDistFile('vi/blog/index.html');
@@ -156,6 +295,132 @@ for (const view of APP_VIEWS) {
   );
   vietnameseDescriptions.set(expectedDescription, routePath);
 }
+
+for (const page of indexablePages) {
+  const relativeFile = routeFile(page.path);
+  const absoluteFile = resolve(distDir, relativeFile);
+  if (!existsSync(absoluteFile)) {
+    failures.push(`${page.path} is missing its generated HTML entry.`);
+    continue;
+  }
+
+  const html = readDistFile(relativeFile);
+  const expectedCanonical = absoluteUrl(page.path);
+  const canonicals = canonicalLinks(html);
+  const alternates = alternateLinks(html);
+  const schemaObjects = getSchemaObjects(html, page.path);
+  const pageSchema = schemaObjects.find((schema) =>
+    schema['@type'] === 'WebPage' || schema['@type'] === 'BlogPosting');
+
+  expect(
+    metaContent(html, 'name', 'robots') === 'index, follow, max-image-preview:large',
+    `${page.path} is unexpectedly blocked from indexing.`,
+  );
+  expect(
+    canonicals.length === 1 && canonicals[0] === expectedCanonical,
+    `${page.path} must expose exactly one self-referencing canonical URL.`,
+  );
+  expect(
+    alternates.size === page.expectedAlternates.size
+      && [...page.expectedAlternates].every(([locale, url]) => alternates.get(locale) === url),
+    `${page.path} has incomplete or inconsistent hreflang links.`,
+  );
+  expect(
+    metaContent(html, 'property', 'og:url') === expectedCanonical,
+    `${page.path} has an Open Graph URL that differs from its canonical URL.`,
+  );
+  expect(
+    typeof pageSchema?.url === 'string' && pageSchema.url === expectedCanonical,
+    `${page.path} has structured data that differs from its canonical URL.`,
+  );
+  expect(
+    Boolean(html.match(/<title>[^<]+<\/title>/))
+      && Boolean(metaContent(html, 'name', 'description')),
+    `${page.path} is missing a title or meta description.`,
+  );
+  expect(
+    html.includes('<main data-seo-fallback'),
+    `${page.path} is missing crawlable fallback content.`,
+  );
+  expect(
+    !html.includes('http-equiv="refresh"')
+      && !html.includes('window.location.replace('),
+    `${page.path} contains redirect markup even though it is indexable.`,
+  );
+}
+
+for (const path of privatePages) {
+  const relativeFile = routeFile(path);
+  const absoluteFile = resolve(distDir, relativeFile);
+  if (!existsSync(absoluteFile)) {
+    failures.push(`${path} is missing its generated private HTML entry.`);
+    continue;
+  }
+
+  const html = readDistFile(relativeFile);
+  expect(
+    metaContent(html, 'name', 'robots') === 'noindex, nofollow',
+    `${path} must remain noindex, nofollow.`,
+  );
+  expect(
+    !html.includes('http-equiv="refresh"')
+      && !html.includes('window.location.replace('),
+    `${path} unexpectedly contains redirect markup.`,
+  );
+}
+
+for (const { path, targetPath } of legacyPages) {
+  const relativeFile = routeFile(path);
+  const absoluteFile = resolve(distDir, relativeFile);
+  if (!existsSync(absoluteFile)) {
+    failures.push(`${path} is missing its generated legacy redirect entry.`);
+    continue;
+  }
+
+  const html = readDistFile(relativeFile);
+  expect(
+    metaContent(html, 'name', 'robots') === 'noindex, follow'
+      && html.includes(`content="0;url=${targetPath}"`)
+      && html.includes(`window.location.replace(${JSON.stringify(targetPath)}`),
+    `${path} is not a valid noindex redirect to ${targetPath}.`,
+  );
+}
+
+for (const locale of SUPPORTED_LOCALES) {
+  const relativeFile = `${locale}/404/index.html`;
+  const html = readDistFile(relativeFile);
+  expect(
+    metaContent(html, 'name', 'robots') === 'noindex, nofollow',
+    `/${locale}/404 must be noindex, nofollow.`,
+  );
+  expect(
+    canonicalLinks(html).length === 0 && alternateLinks(html).size === 0,
+    `/${locale}/404 must not expose canonical or hreflang links.`,
+  );
+}
+
+const globalNotFoundHtml = readDistFile('404.html');
+expect(
+  metaContent(globalNotFoundHtml, 'name', 'robots') === 'noindex, nofollow'
+    && canonicalLinks(globalNotFoundHtml).length === 0
+    && alternateLinks(globalNotFoundHtml).size === 0,
+  'The global 404 page must be noindex and must not expose canonical or hreflang links.',
+);
+
+const expectedHtmlFiles = new Set([
+  'index.html',
+  '404.html',
+  ...indexablePages.map(({ path }) => routeFile(path)),
+  ...privatePages.map(routeFile),
+  ...legacyPages.map(({ path }) => routeFile(path)),
+  ...SUPPORTED_LOCALES.map((locale) => `${locale}/404/index.html`),
+]);
+const actualHtmlFiles = collectHtmlFiles(distDir);
+expect(
+  actualHtmlFiles.length === expectedHtmlFiles.size
+    && actualHtmlFiles.every((file) => expectedHtmlFiles.has(file)),
+  'The build contains a missing or unexpected HTML route outside the typed route registry.',
+);
 
 for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const article = getStructuredBlogArticle(articleId);
@@ -232,6 +497,52 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
 const sitemapXml = readDistFile('sitemap.xml');
 const blogFeedXml = readDistFile('blog-feed.xml');
 const robotsTxt = readDistFile('robots.txt');
+const sitemapLocations = [
+  ...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g),
+].map((match) => match[1]);
+const expectedIndexableUrls = new Set(
+  indexablePages.map(({ path }) => absoluteUrl(path)),
+);
+const sitemapUrlBlocks = new Map(
+  [...sitemapXml.matchAll(/<url>\s*([\s\S]*?)\s*<\/url>/g)].map((match) => {
+    const block = match[1];
+    const location = block.match(/<loc>([^<]+)<\/loc>/)?.[1] ?? '';
+    return [location, block];
+  }),
+);
+
+expect(
+  sitemapLocations.length === expectedIndexableUrls.size
+    && new Set(sitemapLocations).size === sitemapLocations.length
+    && sitemapLocations.every((url) => expectedIndexableUrls.has(url)),
+  'Sitemap URLs do not exactly match the typed set of indexable pages.',
+);
+expect(
+  !sitemapLocations.includes(siteUrl)
+    && !sitemapLocations.includes(`${siteUrl}/`)
+    && privatePages.every((path) => !sitemapLocations.includes(absoluteUrl(path)))
+    && legacyPages.every(({ path }) => !sitemapLocations.includes(absoluteUrl(path))),
+  'Sitemap contains a root redirect, private page, or legacy redirect.',
+);
+
+for (const page of indexablePages) {
+  const canonicalUrl = absoluteUrl(page.path);
+  const block = sitemapUrlBlocks.get(canonicalUrl) ?? '';
+  const sitemapAlternates = new Map(
+    [...block.matchAll(
+      /<xhtml:link rel="alternate" hreflang="([^"]+)" href="([^"]+)" \/>/g,
+    )].map((match) => [match[1], match[2]]),
+  );
+
+  expect(
+    sitemapAlternates.size === page.expectedAlternates.size
+      && [...page.expectedAlternates].every(
+        ([locale, url]) => sitemapAlternates.get(locale) === url,
+      ),
+    `${page.path} has incomplete or inconsistent sitemap hreflang links.`,
+  );
+}
+
 expect(
   sitemapXml.includes(`<loc>${siteUrl}/vi/blog</loc>`),
   'Sitemap does not use the configured canonical origin for Blog.',
@@ -283,6 +594,12 @@ expect(
   robotsTxt.includes(`Sitemap: ${siteUrl}/sitemap.xml`),
   'robots.txt and the configured canonical origin are inconsistent.',
 );
+expect(
+  robotsTxt.includes('User-agent: *')
+    && robotsTxt.includes('Allow: /')
+    && !robotsTxt.includes('Disallow:'),
+  'robots.txt blocks pages that need to remain crawlable for public content or noindex discovery.',
+);
 
 if (failures.length > 0) {
   console.error(`SEO output findings: ${failures.length}`);
@@ -290,6 +607,6 @@ if (failures.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `SEO output findings: 0 (${vietnameseDescriptions.size} Vietnamese routes and ${PUBLIC_BLOG_DETAIL_IDS.length} Blog articles verified)`,
+    `SEO output findings: 0 (${indexablePages.length} indexable pages, ${privatePages.length} private pages, ${vietnameseDescriptions.size} Vietnamese routes, and ${PUBLIC_BLOG_DETAIL_IDS.length} Blog articles verified)`,
   );
 }

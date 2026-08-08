@@ -512,11 +512,11 @@ writeFileSync(
   'utf8',
 );
 
-const rootHtml = replaceMeta(
-  renderLegacyRedirectHtml(sourceHtml, 'landing', DEFAULT_LOCALE, siteUrl),
-  'name',
-  'robots',
-  'index, follow, max-image-preview:large',
+const rootHtml = renderLegacyRedirectHtml(
+  sourceHtml,
+  'landing',
+  DEFAULT_LOCALE,
+  siteUrl,
 );
 
 writeFileSync(resolve(distDir, 'index.html'), rootHtml, 'utf8');

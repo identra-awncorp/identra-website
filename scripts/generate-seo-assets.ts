@@ -162,15 +162,8 @@ ${article.content.vi.tags.map((tag) => `      <category>${escapeXml(tag)}</categ
 </rss>
 `;
 
-const disallowedPrivatePaths = SUPPORTED_LOCALES
-  .flatMap((locale) => [
-    `Disallow: /${locale}/login`,
-    `Disallow: /${locale}/dashboard`,
-  ])
-  .join('\n');
 const robotsTxt = `User-agent: *
 Allow: /
-${disallowedPrivatePaths}
 
 Sitemap: ${siteUrl}/sitemap.xml
 `;

@@ -1,14 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /en/login
-Disallow: /en/dashboard
-Disallow: /es/login
-Disallow: /es/dashboard
-Disallow: /ja/login
-Disallow: /ja/dashboard
-Disallow: /de/login
-Disallow: /de/dashboard
-Disallow: /vi/login
-Disallow: /vi/dashboard
 
 Sitemap: https://www.identra.id.vn/sitemap.xml

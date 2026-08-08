@@ -16,7 +16,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Every public route must be represented in both the route source of truth and the SEO source of truth.
 - When adding, renaming, or removing a route, update `APP_VIEWS` and path helpers in `src/types/routes.ts`, `SEO_ROUTE_GROUPS`, `routeTitles`, and any relevant `descriptionTemplates` in `src/translations/SeoTranslations.ts`.
 - Blog detail pages must use `BLOG_DETAIL_IDS`, `BlogDetailId`, and `blogDetailPath` rather than ad hoc URLs.
-- Account-only or private pages such as localized login routes must be `noindex, nofollow` and excluded from indexing in generated robots rules.
+- Account-only or private pages such as localized login and dashboard routes must be `noindex, nofollow`, excluded from the sitemap, and left crawlable so search engines can read the `noindex` directive.
 - Localized 404 pages must be `noindex, nofollow` and must not emit canonical or alternate links.
 
 ## Localized SEO Copy
@@ -31,7 +31,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Public canonical URLs must be locale-prefixed.
 - Use `/{locale}` for the landing page and `/{locale}/{view}` for normal pages.
 - Use `blogDetailPath` for blog detail pages.
-- The root `/` entry is only a non-indexed default-locale shell, not the canonical public content URL.
+- The root `/` entry is a permanent server redirect to the default-locale landing page. Its static fallback must also be `noindex, follow` and redirect to the same target.
 - Keep canonical links, `hreflang` alternates for every supported locale, and `x-default` aligned with `SUPPORTED_LOCALES`, `DEFAULT_LOCALE`, `viewToPath`, and `blogDetailPath`.
 - Do not hand-build alternate URL lists in components.
 
@@ -62,7 +62,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Do not hand-edit generated SEO outputs such as `public/sitemap.xml`, `public/robots.txt`, or localized files under `dist/`.
 - Change the source route data, SEO copy, scripts, or assets, then regenerate outputs.
 - `public/sitemap.xml` must include localized route entries and `hreflang` alternates.
-- `public/robots.txt` must allow public content, disallow private localized login routes, and point to the canonical sitemap URL.
+- `public/robots.txt` must allow crawlers to read public and `noindex` HTML, and point to the canonical sitemap URL. Do not block a page in `robots.txt` when its `noindex` directive is the mechanism preventing indexing.
 
 ## Verification
 
@@ -72,6 +72,16 @@ For SEO, route metadata, canonical URL, sitemap, robots, social preview, or loca
 npm.cmd run build
 npm.cmd run scan:routing-types
 ```
+
+After deployment, run the production audit:
+
+```powershell
+npm.cmd run audit:seo-live
+```
+
+The live audit fetches every URL in the production sitemap and verifies that it returns `200` without redirecting, remains indexable, exposes a self-referencing canonical URL, and contains crawlable fallback content. It also checks the intentional root redirect, private `noindex` pages, 404 behavior, `robots.txt`, the Blog feed, and critical SEO assets.
+
+Search Console may list the permanent `/` to `/en` redirect as “Page with redirect” and account or 404 URLs as “Excluded by noindex”. Those are expected exclusions. “Redirect error” is not expected and must be investigated for a loop, invalid destination, or excessive chain using the affected URL shown in Search Console.
 
 Then inspect relevant generated files or snippets:
 

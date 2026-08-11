@@ -43,6 +43,7 @@ import {
   STRUCTURED_BLOG_ARTICLES,
 } from '../src/content/blog/structuredBlogArticles';
 import type { StructuredBlogArticle } from '../src/content/blog/structuredBlogArticleModel';
+import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -197,10 +198,12 @@ const renderLocalizedHtml = (
   const structuredArticle = route.view === 'blog-detail'
     ? getStructuredBlogArticle(currentBlogId)
     : null;
+  const structuredSeoProfile = structuredArticle
+    ? getStructuredBlogSeoMetadata(structuredArticle)
+    : null;
   const blogPost = route.view === 'blog-detail'
-    ? structuredArticle
-      ? getStructuredBlogSeoMetadata(structuredArticle)
-      : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
+    ? structuredSeoProfile
+      ?? seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
     : null;
   const title = blogPost
     ? structuredArticle
@@ -302,7 +305,13 @@ const renderLocalizedHtml = (
           ...(structuredArticle
             ? {
                 articleSection: structuredArticle.content.vi.category,
-                keywords: structuredArticle.content.vi.tags.join(', '),
+                keywords: structuredSeoProfile
+                  ? getStructuredBlogSearchTerms(structuredSeoProfile).join(', ')
+                  : structuredArticle.content.vi.tags.join(', '),
+                about: structuredSeoProfile?.entities.map((name) => ({
+                  '@type': 'Thing',
+                  name,
+                })) ?? [],
                 wordCount: countMarkdownWords(structuredArticle.content.vi.markdown),
               }
             : {}),

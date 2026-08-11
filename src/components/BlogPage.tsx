@@ -17,8 +17,10 @@ import { useLanguage } from '../context/LanguageContext';
 import { blogDetailPath, type BlogDetailId } from '../types/routes';
 import {
   getStructuredBlogArticle,
+  getStructuredBlogSeoMetadata,
   STRUCTURED_BLOG_ARTICLES,
 } from '../content/blog/structuredBlogArticles';
+import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
 import type { BlogArticleImage } from '../content/blog/structuredBlogArticleModel';
 
 // Interfaces
@@ -43,6 +45,15 @@ interface BlogPageProps {
 
 // Blog articles use the same visual card architecture as the Ebooks page.
 const BLOG_GRID_IMAGE_SIZES = '(min-width: 1280px) 280px, (min-width: 768px) 40vw, calc(100vw - 3rem)';
+
+const normalizeBlogSearchText = (value: string): string =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd')
+    .replace(/Đ/g, 'D')
+    .toLocaleLowerCase()
+    .trim();
 
 const BLOG_POSTS_DATA: BlogPost[] = STRUCTURED_BLOG_ARTICLES.map((article) => ({
   id: article.id,
@@ -213,14 +224,25 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
       const matchesTopic = selectedTopic === 'all' || post.topics.includes(selectedTopic);
       const matchesIndustry = selectedIndustry === 'all' || post.industries.includes(selectedIndustry) || post.industries.includes('all');
       const copy = postCopy(post);
-      const localizedTitle = copy.title.toLowerCase();
-      const localizedDescription = copy.description.toLowerCase();
-      const localizedType = copy.type.toLowerCase();
-      const normalizedSearch = searchQuery.toLowerCase();
-      const matchesSearch = 
-        localizedTitle.includes(normalizedSearch) ||
-        localizedDescription.includes(normalizedSearch) ||
-        localizedType.includes(normalizedSearch);
+      const article = getStructuredBlogArticle(post.id);
+      const seoProfile = article
+        ? getStructuredBlogSeoMetadata(article)
+        : null;
+      const searchableText = normalizeBlogSearchText([
+        copy.title,
+        copy.description,
+        copy.type,
+        ...(seoProfile
+          ? [
+              seoProfile.title,
+              seoProfile.description,
+              ...getStructuredBlogSearchTerms(seoProfile),
+              ...seoProfile.entities,
+            ]
+          : []),
+      ].join(' '));
+      const normalizedSearch = normalizeBlogSearchText(searchQuery);
+      const matchesSearch = searchableText.includes(normalizedSearch);
       
       return matchesTopic && matchesIndustry && matchesSearch;
     });

@@ -26,7 +26,9 @@ import {
 } from '../src/types/routes';
 import {
   getStructuredBlogArticle,
+  getStructuredBlogSeoMetadata,
 } from '../src/content/blog/structuredBlogArticles';
+import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
 import {
   getSeoRouteDescription,
   SEO_ROUTE_GROUPS,
@@ -429,6 +431,9 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
     continue;
   }
 
+  const seoProfile = getStructuredBlogSeoMetadata(article);
+  const expectedKeywords = getStructuredBlogSearchTerms(seoProfile).join(', ');
+
   const routePath = blogDetailPath(articleId, 'vi');
   const html = readDistFile(`${routePath.replace(/^\/+/, '')}/index.html`);
   const paragraphCount = html.match(/<p(?:\s|>)/g)?.length ?? 0;
@@ -437,6 +442,21 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const blogPosting = schemaObjects.find((schema) => schema['@type'] === 'BlogPosting');
   const schemaAuthor = isRecord(blogPosting?.author) ? blogPosting.author : null;
   const schemaImage = isRecord(blogPosting?.image) ? blogPosting.image : null;
+  const schemaAbout = Array.isArray(blogPosting?.about)
+    ? blogPosting.about.filter(isRecord)
+    : [];
+
+  expect(
+    html.includes(`<title>${seoProfile.title}</title>`)
+      && metaContent(html, 'name', 'description') === seoProfile.description
+      && metaContent(html, 'property', 'og:title') === seoProfile.title
+      && metaContent(html, 'property', 'og:description') === seoProfile.description,
+    `${articleId} does not expose its intended search and sharing metadata.`,
+  );
+  expect(
+    metaContent(html, 'name', 'keywords') === null,
+    `${articleId} must not emit the meta keywords tag ignored by Google Search.`,
+  );
 
   expect(
     html.includes(`<link rel="canonical" href="${siteUrl}${routePath}" />`),
@@ -482,11 +502,15 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
       && schemaImage?.width === article.socialImage.width
       && schemaImage?.height === article.socialImage.height
       && blogPosting.articleSection === article.content.vi.category
-      && blogPosting.keywords === article.content.vi.tags.join(', ')
+      && blogPosting.headline === article.content.vi.title
+      && blogPosting.keywords === expectedKeywords
+      && schemaAbout.length === seoProfile.entities.length
+      && seoProfile.entities.every((entity) =>
+        schemaAbout.some((item) => item['@type'] === 'Thing' && item.name === entity))
       && typeof blogPosting.wordCount === 'number'
       && blogPosting.wordCount > 0
     ),
-    `${articleId} has incomplete BlogPosting author, image, category, tags, or word count metadata.`,
+    `${articleId} has incomplete BlogPosting author, image, topic, keyword, or word count metadata.`,
   );
   expect(
     blogIndexHtml.includes(`href="${routePath}"`),

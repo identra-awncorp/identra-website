@@ -28,6 +28,7 @@ import {
   getStructuredBlogArticle,
   getStructuredBlogSeoMetadata,
 } from '../content/blog/structuredBlogArticles';
+import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -179,10 +180,12 @@ export default function SeoMetadata({
     const imageUrl = absoluteUrl(imagePath, siteUrl);
     const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
+    const structuredSeoProfile = isBlogDetail && structuredArticle
+      ? getStructuredBlogSeoMetadata(structuredArticle)
+      : null;
     const blogPost = isBlogDetail
-      ? structuredArticle
-        ? getStructuredBlogSeoMetadata(structuredArticle)
-        : seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
+      ? structuredSeoProfile
+        ?? seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
       : null;
     const title = isNotFound
       ? formatSeoTitle(routeTitle, seo.siteName)
@@ -216,6 +219,11 @@ export default function SeoMetadata({
       imageUrl,
       imageWidth: String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH),
       isBlogDetail,
+      articleSection: structuredArticle?.content.vi.category ?? '',
+      keywords: structuredSeoProfile
+        ? getStructuredBlogSearchTerms(structuredSeoProfile)
+        : [],
+      about: structuredSeoProfile?.entities ?? [],
       localeMeta,
       logoUrl,
       robotsContent: isNotFound || routeGroup === 'account'
@@ -320,6 +328,12 @@ export default function SeoMetadata({
             },
             datePublished: metadata.publishedAt,
             dateModified: metadata.modifiedAt,
+            articleSection: metadata.articleSection,
+            keywords: metadata.keywords.join(', '),
+            about: metadata.about.map((name) => ({
+              '@type': 'Thing',
+              name,
+            })),
           }
         : {}),
     };

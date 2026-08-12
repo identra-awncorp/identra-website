@@ -7,7 +7,7 @@ import 'dotenv/config';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createElement } from 'react';
+import { createElement, Fragment, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -44,6 +44,17 @@ import {
 } from '../src/content/blog/structuredBlogArticles';
 import type { StructuredBlogArticle } from '../src/content/blog/structuredBlogArticleModel';
 import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
+import {
+  getWhitePaperSearchTerms,
+  WHITE_PAPER_PDF_FILENAME,
+  WHITE_PAPER_PDF_PATH,
+  WHITE_PAPER_SEO_PROFILE,
+} from '../src/content/whitePaperSeoProfile';
+import {
+  WHITE_PAPER_TRANSLATIONS,
+  type WhitePaperContentBlock,
+  type WhitePaperSection,
+} from '../src/translations/WhitePaperPageTranslations';
 import {
   BLOG_MODIFIED_DATE,
   BLOG_PUBLISHED_DATE,
@@ -168,6 +179,228 @@ const renderStructuredBlogFallback = (
   return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><article><header><h1 style="max-width:56rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(content.title)}</h1><p style="max-width:48rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(content.description)}</p></header><div style="margin-top:3rem;line-height:1.75">${articleBody}</div></article><nav aria-label="Related articles" style="margin-top:3rem"><ul>${relatedLinks}</ul></nav></main></div>`;
 };
 
+const renderWhitePaperInline = (text: string): ReactNode[] =>
+  text.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? createElement('strong', { key: `${index}-${part}` }, part.slice(2, -2))
+      : createElement(Fragment, { key: `${index}-${part}` }, part));
+
+const renderWhitePaperTable = (
+  headers: readonly string[],
+  rows: readonly (readonly string[])[],
+  key: string,
+): ReactNode => createElement(
+  'table',
+  { key },
+  createElement(
+    'thead',
+    null,
+    createElement(
+      'tr',
+      null,
+      ...headers.map((header, index) =>
+        createElement('th', { key: `${index}-${header}`, scope: 'col' }, renderWhitePaperInline(header))),
+    ),
+  ),
+  createElement(
+    'tbody',
+    null,
+    ...rows.map((row, rowIndex) =>
+      createElement(
+        'tr',
+        { key: `${rowIndex}-${row.join('-')}` },
+        ...row.map((cell, cellIndex) =>
+          createElement('td', { key: `${cellIndex}-${cell}` }, renderWhitePaperInline(cell))),
+      )),
+  ),
+);
+
+const renderWhitePaperBlock = (
+  block: WhitePaperContentBlock,
+  index: number,
+): ReactNode => {
+  if (block.type === 'heading') {
+    return createElement('h3', { key: `${index}-${block.text}` }, block.text);
+  }
+
+  if (block.type === 'paragraph') {
+    return createElement('p', { key: `${index}-${block.text}` }, renderWhitePaperInline(block.text));
+  }
+
+  if (block.type === 'quote') {
+    return createElement(
+      'blockquote',
+      { key: `${index}-${block.body}` },
+      block.title
+        ? createElement('strong', null, `${block.title}: `)
+        : null,
+      ...renderWhitePaperInline(block.body),
+    );
+  }
+
+  if (block.type === 'unordered-list' || block.type === 'ordered-list') {
+    const listType = block.type === 'ordered-list' ? 'ol' : 'ul';
+    return createElement(
+      listType,
+      { key: `${index}-${block.type}` },
+      ...block.items.map((item, itemIndex) =>
+        createElement('li', { key: `${itemIndex}-${item}` }, renderWhitePaperInline(item))),
+    );
+  }
+
+  return renderWhitePaperTable(block.headers, block.rows, `${index}-table`);
+};
+
+const renderWhitePaperSection = (section: WhitePaperSection): ReactNode => {
+  const hasStructuredBlocks = Boolean(section.blocks?.length);
+  const legacyContent: ReactNode[] = [];
+
+  if (!hasStructuredBlocks) {
+    section.cards?.forEach((card, index) => {
+      legacyContent.push(createElement(
+        'section',
+        { key: `card-${index}-${card.title}` },
+        createElement('h3', null, card.title),
+        createElement('p', null, card.body),
+      ));
+    });
+
+    if (section.note) {
+      legacyContent.push(createElement(
+        'aside',
+        { key: `note-${section.note.title}` },
+        createElement('strong', null, `${section.note.title}: `),
+        section.note.body,
+      ));
+    }
+
+    if (section.bullets?.length) {
+      legacyContent.push(createElement(
+        Fragment,
+        { key: `bullets-${section.id}` },
+        section.bulletsTitle ? createElement('h3', null, section.bulletsTitle) : null,
+        createElement(
+          'ul',
+          null,
+          ...section.bullets.map((item, index) =>
+            createElement('li', { key: `${index}-${item}` }, item)),
+        ),
+      ));
+    }
+
+    if (section.table) {
+      legacyContent.push(renderWhitePaperTable(
+        section.table.headers,
+        section.table.rows,
+        `table-${section.id}`,
+      ));
+    }
+
+    if (section.ordered?.length) {
+      legacyContent.push(createElement(
+        Fragment,
+        { key: `ordered-${section.id}` },
+        section.orderedTitle ? createElement('h3', null, section.orderedTitle) : null,
+        createElement(
+          'ol',
+          null,
+          ...section.ordered.map((item, index) =>
+            createElement('li', { key: `${index}-${item}` }, item)),
+        ),
+      ));
+    }
+  }
+
+  return createElement(
+    'section',
+    { id: section.id, key: section.id },
+    createElement('p', null, section.eyebrow),
+    createElement('h2', null, section.title),
+    ...section.paragraphs.map((paragraph, index) =>
+      createElement('p', { key: `paragraph-${index}-${paragraph}` }, paragraph)),
+    ...(hasStructuredBlocks
+      ? section.blocks?.map(renderWhitePaperBlock) ?? []
+      : legacyContent),
+  );
+};
+
+const renderWhitePaperFallback = (): string => {
+  const copy = WHITE_PAPER_TRANSLATIONS.vi;
+  const fallback = createElement(
+    'div',
+    { id: 'root' },
+    createElement(
+      'main',
+      {
+        'data-seo-fallback': true,
+        style: {
+          color: '#0f172a',
+          fontFamily: 'Arial, sans-serif',
+          lineHeight: 1.7,
+          margin: '0 auto',
+          maxWidth: '72rem',
+          padding: '5rem 1.5rem',
+        },
+      },
+      createElement(
+        'article',
+        null,
+        createElement(
+          'header',
+          null,
+          createElement('p', null, copy.versionBadge),
+          createElement('h1', null, copy.heroTitle),
+          createElement('p', null, copy.heroSubtitle),
+          createElement('p', null, copy.publisher),
+          createElement(
+            'dl',
+            null,
+            ...copy.metadata.flatMap((item, index) => [
+              createElement('dt', { key: `term-${index}-${item.title}` }, item.title),
+              createElement('dd', { key: `detail-${index}-${item.title}` }, item.body),
+            ]),
+          ),
+          ...copy.callouts.map((callout, index) =>
+            createElement(
+              'aside',
+              { key: `callout-${index}-${callout.title}` },
+              createElement('h2', null, callout.title),
+              createElement('p', null, callout.body),
+            )),
+          createElement(
+            'p',
+            null,
+            createElement(
+              'a',
+              { href: WHITE_PAPER_PDF_PATH },
+              `Tải ${WHITE_PAPER_PDF_FILENAME}`,
+            ),
+          ),
+        ),
+        createElement(
+          'nav',
+          { 'aria-label': copy.tocAriaLabel },
+          createElement('h2', null, copy.desktopTocTitle),
+          createElement(
+            'ol',
+            null,
+            ...copy.sections.map((section) =>
+              createElement(
+                'li',
+                { key: `toc-${section.id}` },
+                createElement('a', { href: `#${section.id}` }, section.title),
+              )),
+          ),
+        ),
+        ...copy.sections.map(renderWhitePaperSection),
+        createElement('footer', null, createElement('p', null, copy.attribution)),
+      ),
+    ),
+  );
+
+  return renderToStaticMarkup(fallback);
+};
+
 const replaceMeta = (
   html: string,
   attribute: 'name' | 'property',
@@ -201,6 +434,7 @@ const renderLocalizedHtml = (
   const structuredSeoProfile = structuredArticle
     ? getStructuredBlogSeoMetadata(structuredArticle)
     : null;
+  const isWhitePaper = route.view === 'white-paper';
   const blogPost = route.view === 'blog-detail'
     ? structuredSeoProfile
       ?? seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
@@ -209,11 +443,15 @@ const renderLocalizedHtml = (
     ? structuredArticle
       ? blogPost.title
       : formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
+    : isWhitePaper
+      ? WHITE_PAPER_SEO_PROFILE.title
     : route.view === 'landing'
       ? formatSeoTitle(seo.defaultTitle)
       : formatSeoTitle(routeTitle, seo.siteName);
   const description = structuredArticle
     ? blogPost?.description ?? ''
+    : isWhitePaper
+      ? WHITE_PAPER_SEO_PROFILE.description
     : formatSeoDescription(
         blogPost
           ? blogPost.description
@@ -222,19 +460,23 @@ const renderLocalizedHtml = (
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
   const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
   const imageUrl = absoluteUrl(imagePath, siteUrl);
-  const imageAlt = structuredArticle?.content.vi.title ?? seo.imageAlt;
+  const imageAlt = isWhitePaper
+    ? WHITE_PAPER_SEO_PROFILE.imageAlt
+    : structuredArticle?.content.vi.title ?? seo.imageAlt;
   const imageType = structuredArticle?.socialImage.type ?? 'image/jpeg';
   const imageWidth = String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH);
   const imageHeight = String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT);
   const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
-  const articleOpenGraphMeta = structuredArticle
+  const articleOpenGraphMeta = structuredArticle || isWhitePaper
     ? [
-        `    <meta name="author" content="${escapeHtml(structuredArticle.author.name)}" />`,
-        `    <meta property="article:published_time" content="${escapeHtml(structuredArticle.publishedAt)}" />`,
-        `    <meta property="article:modified_time" content="${escapeHtml(structuredArticle.modifiedAt)}" />`,
+        `    <meta name="author" content="${escapeHtml(isWhitePaper ? WHITE_PAPER_SEO_PROFILE.author.name : structuredArticle?.author.name ?? '')}" />`,
+        `    <meta property="article:published_time" content="${escapeHtml(isWhitePaper ? WHITE_PAPER_SEO_PROFILE.publishedAt : structuredArticle?.publishedAt ?? '')}" />`,
+        `    <meta property="article:modified_time" content="${escapeHtml(isWhitePaper ? WHITE_PAPER_SEO_PROFILE.modifiedAt : structuredArticle?.modifiedAt ?? '')}" />`,
         `    <meta property="article:author" content="${escapeHtml(siteUrl)}" />`,
-        `    <meta property="article:section" content="${escapeHtml(structuredArticle.content.vi.category)}" />`,
-        ...structuredArticle.content.vi.tags.map(
+        `    <meta property="article:section" content="${escapeHtml(isWhitePaper ? WHITE_PAPER_SEO_PROFILE.articleSection : structuredArticle?.content.vi.category ?? '')}" />`,
+        ...(isWhitePaper
+          ? getWhitePaperSearchTerms()
+          : structuredArticle?.content.vi.tags ?? []).map(
           (tag) => `    <meta property="article:tag" content="${escapeHtml(tag)}" />`,
         ),
       ].join('\n')
@@ -262,9 +504,15 @@ const renderLocalizedHtml = (
   };
   const pageSchema = {
     '@context': 'https://schema.org',
-    '@type': route.view === 'blog-detail' ? 'BlogPosting' : 'WebPage',
+    '@type': isWhitePaper
+      ? 'TechArticle'
+      : route.view === 'blog-detail'
+        ? 'BlogPosting'
+        : 'WebPage',
     name: title,
-    headline: structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
+    headline: isWhitePaper
+      ? WHITE_PAPER_SEO_PROFILE.headline
+      : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
     description,
     url: canonicalUrl,
     image: structuredArticle
@@ -293,15 +541,40 @@ const renderLocalizedHtml = (
       },
     },
     mainEntityOfPage: canonicalUrl,
-    ...(blogPost
+    ...(blogPost || isWhitePaper
       ? {
           author: {
-            '@type': structuredArticle?.author.type ?? 'Person',
-            name: structuredArticle?.author.name ?? 'Brandon Chen',
+            '@type': isWhitePaper
+              ? WHITE_PAPER_SEO_PROFILE.author.type
+              : structuredArticle?.author.type ?? 'Person',
+            name: isWhitePaper
+              ? WHITE_PAPER_SEO_PROFILE.author.name
+              : structuredArticle?.author.name ?? 'Brandon Chen',
             url: siteUrl,
           },
-          datePublished: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
-          dateModified: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
+          datePublished: isWhitePaper
+            ? WHITE_PAPER_SEO_PROFILE.publishedAt
+            : structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
+          dateModified: isWhitePaper
+            ? WHITE_PAPER_SEO_PROFILE.modifiedAt
+            : structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
+          ...(isWhitePaper
+            ? {
+                articleSection: WHITE_PAPER_SEO_PROFILE.articleSection,
+                keywords: getWhitePaperSearchTerms().join(', '),
+                about: WHITE_PAPER_SEO_PROFILE.about.map((name) => ({
+                  '@type': 'Thing',
+                  name,
+                })),
+                isAccessibleForFree: true,
+                version: WHITE_PAPER_SEO_PROFILE.version,
+                encoding: {
+                  '@type': 'MediaObject',
+                  contentUrl: absoluteUrl(WHITE_PAPER_PDF_PATH, siteUrl),
+                  encodingFormat: 'application/pdf',
+                },
+              }
+            : {}),
           ...(structuredArticle
             ? {
                 articleSection: structuredArticle.content.vi.category,
@@ -322,6 +595,8 @@ const renderLocalizedHtml = (
     .replace(/</g, '\\u003c');
   const fallbackMarkup = structuredArticle
     ? renderStructuredBlogFallback(structuredArticle)
+    : isWhitePaper
+      ? renderWhitePaperFallback()
     : route.view === 'blog'
       ? renderBlogIndexFallback(routeTitle, description, locale)
       : renderSeoFallback(blogPost?.title ?? routeTitle, description);
@@ -356,7 +631,12 @@ const renderLocalizedHtml = (
       ? 'noindex, nofollow'
       : 'index, follow, max-image-preview:large',
   );
-  html = replaceMeta(html, 'property', 'og:type', route.view === 'blog-detail' ? 'article' : 'website');
+  html = replaceMeta(
+    html,
+    'property',
+    'og:type',
+    route.view === 'blog-detail' || isWhitePaper ? 'article' : 'website',
+  );
   html = replaceMeta(html, 'property', 'og:title', title);
   html = replaceMeta(html, 'property', 'og:description', description);
   html = replaceMeta(html, 'property', 'og:url', canonicalUrl);

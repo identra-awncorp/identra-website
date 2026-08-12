@@ -6,5 +6,16 @@
       "destination": "/en",
       "permanent": true
     }
+  ],
+  "headers": [
+    {
+      "source": "/white-paper/Identra-White-Paper-v1.0.pdf",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://www.identra.id.vn/vi/white-paper>; rel=\"canonical\""
+        }
+      ]
+    }
   ]
 }

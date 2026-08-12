@@ -5,6 +5,7 @@
 
 import type { Language } from '../context/LanguageContext';
 import type { AppView, BlogDetailId } from '../types/routes';
+import { WHITE_PAPER_SEO_PROFILE } from '../content/whitePaperSeoProfile';
 
 export type SeoRouteGroup =
   | 'landing'
@@ -847,7 +848,7 @@ const vi = {
     'privacy-overview': 'Tìm hiểu cách Identra thu thập, sử dụng và bảo vệ dữ liệu cá nhân, cũng như các lựa chọn dành cho người dùng và tổ chức.',
     academy: 'Học các khái niệm và cách triển khai danh tính số, xác minh, tuân thủ và phòng chống gian lận qua nội dung từ Identra.',
     demo: 'Trải nghiệm cách các bước xác minh, tín hiệu rủi ro và hướng xử lý được kết nối trong một hành trình trực quan của Identra.',
-    'white-paper': 'Đọc Sách trắng Identra về thực chứng có thể kiểm chứng, chia sẻ dữ liệu có sự đồng ý và hạ tầng danh tính cho doanh nghiệp.',
+    'white-paper': WHITE_PAPER_SEO_PROFILE.description,
   },
   descriptionTemplates: {
     landing: 'Identra kết nối con người, tổ chức và dữ liệu bằng danh tính có thể xác minh, giúp các quy trình số an toàn, minh bạch và dễ tích hợp hơn.',

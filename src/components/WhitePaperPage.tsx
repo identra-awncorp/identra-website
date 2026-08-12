@@ -33,6 +33,10 @@ import {
   type WhitePaperSection,
   type WhitePaperSectionId,
 } from '../translations/WhitePaperPageTranslations';
+import {
+  WHITE_PAPER_PDF_FILENAME,
+  WHITE_PAPER_PDF_PATH,
+} from '../content/whitePaperSeoProfile';
 import type { AppView } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 
@@ -60,9 +64,6 @@ const SECTION_ICONS: Record<WhitePaperSectionId, LucideIcon> = {
   'appendix-b': FileCode,
   'appendix-c': Globe,
 };
-
-const WHITE_PAPER_PDF_URL = '/white-paper/Identra-White-Paper-v1.0.pdf';
-const WHITE_PAPER_PDF_FILENAME = 'Identra-White-Paper-v1.0.pdf';
 
 const getSectionSearchText = (section: WhitePaperSection) => {
   const cardText = section.cards?.flatMap((card) => [card.title, card.body]) ?? [];
@@ -516,7 +517,7 @@ export default function WhitePaperPage({
               </button>
 
               <a
-                href={WHITE_PAPER_PDF_URL}
+                href={WHITE_PAPER_PDF_PATH}
                 download={WHITE_PAPER_PDF_FILENAME}
                 className="flex items-center gap-1.5 rounded-full bg-white px-4.5 py-2 text-xs font-bold text-[#354CE1] shadow-xs transition hover:bg-slate-50 md:text-sm cursor-pointer"
               >

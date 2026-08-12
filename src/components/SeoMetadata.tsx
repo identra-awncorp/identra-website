@@ -29,6 +29,11 @@ import {
   getStructuredBlogSeoMetadata,
 } from '../content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
+import {
+  getWhitePaperSearchTerms,
+  WHITE_PAPER_PDF_PATH,
+  WHITE_PAPER_SEO_PROFILE,
+} from '../content/whitePaperSeoProfile';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -132,6 +137,21 @@ const removeLocalizedLinks = () => {
   });
 };
 
+const removeArticleMetadata = () => {
+  document.head.querySelector('meta[name="author"]')?.remove();
+  [
+    'article:published_time',
+    'article:modified_time',
+    'article:author',
+    'article:section',
+  ].forEach((property) => {
+    document.head.querySelector(`meta[property="${property}"]`)?.remove();
+  });
+  document.head.querySelectorAll('meta[property="article:tag"]').forEach((meta) => {
+    meta.remove();
+  });
+};
+
 export default function SeoMetadata({
   currentView,
   blogId,
@@ -180,6 +200,7 @@ export default function SeoMetadata({
     const imageUrl = absoluteUrl(imagePath, siteUrl);
     const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
+    const isWhitePaper = !isNotFound && currentView === 'white-paper';
     const structuredSeoProfile = isBlogDetail && structuredArticle
       ? getStructuredBlogSeoMetadata(structuredArticle)
       : null;
@@ -189,6 +210,8 @@ export default function SeoMetadata({
       : null;
     const title = isNotFound
       ? formatSeoTitle(routeTitle, seo.siteName)
+      : isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.title
       : isBlogDetail && blogPost
         ? structuredArticle
           ? blogPost.title
@@ -198,6 +221,8 @@ export default function SeoMetadata({
           : formatSeoTitle(routeTitle, seo.siteName);
     const description = structuredArticle
       ? blogPost?.description ?? ''
+      : isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.description
       : formatSeoDescription(
           isNotFound
             ? seo.notFoundDescription
@@ -212,18 +237,34 @@ export default function SeoMetadata({
       description,
       headline: isNotFound
         ? routeTitle
-        : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
-      imageAlt: structuredArticle?.content.vi.title ?? seo.imageAlt,
+        : isWhitePaper
+          ? WHITE_PAPER_SEO_PROFILE.headline
+          : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
+      imageAlt: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.imageAlt
+        : structuredArticle?.content.vi.title ?? seo.imageAlt,
       imageHeight: String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT),
       imageType: structuredArticle?.socialImage.type ?? 'image/jpeg',
       imageUrl,
       imageWidth: String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH),
       isBlogDetail,
-      articleSection: structuredArticle?.content.vi.category ?? '',
-      keywords: structuredSeoProfile
-        ? getStructuredBlogSearchTerms(structuredSeoProfile)
-        : [],
-      about: structuredSeoProfile?.entities ?? [],
+      isArticle: isBlogDetail || isWhitePaper,
+      schemaType: isWhitePaper
+        ? 'TechArticle'
+        : isBlogDetail
+          ? 'BlogPosting'
+          : 'WebPage',
+      articleSection: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.articleSection
+        : structuredArticle?.content.vi.category ?? '',
+      keywords: isWhitePaper
+        ? getWhitePaperSearchTerms()
+        : structuredSeoProfile
+          ? getStructuredBlogSearchTerms(structuredSeoProfile)
+          : [],
+      about: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.about
+        : structuredSeoProfile?.entities ?? [],
       localeMeta,
       logoUrl,
       robotsContent: isNotFound || routeGroup === 'account'
@@ -232,12 +273,20 @@ export default function SeoMetadata({
       routeTitle,
       siteUrl,
       title,
-      author: structuredArticle?.author ?? {
-        type: 'Person',
-        name: 'Brandon Chen',
-      },
-      publishedAt: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
-      modifiedAt: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
+      author: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.author
+        : structuredArticle?.author ?? {
+            type: 'Person',
+            name: 'Brandon Chen',
+          },
+      publishedAt: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.publishedAt
+        : structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
+      modifiedAt: isWhitePaper
+        ? WHITE_PAPER_SEO_PROFILE.modifiedAt
+        : structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
+      version: isWhitePaper ? WHITE_PAPER_SEO_PROFILE.version : '',
+      pdfUrl: isWhitePaper ? absoluteUrl(WHITE_PAPER_PDF_PATH, siteUrl) : '',
     };
   }, [blogId, currentView, demoScenarioId, isNotFound, language, seo]);
 
@@ -262,7 +311,7 @@ export default function SeoMetadata({
     upsertMeta('name', 'robots', metadata.robotsContent);
     upsertMeta('name', 'application-name', 'Identra');
     upsertMeta('property', 'og:site_name', 'Identra');
-    upsertMeta('property', 'og:type', metadata.isBlogDetail ? 'article' : 'website');
+    upsertMeta('property', 'og:type', metadata.isArticle ? 'article' : 'website');
     upsertMeta('property', 'og:title', metadata.title);
     upsertMeta('property', 'og:description', metadata.description);
     const pageUrl = metadata.canonicalUrl ?? window.location.href;
@@ -279,6 +328,21 @@ export default function SeoMetadata({
     upsertMeta('name', 'twitter:description', metadata.description);
     upsertMeta('name', 'twitter:image', metadata.imageUrl);
     upsertMeta('name', 'twitter:image:alt', metadata.imageAlt);
+
+    removeArticleMetadata();
+    if (metadata.isArticle) {
+      upsertMeta('name', 'author', metadata.author.name);
+      upsertMeta('property', 'article:published_time', metadata.publishedAt);
+      upsertMeta('property', 'article:modified_time', metadata.modifiedAt);
+      upsertMeta('property', 'article:author', metadata.siteUrl);
+      upsertMeta('property', 'article:section', metadata.articleSection);
+      metadata.keywords.forEach((keyword) => {
+        const tagElement = document.createElement('meta');
+        tagElement.setAttribute('property', 'article:tag');
+        tagElement.setAttribute('content', keyword);
+        document.head.appendChild(tagElement);
+      });
+    }
 
     let schemaElement = document.getElementById('identra-seo-schema');
 
@@ -299,7 +363,7 @@ export default function SeoMetadata({
     };
     const pageSchema = {
       '@context': 'https://schema.org',
-      '@type': metadata.isBlogDetail ? 'BlogPosting' : 'WebPage',
+      '@type': metadata.schemaType,
       name: metadata.title,
       headline: metadata.headline,
       description: metadata.description,
@@ -320,7 +384,7 @@ export default function SeoMetadata({
         },
       },
       mainEntityOfPage: pageUrl,
-      ...(metadata.isBlogDetail
+      ...(metadata.isArticle
         ? {
             author: {
               '@type': metadata.author.type,
@@ -334,6 +398,17 @@ export default function SeoMetadata({
               '@type': 'Thing',
               name,
             })),
+            isAccessibleForFree: true,
+            ...(metadata.version
+              ? {
+                  version: metadata.version,
+                  encoding: {
+                    '@type': 'MediaObject',
+                    contentUrl: metadata.pdfUrl,
+                    encodingFormat: 'application/pdf',
+                  },
+                }
+              : {}),
           }
         : {}),
     };

@@ -32,8 +32,12 @@ type RouteNavigationState = {
 const IN_APP_NAVIGATION_STATE: RouteNavigationState = { fromApp: true };
 
 const Hero = lazy(() => import('./components/Hero'));
-const RelaySection = lazy(() => import('./components/RelaySection'));
-const RelayTransactions = lazy(() => import('./components/RelayTransactions'));
+const CredentialIssuanceSection = lazy(
+  () => import('./components/CredentialIssuanceSection'),
+);
+const CredentialIssuanceTransactions = lazy(
+  () => import('./components/CredentialIssuanceTransactions'),
+);
 const BuildingBlocks = lazy(() => import('./components/BuildingBlocks'));
 const PrivacyPortal = lazy(() => import('./components/PrivacyPortal'));
 const SecurityCertifications = lazy(() => import('./components/SecurityCertifications'));
@@ -50,7 +54,7 @@ const CareersPage = lazy(() => import('./components/CareersPage'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const KycAmlPage = lazy(() => import('./components/KycAmlPage'));
 const ConnectPage = lazy(() => import('./components/ConnectPage'));
-const RelayPage = lazy(() => import('./components/RelayPage'));
+const CredentialIssuancePage = lazy(() => import('./components/CredentialIssuancePage'));
 const PlatformPage = lazy(() => import('./components/PlatformPage'));
 const NfcPage = lazy(() => import('./components/NfcPage'));
 const CustomersPage = lazy(() => import('./components/CustomersPage'));
@@ -327,11 +331,11 @@ export default function App() {
             {/* Hero Section */}
             <Hero onOpenSandbox={handleOpenSandbox} onViewChange={handleViewChange} />
 
-            {/* Relay Section (Trust & Privacy) */}
-            <RelaySection onOpenSandbox={handleOpenSandbox} />
+            {/* Credential Issuance (Trust & Reuse) */}
+            <CredentialIssuanceSection onViewChange={handleViewChange} />
 
-            {/* Relay Transactions (Ownership Transfer) */}
-            <RelayTransactions />
+            {/* Credential Issuance Transactions */}
+            <CredentialIssuanceTransactions />
 
             {/* Building Blocks (Modular Platform Grid) */}
             <BuildingBlocks onOpenSandbox={handleOpenSandbox} />
@@ -446,8 +450,8 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
-        ) : currentView === 'relay' ? (
-          <RelayPage onViewChange={handleViewChange} />
+        ) : currentView === 'credential-issuance' ? (
+          <CredentialIssuancePage />
         ) : currentView === 'platform' ? (
           <PlatformPage
             onOpenSandbox={handleOpenSandbox}

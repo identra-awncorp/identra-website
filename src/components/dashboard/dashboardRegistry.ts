@@ -5,7 +5,8 @@
 
 import type { PlatformProductId } from '../../types/platformProducts';
 
-export type DashboardProductStatus = 'active' | 'comingSoon';
+export type DashboardProductStatus = 'active' | 'preview' | 'comingSoon';
+export type DashboardSharedWorkspace = 'credential-issuance';
 export type DashboardCapability =
   | 'flowBuilder'
   | 'interfaceBuilder'
@@ -16,6 +17,7 @@ export type DashboardProductDefinition = {
   readonly id: PlatformProductId;
   readonly status: DashboardProductStatus;
   readonly tool?: 'dynamic-flow' | 'interface-studio';
+  readonly workspace?: DashboardSharedWorkspace;
   readonly capabilities: readonly DashboardCapability[];
 };
 
@@ -32,7 +34,12 @@ export const DASHBOARD_PRODUCTS: readonly DashboardProductDefinition[] = [
     tool: 'interface-studio',
     capabilities: ['interfaceBuilder', 'simulation', 'localPersistence'],
   },
-  { id: 'relay', status: 'comingSoon', capabilities: [] },
+  {
+    id: 'credentialIssuance',
+    status: 'preview',
+    workspace: 'credential-issuance',
+    capabilities: [],
+  },
   { id: 'workflows', status: 'comingSoon', capabilities: [] },
   { id: 'caseManagement', status: 'comingSoon', capabilities: [] },
   { id: 'copilot', status: 'comingSoon', capabilities: [] },
@@ -40,4 +47,3 @@ export const DASHBOARD_PRODUCTS: readonly DashboardProductDefinition[] = [
   { id: 'graph', status: 'comingSoon', capabilities: [] },
   { id: 'marketplace', status: 'comingSoon', capabilities: [] },
 ] as const;
-

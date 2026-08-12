@@ -15,6 +15,7 @@ import {
   getSeoRouteDescription,
   SEO_ROUTE_GROUPS,
   SEO_TRANSLATIONS,
+  type SeoRouteGroup,
 } from '../src/translations/SeoTranslations';
 import { NOT_FOUND_PAGE_TRANSLATIONS } from '../src/translations/NotFoundPageTranslations';
 import {
@@ -44,6 +45,7 @@ import {
 } from '../src/content/blog/structuredBlogArticles';
 import type { StructuredBlogArticle } from '../src/content/blog/structuredBlogArticleModel';
 import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
+import { getDemoSeoProfile } from '../src/content/demoSeoProfiles';
 import {
   getWhitePaperSearchTerms,
   WHITE_PAPER_PDF_FILENAME,
@@ -124,6 +126,95 @@ const localesForRoute = (route: LocalizedRoute): readonly Locale[] =>
 
 const renderSeoFallback = (headline: string, description: string): string =>
   `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main></div>`;
+
+type PublicFallbackCopy = {
+  readonly homeLabel: string;
+  readonly exploreTitle: string;
+  readonly exploreIntro: (pageTitle: string) => string;
+  readonly resourcesTitle: string;
+  readonly resourcesIntro: string;
+};
+
+const PUBLIC_FALLBACK_COPY: Record<Locale, PublicFallbackCopy> = {
+  en: {
+    homeLabel: 'Identra home',
+    exploreTitle: 'Explore related Identra capabilities',
+    exploreIntro: (pageTitle) => `Continue from ${pageTitle} with related products, solutions, and practical resources.`,
+    resourcesTitle: 'Resources and support',
+    resourcesIntro: 'Read practical identity guidance, review the developer documentation, or talk with the Identra team about your use case.',
+  },
+  es: {
+    homeLabel: 'Inicio de Identra',
+    exploreTitle: 'Explora capacidades relacionadas de Identra',
+    exploreIntro: (pageTitle) => `Continúa desde ${pageTitle} con productos, soluciones y recursos prácticos relacionados.`,
+    resourcesTitle: 'Recursos y asistencia',
+    resourcesIntro: 'Consulta guías prácticas de identidad, revisa la documentación para desarrolladores o habla con el equipo de Identra sobre tu caso.',
+  },
+  ja: {
+    homeLabel: 'Identra ホーム',
+    exploreTitle: '関連するIdentraの機能を見る',
+    exploreIntro: (pageTitle) => `${pageTitle}に関連する製品、ソリューション、実践的な情報をご覧ください。`,
+    resourcesTitle: '資料とサポート',
+    resourcesIntro: 'デジタルアイデンティティの解説、開発者向けドキュメント、またはIdentraチームへの相談をご利用いただけます。',
+  },
+  de: {
+    homeLabel: 'Identra Startseite',
+    exploreTitle: 'Verwandte Identra-Funktionen entdecken',
+    exploreIntro: (pageTitle) => `Entdecken Sie zu ${pageTitle} passende Produkte, Lösungen und praktische Ressourcen.`,
+    resourcesTitle: 'Ressourcen und Unterstützung',
+    resourcesIntro: 'Lesen Sie praktische Leitfäden, öffnen Sie die Entwicklerdokumentation oder besprechen Sie Ihren Anwendungsfall mit Identra.',
+  },
+  vi: {
+    homeLabel: 'Trang chủ Identra',
+    exploreTitle: 'Khám phá các năng lực liên quan của Identra',
+    exploreIntro: (pageTitle) => `Từ ${pageTitle}, bạn có thể tìm hiểu thêm các sản phẩm, giải pháp và tài liệu liên quan.`,
+    resourcesTitle: 'Tài liệu và hỗ trợ',
+    resourcesIntro: 'Đọc các bài phân tích về danh tính số, xem tài liệu dành cho nhà phát triển hoặc trao đổi với Identra về nhu cầu của bạn.',
+  },
+};
+
+const RELATED_VIEWS_BY_GROUP = {
+  landing: ['platform', 'dynamic-flow', 'interface-studio', 'credential-issuance'],
+  product: ['platform', 'dynamic-flow', 'interface-studio', 'credential-issuance'],
+  solution: ['platform', 'case-management', 'workflows', 'resource-center'],
+  industry: ['platform', 'customers', 'resource-center', 'blog'],
+  resource: ['blog', 'research', 'resource-center', 'docs'],
+  whitePaper: ['credential-issuance', 'platform', 'blog', 'research'],
+  company: ['about', 'customers', 'partners', 'careers'],
+  developer: ['docs', 'platform', 'dynamic-flow', 'credential-issuance'],
+  legal: ['privacy-overview', 'security', 'about', 'contact'],
+  account: ['landing', 'platform', 'docs', 'contact'],
+  demo: ['demo', 'platform', 'dynamic-flow', 'contact'],
+  blogDetail: ['blog', 'resource-center', 'research', 'contact'],
+} as const satisfies Record<SeoRouteGroup, readonly AppView[]>;
+
+const renderPublicSeoFallback = (
+  headline: string,
+  description: string,
+  view: AppView,
+  locale: Locale,
+): string => {
+  const seo = SEO_TRANSLATIONS[locale];
+  const copy = PUBLIC_FALLBACK_COPY[locale];
+  const relatedViews = RELATED_VIEWS_BY_GROUP[SEO_ROUTE_GROUPS[view]]
+    .filter((relatedView) => relatedView !== view)
+    .slice(0, 4);
+  const relatedLinks = relatedViews.map((relatedView) => {
+    const relatedTitle = seo.routeTitles[relatedView];
+    const relatedDescription = formatSeoDescription(
+      getSeoRouteDescription(seo, relatedView),
+    );
+
+    return `<li><article><h3><a href="${escapeHtml(viewToPath(relatedView, locale))}">${escapeHtml(relatedTitle)}</a></h3><p>${escapeHtml(relatedDescription)}</p></article></li>`;
+  }).join('');
+  const resourceViews = (['blog', 'docs', 'contact'] as const)
+    .filter((resourceView) => resourceView !== view);
+  const resourceLinks = resourceViews.map((resourceView) =>
+    `<li><a href="${escapeHtml(viewToPath(resourceView, locale))}">${escapeHtml(seo.routeTitles[resourceView])}</a></li>`,
+  ).join('');
+
+  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:3rem 1.5rem 5rem;font-family:Arial,sans-serif;color:#0f172a"><nav aria-label="${escapeHtml(copy.homeLabel)}"><a href="${escapeHtml(viewToPath('landing', locale))}">Identra</a></nav><article style="margin-top:3rem"><header><h1 style="max-width:52rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:46rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></header><section style="margin-top:3rem"><h2>${escapeHtml(copy.exploreTitle)}</h2><p>${escapeHtml(copy.exploreIntro(headline))}</p><ul>${relatedLinks}</ul></section><section style="margin-top:3rem"><h2>${escapeHtml(copy.resourcesTitle)}</h2><p>${escapeHtml(copy.resourcesIntro)}</p><nav aria-label="${escapeHtml(copy.resourcesTitle)}"><ul>${resourceLinks}</ul></nav></section></article></main></div>`;
+};
 
 const renderBlogIndexFallback = (
   headline: string,
@@ -426,6 +517,9 @@ const renderLocalizedHtml = (
   const seo = SEO_TRANSLATIONS[locale];
   const localeMeta = LANGUAGE_META[locale];
   const routeTitle = seo.routeTitles[route.view];
+  const demoSeoProfile = route.view === 'demo' && route.demoScenarioId
+    ? getDemoSeoProfile(route.demoScenarioId, locale)
+    : null;
   const routeGroup = SEO_ROUTE_GROUPS[route.view];
   const currentBlogId = route.blogId ?? DEFAULT_BLOG_DETAIL_ID;
   const structuredArticle = route.view === 'blog-detail'
@@ -445,6 +539,8 @@ const renderLocalizedHtml = (
       : formatSeoTitle(blogPost.title, seo.blogTitleSuffix)
     : isWhitePaper
       ? WHITE_PAPER_SEO_PROFILE.title
+    : demoSeoProfile
+      ? formatSeoTitle(demoSeoProfile.title, seo.siteName)
     : route.view === 'landing'
       ? formatSeoTitle(seo.defaultTitle)
       : formatSeoTitle(routeTitle, seo.siteName);
@@ -452,6 +548,8 @@ const renderLocalizedHtml = (
     ? blogPost?.description ?? ''
     : isWhitePaper
       ? WHITE_PAPER_SEO_PROFILE.description
+    : demoSeoProfile
+      ? formatSeoDescription(demoSeoProfile.description)
     : formatSeoDescription(
         blogPost
           ? blogPost.description
@@ -497,10 +595,21 @@ const renderLocalizedHtml = (
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': `${siteUrl}/#organization`,
     name: 'Identra',
     url: siteUrl,
     logo: logoUrl,
     description: seo.organizationDescription,
+  };
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteUrl}/#website`,
+    name: 'Identra',
+    url: siteUrl,
+    publisher: {
+      '@id': `${siteUrl}/#organization`,
+    },
   };
   const pageSchema = {
     '@context': 'https://schema.org',
@@ -512,7 +621,10 @@ const renderLocalizedHtml = (
     name: title,
     headline: isWhitePaper
       ? WHITE_PAPER_SEO_PROFILE.headline
-      : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
+      : structuredArticle?.content.vi.title
+        ?? blogPost?.title
+        ?? demoSeoProfile?.headline
+        ?? routeTitle,
     description,
     url: canonicalUrl,
     image: structuredArticle
@@ -527,9 +639,7 @@ const renderLocalizedHtml = (
     thumbnailUrl: imageUrl,
     inLanguage: localeMeta.htmlLang,
     isPartOf: {
-      '@type': 'WebSite',
-      name: 'Identra',
-      url: siteUrl,
+      '@id': `${siteUrl}/#website`,
     },
     publisher: {
       '@type': 'Organization',
@@ -591,7 +701,11 @@ const renderLocalizedHtml = (
         }
       : {}),
   };
-  const schemaJson = JSON.stringify([organizationSchema, pageSchema])
+  const schemaJson = JSON.stringify([
+    organizationSchema,
+    ...(route.view === 'landing' ? [websiteSchema] : []),
+    pageSchema,
+  ])
     .replace(/</g, '\\u003c');
   const fallbackMarkup = structuredArticle
     ? renderStructuredBlogFallback(structuredArticle)
@@ -599,7 +713,17 @@ const renderLocalizedHtml = (
       ? renderWhitePaperFallback()
     : route.view === 'blog'
       ? renderBlogIndexFallback(routeTitle, description, locale)
-      : renderSeoFallback(blogPost?.title ?? routeTitle, description);
+      : routeGroup === 'account'
+        ? renderSeoFallback(
+            blogPost?.title ?? demoSeoProfile?.headline ?? routeTitle,
+            description,
+          )
+        : renderPublicSeoFallback(
+            blogPost?.title ?? demoSeoProfile?.headline ?? routeTitle,
+            description,
+            route.view,
+            locale,
+          );
 
   let html = sourceHtml
     .replace(/<html lang="[^"]*">/, `<html lang="${localeMeta.htmlLang}">`)

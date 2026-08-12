@@ -76,7 +76,13 @@ export interface DocContent {
 
 export type LocalizedDocsContent = Record<Locale, DocContent>;
 
-export type DocsTabId = 'overview' | 'inquiries' | 'transactions' | 'relay' | 'api-ref' | 'changelog';
+export type DocsTabId =
+  | 'overview'
+  | 'inquiries'
+  | 'transactions'
+  | 'credential-issuance'
+  | 'api-ref'
+  | 'changelog';
 
 export interface DocsArticleLayoutUi {
   backToMain: string;

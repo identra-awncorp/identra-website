@@ -12,7 +12,7 @@ export const CHANGELOG_DOCS_TRANSLATIONS = {
           { type: 'p', text: 'This sample changelog records API, SDK, dashboard, and verification-engine changes that may affect an integration. Dates refer to general availability unless an entry says otherwise.' },
           { type: 'changelog', items: [
             { version: '2026-07-15', title: 'Transaction outcome updates', text: 'Added settled, refunded, chargeback, and confirmed_fraud outcomes so historical transaction context can reflect post-authorization events.' },
-            { version: '2026-06-24', title: 'Relay delivery diagnostics', text: 'Added delivery attempt timestamps, normalized failure codes, and destination-level latency metrics.' },
+            { version: '2026-06-24', title: 'Credential delivery diagnostics', text: 'Added delivery attempt timestamps, normalized failure codes, and destination-level latency metrics.' },
             { version: '2026-05-08', title: 'Inquiry session recovery', text: 'Client SDKs can now resume an interrupted Inquiry on the same device while its session token remains valid.' },
             { version: '2026-03-19', title: 'Webhook signing v2', text: 'Introduced timestamped HMAC signatures with replay protection. The previous signature remains available during migration.' }
           ] }
@@ -82,7 +82,7 @@ export const CHANGELOG_DOCS_TRANSLATIONS = {
           { type: 'p', text: 'Este historial de ejemplo recoge cambios de API, SDK, panel de administración y motores de verificación que pueden afectar una integración. Las fechas indican disponibilidad general salvo mención contraria.' },
           { type: 'changelog', items: [
             { version: '2026-07-15', title: 'Resultados posteriores de transacciones', text: 'Añadimos settled, refunded, chargeback y confirmed_fraud para reflejar eventos posteriores a la autorización.' },
-            { version: '2026-06-24', title: 'Diagnóstico de entregas Relay', text: 'Añadimos fechas de intentos, códigos de fallo normalizados y métricas de latencia por destino.' },
+            { version: '2026-06-24', title: 'Diagnóstico de entrega de credenciales', text: 'Añadimos fechas de intentos, códigos de fallo normalizados y métricas de latencia por destino.' },
             { version: '2026-05-08', title: 'Recuperación de sesiones Inquiry', text: 'Los SDK de cliente pueden reanudar un Inquiry interrumpido en el mismo dispositivo mientras el token sea válido.' },
             { version: '2026-03-19', title: 'Firma de webhooks v2', text: 'Incorporamos firmas HMAC con fecha y protección contra repetición. La firma anterior sigue disponible durante la migración.' }
           ] }
@@ -152,7 +152,7 @@ export const CHANGELOG_DOCS_TRANSLATIONS = {
           { type: 'p', text: 'このサンプル変更履歴には、連携へ影響する可能性があるAPI、SDK、管理画面、検証エンジンの変更を記載しています。特記がない日付は一般提供開始日です。' },
           { type: 'changelog', items: [
             { version: '2026-07-15', title: '取引結果の更新', text: '認可後の履歴を反映できるよう、settled、refunded、chargeback、confirmed_fraudを追加しました。' },
-            { version: '2026-06-24', title: 'Relay配信診断', text: '配信試行時刻、正規化した失敗コード、送信先ごとの遅延指標を追加しました。' },
+            { version: '2026-06-24', title: 'クレデンシャル配信診断', text: '配信試行時刻、正規化した失敗コード、送信先ごとの遅延指標を追加しました。' },
             { version: '2026-05-08', title: 'Inquiryセッションの復旧', text: 'セッショントークンが有効な間、クライアントSDKが同じ端末で中断したInquiryを再開できるようになりました。' },
             { version: '2026-03-19', title: 'Webhook署名v2', text: 'タイムスタンプ付きHMAC署名と再送攻撃の防止機能を導入しました。移行期間中は以前の署名も利用できます。' }
           ] }
@@ -222,7 +222,7 @@ export const CHANGELOG_DOCS_TRANSLATIONS = {
           { type: 'p', text: 'Dieses Beispielprotokoll dokumentiert Änderungen an API, SDK, Verwaltungsoberfläche und Verifizierungsmodulen, die Integrationen betreffen können. Datumsangaben stehen für allgemeine Verfügbarkeit, sofern nicht anders angegeben.' },
           { type: 'changelog', items: [
             { version: '2026-07-15', title: 'Nachträgliche Transaktionsergebnisse', text: 'settled, refunded, chargeback und confirmed_fraud bilden nun Ereignisse nach der Autorisierung im Verlauf ab.' },
-            { version: '2026-06-24', title: 'Diagnose der Relay-Zustellung', text: 'Zeitpunkte der Versuche, normalisierte Fehlercodes und Latenzmetriken je Ziel wurden ergänzt.' },
+            { version: '2026-06-24', title: 'Diagnose der Credential-Zustellung', text: 'Zeitpunkte der Versuche, normalisierte Fehlercodes und Latenzmetriken je Ziel wurden ergänzt.' },
             { version: '2026-05-08', title: 'Wiederaufnahme von Inquiry-Sitzungen', text: 'Nutzer-SDKs können unterbrochene Inquiries auf demselben Gerät fortsetzen, solange das Token gültig ist.' },
             { version: '2026-03-19', title: 'Webhook-Signatur v2', text: 'Zeitgestempelte HMAC-Signaturen mit Schutz vor Wiederholungsangriffen wurden eingeführt. Die alte Signatur bleibt während der Migration verfügbar.' }
           ] }
@@ -292,7 +292,7 @@ export const CHANGELOG_DOCS_TRANSLATIONS = {
           { type: 'p', text: 'Nhật ký mẫu này ghi lại những thay đổi của API, SDK, bảng quản trị và bộ máy xác minh có thể ảnh hưởng đến tích hợp. Ngày ghi trong mỗi mục là thời điểm phát hành rộng rãi, trừ khi có chú thích khác.' },
           { type: 'changelog', items: [
             { version: '2026-07-15', title: 'Cập nhật kết quả sau giao dịch', text: 'Bổ sung các trạng thái settled, refunded, chargeback và confirmed_fraud để lịch sử giao dịch phản ánh các sự kiện sau khi cấp phép.' },
-            { version: '2026-06-24', title: 'Chẩn đoán việc chuyển dữ liệu Relay', text: 'Bổ sung thời điểm từng lần thử, mã lỗi đã chuẩn hóa và chỉ số độ trễ theo từng đích đến.' },
+            { version: '2026-06-24', title: 'Chẩn đoán việc chuyển thực chứng', text: 'Bổ sung thời điểm từng lần thử, mã lỗi đã chuẩn hóa và chỉ số độ trễ theo từng đích đến.' },
             { version: '2026-05-08', title: 'Khôi phục phiên Inquiry', text: 'SDK trên thiết bị người dùng có thể tiếp tục một Inquiry bị gián đoạn trên cùng thiết bị khi mã phiên vẫn còn hiệu lực.' },
             { version: '2026-03-19', title: 'Chữ ký sự kiện v2', text: 'Giới thiệu chữ ký HMAC kèm dấu thời gian và cơ chế chống phát lại. Chữ ký cũ vẫn khả dụng trong thời gian chuyển đổi.' }
           ] }

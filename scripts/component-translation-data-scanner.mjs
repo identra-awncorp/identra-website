@@ -134,6 +134,7 @@ const technicalLiteral = (raw) => {
   const value = normalize(raw);
   if (!value) return true;
   if (/^(GET|POST|PUT|PATCH|DELETE)\s+\/[\w./:-]+$/i.test(value)) return true;
+  if (/^(?:article|og|twitter):[a-z0-9_:-]+$/i.test(value)) return true;
   if (/^(?:[a-z]+:)?[#./\w:[\]-]+(?:\s+[#./\w:[\]-]+)*$/i.test(value) && /(?:^|\s)(?:bg|text|from|to|via|border|hover|group-hover|focus|ring|shadow|rounded|font|grid|flex|w|h|p|m|gap|opacity|scale|translate|rotate|animate|duration|ease|z|col|row|items|justify|object|overflow|aspect|leading|tracking|uppercase|lowercase|capitalize)-/.test(value)) return true;
   if (/^(true|false|null|undefined)$/i.test(value)) return true;
   if (/^[A-Z][\p{L}.'-]+(?:\s+[A-Z][\p{L}.'-]+){0,3}(?:\s+\([A-Z][\p{L}\s.'-]+\))?$/u.test(value)) return true;

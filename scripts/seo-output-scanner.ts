@@ -29,6 +29,7 @@ import {
   getStructuredBlogSeoMetadata,
 } from '../src/content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
+import { getDemoSeoProfile } from '../src/content/demoSeoProfiles';
 import {
   getWhitePaperSearchTerms,
   WHITE_PAPER_PDF_PATH,
@@ -43,6 +44,7 @@ import {
 import {
   DEFAULT_SITE_URL,
   formatSeoDescription,
+  formatSeoTitle,
 } from '../src/utils/seo';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -183,6 +185,7 @@ const rootHtml = readDistFile('index.html');
 const vercelConfig = JSON.parse(
   readFileSync(resolve(projectRoot, 'vercel.json'), 'utf8'),
 ) as {
+  trailingSlash?: boolean;
   redirects?: Array<{
     source?: string;
     destination?: string;
@@ -202,6 +205,10 @@ const redirectBySource = new Map(
       : []),
 );
 
+expect(
+  vercelConfig.trailingSlash === false,
+  'Vercel must normalize trailing-slash URLs to the canonical route without a trailing slash.',
+);
 expect(
   Boolean(configuredRedirects.some((redirect) =>
     redirect.source === '/'
@@ -367,10 +374,66 @@ for (const page of indexablePages) {
     html.includes('<main data-seo-fallback'),
     `${page.path} is missing crawlable fallback content.`,
   );
+  const staticH2Count = html.match(/<h2(?:\s|>)/g)?.length ?? 0;
+  const staticParagraphCount = html.match(/<p(?:\s|>)/g)?.length ?? 0;
+  const staticInternalLinkCount = html.match(/href="\/(?!\/)/g)?.length ?? 0;
+  expect(
+    staticH2Count >= 2 && staticParagraphCount >= 3,
+    `${page.path} exposes too little structured static content before React loads.`,
+  );
+  if (page.path !== viewToPath('white-paper', 'vi')) {
+    expect(
+      staticInternalLinkCount >= 3,
+      `${page.path} exposes too few crawlable internal links before React loads.`,
+    );
+  }
   expect(
     !html.includes('http-equiv="refresh"')
       && !html.includes('window.location.replace('),
     `${page.path} contains redirect markup even though it is indexable.`,
+  );
+}
+
+for (const locale of SUPPORTED_LOCALES) {
+  const seenTitles = new Set<string>();
+  const seenDescriptions = new Set<string>();
+
+  for (const scenarioId of DEMO_SCENARIO_IDS) {
+    const profile = getDemoSeoProfile(scenarioId, locale);
+    const path = demoScenarioPath(scenarioId, locale);
+    const html = readDistFile(routeFile(path));
+    const expectedTitle = formatSeoTitle(
+      profile.title,
+      SEO_TRANSLATIONS[locale].siteName,
+    );
+    const description = metaContent(html, 'name', 'description');
+
+    expect(
+      html.includes(`<title>${expectedTitle}</title>`)
+        && description === formatSeoDescription(profile.description),
+      `${path} does not expose its scenario-specific demo metadata.`,
+    );
+    expect(
+      !seenTitles.has(expectedTitle) && !seenDescriptions.has(profile.description),
+      `${path} duplicates another demo title or description in ${locale}.`,
+    );
+    seenTitles.add(expectedTitle);
+    seenDescriptions.add(profile.description);
+  }
+}
+
+for (const locale of SUPPORTED_LOCALES) {
+  const landingPath = viewToPath('landing', locale);
+  const landingHtml = readDistFile(routeFile(landingPath));
+  const schemas = getSchemaObjects(landingHtml, landingPath);
+  const websiteSchemas = schemas.filter((schema) => schema['@type'] === 'WebSite');
+
+  expect(
+    websiteSchemas.length === 1
+      && websiteSchemas[0]?.name === 'Identra'
+      && websiteSchemas[0]?.url === siteUrl
+      && websiteSchemas[0]?.['@id'] === `${siteUrl}/#website`,
+    `${landingPath} is missing the top-level WebSite schema used for the Identra site name.`,
   );
 }
 
@@ -647,6 +710,12 @@ expect(
     && privatePages.every((path) => !sitemapLocations.includes(absoluteUrl(path)))
     && legacyPages.every(({ path }) => !sitemapLocations.includes(absoluteUrl(path))),
   'Sitemap contains a root redirect, private page, or legacy redirect.',
+);
+expect(
+  !sitemapXml.includes('/relay')
+    && SUPPORTED_LOCALES.every((locale) =>
+      sitemapXml.includes(`<loc>${siteUrl}${viewToPath('credential-issuance', locale)}</loc>`)),
+  'Sitemap still exposes Relay or is missing a localized Credential Issuance route.',
 );
 
 for (const page of indexablePages) {

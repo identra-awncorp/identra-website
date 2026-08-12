@@ -623,7 +623,7 @@ const en: DashboardCopy = {
   products: {
     interfaceStudio: 'Interface Studio',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     workflows: 'Workflows',
     caseManagement: 'Case Management',
     copilot: 'Copilot',
@@ -980,7 +980,7 @@ const vi: DashboardCopy = {
   products: {
     interfaceStudio: 'Interface Studio',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     workflows: 'Quy trình',
     caseManagement: 'Quản lý hồ sơ',
     copilot: 'Trợ lý',
@@ -1337,7 +1337,7 @@ const es: DashboardCopy = {
   products: {
     interfaceStudio: 'Interface Studio',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     workflows: 'Flujos de trabajo',
     caseManagement: 'Gestión de casos',
     copilot: 'Copilot',
@@ -1694,7 +1694,7 @@ const de: DashboardCopy = {
   products: {
     interfaceStudio: 'Interface Studio',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     workflows: 'Workflows',
     caseManagement: 'Fallverwaltung',
     copilot: 'Copilot',
@@ -2051,7 +2051,7 @@ const ja: DashboardCopy = {
   products: {
     interfaceStudio: 'Interface Studio',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     workflows: 'ワークフロー',
     caseManagement: 'ケース管理',
     copilot: 'Copilot',

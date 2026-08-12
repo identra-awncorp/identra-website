@@ -1,8 +1,8 @@
-export const relayTransactionsTranslations = {
+export const credentialIssuanceTransactionsTranslations = {
   "en": {
-    "txBadge": "Smart Escrow",
-    "txTitle": "Atomic Ownership Transfer via Smart Contracts",
-    "txDesc": "Securely trade and transfer ownership of Verifiable Credentials (VCs). Utilizing automated smart contracts, buyers can instantly audit credential authenticity, and sellers are guaranteed immediate payment upon successful transfer.",
+    "txBadge": "Reusable credential example",
+    "txTitle": "A credential can keep working after issuance",
+    "txDesc": "This ticket example shows how an issued credential can carry verifiable rights into a later transaction while preserving authenticity and a clear audit trail.",
     "txCardTitle": "Verifiable Ticket Trade Escrow",
     "txContractStatus": "Smart Contract Status",
     "txStatusAwaiting": "Awaiting Deposits",
@@ -61,9 +61,9 @@ export const relayTransactionsTranslations = {
     "txAudioBlockedWarning": "Web Audio playback failed or was blocked by browser autoplay/iframe sandbox:"
   },
   "es": {
-    "txBadge": "Garantía Inteligente",
-    "txTitle": "Transferencia de Propiedad Atómica mediante Contratos Inteligentes",
-    "txDesc": "Comercie y transfiera de forma segura la propiedad de Credenciales Verificables. Utilizando contratos inteligentes automatizados, los compradores pueden auditar instantáneamente la autenticidad de las credenciales y los vendedores tienen garantizado el pago inmediato tras una transferencia exitosa.",
+    "txBadge": "Ejemplo de credencial reutilizable",
+    "txTitle": "Una credencial sigue generando valor después de emitirse",
+    "txDesc": "Este ejemplo de entrada muestra cómo una credencial emitida puede trasladar derechos verificables a una transacción posterior, con autenticidad y auditoría claras.",
     "txCardTitle": "Fideicomiso de Intercambio de Boletos Verificables",
     "txContractStatus": "Estado del contrato inteligente",
     "txStatusAwaiting": "Esperando Depósitos",
@@ -122,9 +122,9 @@ export const relayTransactionsTranslations = {
     "txAudioBlockedWarning": "La reproducción de Web Audio falló o fue bloqueada por el navegador/iframe:"
   },
   "ja": {
-    "txBadge": "スマートエスクロー",
-    "txTitle": "スマートコントラクトによるアトミックな所有権移転",
-    "txDesc": "検証可能資格（VC）の所有権を安全に取引・移転します。自動化されたスマートコントラクトを活用することで、購入者は資格の真正性を即座に監査でき、販売者は移転の成功時に即座の支払いが保証されます。",
+    "txBadge": "再利用可能なクレデンシャル例",
+    "txTitle": "発行後もクレデンシャルの価値は続きます",
+    "txDesc": "このチケット例では、発行済みクレデンシャルが真正性と監査履歴を保ちながら、後続取引へ検証可能な権利を引き継ぐ流れを示します。",
     "txCardTitle": "検証可能チケット取引エスクロー",
     "txContractStatus": "スマートコントラクトのステータス",
     "txStatusAwaiting": "デポジット待ち",
@@ -183,9 +183,9 @@ export const relayTransactionsTranslations = {
     "txAudioBlockedWarning": "Web Audioの再生に失敗したか、ブラウザ/iframeによりブロックされました:"
   },
   "de": {
-    "txBadge": "Smart Escrow",
-    "txTitle": "Atomare Eigentumsübertragung über Smart Contracts",
-    "txDesc": "Sicherer Handel und Eigentumsübertragung von überprüfbaren Nachweisen (Verifiable Credentials, VCs). Durch den Einsatz automatisierter Smart Contracts können Käufer die Echtheit von Nachweisen sofort prüfen, und Verkäufern wird eine sofortige Auszahlung nach erfolgreicher Übertragung garantiert.",
+    "txBadge": "Beispiel für wiederverwendbare Nachweise",
+    "txTitle": "Ein Nachweis wirkt nach der Ausgabe weiter",
+    "txDesc": "Dieses Ticketbeispiel zeigt, wie ein ausgegebener Nachweis verifizierbare Rechte in eine spätere Transaktion überträgt und dabei Authentizität sowie Audit-Verlauf bewahrt.",
     "txCardTitle": "Überprüfbares Ticket-Handel-Treuhandkonto",
     "txContractStatus": "Smart Contract Status",
     "txStatusAwaiting": "Warten auf Einzahlungen",
@@ -244,9 +244,9 @@ export const relayTransactionsTranslations = {
     "txAudioBlockedWarning": "Web-Audio-Wiedergabe ist fehlgeschlagen oder wurde vom Browser/Iframe blockiert:"
   },
   "vi": {
-    "txBadge": "Hợp đồng Thông minh",
-    "txTitle": "Tự động hóa quy trình và giao dịch với hợp đồng thông minh",
-    "txDesc": "Giao dịch và chuyển quyền sở hữu các thực chứng một cách an toàn. Nhờ sử dụng hợp đồng thông minh, người mua có thể lập tức kiểm tra tính xác thực của dữ liệu, trong khi người bán được đảm bảo nhận tiền ngay khi chuyển giao thành công.",
+    "txBadge": "Ví dụ về thực chứng có thể tái sử dụng",
+    "txTitle": "Giá trị của thực chứng tiếp tục sau khi phát hành",
+    "txDesc": "Ví dụ vé điện tử cho thấy một thực chứng đã phát hành có thể mang quyền lợi đã được xác minh vào giao dịch tiếp theo, đồng thời giữ nguyên tính xác thực và lịch sử kiểm toán.",
     "txCardTitle": "Hợp đồng thông minh Giao dịch Vé đã xác minh",
     "txContractStatus": "Trạng thái Hợp đồng Thông minh",
     "txStatusAwaiting": "Đang chờ giao dịch",

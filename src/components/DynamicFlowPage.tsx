@@ -160,13 +160,13 @@ function HeroFlowVisual({ copy }: { copy: DynamicFlowPageCopy }) {
               <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <p className="type-label text-[#354CE1] uppercase tracking-wider">{copy.hero.visualEyebrow}</p>
             </div>
-            <h4 className="type-card-title mt-1 text-[#0F1E36] font-bold">
+            <p className="type-card-title mt-1 text-[#0F1E36] font-bold">
               {activePreset === 'fintech'
                 ? simCopy.presetFintech
                 : activePreset === 'crypto'
                   ? simCopy.presetCrypto
                   : simCopy.presetAge}
-            </h4>
+            </p>
           </div>
 
           <div className="flex items-center gap-1.5 rounded-full bg-slate-100/90 p-1 backdrop-blur-sm">

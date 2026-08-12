@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { EVENTS_PAGE_TRANSLATIONS } from '../translations/EventsPageTranslations';
 import { useLanguage } from '../context/LanguageContext';
+import { viewToPath } from '../types/routes';
 import eventNetworkingImage from '../assets/images/identra_event_networking_1783338372214.jpg';
 
 interface EventsPageProps {
@@ -412,7 +413,7 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
                     </div>
 
                     {/* Fineprint disclaimer */}
-                    <p className="text-[10.5px] text-slate-400 leading-normal font-normal pt-2">{t.copy.bySubmittingThisFormYouAgreeToReceive}<a href="#" className="underline">{t.copy.privacyPolicy}</a>{t.copy.forMoreInformationAboutOurPrivacyPractices}</p>
+                    <p className="text-[10.5px] text-slate-400 leading-normal font-normal pt-2">{t.copy.bySubmittingThisFormYouAgreeToReceive}<a href={viewToPath('privacy-overview', language)} className="underline">{t.copy.privacyPolicy}</a>{t.copy.forMoreInformationAboutOurPrivacyPractices}</p>
                   </motion.form>
                 ) : (
                   <motion.div 

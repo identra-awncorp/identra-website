@@ -1361,5 +1361,5 @@ export const INTERFACE_STUDIO_TRANSLATIONS = {
   vi,
 } as const satisfies Record<Locale, InterfaceStudioPageCopy>;
 
-// Kept as a compatibility export for the temporary Relay translation alias.
+// Kept as a compatibility export for existing translation consumers.
 export const interfaceStudioPageTranslations = INTERFACE_STUDIO_TRANSLATIONS;

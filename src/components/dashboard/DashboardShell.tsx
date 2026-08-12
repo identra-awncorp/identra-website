@@ -5,6 +5,7 @@
 
 import { useState, type ReactNode } from 'react';
 import {
+  BadgeCheck,
   Blocks,
   Bot,
   Braces,
@@ -17,7 +18,6 @@ import {
   Network,
   PanelLeftClose,
   PanelLeftOpen,
-  RadioTower,
   Store,
   Workflow,
   X,
@@ -27,14 +27,17 @@ import { SUPPORTED_LOCALES, type DashboardToolId } from '../../types/routes';
 import type { PlatformProductId } from '../../types/platformProducts';
 import type { DashboardCopy } from '../../translations/dashboard/DashboardPageTranslations';
 import type { Language } from '../../context/LanguageContext';
-import { DASHBOARD_PRODUCTS } from './dashboardRegistry';
+import {
+  DASHBOARD_PRODUCTS,
+  type DashboardSharedWorkspace,
+} from './dashboardRegistry';
 import { useDialogFocus } from './useDialogFocus';
 import identraLogo from '../../assets/images/identra-logo.svg';
 
 const PRODUCT_ICONS: Record<PlatformProductId, LucideIcon> = {
   interfaceStudio: Blocks,
   dynamicFlow: GitBranch,
-  relay: RadioTower,
+  credentialIssuance: BadgeCheck,
   workflows: Workflow,
   caseManagement: BriefcaseBusiness,
   copilot: Bot,
@@ -49,11 +52,13 @@ type DashboardShellProps = {
   readonly language: Language;
   readonly onLanguageChange: (language: Language) => void;
   readonly activeTool?: DashboardToolId;
+  readonly activeProduct?: PlatformProductId;
   readonly projectName?: string;
   readonly saveStatus?: 'saved' | 'saving' | 'error';
   readonly canOpenTools: boolean;
   readonly onOpenOverview: () => void;
   readonly onOpenTool: (tool: DashboardToolId) => void;
+  readonly onOpenWorkspace: (workspace: DashboardSharedWorkspace) => void;
   readonly onBackToSite: () => void;
 };
 
@@ -63,11 +68,13 @@ export default function DashboardShell({
   language,
   onLanguageChange,
   activeTool,
+  activeProduct,
   projectName,
   saveStatus = 'saved',
   canOpenTools,
   onOpenOverview,
   onOpenTool,
+  onOpenWorkspace,
   onBackToSite,
 }: DashboardShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -86,7 +93,7 @@ export default function DashboardShell({
           setMobileOpen(false);
         }}
         className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${
- !activeTool
+ !activeTool && !activeProduct
  ? 'bg-[#EEF0FF] text-[#354CE1]'
  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950'
  }`}
@@ -101,7 +108,8 @@ export default function DashboardShell({
       <div className="mt-2 space-y-1">
         {DASHBOARD_PRODUCTS.map((product) => {
           const Icon = PRODUCT_ICONS[product.id];
-          const isActive = product.tool === activeTool;
+          const isActive = product.tool === activeTool
+            || product.id === activeProduct;
           const isDisabled = product.status === 'comingSoon'
             || (product.status === 'active' && !canOpenTools);
 
@@ -112,6 +120,7 @@ export default function DashboardShell({
               disabled={isDisabled}
               onClick={() => {
                 if (product.tool) onOpenTool(product.tool);
+                if (product.workspace) onOpenWorkspace(product.workspace);
                 setMobileOpen(false);
               }}
               className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition ${
@@ -126,7 +135,7 @@ export default function DashboardShell({
               <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                 {copy.products[product.id]}
               </span>
-              {product.status === 'comingSoon' && (
+              {(product.status === 'comingSoon' || product.status === 'preview') && (
                 <span className="type-label-compact rounded-full border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-bold uppercase text-slate-400">
                   {copy.comingSoon}
                 </span>

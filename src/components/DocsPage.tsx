@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
-  ArrowLeftRight,
   BookOpen,
   Check,
   ChevronDown,
   Clock,
   Code,
   Contact,
+  FileBadge2,
   Menu,
   Moon,
   Search,
@@ -15,18 +15,26 @@ import {
   Sun,
   X
 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { DOCS_PAGE_TRANSLATIONS } from '../translations/DocsPageTranslations';
 import { copyTextToClipboard } from '../utils/clipboard';
 import identraLogo from '../assets/images/identra-logo.svg';
-import { DOCS_TAB_PAGE_IDS, getTabIdForPage } from './docs/docsNavigation';
+import {
+  DOCS_TAB_PAGE_IDS,
+  DOCS_TAB_QUERY_PARAM,
+  getDocsTabIdFromSearch,
+  getTabIdForPage,
+} from './docs/docsNavigation';
 import type { DocPage, DocsContentPageProps, DocsTabId } from './docs/docsModel';
 
 const DocsOverviewPage = React.lazy(() => import('./docs/DocsOverviewPage'));
 const DocsInquiriesPage = React.lazy(() => import('./docs/DocsInquiriesPage'));
 const DocsTransactionsPage = React.lazy(() => import('./docs/DocsTransactionsPage'));
-const DocsRelayPage = React.lazy(() => import('./docs/DocsRelayPage'));
+const DocsCredentialIssuancePage = React.lazy(
+  () => import('./docs/DocsCredentialIssuancePage'),
+);
 const DocsApiReferencePage = React.lazy(() => import('./docs/DocsApiReferencePage'));
 const DocsChangelogPage = React.lazy(() => import('./docs/DocsChangelogPage'));
 
@@ -43,18 +51,21 @@ const DOCS_PAGE_COMPONENTS: Record<DocsTabId, React.ComponentType<DocsContentPag
   overview: DocsOverviewPage,
   inquiries: DocsInquiriesPage,
   transactions: DocsTransactionsPage,
-  relay: DocsRelayPage,
+  'credential-issuance': DocsCredentialIssuancePage,
   'api-ref': DocsApiReferencePage,
   changelog: DocsChangelogPage
 };
 
 export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => void }) {
   const { language } = useLanguage();
+  const [searchParams, setSearchParams] = useSearchParams();
   const t = getLocalizedRecord(DOCS_PAGE_TRANSLATIONS, language as keyof typeof DOCS_PAGE_TRANSLATIONS, 'DOCS_PAGE_TRANSLATIONS');
   const ui = t.ui;
   const docPages: DocPage[] = t.pages;
 
-  const [currentTab, setCurrentTab] = useState<DocsTabId>('overview');
+  const [currentTab, setCurrentTab] = useState<DocsTabId>(
+    () => getDocsTabIdFromSearch(searchParams) ?? 'overview',
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -84,11 +95,19 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
     setCopyStatus('idle');
   }, [currentTab]);
 
+  useEffect(() => {
+    setCurrentTab(getDocsTabIdFromSearch(searchParams) ?? 'overview');
+  }, [searchParams]);
+
   const tabItems = useMemo<DocsTabItem[]>(() => [
     { id: 'overview', label: ui.tabs.overview, Icon: BookOpen },
     { id: 'inquiries', label: ui.tabs.inquiries, Icon: Contact },
     { id: 'transactions', label: ui.tabs.transactions, Icon: Shuffle },
-    { id: 'relay', label: ui.tabs.relay, Icon: ArrowLeftRight },
+    {
+      id: 'credential-issuance',
+      label: ui.tabs.credentialIssuance,
+      Icon: FileBadge2,
+    },
     { id: 'api-ref', label: ui.tabs.api, Icon: Code },
     { id: 'changelog', label: ui.tabs.changelog, Icon: Clock }
   ], [ui.tabs]);
@@ -104,6 +123,13 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
 
   const handleTabChange = (tabId: DocsTabId) => {
     setCurrentTab(tabId);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    if (tabId === 'overview') {
+      nextSearchParams.delete(DOCS_TAB_QUERY_PARAM);
+    } else {
+      nextSearchParams.set(DOCS_TAB_QUERY_PARAM, tabId);
+    }
+    setSearchParams(nextSearchParams);
     setMobileSidebarOpen(false);
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -115,6 +141,13 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
     const targetId = DOCS_TAB_PAGE_IDS[tabId].length > 1 ? page.id : page.sections[0]?.id;
 
     setCurrentTab(tabId);
+    const nextSearchParams = new URLSearchParams(searchParams);
+    if (tabId === 'overview') {
+      nextSearchParams.delete(DOCS_TAB_QUERY_PARAM);
+    } else {
+      nextSearchParams.set(DOCS_TAB_QUERY_PARAM, tabId);
+    }
+    setSearchParams(nextSearchParams);
     setSearchQuery('');
     setSearchOpen(false);
     setMobileSidebarOpen(false);

@@ -29,6 +29,7 @@ import {
   getStructuredBlogSeoMetadata,
 } from '../content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
+import { getDemoSeoProfile } from '../content/demoSeoProfiles';
 import {
   getWhitePaperSearchTerms,
   WHITE_PAPER_PDF_PATH,
@@ -172,9 +173,12 @@ export default function SeoMetadata({
     const structuredArticle = currentView === 'blog-detail'
       ? getStructuredBlogArticle(currentBlogId)
       : null;
+    const demoSeoProfile = !isNotFound && currentView === 'demo' && demoScenarioId
+      ? getDemoSeoProfile(demoScenarioId, language)
+      : null;
     const routeTitle = isNotFound
       ? seo.notFoundTitle
-      : seo.routeTitles[currentView];
+      : demoSeoProfile?.title ?? seo.routeTitles[currentView];
     const routeGroup = SEO_ROUTE_GROUPS[currentView];
     const routePathForLocale = (locale: Locale) =>
       currentView === 'blog-detail'
@@ -223,6 +227,8 @@ export default function SeoMetadata({
       ? blogPost?.description ?? ''
       : isWhitePaper
         ? WHITE_PAPER_SEO_PROFILE.description
+      : demoSeoProfile
+        ? formatSeoDescription(demoSeoProfile.description)
       : formatSeoDescription(
           isNotFound
             ? seo.notFoundDescription
@@ -239,7 +245,10 @@ export default function SeoMetadata({
         ? routeTitle
         : isWhitePaper
           ? WHITE_PAPER_SEO_PROFILE.headline
-          : structuredArticle?.content.vi.title ?? blogPost?.title ?? routeTitle,
+          : structuredArticle?.content.vi.title
+            ?? blogPost?.title
+            ?? demoSeoProfile?.headline
+            ?? routeTitle,
       imageAlt: isWhitePaper
         ? WHITE_PAPER_SEO_PROFILE.imageAlt
         : structuredArticle?.content.vi.title ?? seo.imageAlt,
@@ -356,10 +365,21 @@ export default function SeoMetadata({
     const organizationSchema = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': `${metadata.siteUrl}/#organization`,
       name: 'Identra',
       url: metadata.siteUrl,
       logo: metadata.logoUrl,
       description: seo.organizationDescription,
+    };
+    const websiteSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${metadata.siteUrl}/#website`,
+      name: 'Identra',
+      url: metadata.siteUrl,
+      publisher: {
+        '@id': `${metadata.siteUrl}/#organization`,
+      },
     };
     const pageSchema = {
       '@context': 'https://schema.org',
@@ -371,9 +391,7 @@ export default function SeoMetadata({
       image: metadata.imageUrl,
       inLanguage: metadata.localeMeta.htmlLang,
       isPartOf: {
-        '@type': 'WebSite',
-        name: 'Identra',
-        url: metadata.siteUrl,
+        '@id': `${metadata.siteUrl}/#website`,
       },
       publisher: {
         '@type': 'Organization',
@@ -415,9 +433,10 @@ export default function SeoMetadata({
 
     schemaElement.textContent = JSON.stringify([
       organizationSchema,
+      ...(!isNotFound && currentView === 'landing' ? [websiteSchema] : []),
       pageSchema,
     ]);
-  }, [metadata, seo.organizationDescription]);
+  }, [currentView, isNotFound, metadata, seo.organizationDescription]);
 
   return null;
 }

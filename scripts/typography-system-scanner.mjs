@@ -5,8 +5,8 @@ import ts from 'typescript';
 const projectRoot = resolve(import.meta.dirname, '..');
 const migratedComponents = [
   'src/components/Hero.tsx',
-  'src/components/RelaySection.tsx',
-  'src/components/RelayTransactions.tsx',
+  'src/components/CredentialIssuanceSection.tsx',
+  'src/components/CredentialIssuanceTransactions.tsx',
   'src/components/BuildingBlocks.tsx',
   'src/components/PrivacyPortal.tsx',
   'src/components/SecurityCertifications.tsx',

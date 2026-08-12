@@ -434,9 +434,9 @@ export default function StructuredBlogDetailPage({
             className="contents order-1 space-y-0 lg:sticky lg:top-6 lg:order-2 lg:col-span-4 lg:block lg:h-[calc(100vh-3rem)] lg:space-y-8 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-3"
           >
             <div className="order-1 rounded-2xl bg-white p-5 shadow-[0_0_18px_rgba(15,23,42,0.08)] lg:order-none">
-              <h3 className="mb-4 text-sm font-bold uppercase text-slate-400">
+              <p className="mb-4 text-sm font-bold uppercase text-slate-400">
                 {content.ui.tableOfContents}
-              </h3>
+              </p>
               <nav aria-label={content.ui.tableOfContents} className="flex flex-col gap-1">
                 {content.tableOfContents.map((item) => (
                   <button
@@ -481,9 +481,9 @@ export default function StructuredBlogDetailPage({
 
       <div className="border-t border-slate-200/60 bg-white py-16">
         <div className="mx-auto max-w-7xl px-6">
-          <h3 className="type-section-title-compact mb-8 text-slate-950">
+          <h2 className="type-section-title-compact mb-8 text-slate-950">
             {commonCopy.continueReading}
-          </h3>
+          </h2>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {relatedPosts.map((relatedArticle) => {

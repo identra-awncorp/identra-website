@@ -436,7 +436,7 @@ export default function BlogDetailPage({
           {/* Right Column: Floating Sidebar Navigation */}
           <div className="lg:col-span-4 lg:sticky lg:top-36 space-y-8">
             <div className="bg-white border border-slate-150 rounded-2xl p-5 shadow-xs">
-              <h3 className="type-label text-slate-400 uppercase mb-4">{t.copy.tableOfContents}</h3>
+              <p className="type-label text-slate-400 uppercase mb-4">{t.copy.tableOfContents}</p>
               <nav className="flex flex-col gap-1">
                 {tableOfContents.map((item) => (
                   <button
@@ -477,7 +477,7 @@ export default function BlogDetailPage({
       {/* "Continue Reading" Section */}
       <div className="border-t border-slate-200/60 bg-white py-16">
         <div className="max-w-7xl mx-auto px-6">
-          <h3 className="type-section-title-compact text-slate-950 mb-8">{t.copy.continueReading}</h3>
+          <h2 className="type-section-title-compact text-slate-950 mb-8">{t.copy.continueReading}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {dataT.continueCards.map((card, idx) => (

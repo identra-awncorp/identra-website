@@ -19,7 +19,7 @@ export const APP_VIEWS = [
   'research',
   'compliance',
   'connect',
-  'relay',
+  'credential-issuance',
   'platform',
   'nfc',
   'customers',
@@ -177,6 +177,9 @@ export type DashboardRoute =
       readonly page: 'overview';
     }
   | {
+      readonly page: 'credential-issuance';
+    }
+  | {
       readonly page: 'flow';
       readonly flowId: string;
       readonly tool: DashboardToolId;
@@ -262,6 +265,14 @@ export const pathToDashboardRoute = (pathname: string): DashboardRoute | null =>
     return { page: 'overview' };
   }
   if (
+    collectionSegment === 'credential-issuance'
+    && !encodedFlowId
+    && !toolSegment
+    && extraSegments.length === 0
+  ) {
+    return { page: 'credential-issuance' };
+  }
+  if (
     collectionSegment !== 'flows'
     || !encodedFlowId
     || !toolSegment
@@ -319,6 +330,12 @@ export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
 export const dashboardPath = (locale: Locale) =>
   `/${locale}/dashboard`;
 
+export const dashboardCredentialIssuancePath = (locale: Locale) =>
+  `/${locale}/dashboard/credential-issuance`;
+
+export const credentialIssuanceDocsPath = (locale: Locale) =>
+  `/${locale}/docs?tab=credential-issuance`;
+
 export const dashboardFlowPath = (
   flowId: string,
   tool: DashboardToolId,
@@ -348,9 +365,11 @@ export const localizePath = (pathname: string, locale: Locale): string | null =>
   if (view === 'dashboard') {
     const dashboardRoute = pathToDashboardRoute(pathname);
     if (!dashboardRoute) return null;
-    return dashboardRoute.page === 'overview'
-      ? dashboardPath(locale)
-      : dashboardFlowPath(dashboardRoute.flowId, dashboardRoute.tool, locale);
+    if (dashboardRoute.page === 'overview') return dashboardPath(locale);
+    if (dashboardRoute.page === 'credential-issuance') {
+      return dashboardCredentialIssuancePath(locale);
+    }
+    return dashboardFlowPath(dashboardRoute.flowId, dashboardRoute.tool, locale);
   }
 
   if (view === 'demo') {

@@ -117,14 +117,14 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
       },
       {
         id: 'ticket-transfer',
-        tag: 'Relay',
+        tag: 'Credential Issuance',
         title: 'Transfer a verified ticket',
         desc: 'Prove original ownership, lock escrow, and transfer a ticket credential safely.',
-        security: 'Relay + smart escrow',
+        security: 'Credential Issuance + smart escrow',
         successResult: 'Ticket ownership transferred atomically. The buyer received a verified credential and escrow was released.',
         steps: [
           { label: 'Verify original ownership', action: 'Audit ticket owner', logText: 'Original purchase key and issuer signature confirmed valid ownership.' },
-          { label: 'Lock escrow terms', action: 'Initialize escrow', logText: 'Relay smart contract locked funds and protected against double spending.' },
+          { label: 'Lock escrow terms', action: 'Initialize escrow', logText: 'The escrow smart contract locked funds and protected against double spending.' },
           { label: 'Execute transfer', action: 'Complete ticket transfer', logText: 'Ticket ownership moved to the buyer wallet and escrow settlement was released.' }
         ]
       }
@@ -243,14 +243,14 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
       },
       {
         id: 'ticket-transfer',
-        tag: 'Relay',
+        tag: 'Credential Issuance',
         title: 'Transferir una entrada verificada',
         desc: 'Prueba propiedad original, bloquea el depósito en garantía y transfiere la credencial de entrada de forma segura.',
-        security: 'Relay + depósito inteligente',
+        security: 'Credential Issuance + depósito inteligente',
         successResult: 'La propiedad de la entrada se transfirió de forma atómica. El comprador recibió una credencial verificada y se liberó el depósito.',
         steps: [
           { label: 'Verificar propiedad original', action: 'Auditar propietario de la entrada', logText: 'La clave de compra original y la firma del emisor confirmaron propiedad válida.' },
-          { label: 'Bloquear términos del depósito', action: 'Inicializar depósito en garantía', logText: 'El contrato Relay bloqueó fondos y protegió contra doble gasto.' },
+          { label: 'Bloquear términos del depósito', action: 'Inicializar depósito en garantía', logText: 'El contrato de depósito bloqueó fondos y protegió contra doble gasto.' },
           { label: 'Ejecutar transferencia', action: 'Completar transferencia de entrada', logText: 'La propiedad pasó a la billetera del comprador y se liberó el depósito.' }
         ]
       }
@@ -357,14 +357,14 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
       },
       {
         id: 'ticket-transfer',
-        tag: 'Relay',
+        tag: 'Credential Issuance',
         title: '検証済みチケットを譲渡',
         desc: '元の所有権を証明し、エスクローをロックして、チケット資格情報を安全に譲渡します。',
-        security: 'Relay + スマートエスクロー',
+        security: 'Credential Issuance + スマートエスクロー',
         successResult: 'チケット所有権はアトミックに譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。',
         steps: [
           { label: '元の所有権を検証', action: 'チケット所有者を監査', logText: '元の購入キーと発行者署名により、有効な所有権を確認しました。' },
-          { label: 'エスクロー条件をロック', action: 'エスクローを初期化', logText: 'Relayスマートコントラクトが資金をロックし、二重使用を防止しました。' },
+          { label: 'エスクロー条件をロック', action: 'エスクローを初期化', logText: 'エスクローのスマートコントラクトが資金をロックし、二重使用を防止しました。' },
           { label: '譲渡を実行', action: 'チケット譲渡を完了', logText: 'チケット所有権は購入者ウォレットへ移り、エスクロー決済が解放されました。' }
         ]
       }
@@ -471,14 +471,14 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
       },
       {
         id: 'ticket-transfer',
-        tag: 'Relay',
+        tag: 'Credential Issuance',
         title: 'Verifiziertes Ticket übertragen',
         desc: 'Weisen Sie ursprüngliches Eigentum nach, sperren Sie Treuhandbedingungen und übertragen Sie den Ticketnachweis sicher.',
-        security: 'Relay + Smart Escrow',
+        security: 'Credential Issuance + Smart Escrow',
         successResult: 'Das Ticketeigentum wurde atomar übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.',
         steps: [
           { label: 'Ursprüngliches Eigentum prüfen', action: 'Ticketinhaber auditieren', logText: 'Ursprünglicher Kaufschlüssel und Ausstellersignatur bestätigten gültiges Eigentum.' },
-          { label: 'Treuhandbedingungen sperren', action: 'Treuhandkonto initialisieren', logText: 'Der Relay-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe.' },
+          { label: 'Treuhandbedingungen sperren', action: 'Treuhandkonto initialisieren', logText: 'Der Escrow-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe.' },
           { label: 'Übertragung ausführen', action: 'Ticketübertragung abschließen', logText: 'Das Ticketeigentum wechselte zur Käufer-Wallet und die Treuhandzahlung wurde freigegeben.' }
         ]
       }
@@ -585,14 +585,14 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
       },
       {
         id: 'ticket-transfer',
-        tag: 'Relay',
+        tag: 'Credential Issuance',
         title: 'Chuyển nhượng vé đã xác thực',
         desc: 'Xác minh chủ sở hữu hiện tại, khóa tiền trong ký quỹ và chuyển vé an toàn cho người mua.',
         security: 'Tiết lộ có chọn lọc và hợp đồng thông minh',
         successResult: 'Vé và tiền ký quỹ được chuyển giao trong cùng một giao dịch: người mua nhận vé đã xác thực, còn tiền chỉ được giải ngân khi hoàn tất.',
         steps: [
           { label: 'Xác minh quyền sở hữu', action: 'Kiểm tra chủ vé', logText: 'Mã giao dịch mua ban đầu và chữ ký của đơn vị phát hành xác nhận người bán là chủ sở hữu hợp lệ.' },
-          { label: 'Khóa tiền ký quỹ', action: 'Tạo giao dịch ký quỹ', logText: 'Hợp đồng thông minh Relay khóa tiền cho đến khi chuyển vé hoàn tất, đồng thời ngăn một vé bị bán hai lần.' },
+          { label: 'Khóa tiền ký quỹ', action: 'Tạo giao dịch ký quỹ', logText: 'Hợp đồng thông minh ký quỹ khóa tiền cho đến khi chuyển vé hoàn tất, đồng thời ngăn một vé bị bán hai lần.' },
           { label: 'Hoàn tất chuyển nhượng', action: 'Chuyển vé', logText: 'Quyền sở hữu vé được cập nhật sang ví của người mua và tiền ký quỹ được giải ngân cho người bán.' }
         ]
       }

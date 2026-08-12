@@ -8,6 +8,8 @@ import { ArrowLeft, GitBranch } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import {
+  credentialIssuanceDocsPath,
+  dashboardCredentialIssuancePath,
   dashboardFlowPath,
   dashboardPath,
   pathToDashboardRoute,
@@ -21,6 +23,8 @@ import DashboardShell from './DashboardShell';
 import DashboardOverview from './DashboardOverview';
 import DynamicFlowWorkspace from './DynamicFlowWorkspace';
 import InterfaceStudioWorkspace from './InterfaceStudioWorkspace';
+import CredentialIssuancePreview from './CredentialIssuancePreview';
+import type { DashboardSharedWorkspace } from './dashboardRegistry';
 import { createBrowserDashboardWorkspaceRepository } from './dashboardWorkspaceRepository';
 import type { DashboardWorkspaceV2, FlowProjectV2 } from './dashboardV2Types';
 
@@ -91,6 +95,11 @@ export default function DashboardPage() {
   const openTool = (tool: DashboardToolId) => {
     if (activeProjectId) openFlowTool(activeProjectId, tool);
   };
+  const openWorkspace = (sharedWorkspace: DashboardSharedWorkspace) => {
+    if (sharedWorkspace === 'credential-issuance') {
+      navigate(dashboardCredentialIssuancePath(language));
+    }
+  };
 
   return (
     <DashboardShell
@@ -98,11 +107,15 @@ export default function DashboardPage() {
       language={language}
       onLanguageChange={setLanguage}
       activeTool={route.page === 'flow' ? route.tool : undefined}
+      activeProduct={
+        route.page === 'credential-issuance' ? 'credentialIssuance' : undefined
+      }
       projectName={currentProject?.name}
       saveStatus={saveStatus}
       canOpenTools={Boolean(activeProjectId)}
       onOpenOverview={openOverview}
       onOpenTool={openTool}
+      onOpenWorkspace={openWorkspace}
       onBackToSite={() => navigate(viewToPath('landing', language))}
     >
       {repository.loadResult.status === 'storageError' ? (
@@ -142,6 +155,11 @@ export default function DashboardPage() {
             {advancedCopy.storage.unsupportedVersionDescription}
           </p>
         </div>
+      ) : route.page === 'credential-issuance' ? (
+        <CredentialIssuancePreview
+          onOpenDocs={() => navigate(credentialIssuanceDocsPath(language))}
+          onBack={openOverview}
+        />
       ) : route.page === 'overview' ? (
         <DashboardOverview
           copy={copy}

@@ -41,9 +41,9 @@ const DOCS_PAGE_STRUCTURE = [
   { id: 'environments', category: 'overview', prevPageId: 'security', nextPageId: 'choose-integration', sections: ['sandbox-prod'] },
   { id: 'choose-integration', category: 'sending', prevPageId: 'environments', nextPageId: 'inquiries', sections: ['integration-options'] },
   { id: 'inquiries', category: 'sending', prevPageId: 'choose-integration', nextPageId: 'transactions', sections: ['inquiries-intro'] },
-  { id: 'transactions', category: 'sending', prevPageId: 'inquiries', nextPageId: 'relay', sections: ['transactions-intro'] },
-  { id: 'relay', category: 'sending', prevPageId: 'transactions', nextPageId: 'api-reference', sections: ['relay-intro'] },
-  { id: 'api-reference', category: 'retrieving', prevPageId: 'relay', nextPageId: 'changelog', sections: ['api-lifecycle-overview', 'identity', 'issuance', 'verification'] },
+  { id: 'transactions', category: 'sending', prevPageId: 'inquiries', nextPageId: 'credential-issuance', sections: ['transactions-intro'] },
+  { id: 'credential-issuance', category: 'sending', prevPageId: 'transactions', nextPageId: 'api-reference', sections: ['credential-issuance-intro'] },
+  { id: 'api-reference', category: 'retrieving', prevPageId: 'credential-issuance', nextPageId: 'changelog', sections: ['api-lifecycle-overview', 'identity', 'issuance', 'verification'] },
   { id: 'changelog', category: 'resources', prevPageId: 'api-reference', sections: ['changelog-intro'] }
 ];
 
@@ -90,7 +90,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         overview: 'Overview',
         inquiries: 'Inquiries',
         transactions: 'Transactions',
-        relay: 'Relay',
+        credentialIssuance: 'Credential Issuance',
         api: 'API Reference',
         changelog: 'Changelog'
       }
@@ -243,7 +243,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         title: 'Transactions',
         category: 'sending',
         prevPageId: 'inquiries',
-        nextPageId: 'relay',
+        nextPageId: 'credential-issuance',
         sections: [
           { id: 'transactions-intro', title: 'Monitoring Transactions', blocks: [
             { type: 'p', text: 'Track money flows, account transfers, login sessions, and payout events. Run real-time checks to protect users from account takeover and checkout fraud.' }
@@ -251,14 +251,14 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         ]
       },
       {
-        id: 'relay',
-        title: 'Relay',
+        id: 'credential-issuance',
+        title: 'Credential Issuance',
         category: 'sending',
         prevPageId: 'transactions',
         nextPageId: 'api-reference',
         sections: [
-          { id: 'relay-intro', title: 'Secure Routing with Relay', blocks: [
-            { type: 'p', text: 'Relay routes verified PII and checks securely to third-party servers, partner banks, or downstream APIs without requiring you to hold the data.' }
+          { id: 'credential-issuance-intro', title: 'Issue reusable credentials', blocks: [
+            { type: 'p', text: 'Turn approved verification results into signed credentials, deliver them with OpenID4VCI, and manage their status throughout the lifecycle.' }
           ] }
         ]
       },
@@ -266,7 +266,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         id: 'api-reference',
         title: 'API Reference',
         category: 'retrieving',
-        prevPageId: 'relay',
+        prevPageId: 'credential-issuance',
         nextPageId: 'changelog',
         sections: [
           { id: 'api-lifecycle-overview', title: 'Lifecycle Overview', blocks: [
@@ -276,7 +276,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
             { type: 'p', text: 'Create secure keys, publish DID Documents, and prepare issuer, holder, and verifier identities before any credential exchange begins.' }
           ] },
           { id: 'issuance', title: 'Credential Issuance and Storage', blocks: [
-            { type: 'p', text: 'Open DIDComm channels, sign verifiable credentials, deliver them to the holder, and store them in the mobile wallet.' }
+            { type: 'p', text: 'Create OpenID4VCI offers, sign verifiable credentials, deliver them to compatible wallets, and use DIDComm as an additional option when required.' }
           ] },
           { id: 'verification', title: 'Presentation and Verification', blocks: [
             { type: 'p', text: 'Request a presentation, let the holder approve and submit a verifiable presentation, verify it, and return the result.' }
@@ -293,7 +293,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
             { type: 'p', text: 'Stay up to date with additions, improvements, and fixes to the Identra API and SDKs.' },
             { type: 'changelog', items: [
               { version: 'v2025-12-08', title: 'Enhanced Document Check Engine', text: "Upgraded verification checks to use machine learning models for modern driver's licenses and national ID cards." },
-              { version: 'v2025-06-15', title: 'Relay Routing Improvements', text: 'Added routing for partial inquiry objects with customizable PII filters.' },
+              { version: 'v2025-06-15', title: 'Credential delivery improvements', text: 'Improved delivery controls for verified outcomes and downstream integrations.' },
               { version: 'v2024-11-01', title: 'Inline Sandbox Customization', text: 'Introduced template-level overrides for simulating failed and review verdicts from the dashboard.' }
             ] }
           ] }
@@ -339,7 +339,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Historial de versiones'
       },
       identra: 'identra',
-      tabs: { overview: 'Resumen', inquiries: 'Solicitudes', transactions: 'Transacciones', relay: 'Retransmisión', api: 'Referencia API', changelog: 'Historial de cambios' }
+      tabs: { overview: 'Resumen', inquiries: 'Solicitudes', transactions: 'Transacciones', credentialIssuance: 'Credential Issuance', api: 'Referencia API', changelog: 'Historial de cambios' }
     },
     categories: { overview: 'Resumen', sending: 'Enviar datos a Identra', retrieving: 'Recuperar datos de Identra', resources: 'Recursos' },
     pages: []
@@ -382,7 +382,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'リリース履歴'
       },
       identra: 'identra',
-      tabs: { overview: '概要', inquiries: '照会', transactions: '取引', relay: '中継', api: 'APIリファレンス', changelog: '変更履歴' }
+      tabs: { overview: '概要', inquiries: '照会', transactions: '取引', credentialIssuance: 'Credential Issuance', api: 'APIリファレンス', changelog: '変更履歴' }
     },
     categories: { overview: '概要', sending: 'Identraへデータ送信', retrieving: 'Identraからデータ取得', resources: 'リソース' },
     pages: []
@@ -425,7 +425,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Versionsverlauf'
       },
       identra: 'identra',
-      tabs: { overview: 'Übersicht', inquiries: 'Prüfvorgänge', transactions: 'Transaktionen', relay: 'Weiterleitung', api: 'API-Referenz', changelog: 'Änderungsprotokoll' }
+      tabs: { overview: 'Übersicht', inquiries: 'Prüfvorgänge', transactions: 'Transaktionen', credentialIssuance: 'Credential Issuance', api: 'API-Referenz', changelog: 'Änderungsprotokoll' }
     },
     categories: { overview: 'Übersicht', sending: 'Daten an Identra senden', retrieving: 'Daten von Identra abrufen', resources: 'Ressourcen' },
     pages: []
@@ -468,7 +468,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
         releaseHistory: 'Lịch sử phát hành'
       },
       identra: 'identra',
-      tabs: { overview: 'Tổng quan', inquiries: 'Hồ sơ xác minh', transactions: 'Giao dịch', relay: 'Chuyển tiếp', api: 'Tham chiếu API', changelog: 'Nhật ký thay đổi' }
+      tabs: { overview: 'Tổng quan', inquiries: 'Hồ sơ xác minh', transactions: 'Giao dịch', credentialIssuance: 'Credential Issuance', api: 'Tham chiếu API', changelog: 'Nhật ký thay đổi' }
     },
     categories: { overview: 'Tổng quan', sending: 'Gửi dữ liệu đến Identra', retrieving: 'Lấy dữ liệu từ Identra', resources: 'Tài nguyên' },
     pages: []
@@ -519,14 +519,14 @@ translatePages('es', {
   'choose-integration': { title: 'Elegir un método de integración', sections: { 'integration-options': { title: 'Opciones de integración', blocks: [{ type: 'p', text: 'Identra ofrece rutas desde SDKs personalizados hasta enlaces alojados sin desarrollo.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Renderiza Identra dentro de tu aplicación con marca personalizada.' }, { title: 'Hosted Flow', text: 'Envía usuarios a una URL segura alojada por Identra.' }] }, { type: 'subheading', text: 'Ejemplo: integración con React' }, { type: 'p', text: 'Renderiza Identra de forma segura y gestiona eventos de finalización.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Solicitudes de verificación', sections: { 'inquiries-intro': { title: 'Resumen de solicitudes', blocks: [{ type: 'p', text: 'Un Inquiry es el punto central del SDK de Identra. Tu backend lo crea mediante REST API y entrega el token al flujo cliente.' }, { type: 'subheading', text: 'Crear un Inquiry con REST API' }, { type: 'p', text: 'Crea la sesión en tu backend seguro para proteger reglas y referencias internas.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transacciones', sections: { 'transactions-intro': { title: 'Monitorear transacciones', blocks: [{ type: 'p', text: 'Rastrea movimientos de dinero, transferencias, sesiones y pagos para prevenir toma de cuentas y fraude.' }] } } },
-  relay: { title: 'Retransmisión', sections: { 'relay-intro': { title: 'Enrutamiento seguro con Relay', blocks: [{ type: 'p', text: 'Relay enruta PII verificada y comprobaciones a terceros o APIs posteriores sin que tengas que conservar esos datos.' }] } } },
+  'credential-issuance': { title: 'Credential Issuance', sections: { 'credential-issuance-intro': { title: 'Emitir credenciales reutilizables', blocks: [{ type: 'p', text: 'Convierte resultados aprobados en credenciales firmadas, entrégalas mediante OpenID4VCI y gestiona su estado durante todo el ciclo de vida.' }] } } },
   'api-reference': { title: 'Referencia API', sections: {
     'api-lifecycle-overview': { title: 'Resumen del ciclo de vida', blocks: [{ type: 'p', text: 'Sigue todo el ciclo SDK: claves, DID Documents, emisión de credenciales, almacenamiento del titular, presentación y recibos del verificador.' }] },
     identity: { title: 'Base de identidad y claves', blocks: [{ type: 'p', text: 'Crea claves seguras, publica DID Documents y prepara las identidades de emisor, titular y verificador antes del intercambio.' }] },
     issuance: { title: 'Emisión y almacenamiento de credenciales', blocks: [{ type: 'p', text: 'Abre canales DIDComm, firma credenciales verificables, entrégalas al titular y guárdalas en la wallet móvil.' }] },
     verification: { title: 'Presentación y verificación', blocks: [{ type: 'p', text: 'Solicita una presentación, permite que el titular la apruebe y envíe, verifica la prueba y devuelve el resultado.' }] }
   } },
-  changelog: { title: 'Historial de cambios', sections: { 'changelog-intro': { title: 'Últimas actualizaciones', blocks: [{ type: 'p', text: 'Mantente al día con mejoras y correcciones de la API y SDKs de Identra.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Motor mejorado de comprobación documental', text: 'Modelos de aprendizaje automático para licencias modernas e ID nacionales.' }, { version: 'v2025-06-15', title: 'Mejoras de enrutamiento Relay', text: 'Enrutamiento de objetos parciales con filtros PII personalizables.' }, { version: 'v2024-11-01', title: 'Personalización inline de Sandbox', text: 'Overrides de plantilla para simular rechazos y revisiones.' }] }] } } }
+  changelog: { title: 'Historial de cambios', sections: { 'changelog-intro': { title: 'Últimas actualizaciones', blocks: [{ type: 'p', text: 'Mantente al día con mejoras y correcciones de la API y SDKs de Identra.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Motor mejorado de comprobación documental', text: 'Modelos de aprendizaje automático para licencias modernas e ID nacionales.' }, { version: 'v2025-06-15', title: 'Mejoras en la entrega de credenciales', text: 'Mejoras de control para resultados verificados e integraciones posteriores.' }, { version: 'v2024-11-01', title: 'Personalización inline de Sandbox', text: 'Overrides de plantilla para simular rechazos y revisiones.' }] }] } } }
 });
 
 translatePages('ja', {
@@ -537,14 +537,14 @@ translatePages('ja', {
   'choose-integration': { title: '統合方法の選択', sections: { 'integration-options': { title: '統合オプション', blocks: [{ type: 'p', text: 'Identraは、カスタムSDKから開発不要のホスト型リンクまで複数の統合方法を提供します。' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Identraをアプリ内に表示し、ブランドに合わせた体験を提供します。' }, { title: 'Hosted Flow', text: '安全なIdentraホストURLへユーザーを送ります。' }] }, { type: 'subheading', text: '例: Reactで埋め込み' }, { type: 'p', text: 'Identraを安全に表示し、完了イベントを処理します。' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: '照会', sections: { 'inquiries-intro': { title: '照会の概要', blocks: [{ type: 'p', text: 'InquiryはIdentra SDKの中心です。バックエンドがREST APIで作成し、生成されたトークンをクライアントへ渡します。' }, { type: 'subheading', text: 'REST APIでInquiryを作成' }, { type: 'p', text: 'セキュアなバックエンドでセッションを作成し、ルールや参照IDを保護します。' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: '取引', sections: { 'transactions-intro': { title: '取引の監視', blocks: [{ type: 'p', text: '資金移動、口座移管、ログイン、支払いイベントを追跡し、不正を防ぎます。' }] } } },
-  relay: { title: '中継', sections: { 'relay-intro': { title: '安全な中継経路', blocks: [{ type: 'p', text: 'Relayは、検証済みPIIとチェック結果を、データを保持せずに第三者や下流APIへ安全にルーティングします。' }] } } },
+  'credential-issuance': { title: 'Credential Issuance', sections: { 'credential-issuance-intro': { title: '再利用可能なクレデンシャルを発行', blocks: [{ type: 'p', text: '承認済みの検証結果を署名済みクレデンシャルへ変換し、OpenID4VCIで配信してライフサイクル全体の状態を管理します。' }] } } },
   'api-reference': { title: 'APIリファレンス', sections: {
     'api-lifecycle-overview': { title: 'ライフサイクル概要', blocks: [{ type: 'p', text: '鍵作成、DID Document公開、クレデンシャル発行、Holder保存、提示、Verifierの受領結果まで、SDK全体の流れを追います。' }] },
     identity: { title: 'IDと鍵の基盤', blocks: [{ type: 'p', text: 'クレデンシャル交換の前に、安全な鍵を作成し、DID Documentsを公開し、Issuer、Holder、VerifierのIDを準備します。' }] },
     issuance: { title: 'クレデンシャルの発行と保存', blocks: [{ type: 'p', text: 'DIDCommチャネルを開き、検証可能なクレデンシャルに署名し、Holderへ届けてモバイルウォレットへ保存します。' }] },
     verification: { title: '提示と検証', blocks: [{ type: 'p', text: '提示を要求し、Holderが承認して送信したVerifiable Presentationを検証し、結果を返します。' }] }
   } },
-  changelog: { title: '変更履歴', sections: { 'changelog-intro': { title: '最新更新', blocks: [{ type: 'p', text: 'Identra APIとSDKsの追加、改善、修正を確認できます。' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: '書類チェックエンジン強化', text: '現代的な免許証と国民ID向けに機械学習モデルを強化しました。' }, { version: 'v2025-06-15', title: 'Relayルーティング改善', text: 'カスタムPIIフィルター付き部分Inquiryルーティングを追加しました。' }, { version: 'v2024-11-01', title: 'Inline Sandboxカスタマイズ', text: '失敗やレビュー判定をシミュレーションするテンプレート上書きを追加しました。' }] }] } } }
+  changelog: { title: '変更履歴', sections: { 'changelog-intro': { title: '最新更新', blocks: [{ type: 'p', text: 'Identra APIとSDKsの追加、改善、修正を確認できます。' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: '書類チェックエンジン強化', text: '現代的な免許証と国民ID向けに機械学習モデルを強化しました。' }, { version: 'v2025-06-15', title: 'クレデンシャル配信の改善', text: '検証済み結果と後続統合の配信制御を改善しました。' }, { version: 'v2024-11-01', title: 'Inline Sandboxカスタマイズ', text: '失敗やレビュー判定をシミュレーションするテンプレート上書きを追加しました。' }] }] } } }
 });
 
 translatePages('de', {
@@ -555,14 +555,14 @@ translatePages('de', {
   'choose-integration': { title: 'Integrationsmethode wählen', sections: { 'integration-options': { title: 'Integrationsoptionen', blocks: [{ type: 'p', text: 'Identra bietet Wege von eigenen SDK-Integrationen bis zu gehosteten Links ohne Entwicklung.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Zeigen Sie Identra direkt in Ihrer App mit eigenem Branding an.' }, { title: 'Hosted Flow', text: 'Leiten Sie Nutzer zu einer sicheren Identra-gehosteten URL weiter.' }] }, { type: 'subheading', text: 'Beispiel: Einbettung mit React' }, { type: 'p', text: 'Rendern Sie Identra sicher und verarbeiten Sie Abschlussereignisse.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Prüfvorgänge', sections: { 'inquiries-intro': { title: 'Überblick über Prüfvorgänge', blocks: [{ type: 'p', text: 'Ein Inquiry ist der Mittelpunkt des Identra SDK. Ihr Backend erstellt ihn per REST API und gibt das Token an den Client weiter.' }, { type: 'subheading', text: 'Inquiry per REST API erstellen' }, { type: 'p', text: 'Erstellen Sie die Sitzung auf Ihrem sicheren Backend, um Regeln und Referenzen zu schützen.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Transaktionen', sections: { 'transactions-intro': { title: 'Transaktionen überwachen', blocks: [{ type: 'p', text: 'Verfolgen Sie Geldflüsse, Transfers, Sitzungen und Auszahlungen, um Betrug zu verhindern.' }] } } },
-  relay: { title: 'Weiterleitung', sections: { 'relay-intro': { title: 'Sichere Weiterleitung', blocks: [{ type: 'p', text: 'Relay leitet verifizierte PII und Prüfergebnisse sicher an Dritte oder nachgelagerte APIs weiter, ohne dass Sie die Daten halten müssen.' }] } } },
+  'credential-issuance': { title: 'Credential Issuance', sections: { 'credential-issuance-intro': { title: 'Wiederverwendbare Nachweise ausgeben', blocks: [{ type: 'p', text: 'Machen Sie aus bestätigten Prüfergebnissen signierte Nachweise, liefern Sie sie per OpenID4VCI aus und verwalten Sie den Status über den gesamten Lebenszyklus.' }] } } },
   'api-reference': { title: 'API-Referenz', sections: {
     'api-lifecycle-overview': { title: 'Lebenszyklusüberblick', blocks: [{ type: 'p', text: 'Verfolgen Sie den vollständigen SDK-Ablauf von Schlüsseln und DID Documents bis zu Ausstellung, Speicherung, Präsentation, Prüfung und Ergebnisbeleg.' }] },
     identity: { title: 'Identitäts- und Schlüsselbasis', blocks: [{ type: 'p', text: 'Erstellen Sie sichere Schlüssel, veröffentlichen Sie DID Documents und bereiten Sie Aussteller-, Inhaber- und Prüferidentitäten vor.' }] },
     issuance: { title: 'Ausstellung und Speicherung von Nachweisen', blocks: [{ type: 'p', text: 'Öffnen Sie DIDComm-Kanäle, signieren Sie verifizierbare Nachweise, liefern Sie sie an den Inhaber und speichern Sie sie in der mobilen Wallet.' }] },
     verification: { title: 'Präsentation und Prüfung', blocks: [{ type: 'p', text: 'Fordern Sie eine Präsentation an, lassen Sie den Inhaber zustimmen und senden, prüfen Sie den Nachweis und geben Sie das Ergebnis zurück.' }] }
   } },
-  changelog: { title: 'Änderungsprotokoll', sections: { 'changelog-intro': { title: 'Neueste Updates', blocks: [{ type: 'p', text: 'Bleiben Sie über Verbesserungen und Korrekturen von API und SDKs informiert.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Verbesserte Dokumentprüfmaschine', text: 'Machine-Learning-Modelle für moderne Führerscheine und nationale IDs.' }, { version: 'v2025-06-15', title: 'Relay-Routing-Verbesserungen', text: 'Routing partieller Inquiry-Objekte mit anpassbaren PII-Filtern.' }, { version: 'v2024-11-01', title: 'Inline-Sandbox-Anpassung', text: 'Template-Overrides zur Simulation von Ablehnung und Review.' }] }] } } }
+  changelog: { title: 'Änderungsprotokoll', sections: { 'changelog-intro': { title: 'Neueste Updates', blocks: [{ type: 'p', text: 'Bleiben Sie über Verbesserungen und Korrekturen von API und SDKs informiert.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Verbesserte Dokumentprüfmaschine', text: 'Machine-Learning-Modelle für moderne Führerscheine und nationale IDs.' }, { version: 'v2025-06-15', title: 'Verbesserte Credential-Zustellung', text: 'Verbesserte Steuerung für verifizierte Ergebnisse und nachgelagerte Integrationen.' }, { version: 'v2024-11-01', title: 'Inline-Sandbox-Anpassung', text: 'Template-Overrides zur Simulation von Ablehnung und Review.' }] }] } } }
 });
 
 translatePages('vi', {
@@ -573,12 +573,12 @@ translatePages('vi', {
   'choose-integration': { title: 'Chọn phương thức tích hợp', sections: { 'integration-options': { title: 'Tùy chọn tích hợp', blocks: [{ type: 'p', text: 'Identra cung cấp nhiều cách tích hợp, từ SDK tùy chỉnh đến liên kết được lưu trữ không cần phát triển.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Hiển thị Identra trực tiếp trong ứng dụng với thương hiệu tùy chỉnh.' }, { title: 'Hosted Flow', text: 'Chuyển người dùng đến URL an toàn do Identra lưu trữ.' }] }, { type: 'subheading', text: 'Ví dụ: nhúng với React' }, { type: 'p', text: 'Hiển thị Identra an toàn và xử lý sự kiện hoàn tất trong ứng dụng.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Hồ sơ xác minh', sections: { 'inquiries-intro': { title: 'Tổng quan về hồ sơ xác minh', blocks: [{ type: 'p', text: 'Inquiry là điểm trung tâm của Identra SDK. Backend tạo Inquiry qua REST API và chuyển token sang luồng phía client.' }, { type: 'subheading', text: 'Tạo Inquiry qua REST API' }, { type: 'p', text: 'Tạo phiên trên backend an toàn để bảo vệ quy tắc và mã tham chiếu nội bộ.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
   transactions: { title: 'Giao dịch', sections: { 'transactions-intro': { title: 'Giám sát giao dịch', blocks: [{ type: 'p', text: 'Theo dõi dòng tiền, chuyển khoản, phiên đăng nhập và thanh toán để chống chiếm đoạt tài khoản và gian lận.' }] } } },
-  relay: { title: 'Chuyển tiếp', sections: { 'relay-intro': { title: 'Chuyển tiếp dữ liệu an toàn', blocks: [{ type: 'p', text: 'Relay định tuyến PII đã xác minh và kết quả kiểm tra đến bên thứ ba hoặc API hạ nguồn mà không cần bạn lưu giữ dữ liệu.' }] } } },
+  'credential-issuance': { title: 'Credential Issuance', sections: { 'credential-issuance-intro': { title: 'Phát hành thực chứng có thể tái sử dụng', blocks: [{ type: 'p', text: 'Chuyển kết quả xác minh được phê duyệt thành thực chứng đã ký, chuyển tới ví bằng OpenID4VCI và quản lý trạng thái trong toàn bộ vòng đời.' }] } } },
   'api-reference': { title: 'Tham chiếu API', sections: {
     'api-lifecycle-overview': { title: 'Tổng quan vòng đời', blocks: [{ type: 'p', text: 'Theo dõi toàn bộ vòng đời SDK: tạo khóa, công bố DID Document, cấp phát thực chứng, lưu vào ví, trình bày bằng chứng và trả kết quả xác minh.' }] },
     identity: { title: 'Nền tảng định danh và khóa', blocks: [{ type: 'p', text: 'Tạo khóa an toàn, công bố DID Documents và chuẩn bị định danh cho bên phát hành, holder và bên xác minh trước khi trao đổi thực chứng.' }] },
     issuance: { title: 'Cấp phát và lưu thực chứng', blocks: [{ type: 'p', text: 'Mở kênh DIDComm, ký thực chứng, chuyển cho bên nắm giữ và lưu vào ví trên thiết bị di động.' }] },
     verification: { title: 'Trình bày và xác minh', blocks: [{ type: 'p', text: 'Gửi yêu cầu trình bày, để holder phê duyệt và gửi verifiable presentation, xác minh bằng chứng rồi trả lại kết quả.' }] }
   } },
-  changelog: { title: 'Nhật ký thay đổi', sections: { 'changelog-intro': { title: 'Cập nhật mới nhất', blocks: [{ type: 'p', text: 'Theo dõi các bổ sung, cải tiến và bản sửa lỗi cho Identra API và SDKs.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Nâng cấp engine kiểm tra giấy tờ', text: 'Dùng mô hình machine learning cho giấy phép lái xe và ID quốc gia hiện đại.' }, { version: 'v2025-06-15', title: 'Cải tiến định tuyến Relay', text: 'Thêm định tuyến đối tượng Inquiry một phần với bộ lọc PII tùy chỉnh.' }, { version: 'v2024-11-01', title: 'Tùy chỉnh Sandbox inline', text: 'Thêm override cấp template để mô phỏng kết quả từ chối và đánh giá.' }] }] } } }
+  changelog: { title: 'Nhật ký thay đổi', sections: { 'changelog-intro': { title: 'Cập nhật mới nhất', blocks: [{ type: 'p', text: 'Theo dõi các bổ sung, cải tiến và bản sửa lỗi cho Identra API và SDKs.' }, { type: 'changelog', items: [{ version: 'v2025-12-08', title: 'Nâng cấp engine kiểm tra giấy tờ', text: 'Dùng mô hình machine learning cho giấy phép lái xe và ID quốc gia hiện đại.' }, { version: 'v2025-06-15', title: 'Cải tiến chuyển thực chứng tới ví', text: 'Cải thiện khả năng kiểm soát kết quả đã xác minh và tích hợp hạ nguồn.' }, { version: 'v2024-11-01', title: 'Tùy chỉnh Sandbox inline', text: 'Thêm override cấp template để mô phỏng kết quả từ chối và đánh giá.' }] }] } } }
 });

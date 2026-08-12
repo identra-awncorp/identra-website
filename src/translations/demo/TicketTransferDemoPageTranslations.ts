@@ -7,10 +7,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
   "en": {
     "meta": {
       "id": "ticket-transfer",
-      "tag": "Relay",
+      "tag": "Credential Issuance",
       "title": "Transfer a verified ticket",
       "desc": "Prove original ownership, lock escrow, and transfer a ticket credential safely.",
-      "security": "Relay + smart escrow",
+      "security": "Credential Issuance + smart escrow",
       "successResult": "Ticket ownership transferred atomically. The buyer received a verified credential and escrow was released.",
       "steps": [
         {
@@ -21,7 +21,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Lock escrow terms",
           "action": "Initialize escrow",
-          "logText": "Relay smart contract locked funds and protected against double spending."
+          "logText": "The escrow smart contract locked funds and protected against double spending."
         },
         {
           "label": "Execute transfer",
@@ -72,7 +72,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
             "Ticket Ledger Ownership Match"
           ],
           [
-            "Relay Smart Contract Init",
+            "Escrow Smart Contract Init",
             "Atomic Escrow Fund Lock",
             "Double-Spend Integrity Guard"
           ],
@@ -132,10 +132,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
   "es": {
     "meta": {
       "id": "ticket-transfer",
-      "tag": "Relay",
+      "tag": "Credential Issuance",
       "title": "Transferir una entrada verificada",
       "desc": "Prueba propiedad original, bloquea el depósito en garantía y transfiere la credencial de entrada de forma segura.",
-      "security": "Relay + depósito inteligente",
+      "security": "Credential Issuance + depósito inteligente",
       "successResult": "La propiedad de la entrada se transfirió de forma atómica. El comprador recibió una credencial verificada y se liberó el depósito.",
       "steps": [
         {
@@ -146,7 +146,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Bloquear términos del depósito",
           "action": "Inicializar depósito en garantía",
-          "logText": "El contrato Relay bloqueó fondos y protegió contra doble gasto."
+          "logText": "El contrato de depósito bloqueó fondos y protegió contra doble gasto."
         },
         {
           "label": "Ejecutar transferencia",
@@ -197,7 +197,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
             "Coincidencia de propiedad en libro de entradas"
           ],
           [
-            "Inicio de contrato inteligente Relay",
+            "Inicio de contrato inteligente de depósito",
             "Bloqueo de fondos en depósito atómico",
             "Protección de integridad contra doble gasto"
           ],
@@ -257,10 +257,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
   "ja": {
     "meta": {
       "id": "ticket-transfer",
-      "tag": "Relay",
+      "tag": "Credential Issuance",
       "title": "検証済みチケットを譲渡",
       "desc": "元の所有権を証明し、エスクローをロックして、チケット資格情報を安全に譲渡します。",
-      "security": "Relay + スマートエスクロー",
+      "security": "Credential Issuance + スマートエスクロー",
       "successResult": "チケット所有権はアトミックに譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。",
       "steps": [
         {
@@ -271,7 +271,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "エスクロー条件をロック",
           "action": "エスクローを初期化",
-          "logText": "Relayスマートコントラクトが資金をロックし、二重使用を防止しました。"
+          "logText": "エスクローのスマートコントラクトが資金をロックし、二重使用を防止しました。"
         },
         {
           "label": "譲渡を実行",
@@ -322,7 +322,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
             "チケット台帳所有権照合"
           ],
           [
-            "Relayスマートコントラクト初期化",
+            "エスクローのスマートコントラクト初期化",
             "アトミックエスクロー資金ロック",
             "二重使用整合性ガード"
           ],
@@ -382,10 +382,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
   "de": {
     "meta": {
       "id": "ticket-transfer",
-      "tag": "Relay",
+      "tag": "Credential Issuance",
       "title": "Verifiziertes Ticket übertragen",
       "desc": "Weisen Sie ursprüngliches Eigentum nach, sperren Sie Treuhandbedingungen und übertragen Sie den Ticketnachweis sicher.",
-      "security": "Relay + Smart Escrow",
+      "security": "Credential Issuance + Smart Escrow",
       "successResult": "Das Ticketeigentum wurde atomar übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.",
       "steps": [
         {
@@ -396,7 +396,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Treuhandbedingungen sperren",
           "action": "Treuhandkonto initialisieren",
-          "logText": "Der Relay-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe."
+          "logText": "Der Escrow-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe."
         },
         {
           "label": "Übertragung ausführen",
@@ -447,7 +447,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
             "Abgleich des Ticketeigentums im Ledger"
           ],
           [
-            "Relay-Smart-Contract-Initialisierung",
+            "Escrow-Smart-Contract-Initialisierung",
             "Atomare Escrow-Fondssperre",
             "Integritätsschutz gegen Double-Spend"
           ],
@@ -507,7 +507,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
   "vi": {
     "meta": {
       "id": "ticket-transfer",
-      "tag": "Relay",
+      "tag": "Credential Issuance",
       "title": "Chuyển vé đã xác minh",
       "desc": "Chứng minh quyền sở hữu ban đầu, khóa ký quỹ và chuyển thông tin xác thực vé một cách an toàn.",
       "security": "Tiết lộ có chọn lọc và hợp đồng thông minh",
@@ -521,7 +521,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Khóa điều khoản ký quỹ",
           "action": "Khởi tạo ký quỹ",
-          "logText": "Hợp đồng thông minh Relay đã khóa tiền và chống chi tiêu hai lần."
+          "logText": "Hợp đồng thông minh ký quỹ đã khóa tiền và chống chi tiêu hai lần."
         },
         {
           "label": "Thực hiện chuyển nhượng",
@@ -572,7 +572,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
             "Khớp quyền sở hữu trong sổ cái vé"
           ],
           [
-            "Khởi tạo hợp đồng thông minh Relay",
+            "Khởi tạo hợp đồng thông minh ký quỹ",
             "Khóa quỹ ký quỹ nguyên tử",
             "Bảo vệ toàn vẹn chống chi tiêu hai lần"
           ],

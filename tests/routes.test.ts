@@ -4,10 +4,13 @@ import test from 'node:test';
 import {
   APP_VIEWS,
   DEFAULT_BLOG_DETAIL_ID,
+  DEMO_SCENARIO_IDS,
   LEGACY_VIEW_ALIASES,
   PUBLIC_BLOG_DETAIL_IDS,
   SUPPORTED_LOCALES,
   blogDetailPath,
+  credentialIssuanceDocsPath,
+  dashboardCredentialIssuancePath,
   dashboardFlowPath,
   dashboardPath,
   getBlogDetailLocales,
@@ -19,6 +22,8 @@ import {
   resolveViewLocale,
   viewToPath,
 } from '../src/types/routes.ts';
+import { getDocsTabIdFromSearch } from '../src/components/docs/docsNavigation.ts';
+import { getDemoSeoProfile } from '../src/content/demoSeoProfiles.ts';
 
 test('white paper is exposed only through its Vietnamese route', () => {
   assert.deepEqual(getViewLocales('white-paper'), ['vi']);
@@ -33,23 +38,36 @@ test('fully translated views keep all supported locales', () => {
   assert.equal(viewToPath('connect', 'de'), '/de/connect');
 });
 
-test('Interface Studio and Relay publish independent canonical routes', () => {
+test('Interface Studio and Credential Issuance publish independent canonical routes', () => {
   assert.ok(APP_VIEWS.includes('interface-studio'));
-  assert.ok(APP_VIEWS.includes('relay'));
+  assert.ok(APP_VIEWS.includes('credential-issuance'));
   assert.equal(viewToPath('interface-studio', 'vi'), '/vi/interface-studio');
   assert.equal(pathToView('/ja/interface-studio'), 'interface-studio');
   assert.equal(pathToView('/ja/flow-editor'), null);
 
   assert.deepEqual(LEGACY_VIEW_ALIASES, {});
-  assert.equal(viewToPath('relay', 'de'), '/de/relay');
-  assert.equal(pathToView('/de/relay'), 'relay');
-  assert.equal(localizePath('/de/relay', 'vi'), '/vi/relay');
-  assert.equal(pathToView('/vi/relay/unexpected'), null);
+  assert.equal(viewToPath('credential-issuance', 'de'), '/de/credential-issuance');
+  assert.equal(pathToView('/de/credential-issuance'), 'credential-issuance');
+  assert.equal(localizePath('/de/credential-issuance', 'vi'), '/vi/credential-issuance');
+  assert.equal(pathToView('/vi/credential-issuance/unexpected'), null);
+  assert.equal(pathToView('/vi/relay'), null);
 });
 
 test('dashboard routes are canonical, localized, and preserve nested flow tools', () => {
   assert.ok(APP_VIEWS.includes('dashboard'));
   assert.equal(dashboardPath('vi'), '/vi/dashboard');
+  assert.equal(
+    dashboardCredentialIssuancePath('vi'),
+    '/vi/dashboard/credential-issuance',
+  );
+  assert.deepEqual(
+    pathToDashboardRoute('/vi/dashboard/credential-issuance'),
+    { page: 'credential-issuance' },
+  );
+  assert.equal(
+    localizePath('/de/dashboard/credential-issuance', 'ja'),
+    '/ja/dashboard/credential-issuance',
+  );
   assert.equal(
     dashboardFlowPath('flow 01', 'dynamic-flow', 'en'),
     '/en/dashboard/flows/flow%2001/dynamic-flow',
@@ -70,6 +88,35 @@ test('dashboard routes are canonical, localized, and preserve nested flow tools'
   assert.equal(pathToView('/en/dashboard/flows/flow-1/dynamic-flow'), 'dashboard');
   assert.equal(pathToView('/en/dashboard/flows/flow-1/unknown-tool'), null);
   assert.equal(pathToView('/en/dashboard/unexpected'), null);
+});
+
+test('Credential Issuance docs path opens the dedicated docs tab', () => {
+  assert.equal(
+    credentialIssuanceDocsPath('en'),
+    '/en/docs?tab=credential-issuance',
+  );
+  assert.equal(
+    getDocsTabIdFromSearch('?tab=credential-issuance'),
+    'credential-issuance',
+  );
+  assert.equal(getDocsTabIdFromSearch('?tab=unknown'), null);
+});
+
+test('every demo scenario has unique localized search metadata', () => {
+  for (const locale of SUPPORTED_LOCALES) {
+    const profiles = DEMO_SCENARIO_IDS.map((scenarioId) =>
+      getDemoSeoProfile(scenarioId, locale));
+
+    assert.equal(new Set(profiles.map(({ title }) => title)).size, profiles.length);
+    assert.equal(
+      new Set(profiles.map(({ description }) => description)).size,
+      profiles.length,
+    );
+    assert.ok(
+      profiles.every(({ title, headline, description }) =>
+        title.trim() && headline.trim() && description.trim()),
+    );
+  }
 });
 
 test('Vietnamese-only structured articles canonicalize every locale to Vietnamese', () => {

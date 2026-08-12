@@ -24,11 +24,11 @@ test('platform registry exposes nine unique products exactly once', () => {
   );
 });
 
-test('platform product destinations are valid and preserve Relay taxonomy', () => {
+test('platform product destinations are valid and include Credential Issuance', () => {
   assert.deepEqual(PLATFORM_PRODUCT_VIEWS, {
     interfaceStudio: 'interface-studio',
     dynamicFlow: 'dynamic-flow',
-    relay: 'relay',
+    credentialIssuance: 'credential-issuance',
     workflows: 'workflows',
     caseManagement: 'case-management',
     copilot: 'copilot',

@@ -386,7 +386,7 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                           {c.risk === 'Suspicious IP Location' ? buildingBlocksT.suspiciousIpLocation :
                            c.risk === 'Document Expiry Date mismatch' ? buildingBlocksT.docExpiryMismatch :
                            buildingBlocksT.nameTypoPassport}
-                          &bull; <span className="font-semibold text-rose-600">{c.flag === 'High' ? buildingBlocksT.relayRiskHigh : c.flag === 'Medium' ? buildingBlocksT.relayRiskMedium : buildingBlocksT.relayRiskLow}</span>
+                          &bull; <span className="font-semibold text-rose-600">{c.flag === 'High' ? buildingBlocksT.riskHigh : c.flag === 'Medium' ? buildingBlocksT.riskMedium : buildingBlocksT.riskLow}</span>
                         </p>
                       </div>
 

@@ -93,6 +93,8 @@ const technicalLiteral = (raw) => {
   if (/^"[A-Za-z0-9_.-]+"$/.test(value)) return true;
   if (/^\{\s*"[\w-]+":.+\}$/.test(value)) return true;
   if (/^\{value\}(?:\s+\{value\})+\.?$/.test(value)) return true;
+  if (/^\{value\}(?:\s*[:|/Â·-]\s*\{value\})+$/.test(value)) return true;
+  if (/^[a-z][a-z0-9-]*-\{value\}$/.test(value)) return true;
   if (/^[A-Z0-9_./:%#\-+()[\]\s]+$/.test(value)) return true;
   if (/^(LAT|LON):\s*[-\d.° NSEW,\s]+(?:,\s*(LAT|LON):\s*[-\d.° NSEW,\s]+)?$/i.test(value)) return true;
   if (/^\d+\s+[A-Z][\p{L}.'-]+(?:\s+[A-Z][\p{L}.'-]+){0,5}(?:,\s*[A-Z][\p{L}.'-]+(?:\s+[A-Z][\p{L}.'-]+){0,3})?$/u.test(value)) return true;

@@ -23,7 +23,7 @@ export type FooterTextKey =
   | 'developers'
   | 'platformOverview'
   | 'dynamicFlow'
-  | 'relay'
+  | 'credentialIssuance'
   | 'interfaceStudio'
   | 'passiveSignals'
   | 'caseManagement'
@@ -121,7 +121,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     developers: 'Developers',
     platformOverview: 'Platform Overview',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     interfaceStudio: 'Interface Studio',
     passiveSignals: 'Passive signals',
     caseManagement: 'Case management',
@@ -219,7 +219,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     developers: 'Desarrolladores',
     platformOverview: 'Resumen de la plataforma',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     interfaceStudio: 'Interface Studio',
     passiveSignals: 'Señales pasivas',
     caseManagement: 'Gestión de casos',
@@ -317,7 +317,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     developers: '開発者向け',
     platformOverview: 'プラットフォーム概要',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     interfaceStudio: 'Interface Studio',
     passiveSignals: 'パッシブシグナル',
     caseManagement: 'ケース管理',
@@ -415,7 +415,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     developers: 'Entwickler',
     platformOverview: 'Plattformübersicht',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     interfaceStudio: 'Interface Studio',
     passiveSignals: 'Passive Signale',
     caseManagement: 'Fallmanagement',
@@ -513,7 +513,7 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     developers: 'Nhà phát triển',
     platformOverview: 'Tổng quan nền tảng',
     dynamicFlow: 'Dynamic Flow',
-    relay: 'Relay',
+    credentialIssuance: 'Credential Issuance',
     interfaceStudio: 'Interface Studio',
     passiveSignals: 'Tín hiệu thụ động',
     caseManagement: 'Quản lý hồ sơ',
@@ -606,7 +606,7 @@ export const FOOTER_SECTIONS = [
       { key: 'platformOverview', view: 'platform' },
       { key: 'interfaceStudio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
       { key: 'dynamicFlow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
-      { key: 'relay', view: PLATFORM_PRODUCT_VIEWS.relay },
+      { key: 'credentialIssuance', view: PLATFORM_PRODUCT_VIEWS.credentialIssuance },
       { key: 'workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
       { key: 'caseManagement', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
       { key: 'copilot', view: PLATFORM_PRODUCT_VIEWS.copilot },
@@ -685,11 +685,11 @@ export const FOOTER_SECTIONS = [
       { key: 'whitePaper', view: 'white-paper' },
       { key: 'ebooksReports', view: 'ebooks' },
       { key: 'research', view: 'research' },
-      { key: 'webinarsVideos' },
-      { key: 'identityGlossary' },
-      { key: 'helpCenter' },
+      { key: 'webinarsVideos', view: 'events' },
+      { key: 'identityGlossary', view: 'resource-center' },
+      { key: 'helpCenter', view: 'docs' },
       { key: 'caseStudies', view: 'customers' },
-      { key: 'identraAcademy' }
+      { key: 'identraAcademy', view: 'academy' }
     ]
   },
   {
@@ -699,13 +699,11 @@ export const FOOTER_SECTIONS = [
       { key: 'pricing', view: 'pricing' },
       { key: 'login', view: 'login' },
       { key: 'contactUs', view: 'contact' },
-      { key: 'industryRecognition' },
       { key: 'events', view: 'events' },
       { key: 'earlyCareers', view: 'careers' },
       { key: 'careers', view: 'careers' },
       { key: 'partnerWithUs', view: 'partners' },
       { key: 'security', view: 'security' },
-      { key: 'awards' }
     ]
   },
   {
@@ -714,8 +712,7 @@ export const FOOTER_SECTIONS = [
     links: [
       { key: 'documentation', view: 'docs' },
       { key: 'whitePaper', view: 'white-paper' },
-      { key: 'apiReference' },
-      { key: 'serviceStatus' }
+      { key: 'apiReference', view: 'docs' }
     ]
   }
 ] as const satisfies readonly {
@@ -727,11 +724,7 @@ export const FOOTER_SECTIONS = [
 }[];
 
 export const FOOTER_LEGAL_LINKS = [
-  { key: 'websiteTerms' },
   { key: 'privacyPolicy', view: 'privacy-overview' },
-  { key: 'cookiePolicy' },
   { key: 'doNotSell', view: 'privacy-overview' },
-  { key: 'dataSubjectRequest', view: 'privacy-overview' },
-  { key: 'consumerHealthPrivacy' },
-  { key: 'accessibilityStatement' }
+  { key: 'dataSubjectRequest', view: 'privacy-overview' }
 ] as const satisfies readonly { key: FooterTextKey; view?: string }[];

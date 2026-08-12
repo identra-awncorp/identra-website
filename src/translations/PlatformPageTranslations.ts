@@ -195,8 +195,8 @@ const en: PlatformPageCopy = {
       title: 'Dynamic Flow',
       description: 'Adapt verification steps in real time so trusted users move quickly while higher-risk sessions receive additional checks.',
     },
-    relay: {
-      title: 'Relay',
+    credentialIssuance: {
+      title: 'Credential Issuance',
       description: 'Let customers reuse verified credentials and disclose only the information needed for each new verification.',
     },
     workflows: {
@@ -382,8 +382,8 @@ const es: PlatformPageCopy = {
       title: 'Dynamic Flow',
       description: 'Adapte los pasos en tiempo real para que los usuarios confiables avancen rápido y las sesiones de riesgo reciban controles adicionales.',
     },
-    relay: {
-      title: 'Relay',
+    credentialIssuance: {
+      title: 'Credential Issuance',
       description: 'Permita reutilizar credenciales verificadas y compartir solo la información necesaria para cada nueva verificación.',
     },
     workflows: {
@@ -569,8 +569,8 @@ const ja: PlatformPageCopy = {
       title: 'Dynamic Flow',
       description: '信頼度の高い利用者は素早く通過させ、リスクの高いセッションには追加確認を求めるよう、経路をリアルタイムで調整します。',
     },
-    relay: {
-      title: 'Relay',
+    credentialIssuance: {
+      title: 'Credential Issuance',
       description: '確認済みの実証情報を再利用し、新しい確認先には必要な情報だけを安全に共有できます。',
     },
     workflows: {
@@ -756,8 +756,8 @@ const de: PlatformPageCopy = {
       title: 'Dynamic Flow',
       description: 'Passen Sie Schritte in Echtzeit an, damit vertrauenswürdige Nutzer schnell vorankommen und riskante Sitzungen zusätzliche Prüfungen erhalten.',
     },
-    relay: {
-      title: 'Relay',
+    credentialIssuance: {
+      title: 'Credential Issuance',
       description: 'Lassen Sie bestätigte Nachweise wiederverwenden und für jede neue Prüfung nur die erforderlichen Informationen offenlegen.',
     },
     workflows: {
@@ -943,8 +943,8 @@ const vi: PlatformPageCopy = {
       title: 'Dynamic Flow',
       description: 'Điều chỉnh các bước xác minh theo thời gian thực để người dùng có độ tin cậy cao hoàn tất nhanh hơn, còn trường hợp có dấu hiệu rủi ro sẽ được yêu cầu xác minh thêm.',
     },
-    relay: {
-      title: 'Relay',
+    credentialIssuance: {
+      title: 'Credential Issuance',
       description: 'Cho phép khách hàng tái sử dụng thực chứng đã được xác minh và chỉ chia sẻ những thông tin cần thiết cho từng yêu cầu mới.',
     },
     workflows: {

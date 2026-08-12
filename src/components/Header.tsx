@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { SUPPORTED_LOCALES, type AppView, type Locale, viewToPath } from '../types/routes';
+import { isAppView, SUPPORTED_LOCALES, type AppView, type Locale, viewToPath } from '../types/routes';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
@@ -15,7 +15,7 @@ import {
   ClipboardCheck, Share2, Briefcase, ShieldAlert, Calendar, ListChecks, 
   RefreshCw, Landmark, ShoppingBag, HeartPulse, CreditCard, Coins, 
   Building, Building2, BookOpen, GraduationCap, CheckCircle, HeartHandshake, Users,
-  Search, Video, HelpCircle, Lock, FileCode, Code, Gauge, Asterisk, Shapes, MessageSquare, FileText
+  Search, Video, HelpCircle, Lock, FileCode, Code, Asterisk, Shapes, MessageSquare, FileText
 } from 'lucide-react';
 import { NavItem } from '../types';
 import { HEADER_COPY_KEYS, MENU_TRANSLATIONS } from '../translations/HeaderTranslations';
@@ -27,7 +27,7 @@ import identityIllustrationImage from '../assets/images/identra_identity_illustr
 
 const PLATFORM_ITEMS = [
   { label: HEADER_COPY_KEYS.dynamicFlow, subtitle: HEADER_COPY_KEYS.identityDataCollection, icon: 'Split', href: '#dynamic-flow', view: PLATFORM_PRODUCT_VIEWS.dynamicFlow },
-  { label: HEADER_COPY_KEYS.relay, subtitle: HEADER_COPY_KEYS.eligibilityAssurance, icon: 'ShieldCheck', href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
+  { label: HEADER_COPY_KEYS.credentialIssuance, subtitle: HEADER_COPY_KEYS.reusableCredentials, icon: 'ShieldCheck', href: '#credential-issuance', view: PLATFORM_PRODUCT_VIEWS.credentialIssuance },
   { label: HEADER_COPY_KEYS.interfaceStudio, subtitle: HEADER_COPY_KEYS.noCodeUiBuilder, icon: 'Sliders', href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
   { label: HEADER_COPY_KEYS.workflows, subtitle: HEADER_COPY_KEYS.processAutomation, icon: 'Shuffle', href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
   { label: HEADER_COPY_KEYS.caseManagement, subtitle: HEADER_COPY_KEYS.manualReviewHub, icon: 'FolderHeart', href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
@@ -83,10 +83,10 @@ const SOLUTIONS_INDUSTRIES = [
 ];
 
 const SOLUTIONS_GOALS = [
-  { label: HEADER_COPY_KEYS.compliance, icon: 'CheckCircle', href: '#' },
-  { label: HEADER_COPY_KEYS.trustSafety, icon: 'HeartHandshake', href: '#' },
-  { label: HEADER_COPY_KEYS.fraudPrevention, icon: 'ShieldAlert', href: '#' },
-  { label: HEADER_COPY_KEYS.globalExpansion, icon: 'Globe', href: '#' },
+  { label: HEADER_COPY_KEYS.compliance, icon: 'CheckCircle', href: '#compliance-goal' },
+  { label: HEADER_COPY_KEYS.trustSafety, icon: 'HeartHandshake', href: '#trust' },
+  { label: HEADER_COPY_KEYS.fraudPrevention, icon: 'ShieldAlert', href: '#fraud-prevent' },
+  { label: HEADER_COPY_KEYS.globalExpansion, icon: 'Globe', href: '#global-expansion' },
 ];
 
 const COMPANY_LEARNING_ITEMS = [
@@ -94,28 +94,27 @@ const COMPANY_LEARNING_ITEMS = [
   { label: HEADER_COPY_KEYS.demo, icon: 'Sparkles', href: '#demo', isNew: true },
   { label: HEADER_COPY_KEYS.blog, icon: 'Newspaper', href: '#blog' },
   { label: HEADER_COPY_KEYS.ebooksReports, icon: 'BookOpen', href: '#ebooks' },
-  { label: HEADER_COPY_KEYS.webinarsVideos, icon: 'Video', href: '#' },
-  { label: HEADER_COPY_KEYS.identityGlossary, icon: 'BookOpen', href: '#' },
-  { label: HEADER_COPY_KEYS.helpCenter, icon: 'HelpCircle', href: '#' },
+  { label: HEADER_COPY_KEYS.webinarsVideos, icon: 'Video', href: '#events' },
+  { label: HEADER_COPY_KEYS.identityGlossary, icon: 'BookOpen', href: '#resource-center' },
+  { label: HEADER_COPY_KEYS.helpCenter, icon: 'HelpCircle', href: '#docs' },
   { label: HEADER_COPY_KEYS.identraAcademy, icon: 'GraduationCap', href: '#academy' },
 ];
 
 const COMPANY_MENU_ITEMS = [
   { label: HEADER_COPY_KEYS.about, icon: 'Asterisk', href: '#about' },
-  { label: HEADER_COPY_KEYS.industryRecognitions, icon: 'Shapes', href: '#' },
+  { label: HEADER_COPY_KEYS.industryRecognitions, icon: 'Shapes', href: '#research' },
   { label: HEADER_COPY_KEYS.events, icon: 'Calendar', href: '#events' },
   { label: HEADER_COPY_KEYS.careers, icon: 'Briefcase', href: '#careers' },
   { label: HEADER_COPY_KEYS.contact, icon: 'MessageSquare', href: '#contact' },
   { label: HEADER_COPY_KEYS.partners, icon: 'HeartHandshake', href: '#partners' },
-  { label: HEADER_COPY_KEYS.privacyOverview, icon: 'Lock', href: '#' },
+  { label: HEADER_COPY_KEYS.privacyOverview, icon: 'Lock', href: '#privacy-overview' },
   { label: HEADER_COPY_KEYS.security, icon: 'Shield', href: '#security' },
 ];
 
 const COMPANY_DEVELOPERS_ITEMS = [
   { label: HEADER_COPY_KEYS.whitePaper, icon: 'FileText', href: '#white-paper' },
-  { label: HEADER_COPY_KEYS.documentation, icon: 'FileCode', href: '#' },
-  { label: HEADER_COPY_KEYS.apiReference, icon: 'Code', href: '#' },
-  { label: HEADER_COPY_KEYS.serviceStatus, icon: 'Gauge', href: '#' },
+  { label: HEADER_COPY_KEYS.documentation, icon: 'FileCode', href: '#docs' },
+  { label: HEADER_COPY_KEYS.apiReference, icon: 'Code', href: '#docs' },
 ];
 
 const ICON_MAP: Record<string, React.ComponentType<any>> = {
@@ -167,7 +166,6 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Lock,
   FileCode,
   Code,
-  Gauge,
   FileText,
   Asterisk,
   Shapes,
@@ -195,7 +193,7 @@ const NAVIGATION_ITEMS: NavItem[] = [
       { label: HEADER_COPY_KEYS.verifications, description: HEADER_COPY_KEYS.descVerifications, href: '#verifications' },
       { label: HEADER_COPY_KEYS.interfaceStudio, description: HEADER_COPY_KEYS.descInterfaceStudio, href: '#interface-studio', view: PLATFORM_PRODUCT_VIEWS.interfaceStudio },
       { label: HEADER_COPY_KEYS.workflows, description: HEADER_COPY_KEYS.descWorkflows, href: '#workflows', view: PLATFORM_PRODUCT_VIEWS.workflows },
-      { label: HEADER_COPY_KEYS.relay, description: HEADER_COPY_KEYS.descRelay, href: '#connect', view: PLATFORM_PRODUCT_VIEWS.relay },
+      { label: HEADER_COPY_KEYS.credentialIssuance, description: HEADER_COPY_KEYS.descCredentialIssuance, href: '#credential-issuance', view: PLATFORM_PRODUCT_VIEWS.credentialIssuance },
       { label: HEADER_COPY_KEYS.cases, description: HEADER_COPY_KEYS.descCases, href: '#cases', view: PLATFORM_PRODUCT_VIEWS.caseManagement },
       { label: HEADER_COPY_KEYS.passiveSignalsTitle, description: HEADER_COPY_KEYS.descPassiveSignals, href: '#passive-signals', view: PLATFORM_PRODUCT_VIEWS.passiveSignals },
       { label: HEADER_COPY_KEYS.graph, description: HEADER_COPY_KEYS.descGraph, href: '#graph', view: PLATFORM_PRODUCT_VIEWS.graph },
@@ -206,12 +204,12 @@ const NAVIGATION_ITEMS: NavItem[] = [
   {
     label: HEADER_COPY_KEYS.solutions,
     children: [
-      { label: HEADER_COPY_KEYS.byIndustry, description: HEADER_COPY_KEYS.descByIndustry, href: '#' },
-      { label: HEADER_COPY_KEYS.byUseCase, description: HEADER_COPY_KEYS.descByUseCase, href: '#' },
+      { label: HEADER_COPY_KEYS.byIndustry, description: HEADER_COPY_KEYS.descByIndustry, href: '#fintech', view: 'fintech' },
+      { label: HEADER_COPY_KEYS.byUseCase, description: HEADER_COPY_KEYS.descByUseCase, href: '#compliance', view: 'compliance' },
     ]
   },
-  { label: HEADER_COPY_KEYS.customers, href: '#' },
-  { label: HEADER_COPY_KEYS.pricing, href: '#' },
+  { label: HEADER_COPY_KEYS.customers, href: '#customers', view: 'customers' },
+  { label: HEADER_COPY_KEYS.pricing, href: '#pricing', view: 'pricing' },
   { label: HEADER_COPY_KEYS.research, href: '#research' },
   {
     label: HEADER_COPY_KEYS.company,
@@ -238,6 +236,19 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
   const [expandedMobileMenus, setExpandedMobileMenus] = useState<Record<number, boolean>>({});
   const [expandedSolutionsSubMenus, setExpandedSolutionsSubMenus] = useState<Record<string, boolean>>({});
+  const hrefForNavigation = (href?: string, targetView?: AppView) => {
+    const hashTarget = href?.startsWith('#') ? href.slice(1) : '';
+    const aliasedTarget = hashTarget === 'verifications'
+      ? 'government-id'
+      : hashTarget === 'cases'
+        ? 'case-management'
+        : hashTarget;
+    const resolvedView = targetView ?? (isAppView(aliasedTarget) ? aliasedTarget : null);
+
+    return resolvedView
+      ? viewToPath(resolvedView, language)
+      : viewToPath('landing', language);
+  };
   const [expandedProductsSubMenus, setExpandedProductsSubMenus] = useState<Record<string, boolean>>({});
   const [expandedCompanySubMenus, setExpandedCompanySubMenus] = useState<Record<string, boolean>>({});
   const [unavailableNoticeVisible, setUnavailableNoticeVisible] = useState(false);
@@ -387,6 +398,8 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('security');
     } else if (lowercaseLabel.includes('event') || href === '#events') {
       onViewChange('events');
+    } else if (lowercaseLabel.includes('research') || href === '#research') {
+      onViewChange('research');
     } else if (lowercaseLabel.includes('blog') || href === '#blog') {
       onViewChange('blog');
     } else if (lowercaseLabel.includes('e-books') || lowercaseLabel.includes('ebook') || href === '#ebooks') {
@@ -577,7 +590,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('profile-report');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.relay || href === '#connect' || href === '#relay')) {
+    } else if (onViewChange && href === '#connect') {
       e.preventDefault();
       onViewChange('connect');
       setActiveDropdown(null);
@@ -832,15 +845,20 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       {/* Main Header */}
       <nav className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between border-b border-slate-100 relative">
         {/* Logo */}
-        <button type="button"
-          onClick={() => onViewChange?.('landing')}
+        <a
+          href={viewToPath('landing', language)}
+          onClick={(event) => {
+            if (!onViewChange || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            onViewChange('landing');
+          }}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
           <img src={identraLogo} alt={tm(HEADER_COPY_KEYS.identra)} className="h-8 w-8 object-contain" />
           <span className="font-display font-bold text-xl tracking-tight text-slate-900">
             {tm(HEADER_COPY_KEYS.identra)}
           </span>
-        </button>
+        </a>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center gap-1.5">
@@ -873,7 +891,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                           {item.children.map((child, cIdx) => (
                             <a
                               key={cIdx}
-                              href={child.href}
+                              href={hrefForNavigation(child.href, child.view)}
                               onClick={(e) => handleLinkClick(e, child.label, child.href, child.view)}
                               className="p-3 hover:bg-slate-50 rounded-xl transition flex flex-col gap-0.5"
                             >
@@ -892,7 +910,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                   </div>
                 ) : (
                   <a
-                    href={item.href}
+                    href={hrefForNavigation(item.href, item.view)}
                     onClick={(e) => handleLinkClick(e, item.label, item.href || '', item.view)}
                     className="px-3.5 py-1.5 rounded-xl text-sm font-medium text-slate-600 hover:text-[#354CE1] hover:bg-slate-50 transition"
                   >
@@ -1002,7 +1020,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {SOLUTIONS_USE_CASES.map((u, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={u.href}
+                                        href={hrefForNavigation(u.href)}
                                         onClick={(e) => handleSolutionsItemClick(e, 'useCase', u.label, u.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition"
                                       >
@@ -1027,7 +1045,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {SOLUTIONS_INDUSTRIES.map((i, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={i.href}
+                                        href={hrefForNavigation(i.href)}
                                         onClick={(e) => handleSolutionsItemClick(e, 'industry', i.label, i.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition"
                                       >
@@ -1052,7 +1070,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {SOLUTIONS_GOALS.map((g, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={g.href}
+                                        href={hrefForNavigation(g.href)}
                                         onClick={(e) => handleSolutionsItemClick(e, 'goal', g.label, g.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition"
                                       >
@@ -1079,7 +1097,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {PLATFORM_ITEMS.map((p, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={p.href}
+                                        href={hrefForNavigation(p.href, p.view)}
                                         onClick={(e) => handleLinkClick(e, p.label, p.href, p.view)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1105,7 +1123,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {VERIFICATION_ITEMS.map((v, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={v.href}
+                                        href={hrefForNavigation(v.href)}
                                         onClick={(e) => handleLinkClick(e, v.label, v.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1130,7 +1148,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {RISK_ITEMS.map((r, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={r.href}
+                                        href={hrefForNavigation(r.href)}
                                         onClick={(e) => handleLinkClick(e, r.label, r.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1157,7 +1175,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {COMPANY_LEARNING_ITEMS.map((l, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={l.href}
+                                        href={hrefForNavigation(l.href)}
                                         onClick={(e) => handleLinkClick(e, l.label, l.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1187,7 +1205,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {COMPANY_MENU_ITEMS.map((c, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={c.href}
+                                        href={hrefForNavigation(c.href)}
                                         onClick={(e) => handleLinkClick(e, c.label, c.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1212,7 +1230,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                                     {COMPANY_DEVELOPERS_ITEMS.map((d, cIdx) => (
                                       <a
                                         key={cIdx}
-                                        href={d.href}
+                                        href={hrefForNavigation(d.href)}
                                         onClick={(e) => handleLinkClick(e, d.label, d.href)}
                                         className="p-1.5 hover:bg-slate-50 rounded-lg transition text-left block"
                                       >
@@ -1228,7 +1246,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                               {item.children.map((child, cIdx) => (
                                 <a
                                   key={cIdx}
-                                  href={child.href}
+                                  href={hrefForNavigation(child.href, child.view)}
                                   onClick={(e) => handleLinkClick(e, child.label, child.href, child.view)}
                                   className="p-2 hover:bg-slate-50 rounded-lg transition"
                                 >
@@ -1242,7 +1260,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                       </div>
                     ) : (
                       <a
-                        href={item.href}
+                        href={hrefForNavigation(item.href, item.view)}
                         onClick={(e) => handleLinkClick(e, item.label, item.href || '', item.view)}
                         className="block px-3 py-2 text-sm font-semibold text-slate-800 hover:text-[#354CE1]"
                       >
@@ -1343,7 +1361,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={p.href}
+                        href={hrefForNavigation(p.href, p.view)}
                         onClick={(e) => handleLinkClick(e, p.label, p.href, p.view)}
                         className="flex items-start gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1375,7 +1393,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={v.href}
+                        href={hrefForNavigation(v.href)}
                         onClick={(e) => handleLinkClick(e, v.label, v.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1402,7 +1420,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={r.href}
+                        href={hrefForNavigation(r.href)}
                         onClick={(e) => handleLinkClick(e, r.label, r.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1470,7 +1488,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={u.href}
+                        href={hrefForNavigation(u.href)}
                         onClick={(e) => handleSolutionsItemClick(e, 'useCase', u.label, u.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1497,7 +1515,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={i.href}
+                        href={hrefForNavigation(i.href)}
                         onClick={(e) => {
                           e.preventDefault();
                           setActiveDropdown(null);
@@ -1552,7 +1570,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={g.href}
+                        href={hrefForNavigation(g.href)}
                         onClick={(e) => {
                           e.preventDefault();
                           setActiveDropdown(null);
@@ -1635,7 +1653,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={item.href}
+                        href={hrefForNavigation(item.href)}
                         onClick={(e) => handleItemClick(e, item.label, item.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1665,7 +1683,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={item.href}
+                        href={hrefForNavigation(item.href)}
                         onClick={(e) => handleItemClick(e, item.label, item.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >
@@ -1692,7 +1710,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     return (
                       <a
                         key={idx}
-                        href={item.href}
+                        href={hrefForNavigation(item.href)}
                         onClick={(e) => handleItemClick(e, item.label, item.href)}
                         className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition group"
                       >

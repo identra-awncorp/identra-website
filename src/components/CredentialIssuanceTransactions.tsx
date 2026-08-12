@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
-import { relayTransactionsTranslations } from '../translations/RelayTransactionsTranslations';
+import { credentialIssuanceTransactionsTranslations } from '../translations/CredentialIssuanceTransactionsTranslations';
 import { 
   Ticket, 
   ArrowRight, 
@@ -26,8 +26,8 @@ import {
   Search
 } from 'lucide-react';
 
-type RelayTransactionsLanguage = keyof typeof relayTransactionsTranslations;
-type RelayTransactionsTranslationKey = keyof typeof relayTransactionsTranslations.en;
+type CredentialIssuanceTransactionsLanguage = keyof typeof credentialIssuanceTransactionsTranslations;
+type CredentialIssuanceTransactionsTranslationKey = keyof typeof credentialIssuanceTransactionsTranslations.en;
 
 const formatTxText = (template: string, values: Record<string, string | number>) => (
   Object.entries(values).reduce(
@@ -36,11 +36,11 @@ const formatTxText = (template: string, values: Record<string, string | number>)
   )
 );
 
-export default function RelayTransactions() {
+export default function CredentialIssuanceTransactions() {
   const { language } = useLanguage();
-  const t = (key: RelayTransactionsTranslationKey) => {
-    const lang = language as RelayTransactionsLanguage;
-    return getLocalizedValue(getLocalizedRecord(relayTransactionsTranslations, lang as keyof typeof relayTransactionsTranslations, 'relayTransactionsTranslations'), key, lang, 'relayTransactionsTranslations');
+  const t = (key: CredentialIssuanceTransactionsTranslationKey) => {
+    const lang = language as CredentialIssuanceTransactionsLanguage;
+    return getLocalizedValue(getLocalizedRecord(credentialIssuanceTransactionsTranslations, lang as keyof typeof credentialIssuanceTransactionsTranslations, 'credentialIssuanceTransactionsTranslations'), key, lang, 'credentialIssuanceTransactionsTranslations');
   };
 
   const [ticketDeposited, setTicketDeposited] = useState(false);
@@ -195,7 +195,7 @@ export default function RelayTransactions() {
   };
 
   return (
-    <section id="relay-transactions" className="section-space-wide bg-[#FAFBFD] border-b border-slate-200 text-slate-800 overflow-hidden relative">
+    <section id="credential-issuance-transactions" className="section-space-wide bg-[#FAFBFD] border-b border-slate-200 text-slate-800 overflow-hidden relative">
       {/* Soft elegant background graphics */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#354CE1]/5 rounded-full blur-3xl pointer-events-none" />
 

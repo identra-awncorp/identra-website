@@ -12,6 +12,7 @@ import {
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { CONTACT_TRANSLATIONS } from '../translations/ContactPageTranslations';
+import { viewToPath } from '../types/routes';
 
 interface ContactPageProps {
   onOpenSandbox: () => void;
@@ -422,7 +423,7 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                     className="mt-1 accent-[#354CE1] rounded w-4 h-4 cursor-pointer"
                   />
                   <span className="type-body-sm text-slate-500">
-                    {t.consentPrefix} <a href="#" className="text-[#354CE1] hover:underline font-semibold">{t.privacyPolicy}</a>. {t.consentSuffix}
+                    {t.consentPrefix} <a href={viewToPath('privacy-overview', language)} className="text-[#354CE1] hover:underline font-semibold">{t.privacyPolicy}</a>. {t.consentSuffix}
                   </span>
                 </label>
                 {formErrors.consent && (

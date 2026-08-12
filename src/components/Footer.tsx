@@ -6,7 +6,7 @@
 import { type AppView, viewToPath } from '../types/routes';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Instagram, Linkedin, Smile, Star, Twitter } from 'lucide-react';
+import { ArrowRight, Smile, Star } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
 import {
@@ -94,9 +94,9 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
       <div className="max-w-7xl mx-auto px-6 space-y-16">
         <div className="bg-white text-slate-900 rounded-3xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
-            <h3 className="text-2xl md:text-4xl font-display font-bold text-[#0F1E36] tracking-tight">
+            <h2 className="text-2xl md:text-4xl font-display font-bold text-[#0F1E36] tracking-tight">
               {translate('readyToStart')}
-            </h3>
+            </h2>
             <p className="text-slate-500 text-sm md:text-base">
               {translate('readyToStartDesc')}
             </p>
@@ -141,7 +141,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
                   isWide ? 'xl:col-span-2' : 'xl:col-span-1'
                 ].join(' ')}
               >
-                <h4 className="font-bold text-white uppercase tracking-wider text-[10px]">
+                <h3 className="font-bold text-white uppercase tracking-wider text-[10px]">
                   {titleView ? (
                     <a
                       href={hrefForView(titleView)}
@@ -153,7 +153,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
                   ) : (
                     translate(section.titleKey)
                   )}
-                </h4>
+                </h3>
                 <ul className={['space-y-2', isCompact ? 'text-[11px]' : ''].join(' ')}>
                   {section.links.map((link) => {
                     const view = 'view' in link ? link.view : undefined;
@@ -196,15 +196,6 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
             </div>
 
             <div className="flex items-center gap-4">
-              <a href="#" onClick={(event) => navigate(event)} className="p-2 hover:bg-indigo-400/20 rounded-full transition text-white">
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a href="#" onClick={(event) => navigate(event)} className="p-2 hover:bg-indigo-400/20 rounded-full transition text-white">
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a href="#" onClick={(event) => navigate(event)} className="p-2 hover:bg-indigo-400/20 rounded-full transition text-white">
-                <Instagram className="w-4 h-4" />
-              </a>
               <span className="text-white font-semibold font-display flex items-center gap-1 select-none">
                 <Smile className="w-4.5 h-4.5" />
                 {translate('slogan')}

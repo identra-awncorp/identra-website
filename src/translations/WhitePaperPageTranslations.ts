@@ -1608,7 +1608,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "CertNet là hạ tầng tin cậy được ưu tiên trong hệ sinh thái Identra, nhưng nền tảng không bị giới hạn vào một blockchain, phương thức DID hoặc sổ đăng ký duy nhất. Việc lựa chọn hạ tầng được thực hiện theo mục đích sử dụng, yêu cầu quyền riêng tư và mức độ tin cậy của từng mối quan hệ."
+          "text": "CertNet là một lựa chọn hạ tầng tin cậy trong hệ sinh thái Identra, nhưng nền tảng không bị giới hạn vào một blockchain, phương thức DID hoặc sổ đăng ký duy nhất. Việc lựa chọn hạ tầng được thực hiện theo mục đích sử dụng, yêu cầu quyền riêng tư và mức độ tin cậy của từng mối quan hệ."
         },
         {
           "type": "paragraph",

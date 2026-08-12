@@ -503,49 +503,49 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/connect" />
   </url>
   <url>
-    <loc>https://www.identra.id.vn/en/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/relay" />
+    <loc>https://www.identra.id.vn/en/credential-issuance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/credential-issuance" />
   </url>
   <url>
-    <loc>https://www.identra.id.vn/es/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/relay" />
+    <loc>https://www.identra.id.vn/es/credential-issuance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/credential-issuance" />
   </url>
   <url>
-    <loc>https://www.identra.id.vn/ja/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/relay" />
+    <loc>https://www.identra.id.vn/ja/credential-issuance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/credential-issuance" />
   </url>
   <url>
-    <loc>https://www.identra.id.vn/de/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/relay" />
+    <loc>https://www.identra.id.vn/de/credential-issuance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/credential-issuance" />
   </url>
   <url>
-    <loc>https://www.identra.id.vn/vi/relay</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/relay" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/relay" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/relay" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/relay" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/relay" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/relay" />
+    <loc>https://www.identra.id.vn/vi/credential-issuance</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="ja" href="https://www.identra.id.vn/ja/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/credential-issuance" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/credential-issuance" />
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/platform</loc>

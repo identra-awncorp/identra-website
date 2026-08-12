@@ -21,7 +21,6 @@ import {
   Fingerprint,
   GitBranch,
   LayoutTemplate,
-  Link2,
   LockKeyhole,
   Network,
   Plug,
@@ -59,7 +58,7 @@ interface PlatformPageProps {
 const PRODUCT_ICONS: Record<PlatformProductId, LucideIcon> = {
   interfaceStudio: LayoutTemplate,
   dynamicFlow: GitBranch,
-  relay: Link2,
+  credentialIssuance: ShieldCheck,
   workflows: Workflow,
   caseManagement: BriefcaseBusiness,
   copilot: Bot,

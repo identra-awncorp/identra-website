@@ -8,7 +8,7 @@ import type { AppView } from './routes';
 export const PLATFORM_PRODUCT_IDS = [
   'interfaceStudio',
   'dynamicFlow',
-  'relay',
+  'credentialIssuance',
   'workflows',
   'caseManagement',
   'copilot',
@@ -22,7 +22,7 @@ export type PlatformProductId = typeof PLATFORM_PRODUCT_IDS[number];
 export const PLATFORM_PRODUCT_VIEWS = {
   interfaceStudio: 'interface-studio',
   dynamicFlow: 'dynamic-flow',
-  relay: 'relay',
+  credentialIssuance: 'credential-issuance',
   workflows: 'workflows',
   caseManagement: 'case-management',
   copilot: 'copilot',
@@ -48,7 +48,7 @@ type PlatformJourneyStage = {
 export const PLATFORM_JOURNEY_STAGES = [
   {
     id: 'collect',
-    products: ['interfaceStudio', 'dynamicFlow', 'relay'],
+    products: ['interfaceStudio', 'dynamicFlow', 'credentialIssuance'],
   },
   {
     id: 'orchestrate',

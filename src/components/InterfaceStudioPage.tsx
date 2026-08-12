@@ -359,9 +359,9 @@ function InteractiveStudioWorkspace({ copy }: { readonly copy: InterfaceStudioPa
                       <ShieldCheck className="h-6 w-6" />
                     </div>
                   </div>
-                  <h4 className="type-card-title-sm text-center">
+                  <p className="type-card-title-sm text-center">
                     {copy.hero.screens.welcome.title}
-                  </h4>
+                  </p>
                   <p className="type-body-sm text-center opacity-70">
                     {copy.hero.screens.welcome.body}
                   </p>
@@ -377,7 +377,7 @@ function InteractiveStudioWorkspace({ copy }: { readonly copy: InterfaceStudioPa
 
               {editorState.currentScreen === 'consent' && (
                 <>
-                  <h4 className="type-card-title-sm">{copy.hero.screens.consent.title}</h4>
+                  <p className="type-card-title-sm">{copy.hero.screens.consent.title}</p>
                   <p className="type-body-sm opacity-70">
                     {copy.hero.screens.consent.body}
                   </p>
@@ -401,7 +401,7 @@ function InteractiveStudioWorkspace({ copy }: { readonly copy: InterfaceStudioPa
 
               {editorState.currentScreen === 'verification' && (
                 <>
-                  <h4 className="type-card-title-sm">{copy.hero.screens.verification.title}</h4>
+                  <p className="type-card-title-sm">{copy.hero.screens.verification.title}</p>
                   <div className="p-4 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-center space-y-2">
                     <Scan className="h-8 w-8 mx-auto text-slate-400 animate-pulse" />
                     <p className="type-body-sm font-semibold">{workspaceCopy.scanInstruction}</p>
@@ -423,7 +423,7 @@ function InteractiveStudioWorkspace({ copy }: { readonly copy: InterfaceStudioPa
                       <CheckCircle2 className="h-7 w-7" />
                     </div>
                   </div>
-                  <h4 className="type-card-title-sm text-center">{copy.hero.screens.success.title}</h4>
+                  <p className="type-card-title-sm text-center">{copy.hero.screens.success.title}</p>
                   <p className="type-body-sm text-center opacity-70">
                     {copy.hero.screens.success.body}
                   </p>

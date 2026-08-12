@@ -30,6 +30,7 @@ interface ApiReferenceCopy {
   overviewTitle: string;
   overviewIntro: string;
   contractNotice: string;
+  issuanceDeliveryNotice: string;
   registryNotice: string;
   phaseCardsIntro: string;
   inputLabel: string;
@@ -118,6 +119,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     overviewTitle: 'Lifecycle overview',
     overviewIntro: 'A detailed SDK API reference from key creation and DID Document publication through DIDComm setup, VC issuance, encrypted storage, VP creation, verification, and Holder receipts.',
     contractNotice: 'SDK contracts in this reference are illustrative. Package names, APIs, and endpoints describe intended contracts and mandatory security boundaries.',
+    issuanceDeliveryNotice: 'OpenID4VCI through QR or deep link is the preferred issuance path. The DIDComm stages below document an additional option for deployments that require an established DIDComm relationship.',
     registryNotice: 'CertNet is the default sandbox registry, but the same DID registry layer can publish and resolve documents through did:web, ION, or an internal registry.',
     phaseCardsIntro: 'The lifecycle is divided into three phases so each API stage has a clear owner, input, output, and security invariant.',
     inputLabel: 'API inputs',
@@ -135,6 +137,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     overviewTitle: 'Vista general del ciclo',
     overviewIntro: 'Referencia detallada del SDK desde la creación de claves y publicación del DID Document hasta DIDComm, emisión de VC, almacenamiento cifrado, creación de VP, verificación y recibos para el titular.',
     contractNotice: 'Los contratos SDK de esta referencia son ilustrativos. Los paquetes, APIs y endpoints describen contratos previstos y límites de seguridad obligatorios.',
+    issuanceDeliveryNotice: 'OpenID4VCI mediante QR o enlace profundo es la vía de emisión preferente. Las etapas DIDComm siguientes documentan una opción adicional para despliegues que requieren una relación DIDComm.',
     registryNotice: 'CertNet es el registro predeterminado de sandbox, pero la misma capa de DID registry puede publicar y resolver documentos con did:web, ION o un registro interno.',
     phaseCardsIntro: 'El ciclo se divide en tres fases para que cada etapa API tenga dueño, entrada, salida e invariante de seguridad claros.',
     inputLabel: 'Entradas API',
@@ -152,6 +155,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     overviewTitle: 'ライフサイクル概要',
     overviewIntro: '鍵生成とDID Document公開から、DIDComm接続、VC発行、暗号化保存、VP作成、検証、保有者へのレシート送信までを扱うSDK APIリファレンスです。',
     contractNotice: 'このリファレンスのSDK契約は説明用です。パッケージ名、API、endpointは想定契約と必須のセキュリティ境界を示します。',
+    issuanceDeliveryNotice: 'QRまたはディープリンクによるOpenID4VCIが優先の発行経路です。以下のDIDCommステージは、DIDComm関係が必要な構成向けの追加オプションです。',
     registryNotice: 'CertNetはsandboxの既定registryですが、同じDID registry層でdid:web、ION、内部registryにも公開と解決ができます。',
     phaseCardsIntro: 'ライフサイクルを3つのフェーズに分け、各API stageの所有者、入力、出力、セキュリティ不変条件を明確にします。',
     inputLabel: 'API入力',
@@ -169,6 +173,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     overviewTitle: 'Lifecycle-Überblick',
     overviewIntro: 'Eine detaillierte SDK-API-Referenz von Schlüsselerzeugung und DID-Document-Veröffentlichung über DIDComm, VC-Ausstellung, verschlüsselte Speicherung, VP-Erstellung, Prüfung und Inhaber-Receipt.',
     contractNotice: 'Die SDK-Verträge in dieser Referenz sind illustrativ. Paketnamen, APIs und Endpunkte beschreiben geplante Verträge und verbindliche Sicherheitsgrenzen.',
+    issuanceDeliveryNotice: 'OpenID4VCI per QR-Code oder Deep Link ist der bevorzugte Ausgabeweg. Die folgenden DIDComm-Stufen dokumentieren eine zusätzliche Option für Bereitstellungen mit erforderlicher DIDComm-Beziehung.',
     registryNotice: 'CertNet ist das Standardregister der Sandbox, aber dieselbe DID-registry-Schicht kann Dokumente über did:web, ION oder ein internes Register veröffentlichen und auflösen.',
     phaseCardsIntro: 'Der Lebenszyklus ist in drei Phasen gegliedert, damit jede API-Stufe klare Eigentümer, Eingaben, Ausgaben und Sicherheitsinvarianten hat.',
     inputLabel: 'API-Eingaben',
@@ -186,6 +191,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
     overviewTitle: 'Tổng quan vòng đời',
     overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, cấp phát và lưu thực chứng, tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
     contractNotice: 'Giao diện SDK trong tài liệu này chỉ mang tính minh họa. Tên gói, API và điểm cuối mô tả giao diện dự kiến cùng các ranh giới bảo mật bắt buộc.',
+    issuanceDeliveryNotice: 'OpenID4VCI qua mã QR hoặc deep link là cách phát hành được ưu tiên. Các bước DIDComm bên dưới mô tả lựa chọn bổ sung cho hệ thống cần thiết lập quan hệ DIDComm.',
     registryNotice: 'CertNet là sổ đăng ký mặc định trong môi trường thử nghiệm. Cùng một lớp sổ đăng ký DID cũng có thể công bố và phân giải tài liệu qua did:web, ION hoặc sổ đăng ký nội bộ.',
     phaseCardsIntro: 'Vòng đời được chia thành ba giai đoạn để mỗi bước API có chủ thể, đầu vào, đầu ra và ràng buộc bảo mật rõ ràng.',
     inputLabel: 'Đầu vào API',
@@ -942,6 +948,9 @@ export function buildApiReferenceDocsContent(locale: Locale): DocContent {
         title: docsReferencePhases[phase][locale],
         blocks: [
           { type: 'p' as const, text: copy.phaseIntro[phase] },
+          ...(phase === 'issuance'
+            ? [{ type: 'callout' as const, text: copy.issuanceDeliveryNotice }]
+            : []),
           ...docsReferenceSteps
             .filter(step => step.phase === phase)
             .map(step => stageToBlock(step, locale))

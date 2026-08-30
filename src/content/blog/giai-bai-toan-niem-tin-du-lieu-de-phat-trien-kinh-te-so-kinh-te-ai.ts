@@ -31,7 +31,7 @@ export const DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE = {
   relatedArticleIds: [
     'vuot-xa-super-app-ky-nguyen-ultra-app',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
+    'did-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/trusted-ai-economy-1440.webp`,
@@ -327,4 +327,3 @@ function responsiveImage(name: string): BlogArticleImage {
     height: 810,
   };
 }
-

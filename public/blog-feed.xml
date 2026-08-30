@@ -11,6 +11,45 @@
     <lastBuildDate>Sun, 30 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Lừa đảo trực tuyến và bài toán bảo vệ dữ liệu cá nhân trong thời đại số</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</guid>
+      <description>Dữ liệu cá nhân bị rò rỉ khiến giả mạo ngày càng thuyết phục; SSI bổ sung khả năng xác minh danh tính, vai trò và quyền hạn trong giao dịch số.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Lừa đảo trực tuyến</category>
+      <category>Bảo vệ dữ liệu</category>
+      <category>Định danh tự chủ</category>
+      <category>Xác minh danh tính</category>
+      <media:content url="https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-data-protection-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Rò rỉ dữ liệu tại Trung Quốc và Ấn Độ: Bài học về an ninh dữ liệu và cách SSI thay đổi cách chúng ta bảo vệ thông tin</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</guid>
+      <description>Những vụ rò rỉ quy mô lớn cho thấy rủi ro của việc sao chép dữ liệu định danh và cách SSI có thể giảm lượng thông tin phải lưu giữ.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Rò rỉ dữ liệu</category>
+      <category>An ninh dữ liệu</category>
+      <category>Định danh tự chủ</category>
+      <category>Tối thiểu hóa dữ liệu</category>
+      <media:content url="https://www.identra.id.vn/blog/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin/data-breach-ssi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
+      <title>Tiết lộ có chọn lọc là gì? Cách xác minh thông tin mà không chia sẻ quá nhiều dữ liệu</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</guid>
+      <description>Tiết lộ có chọn lọc giúp chủ thể chỉ trình đúng bằng chứng cần thiết, giảm dữ liệu phải chia sẻ mà vẫn giữ được khả năng xác minh.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Tiết lộ có chọn lọc</category>
+      <category>Tối thiểu hóa dữ liệu</category>
+      <category>Quyền riêng tư</category>
+      <category>Thực chứng</category>
+      <media:content url="https://www.identra.id.vn/blog/tiet-lo-co-chon-loc-la-gi/tiet-lo-co-chon-loc-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
       <title>Thực chứng là gì? Cách dữ liệu số trở nên đáng tin cậy và có thể kiểm chứng</title>
       <link>https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</link>
       <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</guid>

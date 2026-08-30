@@ -275,6 +275,63 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'Tiết lộ có chọn lọc',
     ],
   },
+  'tiet-lo-co-chon-loc-la-gi': {
+    title: 'Tiết lộ có chọn lọc là gì? Xác minh với ít dữ liệu hơn',
+    description: 'Tìm hiểu tiết lộ có chọn lọc là gì, cách chủ thể chỉ cung cấp bằng chứng cần thiết để xác minh thông tin, giảm dữ liệu thu thập và rủi ro rò rỉ.',
+    searchIntent: {
+      primary: 'tiết lộ có chọn lọc là gì',
+      secondary: [
+        'tiết lộ có chọn lọc',
+        'selective disclosure là gì',
+        'xác minh không chia sẻ dữ liệu',
+        'tối thiểu hóa dữ liệu',
+      ],
+    },
+    entities: [
+      'Tiết lộ có chọn lọc',
+      'Thực chứng',
+      'Tối thiểu hóa dữ liệu',
+      'Quyền riêng tư',
+    ],
+  },
+  'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin': {
+    title: 'Rò rỉ dữ liệu tại Trung Quốc và Ấn Độ: Bài học cho SSI',
+    description: 'Phân tích các vụ rò rỉ dữ liệu quy mô lớn được báo cáo tại Trung Quốc và Ấn Độ, rủi ro của dữ liệu định danh bị sao chép và cách SSI hỗ trợ giảm dữ liệu phải lưu giữ.',
+    searchIntent: {
+      primary: 'rò rỉ dữ liệu tại Trung Quốc và Ấn Độ',
+      secondary: [
+        'vụ rò rỉ dữ liệu Trung Quốc 2022',
+        'vụ rò rỉ dữ liệu Ấn Độ 2023',
+        'SSI bảo vệ dữ liệu như thế nào',
+        'tối thiểu hóa dữ liệu định danh',
+      ],
+    },
+    entities: [
+      'Rò rỉ dữ liệu',
+      'An ninh dữ liệu',
+      'Định danh tự chủ',
+      'Tối thiểu hóa dữ liệu',
+    ],
+  },
+  'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so': {
+    title: 'Lừa đảo trực tuyến và bảo vệ dữ liệu cá nhân thời đại số',
+    description: 'Phân tích cách dữ liệu cá nhân bị rò rỉ tiếp sức cho lừa đảo trực tuyến và cách SSI hỗ trợ xác minh danh tính, quyền hạn, đồng thời giảm dữ liệu phải thu thập.',
+    searchIntent: {
+      primary: 'lừa đảo trực tuyến và bảo vệ dữ liệu cá nhân',
+      secondary: [
+        'dữ liệu cá nhân bị lợi dụng để lừa đảo',
+        'SSI chống lừa đảo trực tuyến',
+        'xác minh danh tính bên liên hệ',
+        'giảm thu thập dữ liệu cá nhân',
+      ],
+    },
+    entities: [
+      'Lừa đảo trực tuyến',
+      'Bảo vệ dữ liệu cá nhân',
+      'Định danh tự chủ',
+      'Xác minh danh tính',
+    ],
+  },
 } as const satisfies Record<PublicBlogDetailId, StructuredBlogSeoProfile>;
 
 export const getStructuredBlogSeoProfile = (

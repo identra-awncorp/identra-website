@@ -28,9 +28,9 @@ export const VERIFIABLE_CREDENTIAL_EXPLAINER_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
-    'vi-dinh-tin-la-gi',
-    'did-la-gi',
     'dinh-danh-tu-chu-ssi-la-gi',
+    'did-la-gi',
+    'tiet-lo-co-chon-loc-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/verifiable-credential-cover-1440.webp`,

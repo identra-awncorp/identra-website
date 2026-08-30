@@ -29,7 +29,7 @@ export const TRUST_WALLET_EXPLAINER_BLOG_ARTICLE = {
   contentLocales: ['vi'],
   relatedArticleIds: [
     'thuc-chung-la-gi',
-    'did-la-gi',
+    'tiet-lo-co-chon-loc-la-gi',
     'dinh-danh-tu-chu-ssi-la-gi',
   ],
   coverImage: {

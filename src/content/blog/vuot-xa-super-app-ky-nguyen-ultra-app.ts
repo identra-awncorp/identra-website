@@ -31,7 +31,7 @@ export const ULTRA_APP_BLOG_ARTICLE = {
   relatedArticleIds: [
     'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
+    'did-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/ultra-app-agent-orchestration-1440.webp`,

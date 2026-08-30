@@ -3340,4 +3340,28 @@
     <image:image><image:loc>https://www.identra.id.vn/blog/thuc-chung-la-gi/thuc-chung-la-gi-og.jpg</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/thuc-chung-la-gi/verifiable-credential-cover-1440.webp</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi" />
+    <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tiet-lo-co-chon-loc-la-gi/tiet-lo-co-chon-loc-la-gi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tiet-lo-co-chon-loc-la-gi/selective-disclosure-cover-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin" />
+    <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin/data-breach-ssi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin/data-breach-cover-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so" />
+    <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-data-protection-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-cover-1440.webp</image:loc></image:image>
+  </url>
 </urlset>

@@ -30,9 +30,9 @@ export const INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE = {
   industries: ['recruitment'],
   contentLocales: ['vi'],
   relatedArticleIds: [
-    'dinh-danh-tu-chu-ssi-la-gi',
     'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
     'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
+    'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
   ],
   coverImage: {
     src: `${assetRoot}/cross-border-remote-work-cover-1440.webp`,

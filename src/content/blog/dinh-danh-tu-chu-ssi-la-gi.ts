@@ -29,8 +29,8 @@ export const SSI_BLOG_ARTICLE = {
   contentLocales: ['vi'],
   relatedArticleIds: [
     'did-la-gi',
-    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
-    'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
+    'thuc-chung-la-gi',
+    'vi-dinh-tin-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/self-sovereign-identity-explained-1440.webp`,

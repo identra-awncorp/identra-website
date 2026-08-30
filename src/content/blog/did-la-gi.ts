@@ -27,9 +27,9 @@ export const DID_EXPLAINER_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
-    'vi-dinh-tin-la-gi',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
+    'thuc-chung-la-gi',
+    'vi-dinh-tin-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/decentralized-identifier-cover-1440.webp`,

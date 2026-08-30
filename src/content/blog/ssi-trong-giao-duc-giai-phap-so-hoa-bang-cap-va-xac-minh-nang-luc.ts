@@ -31,7 +31,7 @@ export const SSI_EDUCATION_BLOG_ARTICLE = {
   relatedArticleIds: [
     'tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc',
     'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
-    'dinh-danh-tu-chu-ssi-la-gi',
+    'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao',
   ],
   coverImage: {
     src: `${assetRoot}/digital-credentials-future-academic-records-1440.webp`,

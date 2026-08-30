@@ -138,6 +138,33 @@ const EXPECTED_SEARCH_INTENTS = {
       'Verifiable Credential là gì',
     ],
   },
+  'tiet-lo-co-chon-loc-la-gi': {
+    primary: 'tiết lộ có chọn lọc là gì',
+    secondary: [
+      'tiết lộ có chọn lọc',
+      'selective disclosure là gì',
+      'xác minh không chia sẻ dữ liệu',
+      'tối thiểu hóa dữ liệu',
+    ],
+  },
+  'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin': {
+    primary: 'rò rỉ dữ liệu tại Trung Quốc và Ấn Độ',
+    secondary: [
+      'vụ rò rỉ dữ liệu Trung Quốc 2022',
+      'vụ rò rỉ dữ liệu Ấn Độ 2023',
+      'SSI bảo vệ dữ liệu như thế nào',
+      'tối thiểu hóa dữ liệu định danh',
+    ],
+  },
+  'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so': {
+    primary: 'lừa đảo trực tuyến và bảo vệ dữ liệu cá nhân',
+    secondary: [
+      'dữ liệu cá nhân bị lợi dụng để lừa đảo',
+      'SSI chống lừa đảo trực tuyến',
+      'xác minh danh tính bên liên hệ',
+      'giảm thu thập dữ liệu cá nhân',
+    ],
+  },
 } as const;
 
 test('search metadata stays separate from visible article content', () => {

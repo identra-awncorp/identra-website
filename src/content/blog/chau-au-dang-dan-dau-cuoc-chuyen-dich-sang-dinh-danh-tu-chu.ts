@@ -30,7 +30,7 @@ export const EUROPE_SSI_SHIFT_BLOG_ARTICLE = {
   contentLocales: ['vi'],
   relatedArticleIds: [
     'dinh-danh-tu-chu-ssi-la-gi',
-    'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
+    'vi-dinh-tin-la-gi',
     'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
   ],
   coverImage: {

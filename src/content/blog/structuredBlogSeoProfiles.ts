@@ -199,6 +199,25 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'Hợp đồng thông minh',
     ],
   },
+  'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai': {
+    title: 'Niềm tin dữ liệu: Hạ tầng cho kinh tế số và kinh tế AI',
+    description: 'Tìm hiểu vì sao niềm tin dữ liệu là điều kiện để con người và AI Agent kiểm chứng nguồn gốc, tính toàn vẹn và hiệu lực của thông tin trước khi ra quyết định.',
+    searchIntent: {
+      primary: 'niềm tin dữ liệu',
+      secondary: [
+        'dữ liệu đáng tin cậy cho AI',
+        'hạ tầng tin cậy cho kinh tế số',
+        'xác minh dữ liệu tự động',
+        'SSI trong kinh tế AI',
+      ],
+    },
+    entities: [
+      'Niềm tin dữ liệu',
+      'Kinh tế số',
+      'Kinh tế AI',
+      'AI Agent',
+    ],
+  },
 } as const satisfies Record<PublicBlogDetailId, StructuredBlogSeoProfile>;
 
 export const getStructuredBlogSeoProfile = (

@@ -102,6 +102,15 @@ const EXPECTED_SEARCH_INTENTS = {
       'Ultra App là gì',
     ],
   },
+  'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai': {
+    primary: 'niềm tin dữ liệu',
+    secondary: [
+      'dữ liệu đáng tin cậy cho AI',
+      'hạ tầng tin cậy cho kinh tế số',
+      'xác minh dữ liệu tự động',
+      'SSI trong kinh tế AI',
+    ],
+  },
 } as const;
 
 test('search metadata stays separate from visible article content', () => {

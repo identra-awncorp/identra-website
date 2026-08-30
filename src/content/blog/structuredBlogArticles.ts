@@ -5,6 +5,7 @@
 
 import { EUROPE_SSI_SHIFT_BLOG_ARTICLE } from './chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu';
 import { SSI_BLOG_ARTICLE } from './dinh-danh-tu-chu-ssi-la-gi';
+import { DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE } from './giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai';
 import { LIFELONG_LEARNING_BLOG_ARTICLE } from './ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc';
 import { INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE } from './rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao';
 import { VIETNAM_EU_EXPORT_BLOG_ARTICLE } from './ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu';
@@ -19,6 +20,7 @@ import { PRODUCT_TRACEABILITY_BLOG_ARTICLE } from './tuong-lai-cua-xac-thuc-va-t
 import { ULTRA_APP_BLOG_ARTICLE } from './vuot-xa-super-app-ky-nguyen-ultra-app';
 
 export const STRUCTURED_BLOG_ARTICLES = [
+  DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE,
   EUROPE_SSI_SHIFT_BLOG_ARTICLE,
   VIETNAM_EU_EXPORT_BLOG_ARTICLE,
   ULTRA_APP_BLOG_ARTICLE,

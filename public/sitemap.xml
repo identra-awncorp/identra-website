@@ -190,7 +190,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/es/blog</loc>
@@ -200,7 +200,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/ja/blog</loc>
@@ -210,7 +210,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/de/blog</loc>
@@ -220,7 +220,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog</loc>
@@ -230,7 +230,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/ebooks</loc>
@@ -3304,5 +3304,16 @@
     <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/eudi-wallet-europe-identity-1440.webp</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/verifiable-credentials-user-control-1440.webp</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/cross-border-eu-digital-identity-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai" />
+    <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/trusted-ai-economy-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/fragmented-data-trust-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/reusable-verification-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/digital-trust-infrastructure-1440.webp</image:loc></image:image>
   </url>
 </urlset>

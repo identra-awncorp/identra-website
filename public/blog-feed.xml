@@ -8,8 +8,22 @@
     <link>https://www.identra.id.vn/vi/blog</link>
     <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
     <language>vi</language>
-    <lastBuildDate>Tue, 04 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Giải bài toán niềm tin dữ liệu để phát triển kinh tế số, kinh tế AI</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</guid>
+      <description>AI chỉ có thể tham gia sâu vào nền kinh tế khi dữ liệu đầu vào có nguồn gốc rõ ràng, có thể kiểm chứng và đủ tin cậy để làm căn cứ cho quyết định.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Kinh tế số</category>
+      <category>Kinh tế AI</category>
+      <category>Niềm tin dữ liệu</category>
+      <category>SSI</category>
+      <category>AI Agent</category>
+      <media:content url="https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
     <item>
       <title>Châu Âu đang dẫn đầu cuộc chuyển dịch sang định danh tự chủ</title>
       <link>https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</link>

@@ -117,6 +117,7 @@ export const BLOG_DETAIL_IDS = [
   'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
   'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
   'did-la-gi',
+  'vi-dinh-tin-la-gi',
 ] as const;
 
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
@@ -133,6 +134,7 @@ export const PUBLIC_BLOG_DETAIL_IDS = [
   'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
   'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
   'did-la-gi',
+  'vi-dinh-tin-la-gi',
 ] as const satisfies readonly BlogDetailId[];
 
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'dinh-danh-tu-chu-ssi-la-gi';
@@ -149,6 +151,7 @@ const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale
   'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu': ['vi'],
   'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai': ['vi'],
   'did-la-gi': ['vi'],
+  'vi-dinh-tin-la-gi': ['vi'],
 };
 
 export const getBlogDetailLocales = (id: BlogDetailId): readonly Locale[] =>

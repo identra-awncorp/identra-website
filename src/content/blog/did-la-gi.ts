@@ -25,9 +25,9 @@ export const DID_EXPLAINER_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'vi-dinh-tin-la-gi',
     'dinh-danh-tu-chu-ssi-la-gi',
     'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
-    'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
   ],
   listing: {
     en: {
@@ -258,4 +258,3 @@ Nhưng nó có thể là một trong những viên gạch nền tảng giúp con
     },
   },
 } as const satisfies StructuredBlogArticle;
-

@@ -120,6 +120,15 @@ const EXPECTED_SEARCH_INTENTS = {
       'DID có phải blockchain không',
     ],
   },
+  'vi-dinh-tin-la-gi': {
+    primary: 'ví định tín là gì',
+    secondary: [
+      'ví định tín',
+      'ví lưu trữ thực chứng',
+      'ví định danh tự chủ',
+      'ví thực chứng số',
+    ],
+  },
 } as const;
 
 test('search metadata stays separate from visible article content', () => {

@@ -3322,4 +3322,10 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/did-la-gi" />
     <lastmod>2026-08-30</lastmod>
   </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi" />
+    <lastmod>2026-08-30</lastmod>
+  </url>
 </urlset>

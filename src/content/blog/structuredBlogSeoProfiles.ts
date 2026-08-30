@@ -237,6 +237,25 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'Self-Sovereign Identity',
     ],
   },
+  'vi-dinh-tin-la-gi': {
+    title: 'Ví định tín là gì? Cách quản lý thực chứng số',
+    description: 'Tìm hiểu ví định tín là gì, cách chủ thể nhận, quản lý và sử dụng thực chứng để chứng minh danh tính, thuộc tính và quyền hạn giữa nhiều hệ thống.',
+    searchIntent: {
+      primary: 'ví định tín là gì',
+      secondary: [
+        'ví định tín',
+        'ví lưu trữ thực chứng',
+        'ví định danh tự chủ',
+        'ví thực chứng số',
+      ],
+    },
+    entities: [
+      'Ví định tín',
+      'Thực chứng',
+      'Mã định danh phi tập trung',
+      'Định danh tự chủ',
+    ],
+  },
 } as const satisfies Record<PublicBlogDetailId, StructuredBlogSeoProfile>;
 
 export const getStructuredBlogSeoProfile = (

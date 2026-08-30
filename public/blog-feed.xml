@@ -11,6 +11,18 @@
     <lastBuildDate>Sun, 30 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>DID là gì? Một cách mới để xây dựng định danh trên Internet</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/did-la-gi</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/did-la-gi</guid>
+      <description>DID cho phép con người, tổ chức, thiết bị và phần mềm sở hữu một định danh có thể được nhiều hệ thống độc lập nhận biết và xác minh.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>DID</category>
+      <category>Định danh phi tập trung</category>
+      <category>Định danh số</category>
+      <category>SSI</category>
+    </item>
+    <item>
       <title>Giải bài toán niềm tin dữ liệu để phát triển kinh tế số, kinh tế AI</title>
       <link>https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</link>
       <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</guid>

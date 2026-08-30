@@ -60,8 +60,8 @@ export interface StructuredBlogArticle {
   industries: readonly string[];
   contentLocales: readonly ['vi'];
   relatedArticleIds: readonly [BlogDetailId, BlogDetailId, BlogDetailId];
-  coverImage: BlogArticleImage;
-  socialImage: {
+  coverImage?: BlogArticleImage;
+  socialImage?: {
     src: string;
     width: number;
     height: number;

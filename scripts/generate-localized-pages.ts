@@ -562,14 +562,14 @@ const renderLocalizedHtml = (
           : getSeoRouteDescription(seo, route.view),
       );
   const canonicalUrl = absoluteUrl(routePath(route, locale), siteUrl);
-  const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
+  const imagePath = structuredArticle?.socialImage?.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
   const imageUrl = absoluteUrl(imagePath, siteUrl);
   const imageAlt = isWhitePaper
     ? WHITE_PAPER_SEO_PROFILE.imageAlt
     : structuredArticle?.content.vi.title ?? seo.imageAlt;
-  const imageType = structuredArticle?.socialImage.type ?? 'image/jpeg';
-  const imageWidth = String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH);
-  const imageHeight = String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT);
+  const imageType = structuredArticle?.socialImage?.type ?? 'image/jpeg';
+  const imageWidth = String(structuredArticle?.socialImage?.width ?? SOCIAL_IMAGE_WIDTH);
+  const imageHeight = String(structuredArticle?.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT);
   const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
   const articleOpenGraphMeta = structuredArticle || isWhitePaper
     ? [
@@ -637,8 +637,8 @@ const renderLocalizedHtml = (
       ? {
           '@type': 'ImageObject',
           url: imageUrl,
-          width: structuredArticle.socialImage.width,
-          height: structuredArticle.socialImage.height,
+          width: structuredArticle.socialImage?.width ?? SOCIAL_IMAGE_WIDTH,
+          height: structuredArticle.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT,
           caption: structuredArticle.content.vi.title,
         }
       : imageUrl,

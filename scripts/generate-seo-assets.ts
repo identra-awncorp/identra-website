@@ -73,10 +73,10 @@ const blogDetailRoutes: SitemapRoute[] = PUBLIC_BLOG_DETAIL_IDS.map((id) => {
   const article = getStructuredBlogArticle(id);
   const imagePaths = article
     ? [...new Set([
-        article.socialImage.src,
-        article.coverImage.src,
+        article.socialImage?.src,
+        article.coverImage?.src,
         ...Object.keys(article.images),
-      ])]
+      ].filter((imagePath): imagePath is string => Boolean(imagePath)))]
     : [];
 
   return {
@@ -145,7 +145,9 @@ const blogFeedXml = `<?xml version="1.0" encoding="UTF-8"?>
     <atom:link href="${escapeXml(blogFeedUrl)}" rel="self" type="application/rss+xml" />
 ${STRUCTURED_BLOG_ARTICLES.map((article) => {
   const articleUrl = new URL(blogDetailPath(article.id, 'vi'), `${siteUrl}/`).toString();
-  const socialImageUrl = new URL(article.socialImage.src, `${siteUrl}/`).toString();
+  const mediaContent = article.socialImage
+    ? `\n      <media:content url="${escapeXml(new URL(article.socialImage.src, `${siteUrl}/`).toString())}" medium="image" type="${escapeXml(article.socialImage.type)}" width="${article.socialImage.width}" height="${article.socialImage.height}" />`
+    : '';
 
   return `    <item>
       <title>${escapeXml(article.content.vi.title)}</title>
@@ -154,8 +156,7 @@ ${STRUCTURED_BLOG_ARTICLES.map((article) => {
       <description>${escapeXml(article.content.vi.description)}</description>
       <dc:creator>${escapeXml(article.author.name)}</dc:creator>
       <pubDate>${new Date(`${article.publishedAt}T00:00:00Z`).toUTCString()}</pubDate>
-${article.content.vi.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join('\n')}
-      <media:content url="${escapeXml(socialImageUrl)}" medium="image" type="${escapeXml(article.socialImage.type)}" width="${article.socialImage.width}" height="${article.socialImage.height}" />
+${article.content.vi.tags.map((tag) => `      <category>${escapeXml(tag)}</category>`).join('\n')}${mediaContent}
     </item>`;
 }).join('\n')}
   </channel>

@@ -200,7 +200,7 @@ export default function SeoMetadata({
           hrefLang: HREFLANG_CODES[locale],
           locale,
         }));
-    const imagePath = structuredArticle?.socialImage.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
+    const imagePath = structuredArticle?.socialImage?.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
     const imageUrl = absoluteUrl(imagePath, siteUrl);
     const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
@@ -252,10 +252,10 @@ export default function SeoMetadata({
       imageAlt: isWhitePaper
         ? WHITE_PAPER_SEO_PROFILE.imageAlt
         : structuredArticle?.content.vi.title ?? seo.imageAlt,
-      imageHeight: String(structuredArticle?.socialImage.height ?? SOCIAL_IMAGE_HEIGHT),
-      imageType: structuredArticle?.socialImage.type ?? 'image/jpeg',
+      imageHeight: String(structuredArticle?.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT),
+      imageType: structuredArticle?.socialImage?.type ?? 'image/jpeg',
       imageUrl,
-      imageWidth: String(structuredArticle?.socialImage.width ?? SOCIAL_IMAGE_WIDTH),
+      imageWidth: String(structuredArticle?.socialImage?.width ?? SOCIAL_IMAGE_WIDTH),
       isBlogDetail,
       isArticle: isBlogDetail || isWhitePaper,
       schemaType: isWhitePaper

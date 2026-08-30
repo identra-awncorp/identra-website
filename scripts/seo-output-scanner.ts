@@ -45,6 +45,9 @@ import {
   DEFAULT_SITE_URL,
   formatSeoDescription,
   formatSeoTitle,
+  PUBLIC_SOCIAL_IMAGE_PATH,
+  SOCIAL_IMAGE_HEIGHT,
+  SOCIAL_IMAGE_WIDTH,
 } from '../src/utils/seo';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -635,6 +638,9 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const schemaAbout = Array.isArray(blogPosting?.about)
     ? blogPosting.about.filter(isRecord)
     : [];
+  const expectedImagePath = article.socialImage?.src ?? PUBLIC_SOCIAL_IMAGE_PATH;
+  const expectedImageWidth = article.socialImage?.width ?? SOCIAL_IMAGE_WIDTH;
+  const expectedImageHeight = article.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT;
 
   expect(
     html.includes(`<title>${seoProfile.title}</title>`)
@@ -669,7 +675,8 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
     `${articleId} preloads every fallback article image instead of preserving lazy loading.`,
   );
   expect(
-    html.includes('loading="lazy"') && html.includes('decoding="async"'),
+    Object.keys(article.images).length === 0
+      || (html.includes('loading="lazy"') && html.includes('decoding="async"')),
     `${articleId} does not lazy-load images in its static fallback.`,
   );
   expect(
@@ -688,9 +695,9 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
     Boolean(
       blogPosting
       && schemaAuthor?.url === siteUrl
-      && schemaImage?.url === `${siteUrl}${article.socialImage.src}`
-      && schemaImage?.width === article.socialImage.width
-      && schemaImage?.height === article.socialImage.height
+      && schemaImage?.url === `${siteUrl}${expectedImagePath}`
+      && schemaImage?.width === expectedImageWidth
+      && schemaImage?.height === expectedImageHeight
       && blogPosting.articleSection === article.content.vi.category
       && blogPosting.headline === article.content.vi.title
       && blogPosting.keywords === expectedKeywords
@@ -786,14 +793,18 @@ expect(
   sitemapXml.includes('xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"')
     && PUBLIC_BLOG_DETAIL_IDS.every((articleId) => {
       const article = getStructuredBlogArticle(articleId);
+      const expectedImagePaths = article
+        ? [
+            article.socialImage?.src,
+            article.coverImage?.src,
+            ...Object.keys(article.images),
+          ].filter((imagePath): imagePath is string => Boolean(imagePath))
+        : [];
+
       return Boolean(
         article
-        && sitemapXml.includes(
-          `<image:loc>${siteUrl}${article.socialImage.src}</image:loc>`,
-        )
-        && sitemapXml.includes(
-          `<image:loc>${siteUrl}${article.coverImage.src}</image:loc>`,
-        )
+        && expectedImagePaths.every((imagePath) =>
+          sitemapXml.includes(`<image:loc>${siteUrl}${imagePath}</image:loc>`))
       );
     }),
   'Image sitemap entries are missing for a Blog social or cover image.',

@@ -218,6 +218,25 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'AI Agent',
     ],
   },
+  'did-la-gi': {
+    title: 'DID là gì? Cách định danh phi tập trung hoạt động',
+    description: 'Tìm hiểu DID là gì, cách định danh phi tập trung chứng minh quyền kiểm soát bằng mật mã và hỗ trợ con người, tổ chức cùng phần mềm xác minh lẫn nhau.',
+    searchIntent: {
+      primary: 'DID là gì',
+      secondary: [
+        'Decentralized Identifier là gì',
+        'định danh phi tập trung là gì',
+        'DID Document là gì',
+        'DID có phải blockchain không',
+      ],
+    },
+    entities: [
+      'Decentralized Identifier',
+      'DID Document',
+      'Định danh phi tập trung',
+      'Self-Sovereign Identity',
+    ],
+  },
 } as const satisfies Record<PublicBlogDetailId, StructuredBlogSeoProfile>;
 
 export const getStructuredBlogSeoProfile = (

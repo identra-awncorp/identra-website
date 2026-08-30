@@ -111,6 +111,15 @@ const EXPECTED_SEARCH_INTENTS = {
       'SSI trong kinh tế AI',
     ],
   },
+  'did-la-gi': {
+    primary: 'DID là gì',
+    secondary: [
+      'Decentralized Identifier là gì',
+      'định danh phi tập trung là gì',
+      'DID Document là gì',
+      'DID có phải blockchain không',
+    ],
+  },
 } as const;
 
 test('search metadata stays separate from visible article content', () => {

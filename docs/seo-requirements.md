@@ -42,6 +42,9 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - If a template tag shape changes, update the generator in the same change.
 - The production build must generate localized HTML entry points for every public route and locale.
 - Each generated page should contain a minimal SEO fallback in `#root` so crawlers and social previews see page-specific content before hydration.
+- The initial HTML must place the CSS-only `data-initial-skeleton` before `data-seo-fallback`. The skeleton covers the SEO fallback from the first browser paint and remains visible until React commits its route-aware loading state.
+- Keep the initial skeleton's critical styles inline in `index.html`; it must not depend on the JavaScript bundle or generated application stylesheet becoming available.
+- Preserve the `noscript` override that hides the initial skeleton when JavaScript is disabled, so the localized SEO fallback remains usable as a no-script document.
 
 ## Social Preview Metadata
 

@@ -112,6 +112,16 @@ const countMarkdownWords = (markdown: string): number =>
     .filter(Boolean)
     .length;
 
+const SEO_FALLBACK_SLOT = '<div data-seo-fallback-slot></div>';
+
+const injectSeoFallback = (html: string, fallbackMarkup: string): string => {
+  if (!html.includes(SEO_FALLBACK_SLOT)) {
+    throw new Error('Localized page template is missing the SEO fallback slot.');
+  }
+
+  return html.replace(SEO_FALLBACK_SLOT, fallbackMarkup);
+};
+
 const routePath = (route: LocalizedRoute, locale: Locale): string =>
   route.view === 'blog-detail'
     ? blogDetailPath(route.blogId ?? DEFAULT_BLOG_DETAIL_ID, locale)
@@ -125,7 +135,7 @@ const localesForRoute = (route: LocalizedRoute): readonly Locale[] =>
     : getViewLocales(route.view);
 
 const renderSeoFallback = (headline: string, description: string): string =>
-  `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main></div>`;
+  `<main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main>`;
 
 type PublicFallbackCopy = {
   readonly homeLabel: string;
@@ -213,7 +223,7 @@ const renderPublicSeoFallback = (
     `<li><a href="${escapeHtml(viewToPath(resourceView, locale))}">${escapeHtml(seo.routeTitles[resourceView])}</a></li>`,
   ).join('');
 
-  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:3rem 1.5rem 5rem;font-family:Arial,sans-serif;color:#0f172a"><nav aria-label="${escapeHtml(copy.homeLabel)}"><a href="${escapeHtml(viewToPath('landing', locale))}">Identra</a></nav><article style="margin-top:3rem"><header><h1 style="max-width:52rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:46rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></header><section style="margin-top:3rem"><h2>${escapeHtml(copy.exploreTitle)}</h2><p>${escapeHtml(copy.exploreIntro(headline))}</p><ul>${relatedLinks}</ul></section><section style="margin-top:3rem"><h2>${escapeHtml(copy.resourcesTitle)}</h2><p>${escapeHtml(copy.resourcesIntro)}</p><nav aria-label="${escapeHtml(copy.resourcesTitle)}"><ul>${resourceLinks}</ul></nav></section></article></main></div>`;
+  return `<main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:3rem 1.5rem 5rem;font-family:Arial,sans-serif;color:#0f172a"><nav aria-label="${escapeHtml(copy.homeLabel)}"><a href="${escapeHtml(viewToPath('landing', locale))}">Identra</a></nav><article style="margin-top:3rem"><header><h1 style="max-width:52rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:46rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></header><section style="margin-top:3rem"><h2>${escapeHtml(copy.exploreTitle)}</h2><p>${escapeHtml(copy.exploreIntro(headline))}</p><ul>${relatedLinks}</ul></section><section style="margin-top:3rem"><h2>${escapeHtml(copy.resourcesTitle)}</h2><p>${escapeHtml(copy.resourcesIntro)}</p><nav aria-label="${escapeHtml(copy.resourcesTitle)}"><ul>${resourceLinks}</ul></nav></section></article></main>`;
 };
 
 const renderBlogIndexFallback = (
@@ -228,7 +238,7 @@ const renderBlogIndexFallback = (
     return `<li><article><h2><a href="${escapeHtml(href)}">${escapeHtml(listing.title)}</a></h2><p>${escapeHtml(listing.description)}</p></article></li>`;
   }).join('');
 
-  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p><section aria-label="Blog" style="margin-top:3rem"><ul>${articleLinks}</ul></section></main></div>`;
+  return `<main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p><section aria-label="Blog" style="margin-top:3rem"><ul>${articleLinks}</ul></section></main>`;
 };
 
 const renderStructuredBlogFallback = (
@@ -267,7 +277,7 @@ const renderStructuredBlogFallback = (
     ];
   }).join('');
 
-  return `<div id="root"><main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><article><header><h1 style="max-width:56rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(content.title)}</h1><p style="max-width:48rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(content.description)}</p></header><div style="margin-top:3rem;line-height:1.75">${articleBody}</div></article><nav aria-label="Related articles" style="margin-top:3rem"><ul>${relatedLinks}</ul></nav></main></div>`;
+  return `<main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><article><header><h1 style="max-width:56rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(content.title)}</h1><p style="max-width:48rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(content.description)}</p></header><div style="margin-top:3rem;line-height:1.75">${articleBody}</div></article><nav aria-label="Related articles" style="margin-top:3rem"><ul>${relatedLinks}</ul></nav></main>`;
 };
 
 const renderWhitePaperInline = (text: string): ReactNode[] =>
@@ -418,74 +428,70 @@ const renderWhitePaperSection = (section: WhitePaperSection): ReactNode => {
 const renderWhitePaperFallback = (): string => {
   const copy = WHITE_PAPER_TRANSLATIONS.vi;
   const fallback = createElement(
-    'div',
-    { id: 'root' },
-    createElement(
-      'main',
-      {
-        'data-seo-fallback': true,
-        style: {
-          color: '#0f172a',
-          fontFamily: 'Arial, sans-serif',
-          lineHeight: 1.7,
-          margin: '0 auto',
-          maxWidth: '72rem',
-          padding: '5rem 1.5rem',
-        },
+    'main',
+    {
+      'data-seo-fallback': true,
+      style: {
+        color: '#0f172a',
+        fontFamily: 'Arial, sans-serif',
+        lineHeight: 1.7,
+        margin: '0 auto',
+        maxWidth: '72rem',
+        padding: '5rem 1.5rem',
       },
+    },
+    createElement(
+      'article',
+      null,
       createElement(
-        'article',
+        'header',
         null,
+        createElement('p', null, copy.versionBadge),
+        createElement('h1', null, copy.heroTitle),
+        createElement('p', null, copy.heroSubtitle),
+        createElement('p', null, copy.publisher),
         createElement(
-          'header',
+          'dl',
           null,
-          createElement('p', null, copy.versionBadge),
-          createElement('h1', null, copy.heroTitle),
-          createElement('p', null, copy.heroSubtitle),
-          createElement('p', null, copy.publisher),
-          createElement(
-            'dl',
-            null,
-            ...copy.metadata.flatMap((item, index) => [
-              createElement('dt', { key: `term-${index}-${item.title}` }, item.title),
-              createElement('dd', { key: `detail-${index}-${item.title}` }, item.body),
-            ]),
-          ),
-          ...copy.callouts.map((callout, index) =>
-            createElement(
-              'aside',
-              { key: `callout-${index}-${callout.title}` },
-              createElement('h2', null, callout.title),
-              createElement('p', null, callout.body),
-            )),
-          createElement(
-            'p',
-            null,
-            createElement(
-              'a',
-              { href: WHITE_PAPER_PDF_PATH },
-              `Tải ${WHITE_PAPER_PDF_FILENAME}`,
-            ),
-          ),
+          ...copy.metadata.flatMap((item, index) => [
+            createElement('dt', { key: `term-${index}-${item.title}` }, item.title),
+            createElement('dd', { key: `detail-${index}-${item.title}` }, item.body),
+          ]),
         ),
+        ...copy.callouts.map((callout, index) =>
+          createElement(
+            'aside',
+            { key: `callout-${index}-${callout.title}` },
+            createElement('h2', null, callout.title),
+            createElement('p', null, callout.body),
+          )),
         createElement(
-          'nav',
-          { 'aria-label': copy.tocAriaLabel },
-          createElement('h2', null, copy.desktopTocTitle),
+          'p',
+          null,
           createElement(
-            'ol',
-            null,
-            ...copy.sections.map((section) =>
-              createElement(
-                'li',
-                { key: `toc-${section.id}` },
-                createElement('a', { href: `#${section.id}` }, section.title),
-              )),
+            'a',
+            { href: WHITE_PAPER_PDF_PATH },
+            `Tải ${WHITE_PAPER_PDF_FILENAME}`,
           ),
         ),
-        ...copy.sections.map(renderWhitePaperSection),
-        createElement('footer', null, createElement('p', null, copy.attribution)),
       ),
+      createElement(
+        'nav',
+        { 'aria-label': copy.tocAriaLabel },
+        createElement('h2', null, copy.desktopTocTitle),
+        createElement(
+          'ol',
+          null,
+          ...copy.sections.map((section) =>
+            createElement(
+              'li',
+              { key: `toc-${section.id}` },
+              createElement('a', { href: `#${section.id}` }, section.title),
+            )),
+        ),
+      ),
+      ...copy.sections.map(renderWhitePaperSection),
+      createElement('footer', null, createElement('p', null, copy.attribution)),
     ),
   );
 
@@ -725,7 +731,7 @@ const renderLocalizedHtml = (
             locale,
           );
 
-  let html = sourceHtml
+  let html = injectSeoFallback(sourceHtml, fallbackMarkup)
     .replace(/<html lang="[^"]*">/, `<html lang="${localeMeta.htmlLang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(
@@ -740,10 +746,6 @@ const renderLocalizedHtml = (
     .replace(
       /<script id="identra-seo-schema" type="application\/ld\+json">[\s\S]*?<\/script>/,
       `<script id="identra-seo-schema" type="application/ld+json">${schemaJson}</script>`,
-    )
-    .replace(
-      '<div id="root"></div>',
-      fallbackMarkup,
     );
 
   html = replaceMeta(html, 'name', 'description', description);
@@ -826,7 +828,7 @@ const renderNotFoundHtml = (
     description: seo.organizationDescription,
   }).replace(/</g, '\\u003c');
 
-  let html = sourceHtml
+  let html = injectSeoFallback(sourceHtml, renderSeoFallback(copy.title, copy.description))
     .replace(/<html lang="[^"]*">/, `<html lang="${localeMeta.htmlLang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(/\s*<link rel="canonical" href="[^"]*" \/>/g, '')
@@ -834,10 +836,6 @@ const renderNotFoundHtml = (
     .replace(
       /<script id="identra-seo-schema" type="application\/ld\+json">[\s\S]*?<\/script>/,
       `<script id="identra-seo-schema" type="application/ld+json">${schemaJson}</script>`,
-    )
-    .replace(
-      '<div id="root"></div>',
-      renderSeoFallback(copy.title, copy.description),
     );
 
   html = replaceMeta(html, 'name', 'description', description);

@@ -43,10 +43,248 @@
         "description": "Identra is an identity verification platform for onboarding, compliance, fraud prevention, and trusted digital experiences."
       }
     </script>
+    <style id="identra-initial-skeleton-styles">
+      [data-initial-skeleton] {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow: hidden;
+        box-sizing: border-box;
+        background: #fafbfd;
+        color-scheme: light;
+      }
+
+      [data-initial-skeleton] *,
+      [data-initial-skeleton] *::before,
+      [data-initial-skeleton] *::after {
+        box-sizing: border-box;
+      }
+
+      .identra-initial-skeleton__content {
+        width: min(100%, 80rem);
+        margin: 0 auto;
+        padding: 4rem 1rem;
+      }
+
+      .identra-initial-skeleton__hero {
+        display: grid;
+        grid-template-columns: minmax(0, 7fr) minmax(18rem, 5fr);
+        align-items: center;
+        gap: 3rem;
+      }
+
+      .identra-initial-skeleton__copy,
+      .identra-initial-skeleton__lines,
+      .identra-initial-skeleton__visual-body,
+      .identra-initial-skeleton__cards {
+        display: grid;
+        gap: 0.875rem;
+      }
+
+      .identra-initial-skeleton__badges,
+      .identra-initial-skeleton__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .identra-initial-skeleton__actions {
+        margin-top: 0.5rem;
+      }
+
+      .identra-initial-skeleton__block {
+        display: block;
+        height: 1.25rem;
+        border-radius: 0.5rem;
+        background: #e2e8f0;
+        animation: identra-initial-skeleton-pulse 1.6s ease-in-out infinite;
+      }
+
+      .identra-initial-skeleton__pill {
+        width: 7rem;
+        height: 1.5rem;
+        border-radius: 999px;
+      }
+
+      .identra-initial-skeleton__pill--short {
+        width: 4rem;
+      }
+
+      .identra-initial-skeleton__title {
+        width: 100%;
+        height: 3.5rem;
+        border-radius: 0.75rem;
+      }
+
+      .identra-initial-skeleton__title--short {
+        width: 82%;
+      }
+
+      .identra-initial-skeleton__line--medium {
+        width: 90%;
+      }
+
+      .identra-initial-skeleton__line--short {
+        width: 68%;
+      }
+
+      .identra-initial-skeleton__button {
+        width: 10rem;
+        height: 3rem;
+        border-radius: 0.75rem;
+      }
+
+      .identra-initial-skeleton__button--secondary {
+        width: 8.5rem;
+      }
+
+      .identra-initial-skeleton__visual {
+        min-height: 24rem;
+        padding: 1.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 1.5rem;
+        background: #0f172a;
+        box-shadow: 0 1.5rem 4rem rgba(15, 23, 42, 0.12);
+      }
+
+      .identra-initial-skeleton__visual-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #1e293b;
+      }
+
+      .identra-initial-skeleton__visual-header .identra-initial-skeleton__block,
+      .identra-initial-skeleton__visual-body .identra-initial-skeleton__block {
+        background: #334155;
+      }
+
+      .identra-initial-skeleton__visual-body {
+        align-content: center;
+        min-height: 18rem;
+        padding: 2rem 0;
+      }
+
+      .identra-initial-skeleton__visual-card {
+        height: 5.5rem;
+        border: 1px solid #334155;
+        border-radius: 1rem;
+        background: rgba(30, 41, 59, 0.65);
+      }
+
+      .identra-initial-skeleton__divider {
+        height: 5.75rem;
+        margin: 4rem 0;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .identra-initial-skeleton__cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem;
+      }
+
+      .identra-initial-skeleton__card {
+        height: 10rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        background: #fff;
+        box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.04);
+      }
+
+      @keyframes identra-initial-skeleton-pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.75; }
+      }
+
+      @media (max-width: 767px) {
+        .identra-initial-skeleton__content {
+          padding: 3rem 1rem;
+        }
+
+        .identra-initial-skeleton__hero {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 2rem;
+        }
+
+        .identra-initial-skeleton__visual {
+          min-height: 17rem;
+        }
+
+        .identra-initial-skeleton__visual-body {
+          min-height: 11rem;
+        }
+
+        .identra-initial-skeleton__divider {
+          margin: 2.5rem 0;
+        }
+
+        .identra-initial-skeleton__cards {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .identra-initial-skeleton__card:nth-child(n + 2) {
+          display: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .identra-initial-skeleton__block {
+          animation: none;
+          opacity: 0.65;
+        }
+      }
+    </style>
     <title>Identra | Identity verification for real people and businesses</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div data-initial-skeleton aria-hidden="true">
+        <div class="identra-initial-skeleton__content">
+          <div class="identra-initial-skeleton__hero">
+            <div class="identra-initial-skeleton__copy">
+              <div class="identra-initial-skeleton__badges">
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__pill"></span>
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__pill identra-initial-skeleton__pill--short"></span>
+              </div>
+              <span class="identra-initial-skeleton__block identra-initial-skeleton__title"></span>
+              <span class="identra-initial-skeleton__block identra-initial-skeleton__title identra-initial-skeleton__title--short"></span>
+              <div class="identra-initial-skeleton__lines">
+                <span class="identra-initial-skeleton__block"></span>
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__line--medium"></span>
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__line--short"></span>
+              </div>
+              <div class="identra-initial-skeleton__actions">
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__button"></span>
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__button identra-initial-skeleton__button--secondary"></span>
+              </div>
+            </div>
+            <div class="identra-initial-skeleton__visual">
+              <div class="identra-initial-skeleton__visual-header">
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__pill"></span>
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__pill identra-initial-skeleton__pill--short"></span>
+              </div>
+              <div class="identra-initial-skeleton__visual-body">
+                <span class="identra-initial-skeleton__block identra-initial-skeleton__line--short"></span>
+                <div class="identra-initial-skeleton__visual-card"></div>
+                <div class="identra-initial-skeleton__visual-card"></div>
+              </div>
+            </div>
+          </div>
+          <div class="identra-initial-skeleton__divider"></div>
+          <div class="identra-initial-skeleton__cards">
+            <div class="identra-initial-skeleton__card"></div>
+            <div class="identra-initial-skeleton__card"></div>
+            <div class="identra-initial-skeleton__card"></div>
+          </div>
+        </div>
+      </div>
+      <div data-seo-fallback-slot></div>
+    </div>
+    <noscript><style>[data-initial-skeleton] { display: none !important; }</style></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

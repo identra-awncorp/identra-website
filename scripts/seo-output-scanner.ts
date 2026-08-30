@@ -61,6 +61,29 @@ const expect = (condition: boolean, message: string) => {
   if (!condition) failures.push(message);
 };
 
+const verifyInitialLoadingShell = (html: string, relativePath: string) => {
+  const criticalStylePosition = html.indexOf('id="identra-initial-skeleton-styles"');
+  const skeletonPosition = html.indexOf('<div data-initial-skeleton');
+  const fallbackPosition = html.indexOf('<main data-seo-fallback');
+
+  expect(
+    criticalStylePosition >= 0 && skeletonPosition >= 0,
+    `${relativePath} is missing the CSS-only initial skeleton or its critical styles.`,
+  );
+  expect(
+    fallbackPosition >= 0 && skeletonPosition < fallbackPosition,
+    `${relativePath} exposes SEO fallback text before the initial skeleton.`,
+  );
+  expect(
+    html.includes('<noscript><style>[data-initial-skeleton] { display: none !important; }</style></noscript>'),
+    `${relativePath} does not expose its SEO fallback when JavaScript is disabled.`,
+  );
+  expect(
+    !html.includes('data-seo-fallback-slot'),
+    `${relativePath} still contains the unfilled SEO fallback slot.`,
+  );
+};
+
 const absoluteUrl = (path: string): string =>
   new URL(path, `${siteUrl}/`).toString();
 
@@ -509,6 +532,10 @@ expect(
     && actualHtmlFiles.every((file) => expectedHtmlFiles.has(file)),
   'The build contains a missing or unexpected HTML route outside the typed route registry.',
 );
+
+for (const relativeFile of actualHtmlFiles) {
+  verifyInitialLoadingShell(readDistFile(relativeFile), relativeFile);
+}
 
 const whitePaperRoutePath = viewToPath('white-paper', 'vi');
 const whitePaperHtml = readDistFile(routeFile(whitePaperRoutePath));

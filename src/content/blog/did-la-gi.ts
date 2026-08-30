@@ -12,6 +12,8 @@ import type {
 
 export const DID_EXPLAINER_BLOG_ARTICLE_ID = 'did-la-gi' as const;
 
+const assetRoot = '/blog/did-la-gi';
+
 export const DID_EXPLAINER_BLOG_ARTICLE = {
   id: DID_EXPLAINER_BLOG_ARTICLE_ID,
   slug: DID_EXPLAINER_BLOG_ARTICLE_ID,
@@ -29,6 +31,22 @@ export const DID_EXPLAINER_BLOG_ARTICLE = {
     'dinh-danh-tu-chu-ssi-la-gi',
     'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
   ],
+  coverImage: {
+    src: `${assetRoot}/decentralized-identifier-cover-1440.webp`,
+    srcSet: [
+      `${assetRoot}/decentralized-identifier-cover-800.webp 800w`,
+      `${assetRoot}/decentralized-identifier-cover-1440.webp 1440w`,
+    ].join(', '),
+    sizes: '(min-width: 1024px) 680px, (min-width: 768px) 55vw, 100vw',
+    width: 1440,
+    height: 810,
+  },
+  socialImage: {
+    src: `${assetRoot}/${DID_EXPLAINER_BLOG_ARTICLE_ID}-og.jpg`,
+    width: 1200,
+    height: 630,
+    type: 'image/jpeg',
+  },
   listing: {
     en: {
       title: 'What Is a DID? A New Way to Build Identity on the Internet',

@@ -18,10 +18,12 @@ import {
 } from './structuredBlogSeoProfiles';
 import { MIT_DIGITAL_DIPLOMAS_BLOG_ARTICLE } from './tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc';
 import { PRODUCT_TRACEABILITY_BLOG_ARTICLE } from './tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham';
+import { VERIFIABLE_CREDENTIAL_EXPLAINER_BLOG_ARTICLE } from './thuc-chung-la-gi';
 import { ULTRA_APP_BLOG_ARTICLE } from './vuot-xa-super-app-ky-nguyen-ultra-app';
 import { TRUST_WALLET_EXPLAINER_BLOG_ARTICLE } from './vi-dinh-tin-la-gi';
 
-export const STRUCTURED_BLOG_ARTICLES = [
+const structuredBlogArticleRegistry = [
+  VERIFIABLE_CREDENTIAL_EXPLAINER_BLOG_ARTICLE,
   TRUST_WALLET_EXPLAINER_BLOG_ARTICLE,
   DID_EXPLAINER_BLOG_ARTICLE,
   DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE,
@@ -36,7 +38,12 @@ export const STRUCTURED_BLOG_ARTICLES = [
   SSI_BLOG_ARTICLE,
 ] as const satisfies readonly StructuredBlogArticle[];
 
-export type StructuredBlogArticleId = typeof STRUCTURED_BLOG_ARTICLES[number]['id'];
+export type StructuredBlogArticleId =
+  typeof structuredBlogArticleRegistry[number]['id'];
+
+export const STRUCTURED_BLOG_ARTICLES: readonly (
+  StructuredBlogArticle & { readonly id: StructuredBlogArticleId }
+)[] = structuredBlogArticleRegistry;
 
 const structuredArticlesById = new Map<string, StructuredBlogArticle>(
   STRUCTURED_BLOG_ARTICLES.map((article) => [article.id, article]),

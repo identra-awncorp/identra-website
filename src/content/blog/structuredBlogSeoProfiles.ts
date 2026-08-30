@@ -256,6 +256,25 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'Định danh tự chủ',
     ],
   },
+  'thuc-chung-la-gi': {
+    title: 'Thực chứng là gì? Dữ liệu số đáng tin cậy và có thể kiểm chứng',
+    description: 'Tìm hiểu thực chứng là gì và cách mật mã giúp phần mềm kiểm tra nguồn phát hành, tính toàn vẹn cùng trạng thái hiệu lực của dữ liệu số.',
+    searchIntent: {
+      primary: 'thực chứng là gì',
+      secondary: [
+        'thực chứng số',
+        'dữ liệu có thể kiểm chứng',
+        'xác minh nguồn gốc dữ liệu',
+        'Verifiable Credential là gì',
+      ],
+    },
+    entities: [
+      'Thực chứng',
+      'Dữ liệu có thể kiểm chứng',
+      'Nguồn gốc dữ liệu',
+      'Tiết lộ có chọn lọc',
+    ],
+  },
 } as const satisfies Record<PublicBlogDetailId, StructuredBlogSeoProfile>;
 
 export const getStructuredBlogSeoProfile = (

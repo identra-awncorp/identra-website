@@ -11,6 +11,19 @@
     <lastBuildDate>Sun, 30 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Thực chứng là gì? Cách dữ liệu số trở nên đáng tin cậy và có thể kiểm chứng</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</guid>
+      <description>Thực chứng giúp phần mềm kiểm tra nguồn phát hành, tính toàn vẹn và trạng thái của dữ liệu số mà không phải xác minh thủ công từ đầu.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
+      <category>Thực chứng</category>
+      <category>Nguồn gốc dữ liệu</category>
+      <category>Mật mã học</category>
+      <category>Tiết lộ có chọn lọc</category>
+      <media:content url="https://www.identra.id.vn/blog/thuc-chung-la-gi/thuc-chung-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
+    <item>
       <title>Ví định tín là gì?</title>
       <link>https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</link>
       <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</guid>
@@ -21,6 +34,7 @@
       <category>Thực chứng</category>
       <category>Định danh tự chủ</category>
       <category>Tiết lộ có chọn lọc</category>
+      <media:content url="https://www.identra.id.vn/blog/vi-dinh-tin-la-gi/vi-dinh-tin-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>DID là gì? Một cách mới để xây dựng định danh trên Internet</title>
@@ -33,6 +47,7 @@
       <category>Định danh phi tập trung</category>
       <category>Định danh số</category>
       <category>SSI</category>
+      <media:content url="https://www.identra.id.vn/blog/did-la-gi/did-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Giải bài toán niềm tin dữ liệu để phát triển kinh tế số, kinh tế AI</title>

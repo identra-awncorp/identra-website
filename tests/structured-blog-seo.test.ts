@@ -129,6 +129,15 @@ const EXPECTED_SEARCH_INTENTS = {
       'ví thực chứng số',
     ],
   },
+  'thuc-chung-la-gi': {
+    primary: 'thực chứng là gì',
+    secondary: [
+      'thực chứng số',
+      'dữ liệu có thể kiểm chứng',
+      'xác minh nguồn gốc dữ liệu',
+      'Verifiable Credential là gì',
+    ],
+  },
 } as const;
 
 test('search metadata stays separate from visible article content', () => {

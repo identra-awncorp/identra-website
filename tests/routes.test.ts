@@ -133,6 +133,7 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
     'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
     'did-la-gi',
     'vi-dinh-tin-la-gi',
+    'thuc-chung-la-gi',
   ] as const;
 
   for (const articleId of articleIds) {
@@ -148,7 +149,7 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
 
 test('only real structured articles are published as blog detail routes', () => {
   assert.equal(DEFAULT_BLOG_DETAIL_ID, 'dinh-danh-tu-chu-ssi-la-gi');
-  assert.equal(PUBLIC_BLOG_DETAIL_IDS.length, 12);
+  assert.equal(PUBLIC_BLOG_DETAIL_IDS.length, 13);
   assert.equal(pathToBlogDetailId('/vi/blog-detail/blog-1'), null);
   assert.equal(
     viewToPath('blog-detail', 'en'),

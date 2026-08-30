@@ -32,9 +32,8 @@ test('trust wallet article exposes localized listing metadata and Vietnamese con
   );
 });
 
-test('trust wallet article preserves its source without attaching image metadata', () => {
+test('trust wallet article keeps its body image-free and exposes optimized cover metadata', () => {
   const content = TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.content.vi;
-  const articleRecord = TRUST_WALLET_EXPLAINER_BLOG_ARTICLE as unknown as Record<string, unknown>;
 
   assert.equal(content.title, 'Ví định tín là gì?');
   assert.equal(TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.listing.vi.title, content.title);
@@ -44,8 +43,20 @@ test('trust wallet article preserves its source without attaching image metadata
   assert.equal(content.markdown.includes('### Thông tin xuất bản'), false);
   assert.equal(content.markdown.includes('!['), false);
   assert.equal(Object.keys(TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.images).length, 0);
-  assert.equal('coverImage' in articleRecord, false);
-  assert.equal('socialImage' in articleRecord, false);
+  assert.equal(
+    TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.coverImage.src,
+    '/blog/vi-dinh-tin-la-gi/trust-wallet-cover-1440.webp',
+  );
+  assert.equal(
+    TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.coverImage.srcSet.includes(
+      'trust-wallet-cover-800.webp 800w',
+    ),
+    true,
+  );
+  assert.equal(
+    TRUST_WALLET_EXPLAINER_BLOG_ARTICLE.socialImage.src,
+    '/blog/vi-dinh-tin-la-gi/vi-dinh-tin-la-gi-og.jpg',
+  );
   assert.equal(
     content.markdown.includes('Ví định tín được tạo ra để thay đổi cách những thông tin này được quản lý và sử dụng.'),
     true,

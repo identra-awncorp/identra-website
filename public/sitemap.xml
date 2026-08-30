@@ -3321,11 +3321,23 @@
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/did-la-gi" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/did-la-gi" />
     <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/did-la-gi/did-la-gi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/did-la-gi/decentralized-identifier-cover-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</loc>
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi" />
     <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vi-dinh-tin-la-gi/vi-dinh-tin-la-gi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/vi-dinh-tin-la-gi/trust-wallet-cover-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi" />
+    <lastmod>2026-08-30</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/thuc-chung-la-gi/thuc-chung-la-gi-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/thuc-chung-la-gi/verifiable-credential-cover-1440.webp</image:loc></image:image>
   </url>
 </urlset>

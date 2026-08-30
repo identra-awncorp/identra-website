@@ -13,6 +13,8 @@ import type {
 export const TRUST_WALLET_EXPLAINER_BLOG_ARTICLE_ID =
   'vi-dinh-tin-la-gi' as const;
 
+const assetRoot = '/blog/vi-dinh-tin-la-gi';
+
 export const TRUST_WALLET_EXPLAINER_BLOG_ARTICLE = {
   id: TRUST_WALLET_EXPLAINER_BLOG_ARTICLE_ID,
   slug: TRUST_WALLET_EXPLAINER_BLOG_ARTICLE_ID,
@@ -26,10 +28,26 @@ export const TRUST_WALLET_EXPLAINER_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'thuc-chung-la-gi',
     'did-la-gi',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
   ],
+  coverImage: {
+    src: `${assetRoot}/trust-wallet-cover-1440.webp`,
+    srcSet: [
+      `${assetRoot}/trust-wallet-cover-800.webp 800w`,
+      `${assetRoot}/trust-wallet-cover-1440.webp 1440w`,
+    ].join(', '),
+    sizes: '(min-width: 1024px) 680px, (min-width: 768px) 55vw, 100vw',
+    width: 1440,
+    height: 810,
+  },
+  socialImage: {
+    src: `${assetRoot}/${TRUST_WALLET_EXPLAINER_BLOG_ARTICLE_ID}-og.jpg`,
+    width: 1200,
+    height: 630,
+    type: 'image/jpeg',
+  },
   listing: {
     en: {
       title: 'What Is a Digital Trust Wallet?',
@@ -264,4 +282,3 @@ Trong một nền kinh tế ngày càng có nhiều giao dịch được thực 
     },
   },
 } as const satisfies StructuredBlogArticle;
-

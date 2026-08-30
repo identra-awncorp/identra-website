@@ -26,9 +26,8 @@ test('DID article exposes localized listing metadata and Vietnamese content', ()
   assert.equal(STRUCTURED_BLOG_ARTICLES.includes(DID_EXPLAINER_BLOG_ARTICLE), true);
 });
 
-test('DID article preserves its source without attaching image metadata', () => {
+test('DID article keeps its body image-free and exposes optimized cover metadata', () => {
   const content = DID_EXPLAINER_BLOG_ARTICLE.content.vi;
-  const articleRecord = DID_EXPLAINER_BLOG_ARTICLE as unknown as Record<string, unknown>;
 
   assert.equal(
     content.title,
@@ -41,8 +40,20 @@ test('DID article preserves its source without attaching image metadata', () => 
   assert.equal(content.markdown.includes('### Thông tin xuất bản'), false);
   assert.equal(content.markdown.includes('!['), false);
   assert.equal(Object.keys(DID_EXPLAINER_BLOG_ARTICLE.images).length, 0);
-  assert.equal('coverImage' in articleRecord, false);
-  assert.equal('socialImage' in articleRecord, false);
+  assert.equal(
+    DID_EXPLAINER_BLOG_ARTICLE.coverImage.src,
+    '/blog/did-la-gi/decentralized-identifier-cover-1440.webp',
+  );
+  assert.equal(
+    DID_EXPLAINER_BLOG_ARTICLE.coverImage.srcSet.includes(
+      'decentralized-identifier-cover-800.webp 800w',
+    ),
+    true,
+  );
+  assert.equal(
+    DID_EXPLAINER_BLOG_ARTICLE.socialImage.src,
+    '/blog/did-la-gi/did-la-gi-og.jpg',
+  );
   assert.equal(
     content.markdown.includes('DID không loại bỏ niềm tin khỏi hệ thống.'),
     true,

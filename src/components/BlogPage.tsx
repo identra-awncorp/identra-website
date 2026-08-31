@@ -17,20 +17,23 @@ import { useLanguage } from '../context/LanguageContext';
 import { blogDetailPath, type BlogDetailId } from '../types/routes';
 import {
   getStructuredBlogArticle,
+  getStructuredBlogTopics,
   getStructuredBlogSeoMetadata,
   STRUCTURED_BLOG_ARTICLES,
 } from '../content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
-import type { BlogArticleImage } from '../content/blog/structuredBlogArticleModel';
+import type {
+  BlogArticleImage,
+  StructuredBlogTopicId,
+} from '../content/blog/structuredBlogArticleModel';
 
 // Interfaces
 type BlogPostId = BlogDetailId;
-type TopicId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.topicLabels;
 type IndustryId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.industryLabels;
 
 interface BlogPost {
   id: BlogPostId;
-  topics: TopicId[];
+  topics: StructuredBlogTopicId[];
   industries: IndustryId[];
   publishedAt: string;
   gradient: string;
@@ -57,7 +60,7 @@ const normalizeBlogSearchText = (value: string): string =>
 
 const BLOG_POSTS_DATA: BlogPost[] = STRUCTURED_BLOG_ARTICLES.map((article) => ({
   id: article.id,
-  topics: [...article.topics] as TopicId[],
+  topics: [...article.topics],
   industries: [...article.industries] as IndustryId[],
   publishedAt: article.publishedAt,
   gradient: 'from-[#172554] to-[#312E81]',
@@ -106,7 +109,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     return structuredArticle.listing[language];
   }, [language]);
 
-  const [selectedTopic, setSelectedTopic] = useState<TopicId>('all');
+  const [selectedTopic, setSelectedTopic] = useState<StructuredBlogTopicId | 'all'>('all');
   const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');
   const [searchInput, setSearchInput] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -132,9 +135,9 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     return () => window.clearTimeout(debounceId);
   }, [scrollCatalogIntoView, searchInput, searchQuery]);
 
-  const selectTopic = (topicId: TopicId) => {
+  const selectTopic = (topic: StructuredBlogTopicId | 'all') => {
     scrollCatalogIntoView('auto');
-    setSelectedTopic((currentTopic) => currentTopic === topicId ? 'all' : topicId);
+    setSelectedTopic((currentTopic) => currentTopic === topic ? 'all' : topic);
   };
 
   const selectIndustry = (industryId: IndustryId) => {
@@ -173,20 +176,6 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     openBlogDetail(post);
   };
 
-  // Filter lists
-  const topicsList: { id: TopicId }[] = [
-    { id: 'age-assurance',},
-    { id: 'artificial-intelligence',},
-    { id: 'compliance',},
-    { id: 'culture',},
-    { id: 'fraud',},
-    { id: 'identity',},
-    { id: 'all',},
-    { id: 'international',},
-    { id: 'privacy',},
-    { id: 'security',},
-  ];
-
   const industriesList: { id: IndustryId }[] = [
     { id: 'adult-entertainment',},
     { id: 'cryptocurrency',},
@@ -217,13 +206,15 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
   const featuredSidebarPosts = sortedBlogPosts
     .filter((post) => post.id !== featuredPost.id)
     .slice(0, 3);
+  const topics = useMemo(() => getStructuredBlogTopics(), []);
 
   // Filtered blog posts
   const filteredBlogPosts = useMemo(() => {
     return sortedBlogPosts.filter((post) => {
-      const matchesTopic = selectedTopic === 'all' || post.topics.includes(selectedTopic);
-      const matchesIndustry = selectedIndustry === 'all' || post.industries.includes(selectedIndustry) || post.industries.includes('all');
       const copy = postCopy(post);
+      const matchesTopic = selectedTopic === 'all'
+        || post.topics.includes(selectedTopic);
+      const matchesIndustry = selectedIndustry === 'all' || post.industries.includes(selectedIndustry) || post.industries.includes('all');
       const article = getStructuredBlogArticle(post.id);
       const seoProfile = article
         ? getStructuredBlogSeoMetadata(article)
@@ -248,7 +239,8 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     });
   }, [postCopy, searchQuery, selectedIndustry, selectedTopic, sortedBlogPosts]);
 
-  const visibleTopics = showAllTopics ? topicsList : topicsList.slice(0, 6);
+  const visibleTopics = showAllTopics ? topics : topics.slice(0, 6);
+  const hiddenTopicCount = Math.max(topics.length - visibleTopics.length, 0);
   const visibleIndustries = showAllIndustries ? industriesList : industriesList.slice(0, 6);
   const resultSetKey = `${selectedTopic}-${selectedIndustry}-${searchQuery}`;
   const noResultsText = t.copy.noResultsDescription.replace('{query}', searchQuery || t.copy.selectedFilters);
@@ -435,45 +427,60 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Topics & Industries Sidebar Filters */}
+          {/* Article tags and industries sidebar filters */}
           <div className="lg:col-span-3 space-y-10 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-2 lg:pb-8">
-            {/* Filter Group: Topics */}
+            {/* Filter Group: Tags */}
             <div>
               <h3 className="type-card-title text-slate-900 mb-4">{t.copy.topics}</h3>
               <div className="flex flex-col items-start gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => selectTopic('all')}
+                  className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                    selectedTopic === 'all'
+                      ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
+                      : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
+                  }`}
+                >
+                  {t.topicLabels.all}
+                </button>
                 {visibleTopics.map((topic) => {
-                  const isSelected = selectedTopic === topic.id;
+                  const isSelected = selectedTopic === topic;
                   return (
                     <button
-                      key={topic.id}
-                      onClick={() => selectTopic(topic.id)}
+                      key={topic}
+                      type="button"
+                      onClick={() => selectTopic(topic)}
                       className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
                       }`}
                     >
-                      {t.topicLabels[topic.id]}
+                      {t.topicLabels[topic]}
                     </button>
                   );
                 })}
               </div>
-              <button
-                onClick={() => setShowAllTopics(!showAllTopics)}
-                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
-              >
-                {showAllTopics ? (
-                  <>
-                    <ChevronUp className="w-3.5 h-3.5 text-[#354CE1]" />
-                    <span>{t.copy.showLess}</span>
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="w-3.5 h-3.5 text-[#354CE1]" />
-                    <span>{t.copy.show4More}</span>
-                  </>
-                )}
-              </button>
+              {topics.length > 6 && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllTopics(!showAllTopics)}
+                  className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                >
+                  {showAllTopics ? (
+                    <>
+                      <ChevronUp className="w-3.5 h-3.5 text-[#354CE1]" />
+                      <span>{t.copy.showLess}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-3.5 h-3.5 text-[#354CE1]" />
+                      <span>{t.copy.show4More.replace('4', String(hiddenTopicCount))}</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
 
             {/* Filter Group: Industries */}

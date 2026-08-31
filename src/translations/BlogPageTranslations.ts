@@ -23,7 +23,7 @@ const en = {
     resourceCenter: 'Resource center',
     allBlogPosts: 'All blog posts',
     searchBlogPosts: 'Search blog posts...',
-    topics: 'Topics',
+    topics: 'Tags',
     showLess: 'Show less',
     show4More: 'Show 4 more',
     industries: 'Industries',
@@ -178,7 +178,7 @@ const en = {
     }
   },
   topicLabels: {
-    all: 'All topics',
+    all: 'All tags',
     fraud: 'Fraud',
     identity: 'Identity',
     compliance: 'Compliance',
@@ -187,6 +187,7 @@ const en = {
     'artificial-intelligence': 'Artificial intelligence',
     'age-assurance': 'Age assurance',
     culture: 'Culture',
+    technology: 'Technology',
     international: 'International'
   },
   industryLabels: {
@@ -255,7 +256,7 @@ const es = {
     resourceCenter: 'Centro de recursos',
     allBlogPosts: 'Todos los artículos',
     searchBlogPosts: 'Buscar artículos...',
-    topics: 'Temas',
+    topics: 'Etiquetas',
     showLess: 'Mostrar menos',
     show4More: 'Mostrar 4 más',
     industries: 'Sectores',
@@ -410,7 +411,7 @@ const es = {
     }
   },
   topicLabels: {
-    all: 'Todos los temas',
+    all: 'Todas las etiquetas',
     fraud: 'Fraude',
     identity: 'Identidad',
     compliance: 'Cumplimiento',
@@ -419,6 +420,7 @@ const es = {
     'artificial-intelligence': 'Inteligencia artificial',
     'age-assurance': 'Verificación de edad',
     culture: 'Cultura',
+    technology: 'Tecnología',
     international: 'Internacional'
   },
   industryLabels: {
@@ -480,7 +482,7 @@ const ja = {
     resourceCenter: 'リソースセンター',
     allBlogPosts: 'すべてのブログ記事',
     searchBlogPosts: 'ブログ記事を検索...',
-    topics: 'トピック',
+    topics: 'タグ',
     showLess: '表示を減らす',
     show4More: 'さらに4件表示',
     industries: '業界',
@@ -635,7 +637,7 @@ const ja = {
     }
   },
   topicLabels: {
-    all: 'すべてのトピック',
+    all: 'すべてのタグ',
     fraud: '不正',
     identity: 'アイデンティティ',
     compliance: 'コンプライアンス',
@@ -644,6 +646,7 @@ const ja = {
     'artificial-intelligence': '人工知能',
     'age-assurance': '年齢確認',
     culture: 'カルチャー',
+    technology: 'テクノロジー',
     international: '国際'
   },
   industryLabels: {
@@ -705,7 +708,7 @@ const de = {
     resourceCenter: 'Ressourcencenter',
     allBlogPosts: 'Alle Blogbeiträge',
     searchBlogPosts: 'Blogbeiträge suchen...',
-    topics: 'Themen',
+    topics: 'Tags',
     showLess: 'Weniger anzeigen',
     show4More: '4 weitere anzeigen',
     industries: 'Branchen',
@@ -860,7 +863,7 @@ const de = {
     }
   },
   topicLabels: {
-    all: 'Alle Themen',
+    all: 'Alle Tags',
     fraud: 'Betrug',
     identity: 'Identität',
     compliance: 'Compliance',
@@ -869,6 +872,7 @@ const de = {
     'artificial-intelligence': 'Künstliche Intelligenz',
     'age-assurance': 'Altersnachweis',
     culture: 'Kultur',
+    technology: 'Technologie',
     international: 'International'
   },
   industryLabels: {
@@ -930,7 +934,7 @@ const vi = {
     resourceCenter: 'Trung tâm tài nguyên',
     allBlogPosts: 'Tất cả bài viết',
     searchBlogPosts: 'Tìm bài viết...',
-    topics: 'Chủ đề',
+    topics: 'Thẻ',
     showLess: 'Thu gọn',
     show4More: 'Hiển thị thêm 4',
     industries: 'Lĩnh vực',
@@ -1085,7 +1089,7 @@ const vi = {
     }
   },
   topicLabels: {
-    all: 'Tất cả chủ đề',
+    all: 'Tất cả thẻ',
     fraud: 'Gian lận',
     identity: 'Danh tính',
     compliance: 'Tuân thủ',
@@ -1094,6 +1098,7 @@ const vi = {
     'artificial-intelligence': 'Trí tuệ nhân tạo',
     'age-assurance': 'Xác minh độ tuổi',
     culture: 'Văn hóa',
+    technology: 'Công nghệ',
     international: 'Quốc tế'
   },
   industryLabels: {

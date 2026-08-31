@@ -53,7 +53,11 @@ test('GDPR to SSI article preserves the source structure and inserts four optimi
     assert.equal(existsSync(`public${source}`), true);
   }
 
-  assert.equal(article.coverImage.src, article.images[imageMatches[0].match(/\(([^)]+)\)/)?.[1] ?? '']?.src);
+  const firstMarkdownImageSource = imageMatches[0].match(/\(([^)]+)\)/)?.[1];
+  const firstMarkdownImage = Object.entries(article.images).find(
+    ([source]) => source === firstMarkdownImageSource,
+  )?.[1];
+  assert.equal(article.coverImage.src, firstMarkdownImage?.src);
   assert.equal(existsSync(`public${article.socialImage.src}`), true);
   assert.equal(article.socialImage.width, 1200);
   assert.equal(article.socialImage.height, 630);

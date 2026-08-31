@@ -14,7 +14,10 @@ import { INTERNATIONAL_HIRING_SSI_BLOG_ARTICLE } from './rao-can-phap-ly-trong-t
 import { DATA_BREACHES_SSI_BLOG_ARTICLE } from './ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin';
 import { VIETNAM_EU_EXPORT_BLOG_ARTICLE } from './ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu';
 import { SSI_EDUCATION_BLOG_ARTICLE } from './ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc';
-import type { StructuredBlogArticle } from './structuredBlogArticleModel';
+import type {
+  StructuredBlogArticle,
+  StructuredBlogTopicId,
+} from './structuredBlogArticleModel';
 import {
   getStructuredBlogSeoProfile,
   type StructuredBlogSeoProfile,
@@ -60,6 +63,11 @@ const structuredArticlesById = new Map<string, StructuredBlogArticle>(
 export const getStructuredBlogArticle = (
   id: string,
 ): StructuredBlogArticle | null => structuredArticlesById.get(id) ?? null;
+
+export const getStructuredBlogTopics = (): readonly StructuredBlogTopicId[] =>
+  Array.from(new Set(
+    STRUCTURED_BLOG_ARTICLES.flatMap((article) => article.topics),
+  ));
 
 export const getStructuredBlogSeoMetadata = (
   article: StructuredBlogArticle,

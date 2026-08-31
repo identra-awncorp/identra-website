@@ -5,6 +5,18 @@
 
 import type { BlogDetailId, Locale } from '../../types/routes';
 
+export type StructuredBlogTopicId =
+  | 'age-assurance'
+  | 'artificial-intelligence'
+  | 'compliance'
+  | 'culture'
+  | 'fraud'
+  | 'identity'
+  | 'international'
+  | 'privacy'
+  | 'security'
+  | 'technology';
+
 export interface BlogArticleListingCopy {
   title: string;
   description: string;
@@ -56,7 +68,7 @@ export interface StructuredBlogArticle {
     type: 'Organization' | 'Person';
     name: string;
   };
-  topics: readonly string[];
+  topics: readonly StructuredBlogTopicId[];
   industries: readonly string[];
   contentLocales: readonly ['vi'];
   relatedArticleIds: readonly [BlogDetailId, BlogDetailId, BlogDetailId];

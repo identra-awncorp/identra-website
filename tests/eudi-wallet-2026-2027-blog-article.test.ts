@@ -3,9 +3,9 @@ import { existsSync } from 'node:fs';
 import test from 'node:test';
 
 import {
-  GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE,
-  GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE_ID,
-} from '../src/content/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung.ts';
+  EUDI_WALLET_2026_2027_BLOG_ARTICLE,
+  EUDI_WALLET_2026_2027_BLOG_ARTICLE_ID,
+} from '../src/content/blog/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au.ts';
 import {
   getStructuredBlogArticle,
   STRUCTURED_BLOG_ARTICLES,
@@ -13,26 +13,25 @@ import {
 import { SUPPORTED_LOCALES } from '../src/types/routes.ts';
 
 const EXPECTED_TITLE =
-  'Từ GDPR đến SSI: Vì sao Châu Âu muốn trao lại quyền kiểm soát dữ liệu cho người dùng';
+  'EUDI Wallet bước vào đời sống: 2026–2027 và bước ngoặt của định danh số Châu Âu';
 
-test('GDPR to SSI article exposes localized listing metadata and Vietnamese content', () => {
-  const article = GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE;
+test('EUDI Wallet 2026–2027 article exposes localized listing metadata and Vietnamese content', () => {
+  const article = EUDI_WALLET_2026_2027_BLOG_ARTICLE;
 
-  assert.equal(article.id, GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE_ID);
+  assert.equal(article.id, EUDI_WALLET_2026_2027_BLOG_ARTICLE_ID);
   assert.deepEqual(Object.keys(article.listing), [...SUPPORTED_LOCALES]);
   assert.deepEqual(article.contentLocales, ['vi']);
   assert.deepEqual(Object.keys(article.content), ['vi']);
   assert.equal(article.content.vi.title, EXPECTED_TITLE);
   assert.equal(article.listing.vi.title, EXPECTED_TITLE);
   assert.equal(getStructuredBlogArticle(article.id), article);
-  assert.equal(STRUCTURED_BLOG_ARTICLES.includes(article), true);
+  assert.equal(STRUCTURED_BLOG_ARTICLES[0], article);
 });
 
-test('GDPR to SSI article preserves the source structure and inserts four optimized images', () => {
-  const article = GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE;
+test('EUDI Wallet 2026–2027 article preserves the source structure and uses four optimized images', () => {
+  const article = EUDI_WALLET_2026_2027_BLOG_ARTICLE;
   const content = article.content.vi;
   const imageMatches = content.markdown.match(/!\[[^\]]+\]\([^)]+\.webp\)/g) ?? [];
-  const referenceLinks = content.markdown.match(/^\s*\[https:\/\/[^\]]+\]\(https:\/\/[^)]+\)$/gm) ?? [];
 
   assert.equal(content.markdown.startsWith('---'), false);
   assert.equal(content.markdown.startsWith('# '), false);
@@ -40,10 +39,9 @@ test('GDPR to SSI article preserves the source structure and inserts four optimi
   assert.equal(content.markdown.includes('### Thông tin xuất bản'), false);
   assert.equal(imageMatches.length, 4);
   assert.equal(Object.keys(article.images).length, 4);
-  assert.equal(referenceLinks.length, 8);
-  assert.match(content.markdown, /GDPR đã thay đổi đáng kể \*\*quyền của người dùng\*\*/);
-  assert.match(content.markdown, /GDPR là một khuôn khổ pháp lý về bảo vệ dữ liệu; SSI là một cách tiếp cận/);
-  assert.match(content.markdown, /Regulation \(EU\) 2024\/1183/);
+  assert.match(content.markdown, /sáu chương trình thử nghiệm quy mô lớn đã quy tụ khoảng 550 tổ chức/);
+  assert.match(content.markdown, /Các nền tảng số rất lớn \(VLOPs\)/);
+  assert.match(content.markdown, /European Business Wallets dành cho doanh nghiệp/);
 
   for (const [source, image] of Object.entries(article.images)) {
     assert.equal(image.width, 1440);
@@ -63,24 +61,24 @@ test('GDPR to SSI article preserves the source structure and inserts four optimi
   assert.equal(article.socialImage.height, 630);
 });
 
-test('GDPR to SSI article metadata matches all source sections', () => {
-  const article = GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE;
+test('EUDI Wallet 2026–2027 article metadata matches all seven source sections', () => {
+  const article = EUDI_WALLET_2026_2027_BLOG_ARTICLE;
   const content = article.content.vi;
   const markdownHeadings = content.markdown.match(/^## .+$/gm) ?? [];
 
-  assert.equal(content.tableOfContents.length, 6);
+  assert.equal(content.tableOfContents.length, 7);
   assert.equal(markdownHeadings.length, content.tableOfContents.length);
-  assert.equal(content.readTimeMinutes, 13);
+  assert.equal(content.readTimeMinutes, 11);
   assert.deepEqual(content.tags, [
-    'GDPR',
-    'Định danh tự chủ',
     'EUDI Wallet',
-    'Quyền kiểm soát dữ liệu',
-    'Chủ quyền số',
+    'Định danh số',
+    'eIDAS 2.0',
+    'Định danh tự chủ',
+    'Quyền riêng tư',
   ]);
   assert.deepEqual(article.relatedArticleIds, [
-    'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
     'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
+    'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
     'dinh-danh-tu-chu-ssi-la-gi',
   ]);
 });

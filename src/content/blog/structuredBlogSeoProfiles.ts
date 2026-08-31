@@ -28,6 +28,25 @@ export interface StructuredBlogSeoProfile {
 type PublicBlogDetailId = (typeof PUBLIC_BLOG_DETAIL_IDS)[number];
 
 export const STRUCTURED_BLOG_SEO_PROFILES = {
+  'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au': {
+    title: 'EUDI Wallet 2026–2027: Bước ngoặt định danh số châu Âu',
+    description: 'Tìm hiểu lộ trình EUDI Wallet từ triển khai năm 2026 đến mở rộng chấp nhận trong năm 2027, cùng tác động đến định danh số và quyền riêng tư tại châu Âu.',
+    searchIntent: {
+      primary: 'lộ trình EUDI Wallet',
+      secondary: [
+        'EUDI Wallet 2026 2027',
+        'ví định danh số châu Âu',
+        'EUDI Wallet là gì',
+        'triển khai EUDI Wallet',
+      ],
+    },
+    entities: [
+      'EUDI Wallet',
+      'eIDAS 2.0',
+      'European Business Wallets',
+      'Self-Sovereign Identity',
+    ],
+  },
   'dinh-danh-tu-chu-ssi-la-gi': {
     title: 'Self-Sovereign Identity (SSI) là gì? Định danh tự chủ',
     description: 'Tìm hiểu Self-Sovereign Identity (SSI), cách định danh tự chủ giúp người dùng nắm giữ, chia sẻ và xác minh danh tính số giữa nhiều dịch vụ.',

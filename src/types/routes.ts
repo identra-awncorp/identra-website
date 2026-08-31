@@ -106,6 +106,7 @@ export const BLOG_DETAIL_IDS = [
   'blog-10',
   'blog-11',
   'blog-12',
+  'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
   'dinh-danh-tu-chu-ssi-la-gi',
   'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
   'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
@@ -128,6 +129,7 @@ export const BLOG_DETAIL_IDS = [
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
 
 export const PUBLIC_BLOG_DETAIL_IDS = [
+  'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
   'dinh-danh-tu-chu-ssi-la-gi',
   'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
   'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
@@ -150,6 +152,7 @@ export const PUBLIC_BLOG_DETAIL_IDS = [
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'dinh-danh-tu-chu-ssi-la-gi';
 
 const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale[]>> = {
+  'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au': ['vi'],
   'dinh-danh-tu-chu-ssi-la-gi': ['vi'],
   'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc': ['vi'],
   'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc': ['vi'],

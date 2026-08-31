@@ -209,7 +209,7 @@ export default function SeoMetadata({
       ? getStructuredBlogSeoMetadata(structuredArticle)
       : null;
     const blogPost = isBlogDetail
-      ? structuredSeoProfile
+      ? structuredArticle?.content.vi
         ?? seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
       : null;
     const title = isNotFound

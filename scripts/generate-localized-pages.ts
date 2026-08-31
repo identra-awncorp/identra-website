@@ -536,7 +536,7 @@ const renderLocalizedHtml = (
     : null;
   const isWhitePaper = route.view === 'white-paper';
   const blogPost = route.view === 'blog-detail'
-    ? structuredSeoProfile
+    ? structuredArticle?.content.vi
       ?? seo.blogPosts[currentBlogId as keyof typeof seo.blogPosts]
     : null;
   const title = blogPost

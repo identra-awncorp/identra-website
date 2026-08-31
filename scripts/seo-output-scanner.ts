@@ -643,11 +643,13 @@ for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const expectedImageHeight = article.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT;
 
   expect(
-    html.includes(`<title>${seoProfile.title}</title>`)
-      && metaContent(html, 'name', 'description') === seoProfile.description
-      && metaContent(html, 'property', 'og:title') === seoProfile.title
-      && metaContent(html, 'property', 'og:description') === seoProfile.description,
-    `${articleId} does not expose its intended search and sharing metadata.`,
+    html.includes(`<title>${article.content.vi.title}</title>`)
+      && metaContent(html, 'name', 'description') === article.content.vi.description
+      && metaContent(html, 'property', 'og:title') === article.content.vi.title
+      && metaContent(html, 'property', 'og:description') === article.content.vi.description
+      && metaContent(html, 'name', 'twitter:title') === article.content.vi.title
+      && metaContent(html, 'name', 'twitter:description') === article.content.vi.description,
+    `${articleId} does not expose its visible title and description verbatim in public metadata.`,
   );
   expect(
     metaContent(html, 'name', 'keywords') === null,

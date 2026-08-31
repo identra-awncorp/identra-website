@@ -29,8 +29,8 @@ export const EUROPE_SSI_SHIFT_BLOG_ARTICLE = {
   industries: ['government'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
     'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
-    'vi-dinh-tin-la-gi',
     'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
   ],
   coverImage: {

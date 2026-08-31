@@ -29,9 +29,9 @@ export const GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
     'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'vi-dinh-tin-la-gi',
   ],
   coverImage: responsiveImage('gdpr-data-control-cover'),
   socialImage: {

@@ -21,6 +21,15 @@ const SSI_SEO_DESCRIPTION =
   'Tìm hiểu Self-Sovereign Identity (SSI), cách định danh tự chủ giúp người dùng nắm giữ, chia sẻ và xác minh danh tính số giữa nhiều dịch vụ.';
 
 const EXPECTED_SEARCH_INTENTS = {
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung': {
+    primary: 'từ GDPR đến SSI',
+    secondary: [
+      'GDPR và định danh tự chủ',
+      'quyền kiểm soát dữ liệu của người dùng',
+      'EUDI Wallet và quyền riêng tư',
+      'chủ quyền số châu Âu',
+    ],
+  },
   'dinh-danh-tu-chu-ssi-la-gi': {
     primary: 'định danh tự chủ là gì',
     secondary: [

@@ -8,8 +8,22 @@
     <link>https://www.identra.id.vn/vi/blog</link>
     <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
     <language>vi</language>
-    <lastBuildDate>Sun, 30 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Từ GDPR đến SSI: Vì sao Châu Âu muốn trao lại quyền kiểm soát dữ liệu cho người dùng</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</guid>
+      <description>Từ các quyền dữ liệu trong GDPR đến EUDI Wallet, châu Âu đang đưa quyền kiểm soát của người dùng từ khuôn khổ pháp lý vào kiến trúc danh tính số.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
+      <category>GDPR</category>
+      <category>Định danh tự chủ</category>
+      <category>EUDI Wallet</category>
+      <category>Quyền kiểm soát dữ liệu</category>
+      <category>Chủ quyền số</category>
+      <media:content url="https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/gdpr-to-ssi-eu-data-control-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
     <item>
       <title>Lừa đảo trực tuyến và bài toán bảo vệ dữ liệu cá nhân trong thời đại số</title>
       <link>https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</link>

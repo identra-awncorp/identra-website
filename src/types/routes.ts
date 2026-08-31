@@ -122,6 +122,7 @@ export const BLOG_DETAIL_IDS = [
   'tiet-lo-co-chon-loc-la-gi',
   'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin',
   'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so',
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
 ] as const;
 
 export type BlogDetailId = typeof BLOG_DETAIL_IDS[number];
@@ -143,6 +144,7 @@ export const PUBLIC_BLOG_DETAIL_IDS = [
   'tiet-lo-co-chon-loc-la-gi',
   'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin',
   'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so',
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
 ] as const satisfies readonly BlogDetailId[];
 
 export const DEFAULT_BLOG_DETAIL_ID: BlogDetailId = 'dinh-danh-tu-chu-ssi-la-gi';
@@ -164,6 +166,7 @@ const BLOG_DETAIL_LOCALE_OVERRIDES: Partial<Record<BlogDetailId, readonly Locale
   'tiet-lo-co-chon-loc-la-gi': ['vi'],
   'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin': ['vi'],
   'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so': ['vi'],
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung': ['vi'],
 };
 
 export const getBlogDetailLocales = (id: BlogDetailId): readonly Locale[] =>

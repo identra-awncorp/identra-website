@@ -10,6 +10,11 @@ import {
 } from '../src/content/blog/structuredBlogArticles.ts';
 
 const EXPECTED_RELATED_ARTICLES = {
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung': [
+    'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
+    'dinh-danh-tu-chu-ssi-la-gi',
+    'vi-dinh-tin-la-gi',
+  ],
   'lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so': [
     'ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin',
     'tiet-lo-co-chon-loc-la-gi',
@@ -46,7 +51,7 @@ const EXPECTED_RELATED_ARTICLES = {
     'did-la-gi',
   ],
   'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu': [
-    'dinh-danh-tu-chu-ssi-la-gi',
+    'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
     'vi-dinh-tin-la-gi',
     'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
   ],
@@ -114,7 +119,7 @@ test('every structured article declares three valid and unique related article I
 });
 
 test('every structured article preserves its editorially curated related reading set', () => {
-  assert.equal(Object.keys(EXPECTED_RELATED_ARTICLES).length, 16);
+  assert.equal(Object.keys(EXPECTED_RELATED_ARTICLES).length, 17);
 
   for (const article of STRUCTURED_BLOG_ARTICLES) {
     assert.deepEqual(

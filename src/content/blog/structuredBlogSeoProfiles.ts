@@ -180,6 +180,25 @@ export const STRUCTURED_BLOG_SEO_PROFILES = {
       'Liên minh châu Âu',
     ],
   },
+  'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung': {
+    title: 'Từ GDPR đến SSI: Quyền kiểm soát dữ liệu tại châu Âu',
+    description: 'Phân tích cách GDPR, thị trường số chung, chủ quyền số và EUDI Wallet đưa quyền kiểm soát dữ liệu của người dùng vào kiến trúc danh tính số châu Âu.',
+    searchIntent: {
+      primary: 'từ GDPR đến SSI',
+      secondary: [
+        'GDPR và định danh tự chủ',
+        'quyền kiểm soát dữ liệu của người dùng',
+        'EUDI Wallet và quyền riêng tư',
+        'chủ quyền số châu Âu',
+      ],
+    },
+    entities: [
+      'GDPR',
+      'Self-Sovereign Identity',
+      'EUDI Wallet',
+      'Chủ quyền số',
+    ],
+  },
   'vuot-xa-super-app-ky-nguyen-ultra-app': {
     title: 'AI Agent giao dịch như thế nào? Từ Super App đến Ultra App',
     description: 'Tìm hiểu cách AI Agent xác minh đối tác, phối hợp dịch vụ, thực hiện giao dịch và thanh toán trong mô hình Ultra App với SSI, blockchain và hợp đồng thông minh.',

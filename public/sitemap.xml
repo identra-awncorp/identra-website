@@ -190,7 +190,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/es/blog</loc>
@@ -200,7 +200,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/ja/blog</loc>
@@ -210,7 +210,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/de/blog</loc>
@@ -220,7 +220,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog</loc>
@@ -230,7 +230,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-31</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/ebooks</loc>
@@ -3363,5 +3363,16 @@
     <lastmod>2026-08-30</lastmod>
     <image:image><image:loc>https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-data-protection-og.jpg</image:loc></image:image>
     <image:image><image:loc>https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-cover-1440.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung" />
+    <lastmod>2026-08-31</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/gdpr-to-ssi-eu-data-control-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/gdpr-data-control-cover-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/eu-cross-border-identity-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/eu-ssi-infrastructure-1440.webp</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/eudi-wallet-data-control-1440.webp</image:loc></image:image>
   </url>
 </urlset>

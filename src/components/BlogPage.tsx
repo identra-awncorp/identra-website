@@ -17,6 +17,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { blogDetailPath, type BlogDetailId } from '../types/routes';
 import {
   getStructuredBlogArticle,
+  getStructuredBlogIndustries,
   getStructuredBlogTopics,
   getStructuredBlogSeoMetadata,
   STRUCTURED_BLOG_ARTICLES,
@@ -24,17 +25,17 @@ import {
 import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
 import type {
   BlogArticleImage,
+  StructuredBlogIndustryId,
   StructuredBlogTopicId,
 } from '../content/blog/structuredBlogArticleModel';
 
 // Interfaces
 type BlogPostId = BlogDetailId;
-type IndustryId = keyof typeof BLOG_PAGE_TRANSLATIONS.en.industryLabels;
 
 interface BlogPost {
   id: BlogPostId;
   topics: StructuredBlogTopicId[];
-  industries: IndustryId[];
+  industries: StructuredBlogIndustryId[];
   publishedAt: string;
   gradient: string;
   illustration: 'shield' | 'chart' | 'users' | 'fingerprint' | 'globe' | 'face' | 'link' | 'lock' | 'document' | 'alert';
@@ -61,7 +62,7 @@ const normalizeBlogSearchText = (value: string): string =>
 const BLOG_POSTS_DATA: BlogPost[] = STRUCTURED_BLOG_ARTICLES.map((article) => ({
   id: article.id,
   topics: [...article.topics],
-  industries: [...article.industries] as IndustryId[],
+  industries: [...article.industries],
   publishedAt: article.publishedAt,
   gradient: 'from-[#172554] to-[#312E81]',
   illustration: 'fingerprint' as const,
@@ -110,7 +111,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
   }, [language]);
 
   const [selectedTopic, setSelectedTopic] = useState<StructuredBlogTopicId | 'all'>('all');
-  const [selectedIndustry, setSelectedIndustry] = useState<IndustryId>('all');
+  const [selectedIndustry, setSelectedIndustry] = useState<StructuredBlogIndustryId>('all');
   const [searchInput, setSearchInput] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [showAllTopics, setShowAllTopics] = useState(false);
@@ -140,7 +141,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     setSelectedTopic((currentTopic) => currentTopic === topic ? 'all' : topic);
   };
 
-  const selectIndustry = (industryId: IndustryId) => {
+  const selectIndustry = (industryId: StructuredBlogIndustryId) => {
     scrollCatalogIntoView('auto');
     setSelectedIndustry((currentIndustry) => currentIndustry === industryId ? 'all' : industryId);
   };
@@ -176,24 +177,6 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     openBlogDetail(post);
   };
 
-  const industriesList: { id: IndustryId }[] = [
-    { id: 'adult-entertainment',},
-    { id: 'cryptocurrency',},
-    { id: 'dating',},
-    { id: 'digital-health',},
-    { id: 'education',},
-    { id: 'finance-fintech',},
-    { id: 'all',},
-    { id: 'gaming',},
-    { id: 'government',},
-    { id: 'healthcare',},
-    { id: 'legal',},
-    { id: 'marketplaces',},
-    { id: 'real-estate',},
-    { id: 'retail-ecommerce',},
-    { id: 'travel',},
-  ];
-
   const sortedBlogPosts = useMemo(
     () => [...BLOG_POSTS_DATA].sort(
       (left, right) => right.publishedAt.localeCompare(left.publishedAt),
@@ -207,6 +190,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
     .filter((post) => post.id !== featuredPost.id)
     .slice(0, 3);
   const topics = useMemo(() => getStructuredBlogTopics(), []);
+  const industries = useMemo(() => getStructuredBlogIndustries(), []);
 
   // Filtered blog posts
   const filteredBlogPosts = useMemo(() => {
@@ -214,7 +198,8 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
       const copy = postCopy(post);
       const matchesTopic = selectedTopic === 'all'
         || post.topics.includes(selectedTopic);
-      const matchesIndustry = selectedIndustry === 'all' || post.industries.includes(selectedIndustry) || post.industries.includes('all');
+      const matchesIndustry = selectedIndustry === 'all'
+        || post.industries.includes(selectedIndustry);
       const article = getStructuredBlogArticle(post.id);
       const seoProfile = article
         ? getStructuredBlogSeoMetadata(article)
@@ -241,7 +226,8 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
 
   const visibleTopics = showAllTopics ? topics : topics.slice(0, 6);
   const hiddenTopicCount = Math.max(topics.length - visibleTopics.length, 0);
-  const visibleIndustries = showAllIndustries ? industriesList : industriesList.slice(0, 6);
+  const visibleIndustries = showAllIndustries ? industries : industries.slice(0, 6);
+  const hiddenIndustryCount = Math.max(industries.length - visibleIndustries.length, 0);
   const resultSetKey = `${selectedTopic}-${selectedIndustry}-${searchQuery}`;
   const noResultsText = t.copy.noResultsDescription.replace('{query}', searchQuery || t.copy.selectedFilters);
 
@@ -487,39 +473,54 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
             <div>
               <h3 className="type-card-title text-slate-900 mb-4">{t.copy.industries}</h3>
               <div className="flex flex-col items-start gap-2.5">
-                {visibleIndustries.map((ind) => {
-                  const isSelected = selectedIndustry === ind.id;
+                <button
+                  type="button"
+                  onClick={() => selectIndustry('all')}
+                  className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
+                    selectedIndustry === 'all'
+                      ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
+                      : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
+                  }`}
+                >
+                  {t.industryLabels.all}
+                </button>
+                {visibleIndustries.map((industry) => {
+                  const isSelected = selectedIndustry === industry;
                   return (
                     <button
-                      key={ind.id}
-                      onClick={() => selectIndustry(ind.id)}
+                      key={industry}
+                      type="button"
+                      onClick={() => selectIndustry(industry)}
                       className={`type-control-compact px-4.5 py-2 rounded-full text-left transition-all duration-250 select-none cursor-pointer border-none ${
                         isSelected
                           ? 'bg-[#354CE1] text-white hover:bg-[#2539C1]'
                           : 'bg-[#F1F3F5] text-[#0F1E36] hover:bg-slate-200/80'
                       }`}
                     >
-                      {t.industryLabels[ind.id]}
+                      {t.industryLabels[industry]}
                     </button>
                   );
                 })}
               </div>
-              <button
-                onClick={() => setShowAllIndustries(!showAllIndustries)}
-                className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
-              >
-                {showAllIndustries ? (
-                  <>
-                    <ChevronUp className="w-3.5 h-3.5 text-[#354CE1]" />
-                    <span>{t.copy.showLess}</span>
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="w-3.5 h-3.5 text-[#354CE1]" />
-                    <span>{t.copy.show9More}</span>
-                  </>
-                )}
-              </button>
+              {industries.length > 6 && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllIndustries(!showAllIndustries)}
+                  className="type-control-compact text-[#354CE1] hover:text-[#2539C1] flex items-center gap-1.5 mt-3.5 select-none cursor-pointer border-none bg-transparent p-0 transition-colors"
+                >
+                  {showAllIndustries ? (
+                    <>
+                      <ChevronUp className="w-3.5 h-3.5 text-[#354CE1]" />
+                      <span>{t.copy.showLess}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown className="w-3.5 h-3.5 text-[#354CE1]" />
+                      <span>{t.copy.show9More.replace('9', String(hiddenIndustryCount))}</span>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
 

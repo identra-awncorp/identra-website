@@ -205,7 +205,9 @@ const en = {
     'retail-ecommerce': 'Retail/e-commerce',
     travel: 'Travel',
     'adult-entertainment': 'Age-gated platforms',
-    dating: 'Social connection'
+    dating: 'Social connection',
+    recruitment: 'Recruitment',
+    technology: 'Technology'
   },
   readerChecklist: [
     {
@@ -438,7 +440,9 @@ const es = {
     'retail-ecommerce': 'Retail/e-commerce',
     travel: 'Viajes',
     'adult-entertainment': 'Plataformas con restricción de edad',
-    dating: 'Conexión social'
+    dating: 'Conexión social',
+    recruitment: 'Contratación',
+    technology: 'Tecnología'
   },
   readerChecklist: [
     {
@@ -664,7 +668,9 @@ const ja = {
     'retail-ecommerce': '小売/eコマース',
     travel: '旅行',
     'adult-entertainment': '年齢制限のあるプラットフォーム',
-    dating: 'ソーシャルマッチング'
+    dating: 'ソーシャルマッチング',
+    recruitment: '採用',
+    technology: 'テクノロジー'
   },
   readerChecklist: [
     {
@@ -890,7 +896,9 @@ const de = {
     'retail-ecommerce': 'Retail/E-Commerce',
     travel: 'Reisen',
     'adult-entertainment': 'Altersbeschränkte Plattformen',
-    dating: 'Soziale Vernetzung'
+    dating: 'Soziale Vernetzung',
+    recruitment: 'Personalbeschaffung',
+    technology: 'Technologie'
   },
   readerChecklist: [
     {
@@ -1116,7 +1124,9 @@ const vi = {
     'retail-ecommerce': 'Bán lẻ/thương mại điện tử',
     travel: 'Du lịch',
     'adult-entertainment': 'Nền tảng giới hạn độ tuổi',
-    dating: 'Kết nối xã hội'
+    dating: 'Kết nối xã hội',
+    recruitment: 'Tuyển dụng',
+    technology: 'Công nghệ'
   },
   readerChecklist: [
     {

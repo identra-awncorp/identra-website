@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  getStructuredBlogIndustries,
   getStructuredBlogTopics,
   STRUCTURED_BLOG_ARTICLES,
 } from '../src/content/blog/structuredBlogArticles.ts';
@@ -20,6 +21,24 @@ test('blog filter tags are derived from tags assigned to real articles', () => {
 
     for (const locale of SUPPORTED_LOCALES) {
       assert.equal(BLOG_PAGE_TRANSLATIONS[locale].topicLabels[filterTag].trim().length > 0, true);
+    }
+  }
+});
+
+test('blog industry filters are derived from industries assigned to real articles', () => {
+  const articleIndustries = STRUCTURED_BLOG_ARTICLES.flatMap(
+    (article) => article.industries,
+  ).filter((industry) => industry !== 'all');
+  const filterIndustries = getStructuredBlogIndustries();
+
+  assert.deepEqual(filterIndustries, [...new Set(articleIndustries)]);
+  assert.equal((filterIndustries as readonly string[]).includes('all'), false);
+
+  for (const industry of filterIndustries) {
+    assert.equal(articleIndustries.includes(industry), true);
+
+    for (const locale of SUPPORTED_LOCALES) {
+      assert.equal(BLOG_PAGE_TRANSLATIONS[locale].industryLabels[industry].trim().length > 0, true);
     }
   }
 });

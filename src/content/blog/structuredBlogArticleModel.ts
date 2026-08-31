@@ -17,6 +17,25 @@ export type StructuredBlogTopicId =
   | 'security'
   | 'technology';
 
+export type StructuredBlogIndustryId =
+  | 'adult-entertainment'
+  | 'all'
+  | 'cryptocurrency'
+  | 'dating'
+  | 'digital-health'
+  | 'education'
+  | 'finance-fintech'
+  | 'gaming'
+  | 'government'
+  | 'healthcare'
+  | 'legal'
+  | 'marketplaces'
+  | 'real-estate'
+  | 'recruitment'
+  | 'retail-ecommerce'
+  | 'technology'
+  | 'travel';
+
 export interface BlogArticleListingCopy {
   title: string;
   description: string;
@@ -69,7 +88,7 @@ export interface StructuredBlogArticle {
     name: string;
   };
   topics: readonly StructuredBlogTopicId[];
-  industries: readonly string[];
+  industries: readonly StructuredBlogIndustryId[];
   contentLocales: readonly ['vi'];
   relatedArticleIds: readonly [BlogDetailId, BlogDetailId, BlogDetailId];
   coverImage?: BlogArticleImage;

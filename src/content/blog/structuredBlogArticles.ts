@@ -16,6 +16,7 @@ import { VIETNAM_EU_EXPORT_BLOG_ARTICLE } from './ssi-blockchain-va-tuong-lai-xu
 import { SSI_EDUCATION_BLOG_ARTICLE } from './ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc';
 import type {
   StructuredBlogArticle,
+  StructuredBlogIndustryId,
   StructuredBlogTopicId,
 } from './structuredBlogArticleModel';
 import {
@@ -68,6 +69,15 @@ export const getStructuredBlogTopics = (): readonly StructuredBlogTopicId[] =>
   Array.from(new Set(
     STRUCTURED_BLOG_ARTICLES.flatMap((article) => article.topics),
   ));
+
+export const getStructuredBlogIndustries = (): readonly Exclude<
+  StructuredBlogIndustryId,
+  'all'
+>[] => Array.from(new Set(
+  STRUCTURED_BLOG_ARTICLES.flatMap((article) => article.industries)
+    .filter((industry): industry is Exclude<StructuredBlogIndustryId, 'all'> =>
+      industry !== 'all'),
+));
 
 export const getStructuredBlogSeoMetadata = (
   article: StructuredBlogArticle,

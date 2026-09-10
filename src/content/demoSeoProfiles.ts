@@ -177,7 +177,7 @@ export const DEMO_SEO_PROFILES = {
     vi: {
       title: 'Demo xác minh danh tính bệnh nhân và tiếp cận y tế',
       headline: 'Đăng ký dịch vụ y tế bằng danh tính bệnh nhân đã xác minh',
-      description: 'Thử quy trình tiếp nhận kiểm tra danh tính bệnh nhân, quyền lợi bảo hiểm và sự đồng ý trước khi sử dụng dữ liệu sức khỏe được bảo vệ.',
+      description: 'Thử quy trình tiếp nhận kiểm tra danh tính bệnh nhân, quyền lợi bảo hiểm và sự đồng thuận trước khi sử dụng dữ liệu sức khỏe được bảo vệ.',
     },
   },
   'ticket-transfer': {

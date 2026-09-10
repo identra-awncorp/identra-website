@@ -648,7 +648,7 @@ export const BUSINESS_FRAUD_TRANSLATIONS = {
     onboardingUseCaseTitle: "Đăng ký người dùng hoặc doanh nghiệp mới",
     onboardingUseCaseDesc: "Xác minh doanh nghiệp và chủ sở hữu hưởng lợi khi đăng ký bằng phương pháp dựa trên tín hiệu. Tự động truy vấn đăng ký doanh nghiệp, chạy kiểm tra chống rửa tiền toàn cầu và bắt đầu xác minh danh tính chủ sở hữu ngay lập tức để đảm bảo không có thực thể giả mạo nào xâm nhập thị trường của bạn.",
     transactionsUseCaseTitle: "Giao dịch rủi ro cao",
-    transactionsUseCaseDesc: "Kích hoạt KYC nâng cao hoặc chứng nhận lại doanh nghiệp khi xảy ra các thông số thanh toán bất thường, thay đổi địa chỉ công ty hoặc dùng chung thông tin ngân hàng. Tạm dừng luồng giao dịch một cách linh hoạt cho đến khi thông tin xác thực được xác nhận bởi các nhân viên được chỉ định.",
+    transactionsUseCaseDesc: "Kích hoạt KYC nâng cao hoặc chứng nhận lại doanh nghiệp khi xảy ra các thông số thanh toán bất thường, thay đổi địa chỉ công ty hoặc dùng chung thông tin ngân hàng. Tạm dừng luồng giao dịch một cách linh hoạt cho đến khi nhân viên được phân công xác nhận thực chứng.",
     ongoingUseCaseTitle: "Quản lý rủi ro và tuân thủ liên tục",
     ongoingUseCaseDesc: "Liên tục sàng lọc các tài khoản doanh nghiệp đã xác minh chống lại các lệnh trừng phạt, tin tức tiêu cực và cơ sở dữ liệu phá sản của bang. Thiết lập các trình kích hoạt dựa trên sự kiện tùy chỉnh bên trong Identra Workflows để cảnh báo nhân viên tuân thủ nếu trạng thái của người bán thay đổi.",
     multiSignalBadge: "Khung đa tín hiệu",

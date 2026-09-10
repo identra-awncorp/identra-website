@@ -347,7 +347,7 @@ export const LOGIN_PAGE_TRANSLATIONS = {
     },
     sso: {
       title: 'Đăng nhập một lần (SSO)',
-      desc: 'Dùng nhà cung cấp danh tính của không gian làm việc công ty để đăng nhập an toàn.',
+      desc: 'Dùng nhà cung cấp định danh của không gian làm việc công ty để đăng nhập an toàn.',
       google: 'Tiếp tục với Google Workspace',
       okta: 'Tiếp tục với Okta SSO',
       oneLogin: 'Tiếp tục với OneLogin',

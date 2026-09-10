@@ -494,7 +494,7 @@ export const AIRLINES_HOTELS_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Hoàn tất lớp xác minh: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
         "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
-        "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "airlines-hotels": [
@@ -537,7 +537,7 @@ export const AIRLINES_HOTELS_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "contactlessNfcScan": "Bắt đầu quét NFC không tiếp xúc. Giữ hộ chiếu sinh trắc gần cảm biến.",
-      "nfcChipDecrypted": "Giải mã chip NFC thành công. Quốc gia cấp: Hoa Kỳ, chủ sở hữu=\"{holder}\", chứng chỉ mật mã=\"HỢP LỆ\"",
+      "nfcChipDecrypted": "Giải mã chip NFC thành công. Quốc gia cấp: Hoa Kỳ, chủ sở hữu=\"{holder}\", chứng thư mật mã=\"HỢP LỆ\"",
       "runningPhotoMatch": "Đang phân tích hình học đối chiếu ảnh chân dung 1-1...",
       "facialAnalysisCompleted": "Phân tích khuôn mặt thành công. Khớp với ảnh hộ chiếu độ phân giải cao: 99,9%.",
       "verifyingBoardingLists": "Đang xác minh danh sách hành khách và chỉ mục phòng...",

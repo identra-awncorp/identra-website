@@ -328,7 +328,7 @@ export const INQUIRIES_DOCS_TRANSLATIONS = {
           { type: 'cards', cards: [
             { title: 'Mẫu cấu hình', text: 'Xác định những bước kiểm tra cần chạy và khi nào phải đánh giá thủ công hoặc dùng phương án dự phòng.' },
             { title: 'Mã tham chiếu', text: 'Mã nội bộ ổn định, không nhạy cảm, dùng để liên kết Inquiry với khách hàng hoặc hồ sơ.' },
-            { title: 'Mã phiên', text: 'Thông tin xác thực có thời hạn ngắn, chỉ dùng để mở trải nghiệm xác minh trên thiết bị người dùng.' },
+            { title: 'Mã phiên', text: 'Mã truy cập có thời hạn ngắn, chỉ dùng để mở trải nghiệm xác minh trên thiết bị người dùng.' },
             { title: 'Quyết định', text: 'Kết quả phê duyệt, từ chối hoặc chờ đánh giá sau khi hoàn tất các bước bắt buộc.' }
           ] },
           { type: 'callout', text: 'Tạo một Inquiry mới cho mỗi lần xác minh. Không dùng lại Inquiry đã hoàn tất, hết hạn hoặc bị từ chối.' }

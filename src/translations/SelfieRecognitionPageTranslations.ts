@@ -924,7 +924,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       },
       {
         title: "Tuân thủ quy định toàn cầu",
-        desc: "Xác định cách thu thập, xử lý và lưu trữ dữ liệu cùng sự đồng ý để đáp ứng nhu cầu tuân thủ trên toàn thế giới. Lưu tín hiệu sinh trắc học cục bộ hoặc dùng cơ chế xóa dữ liệu phía máy chủ linh hoạt."
+        desc: "Xác định cách thu thập, xử lý và lưu trữ dữ liệu cùng sự đồng thuận để đáp ứng nhu cầu tuân thủ trên toàn thế giới. Lưu tín hiệu sinh trắc học cục bộ hoặc dùng cơ chế xóa dữ liệu phía máy chủ linh hoạt."
       },
       {
         title: "Chống deepfake và tấn công injection",
@@ -1008,7 +1008,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     explanationCards: [
       {
         title: "Xác minh quyền sở hữu giấy tờ vật lý",
-        desc: "Chụp và đối chiếu selfie với ảnh chân dung trên giấy tờ theo thời gian thực để gắn giấy tờ vật lý với người thật. Bảo đảm người quét giấy tờ là chủ sở hữu thật của thông tin xác thực."
+        desc: "Chụp và đối chiếu selfie với ảnh chân dung trên giấy tờ theo thời gian thực để gắn giấy tờ vật lý với người thật. Bảo đảm người quét giấy tờ là chủ sở hữu thực sự của giấy tờ."
       },
       {
         title: "Tái xác minh người dùng ít ma sát",

@@ -31,6 +31,7 @@ This file is the working guide for coding agents contributing to the Identra web
 - Components should select the active dictionary with `useLanguage` and `getLocalizedRecord`. Use `getLocalizedValue` when a dynamic key needs a runtime missing-value guard.
 - Add all five locales in the same change. A locale dictionary must be fully materialized; do not build it as a partial override of another language.
 - Vietnamese copy must use correct diacritics and natural phrasing. Non-English locales should not retain English except for approved brand names, API or SDK names, standards, code literals, and genuinely necessary technical terms.
+- For Vietnamese SSI terminology, follow `docs/ssi-terminology-vi.md`. Apply terms contextually, preserve user-authored Blog copy, and ask the owner before changing an ambiguous term or product meaning.
 - Use stable semantic keys. Do not use an English sentence as a key and do not hide copy behind `staticText("...")`.
 - Keep interpolation variables and their meaning consistent across all locales. Prefer a complete translated sentence with placeholders over concatenating translated fragments.
 - Use `Intl.DateTimeFormat`, `Intl.NumberFormat`, or equivalent locale-aware APIs for user-facing dates, numbers, currencies, and percentages.

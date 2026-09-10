@@ -1117,7 +1117,7 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Đã hoàn tất bước: {label}",
         "nextTask": "Bước tiếp theo: {action}",
         "allPassed": "Hồ sơ đã hoàn tất toàn bộ quy trình xét duyệt mở tài khoản.",
-        "sealed": "Thông tin xác thực đã được ký và niêm phong bằng mật mã."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "bank-account": [
@@ -1276,8 +1276,8 @@ export const BANK_ACCOUNT_DEMO_PAGE_TRANSLATIONS: any = {
       "retryButton": "Thử lại",
       "issueCardButton": "Nhận thẻ",
       "physicalCardDeliveryNotice": "Thẻ vật lý AeroBank sẽ được gửi đến địa chỉ của bạn trong vòng 2-5 ngày làm việc.",
-      "identraVcClaimNotice": "Quét mã QR dưới đây để thêm thực chứng của thẻ vào ví SSI.",
-      "claimVcQrTitle": "Quét mã QR để nhận thẻ vào ví SSI",
+      "identraVcClaimNotice": "Quét mã QR dưới đây để thêm thực chứng của thẻ vào ví định tín.",
+      "claimVcQrTitle": "Quét mã QR để nhận thẻ vào ví định tín",
       "accountApproved": "Tài khoản đã được phê duyệt!",
       "identityBoundDescription": "Danh tính số của bạn đã được xác minh và liên kết với AeroBank. Thẻ ghi nợ ảo đã được phát hành.",
       "aeroBank": "AeroBank",

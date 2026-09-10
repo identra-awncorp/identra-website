@@ -1581,7 +1581,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
         'Phân tích luật hạn chế độ tuổi toàn cầu bao gồm COPPA, GDPR-K và Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh.',
         'Triển khai các công cụ ước tính tuổi bằng sinh trắc học trong khi vẫn duy trì các tiêu chuẩn nghiêm ngặt về quyền riêng tư không lưu trữ dữ liệu.',
         'Phân biệt giữa tự khai báo, xác minh qua cơ sở dữ liệu và so khớp giấy tờ tùy thân cứng.',
-        'Xây dựng cơ chế xác minh sự đồng ý của cha mẹ an toàn bằng cách sử dụng các giao dịch vi mô và kiểm tra thẻ tín dụng.'
+        'Xây dựng cơ chế xác minh sự đồng thuận của cha mẹ an toàn bằng cách sử dụng các giao dịch vi mô và kiểm tra thẻ tín dụng.'
       ],
       chapters: [
         {
@@ -1659,7 +1659,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
         'Xác định các chi tiết bảo mật vật lý khu vực: đục lỗ bằng laser, hình chìm và các mẫu thiết bị biến đổi quang học.',
         'Giải thích bố cục cấu trúc cho hộ chiếu Tổ chức Hàng không Dân dụng Quốc tế (ICAO) và thẻ lái xe tiêu chuẩn.',
         'Phân tích bố cục cấu trúc Vùng có thể đọc bằng máy tiêu chuẩn (Doc 9303) trên tất cả các biến thể (TD1, TD2, TD3).',
-        'Đánh giá các hướng dẫn về ID di động mới nổi (ISO 18013-5) và các mỏ neo tin cậy cho ví kỹ thuật số ảo.'
+        'Đánh giá các hướng dẫn về ID di động mới nổi (ISO 18013-5) và các điểm neo tin cậy cho ví định tín.'
       ],
       chapters: [
         {
@@ -1671,7 +1671,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
           description: 'Hiểu các lớp phủ hình ba chiều, các mẫu huỳnh quang UV, chữ in siêu nhỏ và hình ảnh khắc laser động.'
         },
         {
-          title: 'Mô-đun 3: Ví kỹ thuật số và Giấy phép lái xe di động',
+          title: 'Mô-đun 3: Ví định tín và giấy phép lái xe di động',
           description: 'Giới thiệu về các giao thức mDL, khóa tương tác thiết bị và xác thực tài liệu ngoại tuyến bằng mật mã.'
         }
       ]

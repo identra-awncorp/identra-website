@@ -23,7 +23,7 @@ export const WHITE_PAPER_SEO_PROFILE = {
     primary: 'sách trắng Identra',
     secondary: [
       'dữ liệu có thể kiểm chứng',
-      'thực chứng số có thể xác minh',
+      'thực chứng',
       'giao dịch bằng hợp đồng thông minh',
       'hạ tầng danh tính số',
     ],

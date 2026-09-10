@@ -476,7 +476,7 @@ Achieving the right equilibrium requires context-aware friction:
       { id: 3, title: 'Hướng dẫn chiến lược để cân bằng rủi ro và chuyển đổi', banner: 'Cân bằng chuyển đổi', category: 'Hướng dẫn', readTime: '12 phút', content: 'Đội bảo mật muốn không có gian lận, còn đội tăng trưởng muốn không có ma sát. Điểm cân bằng cần ma sát theo ngữ cảnh.\n\nHãy phân tầng theo rủi ro, dùng tiết lộ lũy tiến và chỉ kích hoạt NFC khi tín hiệu đáng ngờ thật sự cần bước bổ sung. Khi NFC được bật, hãy hướng dẫn trực quan vị trí cảm biến trên thiết bị.' }
     ],
     explore: { title: 'Khám phá thêm nền tảng định danh của Identra', learnMore: 'Tìm hiểu thêm', cards: [{ title: 'Giảm ma sát với xác minh mDL.', desc: 'Tiếp nhận khách hàng đủ điều kiện liền mạch bằng giấy phép lái xe di động (mDL) chính thức do bang cấp, tuân thủ ISO 18013-5.' }, { title: 'Xác minh ID chính phủ trên toàn cầu.', desc: 'Xác minh giấy phép địa phương, hộ chiếu khu vực và thẻ ID quốc gia từ hơn 200 quốc gia bằng trích xuất OCR thông minh và đối chiếu sinh trắc học.' }] },
-    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá sandbox hạ tầng định danh toàn diện. Thiết lập và tạo thông tin xác thực thử nghiệm chỉ trong vài phút.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' },
+    cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Liên hệ hoặc bắt đầu khám phá sandbox hạ tầng định danh toàn diện. Thiết lập và tạo thực chứng thử nghiệm chỉ trong vài phút.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' },
     modal: { separator: '-', close: 'Đóng', goBack: 'Quay lại' }
   }
 } as const;

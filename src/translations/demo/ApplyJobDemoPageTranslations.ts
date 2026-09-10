@@ -866,7 +866,7 @@ export const APPLY_JOB_DEMO_PAGE_TRANSLATIONS = {
       "identraVerified": "Dữ liệu từ Identra",
       "candidateName": "Tên ứng viên",
       "workingIdentityNumber": "Số định danh cá nhân",
-      "footer": "Mô phỏng quy trình tuyển dụng có sự đồng ý của ứng viên"
+      "footer": "Mô phỏng quy trình tuyển dụng có sự đồng thuận của ứng viên"
     },
     "flowUi": {
       "teamSubtitle": "Đội nền tảng và hạ tầng",
@@ -913,7 +913,7 @@ export const APPLY_JOB_DEMO_PAGE_TRANSLATIONS = {
       "manualServerTitle": "Xác minh thông tin nhập thủ công",
       "ssiServerTitle": "Xác minh bằng chứng từ Identra",
       "manualModeDescription": "Nhập thủ công: bản demo giả lập việc đối chiếu với nguồn dữ liệu định danh và văn bằng được phép sử dụng, sau đó chuyển kết quả cho bộ phận nhân sự xem xét.",
-      "ssiModeDescription": "Ứng tuyển qua Identra eID: bản demo kiểm tra bản trình bày thực chứng đã được cho phép, DID của bên phát hành, chữ ký, sự ràng buộc với chủ thể và trạng thái thực chứng.",
+      "ssiModeDescription": "Ứng tuyển qua Identra eID: bản demo kiểm tra bản trình bày thực chứng đã được cho phép, DID của bên phát hành, chữ ký, sự ràng buộc với bên nắm giữ và trạng thái thực chứng.",
       "serverProgressLabel": "Tiến trình xác minh",
       "legalIdentitySectionTitle": "Bước 1: Xác minh danh tính",
       "credentialSectionTitle": "Bước 2: Xác minh học vấn và chứng chỉ",

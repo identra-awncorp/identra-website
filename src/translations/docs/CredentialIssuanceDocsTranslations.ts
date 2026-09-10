@@ -269,7 +269,7 @@ const DOC_COPY: Record<Locale, CredentialIssuanceDocsCopy> = {
     cards: [
       ['Mô-đun phát hành', 'Xác định loại thực chứng, điều kiện kích hoạt, tham số được phép, chính sách ký và cách chuyển tới ví.'],
       ['Bên phát hành', 'Nắm quyền phát hành và lựa chọn Identra quản lý hoặc tự quản lý hạ tầng ký.'],
-      ['Người lưu giữ', 'Xem đề nghị nhận thực chứng và lưu vào chiếc ví do mình kiểm soát.'],
+      ['Bên nắm giữ', 'Xem đề nghị nhận thực chứng và lưu vào chiếc ví do mình kiểm soát.'],
       ['Vòng đời', 'Theo dõi phiên bản mô-đun và trạng thái của từng thực chứng đã phát hành.'],
     ],
     modulesTitle: 'Cấu hình mô-đun mà không làm suy giảm giá trị tin cậy',
@@ -289,7 +289,7 @@ const DOC_COPY: Record<Locale, CredentialIssuanceDocsCopy> = {
     trust: 'Chọn mô hình được quản lý để triển khai thuận tiện hoặc giữ toàn bộ quyền ký trong hạ tầng của bạn.',
     trustItems: [
       ['Identra quản lý', 'Identra quản lý DID bên phát hành, hoạt động ký, dịch vụ trạng thái và công bố lên CertNet.'],
-      ['Tự quản lý', 'Kết nối KMS, HSM hoặc bộ ký bên ngoài; khóa riêng luôn nằm ngoài Identra.'],
+      ['Tự quản lý', 'Kết nối KMS, HSM hoặc bộ ký bên ngoài; khóa bí mật luôn nằm ngoài Identra.'],
       ['Adapter sổ đăng ký', 'Lựa chọn CertNet, did:web, ION hoặc sổ đăng ký nội bộ theo yêu cầu quản trị và khả năng liên thông.'],
     ],
     lifecycleTitle: 'Quản lý cả hai vòng đời',

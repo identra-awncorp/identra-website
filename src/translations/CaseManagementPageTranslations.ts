@@ -677,9 +677,9 @@ export const caseTranslations = {
     keyFeatures: 'Các tính năng chính',
     keyFeaturesTitle: 'Xây dựng quy trình quản lý hồ sơ lý tưởng của bạn',
     keyFeaturesDesc: 'Tùy chỉnh mọi khía cạnh trong quy trình điều tra thủ công của bạn. Thiết lập quy trình phân công, che bớt tài liệu cá nhân thô và sử dụng các chỉ số tùy chỉnh được thiết kế để tăng tốc độ vận hành.',
-    customSchemaTitle: 'Sơ đồ hồ sơ tùy chỉnh',
+    customSchemaTitle: 'Lược đồ hồ sơ tùy chỉnh',
     customSchemaSubtitle: 'Cấu hình giao diện người đánh giá',
-    schemaConfigured: 'Sơ đồ đã được cấu hình',
+    schemaConfigured: 'Lược đồ đã được cấu hình',
 
     appScenarios: 'Các kịch bản ứng dụng',
     howTeamsUse: 'Cách các nhóm sử dụng Hồ sơ sự vụ',

@@ -477,8 +477,8 @@ export const GOVERNMENT_SERVICES_DEMO_PAGE_TRANSLATIONS: any = {
         },
         {
           "label": "Phát hành chứng chỉ an toàn",
-          "action": "Tạo chứng chỉ số",
-          "logText": "Thông tin xác thực giấy tờ dùng một lần đã được liên kết và niêm phong bằng mã hóa."
+          "action": "Phát hành thực chứng",
+          "logText": "Thực chứng giấy tờ dùng một lần đã được liên kết và niêm phong bằng mã hóa."
         }
       ]
     },
@@ -514,7 +514,7 @@ export const GOVERNMENT_SERVICES_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Hoàn tất lớp xác minh: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
         "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
-        "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "government-services": [
@@ -529,7 +529,7 @@ export const GOVERNMENT_SERVICES_DEMO_PAGE_TRANSLATIONS: any = {
             "Xác nhận bằng chứng cư trú"
           ],
           [
-            "Tạo khóa riêng RSA",
+            "Tạo khóa bí mật RSA",
             "Liên kết giấy tờ dùng một lần",
             "Đóng dấu niêm phong mã hóa"
           ]

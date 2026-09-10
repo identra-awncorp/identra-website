@@ -102,7 +102,7 @@ export const docsReferencePhases: Record<DocsReferencePhase, LocalizedText> = {
     es: 'Emisión y almacenamiento de credenciales',
     ja: 'クレデンシャルの発行と保存',
     de: 'Ausstellung und Speicherung von Nachweisen',
-    vi: 'Cấp phát và lưu thực chứng'
+    vi: 'Phát hành và lưu thực chứng'
   },
   verification: {
     en: 'Presentation and verification',
@@ -189,7 +189,7 @@ const apiReferenceCopy: Record<Locale, ApiReferenceCopy> = {
   vi: {
     title: 'Toàn bộ vòng đời mật mã của một thực chứng',
     overviewTitle: 'Tổng quan vòng đời',
-    overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, cấp phát và lưu thực chứng, tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
+    overviewIntro: 'Tài liệu API SDK trình bày chi tiết từ bước tạo khóa, công bố tài liệu DID, thiết lập DIDComm, phát hành và lưu thực chứng, tạo VP, xác minh đến gửi biên nhận cho bên nắm giữ.',
     contractNotice: 'Giao diện SDK trong tài liệu này chỉ mang tính minh họa. Tên gói, API và điểm cuối mô tả giao diện dự kiến cùng các ranh giới bảo mật bắt buộc.',
     issuanceDeliveryNotice: 'OpenID4VCI qua mã QR hoặc deep link là cách phát hành được ưu tiên. Các bước DIDComm bên dưới mô tả lựa chọn bổ sung cho hệ thống cần thiết lập quan hệ DIDComm.',
     registryNotice: 'CertNet là sổ đăng ký mặc định trong môi trường thử nghiệm. Cùng một lớp sổ đăng ký DID cũng có thể công bố và phân giải tài liệu qua did:web, ION hoặc sổ đăng ký nội bộ.',
@@ -224,7 +224,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El SDK crea una clave de firma asimétrica. La clave privada se protege según el entorno; la clave pública se incluirá en el DID Document.',
       ja: 'SDKは非対称署名鍵を作成します。秘密鍵は実行環境に合わせて保護され、公開鍵はDID Documentに入ります。',
       de: 'Das SDK erzeugt einen asymmetrischen Signaturschlüssel. Der private Schlüssel wird je Laufzeit geschützt; der öffentliche Schlüssel kommt in das DID Document.',
-      vi: 'SDK tạo khóa ký bất đối xứng. Khóa bí mật được bảo vệ theo môi trường chạy; khóa công khai sẽ được đưa vào DID Document.'
+      vi: 'SDK tạo khóa ký bất đối xứng. Khóa bí mật được bảo vệ theo môi trường chạy; khóa công khai sẽ được đưa vào Tài liệu DID.'
     },
     protocol: 'Ed25519 / ES256',
     inputs: [{
@@ -268,7 +268,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El DID Document contiene la clave pública y el endpoint DIDComm. El SDK puede publicarlo en CertNet, did:web, ION o un registro interno.',
       ja: 'DID Documentには公開鍵とDIDComm service endpointが含まれます。SDKはCertNet、did:web、ION、内部registryへ公開できます。',
       de: 'Das DID Document enthält öffentlichen Schlüssel und DIDComm-Service-Endpunkt. Das SDK kann es in CertNet, did:web, ION oder einem internen Register veröffentlichen.',
-      vi: 'Tài liệu DID chứa khóa công khai và điểm cuối dịch vụ DIDComm. SDK có thể công bố tài liệu lên CertNet, did:web, ION hoặc sổ đăng ký nội bộ.'
+      vi: 'Tài liệu DID chứa khóa công khai và điểm truy cập dịch vụ DIDComm. SDK có thể công bố tài liệu lên CertNet, did:web, ION hoặc sổ đăng ký nội bộ.'
     },
     protocol: 'DID Core + DID Registry',
     inputs: [{
@@ -276,14 +276,14 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Clave pública y endpoint DIDComm',
       ja: '公開鍵とDIDComm endpoint',
       de: 'Öffentlicher Schlüssel und DIDComm-Endpunkt',
-      vi: 'Khóa công khai và điểm cuối DIDComm'
+      vi: 'Khóa công khai và điểm truy cập dịch vụ DIDComm'
     }],
     outputs: [{
       en: 'Canonical DID and stored DID Document',
       es: 'DID canónico y DID Document guardado',
       ja: '正規DIDと保存済みDID Document',
       de: 'Kanonische DID und gespeichertes DID Document',
-      vi: 'DID chuẩn và DID Document đã lưu'
+      vi: 'DID chuẩn và Tài liệu DID đã lưu'
     }],
     security: {
       en: 'The registry never receives the private key. The verificationMethod must reference the keyId used to sign VCs.',
@@ -400,7 +400,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'La wallet decodifica la invitación, resuelve el DID Document del emisor, valida el endpoint y completa el handshake DIDComm.',
       ja: 'walletはinvitationを復号し、発行者DID Documentを解決し、endpointを検証してDIDComm handshakeを完了します。',
       de: 'Die Wallet decodiert die Einladung, löst das DID Document des Ausstellers auf, validiert den Endpunkt und schließt den DIDComm-Handshake ab.',
-      vi: 'Ví giải mã lời mời, phân giải tài liệu DID của bên phát hành, xác thực điểm cuối rồi hoàn tất quá trình bắt tay DIDComm.'
+      vi: 'Ví giải mã lời mời, phân giải tài liệu DID của bên phát hành, xác thực điểm truy cập dịch vụ rồi hoàn tất quá trình bắt tay DIDComm.'
     },
     protocol: 'DIDComm DID Exchange',
     inputs: [{
@@ -532,7 +532,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'El verificador crea claves y publica un DID Document con clave pública y endpoint DIDComm para que el titular pueda autenticarlo.',
       ja: '検証者は鍵を作成し、公開鍵とDIDComm endpointを含むDID Documentを公開して、保有者が認証できるようにします。',
       de: 'Der Prüfer erstellt Schlüssel und veröffentlicht ein DID Document mit öffentlichem Schlüssel und DIDComm-Endpunkt, damit der Inhaber ihn authentifizieren kann.',
-      vi: 'Bên xác minh tạo khóa và công bố tài liệu DID chứa khóa công khai cùng điểm cuối DIDComm để bên nắm giữ xác thực trước khi chia sẻ.'
+      vi: 'Bên xác minh tạo khóa và công bố tài liệu DID chứa khóa công khai cùng điểm truy cập dịch vụ DIDComm để bên nắm giữ xác thực trước khi chia sẻ.'
     },
     protocol: 'DID Core + DID Registry',
     inputs: [{
@@ -716,7 +716,7 @@ export const docsReferenceSteps: DocsReferenceStep[] = [
       es: 'Solicitud de presentación y consentimiento del usuario',
       ja: 'presentation requestとユーザー同意',
       de: 'Präsentationsanfrage und Nutzerzustimmung',
-      vi: 'Yêu cầu trình xuất và sự đồng ý của người dùng'
+      vi: 'Yêu cầu trình thực chứng và sự đồng thuận của người dùng'
     }],
     outputs: [{
       en: 'Signed VP and message ID',

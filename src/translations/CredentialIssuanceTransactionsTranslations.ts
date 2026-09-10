@@ -265,7 +265,7 @@ export const credentialIssuanceTransactionsTranslations = {
     "txTicketTitle": "Vé xem phim đã xác minh",
     "txTicketIssuer": "Bên phát hành: Grand Cinema Group",
     "txTicketTransfer": "Quyền chuyển nhượng: Được bên phát hành cho phép",
-    "txTicketGenuine": "Thông tin xác thực mật mã hợp lệ",
+    "txTicketGenuine": "Thực chứng mật mã hợp lệ",
     "txEscrowLog": "Nhật ký Sổ cái Hợp đồng Thông minh:",
     "txEscrowLog1": "Đang chờ ký quỹ từ Người bán (Vé) và Người mua (VNĐ)...",
     "txEscrowLog2": "Đã xác minh bằng mật mã chữ ký của Grand Cinema. Xác nhận \"Cho phép chuyển nhượng: true\".",

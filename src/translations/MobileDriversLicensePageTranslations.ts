@@ -779,12 +779,12 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
   vi: {
     backToHome: 'Quay lại trang chủ',
     badge: 'Giấy phép lái xe di động',
-    heroTitle: 'Xác minh người dùng tức thì và an toàn. Xác minh giấy phép lái xe di động (mDL) từ các nhà cung cấp ví số hàng đầu để giảm ma sát cho người dùng.',
+    heroTitle: 'Xác minh người dùng tức thì và an toàn. Xác minh giấy phép lái xe di động (mDL) từ các nhà cung cấp ví định tín hàng đầu để giảm ma sát cho người dùng.',
     tryDemo: 'Trải nghiệm demo',
     pillars: [
       {
         title: 'Tăng tỷ lệ hoàn tất',
-        desc: 'Tối đa hóa chuyển đổi bằng luồng thân thiện, hướng dẫn người dùng trong toàn bộ quá trình chuyển tiếp sang ví số.'
+        desc: 'Tối đa hóa chuyển đổi bằng luồng thân thiện, hướng dẫn người dùng trong toàn bộ quá trình chuyển tiếp sang ví định tín.'
       },
       {
         title: 'Giảm nguy cơ gian lận danh tính',
@@ -802,24 +802,24 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         label: 'Cấu hình',
         badge: 'Bước 1: Thiết lập',
         title: 'Cấu hình luồng thu thập để chấp nhận mDL',
-        desc: 'Đặt mDL là giấy tờ định danh được chấp nhận trong bảng điều khiển. Nếu thiết bị của người dùng có ví số tương thích như Apple Wallet hoặc Google Wallet, hoặc mDL được bang hỗ trợ, Identra sẽ yêu cầu người dùng cho phép gửi một cách rõ ràng.'
+        desc: 'Đặt mDL là giấy tờ định danh được chấp nhận trong bảng điều khiển. Nếu thiết bị của người dùng có ví định tín tương thích như Apple Wallet hoặc Google Wallet, hoặc mDL được bang hỗ trợ, Identra sẽ yêu cầu người dùng cho phép gửi một cách rõ ràng.'
       },
       {
         label: 'Giải mã',
         badge: 'Bước 2: Giải mã',
-        title: 'Giải mã thông tin xác thực của người dùng một cách an toàn',
-        desc: 'Identra xử lý sẵn các thao tác mật mã bảo mật phức tạp. Khi người dùng đồng ý chia sẻ mDL, ví số sẽ truyền một payload CBOR đã mã hóa. Identra thực hiện trao đổi khóa, giải mã bản ghi và kiểm tra dấu thời gian để bảo đảm tính hợp lệ.'
+        title: 'Giải mã dữ liệu mDL của người dùng một cách an toàn',
+        desc: 'Identra xử lý sẵn các thao tác mật mã bảo mật phức tạp. Khi người dùng đồng ý chia sẻ mDL, ví định tín sẽ truyền một payload CBOR đã mã hóa. Identra thực hiện trao đổi khóa, giải mã bản ghi và kiểm tra dấu thời gian để bảo đảm tính hợp lệ.'
       },
       {
         label: 'Xác minh',
         badge: 'Bước 3: Xác minh',
         title: 'Xác minh bằng mật mã và cơ sở dữ liệu của bang',
-        desc: 'Chạy ngay các bước kiểm tra toàn diện cấp bang. Xác nhận chữ ký số thuộc về chứng chỉ gốc của cơ quan DMV chính thức, đồng thời truy vấn trực tiếp cơ sở dữ liệu DMV để bảo đảm giấy phép vẫn còn hiệu lực và chưa bị thu hồi.'
+        desc: 'Chạy ngay các bước kiểm tra toàn diện cấp bang. Xác nhận chữ ký số thuộc về chứng thư gốc của cơ quan DMV chính thức, đồng thời truy vấn trực tiếp cơ sở dữ liệu DMV để bảo đảm giấy phép vẫn còn hiệu lực và chưa bị thu hồi.'
       }
     ],
     setupControl: {
       title: 'Cho phép giấy phép lái xe di động',
-      desc: 'Bật chuyển tiếp xác minh qua ví số'
+      desc: 'Bật chuyển tiếp xác minh qua ví định tín'
     },
     phoneMockup: {
       appName: 'Identra Verify',
@@ -829,7 +829,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
       driversLicense: 'Giấy phép lái xe',
       passport: 'Hộ chiếu',
       mobileDriversLicense: 'Giấy phép lái xe di động',
-      wallet: 'Ví số',
+      wallet: 'Ví định tín',
       continue: 'Tiếp tục'
     },
     decrypt: {
@@ -862,7 +862,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     },
     verify: {
       title: 'Bộ xác minh có thẩm quyền',
-      desc: 'Truy vấn kho chứng chỉ gốc DMV của bang',
+      desc: 'Truy vấn kho chứng thư gốc DMV của bang',
       checking: 'Đang xác minh DMV...',
       passed: 'Kiểm tra đạt',
       run: 'Truy vấn hồ sơ DMV',
@@ -890,12 +890,12 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
       {
         id: 'detection',
         title: 'Giảm ma sát nhờ tự động phát hiện mDL',
-        content: 'SDK của chúng tôi kiểm tra khả năng của thiết bị theo thời gian thực. Nếu phát hiện hỗ trợ Apple Wallet hoặc Google Wallet, Identra sẽ mời người dùng kích hoạt trình quản lý thông tin xác thực gốc trên thiết bị chỉ bằng một lần chạm.'
+        content: 'SDK của chúng tôi kiểm tra khả năng của thiết bị theo thời gian thực. Nếu phát hiện hỗ trợ Apple Wallet hoặc Google Wallet, Identra sẽ mời người dùng kích hoạt trình quản lý giấy tờ định danh tích hợp sẵn trên thiết bị chỉ bằng một lần chạm.'
       },
       {
         id: 'accuracy',
         title: 'Giảm kết quả dương tính giả và âm tính giả',
-        content: 'Không còn ảnh mờ, lóa sáng hay góc chụp kém. Vì thông tin xác thực được đọc trực tiếp từ gói ví số đã ký bằng mật mã, bạn nhận được họ tên và ngày sinh chính xác 100%, sẵn sàng để xử lý ngay.'
+        content: 'Không còn ảnh mờ, lóa sáng hay góc chụp kém. Vì dữ liệu mDL được đọc trực tiếp từ gói ví định tín đã ký bằng mật mã, bạn nhận được họ tên và ngày sinh chính xác 100%, sẵn sàng để xử lý ngay.'
       }
     ],
     teamUseTitle: 'Các đội ngũ có thể dùng xác minh mDL như thế nào',
@@ -906,7 +906,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
       },
       {
         title: 'Xác minh danh tính',
-        desc: 'Xác minh danh tính cá nhân bằng giấy phép lái xe được lưu trong ví số. Tăng độ tin cậy bằng cách yêu cầu selfie trực tiếp và đối chiếu với ảnh chân dung trong gói ID.'
+        desc: 'Xác minh danh tính cá nhân bằng giấy phép lái xe được lưu trong ví định tín. Tăng độ tin cậy bằng cách yêu cầu selfie trực tiếp và đối chiếu với ảnh chân dung trong gói ID.'
       },
       {
         title: 'Tái xác minh người dùng dễ dàng',
@@ -924,7 +924,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
       {
         meta: 'Hướng dẫn - đọc trong 8 phút',
         title: 'Cách tích hợp giao thức mDL ISO 18013-5',
-        desc: 'Hướng dẫn từng bước cho nhà phát triển để thiết lập bắt tay đường cong elliptic và phân giải neo tin cậy với gốc DMV.'
+        desc: 'Hướng dẫn từng bước cho nhà phát triển để thiết lập bắt tay đường cong elliptic và phân giải điểm neo tin cậy với gốc DMV.'
       },
       {
         meta: 'Nghiên cứu điển hình - đọc trong 10 phút',
@@ -947,11 +947,11 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
     faqs: [
       {
         q: 'Giấy phép lái xe di động (mDL) là gì?',
-        a: 'Giấy phép lái xe di động (mDL) là bản sao số của giấy phép lái xe, được ký bằng mật mã và lưu trong ví số như Apple Wallet hoặc Google Wallet trên thiết bị di động. mDL tuân theo tiêu chuẩn quốc tế ISO 18013-5, bảo đảm trao đổi dữ liệu an toàn với thiết bị đầu cuối và phần mềm xác minh.'
+        a: 'Giấy phép lái xe di động (mDL) là bản sao số của giấy phép lái xe, được ký bằng mật mã và lưu trong ví định tín như Apple Wallet hoặc Google Wallet trên thiết bị di động. mDL tuân theo tiêu chuẩn quốc tế ISO 18013-5, bảo đảm trao đổi dữ liệu an toàn với thiết bị đầu cuối và phần mềm xác minh.'
       },
       {
         q: 'Identra xác minh mDL như thế nào?',
-        a: 'Khi người dùng chia sẻ mDL qua Identra SDK, ví số sẽ truyền an toàn một payload được mã hóa chứa các thuộc tính do cơ quan phát hành ký. Identra giải mã payload, xác minh chữ ký số với chứng chỉ gốc DMV và đối chiếu hồ sơ trạng thái theo thời gian thực để bảo đảm hợp lệ.'
+        a: 'Khi người dùng chia sẻ mDL qua Identra SDK, ví định tín sẽ truyền an toàn một payload được mã hóa chứa các thuộc tính do cơ quan phát hành ký. Identra giải mã payload, xác minh chữ ký số với chứng thư gốc DMV và đối chiếu hồ sơ trạng thái theo thời gian thực để bảo đảm hợp lệ.'
       },
       {
         q: 'Những bang nào hỗ trợ giấy phép lái xe di động?',
@@ -959,7 +959,7 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
       },
       {
         q: 'Người dùng vẫn có thể tải lên ID vật lý nếu không có mDL không?',
-        a: 'Có. Dynamic Flow của Identra tự động chuyển về xác minh ID chính phủ vật lý nếu người dùng chưa có mDL đang hoạt động trong ví số, giúp duy trì phạm vi bao phủ đầy đủ cho người dùng.'
+        a: 'Có. Dynamic Flow của Identra tự động chuyển về xác minh ID chính phủ vật lý nếu người dùng chưa có mDL đang hoạt động trong ví định tín, giúp duy trì phạm vi bao phủ đầy đủ cho người dùng.'
       }
     ],
     cta: {

@@ -541,7 +541,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         steps: [
           { label: 'Phân tích rủi ro thiết bị', action: 'Kiểm tra thiết bị', logText: 'Hệ thống đánh giá dấu vân tay trình duyệt, tín hiệu tự động hóa và hành vi trong phiên truy cập.' },
           { label: 'Xác minh chủ thuê bao', action: 'Xác minh số điện thoại', logText: 'Thông tin nhà mạng, SIM và mã OTP xác nhận số điện thoại đang hoạt động, thuộc quyền kiểm soát của người dùng và không phải số VoIP.' },
-          { label: 'Gắn vé với danh tính', action: 'Phát hành vé xác thực', logText: 'Thông tin vé được ký số bằng mã QR và áp dụng điều kiện hạn chế chuyển nhượng.' }
+          { label: 'Gắn vé với danh tính', action: 'Phát hành vé xác thực', logText: 'Siêu dữ liệu vé được ký số bằng mã QR và áp dụng điều kiện hạn chế chuyển nhượng.' }
         ]
       },
       {
@@ -567,20 +567,20 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         steps: [
           { label: 'Tra cứu dữ liệu dân cư', action: 'Đối chiếu hồ sơ công dân', logText: 'Thông tin từ cơ sở dữ liệu dân cư và khai sinh cho kết quả nhất quán.' },
           { label: 'Xác minh nơi cư trú', action: 'Kiểm tra giấy tờ cư trú', logText: 'Địa chỉ bưu chính, hóa đơn tiện ích và dữ liệu vị trí cùng xác nhận nơi cư trú.' },
-          { label: 'Cấp chứng thư số', action: 'Tạo chứng thư số', logText: 'Chứng thư dùng một lần được liên kết với hồ sơ và ký số để chống chỉnh sửa.' }
+          { label: 'Phát hành thực chứng', action: 'Tạo thực chứng', logText: 'Thực chứng dùng một lần được liên kết với hồ sơ và ký số để chống chỉnh sửa.' }
         ]
       },
       {
         id: 'healthcare',
         tag: 'Y tế',
         title: 'Đăng ký khám chữa bệnh',
-        desc: 'Xác minh danh tính, quyền lợi bảo hiểm và sự đồng ý của bệnh nhân trước khi tiếp nhận.',
+        desc: 'Xác minh danh tính, quyền lợi bảo hiểm và sự đồng thuận của bệnh nhân trước khi tiếp nhận.',
         security: 'Kiểm soát danh tính đáp ứng HIPAA',
-        successResult: 'Danh tính, bảo hiểm và sự đồng ý của bệnh nhân đều đã được xác minh. Cơ sở y tế có thể tiếp nhận bệnh nhân mà vẫn bảo vệ dữ liệu.',
+        successResult: 'Danh tính, bảo hiểm và sự đồng thuận của bệnh nhân đều đã được xác minh. Cơ sở y tế có thể tiếp nhận bệnh nhân mà vẫn bảo vệ dữ liệu.',
         steps: [
           { label: 'Xác minh danh tính bệnh nhân', action: 'Kiểm tra giấy tờ', logText: 'Thông tin trên giấy tờ tùy thân trùng khớp với hồ sơ bệnh nhân và không phát hiện hồ sơ nhân khẩu học trùng lặp.' },
           { label: 'Kiểm tra quyền lợi bảo hiểm', action: 'Quét thẻ bảo hiểm', logText: 'Hiệu lực hợp đồng, nhà bảo hiểm và mã nhóm được xác minh theo thời gian thực.' },
-          { label: 'Ghi nhận sự đồng ý', action: 'Ký phiếu đồng ý', logText: 'Phiếu đồng ý được ký, tạo mã băm và lưu trữ theo các yêu cầu bảo vệ dữ liệu y tế.' }
+          { label: 'Ghi nhận sự đồng thuận', action: 'Ký phiếu đồng thuận', logText: 'Phiếu đồng thuận được ký, tạo mã băm và lưu trữ theo các yêu cầu bảo vệ dữ liệu y tế.' }
         ]
       },
       {

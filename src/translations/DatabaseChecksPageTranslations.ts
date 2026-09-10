@@ -1194,7 +1194,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       },
       {
         title: 'Xác minh danh tính',
-        desc: 'Xác minh danh tính của một cá nhân bằng cách đối chiếu thông tin của họ với cơ sở dữ liệu chính thức và nguồn phát hành. Liên kết thông tin xác thực động với ít ma sát.'
+        desc: 'Xác minh danh tính của một cá nhân bằng cách đối chiếu thông tin của họ với cơ sở dữ liệu chính thức và nguồn phát hành. Liên kết thực chứng linh hoạt với thao tác đơn giản.'
       },
       {
         title: 'Ma sát động',

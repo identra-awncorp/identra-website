@@ -719,7 +719,7 @@ export const TICKET_BOOKING_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Hoàn tất lớp xác minh: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
         "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
-        "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "ticket-booking": [

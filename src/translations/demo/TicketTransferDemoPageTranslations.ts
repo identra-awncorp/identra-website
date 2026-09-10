@@ -509,9 +509,9 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "id": "ticket-transfer",
       "tag": "Credential Issuance",
       "title": "Chuyển vé đã xác minh",
-      "desc": "Chứng minh quyền sở hữu ban đầu, khóa ký quỹ và chuyển thông tin xác thực vé một cách an toàn.",
+      "desc": "Chứng minh quyền sở hữu ban đầu, khóa ký quỹ và chuyển thực chứng vé một cách an toàn.",
       "security": "Tiết lộ có chọn lọc và hợp đồng thông minh",
-      "successResult": "Quyền sở hữu vé đã được chuyển đồng thời. Người mua nhận thông tin xác thực đã xác minh và ký quỹ được giải phóng.",
+      "successResult": "Quyền sở hữu vé đã được chuyển đồng thời. Người mua nhận thực chứng đã xác minh và ký quỹ được giải phóng.",
       "steps": [
         {
           "label": "Xác minh quyền sở hữu ban đầu",
@@ -562,7 +562,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Hoàn tất lớp xác minh: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
         "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
-        "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "ticket-transfer": [
@@ -621,7 +621,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "footer": "Chuyển quyền sở hữu an toàn và chống phe vé"
     },
     "logs": {
-      "decryptingTicket": "Đang giải mã chứng chỉ sở hữu vé cho chủ sở hữu: Alice Vance",
+      "decryptingTicket": "Đang giải mã thực chứng xác nhận quyền sở hữu vé cho chủ sở hữu: Alice Vance",
       "ownerVerified": "Chủ sở hữu vé đã xác minh: \"Alice Vance\". Chữ ký mật mã khớp hoàn toàn với sổ cái vé gốc.",
       "lockingEscrow": "Đang khóa tài sản vé VibePass trong sổ cái Trust Escrow...",
       "escrowSealed": "Tài sản ký quỹ đã niêm phong. Quỹ đã khớp. Cơ chế khóa đa chữ ký hoàn tất an toàn.",

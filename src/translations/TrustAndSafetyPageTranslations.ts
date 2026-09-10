@@ -937,7 +937,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
   queueReview: "ĐƯA VÀO HÀNG ĐỢI XEM XÉT ⚠",
   section2Label: "2. Phòng vệ gian lận",
   section2Title: "Phát hiện đối tượng xấu bằng bảo vệ gian lận nhiều lớp",
-  section2Desc: "Bảo vệ hệ sinh thái người dùng hợp lệ bằng phân tích tín hiệu nền tự động và tái xác minh tức thì. Ngăn chặn các đường dây gian lận bằng cách phát hiện mạng thiết bị liên kết và mẫu credential stuffing.",
+  section2Desc: "Bảo vệ hệ sinh thái người dùng hợp lệ bằng phân tích tín hiệu nền tự động và tái xác minh tức thì. Ngăn chặn các đường dây gian lận bằng cách phát hiện mạng thiết bị liên kết và dấu hiệu tấn công nhồi thông tin đăng nhập.",
   section3Label: "3. Vận hành & mở rộng",
   section3Title: "Mở rộng và tinh gọn vận hành định danh",
   section3Desc: "Tăng tốc xem xét thủ công bằng cách cung cấp mọi tín hiệu cần thiết trong một tab có ngữ cảnh.",

@@ -982,7 +982,7 @@ const vi: PlatformPageCopy = {
     collect: {
       workspace: 'Trình thiết kế luồng',
       draft: 'Bản nháp sẵn sàng',
-      start: 'Giới thiệu và lấy sự đồng ý',
+      start: 'Giới thiệu và ghi nhận đồng thuận',
       credential: 'Xác minh thực chứng',
       risk: 'Điều hướng theo mức rủi ro',
       approve: 'Phê duyệt nhanh',

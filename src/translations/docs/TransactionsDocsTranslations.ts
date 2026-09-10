@@ -322,7 +322,7 @@ export const TRANSACTIONS_DOCS_TRANSLATIONS = {
       },
       {
         id: 'transaction-schema',
-        title: 'Thiết kế cấu trúc sự kiện',
+        title: 'Thiết kế lược đồ sự kiện',
         blocks: [
           { type: 'p', text: 'Gửi những dữ kiện có sẵn tại thời điểm ra quyết định. Giữ nguyên ý nghĩa của từng trường để quy tắc và mô hình có thể so sánh hành vi theo thời gian.' },
           { type: 'table', headers: ['Trường', 'Bắt buộc', 'Hướng dẫn'], rows: [

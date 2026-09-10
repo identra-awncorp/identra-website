@@ -531,7 +531,7 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         scenario: 'Tình huống 03',
         navTitle: 'Xác minh nhân viên chính phủ và nhà thầu trước khi cấp quyền truy cập',
         title: 'Xác minh nhân viên chính phủ và nhà thầu trước khi cấp quyền truy cập',
-        desc: 'Cho phép cấp quyền nhân sự an toàn bằng thông tin xác thực được xác minh bằng mật mã tức thì. Xác thực thẻ PIV/CAC và kiểm tra danh bạ nhân sự nội bộ khi khôi phục tài khoản hoặc tiếp nhận từ xa.',
+        desc: 'Cấp quyền truy cập an toàn cho nhân sự bằng cách xác minh thẻ định danh PIV/CAC bằng mật mã và kiểm tra danh bạ nhân sự nội bộ khi khôi phục tài khoản hoặc tiếp nhận từ xa.',
         panelTitle: 'Xác minh phát hành PIV/CAC từ xa',
         panelBadge: 'SECURE_ONBOARD',
         alertTitle: 'Đối chiếu PIV liên bang thành công',

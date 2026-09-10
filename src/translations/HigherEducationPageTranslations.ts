@@ -574,7 +574,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     modalIntro: 'Identra được thiết kế như một nền tảng niềm tin cấp doanh nghiệp. Chúng tôi duy trì sự phù hợp sâu với yêu cầu tuân thủ của tổ chức và luật quyền riêng tư cấp bang:',
     complianceCards: [
       { title: 'Tuân thủ FERPA', desc: 'Hỗ trợ hướng dẫn nghiêm ngặt để bảo vệ hồ sơ giáo dục của sinh viên khỏi việc tiết lộ khi chưa đồng ý.' },
-      { title: 'Tiêu chuẩn NIST IAL2', desc: 'Đạt NIST Identity Assurance Level 2 cho giải ngân hỗ trợ sinh viên và bảo vệ thông tin xác thực.' },
+      { title: 'Tiêu chuẩn NIST IAL2', desc: 'Đạt NIST Identity Assurance Level 2 cho giải ngân hỗ trợ sinh viên và bảo vệ thực chứng.' },
       { title: 'Chứng nhận SOC 2 Type II', desc: 'Kiểm toán định kỳ để bảo đảm kiểm soát bảo mật, tính sẵn sàng và toàn vẹn quy trình ở cấp doanh nghiệp.' },
       { title: 'Tuân thủ CCPA và GDPR', desc: 'Được cấu trúc để hỗ trợ yêu cầu truy cập dữ liệu cá nhân, xóa dữ liệu tuyệt đối và xử lý che giấu nghiêm ngặt.' }
     ],

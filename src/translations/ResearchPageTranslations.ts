@@ -1057,11 +1057,11 @@ export const getLocalizedPublications = (lang: string) => {
         id: "pub-7",
         title: "Điều hướng các luật xác minh độ tuổi toàn cầu trong kỷ nguyên kỹ thuật số",
         description: "Khi các cơ quan quản lý thắt chặt luật về quyền riêng tư và xác minh độ tuổi, các tổ chức phải cân bằng giữa việc tuân thủ và trải nghiệm người dùng bằng các hệ thống linh hoạt, bảo vệ dữ liệu.",
-        abstract: "Từ Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh (AADC) đến các đạo luật riêng lẻ của từng bang ở Hoa Kỳ, các quy định đang nhanh chóng bắt buộc xác minh độ tuổi đối với các dịch vụ kỹ thuật số. Bài báo này xem xét các đánh đổi kỹ thuật giữa xác minh độ tuổi không tiết lộ thông tin, truy vấn cơ sở dữ liệu và ước tính tuổi qua khuôn mặt, cung cấp một sơ đồ triển khai nhiều lớp.",
+        abstract: "Từ Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh (AADC) đến các đạo luật riêng lẻ của từng bang ở Hoa Kỳ, các quy định đang nhanh chóng bắt buộc xác minh độ tuổi đối với các dịch vụ kỹ thuật số. Bài báo này xem xét các đánh đổi kỹ thuật giữa xác minh độ tuổi bằng bằng chứng không tiết lộ (ZKP), truy vấn cơ sở dữ liệu và ước tính tuổi qua khuôn mặt, cung cấp một sơ đồ triển khai nhiều lớp.",
         keyTakeaways: [
           "Cung cấp so sánh toàn diện về luật bảo vệ trẻ em của Vương quốc Anh, California và EU đang phát triển.",
           "So sánh biên độ sai số ước tính độ tuổi bằng sinh trắc học trên các nhóm chủng tộc, độ tuổi và giới tính khác nhau.",
-          "Chứng minh luồng xác minh không tiết lộ thông tin phi tập trung giúp xác nhận khoảng tuổi mà không cần lưu trữ dữ liệu cá nhân."
+          "Chứng minh luồng xác minh phi tập trung sử dụng bằng chứng không tiết lộ (ZKP) giúp xác nhận khoảng tuổi mà không cần lưu trữ dữ liệu cá nhân."
         ]
       }
     ]
@@ -1376,7 +1376,7 @@ export const getLocalizedRegulations = (lang: string) => {
         lawName: "Đạo luật Bộ Quy tắc Thiết kế Phù hợp với Lứa tuổi của California",
         status: "In Effect" as const,
         minAge: 18,
-        methodsAllowed: ["Ước tính", "Xác minh ID", "Đối sánh sự đồng ý của cha mẹ"],
+        methodsAllowed: ["Ước tính", "Xác minh ID", "Đối sánh sự đồng thuận của cha mẹ"],
         strictness: "High" as const,
         details: "Bắt buộc các doanh nghiệp cung cấp dịch vụ trực tuyến có khả năng trẻ em truy cập phải ước tính tuổi của người dùng trẻ em với độ tin cậy cao, hoặc áp dụng các cài đặt quyền riêng tư trẻ em tối đa theo mặc định."
       },
@@ -1428,7 +1428,7 @@ export const getLocalizedRegulations = (lang: string) => {
         minAge: 15,
         methodsAllowed: ["Mã xác thực ngân hàng ẩn danh", "Ước tính tuổi bằng sinh trắc học", "Đối khớp ID"],
         strictness: "High" as const,
-        details: "Yêu cầu các trang mạng xã hội xác minh người dùng trên 15 tuổi hoặc có sự đồng ý rõ ràng của cha mẹ. Khuyến khích các hệ thống mà bên xác thực không biết trang web nào đang được truy cập."
+        details: "Yêu cầu các trang mạng xã hội xác minh người dùng trên 15 tuổi hoặc có sự đồng thuận rõ ràng của cha mẹ. Khuyến khích các hệ thống mà bên xác thực không biết trang web nào đang được truy cập."
       }
     ]
   };
@@ -1693,10 +1693,10 @@ export const getLocalizedReadingList = (lang: string) => {
         source: "World Economic Forum & Identra Labs",
         readTime: "15 phút",
         publicationYear: "2026",
-        description: "Khám phá chuyên sâu các kỹ thuật bảo đảm độ tuổi bằng mã hóa tiên tiến nhất, tìm hiểu giao thức chứng minh không tiết lộ thông tin và mô hình xác thực ẩn danh.",
-        summary: "Từ Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh đến luật AADC của California, các cơ quan quản lý đang bắt buộc xác minh độ tuổi mạnh mẽ. Tài liệu này đề xuất các kiến trúc mã hóa phi tập trung cho phép người dùng khẳng định độ tuổi mà không làm rò rỉ dữ liệu sinh trắc học hoặc tài liệu thô cho bên xác minh. Chúng tôi đánh giá cách chứng minh không tiết lộ thông tin (ZKPs) và thông tin xác thực phi tập trung có thể trở thành tiêu chuẩn vàng cho sự tuân thủ toàn cầu.",
+        description: "Khám phá chuyên sâu các kỹ thuật bảo đảm độ tuổi bằng mã hóa tiên tiến nhất, tìm hiểu giao thức tạo bằng chứng không tiết lộ (ZKP) và mô hình xác thực ẩn danh.",
+        summary: "Từ Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh đến luật AADC của California, các cơ quan quản lý đang bắt buộc xác minh độ tuổi mạnh mẽ. Tài liệu này đề xuất các kiến trúc mã hóa phi tập trung cho phép người dùng khẳng định độ tuổi mà không làm rò rỉ dữ liệu sinh trắc học hoặc tài liệu thô cho bên tin cậy. Chúng tôi đánh giá cách bằng chứng không tiết lộ (ZKP) và thực chứng phi tập trung có thể trở thành tiêu chuẩn vàng cho sự tuân thủ toàn cầu.",
         keyInsights: [
-          "Chứng minh không tiết lộ thông tin cho phép người dùng xác minh khoảng tuổi mà không cần truyền ngày sinh chính xác.",
+          "Bằng chứng không tiết lộ (ZKP) cho phép người dùng xác minh khoảng tuổi mà không cần truyền ngày sinh chính xác.",
           "Mô hình mã xác thực ẩn danh ngăn bên xác minh độ tuổi lập bản đồ hoặc theo dõi lịch sử duyệt web của người dùng.",
           "Ước tính tuổi qua khuôn mặt đã cải thiện tính công bằng nhân khẩu học trên các nhóm đối tượng đa dạng lên độ chính xác hơn 98.7%."
         ]

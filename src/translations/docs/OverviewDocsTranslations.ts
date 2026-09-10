@@ -402,7 +402,7 @@ export const OVERVIEW_DOCS_TRANSLATIONS = {
         title: 'Môi trường SSI',
         blocks: [
           { type: 'p', text: 'Hướng dẫn SSI theo vai trò. Đi từng bước qua ba vai trò, xem ranh giới dữ liệu và so sánh ví dụ giữa các SDK web, server và mobile.' },
-          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo thực chứng, bên nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn bên xác minh yêu cầu và kiểm tra bản trình xuất (VP).' },
+          { type: 'p', text: 'SSI trở nên dễ hiểu hơn khi trách nhiệm của từng vai trò được phân định rõ. Bên phát hành tạo thực chứng, bên nắm giữ lưu VC trong kho bảo mật trên điện thoại, còn bên xác minh yêu cầu và kiểm tra bản trình bày thực chứng (VP).' },
           { type: 'callout', text: '[Bên phát hành kiểm tra và ký VC] -> [Bên nắm giữ lưu VC trên thiết bị di động] -> [Người dùng đồng ý và tạo VP] -> [Bên xác minh kiểm tra VP]' },
           { type: 'cards', cards: [
             { title: 'Bên phát hành', text: 'Kiểm tra dữ liệu nguồn, ký thực chứng và gửi đề nghị nhận VC qua DIDComm.' },

@@ -1554,7 +1554,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-8": {
         "title": "17 tín hiệu hàng đầu để chống ATO, danh tính tổng hợp và deepfake",
         "type": "Hướng dẫn",
-        "description": "Trang bị cho đội ngũ an toàn và tin cậy các tín hiệu có thể hành động để phát hiện chiếm đoạt tài khoản, giấy tờ giả và thông tin xác thực tổng hợp.",
+        "description": "Trang bị cho đội ngũ an toàn và tin cậy các tín hiệu có thể hành động để phát hiện chiếm đoạt tài khoản, giấy tờ giả và hồ sơ danh tính tổng hợp.",
       },
       "ebook-9": {
         "title": "Danh sách kiểm tra IDV cho nhân sự: 7 tính năng cần có để bảo vệ tổ chức",

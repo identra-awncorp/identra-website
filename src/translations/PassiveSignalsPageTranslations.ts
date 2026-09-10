@@ -829,7 +829,7 @@ export const inlineTranslations: Record<string, Record<string, string>> = {
     de: "Häufigkeit der Gerätefreigabe über unabhängige Konten hinweg"
   },
   "Repeated credential velocity spikes within minutes": {
-    vi: "Tần suất sử dụng thông tin xác thực tăng đột biến trong vòng vài phút",
+    vi: "Tần suất sử dụng thông tin đăng nhập tăng đột biến trong vòng vài phút",
     es: "La velocidad de las credenciales aumenta repetidamente en cuestión de minutos",
     ja: "数分以内に認証情報の速度が急上昇することが繰り返される",
     de: "Wiederholte Spitzen der Anmeldedatengeschwindigkeit innerhalb von Minuten"
@@ -907,7 +907,7 @@ export const inlineTranslations: Record<string, Record<string, string>> = {
     de: "Extrem einzigartige Browser-Konfigurationsflags, die nur mit 1 von 300.000 globalen Profilen geteilt werden."
   },
   "Spot larger fraud trends by detecting device sharing, repeated credential reuse, and velocity spikes across your system.": {
-    vi: "Phát hiện các xu hướng gian lận lớn hơn bằng cách kiểm tra việc chia sẻ thiết bị, tái sử dụng thông tin xác thực lặp lại và sự tăng đột biến về tần suất trong toàn bộ hệ thống của bạn.",
+    vi: "Phát hiện các xu hướng gian lận lớn hơn bằng cách kiểm tra việc chia sẻ thiết bị, sử dụng lặp lại thông tin đăng nhập và sự tăng đột biến về tần suất trong toàn bộ hệ thống của bạn.",
     es: "Detecte tendencias de fraude más importantes detectando el uso compartido de dispositivos, la reutilización repetida de credenciales y los picos de velocidad en todo su sistema.",
     ja: "デバイスの共有、認証情報の繰り返しの再利用、システム全体の速度の急上昇を検出することで、より大規模な不正行為の傾向を特定します。",
     de: "Erkennen Sie größere Betrugstrends, indem Sie die gemeinsame Nutzung von Geräten, die wiederholte Wiederverwendung von Anmeldeinformationen und Geschwindigkeitsspitzen in Ihrem System erkennen."
@@ -1211,7 +1211,7 @@ export const passiveSignalsInlineCopy = {
     es: 'Detecte tendencias de fraude más importantes detectando el uso compartido de dispositivos, la reutilización repetida de credenciales y los picos de velocidad en todo su sistema.',
     ja: 'デバイスの共有、認証情報の繰り返しの再利用、システム全体の速度の急上昇を検出することで、より大規模な不正行為の傾向を特定します。',
     de: 'Erkennen Sie größere Betrugstrends, indem Sie die gemeinsame Nutzung von Geräten, die wiederholte Wiederverwendung von Anmeldeinformationen und Geschwindigkeitsspitzen in Ihrem System erkennen.',
-    vi: 'Phát hiện các xu hướng gian lận lớn hơn bằng cách kiểm tra việc chia sẻ thiết bị, tái sử dụng thông tin xác thực lặp lại và sự tăng đột biến về tần suất trong toàn bộ hệ thống của bạn.',
+    vi: 'Phát hiện các xu hướng gian lận lớn hơn bằng cách kiểm tra việc chia sẻ thiết bị, sử dụng lặp lại thông tin đăng nhập và sự tăng đột biến về tần suất trong toàn bộ hệ thống của bạn.',
   },
   device_sharing_frequencies_across_independent_accounts: {
     en: 'Device sharing frequencies across independent accounts',
@@ -1225,7 +1225,7 @@ export const passiveSignalsInlineCopy = {
     es: 'La velocidad de las credenciales aumenta repetidamente en cuestión de minutos',
     ja: '数分以内に認証情報の速度が急上昇することが繰り返される',
     de: 'Wiederholte Spitzen der Anmeldedatengeschwindigkeit innerhalb von Minuten',
-    vi: 'Tần suất sử dụng thông tin xác thực tăng đột biến trong vòng vài phút',
+    vi: 'Tần suất sử dụng thông tin đăng nhập tăng đột biến trong vòng vài phút',
   },
   link_analysis_indicating_coordinate_ring_behavior: {
     en: 'Link analysis indicating coordinate ring behavior',

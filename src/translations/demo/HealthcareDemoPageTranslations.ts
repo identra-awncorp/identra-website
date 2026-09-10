@@ -461,9 +461,9 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "id": "healthcare",
       "tag": "Y tế",
       "title": "Đăng ký truy cập dịch vụ y tế",
-      "desc": "Xác minh danh tính bệnh nhân, bảo hiểm và sự đồng ý trước khi tiếp nhận lâm sàng.",
+      "desc": "Xác minh danh tính bệnh nhân, bảo hiểm và sự đồng thuận trước khi tiếp nhận lâm sàng.",
       "security": "Kiểm soát danh tính sẵn sàng cho HIPAA",
-      "successResult": "Danh tính bệnh nhân, bảo hiểm và sự đồng ý đã đạt kiểm tra. Quy trình tiếp nhận lâm sàng có thể tiếp tục với xử lý dữ liệu được bảo vệ.",
+      "successResult": "Danh tính bệnh nhân, bảo hiểm và sự đồng thuận đã đạt kiểm tra. Quy trình tiếp nhận lâm sàng có thể tiếp tục với xử lý dữ liệu được bảo vệ.",
       "steps": [
         {
           "label": "Xác minh danh tính bệnh nhân",
@@ -476,9 +476,9 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
           "logText": "Trạng thái hợp đồng, nhà bảo hiểm và số nhóm đã được xác minh theo thời gian thực."
         },
         {
-          "label": "Thu thập sự đồng ý",
+          "label": "Thu thập sự đồng thuận",
           "action": "Ký biểu mẫu đồng ý",
-          "logText": "Sự đồng ý đã được ký, băm và lưu trữ theo kiểm soát quyền riêng tư y tế."
+          "logText": "Sự đồng thuận đã được ký, băm và lưu trữ theo kiểm soát quyền riêng tư y tế."
         }
       ]
     },
@@ -514,7 +514,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
         "completedLayer": "Hoàn tất lớp xác minh: {label}",
         "nextTask": "Nhiệm vụ tiếp theo: {action}",
         "allPassed": "Tất cả các giai đoạn xác minh danh tính đã được phê duyệt thành công.",
-        "sealed": "Thông tin xác thực mã hóa đã được ký và niêm phong."
+        "sealed": "Thực chứng đã được ký và niêm phong bằng mật mã."
       },
       "subChecks": {
         "healthcare": [

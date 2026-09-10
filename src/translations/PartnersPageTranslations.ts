@@ -594,7 +594,7 @@ export const PARTNERS_PAGE_TRANSLATIONS = {
       uptimeSla: 'SLA thời gian hoạt động:',
       logs: {
         api: '[API] Đang khởi tạo liên kết tích hợp cho {partner}...',
-        oauth: '[OAUTH] Đang lấy thông tin xác thực client và token truy cập...',
+        oauth: '[OAUTH] Đang lấy thông tin xác thực của ứng dụng khách và mã truy cập...',
         security: '[SECURITY] Đang trao đổi khóa JWT bảo mật với Gateway của {partner}...',
         webhook: '[WEBHOOK] Đang đăng ký endpoint callback: https://api.withidentra.com/v1/partners/{id}',
         schemas: '[SCHEMAS] Đang đồng bộ ánh xạ trường siêu dữ liệu tùy chỉnh...',
@@ -605,7 +605,7 @@ export const PARTNERS_PAGE_TRANSLATIONS = {
     categories: { all: 'Tất cả', identity: 'Định danh', crm: 'CRM', database: 'Dữ liệu', security: 'Bảo mật' },
     integrations: [
       { id: 'salesforce', name: 'Salesforce', category: 'crm', logo: 'SF', description: 'Làm giàu thông tin khách hàng tiềm năng và hồ sơ khách hàng bằng tín hiệu định danh tự động và tài liệu UBO ngay trong bố cục Salesforce CRM.', features: ['Làm giàu lead tự động', 'Ghi nhật ký trạng thái AML/trừng phạt', 'Đồng bộ tài liệu KYB'] },
-      { id: 'okta', name: 'Okta Identity', category: 'security', logo: 'Okta', description: 'Liên kết thông tin xác thực nhân sự an toàn và kích hoạt MFA linh hoạt theo điểm rủi ro Identra theo thời gian thực.', features: ['Mức bảo đảm SSO', 'Khóa tài khoản theo rủi ro', 'Đồng bộ MFA selfie sinh trắc học'] },
+      { id: 'okta', name: 'Okta Identity', category: 'security', logo: 'Okta', description: 'Liên kết thông tin định danh nhân sự an toàn và kích hoạt MFA linh hoạt theo điểm rủi ro Identra theo thời gian thực.', features: ['Mức bảo đảm SSO', 'Khóa tài khoản theo rủi ro', 'Đồng bộ MFA selfie sinh trắc học'] },
       { id: 'hubspot', name: 'HubSpot', category: 'crm', logo: 'HS', description: 'Đồng bộ trạng thái vòng đời định danh và các mốc onboarding KYC trực tiếp vào trường liên hệ HubSpot theo thời gian thực.', features: ['Kích hoạt pipeline liên hệ', 'Thuộc tính tùy chỉnh trạng thái KYC', 'Thiết lập tích hợp không cần mã'] },
       { id: 'snowflake', name: 'Snowflake', category: 'database', logo: 'SFK', description: 'Lưu trữ an toàn hàng triệu nhật ký kiểm tra tuân thủ toàn cầu và siêu dữ liệu tài liệu trong Snowflake để kiểm toán phân tích nâng cao.', features: ['Lưu trữ hàng loạt được mã hóa', 'Pipeline đồng bộ liên tục', 'Chế độ xem phân tích tốc độ cao'] }
     ],
@@ -664,7 +664,7 @@ export const PARTNERS_PAGE_TRANSLATIONS = {
       proposedPlaceholder: 'Mô tả hệ thống của bạn sẽ kết nối với Identra APIs, KYC hoặc hồ sơ bảo mật tùy chỉnh như thế nào...',
       consent: 'Tôi đồng ý với Điều khoản Chương trình Đối tác Identra và cho phép Identra xem xét thông tin tên miền trang web.',
       submit: 'Gửi hồ sơ đối tác',
-      submitting: 'Đang xuất bản checklist thông tin xác thực liên minh...',
+      submitting: 'Đang gửi thông tin đăng ký đối tác...',
       successTitle: 'Đã gửi hồ sơ',
       successDescPrefix: 'Cảm ơn bạn đã đăng ký. Partner Manager sẽ xem xét hồ sơ và trang web',
       successDescSuffix: 'trong vòng 2 ngày làm việc.',

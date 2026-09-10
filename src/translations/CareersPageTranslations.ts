@@ -483,7 +483,7 @@ const vi = {
   job4Resp3: 'Xác định chỉ số thành công, lập bản đồ yêu cầu tính năng và quản lý tích hợp API nhiều đối tác.',
   job4Resp4: 'Thúc đẩy tài liệu tiêu chuẩn và chiến lược go-to-market cùng product marketing.',
   job4Req1: 'Kinh nghiệm sâu ở vai trò PM xây dựng sản phẩm compliance, AML, KYC hoặc trust cho doanh nghiệp.',
-  job4Req2: 'Nền tảng kỹ thuật tốt: thoải mái với cấu trúc API, JSON payload và schema ingestion dữ liệu bên thứ ba.',
+  job4Req2: 'Nền tảng kỹ thuật tốt: thoải mái với cấu trúc API, JSON payload và lược đồ tiếp nhận dữ liệu bên thứ ba.',
   job4Req3: 'Tư duy phân tích, kỹ năng SQL và khả năng đưa ra đánh đổi dựa trên dữ liệu dưới áp lực thời hạn.',
   job4Req4: 'Phong thái làm việc với lãnh đạo xuất sắc và khả năng viết rõ ràng.',
   job5Title: 'Chuyên viên phụ trách khách hàng doanh nghiệp',

@@ -560,7 +560,7 @@ export const securityPageTranslations = {
     hideSandbox: 'Ẩn sandbox chẩn đoán',
     showSandbox: 'Hiện sandbox chẩn đoán (trình mô phỏng kiểm thử xâm nhập trực tiếp)',
     simulationRoomTitle: 'Phòng mô phỏng mật mã',
-    simulationRoomDesc: 'Kiểm toán viên có thể chạy các ca kiểm thử sandbox theo thời gian thực trên endpoint mô phỏng đã cô lập, bao gồm xoay vòng khóa bao bọc, làm sạch tham số cơ sở dữ liệu và sinh trắc học.',
+    simulationRoomDesc: 'Kiểm toán viên có thể chạy các ca kiểm thử sandbox theo thời gian thực trên endpoint mô phỏng đã cô lập, bao gồm luân chuyển khóa bao bọc, làm sạch tham số cơ sở dữ liệu và sinh trắc học.',
     kmsSandbox: 'Sandbox kiểm thử xâm nhập KMS',
     auditingStatus: 'ĐANG KIỂM TOÁN ({progress}%)',
     certifiedStatus: 'ĐÃ CHỨNG NHẬN',
@@ -596,7 +596,7 @@ export const securityPageTranslations = {
     subscribeDesc: 'Đăng ký nhận thông báo pager trực tiếp và báo cáo trạng thái email tự động trong các đợt cập nhật hạ tầng.',
     emailPlaceholder: 'devops@congty.com',
     subscribeButton: 'Đăng ký cảnh báo trạng thái',
-    syncingCredentials: 'Đang đồng bộ thông tin xác thực vào bộ thông báo trạng thái lõi...',
+    syncingCredentials: 'Đang đăng ký nhận thông báo trạng thái hệ thống...',
     subscribedTitle: 'Đăng ký thành công!',
     subscribedPrefix: 'Chúng tôi sẽ thông báo cho',
     subscribedSuffix: 'ngay khi có báo cáo hệ thống.',
@@ -620,7 +620,7 @@ export const securityPageTranslations = {
       { title: 'Tính sẵn sàng', description: 'Chương trình sao lưu và nhân bản của chúng tôi bảo đảm dữ liệu sẵn sàng trên hệ thống chính và phụ. Chương trình khôi phục thảm họa giúp dịch vụ luôn sẵn sàng hoặc có thể khôi phục khi có sự cố.' },
       { title: 'Phát triển an toàn', description: 'Chúng tôi áp dụng thực hành lập trình tốt nhất tập trung vào OWASP Top Ten. Môi trường phát triển, kiểm thử và sản xuất được tách biệt. Mọi thay đổi mã đều được rà soát ngang hàng và kiểm thử trước khi triển khai sản xuất.' },
       { title: 'Quét lỗ hổng liên tục', description: 'Chúng tôi duy trì chương trình quản lý lỗ hổng toàn diện, bao gồm quét, xác định và khắc phục lỗ hổng bảo mật định kỳ trên hạ tầng, endpoint, mạng và ứng dụng.' },
-      { title: 'Mã hóa dữ liệu', description: 'Tất cả lưu lượng web qua Identra được mã hóa bằng HTTPS và TLS 1.2. Dữ liệu trong cơ sở dữ liệu được mã hóa bằng AES-256. Khóa giải mã được lưu trên máy chủ riêng và xoay vòng định kỳ.' },
+      { title: 'Mã hóa dữ liệu', description: 'Tất cả lưu lượng web qua Identra được mã hóa bằng HTTPS và TLS 1.2. Dữ liệu trong cơ sở dữ liệu được mã hóa bằng AES-256. Khóa giải mã được lưu trên máy chủ riêng và luân chuyển định kỳ.' },
       { title: 'Chính sách & đào tạo', description: 'Bộ chính sách và chương trình đào tạo bảo mật toàn diện được cung cấp cho mọi nhân sự có quyền truy cập hệ thống Identra.' },
       { title: 'Kiểm toán bên thứ ba', description: 'Ngoài chương trình quét và kiểm thử nội bộ, chúng tôi thuê chuyên gia bảo mật bên thứ ba thực hiện kiểm thử xâm nhập.' },
       { title: 'Truy cập logic', description: 'Quyền truy cập hệ thống sản xuất chỉ dành cho nhân sự cần thiết, được kiểm toán và giám sát, đồng thời được bảo vệ bằng xác thực đa yếu tố.' },
@@ -641,7 +641,7 @@ export const securityPageTranslations = {
     services: [
       { name: 'API Gateway & bộ định tuyến handshake', description: 'Xử lý yêu cầu API đi vào, xác minh chữ ký token và áp dụng kiểm soát giới hạn tần suất.' },
       { name: 'Công cụ độ sống khuôn mặt sinh trắc học', description: 'Trích xuất selfie theo thời gian thực, xử lý bản đồ độ sâu 3D và gắn cờ giả mạo.' },
-      { name: 'Kho lưu trữ Core DB đã mã hóa', description: 'Cung cấp lưu trữ SQL đa vùng, mã hóa envelope cho metadata khách hàng đã xác thực.' },
+      { name: 'Kho lưu trữ Core DB đã mã hóa', description: 'Cung cấp lưu trữ SQL đa vùng, mã hóa envelope cho siêu dữ liệu khách hàng đã xác thực.' },
       { name: 'Hệ thống phát webhook sự kiện', description: 'Phát thông báo sự kiện tức thì đến máy chủ đối tác khi có cập nhật trạng thái.' }
     ],
     scanSteps: [
@@ -650,7 +650,7 @@ export const securityPageTranslations = {
       { log: '[IAM] Đang kiểm toán chữ ký sổ cái quản trị và thời hạn JWT... OK', kind: 'success', progress: 40 },
       { log: '[SQL] Đang gửi tấn công làm sạch vào tham số cơ sở dữ liệu... tìm thấy 0 lỗ hổng', kind: 'success', progress: 55 },
       { log: '[Biometrics] Đang kiểm thử bảo vệ chống spoof trên cảm biến độ sống... ĐẠT', kind: 'success', progress: 70 },
-      { log: '[KMS] Đang xoay khóa envelope trên kho tài liệu cô lập... THÀNH CÔNG', kind: 'success', progress: 85 },
+      { log: '[KMS] Đang luân chuyển khóa envelope trên kho tài liệu cô lập... THÀNH CÔNG', kind: 'success', progress: 85 },
       { log: '[COMPLIANCE] Đang biên dịch chứng nhận sổ cái tuân thủ SOC 2... XONG', kind: 'compliance', progress: 100 }
     ]
   },

@@ -166,7 +166,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "Dữ liệu có thể kiểm chứng cho phép cá nhân, doanh nghiệp, tổ chức và thiết bị chứng minh danh tính, thuộc tính, quyền hạn, trạng thái và lịch sử hoạt động bằng bằng chứng mật mã. Thực chứng được nguồn có thẩm quyền phát hành, lưu trong Ví định tín của người nắm giữ và trình xuất theo sự đồng thuận của chủ thể. Bên xác minh kiểm tra nguồn gốc, tính toàn vẹn, trạng thái hiệu lực và thẩm quyền phát hành mà không phụ thuộc vào bản sao, chụp giấy tờ hoặc quy trình đối chiếu thủ công."
+          "text": "Dữ liệu có thể kiểm chứng cho phép cá nhân, doanh nghiệp, tổ chức và thiết bị chứng minh danh tính, thuộc tính, quyền hạn, trạng thái và lịch sử hoạt động bằng bằng chứng mật mã. Thực chứng được nguồn có thẩm quyền phát hành, lưu trong Ví định tín của bên nắm giữ và trình xuất theo sự đồng thuận của chủ thể. Bên xác minh kiểm tra nguồn gốc, tính toàn vẹn, trạng thái hiệu lực và thẩm quyền phát hành mà không phụ thuộc vào bản sao, chụp giấy tờ hoặc quy trình đối chiếu thủ công."
         },
         {
           "type": "paragraph",
@@ -398,7 +398,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "Thực chứng được bên phát hành cấp cho bên nắm giữ và lưu trữ trong Ví định tín. Khi một dịch vụ yêu cầu bằng chứng, người dùng được thông báo rõ về dữ liệu cần cung cấp, mục đích sử dụng và bên tiếp nhận. Sau khi người dùng chấp thuận, Ví định tín tạo bản trình xuất chỉ chứa những thông tin cần thiết cho giao dịch. Bên xác minh sau đó kiểm tra bằng chứng mật mã, trạng thái hiệu lực và chính sách tin cậy áp dụng đối với nguồn phát hành."
+          "text": "Thực chứng được bên phát hành cấp cho bên nắm giữ và lưu trữ trong Ví định tín. Khi một dịch vụ yêu cầu bằng chứng, người dùng được thông báo rõ về dữ liệu cần cung cấp, mục đích sử dụng và bên tiếp nhận. Sau khi người dùng chấp thuận, Ví định tín tạo bản trình bày thực chứng chỉ chứa những thông tin cần thiết cho giao dịch. Bên xác minh sau đó kiểm tra bằng chứng mật mã, trạng thái hiệu lực và chính sách tin cậy áp dụng đối với nguồn phát hành."
         },
         {
           "type": "paragraph",
@@ -1097,7 +1097,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "Dữ liệu sinh trắc học được bảo vệ nghiêm ngặt và tách biệt khỏi dữ liệu nghiệp vụ. Việc thu thập, lưu trữ và xử lý chỉ diễn ra khi có mục đích rõ ràng, căn cứ hợp lệ, sự đồng ý cần thiết và cơ chế bảo vệ phù hợp với quy định."
+          "text": "Dữ liệu sinh trắc học được bảo vệ nghiêm ngặt và tách biệt khỏi dữ liệu nghiệp vụ. Việc thu thập, lưu trữ và xử lý chỉ diễn ra khi có mục đích rõ ràng, căn cứ hợp lệ, sự đồng thuận cần thiết và cơ chế bảo vệ phù hợp với quy định."
         },
         {
           "type": "paragraph",
@@ -1169,7 +1169,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
           "type": "unordered-list",
           "items": [
             "nguồn phát hành chịu trách nhiệm về thông tin và trạng thái mà mình xác nhận;",
-            "người nắm giữ kiểm soát việc lưu trữ và chia sẻ thực chứng;",
+            "bên nắm giữ kiểm soát việc lưu trữ và chia sẻ thực chứng;",
             "bên xác minh chịu trách nhiệm về chính sách tin cậy và quyết định nghiệp vụ;",
             "đơn vị lưu ký chịu trách nhiệm về dịch vụ bảo vệ và khôi phục;",
             "AwnCorp chịu trách nhiệm về nền tảng Identra và các chức năng do mình vận hành;",
@@ -1301,7 +1301,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
           "type": "unordered-list",
           "items": [
             "cơ sở giáo dục đóng vai trò nguồn phát hành thực chứng;",
-            "sinh viên và người học là người nắm giữ;",
+            "sinh viên và người học là bên nắm giữ;",
             "nhà tuyển dụng và tổ chức đào tạo tiếp theo là bên xác minh;",
             "hoạt động ứng tuyển, nhập học hoặc công nhận năng lực tạo ra giao dịch có giá trị."
           ]
@@ -1312,7 +1312,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "Sau giáo dục, Identra mở rộng sang thị trường lao động, xác minh doanh nghiệp nhỏ, thương mại và dịch vụ tài chính. Mỗi lĩnh vực mới được phát triển quanh một chu trình hoàn chỉnh gồm nguồn phát hành, người nắm giữ, bên xác minh và một hoạt động tạo ra giá trị cụ thể."
+          "text": "Sau giáo dục, Identra mở rộng sang thị trường lao động, xác minh doanh nghiệp nhỏ, thương mại và dịch vụ tài chính. Mỗi lĩnh vực mới được phát triển quanh một chu trình hoàn chỉnh gồm nguồn phát hành, bên nắm giữ, bên xác minh và một hoạt động tạo ra giá trị cụ thể."
         },
         {
           "type": "paragraph",
@@ -1411,7 +1411,7 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
         },
         {
           "type": "paragraph",
-          "text": "**Rủi ro hình thành hệ sinh thái.** Giá trị của Identra phụ thuộc vào sự tham gia đồng thời của bên phát hành, người nắm giữ, bên xác minh và dịch vụ sử dụng thực chứng. Nếu thiếu một trong các vai trò này, thực chứng được phát hành có thể không có nơi sử dụng hoặc bên xác minh không có đủ nguồn dữ liệu đáng tin cậy. Identra áp dụng chiến lược phát triển theo cụm ngành, hình thành một chu trình giá trị hoàn chỉnh trong phạm vi nhỏ trước khi kết nối và mở rộng sang hệ sinh thái khác."
+          "text": "**Rủi ro hình thành hệ sinh thái.** Giá trị của Identra phụ thuộc vào sự tham gia đồng thời của bên phát hành, bên nắm giữ, bên xác minh và dịch vụ sử dụng thực chứng. Nếu thiếu một trong các vai trò này, thực chứng được phát hành có thể không có nơi sử dụng hoặc bên xác minh không có đủ nguồn dữ liệu đáng tin cậy. Identra áp dụng chiến lược phát triển theo cụm ngành, hình thành một chu trình giá trị hoàn chỉnh trong phạm vi nhỏ trước khi kết nối và mở rộng sang hệ sinh thái khác."
         },
         {
           "type": "paragraph",
@@ -1535,15 +1535,15 @@ const OFFICIAL_WHITE_PAPER_DOCUMENT = {
               "Một khẳng định cụ thể về chủ thể, tài sản, tổ chức hoặc thiết bị"
             ],
             [
-              "Người phát hành",
+              "Bên phát hành",
               "Chủ thể tạo và ký thực chứng"
             ],
             [
-              "Người nắm giữ",
+              "Bên nắm giữ",
               "Chủ thể giữ thực chứng và quyết định trình xuất"
             ],
             [
-              "Người xác minh",
+              "Bên xác minh",
               "Chủ thể yêu cầu và kiểm tra bằng chứng"
             ],
             [

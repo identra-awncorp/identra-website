@@ -6,6 +6,7 @@
 import type { AppView } from '../types/routes';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { 
   FolderHeart, ArrowRight, ShieldCheck, Check, Users, Lock, 
   Database, Smartphone, HelpCircle, AlertTriangle, FileText, 
@@ -1061,12 +1062,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                       }`} />
                     </button>
 
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
+                        <PersistentDisclosure open={isExpanded}
                           transition={{ duration: 0.25, ease: 'easeInOut' }}
                         >
                           <div className="px-5 pb-5 pt-1 space-y-3 border-t border-slate-100/50">
@@ -1078,9 +1074,7 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                               <span>{feat.subText}</span>
                             </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        </PersistentDisclosure>
                   </div>
                 );
               })}

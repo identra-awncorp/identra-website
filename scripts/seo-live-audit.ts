@@ -132,7 +132,7 @@ await mapConcurrent(sitemapUrls, 12, async (url) => {
     `${url} contains client-side redirect markup.`,
   );
   expect(
-    html.includes('<main data-seo-fallback'),
+    /<(?:main|div) data-seo-fallback[ =>]/.test(html),
     `${url} is missing crawlable fallback content.`,
   );
 });

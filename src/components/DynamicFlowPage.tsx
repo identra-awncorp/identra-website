@@ -875,11 +875,9 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
                       />
                     </button>
                   </h3>
-                  {isOpen && (
-                    <div id={panelId} role="region" aria-labelledby={buttonId} className="pb-6">
+                    <div hidden={!isOpen} id={panelId} role="region" aria-labelledby={buttonId} className="pb-6">
                       <p className="type-body max-w-3xl text-slate-600 leading-relaxed">{item.answer}</p>
                     </div>
-                  )}
                 </div>
               );
             })}

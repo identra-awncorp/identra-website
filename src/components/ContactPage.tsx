@@ -670,11 +670,9 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                       )}
                     </button>
                     
-                    {isExpanded && (
-                      <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-500 leading-relaxed border-t border-slate-50/50 animate-in fade-in slide-in-from-top-1 duration-200">
+                      <div data-seo-disclosure hidden={!isExpanded} className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-500 leading-relaxed border-t border-slate-50/50 animate-in fade-in slide-in-from-top-1 duration-200">
                         {faq.answer}
                       </div>
-                    )}
                   </div>
                 );
               })

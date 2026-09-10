@@ -6,7 +6,8 @@ import {
   ArrowLeft, Sparkles, Check, Database, Shield, ChevronDown, 
   ChevronUp, AlertCircle, Cpu, Zap, Share2, Layers, MapPin, Tablet, Users
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { BUSINESS_FRAUD_TRANSLATIONS } from '../translations/BusinessFraudPageTranslations';
@@ -711,20 +712,13 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
                     {isOpen ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
                   </button>
                   
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
+                      <PersistentDisclosure open={isOpen}
                         transition={{ duration: 0.2 }}
                       >
                         <div className="px-6 pb-6 pt-1 text-sm text-slate-300 leading-relaxed border-t border-slate-800/50">
                           {item.content}
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      </PersistentDisclosure>
                 </div>
               );
             })}

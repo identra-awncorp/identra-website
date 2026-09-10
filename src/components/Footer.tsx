@@ -103,27 +103,26 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-            <button
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow transition"
+            <a
+              href={viewToPath('demo', language)}
+              onClick={(event) => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onOpenSandbox();
+              }}
+              className="w-full sm:w-auto bg-[#354CE1] hover:bg-[#2539BE] text-white font-semibold text-sm px-6 py-3.5 rounded-full shadow transition text-center"
             >
               {translate('tryDemo')}
-            </button>
+            </a>
 
-            <button
-              type="button"
-              onClick={() => {
-                if (onViewChange) {
-                  onViewChange('docs');
-                  return;
-                }
-                showUnavailableNotice();
-              }}
+            <a
+              href={viewToPath('docs', language)}
+              onClick={(event) => navigate(event, 'docs')}
               className="w-full sm:w-auto border border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 font-semibold text-sm px-6 py-3.5 rounded-full transition inline-flex items-center justify-center gap-2"
             >
               {translate('tryItNow')}
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </button>
+            </a>
           </div>
         </div>
 

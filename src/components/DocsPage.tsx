@@ -112,8 +112,6 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
     { id: 'changelog', label: ui.tabs.changelog, Icon: Clock }
   ], [ui.tabs]);
 
-  const CurrentDocsPage = DOCS_PAGE_COMPONENTS[currentTab];
-
   const filteredSearchPages = searchQuery.trim() === ''
     ? []
     : docPages.filter(page =>
@@ -168,8 +166,15 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
   };
 
   const renderTabButton = (id: DocsTabId, label: string, Icon: React.ComponentType<{ className?: string }>) => (
-    <button
-      onClick={() => handleTabChange(id)}
+    <a
+      key={id}
+      href={id === 'overview' ? '?' : `?${DOCS_TAB_QUERY_PARAM}=${id}`}
+      onClick={(event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        handleTabChange(id);
+      }}
+      aria-current={currentTab === id ? 'page' : undefined}
       className={`type-control flex items-center gap-2 h-full border-b-2 px-1 shrink-0 transition-colors relative top-[1px] ${
         currentTab === id
           ? 'border-[#354CE1] text-[#354CE1] dark:border-[#5F75FF] dark:text-[#5F75FF]'
@@ -178,7 +183,7 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
     >
       <Icon className={`w-4 h-4 ${currentTab === id ? 'text-[#354CE1] dark:text-[#5F75FF]' : 'text-slate-400 dark:text-slate-500'}`} />
       <span>{label}</span>
-    </button>
+    </a>
   );
 
   return (
@@ -350,14 +355,21 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
             </div>
           )}
         >
-          <CurrentDocsPage
-            ui={ui}
-            copyStatus={copyStatus}
-            feedbackSubmitted={feedbackSubmitted}
-            onCopyPage={handleCopyPage}
-            onFeedback={setFeedbackSubmitted}
-            onBackToLanding={onBackToLanding}
-          />
+          {tabItems.map(({ id }) => {
+            const ContentPage = DOCS_PAGE_COMPONENTS[id];
+            return (
+              <div key={id} data-docs-tab={id} hidden={currentTab !== id} className={currentTab === id ? 'contents' : undefined}>
+                <ContentPage
+                  ui={ui}
+                  copyStatus={copyStatus}
+                  feedbackSubmitted={feedbackSubmitted}
+                  onCopyPage={handleCopyPage}
+                  onFeedback={setFeedbackSubmitted}
+                  onBackToLanding={onBackToLanding}
+                />
+              </div>
+            );
+          })}
         </React.Suspense>
       </div>
     </div>

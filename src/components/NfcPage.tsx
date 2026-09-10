@@ -508,8 +508,7 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                     </div>
                   </button>
 
-                  {isExpanded && (
-                    <div className="px-5 pb-5 pt-1 pl-14 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div data-seo-disclosure hidden={!isExpanded} className="px-5 pb-5 pt-1 pl-14 animate-in fade-in slide-in-from-top-2 duration-200">
                       <div className="space-y-3">
                         <p className="text-slate-600 text-xs leading-relaxed">
                           {feat.description}
@@ -519,7 +518,6 @@ export default function NfcPage({ onOpenSandbox, onBackToLanding, onViewChange }
                         </p>
                       </div>
                     </div>
-                  )}
                 </div>
               );
             })}

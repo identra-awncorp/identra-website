@@ -6,6 +6,7 @@
 import type { AppView } from '../types/routes';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { 
   Radio, ArrowRight, ShieldCheck, Zap, Users, Lock, Wifi, 
   Layers, Database, Laptop, Smartphone, HelpCircle, Check, 
@@ -814,12 +815,7 @@ export default function PassiveSignalsPage({ onOpenSandbox, onBackToLanding, onV
                     </button>
 
                     {/* Expandable Content Panel */}
-                    <AnimatePresence initial={false}>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
+                        <PersistentDisclosure open={isExpanded}
                           transition={{ duration: 0.25, ease: 'easeInOut' }}
                         >
                           <div className="px-6 pb-6 border-t border-slate-100 pt-5 space-y-5">
@@ -851,9 +847,7 @@ export default function PassiveSignalsPage({ onOpenSandbox, onBackToLanding, onV
                               </div>
                             </div>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                        </PersistentDisclosure>
                   </div>
                 );
               })}

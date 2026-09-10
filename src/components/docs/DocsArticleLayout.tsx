@@ -276,6 +276,7 @@ export default function DocsArticleLayout({
   onBackToLanding
 }: DocsArticleLayoutProps) {
   const [activeSectionId, setActiveSectionId] = useState(content.sections[0]?.id ?? '');
+  const sectionSelectId = `${content.sections[0]?.id ?? content.category}-section-select`;
 
   useEffect(() => {
     const hashSectionId = window.location.hash.slice(1);
@@ -319,9 +320,15 @@ export default function DocsArticleLayout({
             {content.sections.map(section => {
               const isActive = section.id === activeSection?.id;
               return (
-                <button
+                <a
                   key={section.id}
-                  onClick={() => handleSectionChange(section.id)}
+                  href={`#${section.id}`}
+                  onClick={(event) => {
+                    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    event.preventDefault();
+                    handleSectionChange(section.id);
+                  }}
+                  aria-current={isActive ? 'location' : undefined}
                   className={`type-control block w-full px-3 py-2 text-left rounded-lg transition ${
                     isActive
                       ? 'bg-[#EEF2F6] dark:bg-slate-800 text-[#354CE1] dark:text-[#5F75FF] font-semibold'
@@ -329,7 +336,7 @@ export default function DocsArticleLayout({
                   }`}
                 >
                   {section.title}
-                </button>
+                </a>
               );
             })}
           </div>
@@ -338,7 +345,7 @@ export default function DocsArticleLayout({
 
       <main aria-label={content.title} className="col-span-1 md:col-span-7 space-y-8 min-h-[60vh] md:pr-4">
         <div className="type-caption flex items-center justify-between text-slate-400 dark:text-slate-500">
-          <span>{content.title}</span>
+          <h1 className="type-caption">{content.title}</h1>
           <button onClick={onCopyPage} className="type-control inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-100 dark:border-slate-800/40 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-600 dark:text-slate-300 transition cursor-pointer">
             {copyStatus === 'success' ? (
               <Check className="w-3.5 h-3.5 text-emerald-500" />
@@ -352,11 +359,11 @@ export default function DocsArticleLayout({
         </div>
 
         <div className="md:hidden space-y-2">
-          <label htmlFor={`${content.category}-section-select`} className="type-label block text-slate-500 dark:text-slate-400 uppercase">
+          <label htmlFor={sectionSelectId} className="type-label block text-slate-500 dark:text-slate-400 uppercase">
             {ui.documentSections}
           </label>
           <select
-            id={`${content.category}-section-select`}
+            id={sectionSelectId}
             value={activeSection?.id ?? ''}
             onChange={(event) => handleSectionChange(event.target.value)}
             className="type-control w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-slate-800 dark:text-slate-100"
@@ -367,10 +374,10 @@ export default function DocsArticleLayout({
           </select>
         </div>
 
-        {activeSection && (
-          <section key={activeSection.id} id={activeSection.id} className="space-y-8 scroll-mt-32">
-            <h2 className="type-document-heading text-slate-900 dark:text-white pt-2">{activeSection.title}</h2>
-            {topics.map(topic => (
+        {content.sections.map(section => (
+          <section key={section.id} id={section.id} data-docs-section hidden={section.id !== activeSection?.id} className="space-y-8 scroll-mt-32">
+            <h2 className="type-document-heading text-slate-900 dark:text-white pt-2">{section.title}</h2>
+            {createTopics(section, ui.topicLabels).map(topic => (
               <section key={topic.id} id={topic.id} className="space-y-3 scroll-mt-32">
                 <h3 className="type-card-title text-slate-900 dark:text-white">{topic.title}</h3>
                 <div className="type-body measure-prose space-y-4 text-slate-600 dark:text-slate-300">
@@ -379,7 +386,7 @@ export default function DocsArticleLayout({
               </section>
             ))}
           </section>
-        )}
+        ))}
 
         <div className="border border-slate-100 dark:border-slate-800/40 bg-slate-50/50 dark:bg-slate-900/50 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-12">
           <div>

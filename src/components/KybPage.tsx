@@ -11,7 +11,8 @@ import {
   Network, AlertTriangle, ArrowLeft, Play, Sparkles, Check,
   Database, FileText, Settings, Globe, Shield, HelpCircle, ChevronDown, ChevronUp
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
@@ -778,20 +779,13 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                   )}
                 </button>
 
-                <AnimatePresence>
-                  {expandedFaq === faq.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                    <PersistentDisclosure open={expandedFaq === faq.id}
                       transition={{ duration: 0.2 }}
                     >
                       <div className="px-6 pb-6 text-xs md:text-sm text-slate-500 leading-relaxed border-t border-slate-50 pt-4">
                         {faq.answer}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </PersistentDisclosure>
               </div>
             ))}
           </div>

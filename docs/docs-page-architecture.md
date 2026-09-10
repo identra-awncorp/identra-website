@@ -14,8 +14,8 @@ This document describes the implementation rules for the standalone Docs experie
 
 ## Tab Behavior
 
-- Docs tab buttons switch between standalone document components.
-- Do not make tab buttons behave as in-page anchors unless the product explicitly asks for that behavior.
+- Docs tab links switch between standalone document components using the existing query parameter; they do not scroll between visible documents.
+- Keep all document components and sections mounted but hide inactive ones. The build-only no-JavaScript presentation expands them so one canonical Docs page contains its complete public documentation.
 - Each tab should own one document surface that can be expanded independently over time.
 
 ## Menus
@@ -27,7 +27,7 @@ This document describes the implementation rules for the standalone Docs experie
 
 ## Article Layout
 
-- The article layout should not render a duplicated document-level `h1` for the active tab by default.
+- Use the existing small top document label as the semantic `h1`; do not add a second large visual heading.
 - The top tab navigation already names the document.
 - The central content should start with the active section title unless a specific page design requires otherwise.
 - The small top label and `main` accessible name should reflect the active document title, not the broad category.

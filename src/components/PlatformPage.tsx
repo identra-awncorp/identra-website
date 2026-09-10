@@ -668,8 +668,8 @@ export default function PlatformPage({
                       />
                     </button>
                   </h3>
-                  {isOpen && (
                     <div
+                      hidden={!isOpen}
                       id={panelId}
                       role="region"
                       aria-labelledby={buttonId}
@@ -677,7 +677,6 @@ export default function PlatformPage({
                     >
                       <p className="type-body max-w-3xl text-slate-600">{item.answer}</p>
                     </div>
-                  )}
                 </div>
               );
             })}

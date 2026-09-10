@@ -28,6 +28,7 @@ import {
   Users
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { KYC_AML_PAGE_TRANSLATIONS } from '../translations/KycAmlPageTranslations';
@@ -445,14 +446,9 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                     {isExpanded ? <ChevronUp className="w-5 h-5 text-slate-400" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
                   </button>
 
-                  <AnimatePresence initial={false}>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: 'auto' }}
-                        exit={{ height: 0 }}
+                      <PersistentDisclosure open={isExpanded}
                         transition={{ duration: 0.2 }}
-                        className="overflow-hidden border-t border-slate-100"
+                        className={`overflow-hidden ${isExpanded ? 'border-t border-slate-100' : ''}`}
                       >
                         <div className="p-6 bg-[#FAFBFD]/50 text-xs text-slate-600 space-y-6">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
@@ -464,9 +460,7 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                             ))}
                           </div>
                         </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                      </PersistentDisclosure>
                 </div>
               );
             })}

@@ -685,11 +685,9 @@ export default function SelfieRecognitionPage({ onOpenSandbox, onBackToLanding, 
                 <span>{faq.q}</span>
                 <span className="text-xs text-slate-400 font-mono ml-4 shrink-0">{activeFaq === index ? '-' : '+'}</span>
               </button>
-              {activeFaq === index && (
-                <p className="text-xs text-slate-500 mt-2 leading-relaxed bg-slate-50 p-3 rounded-xl">
+                <p data-seo-disclosure hidden={activeFaq !== index} className="text-xs text-slate-500 mt-2 leading-relaxed bg-slate-50 p-3 rounded-xl">
                   {faq.a}
                 </p>
-              )}
             </div>
           ))}
         </div>

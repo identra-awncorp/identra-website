@@ -1,5 +1,5 @@
 import { useMemo, useState, type ComponentType } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -53,7 +53,6 @@ const SCENARIO_ICONS: Record<DemoScenarioId, ComponentType<any>> = {
 
 
 export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDemoPageProps) {
-  const navigate = useNavigate();
   const { language } = useLanguage();
   const t = getLocalizedRecord(LIST_DEMO_PAGE_TRANSLATIONS, language as keyof typeof LIST_DEMO_PAGE_TRANSLATIONS, 'LIST_DEMO_PAGE_TRANSLATIONS');
   const [activeTab, setActiveTab] = useState<'scenarios' | 'trends'>('scenarios');
@@ -66,10 +65,6 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
     })),
     [t]
   );
-
-  const handleOpenScenario = (scenarioId: DemoScenarioId) => {
-    navigate(demoScenarioPath(scenarioId, routeLocale));
-  };
 
   return (
     <div className="min-h-screen bg-[#FAFBFD] text-slate-800 font-sans pb-24 relative overflow-hidden">
@@ -204,13 +199,13 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
                           <span className="truncate">{scenario.security}</span>
                         </div>
 
-                        <button
-                          onClick={() => handleOpenScenario(scenario.id)}
+                        <Link
+                          to={demoScenarioPath(scenario.id, routeLocale)}
                           className="type-control w-full inline-flex items-center justify-center gap-2 text-slate-800 hover:text-white bg-slate-50 hover:bg-[#354CE1] border border-slate-200/80 hover:border-[#354CE1] px-4 py-2.5 rounded-xl transition cursor-pointer select-none active:scale-[0.98]"
                         >
                           <Play className="h-3.5 w-3.5 fill-current" />
                           <span>{t.startDemo}</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   );

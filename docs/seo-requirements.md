@@ -41,7 +41,11 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Preserve the SEO placeholders and tag shapes expected by `scripts/generate-localized-pages.ts`, including canonical, alternate, robots, Open Graph, Twitter card, and `identra-seo-schema`.
 - If a template tag shape changes, update the generator in the same change.
 - The production build must generate localized HTML entry points for every public route and locale.
-- Each generated page should contain a minimal SEO fallback in `#root` so crawlers and social previews see page-specific content before hydration.
+- Public marketing and demo pages must contain their actual route content in `#root` before JavaScript runs. `src/entry-seo.tsx` renders the existing React route tree at build time; do not maintain a separate abbreviated marketing copy for crawlers.
+- Build the server renderer with `npm run build:seo-renderer` before `generate:localized-pages`. Rendering errors must fail the build instead of silently publishing an incomplete page. The renderer is build-only; deploy `dist/`, not `dist-ssr/`.
+- Preserve the dedicated Blog and White Paper static generators and their user-authored content/metadata.
+- Keep public FAQ answers and document sections mounted when collapsed. Closed interactive panels must not expose focusable controls; the no-JavaScript document must still expose their content.
+- Docs has one canonical URL per locale. Tab query parameters select the UI but do not create separately indexed sample API documentation.
 - The initial HTML must place the CSS-only `data-initial-skeleton` before `data-seo-fallback`. The skeleton covers the SEO fallback from the first browser paint and remains visible until React commits its route-aware loading state.
 - Keep the initial skeleton's critical styles inline in `index.html`; it must not depend on the JavaScript bundle or generated application stylesheet becoming available.
 - Preserve the `noscript` override that hides the initial skeleton when JavaScript is disabled, so the localized SEO fallback remains usable as a no-script document.

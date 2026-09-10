@@ -718,13 +718,11 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                     </div>
                   </button>
 
-                  {isOpen && (
-                    <div className="px-5 pb-5 animate-in fade-in duration-200">
+                    <div data-seo-disclosure hidden={!isOpen} className="px-5 pb-5 animate-in fade-in duration-200">
                       <p className="text-xs md:text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
                         {item.description}
                       </p>
                     </div>
-                  )}
                 </div>
               );
             })}

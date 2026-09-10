@@ -681,11 +681,9 @@ export default function PricingPage({ onOpenSandbox, onBackToLanding }: PricingP
                   </button>
 
                   {/* Transition/Animate Answer */}
-                  {isOpen && (
-                    <div className="px-6 pb-6 pt-1 text-xs text-slate-500 border-t border-slate-50 leading-relaxed font-normal">
+                    <div data-seo-disclosure hidden={!isOpen} className="px-6 pb-6 pt-1 text-xs text-slate-500 border-t border-slate-50 leading-relaxed font-normal">
                       {faq.answer}
                     </div>
-                  )}
                 </div>
               );
             })}

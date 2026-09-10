@@ -6,7 +6,7 @@
 import 'dotenv/config';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createElement, Fragment, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import ReactMarkdown, { type Components } from 'react-markdown';
@@ -113,13 +113,24 @@ const countMarkdownWords = (markdown: string): number =>
     .length;
 
 const SEO_FALLBACK_SLOT = '<div data-seo-fallback-slot></div>';
+// Tailwind's [hidden] rule is !important in the base layer. Match that layer so
+// no-script content really becomes readable, not merely present in the source.
+const STATIC_CONTENT_STYLES = [
+  '@layer base {',
+  '[data-seo-prerendered] [style*="opacity:0"]{opacity:1!important}',
+  '[data-seo-prerendered] [data-seo-disclosure],[data-seo-prerendered] [role="region"][hidden]{display:block!important}',
+  '[data-seo-prerendered] [data-persistent-disclosure]{height:auto!important;opacity:1!important}',
+  '[data-seo-prerendered] [data-docs-tab]{display:contents!important}',
+  '[data-seo-prerendered] [data-docs-section]{display:block!important}',
+  '}',
+].join('');
 
 const injectSeoFallback = (html: string, fallbackMarkup: string): string => {
   if (!html.includes(SEO_FALLBACK_SLOT)) {
     throw new Error('Localized page template is missing the SEO fallback slot.');
   }
 
-  return html.replace(SEO_FALLBACK_SLOT, fallbackMarkup);
+  return html.replace(SEO_FALLBACK_SLOT, () => fallbackMarkup);
 };
 
 const routePath = (route: LocalizedRoute, locale: Locale): string =>
@@ -519,6 +530,7 @@ const renderLocalizedHtml = (
   route: LocalizedRoute,
   locale: Locale,
   siteUrl: string,
+  prerenderedMarkup?: string,
 ): string => {
   const seo = SEO_TRANSLATIONS[locale];
   const localeMeta = LANGUAGE_META[locale];
@@ -724,7 +736,9 @@ const renderLocalizedHtml = (
             blogPost?.title ?? demoSeoProfile?.headline ?? routeTitle,
             description,
           )
-        : renderPublicSeoFallback(
+        : prerenderedMarkup !== undefined
+          ? `<div data-seo-fallback data-seo-prerendered>${prerenderedMarkup}</div><noscript><style>${STATIC_CONTENT_STYLES}</style></noscript>`
+          : renderPublicSeoFallback(
             blogPost?.title ?? demoSeoProfile?.headline ?? routeTitle,
             description,
             route.view,
@@ -860,6 +874,9 @@ const renderNotFoundHtml = (
 
 const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL ?? process.env.SITE_URL);
 const sourceHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
+const { renderPage } = await import(
+  pathToFileURL(resolve(projectRoot, 'dist-ssr/entry-seo.js')).href
+) as { renderPage: (path: string) => Promise<string> };
 const routes: LocalizedRoute[] = [
   ...APP_VIEWS
     .filter((view) => view !== 'blog-detail')
@@ -882,9 +899,13 @@ for (const route of routes) {
       'index.html',
     );
     mkdirSync(dirname(outputPath), { recursive: true });
+    const prerenderedMarkup = !['blog', 'blog-detail', 'white-paper'].includes(route.view)
+      && SEO_ROUTE_GROUPS[route.view] !== 'account'
+      ? await renderPage(routePath(route, locale))
+      : undefined;
     writeFileSync(
       outputPath,
-      renderLocalizedHtml(sourceHtml, route, locale, siteUrl),
+      renderLocalizedHtml(sourceHtml, route, locale, siteUrl, prerenderedMarkup),
       'utf8',
     );
   }

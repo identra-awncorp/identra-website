@@ -1065,8 +1065,8 @@ export default function InterfaceStudioPage({ onViewChange }: InterfaceStudioPag
                       />
                     </button>
                   </h3>
-                  {isOpen && (
                     <div
+                      hidden={!isOpen}
                       id={panelId}
                       role="region"
                       aria-labelledby={buttonId}
@@ -1076,7 +1076,6 @@ export default function InterfaceStudioPage({ onViewChange }: InterfaceStudioPag
                         {item.answer}
                       </p>
                     </div>
-                  )}
                 </div>
               );
             })}
@@ -1437,11 +1436,9 @@ export default function InterfaceStudioPage({ onViewChange }: InterfaceStudioPag
                         />
                       </button>
                     </h3>
-                    {isOpen && (
-                      <div id={panelId} role="region" aria-labelledby={buttonId} className="pt-4 border-t border-slate-200/60 mt-3">
+                      <div hidden={!isOpen} id={panelId} role="region" aria-labelledby={buttonId} className="pt-4 border-t border-slate-200/60 mt-3">
                         <p className="type-body text-slate-600 leading-relaxed">{item.answer}</p>
                       </div>
-                    )}
                   </div>
                 );
               })}

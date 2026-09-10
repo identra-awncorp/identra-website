@@ -234,6 +234,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
 
   return (
     <div id="resource-center-root" className="bg-[#FAFBFD] font-sans">
+      <h1 className="sr-only">{text('resourceCenterTitle')}</h1>
       
       {/* Hero Featured Segment */}
       <section className="max-w-7xl mx-auto px-6 py-8 md:py-12">

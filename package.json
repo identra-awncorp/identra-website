@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "npm run generate:seo && vite build && npm run generate:localized-pages && npm run scan:seo-output",
+    "build": "npm run generate:seo && vite build && npm run build:seo-renderer && npm run test:seo-prerender && npm run generate:localized-pages && npm run scan:seo-output",
+    "build:seo-renderer": "vite build --ssr src/entry-seo.tsx --outDir dist-ssr",
+    "test:seo-prerender": "node --import tsx --test tests/seo-prerender.test.ts",
     "preview": "vite preview",
     "clean": "node scripts/clean.mjs",
     "generate:seo": "tsx scripts/generate-seo-assets.ts",

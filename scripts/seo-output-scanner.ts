@@ -36,6 +36,14 @@ import {
   WHITE_PAPER_SEO_PROFILE,
 } from '../src/content/whitePaperSeoProfile';
 import { WHITE_PAPER_TRANSLATIONS } from '../src/translations/WhitePaperPageTranslations';
+import { DYNAMIC_FLOW_TRANSLATIONS } from '../src/translations/DynamicFlowPageTranslations';
+import { INTERFACE_STUDIO_TRANSLATIONS } from '../src/translations/InterfaceStudioPageTranslations';
+import { OVERVIEW_DOCS_TRANSLATIONS } from '../src/translations/docs/OverviewDocsTranslations';
+import { INQUIRIES_DOCS_TRANSLATIONS } from '../src/translations/docs/InquiriesDocsTranslations';
+import { TRANSACTIONS_DOCS_TRANSLATIONS } from '../src/translations/docs/TransactionsDocsTranslations';
+import { CREDENTIAL_ISSUANCE_DOCS_TRANSLATIONS } from '../src/translations/docs/CredentialIssuanceDocsTranslations';
+import { API_REFERENCE_DOCS_TRANSLATIONS } from '../src/translations/docs/ApiReferenceDocsTranslations';
+import { CHANGELOG_DOCS_TRANSLATIONS } from '../src/translations/docs/ChangelogDocsTranslations';
 import {
   getSeoRouteDescription,
   SEO_ROUTE_GROUPS,
@@ -67,7 +75,7 @@ const expect = (condition: boolean, message: string) => {
 const verifyInitialLoadingShell = (html: string, relativePath: string) => {
   const criticalStylePosition = html.indexOf('id="identra-initial-skeleton-styles"');
   const skeletonPosition = html.indexOf('<div data-initial-skeleton');
-  const fallbackPosition = html.indexOf('<main data-seo-fallback');
+  const fallbackPosition = html.search(/<(?:main|div) data-seo-fallback[ =>]/);
 
   expect(
     criticalStylePosition >= 0 && skeletonPosition >= 0,
@@ -397,14 +405,14 @@ for (const page of indexablePages) {
     `${page.path} is missing a title or meta description.`,
   );
   expect(
-    html.includes('<main data-seo-fallback'),
+    /<(?:main|div) data-seo-fallback[ =>]/.test(html),
     `${page.path} is missing crawlable fallback content.`,
   );
-  const staticH2Count = html.match(/<h2(?:\s|>)/g)?.length ?? 0;
+  const staticHeadingCount = html.match(/<h[23](?:\s|>)/g)?.length ?? 0;
   const staticParagraphCount = html.match(/<p(?:\s|>)/g)?.length ?? 0;
   const staticInternalLinkCount = html.match(/href="\/(?!\/)/g)?.length ?? 0;
   expect(
-    staticH2Count >= 2 && staticParagraphCount >= 3,
+    staticHeadingCount >= 2 && staticParagraphCount >= 3,
     `${page.path} exposes too little structured static content before React loads.`,
   );
   if (page.path !== viewToPath('white-paper', 'vi')) {
@@ -418,6 +426,87 @@ for (const page of indexablePages) {
       && !html.includes('window.location.replace('),
     `${page.path} contains redirect markup even though it is indexable.`,
   );
+}
+
+// Real route content must replace the old generic marketing fallback. Blog and
+// White Paper deliberately retain their existing editorial static generators.
+for (const view of APP_VIEWS) {
+  if (SEO_ROUTE_GROUPS[view] === 'account' || ['blog', 'blog-detail', 'white-paper'].includes(view)) continue;
+  for (const locale of getViewLocales(view)) {
+    const path = viewToPath(view, locale);
+    const html = readDistFile(routeFile(path));
+    expect(html.includes('data-seo-prerendered'), `${path} is not rendered from its actual React route.`);
+    expect(html.includes('<noscript><style>@layer base {'), `${path} must override Tailwind hidden rules in its no-script document.`);
+    expect(/<h1(?:\s|>)/.test(html), `${path} does not expose its primary heading before JavaScript.`);
+    expect(!html.includes('<!--$!-->') && !html.includes('<!--$?-->'), `${path} contains an unresolved server-rendering boundary.`);
+    for (const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)(?:[?#][^"]*)?"/g)) {
+      expect(existsSync(resolve(distDir, match[1].slice(1))), `${path} references missing build asset ${match[1]}.`);
+    }
+  }
+}
+
+const renderedText = (html: string): string => html
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'")
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/\s+/g, ' ').trim();
+
+const publicPaths = new Set(indexablePages.map(page => page.path));
+const publicLinks = new Map<string, Set<string>>();
+for (const { path } of indexablePages) {
+  const links = new Set<string>();
+  const html = readDistFile(routeFile(path));
+  for (const match of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
+    try {
+      const url = new URL(match[1].replace(/&amp;/g, '&'), absoluteUrl(path));
+      if (url.origin === new URL(siteUrl).origin && publicPaths.has(url.pathname)) links.add(url.pathname);
+    } catch {
+      failures.push(`${path} has an invalid link: ${match[1]}.`);
+    }
+  }
+  publicLinks.set(path, links);
+}
+const reachable = new Set<string>(SUPPORTED_LOCALES.map(locale => viewToPath('landing', locale)));
+for (const path of reachable) {
+  for (const target of publicLinks.get(path) ?? []) reachable.add(target);
+}
+for (const path of publicPaths) {
+  expect(reachable.has(path), `${path} cannot be reached from any locale homepage using static body links.`);
+}
+
+for (const locale of SUPPORTED_LOCALES) {
+  for (const [view, copy] of [
+    ['dynamic-flow', DYNAMIC_FLOW_TRANSLATIONS[locale]],
+    ['interface-studio', INTERFACE_STUDIO_TRANSLATIONS[locale]],
+  ] as const) {
+    const path = viewToPath(view, locale);
+    const text = renderedText(readDistFile(routeFile(path)));
+    for (const [id, item] of Object.entries(copy.faq.items)) {
+      expect(text.includes(item.question) && text.includes(item.answer), `${path} omits FAQ content: ${id}.`);
+    }
+  }
+
+  const docsPath = viewToPath('docs', locale);
+  const docsHtml = readDistFile(routeFile(docsPath));
+  const docsText = renderedText(docsHtml);
+  for (const dictionary of [OVERVIEW_DOCS_TRANSLATIONS, INQUIRIES_DOCS_TRANSLATIONS,
+    TRANSACTIONS_DOCS_TRANSLATIONS, CREDENTIAL_ISSUANCE_DOCS_TRANSLATIONS,
+    API_REFERENCE_DOCS_TRANSLATIONS, CHANGELOG_DOCS_TRANSLATIONS]) {
+    for (const section of dictionary[locale].sections) {
+      expect(docsHtml.includes(`id="${section.id}"`) && docsText.includes(section.title), `${docsPath} omits document section ${section.id}.`);
+      for (const block of section.blocks) {
+        if (block.type === 'p' || block.type === 'callout') {
+          expect(docsText.includes(block.text.replace(/\s+/g, ' ').trim()), `${docsPath} omits text in ${section.id}.`);
+        }
+      }
+    }
+  }
+  expect(canonicalLinks(docsHtml)[0] === absoluteUrl(docsPath), `${docsPath} must remain one canonical document.`);
+  const demoHtml = readDistFile(routeFile(viewToPath('demo', locale)));
+  for (const scenario of DEMO_SCENARIO_IDS) {
+    expect(demoHtml.includes(`href="${demoScenarioPath(scenario, locale)}"`), `${locale} demo listing has no crawlable link to ${scenario}.`);
+  }
 }
 
 for (const locale of SUPPORTED_LOCALES) {

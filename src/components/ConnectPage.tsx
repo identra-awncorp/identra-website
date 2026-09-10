@@ -12,6 +12,7 @@ import {
   HelpCircle, Smartphone, Database, CheckCircle, EyeOff, ClipboardCheck
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import PersistentDisclosure from './PersistentDisclosure';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { CONNECT_TRANSLATIONS } from '../translations/ConnectPageTranslations';
@@ -808,21 +809,14 @@ export default function ConnectPage({ onOpenSandbox, onBackToLanding, onViewChan
                   <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-180 text-[#354CE1]' : ''}`} />
                 </button>
                 
-                <AnimatePresence initial={false}>
-                  {isExpanded && (
-                    <motion.div
-                      initial={{ height: 0 }}
-                      animate={{ height: 'auto' }}
-                      exit={{ height: 0 }}
+                    <PersistentDisclosure open={isExpanded}
                       transition={{ duration: 0.15 }}
                       className="overflow-hidden"
                     >
                       <div className="p-5 pt-0 text-xs sm:text-sm text-slate-500 border-t border-slate-100 bg-[#FAFBFD] leading-relaxed">
                         {faq.a}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                    </PersistentDisclosure>
               </div>
             );
           })}

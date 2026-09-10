@@ -133,3 +133,25 @@ Không thấy lỗi console trong các lượt đọc console đại diện ở 
 Không dùng kết quả `site:` để khẳng định số trang đã lập chỉ mục. Không gửi lại hoặc ép index các URL Login, Dashboard, 404, Relay đã bỏ hay bản ngôn ngữ không được xuất bản.
 
 Ưu tiên xử lý: nội dung bị phụ thuộc click → phạm vi Docs được phép công bố → link trang danh sách/demo → HTML thật và kiểm thử chống tái phát. Không cần viết lại nội dung Blog hoặc đổi thuật ngữ để sửa các vấn đề kỹ thuật này.
+
+## Triển khai tiếp theo — 10/09/2026, bản local chưa deploy
+
+Chủ sở hữu đã chọn giữ một trang Docs canonical chung cho mỗi ngôn ngữ, không tách URL tài liệu mẫu.
+
+- Thêm renderer build-only dùng các component React hiện có để tạo HTML nội dung thật cho trang marketing và demo. Không đổi framework, route, nội dung Blog, dữ liệu dịch hoặc metadata biên tập.
+- Các câu trả lời FAQ/accordion được giữ trong DOM khi đóng. Các panel có animation vẫn giữ hiệu ứng; panel đóng không nhận focus. Bản không JavaScript mở nội dung bằng CSS riêng.
+- Docs giữ sáu tab và giao diện từng mục; toàn bộ 31 section được đưa vào HTML. Tab là liên kết query, các mục có liên kết fragment. Nhãn nhỏ của tài liệu trở thành H1 mà không thêm heading lớn. ID của bộ chọn mục được phân biệt theo tài liệu.
+- Footer và danh sách demo dùng liên kết thật tới trang đích. Cả 374 URL công khai có thể được đi tới từ năm trang chủ bằng liên kết trong body của HTML tĩnh; 10 trang riêng tư vẫn noindex và ngoài sitemap.
+- Giữ skeleton ở lần vẽ đầu. Nội dung lớn trong Suspense được nhúng thẳng vào HTML thay vì dùng script ghép các đoạn tải sau. Bản không JavaScript có CSS cùng layer với Tailwind để thực sự mở được các mục có `hidden`.
+- Bổ sung 15 kiểm thử prerender theo năm ngôn ngữ và mở rộng scanner để kiểm tra nội dung FAQ/Docs, ID, asset, liên kết và khả năng đi tới trang con. Build dừng nếu dựng nội dung thất bại; không âm thầm xuất bản HTML thiếu nội dung.
+
+Các kết quả kiểm tra HTTP production ở phần trên là trước khi triển khai thay đổi này. Chưa deploy, chưa gửi yêu cầu lập chỉ mục và chưa có dữ liệu Search Console mới để xác nhận kết quả lập chỉ mục thực tế.
+
+### Kết quả kiểm tra bản sửa
+
+- Production build đạt; 15/15 kiểm thử prerender và 230/230 kiểm thử hiện có đạt. Scanner SEO: 0 lỗi trên 374 URL công khai, 10 trang riêng tư và 18 bài Blog. Các scanner còn lại: 0 lỗi. Lint: 0 lỗi, 154 cảnh báo sẵn có.
+- Trình duyệt: Dynamic Flow tiếng Việt, Interface Studio tiếng Nhật và Docs tiếng Đức không tràn ngang ở 390, 768, 1440px. Docs tiếng Việt ở mobile chọn đúng mục vòng đời; tab, tải trực tiếp và back/forward giữ đúng nội dung/canonical.
+- FAQ Dynamic Flow mở bằng Enter, giữ focus và cập nhật `aria-expanded`/`hidden`; đủ bốn câu trả lời trong DOM. Connect giữ các panel đóng ở chiều cao 0, có `inert` và `aria-hidden`, không làm mất nội dung.
+- Bản không JavaScript được kiểm tra bằng iframe có sandbox không cho chạy script: đủ 31 mục Docs và bốn câu trả lời Dynamic Flow đọc được ở cả ba độ rộng, không tràn ngang.
+- Khi trì hoãn JavaScript 5 giây, skeleton che nội dung fallback ở lần vẽ đầu. Sau khi React tải xong, cả skeleton và fallback được gỡ đúng. Không ghi nhận lỗi console trong các lượt kiểm tra đại diện.
+- Diff xác nhận không thay đổi các dictionary dịch, nội dung Blog, BlogDetailPage hoặc SeoMetadata. Chưa thực hiện kiểm tra trình duyệt cho cả 374 URL và chưa giả lập riêng tùy chọn reduced-motion; các panel animation mới dùng `useReducedMotion`.

@@ -49,6 +49,10 @@ This document describes the active repository scripts and scanner expectations.
 
 ## Maintenance
 
+- `build:seo-renderer` creates the build-only React renderer in `dist-ssr/`.
+- `test:seo-prerender` runs after that renderer is built. It checks complete Docs sections, unique IDs, inline Suspense output, collapsed product FAQ answers, and demo links in all five locales.
+- `scan:seo-output` also requires actual prerendered route content, no-script CSS, valid local build assets, and reachability of every public sitemap route through static body links from the locale homepages. It preserves the separate Blog and White Paper editorial checks.
+
 - Keep scanner behavior documented when adding or changing a scanner.
 - Prefer precise scanner rules over broad regular expressions that create noisy false positives.
 - Keep script names action-oriented and stable because they are referenced by `CODEX.md` and docs in this directory.

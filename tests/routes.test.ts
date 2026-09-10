@@ -121,6 +121,7 @@ test('every demo scenario has unique localized search metadata', () => {
 
 test('Vietnamese-only structured articles canonicalize every locale to Vietnamese', () => {
   const articleIds = [
+    'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam',
     'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
     'dinh-danh-tu-chu-ssi-la-gi',
     'ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc',
@@ -154,7 +155,7 @@ test('Vietnamese-only structured articles canonicalize every locale to Vietnames
 
 test('only real structured articles are published as blog detail routes', () => {
   assert.equal(DEFAULT_BLOG_DETAIL_ID, 'dinh-danh-tu-chu-ssi-la-gi');
-  assert.equal(PUBLIC_BLOG_DETAIL_IDS.length, 18);
+  assert.equal(PUBLIC_BLOG_DETAIL_IDS.length, 19);
   assert.equal(pathToBlogDetailId('/vi/blog-detail/blog-1'), null);
   assert.equal(
     viewToPath('blog-detail', 'en'),

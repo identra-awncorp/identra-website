@@ -29,9 +29,9 @@ export const DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE = {
   industries: ['all'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam',
     'vuot-xa-super-app-ky-nguyen-ultra-app',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'did-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/trusted-ai-economy-1440.webp`,

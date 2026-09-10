@@ -10,6 +10,11 @@ import {
 } from '../src/content/blog/structuredBlogArticles.ts';
 
 const EXPECTED_RELATED_ARTICLES = {
+  'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam': [
+    'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham',
+    'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai',
+    'dinh-danh-tu-chu-ssi-la-gi',
+  ],
   'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au': [
     'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu',
     'tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung',
@@ -51,9 +56,9 @@ const EXPECTED_RELATED_ARTICLES = {
     'vi-dinh-tin-la-gi',
   ],
   'giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai': [
+    'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam',
     'vuot-xa-super-app-ky-nguyen-ultra-app',
     'dinh-danh-tu-chu-ssi-la-gi',
-    'did-la-gi',
   ],
   'chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu': [
     'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au',
@@ -71,9 +76,9 @@ const EXPECTED_RELATED_ARTICLES = {
     'did-la-gi',
   ],
   'tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham': [
+    'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam',
     'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
     'thuc-chung-la-gi',
-    'dinh-danh-tu-chu-ssi-la-gi',
   ],
   'rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao': [
     'ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc',
@@ -124,7 +129,7 @@ test('every structured article declares three valid and unique related article I
 });
 
 test('every structured article preserves its editorially curated related reading set', () => {
-  assert.equal(Object.keys(EXPECTED_RELATED_ARTICLES).length, 18);
+  assert.equal(Object.keys(EXPECTED_RELATED_ARTICLES).length, 19);
 
   for (const article of STRUCTURED_BLOG_ARTICLES) {
     assert.deepEqual(

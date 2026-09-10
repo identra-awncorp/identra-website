@@ -28,6 +28,25 @@ export interface StructuredBlogSeoProfile {
 type PublicBlogDetailId = (typeof PUBLIC_BLOG_DETAIL_IDS)[number];
 
 export const STRUCTURED_BLOG_SEO_PROFILES = {
+  'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam': {
+    title: 'Dự thảo định danh và xác thực: Cơ hội cho SSI tại Việt Nam',
+    description: 'Tìm hiểu dự thảo định danh và xác thực tại Việt Nam, cùng cơ hội phát triển hạ tầng SSI, DID và dữ liệu có thể kiểm chứng trên nền tảng quốc gia.',
+    searchIntent: {
+      primary: 'dự thảo định danh và xác thực',
+      secondary: [
+        'cơ hội SSI tại Việt Nam',
+        'DID trong dự thảo nghị định',
+        'Nền tảng chuỗi khối quốc gia',
+        'định danh phi tập trung tại Việt Nam',
+      ],
+    },
+    entities: [
+      'Self-Sovereign Identity',
+      'Decentralized Identifiers',
+      'Nền tảng chuỗi khối quốc gia',
+      'Dữ liệu có thể kiểm chứng',
+    ],
+  },
   'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au': {
     title: 'EUDI Wallet 2026–2027: Bước ngoặt định danh số châu Âu',
     description: 'Tìm hiểu lộ trình EUDI Wallet từ triển khai năm 2026 đến mở rộng chấp nhận trong năm 2027, cùng tác động đến định danh số và quyền riêng tư tại châu Âu.',

@@ -190,7 +190,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/es/blog</loc>
@@ -200,7 +200,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/ja/blog</loc>
@@ -210,7 +210,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/de/blog</loc>
@@ -220,7 +220,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog</loc>
@@ -230,7 +230,7 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/blog" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/blog" />
-    <lastmod>2026-08-31</lastmod>
+    <lastmod>2026-09-10</lastmod>
   </url>
   <url>
     <loc>https://www.identra.id.vn/en/ebooks</loc>
@@ -3206,6 +3206,14 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://www.identra.id.vn/de/demo/ticket-transfer" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/demo/ticket-transfer" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/demo/ticket-transfer" />
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</loc>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam" />
+    <lastmod>2026-09-10</lastmod>
+    <image:image><image:loc>https://www.identra.id.vn/blog/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam-og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://www.identra.id.vn/blog/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam/vietnam-ssi-infrastructure-cover-1440.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://www.identra.id.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</loc>

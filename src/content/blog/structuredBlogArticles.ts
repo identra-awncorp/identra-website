@@ -6,6 +6,7 @@
 import { EUROPE_SSI_SHIFT_BLOG_ARTICLE } from './chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu';
 import { SSI_BLOG_ARTICLE } from './dinh-danh-tu-chu-ssi-la-gi';
 import { DID_EXPLAINER_BLOG_ARTICLE } from './did-la-gi';
+import { VIETNAM_IDENTITY_AUTHENTICATION_DRAFT_BLOG_ARTICLE } from './du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam';
 import { EUDI_WALLET_2026_2027_BLOG_ARTICLE } from './eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au';
 import { DATA_TRUST_AI_ECONOMY_BLOG_ARTICLE } from './giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai';
 import { LIFELONG_LEARNING_BLOG_ARTICLE } from './ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc';
@@ -32,6 +33,7 @@ import { ULTRA_APP_BLOG_ARTICLE } from './vuot-xa-super-app-ky-nguyen-ultra-app'
 import { TRUST_WALLET_EXPLAINER_BLOG_ARTICLE } from './vi-dinh-tin-la-gi';
 
 const structuredBlogArticleRegistry = [
+  VIETNAM_IDENTITY_AUTHENTICATION_DRAFT_BLOG_ARTICLE,
   EUDI_WALLET_2026_2027_BLOG_ARTICLE,
   GDPR_TO_SSI_EU_DATA_CONTROL_BLOG_ARTICLE,
   ONLINE_FRAUD_DATA_PROTECTION_BLOG_ARTICLE,

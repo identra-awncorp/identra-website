@@ -21,6 +21,15 @@ const SSI_SEO_DESCRIPTION =
   'Tìm hiểu Self-Sovereign Identity (SSI), cách định danh tự chủ giúp người dùng nắm giữ, chia sẻ và xác minh danh tính số giữa nhiều dịch vụ.';
 
 const EXPECTED_SEARCH_INTENTS = {
+  'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam': {
+    primary: 'dự thảo định danh và xác thực',
+    secondary: [
+      'cơ hội SSI tại Việt Nam',
+      'DID trong dự thảo nghị định',
+      'Nền tảng chuỗi khối quốc gia',
+      'định danh phi tập trung tại Việt Nam',
+    ],
+  },
   'eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au': {
     primary: 'lộ trình EUDI Wallet',
     secondary: [

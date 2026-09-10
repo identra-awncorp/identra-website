@@ -25,7 +25,7 @@ test('EUDI Wallet 2026–2027 article exposes localized listing metadata and Vie
   assert.equal(article.content.vi.title, EXPECTED_TITLE);
   assert.equal(article.listing.vi.title, EXPECTED_TITLE);
   assert.equal(getStructuredBlogArticle(article.id), article);
-  assert.equal(STRUCTURED_BLOG_ARTICLES[0], article);
+  assert.equal(STRUCTURED_BLOG_ARTICLES.includes(article), true);
 });
 
 test('EUDI Wallet 2026–2027 article preserves the source structure and uses four optimized images', () => {

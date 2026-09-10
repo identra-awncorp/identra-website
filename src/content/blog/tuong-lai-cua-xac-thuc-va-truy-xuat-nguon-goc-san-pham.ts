@@ -29,9 +29,9 @@ export const PRODUCT_TRACEABILITY_BLOG_ARTICLE = {
   industries: ['retail-ecommerce', 'marketplaces'],
   contentLocales: ['vi'],
   relatedArticleIds: [
+    'du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam',
     'ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu',
     'thuc-chung-la-gi',
-    'dinh-danh-tu-chu-ssi-la-gi',
   ],
   coverImage: {
     src: `${assetRoot}/verifiable-supply-chain-cover-1440.webp`,

@@ -8,8 +8,22 @@
     <link>https://www.identra.id.vn/vi/blog</link>
     <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
     <language>vi</language>
-    <lastBuildDate>Mon, 31 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 10 Sep 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dự thảo mới về định danh và xác thực: Cơ hội nào đang mở ra cho SSI tại Việt Nam?</title>
+      <link>https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</link>
+      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</guid>
+      <description>Dự thảo về định danh, xác thực và truy xuất nguồn gốc đang mở ra hành lang mới cho DID, bằng chứng số và hạ tầng SSI tại Việt Nam.</description>
+      <dc:creator>Identra</dc:creator>
+      <pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>
+      <category>Định danh số</category>
+      <category>SSI tại Việt Nam</category>
+      <category>DID</category>
+      <category>Chính sách số</category>
+      <category>Chuỗi khối quốc gia</category>
+      <media:content url="https://www.identra.id.vn/blog/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+    </item>
     <item>
       <title>EUDI Wallet bước vào đời sống: 2026–2027 và bước ngoặt của định danh số Châu Âu</title>
       <link>https://www.identra.id.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</link>

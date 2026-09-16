@@ -106,10 +106,10 @@ export type FooterTextKey =
 
 export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, string>> = {
   en: {
-    readyToStart: 'Ready to get started?',
-    readyToStartDesc: "Let's build a safer, more human internet together.",
+    readyToStart: "Want to learn more about Identra?",
+    readyToStartDesc: "Try the simulations or read the documentation to explore how Identra could fit your service.",
     tryDemo: 'Try the demo',
-    tryItNow: 'Get started',
+    tryItNow: "Read the docs",
     platform: 'Platform',
     verifications: 'Verifications',
     riskReports: 'Risk & Reports',
@@ -204,10 +204,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     copyright: '© 2026 Identra Identities, Inc. All rights reserved.'
   },
   es: {
-    readyToStart: '¿Listo para comenzar?',
-    readyToStartDesc: 'Construyamos juntos un internet más seguro y más humano.',
+    readyToStart: "¿Quiere conocer mejor Identra?",
+    readyToStartDesc: "Pruebe las simulaciones o consulte la documentación para conocer cómo aplicar Identra a su servicio.",
     tryDemo: 'Probar la demo',
-    tryItNow: 'Comenzar',
+    tryItNow: "Ver documentación",
     platform: 'Plataforma',
     verifications: 'Verificaciones',
     riskReports: 'Riesgo e informes',
@@ -302,10 +302,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     copyright: '© 2026 Identra Identities, Inc. Todos los derechos reservados.'
   },
   ja: {
-    readyToStart: '始める準備はできましたか？',
-    readyToStartDesc: 'より安全で、より人間らしいインターネットを一緒につくりましょう。',
+    readyToStart: "Identraについてもっと知りたい方へ",
+    readyToStartDesc: "シミュレーションやドキュメントで、Identraをサービスにどう活用できるかをご確認ください。",
     tryDemo: 'デモを試す',
-    tryItNow: '始める',
+    tryItNow: "ドキュメントを見る",
     platform: 'プラットフォーム',
     verifications: '本人確認',
     riskReports: 'リスクとレポート',
@@ -400,10 +400,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     copyright: '© 2026 Identra Identities, Inc. 無断転載を禁じます。'
   },
   de: {
-    readyToStart: 'Bereit loszulegen?',
-    readyToStartDesc: 'Lassen Sie uns gemeinsam ein sichereres und menschlicheres Internet schaffen.',
+    readyToStart: "Möchten Sie Identra näher kennenlernen?",
+    readyToStartDesc: "Probieren Sie die Simulationen aus oder lesen Sie die Dokumentation, um Einsatzmöglichkeiten für Ihren Dienst kennenzulernen.",
     tryDemo: 'Demo testen',
-    tryItNow: 'Loslegen',
+    tryItNow: "Dokumentation lesen",
     platform: 'Plattform',
     verifications: 'Verifizierungen',
     riskReports: 'Risiko & Berichte',
@@ -498,10 +498,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     copyright: '© 2026 Identra Identities, Inc. Alle Rechte vorbehalten.'
   },
   vi: {
-    readyToStart: 'Sẵn sàng bắt đầu?',
-    readyToStartDesc: 'Hãy cùng xây dựng một internet an toàn hơn và nhân văn hơn.',
+    readyToStart: "Bạn muốn tìm hiểu thêm về Identra?",
+    readyToStartDesc: "Trải nghiệm các tình huống mô phỏng hoặc đọc tài liệu để tìm hiểu cách ứng dụng Identra vào dịch vụ của bạn.",
     tryDemo: 'Trải nghiệm demo',
-    tryItNow: 'Bắt đầu',
+    tryItNow: "Xem tài liệu",
     platform: 'Nền tảng',
     verifications: 'Xác minh',
     riskReports: 'Rủi ro & Báo cáo',

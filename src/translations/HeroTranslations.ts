@@ -57,7 +57,7 @@ export const HERO_TRANSLATIONS = {
     slideAltConsole: 'Identra-Konsole für Identitätsprozesse'
   },
   vi: {
-    keeping: 'Trái tim của',
+    keeping: 'Hạ tầng tin cậy cho',
     internetHuman: 'nền kinh tế số',
     titleAfter: '',
     heroDesc: 'Kết nối vạn vật dựa trên niềm tin được xác lập bởi mật mã, thẩm quyền và các quy tắc minh bạch, từ đó tự động hóa quy trình và giao dịch thông qua hợp đồng thông minh.',

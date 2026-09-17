@@ -258,12 +258,35 @@ expect(
 for (const redirect of configuredRedirects) {
   if (!redirect.source || !redirect.destination) continue;
 
+  const isLocalDestination = redirect.destination.startsWith('/')
+    && !redirect.destination.startsWith('//')
+    && !redirect.destination.includes('\\');
+  let isExternalDestination = false;
+  try {
+    const destinationUrl = new URL(redirect.destination);
+    isExternalDestination = redirect.destination.startsWith('https://')
+      && destinationUrl.protocol === 'https:'
+      && !destinationUrl.username
+      && !destinationUrl.password
+      && !/[\s\\]/.test(redirect.destination)
+      && destinationUrl.origin !== new URL(siteUrl).origin;
+  } catch {
+    // Relative destinations are validated separately above.
+  }
+
   expect(
     redirect.source.startsWith('/')
-      && redirect.destination.startsWith('/')
+      && (isLocalDestination || isExternalDestination)
       && redirect.source !== redirect.destination,
     `Vercel redirect ${redirect.source} -> ${redirect.destination} is invalid or self-referencing.`,
   );
+
+  if (isExternalDestination) {
+    expect(
+      !existsSync(resolve(distDir, routeFile(redirect.source))),
+      `External shortcut ${redirect.source} must not replace a generated page.`,
+    );
+  }
 
   const visited = new Set([redirect.source]);
   let destination: string | undefined = redirect.destination;

@@ -2,12 +2,42 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import {existsSync, readFileSync} from 'node:fs';
 import path from 'path';
-import {defineConfig, type Plugin} from 'vite';
+import {defineConfig, type Connect, type Plugin} from 'vite';
 import {
   DEFAULT_LOCALE,
   localizePath,
   pathToLocale,
 } from './src/types/routes';
+
+// These shortcuts belong to the server, not the locale-aware React page registry.
+const externalShortcuts = (): Plugin => {
+  const config = JSON.parse(readFileSync(path.resolve(__dirname, 'vercel.json'), 'utf8')) as {
+    redirects: Array<{source: string; destination: string; permanent: boolean}>;
+    headers: Array<{source: string; headers: Array<{key: string; value: string}>}>;
+  };
+  const redirects = config.redirects.filter(({destination}) => destination.startsWith('https://'));
+  const redirectRequest: Connect.NextHandleFunction = (request, response, next) => {
+    const pathname = request.url?.split('?')[0].replace(/\/$/, '');
+    const redirect = redirects.find(({source}) => source === pathname);
+    if (!redirect) {
+      next();
+      return;
+    }
+
+    response.statusCode = redirect.permanent ? 308 : 307;
+    response.setHeader('Location', redirect.destination);
+    for (const header of config.headers.find(({source}) => source === pathname)?.headers ?? []) {
+      response.setHeader(header.key, header.value);
+    }
+    response.end();
+  };
+
+  return {
+    name: 'identra-external-shortcuts',
+    configureServer(server) { server.middlewares.use(redirectRequest); },
+    configurePreviewServer(server) { server.middlewares.use(redirectRequest); },
+  };
+};
 
 const localizedPreviewEntries = (): Plugin => ({
   name: 'identra-localized-preview-entries',
@@ -99,7 +129,7 @@ const localizedPreviewEntries = (): Plugin => ({
 
 export default defineConfig(() => {
   return {
-    plugins: [localizedPreviewEntries(), react(), tailwindcss()],
+    plugins: [externalShortcuts(), localizedPreviewEntries(), react(), tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

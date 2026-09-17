@@ -264,7 +264,7 @@ export default function StructuredBlogDetailPage({
           href={href}
           target={external ? '_blank' : undefined}
           rel={external ? 'noreferrer noopener' : undefined}
-          className="font-medium text-[#354CE1] underline decoration-indigo-200 underline-offset-4 transition hover:decoration-[#354CE1]"
+          className="font-medium text-[#354CE1] underline decoration-indigo-200 underline-offset-4 transition hover:decoration-[#354CE1] [overflow-wrap:anywhere]"
         >
           {children}
         </a>

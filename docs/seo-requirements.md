@@ -18,6 +18,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Blog detail pages must use `BLOG_DETAIL_IDS`, `BlogDetailId`, and `blogDetailPath` rather than ad hoc URLs.
 - Account-only or private pages such as localized login and dashboard routes must be `noindex, nofollow`, excluded from the sitemap, and left crawlable so search engines can read the `noindex` directive.
 - Localized 404 pages must be `noindex, nofollow` and must not emit canonical or alternate links.
+- An unlisted public resource is not private: absence from navigation does not authorize adding `noindex`. Public resource shortcuts may remain outside the sitemap because they redirect, without blocking search indexing.
 
 ## Localized SEO Copy
 
@@ -86,7 +87,7 @@ After deployment, run the production audit:
 npm.cmd run audit:seo-live
 ```
 
-The live audit fetches every URL in the production sitemap and verifies that it returns `200` without redirecting, remains indexable, exposes a self-referencing canonical URL, and contains crawlable fallback content. It also checks the intentional root redirect, private `noindex` pages, 404 behavior, `robots.txt`, the Blog feed, and critical SEO assets.
+The live audit fetches every expected URL in the production sitemap and verifies that it returns `200` without redirecting, remains indexable, exposes exactly one self-referencing canonical URL, and contains crawlable fallback content. It also checks hreflang against supported route locales, document language, titles and descriptions (including duplicates within a locale), JSON-LD, and complete prerendered marketing content with no-JavaScript visibility rules. Unexpected sitemap URLs fail validation and are not fetched. The intentional root redirect, account `noindex` pages, 404 behavior, `robots.txt`, Blog feed, and critical SEO assets are checked separately.
 
 Search Console may list the permanent `/` to `/en` redirect as “Page with redirect” and account or 404 URLs as “Excluded by noindex”. Those are expected exclusions. “Redirect error” is not expected and must be investigated for a loop, invalid destination, or excessive chain using the affected URL shown in Search Console.
 

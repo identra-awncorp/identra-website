@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
 import {
@@ -24,6 +25,35 @@ import {
 } from '../src/types/routes.ts';
 import { getDocsTabIdFromSearch } from '../src/components/docs/docsNavigation.ts';
 import { getDemoSeoProfile } from '../src/content/demoSeoProfiles.ts';
+
+test('the Vietnamese SSI book is an unlisted, temporary server redirect', () => {
+  const config = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8')) as {
+    redirects: Array<{ source: string; destination: string; permanent: boolean }>;
+    headers: Array<{ source: string; headers: Array<{ key: string; value: string }> }>;
+  };
+  const source = '/vi/self-sovereign-identity-book';
+  const redirect = config.redirects.find((entry) => entry.source === source);
+  assert.deepEqual(redirect, {
+    source,
+    destination: 'https://drive.google.com/file/d/1thNJd9UMxk4glzgrQmmTsZ2fpCs8gIy-/view',
+    permanent: false,
+  });
+  assert.equal(config.redirects.filter((entry) => entry.source === source).length, 1);
+  const headers = config.headers.find((entry) => entry.source === source)?.headers;
+  assert.ok(!headers?.some(({ key }) => key.toLowerCase() === 'x-robots-tag'));
+  assert.ok(headers?.some(({ key, value }) => key === 'Cache-Control' && value === 'no-store'));
+  assert.equal(pathToView(source), null);
+  for (const locale of SUPPORTED_LOCALES) {
+    const localizedPath = `/${locale}/self-sovereign-identity-book`;
+    assert.equal(pathToView(localizedPath), null);
+    assert.ok(APP_VIEWS.every((view) => viewToPath(view, locale) !== source));
+    if (locale !== 'vi') {
+      assert.ok(!config.redirects.some((entry) => entry.source === localizedPath));
+      assert.equal(localizePath(localizedPath, locale), null);
+    }
+  }
+  assert.ok(!config.redirects.some((entry) => entry.source === '/self-sovereign-identity-book'));
+});
 
 test('white paper is exposed only through its Vietnamese route', () => {
   assert.deepEqual(getViewLocales('white-paper'), ['vi']);

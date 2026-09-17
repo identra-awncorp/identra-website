@@ -7,7 +7,7 @@ This document describes the active repository scripts and scanner expectations.
 - `npm.cmd run build` runs SEO generation, Vite production build, and localized page generation.
 - `npm.cmd run generate:seo` generates public SEO assets such as sitemap and robots files.
 - `npm.cmd run generate:localized-pages` generates localized HTML entry points under `dist/`.
-- `npm.cmd run lint` runs TypeScript checking with `tsc --noEmit`.
+- `npm.cmd run typecheck` runs TypeScript checking with `tsc --noEmit`; `npm.cmd run lint` runs ESLint.
 - `npm.cmd run scan:localization` checks for likely hard-coded user-visible copy in components.
 - `npm.cmd run scan:i18n-architecture` checks for forbidden i18n implementation patterns in components.
 - `npm.cmd run scan:component-translation-data` checks component-owned translation data patterns.
@@ -52,6 +52,7 @@ This document describes the active repository scripts and scanner expectations.
 - `build:seo-renderer` creates the build-only React renderer in `dist-ssr/`.
 - `test:seo-prerender` runs after that renderer is built. It checks complete Docs sections, unique IDs, inline Suspense output, collapsed product FAQ answers, and demo links in all five locales.
 - `scan:seo-output` also requires actual prerendered route content, no-script CSS, valid local build assets, and reachability of every public sitemap route through static body links from the locale homepages. It preserves the separate Blog and White Paper editorial checks.
+- Redirect validation accepts local paths or absolute external HTTPS destinations without embedded credentials. External shortcuts must not replace generated pages; duplicate sources, self-redirects, loops, and long redirect chains remain errors. An unlisted public resource does not require `noindex`.
 
 - Keep scanner behavior documented when adding or changing a scanner.
 - Prefer precise scanner rules over broad regular expressions that create noisy false positives.

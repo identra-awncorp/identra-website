@@ -13,6 +13,12 @@ const { renderPage } = await import(pathToFileURL(resolve('dist-ssr/entry-seo.js
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 
+test('Blog source links can wrap without changing their text or destination', async () => {
+  const html = await renderPage('/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung');
+  assert.match(html, /<a[^>]*class="[^"]*\[overflow-wrap:anywhere\][^"]*"/);
+  assert.ok(html.includes('https://commission.europa.eu/publications/obstacles-digital-single-market_en'));
+});
+
 for (const locale of SUPPORTED_LOCALES) {
   test(`${locale}: all Docs tabs and large lazy sections are inline without streaming scripts`, async () => {
     const html = await renderPage(`/${locale}/docs?tab=credential-issuance`);

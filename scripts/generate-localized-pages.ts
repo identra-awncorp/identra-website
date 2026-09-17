@@ -257,6 +257,11 @@ const renderStructuredBlogFallback = (
 ): string => {
   const content = article.content.vi;
   const markdownComponents: Components = {
+    a: ({ href, title, children }) => createElement(
+      'a',
+      { href, title, style: { overflowWrap: 'anywhere' } },
+      children,
+    ),
     img: ({ alt, src }) => {
       const image = src ? article.images[src] : undefined;
 

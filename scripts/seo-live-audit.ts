@@ -14,6 +14,9 @@ import {
   demoScenarioPath,
   getBlogDetailLocales,
   getViewLocales,
+  localizePath,
+  pathToBlogDetailId,
+  pathToView,
   viewToPath,
   type Locale,
 } from '../src/types/routes';
@@ -86,6 +89,7 @@ const expectedIndexableUrls = new Set(indexablePaths.map(absoluteUrl));
 const privatePaths = APP_VIEWS
   .filter((view) => SEO_ROUTE_GROUPS[view] === 'account')
   .flatMap((view) => getViewLocales(view).map((locale) => viewToPath(view, locale)));
+const pageMetadata = new Map<string, string>();
 
 const sitemapResponse = await fetchDirect(`${siteUrl}/sitemap.xml`);
 let sitemapXml = '';
@@ -105,7 +109,7 @@ expect(
   'The deployed sitemap does not exactly match the typed set of indexable routes.',
 );
 
-await mapConcurrent(sitemapUrls, 12, async (url) => {
+await mapConcurrent(sitemapUrls.filter((url) => expectedIndexableUrls.has(url)), 8, async (url) => {
   const response = await fetchDirect(url);
   if (!response) return;
 
@@ -113,6 +117,55 @@ await mapConcurrent(sitemapUrls, 12, async (url) => {
   const robots = html.match(/<meta name="robots" content="([^"]*)" \/>/)?.[1] ?? '';
   const canonical = html.match(/<link rel="canonical" href="([^"]+)" \/>/)?.[1] ?? '';
   const xRobotsTag = response.headers.get('x-robots-tag') ?? '';
+  const pathname = new URL(url).pathname;
+  const view = pathToView(pathname);
+  const blogId = view === 'blog-detail' ? pathToBlogDetailId(pathname) : null;
+  const locales = blogId ? getBlogDetailLocales(blogId) : getViewLocales(view!);
+  const defaultLocale = locales.includes(DEFAULT_LOCALE) ? DEFAULT_LOCALE : locales[0];
+  const expectedAlternates = new Map<string, string>([
+    ...locales.map((locale) => [locale, absoluteUrl(localizePath(pathname, locale)!)] as const),
+    ['x-default', absoluteUrl(localizePath(pathname, defaultLocale)!)],
+  ]);
+  const alternates = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"\s*\/?>/g)];
+  const actualAlternates = new Map(alternates.map((match) => [match[1], match[2]]));
+  const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)"\s*\/?>/g)];
+  const locale = pathname.split('/')[1];
+
+  expect(
+    alternates.length === expectedAlternates.size
+      && [...expectedAlternates].every(([language, href]) => actualAlternates.get(language) === href),
+    `${url} has incomplete, duplicate, or incorrect hreflang links.`,
+  );
+  expect(html.includes(`<html lang="${locale}">`), `${url} has the wrong document language.`);
+  expect(/<h1(?:\s|>)/.test(html), `${url} is missing its primary heading before JavaScript.`);
+  if (view && !['blog', 'blog-detail', 'white-paper'].includes(view)) {
+    expect(
+      html.includes('data-seo-prerendered')
+        && html.includes('<noscript><style>@layer base {')
+        && !/<!--\$(?:!|\?)-->/.test(html),
+      `${url} is missing complete prerendered content or its no-JavaScript visibility rules.`,
+    );
+  }
+  for (const [kind, value] of [
+    ['title', html.match(/<title>([^<]+)<\/title>/)?.[1]],
+    ['description', html.match(/<meta name="description" content="([^"]+)"/)?.[1]],
+  ]) {
+    expect(Boolean(value?.trim()), `${url} is missing its ${kind}.`);
+    if (!value) continue;
+    const key = `${locale}:${kind}:${value}`;
+    expect(!pageMetadata.has(key), `${url} repeats the ${kind} of ${pageMetadata.get(key)}.`);
+    pageMetadata.set(key, url);
+  }
+  try {
+    const schema: unknown = JSON.parse(html.match(/<script id="identra-seo-schema" type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? 'null');
+    expect(
+      Array.isArray(schema) && schema.some((item: unknown) =>
+        typeof item === 'object' && item !== null && 'url' in item && item.url === url),
+      `${url} is missing structured data for its canonical page.`,
+    );
+  } catch {
+    failures.push(`${url} contains invalid JSON-LD.`);
+  }
 
   expect(response.status === 200, `${url} returns HTTP ${response.status}, expected 200.`);
   expect(!response.headers.get('location'), `${url} redirects even though it is in the sitemap.`);
@@ -122,10 +175,10 @@ await mapConcurrent(sitemapUrls, 12, async (url) => {
   );
   expect(
     robots === 'index, follow, max-image-preview:large'
-      && !xRobotsTag.toLowerCase().includes('noindex'),
+      && !/\b(?:noindex|none)\b/i.test(xRobotsTag),
     `${url} is blocked from indexing by robots metadata or an HTTP header.`,
   );
-  expect(canonical === url, `${url} does not expose a self-referencing canonical URL.`);
+  expect(canonicals.length === 1 && canonical === url, `${url} must expose exactly one self-referencing canonical URL.`);
   expect(
     !html.includes('http-equiv="refresh"')
       && !html.includes('window.location.replace('),

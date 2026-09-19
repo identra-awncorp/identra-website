@@ -3,11 +3,6 @@
   "trailingSlash": false,
   "redirects": [
     {
-      "source": "/",
-      "destination": "/en",
-      "permanent": true
-    },
-    {
       "source": "/vi/self-sovereign-identity-book",
       "destination": "https://drive.google.com/file/d/1thNJd9UMxk4glzgrQmmTsZ2fpCs8gIy-/view",
       "permanent": false

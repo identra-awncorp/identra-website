@@ -8,6 +8,17 @@
     <meta name="application-name" content="Identra" />
     <meta name="theme-color" content="#354CE1" />
     <link rel="icon" type="image/svg+xml" href="/identra-logo.svg" />
+    <script id="identra-root-locale">
+      (function () {
+        if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') return;
+        try {
+          var saved = window.localStorage.getItem('identra_lang');
+          if (/^(en|es|ja|de|vi)$/.test(saved || '')) {
+            window.location.replace('/' + saved + window.location.search + window.location.hash);
+          }
+        } catch (_) {}
+      })();
+    </script>
     <link rel="canonical" href="https://www.identra.id.vn/en" />
     <link rel="alternate" type="application/rss+xml" title="Identra Blog" href="/blog-feed.xml" />
     <link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en" />

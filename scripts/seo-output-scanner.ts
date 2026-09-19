@@ -68,6 +68,9 @@ const failures: string[] = [];
 const readDistFile = (relativePath: string): string =>
   readFileSync(resolve(distDir, relativePath), 'utf8');
 
+const withoutRootLocaleScript = (html: string): string =>
+  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>/g, '');
+
 const expect = (condition: boolean, message: string) => {
   if (!condition) failures.push(message);
 };
@@ -244,11 +247,8 @@ expect(
   'Vercel must normalize trailing-slash URLs to the canonical route without a trailing slash.',
 );
 expect(
-  Boolean(configuredRedirects.some((redirect) =>
-    redirect.source === '/'
-    && redirect.destination === defaultLandingPath
-    && redirect.permanent === true)),
-  `Vercel must permanently redirect / to ${defaultLandingPath}.`,
+  !configuredRedirects.some((redirect) => redirect.source === '/'),
+  'Vercel must not redirect the neutral root before the saved language preference can be read.',
 );
 expect(
   redirectBySource.size === configuredRedirects.length,
@@ -306,17 +306,18 @@ for (const redirect of configuredRedirects) {
   );
 }
 expect(
-  rootHtml.includes(`<meta http-equiv="refresh" content="0;url=${defaultLandingPath}" />`)
-    && rootHtml.includes(`window.location.replace("${defaultLandingPath}"`),
-  `The static root fallback does not redirect to ${defaultLandingPath}.`,
+  rootHtml.includes('id="identra-root-locale"')
+    && rootHtml.includes('identra_lang')
+    && rootHtml.includes('window.location.replace('),
+  'The static root entry must choose a saved locale before the app hydrates.',
 );
 expect(
   rootHtml.includes(`<link rel="canonical" href="${siteUrl}${defaultLandingPath}" />`),
-  'The static root fallback does not point canonical signals at the default locale.',
+  'The static root entry must point canonical signals at the default locale.',
 );
 expect(
-  rootHtml.includes('<meta name="robots" content="noindex, follow" />'),
-  'The static root redirect fallback must be noindex, follow.',
+  rootHtml.includes('<meta name="robots" content="index, follow, max-image-preview:large" />'),
+  'The static root entry must remain crawlable while canonicalizing to the default locale.',
 );
 
 const whitePaperPdfHeaders = configuredHeaders.find(
@@ -445,8 +446,8 @@ for (const page of indexablePages) {
     );
   }
   expect(
-    !html.includes('http-equiv="refresh"')
-      && !html.includes('window.location.replace('),
+    !withoutRootLocaleScript(html).includes('http-equiv="refresh"')
+      && !withoutRootLocaleScript(html).includes('window.location.replace('),
     `${page.path} contains redirect markup even though it is indexable.`,
   );
 }
@@ -589,8 +590,8 @@ for (const path of privatePages) {
     `${path} must remain noindex, nofollow.`,
   );
   expect(
-    !html.includes('http-equiv="refresh"')
-      && !html.includes('window.location.replace('),
+    !withoutRootLocaleScript(html).includes('http-equiv="refresh"')
+      && !withoutRootLocaleScript(html).includes('window.location.replace('),
     `${path} unexpectedly contains redirect markup.`,
   );
 }

@@ -17,7 +17,7 @@ This document describes locale-aware routing for the Identra website.
 - The landing page uses `/{locale}`.
 - Standard pages use `/{locale}/{view}`.
 - Blog detail pages use `/{locale}/blog-detail/{encodedBlogDetailId}` through `blogDetailPath`.
-- The root `/` entry should route users into a locale-aware URL and should not be treated as the canonical public content URL.
+- The root `/` entry is a neutral, crawlable landing entry. A small pre-hydration script may send returning visitors to their saved `/{locale}` path; it must not be a server redirect or prevent direct access to explicit locale URLs.
 - The default locale is `en` unless product requirements change.
 
 ## Route Rules
@@ -41,7 +41,7 @@ This document describes locale-aware routing for the Identra website.
 
 - Language switching should preserve the current route whenever possible.
 - Use `localizePath` or `replacePathLocale` instead of string concatenation.
-- When a user enters a path without a locale, route them to the best supported locale based on stored or browser language.
+- When a user enters the neutral root, use the saved explicit preference when available and otherwise serve the default English landing content. Do not infer and persist a preference from a localized URL opened directly.
 - When changing language from an existing localized page, update both runtime language state and URL locale.
 - If the current path cannot be localized safely, fall back to the locale landing page.
 

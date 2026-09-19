@@ -530,6 +530,9 @@ const replaceMeta = (
   );
 };
 
+const withoutRootLocaleScript = (html: string): string =>
+  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>\s*/g, '');
+
 const renderLocalizedHtml = (
   sourceHtml: string,
   route: LocalizedRoute,
@@ -750,7 +753,7 @@ const renderLocalizedHtml = (
             locale,
           );
 
-  let html = injectSeoFallback(sourceHtml, fallbackMarkup)
+  let html = injectSeoFallback(withoutRootLocaleScript(sourceHtml), fallbackMarkup)
     .replace(/<html lang="[^"]*">/, `<html lang="${localeMeta.htmlLang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`)
     .replace(
@@ -879,6 +882,9 @@ const renderNotFoundHtml = (
 
 const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL ?? process.env.SITE_URL);
 const sourceHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
+const rootLocaleScript = sourceHtml.match(
+  /<script id="identra-root-locale">[\s\S]*?<\/script>/,
+)?.[0] ?? '';
 const { renderPage } = await import(
   pathToFileURL(resolve(projectRoot, 'dist-ssr/entry-seo.js')).href
 ) as { renderPage: (path: string) => Promise<string> };
@@ -949,12 +955,15 @@ writeFileSync(
   'utf8',
 );
 
-const rootHtml = renderLegacyRedirectHtml(
+// Keep the neutral root readable without JavaScript. The template script is
+// restored only here so localized pages contain no redirect markup at all.
+const rootHtml = renderLocalizedHtml(
   sourceHtml,
-  'landing',
+  { view: 'landing' },
   DEFAULT_LOCALE,
   siteUrl,
-);
+  await renderPage(viewToPath('landing', DEFAULT_LOCALE)),
+).replace('</head>', `${rootLocaleScript}\n  </head>`);
 
 writeFileSync(resolve(distDir, 'index.html'), rootHtml, 'utf8');
 

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
@@ -12,6 +13,14 @@ const { renderPage } = await import(pathToFileURL(resolve('dist-ssr/entry-seo.js
 };
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;')
   .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+
+test('neutral root keeps crawlable English content and honors a saved locale in the browser', () => {
+  const html = readFileSync(resolve('dist/index.html'), 'utf8');
+  assert.match(html, /<script id="identra-root-locale">[\s\S]*identra_lang[\s\S]*window\.location\.replace/);
+  assert.ok(!html.includes('<meta http-equiv="refresh"'));
+  assert.ok(html.includes('<meta name="robots" content="index, follow, max-image-preview:large" />'));
+  assert.ok(html.includes('<link rel="canonical" href="https://www.identra.id.vn/en" />'));
+});
 
 test('Blog source links can wrap without changing their text or destination', async () => {
   const html = await renderPage('/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung');

@@ -29,6 +29,8 @@ const siteUrl = (process.env.VITE_SITE_URL ?? process.env.SITE_URL ?? DEFAULT_SI
   .trim()
   .replace(/\/+$/, '');
 const failures: string[] = [];
+const withoutRootLocaleScript = (html: string): string =>
+  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>/g, '');
 const requestHeaders = {
   'User-Agent': 'Identra-SEO-Audit/1.0',
 };
@@ -180,8 +182,8 @@ await mapConcurrent(sitemapUrls.filter((url) => expectedIndexableUrls.has(url)),
   );
   expect(canonicals.length === 1 && canonical === url, `${url} must expose exactly one self-referencing canonical URL.`);
   expect(
-    !html.includes('http-equiv="refresh"')
-      && !html.includes('window.location.replace('),
+    !withoutRootLocaleScript(html).includes('http-equiv="refresh"')
+      && !withoutRootLocaleScript(html).includes('window.location.replace('),
     `${url} contains client-side redirect markup.`,
   );
   expect(
@@ -248,11 +250,10 @@ const followRedirects = async (initialUrl: string): Promise<RedirectHop[]> => {
 const canonicalRootTrace = await followRedirects(`${siteUrl}/`);
 const canonicalRootLastHop = canonicalRootTrace.at(-1);
 expect(
-  canonicalRootTrace.length === 2
-    && [301, 308].includes(canonicalRootTrace[0]?.status ?? 0)
+  canonicalRootTrace.length === 1
     && canonicalRootLastHop?.status === 200
-    && canonicalRootLastHop.url === absoluteUrl(viewToPath('landing', DEFAULT_LOCALE)),
-  `The canonical root must permanently redirect in one hop to ${viewToPath('landing', DEFAULT_LOCALE)}.`,
+    && canonicalRootLastHop.url === absoluteUrl('/'),
+  'The canonical root must remain a readable 200 neutral entry so it can honor a saved locale.',
 );
 
 const canonicalHost = new URL(siteUrl);
@@ -272,7 +273,7 @@ for (const variant of redirectVariants) {
     trace.length > 0
       && trace.length <= 4
       && lastHop?.status === 200
-      && lastHop.url === absoluteUrl(viewToPath('landing', DEFAULT_LOCALE)),
+      && lastHop.url === absoluteUrl('/'),
     `${variant} does not resolve safely to the canonical landing page.`,
   );
 }

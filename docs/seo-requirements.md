@@ -32,7 +32,7 @@ This document describes the SEO pipeline for the Identra website. Keep `CODEX.md
 - Public canonical URLs must be locale-prefixed.
 - Use `/{locale}` for the landing page and `/{locale}/{view}` for normal pages.
 - Use `blogDetailPath` for blog detail pages.
-- The root `/` entry is a permanent server redirect to the default-locale landing page. Its static fallback must also be `noindex, follow` and redirect to the same target.
+- The root `/` entry is a neutral, crawlable 200 entry with canonical `/en` content. It may use a tiny client-side script to honor a previously saved language choice, but must not be a server redirect. Explicit locale URLs remain directly accessible and indexable.
 - Keep canonical links, `hreflang` alternates for every supported locale, and `x-default` aligned with `SUPPORTED_LOCALES`, `DEFAULT_LOCALE`, `viewToPath`, and `blogDetailPath`.
 - Do not hand-build alternate URL lists in components.
 
@@ -87,7 +87,7 @@ After deployment, run the production audit:
 npm.cmd run audit:seo-live
 ```
 
-The live audit fetches every expected URL in the production sitemap and verifies that it returns `200` without redirecting, remains indexable, exposes exactly one self-referencing canonical URL, and contains crawlable fallback content. It also checks hreflang against supported route locales, document language, titles and descriptions (including duplicates within a locale), JSON-LD, and complete prerendered marketing content with no-JavaScript visibility rules. Unexpected sitemap URLs fail validation and are not fetched. The intentional root redirect, account `noindex` pages, 404 behavior, `robots.txt`, Blog feed, and critical SEO assets are checked separately.
+The live audit fetches every expected URL in the production sitemap and verifies that it returns `200` without redirecting, remains indexable, exposes exactly one self-referencing canonical URL, and contains crawlable fallback content. It also checks hreflang against supported route locales, document language, titles and descriptions (including duplicates within a locale), JSON-LD, and complete prerendered marketing content with no-JavaScript visibility rules. Unexpected sitemap URLs fail validation and are not fetched. The neutral root entry, account `noindex` pages, 404 behavior, `robots.txt`, Blog feed, and critical SEO assets are checked separately.
 
 Search Console may list the permanent `/` to `/en` redirect as “Page with redirect” and account or 404 URLs as “Excluded by noindex”. Those are expected exclusions. “Redirect error” is not expected and must be investigated for a loop, invalid destination, or excessive chain using the affected URL shown in Search Console.
 

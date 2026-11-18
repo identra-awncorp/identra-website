@@ -34,6 +34,9 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     customFlowTitle: 'Need to design your own custom flow?',
     customFlowDesc: 'Access our master Sandbox Lab to configure custom verification steps, upload your own identity credentials, and run arbitrary API tests.',
     openComprehensiveSandbox: 'Open Comprehensive Sandbox',
+    samplePortalTitle: 'Sample university portal (DEMO)',
+    samplePortalDesc: 'Need a diploma in your Identra wallet for the job application demo? Sign in to the fictional university with a sample account and receive one by scanning a QR code.',
+    samplePortalAction: 'Open the sample university portal',
     comingSoon: 'Coming soon',
     scenarios: [
       {
@@ -160,6 +163,9 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     customFlowTitle: '¿Necesitas diseñar tu propio flujo?',
     customFlowDesc: 'Accede al laboratorio principal para configurar pasos de verificación personalizados, cargar credenciales de identidad y ejecutar pruebas API.',
     openComprehensiveSandbox: 'Abrir laboratorio completo',
+    samplePortalTitle: 'Portal universitario de ejemplo (DEMO)',
+    samplePortalDesc: '¿Necesita un título en su billetera Identra para la demo de solicitud de empleo? Inicie sesión en la universidad ficticia con una cuenta de ejemplo y reciba uno escaneando un código QR.',
+    samplePortalAction: 'Abrir el portal universitario de ejemplo',
     comingSoon: 'Próximamente',
     scenarios: [
       {
@@ -274,6 +280,9 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     customFlowTitle: '独自フローを設計しますか？',
     customFlowDesc: 'メイン検証ラボで検証ステップを構成し、本人確認資格情報をアップロードして、任意のAPIテストを実行できます。',
     openComprehensiveSandbox: '総合検証ラボを開く',
+    samplePortalTitle: 'サンプル大学ポータル（DEMO）',
+    samplePortalDesc: '求人応募デモ用に Identra ウォレットへ卒業証書が必要ですか？架空の大学にサンプルアカウントでログインし、QR コードを読み取って受け取れます。',
+    samplePortalAction: 'サンプル大学ポータルを開く',
     comingSoon: '近日公開',
     scenarios: [
       {
@@ -388,6 +397,9 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     customFlowTitle: 'Müssen Sie einen eigenen Flow entwerfen?',
     customFlowDesc: 'Nutzen Sie das zentrale Testlabor, um eigene Verifizierungsschritte zu konfigurieren, Identitätsnachweise hochzuladen und API-Tests auszuführen.',
     openComprehensiveSandbox: 'Umfassendes Testlabor öffnen',
+    samplePortalTitle: 'Beispiel-Hochschulportal (DEMO)',
+    samplePortalDesc: 'Brauchen Sie für die Bewerbungsdemo ein Zeugnis in Ihrer Identra-Wallet? Melden Sie sich mit einem Beispielkonto bei der fiktiven Hochschule an und erhalten Sie es per QR-Code.',
+    samplePortalAction: 'Beispiel-Hochschulportal öffnen',
     comingSoon: 'Demnächst verfügbar',
     scenarios: [
       {
@@ -502,6 +514,9 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     customFlowTitle: 'Bạn cần một quy trình riêng?',
     customFlowDesc: 'Vào Sandbox để tự cấu hình các bước xác minh, tải lên dữ liệu định danh mẫu và thử nghiệm API theo nhu cầu.',
     openComprehensiveSandbox: 'Mở Sandbox đầy đủ',
+    samplePortalTitle: 'Cổng trường mẫu (DEMO)',
+    samplePortalDesc: 'Cần một bằng tốt nghiệp trong ví Identra cho bản demo ứng tuyển? Đăng nhập trường đại học hư cấu bằng tài khoản mẫu và nhận bằng chỉ với một lần quét mã QR.',
+    samplePortalAction: 'Mở cổng trường mẫu',
     comingSoon: 'Sắp ra mắt',
     scenarios: [
       {

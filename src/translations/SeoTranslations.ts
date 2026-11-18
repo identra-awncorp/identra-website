@@ -90,6 +90,7 @@ export const SEO_ROUTE_GROUPS = {
   academy: 'resource',
   demo: 'demo',
   'white-paper': 'whitePaper',
+  'school-portal': 'demo',
 } as const satisfies Record<AppView, SeoRouteGroup>;
 
 type BlogSeoCopy = {
@@ -199,8 +200,10 @@ const en = {
     academy: 'Academy',
     demo: 'Interactive demo',
     'white-paper': 'White Paper',
+    'school-portal': 'Sample university portal (DEMO)',
   },
   routeDescriptions: {
+    'school-portal': 'Sign in to a fictional university portal with a sample account and receive a sample diploma in your Identra wallet by scanning a QR code.',
     'credential-issuance': 'Issue trusted verifiable credentials through an API or SDK, deliver them to compatible wallets, and manage their lifecycle across your systems.',
   },
   descriptionTemplates: {
@@ -347,6 +350,7 @@ const es = {
     academy: 'Academia',
     demo: 'Demo interactiva',
     'white-paper': 'Libro Blanco',
+    'school-portal': 'Portal universitario de ejemplo (DEMO)',
   },
   routeDescriptions: {
     'credential-issuance': 'Emite credenciales verificables mediante API o SDK, entrégalas a billeteras compatibles y gestiona su ciclo de vida desde tus sistemas.',
@@ -495,6 +499,7 @@ const ja = {
     academy: 'アカデミー',
     demo: 'インタラクティブデモ',
     'white-paper': 'ホワイトペーパー',
+    'school-portal': 'サンプル大学ポータル（DEMO）',
   },
   routeDescriptions: {
     'credential-issuance': 'APIまたはSDKから検証可能なクレデンシャルを発行し、対応ウォレットへ届け、システム全体でライフサイクルを管理します。',
@@ -643,6 +648,7 @@ const de = {
     academy: 'Akademie',
     demo: 'Interaktive Demo',
     'white-paper': 'Whitepaper',
+    'school-portal': 'Beispiel-Hochschulportal (DEMO)',
   },
   routeDescriptions: {
     'credential-issuance': 'Stellen Sie verifizierbare Nachweise per API oder SDK aus, liefern Sie sie an kompatible Wallets und verwalten Sie den Lebenszyklus in Ihren Systemen.',
@@ -791,8 +797,10 @@ const vi = {
     academy: 'Học viện Identra',
     demo: 'Trải nghiệm Identra',
     'white-paper': 'Sách trắng Identra',
+    'school-portal': 'Cổng trường mẫu (DEMO)',
   },
   routeDescriptions: {
+    'school-portal': 'Đăng nhập cổng trường mẫu bằng tài khoản mẫu và nhận bằng tốt nghiệp mẫu vào ví Identra chỉ bằng một lần quét mã QR.',
     landing: 'Identra kết nối con người, tổ chức và dữ liệu bằng danh tính có thể xác minh, giúp doanh nghiệp xây dựng quy trình số an toàn, minh bạch và dễ tích hợp.',
     'government-id': 'Xác minh giấy tờ định danh, đối chiếu thông tin và phát hiện dấu hiệu giả mạo trong cùng một quy trình rõ ràng với Identra.',
     about: 'Tìm hiểu tầm nhìn, cách tiếp cận và đội ngũ đang xây dựng Identra thành hạ tầng danh tính số phục vụ doanh nghiệp và cộng đồng.',

@@ -5,20 +5,23 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { AlertCircle, ArrowLeft, ArrowRight, Award, Briefcase, Building2, Check, CheckCircle2, Code2, ExternalLink, FileCode, Globe, GraduationCap, Loader2, Lock, Mail, Phone, Plus, QrCode, Server, ShieldCheck, Smartphone, Sparkles, Terminal, Trash2, User, X } from 'lucide-react';
+import { AlertCircle, ArrowLeft, ArrowRight, Award, Briefcase, Building2, Check, CheckCircle2, Code2, ExternalLink, FileCode, Globe, GraduationCap, Loader2, Lock, Mail, Phone, Plus, QrCode, Server, ShieldCheck, Smartphone, Sparkles, Terminal, Trash2, User } from 'lucide-react';
+import type { SessionResult } from '@identra/sdk-client';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { APPLY_JOB_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/ApplyJobDemoPageTranslations';
-import type { DemoScenarioId } from '../../types/routes';
+import { truncateText } from '../../identra/verifierSession';
+import { viewToPath, type DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import {
-  APPLY_JOB_IDENTRA_IDENTITY_NUMBER,
   getApplyJobFieldProvenance,
   getApplyJobVerificationOutcome,
   getApplyJobVerificationPlan,
   getApplyJobVerificationSnapshot,
-  isCryptographicallyVerifiedField,
+  isIllustrativeDetail,
+  isVerifiedField as isDiplomaField,
   validateApplyJobApplication,
+  type ApplyJobDiplomaEvidence,
   type ApplyJobFieldId,
   type ApplyJobMode,
   type ApplyJobStageId,
@@ -28,6 +31,7 @@ import {
   type ApplyJobVerificationRunStatus,
   type ApplyJobVerificationSnapshot,
 } from './ApplyJobDemoModel';
+import ApplyJobVerifierDialog from './ApplyJobVerifierDialog';
 import DemoSummaryModal from './DemoSummaryModal';
 import IdentityFlowGraph from './IdentityFlowGraph';
 
@@ -60,62 +64,13 @@ interface ApplyJobApplicationFlowProps {
   isSuccess: boolean;
   onOpenSummary: () => void;
   onVerificationSnapshotChange?: (snapshot: ApplyJobVerificationSnapshot) => void;
-  onCertificateTitlesChange?: (titles: string[]) => void;
-  onSsiModeChange?: (isSsiMode: boolean) => void;
+  onDiplomaResultChange?: (result: SessionResult | null) => void;
   scheduleTimeout: ManagedTimeoutScheduler;
 }
 
 interface CandidateCert {
   title: string;
   url: string;
-}
-
-/**
- * QR code graphic used by the job application flow.
- */
-function ApplyJobQrCodeGraphic({ className = "w-44 h-44 text-[#0F1E36]" }: { className?: string }) {
-  const grid = [
-    [1,1,1,1,1,1,1,0,1,0,1,1,0,1,0,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,1,0,0,1,1,0,1,0,0,1,0,0,0,0,0,1],
-    [1,0,1,1,1,0,1,0,1,0,0,1,0,1,0,1,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,0,1,1,1,0,0,0,1,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,1,1,0,0,1,1,0,1,0,1,1,1,0,1],
-    [1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,1,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0],
-    [1,1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,1,0,1,1],
-    [0,1,0,1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,0,1,0,0],
-    [1,0,1,1,0,0,1,1,0,1,0,0,1,1,0,1,0,1,1,0,1,1],
-    [0,0,1,0,1,1,0,0,1,0,1,0,0,0,1,0,1,0,0,1,0,0],
-    [1,1,0,1,0,0,1,0,0,1,1,1,0,1,0,1,0,1,1,0,1,1],
-    [0,0,0,0,0,0,0,0,1,0,0,1,1,0,1,0,0,0,0,0,0,0],
-    [1,1,1,1,1,1,1,0,1,1,0,0,1,0,1,1,0,1,0,1,1,1],
-    [1,0,0,0,0,0,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1],
-    [1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,0,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,0,1,1,0,0,1,0,1,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,0,0,1,1,1,0,1],
-    [1,0,0,0,0,0,1,0,0,1,1,0,0,1,0,1,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,0,1,0,1,1,0,1,0,1,1,1,1,1,1,1],
-  ];
-
-  return (
-    <svg viewBox="0 0 22 22" className={className} fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      {grid.map((row, rIdx) =>
-        row.map((cell, cIdx) =>
-          cell === 1 ? (
-            <rect
-              key={`${rIdx}-${cIdx}`}
-              x={cIdx}
-              y={rIdx}
-              width="1"
-              height="1"
-              rx="0.12"
-            />
-          ) : null
-        )
-      )}
-    </svg>
-  );
 }
 
 function ApplyJobApplicationFlow({
@@ -128,8 +83,7 @@ function ApplyJobApplicationFlow({
   isSuccess,
   onOpenSummary,
   onVerificationSnapshotChange,
-  onCertificateTitlesChange,
-  onSsiModeChange,
+  onDiplomaResultChange,
   scheduleTimeout
 }: ApplyJobApplicationFlowProps) {
   const { language } = useLanguage();
@@ -140,7 +94,6 @@ function ApplyJobApplicationFlow({
     'APPLY_JOB_DEMO_PAGE_TRANSLATIONS',
   );
   const t = translations.scenario;
-  const bankT = translations.bankModal;
   const uiT = translations.flowUi;
 
   // Scenario states
@@ -162,15 +115,19 @@ function ApplyJobApplicationFlow({
   const [verificationRunStatus, setVerificationRunStatus] = useState<ApplyJobVerificationRunStatus>('idle');
   const [autoAdvanceSeconds, setAutoAdvanceSeconds] = useState(3);
 
-  // Identra eID scan state
-  const [isCryptographicallySecured, setIsCryptographicallySecured] = useState(false);
-  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
-  const [qrSeconds, setQrSeconds] = useState(5);
+  // A diploma result is kept only when the server confirmed it; it is what puts the form in Identra mode.
+  const [diplomaResult, setDiplomaResult] = useState<SessionResult | null>(null);
+  const [isVerifierOpen, setIsVerifierOpen] = useState(false);
   const qrTriggerRef = useRef<HTMLButtonElement>(null);
-  const qrDialogRef = useRef<HTMLDivElement>(null);
 
+  const isCryptographicallySecured = diplomaResult !== null;
   const mode: ApplyJobMode = isCryptographicallySecured ? 'identra' : 'manual';
-  const verificationOutcome = getApplyJobVerificationOutcome(mode);
+  const diplomaEvidence: ApplyJobDiplomaEvidence | null = diplomaResult ? { ok: diplomaResult.ok } : null;
+  const verificationOutcome = getApplyJobVerificationOutcome(mode, diplomaEvidence);
+  const diplomaCheckCounts = {
+    passed: diplomaResult?.checks.filter((check) => check.ok).length ?? 0,
+    total: diplomaResult?.checks.length ?? 0,
+  };
   const verificationPlan = useMemo(
     () => getApplyJobVerificationPlan(mode, jobCerts.length),
     [jobCerts.length, mode],
@@ -187,32 +144,14 @@ function ApplyJobApplicationFlow({
     () => verificationPlan.flatMap((stage) => stage.detailIds),
     [verificationPlan],
   );
-  const getVerificationDetailLabel = useCallback((
-    detailId: ApplyJobVerificationDetailId,
-    detailIndex: number,
-    stageId: ApplyJobStageId,
-  ) => {
-    if (
-      mode === 'identra'
-      && stageId === 'credentials'
-      && detailId === 'identraCredentialProofValidation'
-    ) {
-      return formatText(uiT.identraCertificateVerification, {
-        certificate: jobCerts[Math.max(detailIndex - 1, 0)]?.title ?? '',
-      });
-    }
-    return uiT[detailId];
-  }, [jobCerts, mode, uiT]);
+  const getVerificationDetailLabel = (detailId: ApplyJobVerificationDetailId) => (
+    detailId === 'identraDiplomaChecks'
+      ? formatText(uiT.identraDiplomaChecks, diplomaCheckCounts)
+      : uiT[detailId]
+  );
   const activeVerificationStage = verificationSnapshot.stages.find((stage) => stage.status === 'active');
-  const activeVerificationDetailIndex = activeVerificationStage?.detailStatuses.findIndex(
-    (status) => status === 'active',
-  ) ?? -1;
-  const activeVerificationDetail = verificationSnapshot.activeDetailId && activeVerificationStage
-    ? getVerificationDetailLabel(
-        verificationSnapshot.activeDetailId,
-        activeVerificationDetailIndex,
-        activeVerificationStage.id,
-      )
+  const activeVerificationDetail = verificationSnapshot.activeDetailId
+    ? getVerificationDetailLabel(verificationSnapshot.activeDetailId)
     : null;
   const verificationStageLabels = {
     identity: uiT.legalIdentitySectionTitle,
@@ -242,28 +181,23 @@ function ApplyJobApplicationFlow({
     return uiT[errorKeys[validationError]];
   }, [uiT, validationError]);
 
-  const isVerifiedField = useCallback(
-    (field: ApplyJobFieldId) => isCryptographicallyVerifiedField(mode, field),
-    [mode],
-  );
-  const getFieldSourceLabel = useCallback((field: ApplyJobFieldId) => {
-    const provenanceKey = getApplyJobFieldProvenance(mode, field);
+  const isVerifiedField = (field: ApplyJobFieldId) => isDiplomaField(mode, field, diplomaEvidence);
+  const getFieldSourceLabel = (field: ApplyJobFieldId) => {
+    const provenanceKey = getApplyJobFieldProvenance(mode, field, diplomaEvidence);
     const provenanceLabels: Record<typeof provenanceKey, ApplyJobFlowUiKey> = {
       'self-declared': 'selfDeclaredPill',
-      'identity-vc': 'identityVcPill',
-      'education-vc': 'educationVcPill',
-      'certificate-vc': 'certificateVcPill',
+      diploma: 'educationVcPill',
     };
     return uiT[provenanceLabels[provenanceKey]];
-  }, [mode, uiT]);
+  };
 
   useEffect(() => {
     onVerificationSnapshotChange?.(verificationSnapshot);
   }, [onVerificationSnapshotChange, verificationSnapshot]);
 
   useEffect(() => {
-    onCertificateTitlesChange?.(jobCerts.map((certificate) => certificate.title));
-  }, [jobCerts, onCertificateTitlesChange]);
+    onDiplomaResultChange?.(diplomaResult);
+  }, [diplomaResult, onDiplomaResultChange]);
 
   // Start the deterministic verification plan once the application has been submitted.
   useEffect(() => {
@@ -347,67 +281,38 @@ function ApplyJobApplicationFlow({
     verificationRunStatus,
   ]);
 
-  // Start 5-second QR Modal Simulation
-  const startQrScanModal = () => {
-    setIsQrModalOpen(true);
-    setQrSeconds(5);
+  const openVerifier = () => {
+    setIsVerifierOpen(true);
     addLog({ scope: 'flow', key: 'qrApplyStartedLog', type: 'processing' });
   };
 
-  const closeQrScanModal = useCallback(() => {
-    setIsQrModalOpen(false);
+  const closeVerifier = useCallback(() => {
+    setIsVerifierOpen(false);
     window.requestAnimationFrame(() => qrTriggerRef.current?.focus());
   }, []);
 
-  // Handle 5-second QR scanning countdown
-  useEffect(() => {
-    if (!isQrModalOpen) return;
+  // Name and degree come from the verified diploma; the remaining fields stay self-declared and editable.
+  const applyDiplomaResult = (result: SessionResult) => {
+    if (!result.ok) return;
+    const claims = result.claims ?? {};
+    const claimText = (key: string) => (claims[key] === undefined ? '' : truncateText(String(claims[key])));
+    setJobName(claimText('ho_ten'));
+    setJobDegree([claimText('nganh'), claimText('hang_tot_nghiep'), claimText('nam_tot_nghiep')]
+      .filter(Boolean)
+      .join(' · '));
+    setJobEmail((value) => value || uiT.qrEmail);
+    setJobPhone((value) => value || uiT.qrPhone);
+    setJobExp((value) => value || uiT.qrExperience);
+    setJobGithub((value) => value || uiT.qrGithub);
+    setDiplomaResult(result);
+    setValidationError(null);
+    addLog({ scope: 'flow', key: 'qrApplySuccessLog', type: 'ok' });
+    closeVerifier();
+  };
 
-    if (qrSeconds <= 0) {
-      closeQrScanModal();
-      setJobName(uiT.qrName);
-      setJobEmail(uiT.qrEmail);
-      setJobPhone(uiT.qrPhone);
-      setJobSsn(APPLY_JOB_IDENTRA_IDENTITY_NUMBER);
-      setJobDegree(uiT.qrDegree);
-      setJobCerts([
-        { title: 'Certified Kubernetes Administrator (CKA)', url: 'https://credly.com/org/cncf/badge/cka-9481' },
-        { title: 'AWS Certified Solutions Architect', url: 'https://aws.amazon.com/verification/AWS-74891' },
-        { title: 'Certified Golang Systems Architect', url: 'https://identra.io/credentials/cert-golang-812' }
-      ]);
-      setJobExp(uiT.qrExperience);
-      setJobGithub(uiT.qrGithub);
-      setIsCryptographicallySecured(true);
-      if (onSsiModeChange) onSsiModeChange(true);
-      setValidationError(null);
-      addLog({ scope: 'flow', key: 'qrApplySuccessLog', type: 'ok' });
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setQrSeconds((prev) => prev - 1);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [addLog, closeQrScanModal, isQrModalOpen, onSsiModeChange, qrSeconds, uiT]);
-
-  useEffect(() => {
-    if (!isQrModalOpen) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeQrScanModal();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [closeQrScanModal, isQrModalOpen]);
-
-  // Keep the localized mock education credential current without restarting the flow.
-  useEffect(() => {
-    if (!isCryptographicallySecured) return;
-    setJobDegree(uiT.qrDegree);
-  }, [
-    isCryptographicallySecured,
-    uiT.qrDegree,
-  ]);
+  const handleVerifierSettled = useCallback((ok: boolean) => {
+    if (!ok) addLog({ scope: 'flow', key: 'qrApplyRejectedLog', type: 'action' });
+  }, [addLog]);
 
   // Reset internal states when currentStepIdx is reset
   useEffect(() => {
@@ -426,14 +331,12 @@ function ApplyJobApplicationFlow({
       setVerificationRunStatus('idle');
       setAutoAdvanceSeconds(3);
       setValidationError(null);
-      setIsQrModalOpen(false);
-      setQrSeconds(5);
-      setIsCryptographicallySecured(false);
-      onSsiModeChange?.(false);
+      setIsVerifierOpen(false);
+      setDiplomaResult(null);
     } else {
       setValidationError(null);
     }
-  }, [currentStepIdx, onSsiModeChange]);
+  }, [currentStepIdx]);
 
   return (
     <div className="space-y-6 flex-1 flex flex-col justify-between">
@@ -492,7 +395,7 @@ function ApplyJobApplicationFlow({
             <div className="rounded-2xl border border-indigo-200/80 bg-gradient-to-br from-[#E2E6FF] to-[#FAFBFD] p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
               <div className="flex items-center gap-3.5">
                 <div className="h-14 w-14 bg-white p-1.5 rounded-xl border border-indigo-100 shadow-xs shrink-0 flex items-center justify-center relative group">
-                  <ApplyJobQrCodeGraphic className="h-10 w-10 text-[#354CE1]" />
+                  <QrCode aria-hidden="true" className="h-8 w-8 text-[#354CE1]" />
                   <div className="absolute inset-0 bg-[#354CE1]/5 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <Sparkles className={`h-4 w-4 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
                   </div>
@@ -513,10 +416,11 @@ function ApplyJobApplicationFlow({
               <button
                 ref={qrTriggerRef}
                 type="button"
-                onClick={startQrScanModal}
+                onClick={openVerifier}
+                disabled={isProcessingAction}
                 className="px-3.5 py-2 rounded-xl bg-white hover:bg-indigo-50 border border-[#354CE1]/30 text-[#354CE1] text-xs font-bold shrink-0 transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer hover:border-[#354CE1] active:scale-[0.98]"
               >
-                <ApplyJobQrCodeGraphic className="h-3.5 w-3.5 text-[#354CE1]" />
+                <QrCode aria-hidden="true" className="h-3.5 w-3.5 text-[#354CE1]" />
                 <span>{uiT.scanQrAutofill}</span>
               </button>
             </div>
@@ -591,52 +495,35 @@ function ApplyJobApplicationFlow({
                   <div className="flex items-center justify-between">
                     <label
                       id="apply-job-identity-label"
-                      htmlFor={mode === 'manual' ? 'apply-job-identity' : undefined}
+                      htmlFor="apply-job-identity"
                       className="text-xs font-bold text-slate-600 uppercase tracking-wider"
                     >
-                      {mode === 'identra' ? uiT.personalIdentityNumberLabel : t.workingIdentityNumber}
+                      {t.workingIdentityNumber}
                     </label>
-                    {isVerifiedField('identity') && (
-                      <span className="inline-flex items-center gap-1 text-[10px] text-emerald-700 font-mono font-bold bg-emerald-100/80 px-1.5 py-0.5 rounded border border-emerald-300/60">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                    {mode === 'identra' && (
+                      <span className="inline-flex items-center gap-1 text-[10px] text-slate-600 font-mono font-bold bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
                         {getFieldSourceLabel('identity')}
                       </span>
                     )}
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    {mode === 'identra' ? (
-                      <div
-                        id="apply-job-identity"
-                        role="textbox"
-                        aria-readonly="true"
-                        aria-labelledby="apply-job-identity-label"
-                        tabIndex={0}
-                        className="flex min-h-11 w-full items-center rounded-xl border border-emerald-300 bg-emerald-50/30 py-2.5 pl-10 pr-10 text-xs font-semibold leading-snug text-emerald-950"
-                      >
-                        {jobSsn}
-                      </div>
-                    ) : (
-                      <input
-                        id="apply-job-identity"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="off"
-                        value={jobSsn}
-                        onChange={(e) => {
-                          setValidationError(null);
-                          setJobSsn(e.target.value);
-                        }}
-                        disabled={isProcessingAction}
-                        placeholder={uiT.identityNumberPlaceholder}
-                        className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
-                          validationError === 'identity-number' ? 'border-rose-300 focus:ring-rose-200' : 'border-slate-200'
-                        }`}
-                      />
-                    )}
-                    {isVerifiedField('identity') && (
-                      <Lock className="h-3.5 w-3.5 text-emerald-600 absolute right-3.5 top-1/2 -translate-y-1/2" />
-                    )}
+                    <input
+                      id="apply-job-identity"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="off"
+                      value={jobSsn}
+                      onChange={(e) => {
+                        setValidationError(null);
+                        setJobSsn(e.target.value);
+                      }}
+                      disabled={isProcessingAction}
+                      placeholder={uiT.identityNumberPlaceholder}
+                      className={`w-full bg-white border rounded-xl pl-10 pr-10 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#354CE1]/20 font-mono disabled:opacity-60 disabled:bg-slate-50 disabled:cursor-not-allowed transition-all ${
+                        validationError === 'identity-number' ? 'border-rose-300 focus:ring-rose-200' : 'border-slate-200'
+                      }`}
+                    />
                   </div>
                 </div>
               </div>
@@ -933,7 +820,7 @@ function ApplyJobApplicationFlow({
                   pendingCertificateUrl: newCertUrl,
                   experience: jobExp,
                   githubUrl: jobGithub,
-                }, mode);
+                });
                 if (nextValidationError) {
                   setValidationError(nextValidationError);
                   return;
@@ -994,6 +881,7 @@ function ApplyJobApplicationFlow({
               <p className="text-[11px] text-slate-600 leading-relaxed">
                 {isCryptographicallySecured ? uiT.ssiModeDescription : uiT.manualModeDescription}
               </p>
+              <p className="text-[11px] text-slate-600 leading-relaxed">{uiT.illustrationNotice}</p>
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 shadow-sm space-y-5">
@@ -1055,6 +943,11 @@ function ApplyJobApplicationFlow({
                       <p className="text-[11px] font-semibold leading-relaxed text-[#354CE1]">
                         {activeVerificationDetail}
                       </p>
+                      {verificationSnapshot.activeDetailId && (
+                        <span className="ml-auto shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-600">
+                          {isIllustrativeDetail(verificationSnapshot.activeDetailId) ? uiT.illustrativeTag : uiT.realTag}
+                        </span>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -1135,7 +1028,7 @@ function ApplyJobApplicationFlow({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11.5px]">
                 <div>
                   <span className="block text-slate-400 text-[10px] font-bold uppercase tracking-wider">{uiT.candidateNameSummaryLabel}</span>
-                  <span className="font-bold text-slate-900">{jobName || uiT.qrName}</span>
+                  <span className="font-bold text-slate-900">{jobName}</span>
                 </div>
                 <div>
                   <span className="block text-slate-400 text-[10px] font-bold uppercase tracking-wider">{uiT.jobRoleSummaryLabel}</span>
@@ -1143,11 +1036,11 @@ function ApplyJobApplicationFlow({
                 </div>
                 <div>
                   <span className="block text-slate-400 text-[10px] font-bold uppercase tracking-wider">{uiT.contactEmailSummaryLabel}</span>
-                  <span className="font-mono text-slate-700">{jobEmail || uiT.qrEmail}</span>
+                  <span className="font-mono text-slate-700">{jobEmail}</span>
                 </div>
                 <div>
                   <span className="block text-slate-400 text-[10px] font-bold uppercase tracking-wider">{uiT.phoneSummaryLabel}</span>
-                  <span className="font-mono text-slate-700">{jobPhone || uiT.qrPhone}</span>
+                  <span className="font-mono text-slate-700">{jobPhone}</span>
                 </div>
               </div>
 
@@ -1227,107 +1120,15 @@ function ApplyJobApplicationFlow({
         <span>{t.footer}</span>
       </div>
 
-      {/* 5-Second QR Scanning Modal Popup */}
-      <AnimatePresence>
-        {isQrModalOpen && (
-          <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 flex items-center justify-center p-4">
-            <motion.div
-              ref={qrDialogRef}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="apply-job-qr-title"
-              onKeyDown={(event) => {
-                if (event.key !== 'Tab') return;
-                const focusableElements = Array.from(
-                  qrDialogRef.current?.querySelectorAll<HTMLButtonElement>('button:not([disabled])') ?? [],
-                );
-                if (focusableElements.length === 0) return;
-                const firstElement = focusableElements[0];
-                const lastElement = focusableElements[focusableElements.length - 1];
-
-                if (event.shiftKey && document.activeElement === firstElement) {
-                  event.preventDefault();
-                  lastElement.focus();
-                } else if (!event.shiftKey && document.activeElement === lastElement) {
-                  event.preventDefault();
-                  firstElement.focus();
-                }
-              }}
-              className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative space-y-5"
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="h-9 w-9 rounded-xl bg-[#354CE1]/10 flex items-center justify-center text-[#354CE1]">
-                    <QrCode className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 id="apply-job-qr-title" className="font-display font-bold text-slate-900 text-sm sm:text-base">
-                      {bankT.scanQrModalTitle}
-                    </h4>
-                    <p className="text-[11px] text-slate-500 font-medium">
-                      {uiT.qrHandshakeSubtitle}
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={closeQrScanModal}
-                  autoFocus
-                  aria-label={bankT.cancelButton}
-                  title={bankT.cancelButton}
-                  className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* QR Code Display Box (Sleek & Minimalist) */}
-              <div className="flex flex-col items-center space-y-4 py-2">
-                <div className="relative p-4 bg-[#FAFBFD] rounded-2xl border border-slate-200/90 shadow-xs flex flex-col items-center justify-center overflow-hidden">
-                  {/* Sleek Laser Scan Line */}
-                  <motion.div
-                    initial={{ top: '5%' }}
-                    animate={shouldReduceMotion ? { top: '5%' } : { top: ['5%', '92%', '5%'] }}
-                    transition={shouldReduceMotion ? undefined : { repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
-                    className="absolute inset-x-3 h-0.5 bg-gradient-to-r from-transparent via-[#354CE1] to-transparent shadow-[0_0_10px_#354CE1] z-20"
-                  />
-
-                  {/* Crisp Clean QR Graphic */}
-                  <div className="bg-white p-3.5 rounded-xl border border-slate-100 shadow-xs">
-                    <ApplyJobQrCodeGraphic className="h-48 w-48 text-[#0F1E36]" />
-                  </div>
-                </div>
-
-                {/* Soft Countdown Status Pill */}
-                <div role="status" aria-live="polite" className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#354CE1]/10 border border-[#354CE1]/20 text-[#354CE1] text-xs font-mono font-bold">
-                  <Sparkles className={`h-3.5 w-3.5 text-[#354CE1] ${shouldReduceMotion ? '' : 'animate-spin'}`} />
-                  <span>{bankT.waitingForScan.replace('{seconds}', qrSeconds.toString())}</span>
-                </div>
-
-                <p className="text-xs text-slate-500 text-center leading-relaxed px-2">
-                  {bankT.qrModalInstructions}
-                </p>
-              </div>
-
-              {/* Modal Footer Cancel Button */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-end">
-                <button
-                  type="button"
-                  onClick={closeQrScanModal}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
-                >
-                  {bankT.cancelButton}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {isVerifierOpen && (
+        <ApplyJobVerifierDialog
+          onClose={closeVerifier}
+          onUseResult={applyDiplomaResult}
+          onSettled={handleVerifierSettled}
+          onFillManually={closeVerifier}
+          portalHref={viewToPath('school-portal', language)}
+        />
+      )}
     </div>
   );
 }
@@ -1443,30 +1244,23 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isProcessingAction, setIsProcessingAction] = useState<boolean>(false);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState<boolean>(false);
-  const [isSsiCredentialMode, setIsSsiCredentialMode] = useState<boolean>(false);
+  const [diplomaResult, setDiplomaResult] = useState<SessionResult | null>(null);
+  const isSsiCredentialMode = diplomaResult !== null;
   const [verificationSnapshot, setVerificationSnapshot] = useState<ApplyJobVerificationSnapshot>(
     createIdleApplyJobVerificationSnapshot,
   );
-  const [certificateTitles, setCertificateTitles] = useState<string[]>([]);
   const verificationOutcome: ApplyJobVerificationOutcome = getApplyJobVerificationOutcome(
     isSsiCredentialMode ? 'identra' : 'manual',
+    diplomaResult ? { ok: diplomaResult.ok } : null,
   );
-  const getTrackerDetailLabel = useCallback((
-    detailId: ApplyJobVerificationDetailId,
-    detailIndex: number,
-    stageId: ApplyJobStageId,
-  ) => {
-    if (
-      isSsiCredentialMode
-      && stageId === 'credentials'
-      && detailId === 'identraCredentialProofValidation'
-    ) {
-      return formatText(flowT.identraCertificateVerification, {
-        certificate: certificateTitles[Math.max(detailIndex - 1, 0)] ?? '',
-      });
-    }
-    return flowT[detailId];
-  }, [certificateTitles, flowT, isSsiCredentialMode]);
+  const getTrackerDetailLabel = (detailId: ApplyJobVerificationDetailId) => (
+    detailId === 'identraDiplomaChecks'
+      ? formatText(flowT.identraDiplomaChecks, {
+          passed: diplomaResult?.checks.filter((check) => check.ok).length ?? 0,
+          total: diplomaResult?.checks.length ?? 0,
+        })
+      : flowT[detailId]
+  );
 
   // Scroll terminal logs
   useEffect(() => {
@@ -1515,7 +1309,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
     setIsSuccess(false);
     setIsProcessingAction(false);
     setIsSummaryModalOpen(false);
-    setIsSsiCredentialMode(false);
+    setDiplomaResult(null);
     setVerificationSnapshot(createIdleApplyJobVerificationSnapshot());
     setSimulationLogs(createInitialApplyJobLogs(true));
   };
@@ -1625,8 +1419,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   isSuccess={isSuccess}
                   onOpenSummary={() => setIsSummaryModalOpen(true)}
                   onVerificationSnapshotChange={setVerificationSnapshot}
-                  onCertificateTitlesChange={setCertificateTitles}
-                  onSsiModeChange={setIsSsiCredentialMode}
+                  onDiplomaResultChange={setDiplomaResult}
                   scheduleTimeout={scheduleTimeout}
                 />
               </div>
@@ -1695,9 +1488,10 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                   const stageSnapshot = verificationSnapshot.stages[sIdx];
                   const isActive = stageSnapshot?.status === 'active';
                   const isDone = stageSnapshot?.status === 'done';
-                  const subChecks = stageSnapshot?.detailIds.map((detailId, detailIndex) => (
-                    getTrackerDetailLabel(detailId, detailIndex, stageSnapshot.id)
-                  )) ?? [];
+                  const subChecks = stageSnapshot?.detailIds.map((detailId) => ({
+                    label: getTrackerDetailLabel(detailId),
+                    isIllustrative: isIllustrativeDetail(detailId),
+                  })) ?? [];
 
                   return (
                     <div
@@ -1756,7 +1550,7 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                             {t.underlyingChecks}
                           </div>
                           <div className="grid grid-cols-1 gap-1">
-                            {subChecks.map((label: string, cIdx: number) => {
+                            {subChecks.map(({ label, isIllustrative }, cIdx: number) => {
                               const checkStatus = stageSnapshot?.detailStatuses[cIdx] ?? 'pending';
 
                               return (
@@ -1778,6 +1572,9 @@ export default function ApplyJobDemoPage({ onBackToList }: ApplyJobDemoPageProps
                                         : 'text-slate-400'
                                   }>
                                     {label}
+                                  </span>
+                                  <span className="ml-auto shrink-0 font-sans text-[10px] text-slate-500">
+                                    {isIllustrative ? flowT.illustrativeTag : flowT.realTag}
                                   </span>
                                 </div>
                               );

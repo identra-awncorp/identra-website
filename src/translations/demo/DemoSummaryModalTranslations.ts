@@ -764,11 +764,11 @@ export const getDemoSummaryDecisionData = (scenarioId: string, language: string,
         ],
         confidenceTrend: [0, 0, 0],
         decisionLogic: getSummaryLocalizedText(lt(
-          'The candidate-approved Identra presentation passed the simulated issuer, signature, holder-binding, challenge, and credential-status checks. Background-screening results remain subject to the employer review policy.',
-          'La presentación de Identra autorizada por el candidato superó las comprobaciones simuladas de emisor, firma, vinculación del titular, desafío y estado. Los antecedentes siguen sujetos a la política del empleador.',
-          '候補者が承認したIdentraプレゼンテーションは、発行者、署名、所有者バインディング、チャレンジ、資格情報の状態に関するシミュレーション検証を通過しました。経歴確認結果は雇用主の方針に基づき確認されます。',
-          'Die vom Bewerber freigegebene Identra-Präsentation hat die simulierten Prüfungen von Aussteller, Signatur, Inhaberbindung, Challenge und Status bestanden. Hintergrundprüfungen bleiben der Arbeitgeberrichtlinie unterstellt.',
-          'Bản trình bày Identra được ứng viên cho phép đã vượt qua bước kiểm tra giả lập đối với bên phát hành, chữ ký, sự ràng buộc với chủ thể, giá trị thử thách và trạng thái thực chứng. Kết quả kiểm tra lý lịch vẫn cần được xem xét theo chính sách tuyển dụng.'
+          'The diploma the candidate shared was checked by the sample employer\'s server: issuer certificate, signature, validity, recognised issuer, revocation status and holder. Identity-registry and background lookups in this demo are illustrations and remain subject to the employer review policy.',
+          'El servidor del empleador de ejemplo comprobó el título que compartió el candidato: certificado y firma del emisor, vigencia, emisor reconocido, revocación y titular. Las consultas de identidad y antecedentes de esta demo son ilustraciones y siguen sujetas a la política del empleador.',
+          '候補者が共有した卒業証書は、サンプル採用企業のサーバーが確認しました（発行元の証明書と署名、有効期間、認定発行元、取り消し状況、本人による送信）。このデモの本人確認と経歴の照会は例示であり、雇用主の方針に基づき確認されます。',
+          'Das geteilte Zeugnis wurde vom Server des Beispiel-Arbeitgebers geprüft: Zertifikat und Signatur des Ausstellers, Gültigkeit, anerkannter Aussteller, Widerrufsstatus und Inhaber. Identitäts- und Hintergrundabfragen sind in dieser Demo Veranschaulichungen und bleiben der Arbeitgeberrichtlinie unterstellt.',
+          'Bằng tốt nghiệp ứng viên chia sẻ đã được máy chủ của nhà tuyển dụng mẫu kiểm tra: giấy chứng nhận và chữ ký của nơi cấp, thời hạn, nơi cấp được công nhận, tình trạng thu hồi và người giữ bằng. Tra cứu danh tính và lý lịch trong bản demo này là minh họa, vẫn cần được xem xét theo chính sách tuyển dụng.'
         ), language),
         rules: scenario.rules.map((rule) => ({
           id: rule.id,

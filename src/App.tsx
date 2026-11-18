@@ -115,6 +115,7 @@ const GovernmentServicesDemoPage = lazy(() => import('./components/demo/Governme
 const HealthcareDemoPage = lazy(() => import('./components/demo/HealthcareDemoPage'));
 const TicketTransferDemoPage = lazy(() => import('./components/demo/TicketTransferDemoPage'));
 const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
+const SchoolPortalPage = lazy(() => import('./components/SchoolPortalPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 const DEMO_SCENARIO_PAGE_COMPONENTS: Record<DemoScenarioId, LazyExoticComponent<ComponentType<DemoScenarioPageProps>>> = {
@@ -708,6 +709,8 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
+        ) : currentView === 'school-portal' ? (
+          <SchoolPortalPage />
         ) : (
           <EventsPage 
             onOpenSandbox={handleOpenSandbox} 

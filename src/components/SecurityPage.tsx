@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
 import { securityPageTranslations } from '../translations/SecurityPageTranslations';
+import IdentraRootCertificateSection from './IdentraRootCertificateSection';
 import identityIllustrationImage from '../assets/images/identra_identity_illustration_1783335932193.jpg';
 
 interface SecurityPageProps {
@@ -265,6 +266,8 @@ export default function SecurityPage({ onOpenSandbox, onBackToLanding, onViewCha
           </div>
         </div>
       </section>
+
+      <IdentraRootCertificateSection />
 
       {/* 4. "Security" Multilayered Grid Section */}
       <section className="bg-slate-50 border-t border-b border-slate-150/80 py-16 md:py-24 px-6">

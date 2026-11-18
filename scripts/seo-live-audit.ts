@@ -30,7 +30,7 @@ const siteUrl = (process.env.VITE_SITE_URL ?? process.env.SITE_URL ?? DEFAULT_SI
   .replace(/\/+$/, '');
 const failures: string[] = [];
 const withoutRootLocaleScript = (html: string): string =>
-  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>/g, '');
+  html.replace(/<script id="identra-root-locale"[^>]*>[\s\S]*?<\/script>/g, '');
 const requestHeaders = {
   'User-Agent': 'Identra-SEO-Audit/1.0',
 };

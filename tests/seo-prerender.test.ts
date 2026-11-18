@@ -16,7 +16,9 @@ const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;
 
 test('neutral root keeps crawlable English content and honors a saved locale in the browser', () => {
   const html = readFileSync(resolve('dist/index.html'), 'utf8');
-  assert.match(html, /<script id="identra-root-locale">[\s\S]*identra_lang[\s\S]*window\.location\.replace/);
+  // External, not inline, so the Content-Security-Policy can stay at script-src 'self'.
+  assert.ok(html.includes('<script id="identra-root-locale" src="/root-locale.js"></script>'));
+  assert.match(readFileSync(resolve('dist/root-locale.js'), 'utf8'), /identra_lang[\s\S]*window\.location\.replace/);
   assert.ok(!html.includes('<meta http-equiv="refresh"'));
   assert.ok(html.includes('<meta name="robots" content="index, follow, max-image-preview:large" />'));
   assert.ok(html.includes('<link rel="canonical" href="https://www.identra.id.vn/en" />'));

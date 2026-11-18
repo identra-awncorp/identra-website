@@ -7,16 +7,14 @@ export type ApplyJobMode = 'manual' | 'identra';
 
 export type ApplyJobStageId = 'identity' | 'credentials' | 'background';
 
+// Only the two `identra*` details are real: they come from the verification the server ran on the
+// presented diploma. Every other detail is an illustration of what an employer would also check.
 export type ApplyJobVerificationDetailId =
-  | 'identraIdentityPresentation'
-  | 'identraIdentityDidResolution'
-  | 'identraIdentityProofValidation'
+  | 'identraNameFromDiploma'
+  | 'identraDiplomaChecks'
   | 'manualIdentityRegistryLookup'
   | 'manualIdentityMatch'
   | 'manualWorkEligibilityCheck'
-  | 'identraCredentialPresentation'
-  | 'identraCredentialIssuerDidResolution'
-  | 'identraCredentialProofValidation'
   | 'manualDegreeRegistryLookup'
   | 'manualGraduateRecordMatch'
   | 'manualCertificateUrlMatch'
@@ -57,13 +55,13 @@ export type ApplyJobFieldId =
   | 'experience'
   | 'github';
 
-export type ApplyJobFieldProvenance =
-  | 'self-declared'
-  | 'identity-vc'
-  | 'education-vc'
-  | 'certificate-vc';
+/** `diploma` = taken from a diploma the server verified; everything else is typed in by the candidate. */
+export type ApplyJobFieldProvenance = 'self-declared' | 'diploma';
 
-export const APPLY_JOB_IDENTRA_IDENTITY_NUMBER = '079204012345';
+/** What the real verification returned, if the candidate used the Identra wallet. */
+export interface ApplyJobDiplomaEvidence {
+  ok: boolean;
+}
 
 export interface ApplyJobCertificateInput {
   title: string;
@@ -100,22 +98,29 @@ const BACKGROUND_DETAILS: ApplyJobVerificationDetailId[] = [
   'backgroundWatchlistCheck',
 ];
 
+const REAL_DETAILS: ReadonlySet<ApplyJobVerificationDetailId> = new Set([
+  'identraNameFromDiploma',
+  'identraDiplomaChecks',
+]);
+
+/** True for the steps that only illustrate a check; the UI must label them as such. */
+export const isIllustrativeDetail = (detailId: ApplyJobVerificationDetailId): boolean =>
+  !REAL_DETAILS.has(detailId);
+
 const getIdentraPlan = (certificateCount: number): ApplyJobVerificationStage[] => [
   {
     id: 'identity',
     detailIds: [
-      'identraIdentityPresentation',
-      'identraIdentityProofValidation',
+      'identraNameFromDiploma',
+      'manualIdentityRegistryLookup',
+      'manualWorkEligibilityCheck',
     ],
   },
   {
     id: 'credentials',
     detailIds: [
-      'identraCredentialPresentation',
-      ...Array.from(
-        { length: certificateCount },
-        () => 'identraCredentialProofValidation' as const,
-      ),
+      'identraDiplomaChecks',
+      certificateCount > 0 ? 'manualCertificateUrlMatch' : 'manualNoCertificateCheck',
     ],
   },
   {
@@ -223,36 +228,29 @@ export const getApplyJobVerificationSnapshot = (
   };
 };
 
+/** The outcome follows the server's answer, not the mode: Identra mode without a passed diploma is not verified. */
 export const getApplyJobVerificationOutcome = (
   mode: ApplyJobMode,
+  diploma: ApplyJobDiplomaEvidence | null,
 ): ApplyJobVerificationOutcome => (
-  mode === 'identra' ? 'verified' : 'needs-review'
+  mode === 'identra' && diploma?.ok === true ? 'verified' : 'needs-review'
 );
+
+const DIPLOMA_FIELDS: ReadonlySet<ApplyJobFieldId> = new Set(['name', 'degree']);
 
 export const getApplyJobFieldProvenance = (
   mode: ApplyJobMode,
   field: ApplyJobFieldId,
-): ApplyJobFieldProvenance => {
-  if (mode === 'manual') return 'self-declared';
+  diploma: ApplyJobDiplomaEvidence | null = null,
+): ApplyJobFieldProvenance => (
+  mode === 'identra' && diploma?.ok === true && DIPLOMA_FIELDS.has(field) ? 'diploma' : 'self-declared'
+);
 
-  const identraProvenance: Record<ApplyJobFieldId, ApplyJobFieldProvenance> = {
-    name: 'identity-vc',
-    identity: 'identity-vc',
-    email: 'self-declared',
-    phone: 'self-declared',
-    degree: 'education-vc',
-    certificates: 'certificate-vc',
-    experience: 'self-declared',
-    github: 'self-declared',
-  };
-
-  return identraProvenance[field];
-};
-
-export const isCryptographicallyVerifiedField = (
+export const isVerifiedField = (
   mode: ApplyJobMode,
   field: ApplyJobFieldId,
-): boolean => getApplyJobFieldProvenance(mode, field) !== 'self-declared';
+  diploma: ApplyJobDiplomaEvidence | null,
+): boolean => getApplyJobFieldProvenance(mode, field, diploma) === 'diploma';
 
 const isValidWebUrl = (value: string): boolean => {
   try {
@@ -263,9 +261,9 @@ const isValidWebUrl = (value: string): boolean => {
   }
 };
 
+// The identity number is typed in by the candidate in both modes: the diploma does not carry it.
 export const validateApplyJobApplication = (
   input: ApplyJobApplicationInput,
-  mode: ApplyJobMode,
 ): ApplyJobValidationError | null => {
   if (!input.name.trim()) return 'candidate-name';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) return 'email';
@@ -273,7 +271,7 @@ export const validateApplyJobApplication = (
   const phoneDigits = input.phone.replace(/\D/g, '');
   if (phoneDigits.length < 9 || phoneDigits.length > 11) return 'phone';
 
-  if (mode === 'manual' && !/^\d{12}$/.test(input.identityNumber.trim())) {
+  if (!/^\d{12}$/.test(input.identityNumber.trim())) {
     return 'identity-number';
   }
 

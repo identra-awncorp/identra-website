@@ -69,7 +69,7 @@ const readDistFile = (relativePath: string): string =>
   readFileSync(resolve(distDir, relativePath), 'utf8');
 
 const withoutRootLocaleScript = (html: string): string =>
-  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>/g, '');
+  html.replace(/<script id="identra-root-locale"[^>]*>[\s\S]*?<\/script>/g, '');
 
 const expect = (condition: boolean, message: string) => {
   if (!condition) failures.push(message);
@@ -305,10 +305,11 @@ for (const redirect of configuredRedirects) {
     `Vercel redirect ${redirect.source} creates an unnecessarily long redirect chain.`,
   );
 }
+const rootLocaleScript = readDistFile('root-locale.js');
 expect(
-  rootHtml.includes('id="identra-root-locale"')
-    && rootHtml.includes('identra_lang')
-    && rootHtml.includes('window.location.replace('),
+  rootHtml.includes('<script id="identra-root-locale" src="/root-locale.js"></script>')
+    && rootLocaleScript.includes('identra_lang')
+    && rootLocaleScript.includes('window.location.replace('),
   'The static root entry must choose a saved locale before the app hydrates.',
 );
 expect(

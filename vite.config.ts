@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import {existsSync, readFileSync} from 'node:fs';
 import path from 'path';
 import {defineConfig, type Connect, type Plugin} from 'vite';
+import {identraRootCaPlugin} from './src/identra/trust/rootCaPlugin';
 import {
   DEFAULT_LOCALE,
   localizePath,
@@ -129,7 +130,13 @@ const localizedPreviewEntries = (): Plugin => ({
 
 export default defineConfig(() => {
   return {
-    plugins: [externalShortcuts(), localizedPreviewEntries(), react(), tailwindcss()],
+    plugins: [
+      externalShortcuts(),
+      localizedPreviewEntries(),
+      identraRootCaPlugin({defaultFile: path.resolve(__dirname, 'src/identra/trust/root-ca.pem')}),
+      react(),
+      tailwindcss(),
+    ],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
@@ -141,6 +148,8 @@ export default defineConfig(() => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      // The Identra SDK is linked from the sibling repository as a file: dependency.
+      fs: {allow: [path.resolve(__dirname), path.resolve(__dirname, '../identra-sdk/packages')]},
     },
     build: {
       rollupOptions: {

@@ -1,0 +1,112 @@
+# Identra website: static hosting behind nginx (ADR-0016 section 5).
+#
+# Traffic path: Cloudflare (TLS) -> cloudflared -> nginx on 127.0.0.1:80 -> files in
+# /srv/awncorp/identra-web (the contents of `dist/` after `npm run build`).
+# Include this file inside the `http {}` context (e.g. sites-enabled); the `map` blocks must live there.
+# The two rules that used to live in vercel.json are translated below and marked "from vercel.json".
+#
+# Layout produced by the build (see scripts/generate-localized-pages.ts):
+#   /index.html                      neutral root entry (picks a saved locale via /root-locale.js)
+#   /{locale}/index.html             locale home pages; locales: en es ja de vi
+#   /{locale}/{view}/index.html      pages, e.g. /vi/blog/index.html, /vi/school-portal/index.html
+#   /{locale}/demo/{id}/index.html   demo scenarios
+#   /{locale}/404/index.html         localized not-found pages; /404.html is the neutral one
+#   /assets/*                        content-hashed JS/CSS/images (safe to cache forever)
+#   /trust/identra-root-ca.pem       the published Identra Root CA certificate
+
+map $uri $identra_cache_control {
+    default                                "public, max-age=3600";
+    ~^/assets/                             "public, max-age=31536000, immutable";
+    ~\.html$                               "no-cache";
+    /                                      "no-cache";
+    /root-locale.js                        "no-cache";
+    /trust/identra-root-ca.pem             "no-cache";
+    /sitemap.xml                           "no-cache";
+    /blog-feed.xml                         "no-cache";
+    # from vercel.json: the unlisted book shortcut must never be cached.
+    /vi/self-sovereign-identity-book       "no-store";
+}
+
+# from vercel.json: the white-paper PDF points search engines at its HTML page.
+# It keeps the canonical origin of the current build (VITE_SITE_URL); change both together.
+map $uri $identra_link_header {
+    default                                    "";
+    /white-paper/Identra-White-Paper-v1.0.pdf  '<https://www.identra.id.vn/vi/white-paper>; rel="canonical"';
+}
+
+# Unknown paths get the not-found page of the locale they were asked in.
+map $uri $identra_not_found_page {
+    default          /404.html;
+    ~^/(en|es|ja|de|vi)(/|$)  /$1/404/index.html;
+}
+
+server {
+    listen 127.0.0.1:80;
+    server_name identra.awncorp.vn;
+    root /srv/awncorp/identra-web;
+    index index.html;
+
+    server_tokens off;
+    charset utf-8;
+    absolute_redirect off;
+
+    # Content-Security-Policy, verified against the built site in a real browser:
+    # - script-src 'self' only: there is no inline script (the locale bootstrap is /root-locale.js;
+    #   JSON-LD blocks are data, not script, and are not governed by script-src).
+    # - style-src needs 'unsafe-inline': the prerendered HTML carries an inline <style> for the first-paint
+    #   skeleton and many style="" attributes (React/motion); fonts' CSS comes from Google Fonts.
+    # - img-src lists the two image hosts the current pages use (Unsplash, Google user content).
+    # - connect-src: the Identra API only.
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://lh3.googleusercontent.com; connect-src 'self' https://api-identra.awncorp.vn; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Cross-Origin-Opener-Policy "same-origin" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), browsing-topics=()" always;
+    add_header Cache-Control $identra_cache_control always;
+    add_header Link $identra_link_header always;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml application/xml text/plain;
+
+    # Like vercel.json "trailingSlash": false: /vi/blog/ -> /vi/blog (the root "/" is left alone).
+    location ~ ^(.+)/$ {
+        return 308 $1$is_args$args;
+    }
+
+    # from vercel.json: temporary redirect of the unlisted Vietnamese book shortcut (no-store via the map).
+    # Only /vi; the same slug in other locales or without a locale falls through to a 404.
+    location = /vi/self-sovereign-identity-book {
+        return 307 https://drive.google.com/file/d/1thNJd9UMxk4glzgrQmmTsZ2fpCs8gIy-/view;
+    }
+
+    location = /trust/identra-root-ca.pem {
+        default_type application/x-pem-file;
+        add_header Content-Disposition 'attachment; filename="identra-root-ca.pem"' always;
+        # add_header in a location replaces the server-level ones, so they are repeated here.
+        add_header Content-Security-Policy "default-src 'none'; frame-ancestors 'none'" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Cache-Control $identra_cache_control always;
+        try_files $uri =404;
+    }
+
+    location /assets/ {
+        try_files $uri =404;
+    }
+
+    # Reserved for the product lifecycle page (later task): GS1 Digital Link URLs
+    # /01/<GTIN>/21/<serial> are printed in product QR codes and are served by one shell page that
+    # reads the path in the browser. The build will emit dist/01/index.html; until then this 404s.
+    location ^~ /01/ {
+        try_files /01/index.html =404;
+    }
+
+    location / {
+        try_files $uri $uri/index.html =404;
+    }
+
+    error_page 404 $identra_not_found_page;
+    location ~ ^/((en|es|ja|de|vi)/404/index\.html|404\.html)$ {
+        internal;
+    }
+}

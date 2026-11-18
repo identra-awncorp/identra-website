@@ -31,7 +31,7 @@ This document describes locale-aware routing for the Identra website.
 
 ## Unlisted External Shortcuts
 
-- `/vi/self-sovereign-identity-book` redirects to the owner's Vietnamese translation of *Self-Sovereign Identity* on Google Drive. The destination is configured only in `vercel.json`.
+- `/vi/self-sovereign-identity-book` redirects to the owner's Vietnamese translation of *Self-Sovereign Identity* on Google Drive. The destination is configured in `vercel.json` and, for the static hosting behind nginx (ADR-0016), in `deploy/nginx/identra-web.conf.example`; keep both in step.
 - This is a temporary HTTP 307 redirect with `Cache-Control: no-store` and no `noindex` directive. Unlisted means no visible navigation link, not exclusion from search or access control; Google Drive's sharing permissions still apply.
 - Do not add this shortcut to `APP_VIEWS`, generated HTML pages, sitemap, navigation, or visible content. Only the `/vi` URL is supported; the same slug under `/en`, `/es`, `/ja`, or `/de` must return 404, with no fallback to the Vietnamese book. The unprefixed slug must also return 404.
 - Vite dev and preview mirror exact external shortcut paths from `vercel.json` before page routing. Restart Vite after changing a destination.

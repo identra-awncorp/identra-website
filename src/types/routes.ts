@@ -72,7 +72,8 @@ export const APP_VIEWS = [
   'privacy-overview',
   'academy',
   'demo',
-  'white-paper'
+  'white-paper',
+  'school-portal'
 ] as const;
 
 export type AppView = typeof APP_VIEWS[number];
@@ -83,6 +84,7 @@ export type LegacyViewAlias = keyof typeof LEGACY_VIEW_ALIASES;
 
 const VIEW_LOCALE_OVERRIDES: Partial<Record<AppView, readonly Locale[]>> = {
   'white-paper': ['vi'],
+  'school-portal': ['en', 'vi'],
 };
 
 export const getViewLocales = (view: AppView): readonly Locale[] =>

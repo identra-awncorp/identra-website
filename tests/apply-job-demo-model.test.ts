@@ -6,12 +6,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
-  APPLY_JOB_IDENTRA_IDENTITY_NUMBER,
   getApplyJobFieldProvenance,
   getApplyJobVerificationOutcome,
   getApplyJobVerificationPlan,
   getApplyJobVerificationSnapshot,
-  isCryptographicallyVerifiedField,
+  isIllustrativeDetail,
+  isVerifiedField,
   validateApplyJobApplication,
   type ApplyJobApplicationInput,
 } from '../src/components/demo/ApplyJobDemoModel';
@@ -31,25 +31,27 @@ const validManualApplication: ApplyJobApplicationInput = {
 
 test('uses one deterministic snapshot for all verification stages', () => {
   const plan = getApplyJobVerificationPlan('identra', 2);
-  const snapshot = getApplyJobVerificationSnapshot(plan, 2, 'running');
+  const snapshot = getApplyJobVerificationSnapshot(plan, 3, 'running');
 
-  assert.equal(snapshot.progressPercent, 25);
-  assert.equal(snapshot.activeDetailId, 'identraCredentialPresentation');
+  assert.equal(snapshot.totalDetailCount, 8);
+  assert.equal(snapshot.progressPercent, 38);
+  assert.equal(snapshot.activeDetailId, 'identraDiplomaChecks');
   assert.deepEqual(snapshot.stages.map((stage) => stage.status), ['done', 'active', 'pending']);
 });
 
-test('creates one Identra credential check for the degree and each supplied certificate', () => {
+test('the Identra plan has exactly two real steps, both from the verified diploma; certificates stay self-declared', () => {
   const plan = getApplyJobVerificationPlan('identra', 2);
 
   assert.deepEqual(plan[0].detailIds, [
-    'identraIdentityPresentation',
-    'identraIdentityProofValidation',
+    'identraNameFromDiploma',
+    'manualIdentityRegistryLookup',
+    'manualWorkEligibilityCheck',
   ]);
-  assert.deepEqual(plan[1].detailIds, [
-    'identraCredentialPresentation',
-    'identraCredentialProofValidation',
-    'identraCredentialProofValidation',
-  ]);
+  assert.deepEqual(plan[1].detailIds, ['identraDiplomaChecks', 'manualCertificateUrlMatch']);
+  assert.deepEqual(getApplyJobVerificationPlan('identra', 0)[1].detailIds, ['identraDiplomaChecks', 'manualNoCertificateCheck']);
+  const details = plan.flatMap((stage) => stage.detailIds);
+  assert.deepEqual(details.filter((detailId) => !isIllustrativeDetail(detailId)), ['identraNameFromDiploma', 'identraDiplomaChecks']);
+  assert.ok(getApplyJobVerificationPlan('manual', true).flatMap((stage) => stage.detailIds).every(isIllustrativeDetail));
   assert.deepEqual(plan[2].detailIds, [
     'backgroundConsentCheck',
     'backgroundRecordCheck',
@@ -71,69 +73,71 @@ test('keeps Identra and manual credential checks separate', () => {
   const identraPlan = getApplyJobVerificationPlan('identra', true);
   const manualPlan = getApplyJobVerificationPlan('manual', true);
 
-  assert.ok(identraPlan[1].detailIds.every((detailId) => detailId.startsWith('identra')));
+  assert.equal(identraPlan[1].detailIds[0], 'identraDiplomaChecks');
   assert.ok(manualPlan[1].detailIds.every((detailId) => detailId.startsWith('manual')));
 });
 
-test('does not claim cryptographic verification for editable self-declared fields', () => {
-  assert.equal(getApplyJobFieldProvenance('identra', 'email'), 'self-declared');
-  assert.equal(getApplyJobFieldProvenance('identra', 'phone'), 'self-declared');
-  assert.equal(getApplyJobFieldProvenance('identra', 'experience'), 'self-declared');
-  assert.equal(getApplyJobFieldProvenance('identra', 'github'), 'self-declared');
-  assert.equal(isCryptographicallyVerifiedField('identra', 'email'), false);
-  assert.equal(isCryptographicallyVerifiedField('identra', 'phone'), false);
-  assert.equal(isCryptographicallyVerifiedField('identra', 'experience'), false);
-  assert.equal(isCryptographicallyVerifiedField('identra', 'github'), false);
-  assert.equal(getApplyJobFieldProvenance('identra', 'degree'), 'education-vc');
-  assert.equal(getApplyJobFieldProvenance('identra', 'certificates'), 'certificate-vc');
-  assert.equal(getApplyJobFieldProvenance('identra', 'identity'), 'identity-vc');
-  assert.match(APPLY_JOB_IDENTRA_IDENTITY_NUMBER, /^\d{12}$/);
-  assert.equal(getApplyJobVerificationOutcome('identra'), 'verified');
-  assert.equal(getApplyJobVerificationOutcome('manual'), 'needs-review');
+test('only name and degree come from the diploma, and only when the server confirmed it', () => {
+  const passed = { ok: true };
+  for (const field of ['identity', 'email', 'phone', 'certificates', 'experience', 'github'] as const) {
+    assert.equal(getApplyJobFieldProvenance('identra', field, passed), 'self-declared', field);
+    assert.equal(isVerifiedField('identra', field, passed), false, field);
+  }
+  assert.equal(getApplyJobFieldProvenance('identra', 'name', passed), 'diploma');
+  assert.equal(getApplyJobFieldProvenance('identra', 'degree', passed), 'diploma');
+  assert.equal(getApplyJobFieldProvenance('identra', 'degree', { ok: false }), 'self-declared');
+  assert.equal(getApplyJobFieldProvenance('identra', 'degree', null), 'self-declared');
+  assert.equal(getApplyJobFieldProvenance('manual', 'degree', passed), 'self-declared');
 });
 
-test('requires valid editable fields before Identra verification starts', () => {
-  assert.equal(validateApplyJobApplication(validManualApplication, 'identra'), null);
+test('the outcome follows the server answer, not the mode alone', () => {
+  assert.equal(getApplyJobVerificationOutcome('identra', { ok: true }), 'verified');
+  assert.equal(getApplyJobVerificationOutcome('identra', { ok: false }), 'needs-review');
+  assert.equal(getApplyJobVerificationOutcome('identra', null), 'needs-review');
+  assert.equal(getApplyJobVerificationOutcome('manual', { ok: true }), 'needs-review');
+});
+
+test('requires every self-declared field, the identity number included, in both modes', () => {
+  assert.equal(validateApplyJobApplication(validManualApplication), null);
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, email: '' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, email: '' }),
     'email',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, phone: '' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, phone: '' }),
     'phone',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, experience: '' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, experience: '' }),
     'experience',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, githubUrl: '' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, githubUrl: '' }),
     'github-url',
   );
 });
 
 test('validates manual identity, URLs, and certificate drafts', () => {
-  assert.equal(validateApplyJobApplication(validManualApplication, 'manual'), null);
+  assert.equal(validateApplyJobApplication(validManualApplication), null);
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, identityNumber: '123' }, 'manual'),
+    validateApplyJobApplication({ ...validManualApplication, identityNumber: '123' }),
     'identity-number',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, githubUrl: 'not a url' }, 'manual'),
+    validateApplyJobApplication({ ...validManualApplication, githubUrl: 'not a url' }),
     'github-url',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, experience: 'four years' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, experience: 'four years' }),
     'experience',
   );
   assert.equal(
-    validateApplyJobApplication({ ...validManualApplication, experience: '4.5' }, 'identra'),
+    validateApplyJobApplication({ ...validManualApplication, experience: '4.5' }),
     'experience',
   );
   assert.equal(
     validateApplyJobApplication(
       { ...validManualApplication, pendingCertificateTitle: 'CKA', pendingCertificateUrl: '' },
-      'manual',
     ),
     'certificate-incomplete',
   );

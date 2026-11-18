@@ -32,3 +32,6 @@ pnpm-debug.log*
 Thumbs.db
 .idea/
 .vscode/
+
+# Design inspection screenshots (design-taste-frontend skill)
+.taste-skill/

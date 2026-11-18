@@ -2893,6 +2893,18 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/vi/white-paper" />
   </url>
   <url>
+    <loc>https://www.identra.id.vn/en/school-portal</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/school-portal" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/school-portal" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/school-portal" />
+  </url>
+  <url>
+    <loc>https://www.identra.id.vn/vi/school-portal</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/school-portal" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://www.identra.id.vn/vi/school-portal" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.identra.id.vn/en/school-portal" />
+  </url>
+  <url>
     <loc>https://www.identra.id.vn/en/demo/bank-account</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.identra.id.vn/en/demo/bank-account" />
     <xhtml:link rel="alternate" hreflang="es" href="https://www.identra.id.vn/es/demo/bank-account" />

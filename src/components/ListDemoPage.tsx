@@ -16,7 +16,7 @@ import {
   Ticket
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { demoScenarioPath, type DemoScenarioId, type Locale } from '../types/routes';
+import { demoScenarioPath, viewToPath, type DemoScenarioId, type Locale } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
 
@@ -211,6 +211,20 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
                   );
                 })}
               </div>
+            </div>
+
+            <div className="rounded-2xl bg-[#E2E6FF] p-6 sm:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+              <div className="space-y-1 flex-1">
+                <h3 className="type-card-title text-[#0F1E36]">{t.samplePortalTitle}</h3>
+                <p className="type-body text-slate-700">{t.samplePortalDesc}</p>
+              </div>
+              <Link
+                to={viewToPath('school-portal', routeLocale)}
+                className="type-control inline-flex items-center justify-center gap-2 text-white bg-[#354CE1] hover:bg-[#2539BE] px-5 py-2.5 rounded-full transition shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
+              >
+                <span>{t.samplePortalAction}</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6">

@@ -531,7 +531,7 @@ const replaceMeta = (
 };
 
 const withoutRootLocaleScript = (html: string): string =>
-  html.replace(/<script id="identra-root-locale">[\s\S]*?<\/script>\s*/g, '');
+  html.replace(/<script id="identra-root-locale"[^>]*>[\s\S]*?<\/script>\s*/g, '');
 
 const renderLocalizedHtml = (
   sourceHtml: string,
@@ -883,7 +883,7 @@ const renderNotFoundHtml = (
 const siteUrl = normalizeSiteUrl(process.env.VITE_SITE_URL ?? process.env.SITE_URL);
 const sourceHtml = readFileSync(resolve(distDir, 'index.html'), 'utf8');
 const rootLocaleScript = sourceHtml.match(
-  /<script id="identra-root-locale">[\s\S]*?<\/script>/,
+  /<script id="identra-root-locale"[^>]*>[\s\S]*?<\/script>/,
 )?.[0] ?? '';
 const { renderPage } = await import(
   pathToFileURL(resolve(projectRoot, 'dist-ssr/entry-seo.js')).href

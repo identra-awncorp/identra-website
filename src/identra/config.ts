@@ -4,11 +4,13 @@
  */
 
 // The one place that knows where the Identra API lives (vc-api.md section 1).
-export const DEFAULT_IDENTRA_API_URL = 'https://api-identra.awncorp.vn';
+/** The canonical API origin: identifiers (offer and request URIs) always use it, in every environment. */
+export const IDENTRA_API_ORIGIN = 'https://api-identra.awncorp.vn';
+export const DEFAULT_IDENTRA_API_URL = IDENTRA_API_ORIGIN;
 
 const isLoopback = (hostname: string) => hostname === '127.0.0.1' || hostname === 'localhost';
 
-/** Accepts an https origin, or plain http on the loopback interface for local development. */
+/** Where requests go: an https origin, or plain http on the loopback interface for local development. */
 export const resolveIdentraApiUrl = (value: string | undefined): string => {
   if (!value?.trim()) return DEFAULT_IDENTRA_API_URL;
 

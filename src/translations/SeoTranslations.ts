@@ -90,7 +90,8 @@ export const SEO_ROUTE_GROUPS = {
   academy: 'resource',
   demo: 'demo',
   'white-paper': 'whitePaper',
-  'school-portal': 'demo',
+  // A sign-in page for public sample accounts: kept out of search results and the sitemap.
+  'school-portal': 'account',
 } as const satisfies Record<AppView, SeoRouteGroup>;
 
 type BlogSeoCopy = {

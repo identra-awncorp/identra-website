@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.identra.id.vn/sitemap.xml
+Sitemap: https://identra.awncorp.vn/sitemap.xml

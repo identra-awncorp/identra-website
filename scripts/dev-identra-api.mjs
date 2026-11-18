@@ -10,6 +10,8 @@
  * nothing and verifies nothing: verification results are canned.
  *
  * Contract: identra-server/docs/vc-api.md §2, §3 (status change only), §5, §6, §8;
+ * errors are exactly { statusCode, code, message } with the closed code list of §2, every
+ * response with an expiresAt carries serverTime, creations answer 201, 429 carries Retry-After;
  * check ids/codes: identra-sdk/docs/architecture.md §3.
  * Node 22+, zero dependencies. Listens on 127.0.0.1 only.
  *
@@ -43,6 +45,10 @@
  *        r = create-session | get-session | login | offers | credentials | status
  *        s = 500 | 503 | 429, n = 1..100 (default 1): the next n matching requests fail
  *        ("offers" matches both POST /offers and GET /offers/:offerId)
+ *   /__dev/hostile-next?kind=<k>                 k = long-qr | rtl-issuer: the next created session
+ *                                                answers with a 5000-character QR, or the next completed
+ *                                                verified session names its issuer with a bidi override
+ *                                                (both must be rejected by the clients)
  *   /__dev/reset[?empty=1|0]                     reseed everything (tokens, offers, sessions,
  *                                                rate limits, fail-next); empty overrides
  *                                                DEV_EMPTY_CREDENTIALS from now on
@@ -89,7 +95,7 @@ const STATUS_DELAY = 600;
 const MAX_BODY = 16 * 1024;
 const DAY = 24 * 60 * 60 * 1000;
 const ORIGIN_RE = /^http:\/\/(?:127\.0\.0\.1|localhost):\d{1,5}$/;
-const LIMITS = { login: 10, session: 30, write: 60 };
+const LIMITS = { login: 10, session: 30, write: 60, read: 300 };
 
 // ---------------------------------------------------------------- seed data (fictional)
 
@@ -149,7 +155,7 @@ const FAIL_ROUTES = new Set(['create-session', 'get-session', 'login', 'offers',
 
 // ---------------------------------------------------------------- state (in memory)
 
-let tokens, offers, sessions, credentials, buckets, failNext;
+let tokens, offers, sessions, credentials, buckets, failNext, hostileNext;
 
 function reset() {
   tokens = new Map();
@@ -158,6 +164,7 @@ function reset() {
   credentials = new Map();
   buckets = new Map();
   failNext = new Map();
+  hostileNext = new Set();
   if (emptyCredentials) return;
   const now = Date.now();
   addCredential('sv003', 'SV0003', 'Lê Hoàng Mẫu', now - 3 * DAY, 'valid');
@@ -193,7 +200,8 @@ class HttpError extends Error {
 }
 const fail = (status, message, code, headers) => { throw new HttpError(status, message, code, headers); };
 const notFound = () => fail(404, 'Not found.', 'NOT_FOUND');
-const badState = (what) => fail(409, `Cannot do that: ${what}.`, 'INVALID_STATE');
+const badState = (what) => fail(409, `Cannot do that: ${what}.`, 'CONFLICT');
+const invalid = (message) => fail(400, message, 'VALIDATION_FAILED');
 
 function readJson(req) {
   if (Number(req.headers['content-length']) > MAX_BODY) return Promise.reject(tooLarge());
@@ -211,12 +219,12 @@ function readJson(req) {
       if (over) return;
       const text = Buffer.concat(chunks).toString('utf8');
       if (text.trim() === '') return resolve({});
-      try { resolve(JSON.parse(text)); } catch { reject(new HttpError(400, 'Body is not valid JSON.', 'INVALID_JSON')); }
+      try { resolve(JSON.parse(text)); } catch { reject(new HttpError(400, 'Body is not valid JSON.', 'VALIDATION_FAILED')); }
     });
   });
 }
 function tooLarge() {
-  return new HttpError(413, 'Body exceeds 16 KB.', 'PAYLOAD_TOO_LARGE', { connection: 'close' });
+  return new HttpError(400, 'Body exceeds 16 KB.', 'VALIDATION_FAILED', { connection: 'close' });
 }
 
 // Strict body: a plain object with exactly the allowed keys, each a string of 1..64 chars.
@@ -224,13 +232,14 @@ function strings(body, keys) {
   const ok = body !== null && typeof body === 'object' && !Array.isArray(body)
     && Object.keys(body).every((k) => keys.includes(k))
     && keys.every((k) => typeof body[k] === 'string' && body[k].length >= 1 && body[k].length <= 64);
-  if (!ok) fail(400, `Body must be { ${keys.join(', ')} } with strings of 1..64 characters.`, 'INVALID_BODY');
+  if (!ok) invalid(`Body must be { ${keys.join(', ')} } with strings of 1..64 characters.`);
   return body;
 }
 
 function auth(req, role) {
   const m = /^Bearer ([A-Za-z0-9_-]{1,128})$/.exec(req.headers.authorization ?? '');
-  if (!m) fail(401, 'Missing bearer token.', 'UNAUTHENTICATED');
+  // A missing, unknown or expired token is always 401 SESSION_EXPIRED (§2).
+  if (!m) fail(401, 'Missing bearer token.', 'SESSION_EXPIRED');
   const t = tokens.get(m[1]);
   if (!t || t.expiresAt <= Date.now()) {
     tokens.delete(m[1]);
@@ -257,7 +266,7 @@ function forcedFailure(routeKey) {
   if (!rule) return;
   if (--rule.remaining <= 0) failNext.delete(routeKey);
   if (rule.status === 429) fail(429, 'Too many requests. Try again later.', 'RATE_LIMITED', { 'retry-after': '5' });
-  if (rule.status === 503) fail(503, 'Service temporarily unavailable.', 'SERVICE_UNAVAILABLE', { 'retry-after': '5' });
+  if (rule.status === 503) fail(503, 'Service temporarily unavailable.', 'UNAVAILABLE');
   fail(500, 'Internal server error.', 'INTERNAL_ERROR');
 }
 
@@ -272,7 +281,7 @@ function login({ body }) {
   const token = randomBytes(32).toString('base64url');
   const expiresAt = Date.now() + (acc.ttl ?? TOKEN_TTL);
   tokens.set(token, { username, role: acc.role, expiresAt });
-  return [200, { token, expiresAt: iso(expiresAt), role: acc.role, profile: acc.profile }];
+  return [200, { token, expiresAt: iso(expiresAt), serverTime: iso(Date.now()), role: acc.role, profile: acc.profile }];
 }
 
 function offerState(o, now = Date.now()) {
@@ -284,21 +293,22 @@ function issueOffer(o) {
   const now = Date.now();
   const { profile } = ACCOUNTS.get(o.owner);
   o.status = 'issued';
-  o.keepUntil = Math.max(o.keepUntil, now + RETENTION);
   return addCredential(o.owner, profile.maSinhVien, profile.hoTen, now, 'valid');
 }
 
 function createOffer({ req }) {
   const { username } = auth(req, 'student');
   const offerId = newId();
-  const expiresAt = Date.now() + OFFER_TTL;
-  const o = { offerId, owner: username, status: 'pending', expiresAt, keepUntil: expiresAt + RETENTION };
+  const createdAt = Date.now();
+  const expiresAt = createdAt + OFFER_TTL;
+  // Readable for 30 minutes after creation, then 404 (§5).
+  const o = { offerId, owner: username, status: 'pending', expiresAt, keepUntil: createdAt + RETENTION };
   offers.set(offerId, o);
   if (AUTO) later(10_000, () => { if (offers.get(offerId) === o && offerState(o) === 'pending') issueOffer(o); });
   const txCode = String(randomInt(0, 1_000_000)).padStart(6, '0');
   const offerUri = 'openid-credential-offer://?credential_offer_uri='
     + encodeURIComponent(`${API}/issuers/truong-mau/offers/${offerId}`);
-  return [201, { offerId, offerUri, txCode, expiresAt: iso(expiresAt) }];
+  return [201, { offerId, offerUri, txCode, expiresAt: iso(expiresAt), serverTime: iso(createdAt) }];
 }
 
 function getOffer({ req, params: [offerId] }) {
@@ -321,10 +331,10 @@ async function changeStatus({ req, body, params: [id] }) {
   await delay(STATUS_DELAY); // visible pending state in the UI
   auth(req, 'registrar');
   const { status } = strings(body, ['status']);
-  if (!['valid', 'revoked', 'suspended'].includes(status)) fail(400, 'status must be valid, revoked or suspended.', 'INVALID_BODY');
+  if (!['valid', 'revoked', 'suspended'].includes(status)) invalid('status must be valid, revoked or suspended.');
   const c = credentials.get(id);
   if (!c) notFound();
-  if (c.status === 'revoked') fail(409, 'The credential is revoked; revocation is final.', 'CREDENTIAL_REVOKED');
+  if (c.status === 'revoked') fail(409, 'The credential is revoked; revocation is final.', 'CONFLICT');
   c.status = status;
   c.updatedAt = Date.now();
   return [200, { id: c.id, status: c.status, updatedAt: iso(c.updatedAt) }];
@@ -334,8 +344,7 @@ async function changeStatus({ req, body, params: [id] }) {
 
 function sessionState(s, now = Date.now()) {
   if ((s.status === 'pending' || s.status === 'request_retrieved') && now >= s.expiresAt) {
-    s.status = 'expired';
-    s.keepUntil = s.expiresAt + RETENTION;
+    s.status = 'expired'; // stays readable as expired until 30 min after creation (§6)
   }
   return s.status;
 }
@@ -343,7 +352,14 @@ const open = (s) => ['pending', 'request_retrieved'].includes(sessionState(s));
 
 function sessionView(s) {
   sessionState(s);
-  return { id: s.id, status: s.status, verifier: { name: VERIFIER_NAME }, expiresAt: iso(s.expiresAt), ...(s.result && { result: s.result }) };
+  return {
+    id: s.id,
+    status: s.status,
+    verifier: { name: VERIFIER_NAME },
+    expiresAt: iso(s.expiresAt),
+    serverTime: iso(Date.now()),
+    ...(s.result && { result: s.result }),
+  };
 }
 
 function buildResult(outcome, now) {
@@ -358,8 +374,10 @@ function buildResult(outcome, now) {
     return { id, ok: code === null, code };
   });
   const ok = checks.every((c) => c.ok);
-  const trustOk = checks.find((c) => c.id === 'issuer_trust').ok;
-  return { ok, checks, ...(ok && { claims: { ...CLAIMS[claims] } }), issuer: trustOk ? ISSUER : null, verifiedAt: iso(now) };
+  // claims and issuer exist only when ok; every claim value is a string (§6).
+  if (!ok) return { ok, checks, verifiedAt: iso(now) };
+  const issuer = hostileNext.delete('rtl-issuer') ? { ...ISSUER, ten: 'Trường \u202Euầm\u202C Mẫu' } : ISSUER;
+  return { ok, checks, claims: { ...CLAIMS[claims] }, issuer, verifiedAt: iso(now) };
 }
 
 function completeSession(s, outcome) {
@@ -371,21 +389,22 @@ function completeSession(s, outcome) {
 
 function createSession({ body }) {
   const { verifier, scenario } = strings(body, ['verifier', 'scenario']);
-  if (verifier !== 'nha-tuyen-dung-mau' || scenario !== 'ung-tuyen') {
-    fail(400, 'Unknown verifier or scenario.', 'UNKNOWN_SCENARIO');
-  }
+  if (verifier !== 'nha-tuyen-dung-mau' || scenario !== 'ung-tuyen') invalid('Unknown verifier or scenario.');
   const id = newId();
   const requestId = newId();
-  const expiresAt = Date.now() + SESSION_TTL;
-  const s = { id, requestId, status: 'pending', expiresAt, keepUntil: expiresAt + RETENTION, result: null };
+  const createdAt = Date.now();
+  const expiresAt = createdAt + SESSION_TTL;
+  // Deleted 30 minutes after creation (or after verification), then 404 (§6).
+  const s = { id, requestId, status: 'pending', expiresAt, keepUntil: createdAt + RETENTION, result: null };
   sessions.set(id, s);
   if (AUTO) {
     later(4000, () => { if (sessions.get(id) === s && sessionState(s) === 'pending') s.status = 'request_retrieved'; });
     later(8000, () => { if (sessions.get(id) === s && open(s)) completeSession(s, 'verified'); });
   }
   const qr = 'openid4vp://?client_id=' + encodeURIComponent(CLIENT_ID)
-    + '&request_uri=' + encodeURIComponent(`${API}/oid4vp/request/${requestId}`);
-  return [201, { id, qr, expiresAt: iso(expiresAt) }];
+    + '&request_uri=' + encodeURIComponent(`${API}/oid4vp/request/${requestId}`)
+    + (hostileNext.delete('long-qr') ? `&padding=${'A'.repeat(5000)}` : '');
+  return [201, { id, qr, expiresAt: iso(expiresAt), serverTime: iso(createdAt) }];
 }
 
 function getSession({ params: [id] }) {
@@ -408,7 +427,7 @@ const dev = {
   },
   complete({ params: [id], query }) {
     const outcome = query.get('outcome') ?? 'verified';
-    if (!Object.hasOwn(OUTCOMES, outcome)) fail(400, `outcome must be one of ${Object.keys(OUTCOMES).join(', ')}.`, 'UNKNOWN_OUTCOME');
+    if (!Object.hasOwn(OUTCOMES, outcome)) invalid(`outcome must be one of ${Object.keys(OUTCOMES).join(', ')}.`);
     const s = devSession(id);
     if (!open(s)) badState(`session is ${s.status}`);
     completeSession(s, outcome);
@@ -440,10 +459,16 @@ const dev = {
     const status = Number(query.get('status'));
     const count = Number(query.get('count') ?? 1);
     if (!FAIL_ROUTES.has(route) || ![500, 503, 429].includes(status) || !Number.isInteger(count) || count < 1 || count > 100) {
-      fail(400, `Use route=${[...FAIL_ROUTES].join('|')}&status=500|503|429&count=1..100.`, 'INVALID_QUERY');
+      invalid(`Use route=${[...FAIL_ROUTES].join('|')}&status=500|503|429&count=1..100.`);
     }
     failNext.set(route, { status, remaining: count });
     return [200, { ok: true, failNext: Object.fromEntries(failNext) }];
+  },
+  hostileNext({ query }) {
+    const kind = query.get('kind');
+    if (kind !== 'long-qr' && kind !== 'rtl-issuer') invalid('Use kind=long-qr|rtl-issuer.');
+    hostileNext.add(kind);
+    return [200, { ok: true, hostileNext: [...hostileNext] }];
   },
   reset({ query }) {
     const empty = query.get('empty');
@@ -462,11 +487,11 @@ const ID = '([A-Za-z0-9_-]{1,64})';
 const ROUTES = [
   ['POST', '/v1/demo/school/login', 'login', 'login', login],
   ['POST', '/v1/demo/school/offers', 'offers', 'write', createOffer],
-  ['GET', `/v1/demo/school/offers/${ID}`, 'offers', null, getOffer],
-  ['GET', '/v1/demo/school/credentials', 'credentials', null, listCredentials],
+  ['GET', `/v1/demo/school/offers/${ID}`, 'offers', 'read', getOffer],
+  ['GET', '/v1/demo/school/credentials', 'credentials', 'read', listCredentials],
   ['POST', `/v1/issuers/truong-mau/credentials/${ID}/status`, 'status', 'write', changeStatus],
   ['POST', '/v1/verification/sessions', 'create-session', 'session', createSession],
-  ['GET', `/v1/verification/sessions/${ID}`, 'get-session', null, getSession],
+  ['GET', `/v1/verification/sessions/${ID}`, 'get-session', 'read', getSession],
   ['GET', '/oid4vp/request/[^/]+', null, null, notImplemented],
   ['GET', '/issuers/truong-mau/offers/[^/]+', null, null, notImplemented],
   ['POST', `/__dev/sessions/${ID}/retrieve`, null, null, dev.retrieve],
@@ -475,6 +500,7 @@ const ROUTES = [
   ['POST', `/__dev/offers/${ID}/complete`, null, null, dev.completeOffer],
   ['POST', `/__dev/offers/${ID}/expire`, null, null, dev.expireOffer],
   ['POST', '/__dev/fail-next', null, null, dev.failNext],
+  ['POST', '/__dev/hostile-next', null, null, dev.hostileNext],
   ['POST', '/__dev/reset', null, null, dev.reset],
 ].map(([method, path, key, limit, handler]) => ({ method, re: new RegExp(`^${path}$`), key, limit, handler }));
 
@@ -504,7 +530,7 @@ const server = http.createServer(async (req, res) => {
     prune(Date.now());
     let match;
     const route = ROUTES.find((r) => r.method === req.method && (match = r.re.exec(url.pathname)));
-    if (!route) fail(404, 'Route not found.', 'NOT_FOUND');
+    if (!route) notFound();
     const body = req.method === 'POST' ? await readJson(req) : undefined;
     if (route.key) forcedFailure(route.key);
     if (route.limit) rateLimit(req.socket.remoteAddress ?? 'unknown', route.limit);
@@ -519,7 +545,7 @@ const server = http.createServer(async (req, res) => {
     }
     if (res.headersSent) { res.destroy(); return; }
     res.writeHead(e.status, e.headers);
-    res.end(JSON.stringify({ statusCode: e.status, error: http.STATUS_CODES[e.status], message: e.message, ...(e.code && { code: e.code }) }));
+    res.end(JSON.stringify({ statusCode: e.status, code: e.code ?? 'INTERNAL_ERROR', message: e.message }));
   }
 });
 

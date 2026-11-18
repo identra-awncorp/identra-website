@@ -6,7 +6,7 @@
 // Vercel currently serves the public site from the www host and permanently
 // redirects the apex domain there. Keep every generated canonical signal on
 // the final, directly reachable host.
-export const DEFAULT_SITE_URL = 'https://www.identra.id.vn';
+export const DEFAULT_SITE_URL = 'https://identra.awncorp.vn';
 export const PUBLIC_LOGO_PATH = '/identra-logo.svg';
 export const PUBLIC_SOCIAL_IMAGE_PATH = '/social/identra-og.jpg';
 export const SOCIAL_IMAGE_WIDTH = '1200';

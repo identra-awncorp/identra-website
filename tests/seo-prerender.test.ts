@@ -21,7 +21,7 @@ test('neutral root keeps crawlable English content and honors a saved locale in 
   assert.match(readFileSync(resolve('dist/root-locale.js'), 'utf8'), /identra_lang[\s\S]*window\.location\.replace/);
   assert.ok(!html.includes('<meta http-equiv="refresh"'));
   assert.ok(html.includes('<meta name="robots" content="index, follow, max-image-preview:large" />'));
-  assert.ok(html.includes('<link rel="canonical" href="https://www.identra.id.vn/en" />'));
+  assert.ok(html.includes('<link rel="canonical" href="https://identra.awncorp.vn/en" />'));
 });
 
 test('Blog source links can wrap without changing their text or destination', async () => {

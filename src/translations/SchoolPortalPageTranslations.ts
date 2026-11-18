@@ -65,6 +65,12 @@ export interface SchoolPortalPageCopy {
   expiredBody: string;
   newOffer: string;
   openInWallet: string;
+  linkLabel: string;
+  copyLink: string;
+  linkCopied: string;
+  qrUnavailable: string;
+  reissue: string;
+  reissueHint: string;
   firstTimeTitle: string;
   firstTimeSteps: readonly string[];
   myDiplomasTitle: string;
@@ -93,6 +99,7 @@ export interface SchoolPortalPageCopy {
   saving: string;
   statusChangeProblems: Record<StatusChangeProblem, string>;
   statusChanged: string;
+  timingNote: string;
 }
 
 const vi: SchoolPortalPageCopy = {
@@ -111,9 +118,10 @@ const vi: SchoolPortalPageCopy = {
   signingIn: 'Đang đăng nhập…',
   signInProblems: {
     invalid_credentials: 'Tên đăng nhập hoặc mật khẩu chưa đúng.',
+    rejected: 'Máy chủ không nhận yêu cầu đăng nhập này. Kiểm tra lại tên đăng nhập rồi thử lại.',
     rate_limited: 'Bạn đã thử đăng nhập quá nhiều lần.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
-    unavailable: 'Máy chủ Identra chưa trả lời được. Thử lại sau ít phút.',
+    unavailable: 'Máy chủ Identra đang không phản hồi. Thử lại sau ít phút.',
   },
   retryAfter: 'Đợi {seconds} giây rồi thử lại.',
   sessionExpiredNotice: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
@@ -147,13 +155,13 @@ const vi: SchoolPortalPageCopy = {
     soHieuBang: 'Số hiệu bằng',
   },
   walletTitle: 'Nhận bằng vào ví',
-  walletIntro: 'Nhà trường cấp cho bạn một bản bằng tốt nghiệp có thể kiểm tra được, lưu trong ứng dụng Identra trên điện thoại.',
+  walletIntro: 'Nhà trường cấp cho bạn bằng tốt nghiệp điện tử mà ai cũng kiểm tra được, lưu trong ứng dụng Identra.',
   receive: 'Nhận bằng vào ví Identra',
   creatingOffer: 'Đang chuẩn bị mã nhận bằng…',
   offerQrLabel: 'Mã QR để nhận bằng tốt nghiệp vào ví Identra. Quét bằng ứng dụng Identra.',
   pinLabel: 'Mã PIN',
   pinHelp: 'Ví sẽ hỏi mã này sau khi quét. Đừng đưa mã cho người khác.',
-  expiresIn: 'Mã còn hiệu lực {time}',
+  expiresIn: 'Mã còn hiệu lực trong {time}',
   waitingForWallet: 'Đang chờ ví nhận bằng',
   reconnecting: 'Mất kết nối tới máy chủ, đang thử lại…',
   issuedTitle: 'Đã cấp vào ví',
@@ -161,11 +169,17 @@ const vi: SchoolPortalPageCopy = {
   expiredTitle: 'Mã nhận bằng đã hết hạn',
   expiredBody: 'Mỗi mã chỉ dùng được trong 10 phút. Tạo mã mới để thử lại.',
   newOffer: 'Tạo mã mới',
-  openInWallet: 'Đang dùng điện thoại? Mở trong ví Identra',
+  openInWallet: 'Mở trong ví Identra',
+  linkLabel: 'Liên kết nhận bằng',
+  copyLink: 'Sao chép liên kết',
+  linkCopied: 'Đã sao chép liên kết',
+  qrUnavailable: 'Không hiển thị được mã QR. Hãy dùng liên kết bên dưới.',
+  reissue: 'Nhận lại bằng vào ví',
+  reissueHint: 'Dùng khi bạn đổi hoặc mất điện thoại. Mỗi lần nhận là một bản bằng mới; bằng cũ vẫn còn hiệu lực cho đến khi phòng đào tạo thu hồi.',
   firstTimeTitle: 'Lần đầu dùng ví Identra?',
   firstTimeSteps: [
     'Mở ứng dụng Identra trên điện thoại và chọn Quét mã.',
-    'Đưa camera vào mã QR ở trên.',
+    'Hướng camera vào mã QR ở trên.',
     'Nhập mã PIN 6 số khi ví hỏi.',
     'Xem lại thông tin và bấm Nhận. Trang này sẽ báo khi bằng đã vào ví.',
   ],
@@ -175,12 +189,14 @@ const vi: SchoolPortalPageCopy = {
   loadProblems: {
     network: 'Không kết nối được máy chủ Identra.',
     rate_limited: 'Có quá nhiều yêu cầu trong thời gian ngắn. Đợi một phút rồi thử lại.',
-    unavailable: 'Máy chủ Identra chưa trả lời được.',
+    unavailable: 'Máy chủ Identra đang không phản hồi.',
+    forbidden: 'Tài khoản này không có quyền xem mục này.',
+    rejected: 'Máy chủ không nhận yêu cầu này. Tải lại trang rồi thử lại.',
   },
   retry: 'Thử lại',
   loading: 'Đang tải…',
   registrarTitle: 'Bằng đã cấp',
-  registrarIntro: 'Tạm dừng, khôi phục hoặc thu hồi một bằng. Nơi kiểm tra bằng sẽ thấy thay đổi trong vòng vài phút.',
+  registrarIntro: 'Tạm dừng, khôi phục hoặc thu hồi một bằng tốt nghiệp đã cấp.',
   refresh: 'Tải lại',
   updatedAt: 'Cập nhật lúc {time}',
   counts: '{valid} còn hiệu lực · {suspended} tạm dừng · {revoked} đã thu hồi',
@@ -198,9 +214,9 @@ const vi: SchoolPortalPageCopy = {
     revoke: 'Thu hồi vĩnh viễn bằng của {name}?',
   },
   confirmBody: {
-    suspend: 'Trong thời gian tạm dừng, mọi nơi kiểm tra sẽ thấy bằng này đang bị tạm dừng. Bạn có thể khôi phục sau.',
-    restore: 'Bằng sẽ có hiệu lực trở lại với mọi nơi kiểm tra.',
-    revoke: 'Thu hồi là vĩnh viễn và không thể hoàn tác. Từ nay mọi nơi kiểm tra sẽ thấy bằng này đã bị thu hồi.',
+    suspend: 'Trong thời gian tạm dừng, nơi kiểm tra sẽ thấy bằng này đang bị tạm dừng. Bạn có thể khôi phục sau.',
+    restore: 'Bằng sẽ có hiệu lực trở lại.',
+    revoke: 'Thu hồi là vĩnh viễn và không thể hoàn tác: bằng này sẽ không bao giờ có hiệu lực trở lại.',
   },
   confirmAction: { suspend: 'Tạm dừng bằng', restore: 'Khôi phục bằng', revoke: 'Thu hồi vĩnh viễn' },
   cancel: 'Hủy',
@@ -208,10 +224,15 @@ const vi: SchoolPortalPageCopy = {
   statusChangeProblems: {
     already_revoked: 'Bằng này đã bị thu hồi trước đó nên không thể thay đổi.',
     session_expired: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+    forbidden: 'Tài khoản này không có quyền đổi trạng thái bằng. Trạng thái chưa thay đổi.',
+    not_found: 'Không còn tìm thấy bằng này. Tải lại danh sách rồi thử lại.',
+    rejected: 'Máy chủ không nhận thay đổi này. Trạng thái chưa thay đổi.',
+    rate_limited: 'Có quá nhiều thay đổi trong thời gian ngắn. Đợi một phút rồi thử lại. Trạng thái chưa thay đổi.',
     network: 'Không kết nối được máy chủ Identra. Trạng thái chưa thay đổi.',
-    unavailable: 'Máy chủ Identra chưa trả lời được. Trạng thái chưa thay đổi.',
+    unavailable: 'Máy chủ Identra đang không phản hồi. Trạng thái chưa thay đổi.',
   },
-  statusChanged: 'Máy chủ đã ghi nhận: bằng của {name} giờ ở trạng thái {status}.',
+  statusChanged: 'Đã lưu: bằng của {name} chuyển sang “{status}”.',
+  timingNote: 'Trang kiểm tra của Identra thấy ngay; nơi kiểm tra khác có thể chậm tới 15 phút.',
 };
 
 const en: SchoolPortalPageCopy = {
@@ -230,9 +251,10 @@ const en: SchoolPortalPageCopy = {
   signingIn: 'Signing in…',
   signInProblems: {
     invalid_credentials: 'The username or password is not correct.',
+    rejected: 'The server did not accept this sign-in request. Check the username and try again.',
     rate_limited: 'Too many sign-in attempts.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
-    unavailable: 'The Identra server is not answering. Try again in a few minutes.',
+    unavailable: 'The Identra server is not responding. Try again in a few minutes.',
   },
   retryAfter: 'Wait {seconds} seconds, then try again.',
   sessionExpiredNotice: 'Your session has expired. Please sign in again.',
@@ -266,7 +288,7 @@ const en: SchoolPortalPageCopy = {
     soHieuBang: 'Diploma number',
   },
   walletTitle: 'Receive your diploma',
-  walletIntro: 'The university issues you a diploma that anyone can check, kept in the Identra app on your phone.',
+  walletIntro: 'The university issues you an electronic diploma that anyone can check, kept in the Identra app.',
   receive: 'Receive in my Identra wallet',
   creatingOffer: 'Preparing your code…',
   offerQrLabel: 'QR code to receive your diploma in the Identra wallet. Scan it with the Identra app.',
@@ -280,7 +302,13 @@ const en: SchoolPortalPageCopy = {
   expiredTitle: 'This code has expired',
   expiredBody: 'Each code works for 10 minutes. Create a new one to try again.',
   newOffer: 'New code',
-  openInWallet: 'On your phone? Open in the Identra wallet',
+  openInWallet: 'Open in the Identra wallet',
+  linkLabel: 'Link to receive the diploma',
+  copyLink: 'Copy link',
+  linkCopied: 'Link copied',
+  qrUnavailable: 'The QR code cannot be shown. Use the link below instead.',
+  reissue: 'Receive the diploma again',
+  reissueHint: 'For a new or lost phone. Each time is a new copy of the diploma; the old one stays valid until the registrar revokes it.',
   firstTimeTitle: 'New to the Identra wallet?',
   firstTimeSteps: [
     'Open the Identra app on your phone and tap Scan.',
@@ -294,12 +322,14 @@ const en: SchoolPortalPageCopy = {
   loadProblems: {
     network: 'Cannot reach the Identra server.',
     rate_limited: 'Too many requests in a short time. Wait a minute, then try again.',
-    unavailable: 'The Identra server is not answering.',
+    unavailable: 'The Identra server is not responding.',
+    forbidden: 'This account may not see this.',
+    rejected: 'The server did not accept this request. Reload the page and try again.',
   },
   retry: 'Try again',
   loading: 'Loading…',
   registrarTitle: 'Issued diplomas',
-  registrarIntro: 'Suspend, restore or revoke a diploma. Anyone checking it sees the change within a few minutes.',
+  registrarIntro: 'Suspend, restore or revoke a diploma that has been issued.',
   refresh: 'Refresh',
   updatedAt: 'Updated {time}',
   counts: '{valid} valid · {suspended} suspended · {revoked} revoked',
@@ -317,9 +347,9 @@ const en: SchoolPortalPageCopy = {
     revoke: 'Permanently revoke {name}\'s diploma?',
   },
   confirmBody: {
-    suspend: 'While suspended, anyone checking this diploma sees that it is suspended. You can restore it later.',
-    restore: 'The diploma becomes valid again for anyone checking it.',
-    revoke: 'Revoking is permanent and cannot be undone. From now on anyone checking this diploma sees that it was revoked.',
+    suspend: 'While suspended, verifiers see that this diploma is suspended. You can restore it later.',
+    restore: 'The diploma becomes valid again.',
+    revoke: 'Revoking is permanent and cannot be undone: this diploma will never be valid again.',
   },
   confirmAction: { suspend: 'Suspend diploma', restore: 'Restore diploma', revoke: 'Revoke permanently' },
   cancel: 'Cancel',
@@ -327,10 +357,15 @@ const en: SchoolPortalPageCopy = {
   statusChangeProblems: {
     already_revoked: 'This diploma was already revoked, so it cannot be changed.',
     session_expired: 'Your session has expired. Please sign in again.',
+    forbidden: 'This account may not change a diploma\'s status. The status has not changed.',
+    not_found: 'This diploma can no longer be found. Refresh the list and try again.',
+    rejected: 'The server did not accept this change. The status has not changed.',
+    rate_limited: 'Too many changes in a short time. Wait a minute, then try again. The status has not changed.',
     network: 'Cannot reach the Identra server. The status has not changed.',
-    unavailable: 'The Identra server is not answering. The status has not changed.',
+    unavailable: 'The Identra server is not responding. The status has not changed.',
   },
-  statusChanged: 'Saved by the server: {name}\'s diploma is now {status}.',
+  statusChanged: 'Saved: {name}\'s diploma is now “{status}”.',
+  timingNote: 'Identra\'s own checks see it at once; other verifiers may take up to 15 minutes.',
 };
 
 export const SCHOOL_PORTAL_PAGE_TRANSLATIONS = {

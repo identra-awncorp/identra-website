@@ -291,7 +291,8 @@ function ApplyJobApplicationFlow({
     window.requestAnimationFrame(() => qrTriggerRef.current?.focus());
   }, []);
 
-  // Name and degree come from the verified diploma; the remaining fields stay self-declared and editable.
+  // Name and degree come from the verified diploma; every other field stays exactly as the candidate left it
+  // (empty or typed by them): nothing is invented next to a verified name.
   const applyDiplomaResult = (result: SessionResult) => {
     if (!result.ok) return;
     const claims = result.claims ?? {};
@@ -300,10 +301,6 @@ function ApplyJobApplicationFlow({
     setJobDegree([claimText('nganh'), claimText('hang_tot_nghiep'), claimText('nam_tot_nghiep')]
       .filter(Boolean)
       .join(' · '));
-    setJobEmail((value) => value || uiT.qrEmail);
-    setJobPhone((value) => value || uiT.qrPhone);
-    setJobExp((value) => value || uiT.qrExperience);
-    setJobGithub((value) => value || uiT.qrGithub);
     setDiplomaResult(result);
     setValidationError(null);
     addLog({ scope: 'flow', key: 'qrApplySuccessLog', type: 'ok' });

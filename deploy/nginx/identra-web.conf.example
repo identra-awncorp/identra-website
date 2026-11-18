@@ -12,7 +12,7 @@
 #   /{locale}/demo/{id}/index.html   demo scenarios
 #   /{locale}/404/index.html         localized not-found pages; /404.html is the neutral one
 #   /assets/*                        content-hashed JS/CSS/images (safe to cache forever)
-#   /trust/identra-root-ca.pem       the published Identra Root CA certificate
+#   /trust/identra-root-ca.pem       the published Identra Root CA certificate (and -next.pem in a rollover)
 
 map $uri $identra_cache_control {
     default                                "public, max-age=3600";
@@ -21,6 +21,7 @@ map $uri $identra_cache_control {
     /                                      "no-cache";
     /root-locale.js                        "no-cache";
     /trust/identra-root-ca.pem             "no-cache";
+    /trust/identra-root-ca-next.pem        "no-cache";
     /sitemap.xml                           "no-cache";
     /blog-feed.xml                         "no-cache";
     # from vercel.json: the unlisted book shortcut must never be cached.
@@ -31,7 +32,7 @@ map $uri $identra_cache_control {
 # It keeps the canonical origin of the current build (VITE_SITE_URL); change both together.
 map $uri $identra_link_header {
     default                                    "";
-    /white-paper/Identra-White-Paper-v1.0.pdf  '<https://www.identra.id.vn/vi/white-paper>; rel="canonical"';
+    /white-paper/Identra-White-Paper-v1.0.pdf  '<https://identra.awncorp.vn/vi/white-paper>; rel="canonical"';
 }
 
 # Unknown paths get the not-found page of the locale they were asked in.
@@ -48,16 +49,20 @@ server {
 
     server_tokens off;
     charset utf-8;
-    absolute_redirect off;
 
-    # Content-Security-Policy, verified against the built site in a real browser:
-    # - script-src 'self' only: there is no inline script (the locale bootstrap is /root-locale.js;
-    #   JSON-LD blocks are data, not script, and are not governed by script-src).
-    # - style-src needs 'unsafe-inline': the prerendered HTML carries an inline <style> for the first-paint
-    #   skeleton and many style="" attributes (React/motion); fonts' CSS comes from Google Fonts.
-    # - img-src lists the two image hosts the current pages use (Unsplash, Google user content).
+    # Security headers. nginx drops every server-level add_header in a location that has its own
+    # add_header, so the one such location below (the root certificates) repeats this whole block;
+    # keep the two copies identical.
+    # Content-Security-Policy, verified with zero violations against the built site in Chromium:
+    # - script-src 'self' only: no inline script (the locale bootstrap is /root-locale.js; JSON-LD blocks
+    #   are data, not script, and are not governed by script-src).
+    # - style-src-elem keeps 'unsafe-inline' for the first-paint skeleton <style>; style-src-attr for the
+    #   style="" attributes React and motion write. Fonts' CSS comes from Google Fonts.
+    # - img-src: the two image hosts the current pages use (Unsplash, Google user content).
     # - connect-src: the Identra API only.
-    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://lh3.googleusercontent.com; connect-src 'self' https://api-identra.awncorp.vn; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'" always;
+    # HSTS is honoured by browsers only over HTTPS, which Cloudflare terminates in front of this server.
+    add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://lh3.googleusercontent.com; connect-src https://api-identra.awncorp.vn; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
     add_header X-Content-Type-Options "nosniff" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header X-Frame-Options "DENY" always;
@@ -69,9 +74,15 @@ server {
     gzip on;
     gzip_types text/css application/javascript application/json image/svg+xml application/xml text/plain;
 
+    # A decoded path that starts with "//" or "/\" (e.g. /%5Cevil.example/) is never redirected anywhere.
+    location ~ "^/(/|\x5C)" {
+        return 404;
+    }
+
     # Like vercel.json "trailingSlash": false: /vi/blog/ -> /vi/blog (the root "/" is left alone).
+    # The target is absolute and on this host only, so no path can turn it into an off-site redirect.
     location ~ ^(.+)/$ {
-        return 308 $1$is_args$args;
+        return 308 https://identra.awncorp.vn$1$is_args$args;
     }
 
     # from vercel.json: temporary redirect of the unlisted Vietnamese book shortcut (no-store via the map).
@@ -80,12 +91,17 @@ server {
         return 307 https://drive.google.com/file/d/1thNJd9UMxk4glzgrQmmTsZ2fpCs8gIy-/view;
     }
 
-    location = /trust/identra-root-ca.pem {
+    # The published Identra Root CA certificate(s): the current root and, during a rollover, the next.
+    location ~ ^/trust/(identra-root-ca(-next)?\.pem)$ {
         default_type application/x-pem-file;
-        add_header Content-Disposition 'attachment; filename="identra-root-ca.pem"' always;
-        # add_header in a location replaces the server-level ones, so they are repeated here.
-        add_header Content-Security-Policy "default-src 'none'; frame-ancestors 'none'" always;
+        add_header Content-Disposition "attachment" always;
+        add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://lh3.googleusercontent.com; connect-src https://api-identra.awncorp.vn; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'" always;
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
         add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header Cross-Origin-Opener-Policy "same-origin" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), browsing-topics=()" always;
         add_header Cache-Control $identra_cache_control always;
         try_files $uri =404;
     }

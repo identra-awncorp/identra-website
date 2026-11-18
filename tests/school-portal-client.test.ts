@@ -25,12 +25,16 @@ const json = (body: unknown, status = 200, headers: Record<string, string> = {})
 
 const client = (respond: (call: Call) => Response | Promise<Response>) => {
   const fake = fakeFetch(respond);
-  return { ...fake, api: createSchoolPortalClient({ baseUrl: 'https://api.example.test/', issuer: 'truong-mau', fetch: fake.fetchImpl }) };
+  return { ...fake, api: createSchoolPortalClient({ baseUrl: 'https://api.example.test/', apiOrigin: API, issuer: 'truong-mau', fetch: fake.fetchImpl }) };
 };
+
+const API = 'https://api-identra.awncorp.vn';
+const offerUri = (offerId: string) => `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(`${API}/issuers/truong-mau/offers/${offerId}`)}`;
 
 const studentLogin = {
   token: 'secret-token-123',
   expiresAt: '2026-11-19T02:00:00.000Z',
+  serverTime: '2026-11-19T01:30:00.000Z',
   role: 'student',
   profile: {
     hoTen: 'Nguyễn Minh Mẫu',
@@ -65,21 +69,34 @@ test('login posts the credentials as JSON without cookies and parses a student s
 
 test('a registrar session carries only the registrar profile', async () => {
   const { api } = client(() => json({
-    token: 't', expiresAt: '2026-11-19T02:00:00Z', role: 'registrar', profile: { hoTen: 'Đỗ Thị Mẫu', donVi: 'Phòng Đào tạo' },
+    token: 't', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:30:00Z', role: 'registrar', profile: { hoTen: 'Đỗ Thị Mẫu', donVi: 'Phòng Đào tạo' },
   }));
   assert.deepEqual((await api.login('phongdaotao', 'x')).profile, { hoTen: 'Đỗ Thị Mẫu', donVi: 'Phòng Đào tạo' });
 });
 
-test('HTTP failures map to kinds: wrong password, expired session, rate limit with Retry-After, conflict', async () => {
-  await rejectsWith(client(() => json({ statusCode: 401 }, 401)).api.login('sv001', 'bad'), 'invalid_credentials');
-  await rejectsWith(client(() => json({ statusCode: 401 }, 401)).api.listCredentials('secret-token-123'), 'session_expired');
-  await rejectsWith(client(() => json({}, 403)).api.listCredentials('t'), 'forbidden');
-  await rejectsWith(client(() => json({}, 404)).api.getOfferStatus('t', 'abc'), 'not_found');
-  await rejectsWith(client(() => json({}, 409)).api.changeCredentialStatus('t', 'abc', 'valid'), 'conflict');
+const apiError = (status: number, code: string) => json({ statusCode: status, code, message: 'secret-token-123 for logs only' }, status);
+
+test('failures branch on the error code of section 2, the status only when the body has none', async () => {
+  await rejectsWith(client(() => apiError(401, 'INVALID_CREDENTIALS')).api.login('sv001', 'bad'), 'invalid_credentials');
+  await rejectsWith(client(() => apiError(401, 'SESSION_EXPIRED')).api.listCredentials('secret-token-123'), 'session_expired');
+  await rejectsWith(client(() => apiError(403, 'FORBIDDEN')).api.listCredentials('t'), 'forbidden');
+  await rejectsWith(client(() => apiError(404, 'NOT_FOUND')).api.getOfferStatus('t', 'abc'), 'not_found');
+  await rejectsWith(client(() => apiError(409, 'CONFLICT')).api.changeCredentialStatus('t', 'abc', 'valid'), 'conflict');
+  await rejectsWith(client(() => apiError(400, 'VALIDATION_FAILED')).api.changeCredentialStatus('t', 'abc', 'valid'), 'validation_failed');
+  await rejectsWith(client(() => apiError(500, 'INTERNAL_ERROR')).api.listCredentials('t'), 'internal_error');
+  await rejectsWith(client(() => apiError(503, 'UNAVAILABLE')).api.listCredentials('t'), 'unavailable');
+  // No known code: the status decides; an unknown status is a plain HTTP error.
+  await rejectsWith(client(() => json({ statusCode: 401, code: 'SOMETHING_NEW' }, 401)).api.login('a', 'b'), 'session_expired');
   await rejectsWith(client(() => new Response('<html>oops</html>', { status: 502 })).api.listCredentials('t'), 'http');
 
-  const limited = client(() => json({ statusCode: 429 }, 429, { 'Retry-After': '42' }));
+  const limited = client(() => json({ statusCode: 429, code: 'RATE_LIMITED', message: 'x' }, 429, { 'Retry-After': '42' }));
   await assert.rejects(limited.api.login('sv001', 'x'), (error: PortalApiError) => error.kind === 'rate_limited' && error.retryAfterSeconds === 42);
+});
+
+test('a request that hangs times out', async () => {
+  const fake = fakeFetch((call) => new Promise<Response>((_, reject) => call.init.signal?.addEventListener('abort', () => reject(new Error('aborted')))));
+  const api = createSchoolPortalClient({ baseUrl: 'https://api.example.test', apiOrigin: API, issuer: 'truong-mau', fetch: fake.fetchImpl, timeoutMs: 20 });
+  await rejectsWith(api.listCredentials('t'), 'timeout');
 });
 
 test('a network failure is reported as such, an abort is passed through untouched', async () => {
@@ -102,17 +119,24 @@ test('malformed responses are rejected instead of trusted', async () => {
     { ...studentLogin, profile: { ...studentLogin.profile, hoTen: 'x'.repeat(501) } },
     { ...studentLogin, profile: { ...studentLogin.profile, nganh: { html: '<b>' } } },
     { ...studentLogin, profile: null },
+    { ...studentLogin, serverTime: undefined },
+    { ...studentLogin, profile: { ...studentLogin.profile, hoTen: 'Nguyễn\u202EnaV' } },
+    { ...studentLogin, profile: { ...studentLogin.profile, hoTen: 'Nguyễn\u200B' } },
   ];
   for (const body of bad) {
     await rejectsWith(client(() => new Response(typeof body === 'string' ? body : JSON.stringify(body))).api.login('a', 'b'), 'malformed');
   }
 
-  const offer = { offerId: 'abc_DEF-1', offerUri: 'openid-credential-offer://?credential_offer_uri=https%3A%2F%2Fx', txCode: '123456', expiresAt: '2026-11-19T02:00:00Z' };
+  const offer = { offerId: 'abc_DEF-1', offerUri: offerUri('abc_DEF-1'), txCode: '123456', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:50:00Z' };
   for (const body of [
     { ...offer, txCode: '12345' },
     { ...offer, txCode: '12a456' },
     { ...offer, offerUri: 'javascript:alert(1)' },
+    { ...offer, offerUri: offerUri('other-offer') },
+    { ...offer, offerUri: offerUri('abc_DEF-1').replace(encodeURIComponent(API), encodeURIComponent('https://evil.example')) },
+    { ...offer, offerUri: `${offerUri('abc_DEF-1')}&x=${'a'.repeat(2048)}` },
     { ...offer, offerId: '../../etc' },
+    { ...offer, serverTime: undefined },
   ]) {
     await rejectsWith(client(() => json(body)).api.createOffer('t'), 'malformed');
   }
@@ -124,7 +148,7 @@ test('malformed responses are rejected instead of trusted', async () => {
 test('authenticated calls send the bearer token and hit the contract paths', async () => {
   const { api, calls } = client((call) => {
     if (call.url.endsWith('/offers')) {
-      return json({ offerId: 'o1', offerUri: 'openid-credential-offer://?credential_offer_uri=x', txCode: '000123', expiresAt: '2026-11-19T02:00:00Z' }, 201);
+      return json({ offerId: 'o1', offerUri: offerUri('o1'), txCode: '000123', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:50:00Z' }, 201);
     }
     if (call.url.includes('/offers/')) return json({ status: 'issued' });
     if (call.url.endsWith('/status')) return json({ id: 'c 1', status: 'revoked', updatedAt: '2026-11-19T02:00:00Z' });

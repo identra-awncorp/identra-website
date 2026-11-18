@@ -13,34 +13,37 @@ import type {
 } from './schoolPortalClient';
 
 // State of the sample university portal. Stable keys only; the page picks every sentence at render time.
+// Times: `clockOffsetMs` = serverTime - local time when the answer arrived, so every countdown and expiry
+// decision runs on the server's clock (vc-api.md section 2). Error kinds come from the error `code`.
 
 // ---- Sign-in ------------------------------------------------------------------------------------
 
-export type SignInProblem = 'invalid_credentials' | 'rate_limited' | 'network' | 'unavailable';
+export type SignInProblem = 'invalid_credentials' | 'rate_limited' | 'network' | 'unavailable' | 'rejected';
 export type SignedOutNotice = 'session_expired' | 'signed_out' | null;
 
 export type AuthState =
-  | { status: 'signedOut'; notice: SignedOutNotice; submitting: boolean; problem: SignInProblem | null; retryAfterSeconds: number | null }
-  | { status: 'signedIn'; session: PortalSession };
+  | { status: 'signedOut'; notice: SignedOutNotice; submitting: boolean; problem: SignInProblem | null; retryAt: number | null }
+  | { status: 'signedIn'; session: PortalSession; clockOffsetMs: number };
 
 export type AuthEvent =
   | { type: 'submit' }
-  | { type: 'signedIn'; session: PortalSession }
-  | { type: 'signInFailed'; problem: SignInProblem; retryAfterSeconds?: number }
+  | { type: 'signedIn'; session: PortalSession; clockOffsetMs: number }
+  /** `retryAt`: local time before which signing in again is refused (a 429's Retry-After). */
+  | { type: 'signInFailed'; problem: SignInProblem; retryAt?: number }
   | { type: 'signOut' }
   | { type: 'sessionExpired' };
 
-export const SIGNED_OUT: AuthState = { status: 'signedOut', notice: null, submitting: false, problem: null, retryAfterSeconds: null };
+export const SIGNED_OUT: AuthState = { status: 'signedOut', notice: null, submitting: false, problem: null, retryAt: null };
 
 export const authReducer = (state: AuthState, event: AuthEvent): AuthState => {
   switch (event.type) {
     case 'submit':
-      return state.status === 'signedOut' ? { ...state, submitting: true, problem: null, retryAfterSeconds: null } : state;
+      return state.status === 'signedOut' ? { ...state, notice: null, submitting: true, problem: null, retryAt: null } : state;
     case 'signedIn':
-      return { status: 'signedIn', session: event.session };
+      return { status: 'signedIn', session: event.session, clockOffsetMs: event.clockOffsetMs };
     case 'signInFailed':
       return state.status === 'signedOut'
-        ? { ...state, submitting: false, problem: event.problem, retryAfterSeconds: event.retryAfterSeconds ?? null }
+        ? { ...state, submitting: false, problem: event.problem, retryAt: event.retryAt ?? null }
         : state;
     case 'signOut':
       return { ...SIGNED_OUT, notice: 'signed_out' };
@@ -54,29 +57,30 @@ export const authReducer = (state: AuthState, event: AuthEvent): AuthState => {
 export const signInProblemFor = (error: PortalApiError): SignInProblem => {
   if (error.kind === 'invalid_credentials') return 'invalid_credentials';
   if (error.kind === 'rate_limited') return 'rate_limited';
-  if (error.kind === 'network') return 'network';
+  if (error.kind === 'network' || error.kind === 'timeout') return 'network';
+  if (error.kind === 'validation_failed' || error.kind === 'forbidden') return 'rejected';
   return 'unavailable';
 };
 
 // ---- A student's credential offer ---------------------------------------------------------------
 
-export type LoadProblem = 'network' | 'rate_limited' | 'unavailable';
+export type LoadProblem = 'network' | 'rate_limited' | 'unavailable' | 'forbidden' | 'rejected';
 
 export type OfferState =
   | { phase: 'idle' }
   | { phase: 'creating' }
-  | { phase: 'active'; offer: CredentialOffer; reconnecting: boolean }
+  | { phase: 'active'; offer: CredentialOffer; clockOffsetMs: number; reconnecting: boolean }
   | { phase: 'issued'; offer: CredentialOffer }
   | { phase: 'expired' }
-  | { phase: 'error'; problem: LoadProblem };
+  | { phase: 'error'; problem: LoadProblem; retryAt: number | null };
 
 export type OfferEvent =
   | { type: 'create' }
-  | { type: 'created'; offer: CredentialOffer }
+  | { type: 'created'; offer: CredentialOffer; clockOffsetMs: number }
   | { type: 'status'; offerId: string; status: OfferStatus }
   | { type: 'pollFailed'; offerId: string }
   | { type: 'expiredLocally'; offerId: string }
-  | { type: 'failed'; problem: LoadProblem }
+  | { type: 'failed'; problem: LoadProblem; retryAt?: number }
   | { type: 'reset' };
 
 export const OFFER_IDLE: OfferState = { phase: 'idle' };
@@ -88,9 +92,11 @@ export const offerReducer = (state: OfferState, event: OfferEvent): OfferState =
     case 'create':
       return { phase: 'creating' };
     case 'created':
-      return state.phase === 'creating' ? { phase: 'active', offer: event.offer, reconnecting: false } : state;
+      return state.phase === 'creating'
+        ? { phase: 'active', offer: event.offer, clockOffsetMs: event.clockOffsetMs, reconnecting: false }
+        : state;
     case 'failed':
-      return state.phase === 'creating' ? { phase: 'error', problem: event.problem } : state;
+      return state.phase === 'creating' ? { phase: 'error', problem: event.problem, retryAt: event.retryAt ?? null } : state;
     case 'status':
       if (state.phase !== 'active' || state.offer.offerId !== event.offerId) return state;
       if (event.status === 'issued') return { phase: 'issued', offer: state.offer };
@@ -106,8 +112,10 @@ export const offerReducer = (state: OfferState, event: OfferEvent): OfferState =
 };
 
 export const loadProblemFor = (error: PortalApiError): LoadProblem => {
-  if (error.kind === 'network') return 'network';
+  if (error.kind === 'network' || error.kind === 'timeout') return 'network';
   if (error.kind === 'rate_limited') return 'rate_limited';
+  if (error.kind === 'forbidden') return 'forbidden';
+  if (error.kind === 'validation_failed' || error.kind === 'conflict' || error.kind === 'not_found') return 'rejected';
   return 'unavailable';
 };
 
@@ -168,11 +176,26 @@ export const countByStatus = (items: IssuedCredential[]): Record<CredentialStatu
   { valid: 0, suspended: 0, revoked: 0 } as Record<CredentialStatus, number>,
 );
 
-export type StatusChangeProblem = 'already_revoked' | 'session_expired' | 'network' | 'unavailable';
+export type StatusChangeProblem =
+  | 'already_revoked'
+  | 'session_expired'
+  | 'forbidden'
+  | 'not_found'
+  | 'rejected'
+  | 'rate_limited'
+  | 'network'
+  | 'unavailable';
 
 export const statusChangeProblemFor = (error: PortalApiError): StatusChangeProblem => {
-  if (error.kind === 'conflict') return 'already_revoked';
-  if (error.kind === 'session_expired') return 'session_expired';
-  if (error.kind === 'network') return 'network';
-  return 'unavailable';
+  switch (error.kind) {
+    case 'conflict': return 'already_revoked';
+    case 'session_expired': return 'session_expired';
+    case 'forbidden': return 'forbidden';
+    case 'not_found': return 'not_found';
+    case 'validation_failed': return 'rejected';
+    case 'rate_limited': return 'rate_limited';
+    case 'network':
+    case 'timeout': return 'network';
+    default: return 'unavailable';
+  }
 };

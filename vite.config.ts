@@ -133,7 +133,7 @@ export default defineConfig(() => {
     plugins: [
       externalShortcuts(),
       localizedPreviewEntries(),
-      identraRootCaPlugin({defaultFile: path.resolve(__dirname, 'src/identra/trust/root-ca.pem')}),
+      identraRootCaPlugin({defaultDir: path.resolve(__dirname, 'src/identra/trust')}),
       react(),
       tailwindcss(),
     ],

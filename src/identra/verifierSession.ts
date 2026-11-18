@@ -3,21 +3,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import type {
-  CheckId,
-  ClaimValue,
-  ErrorCode,
-  SessionResult,
-  VerificationSession,
-  VerifierClient,
-  VerifierClientError,
+import {
+  serverClockOffset,
+  type CheckId,
+  type ClaimValue,
+  type ErrorCode,
+  type SessionResult,
+  type VerificationSession,
+  type VerifierClient,
+  type VerifierClientError,
 } from '@identra/sdk-client';
 import { MAX_FIELD_LENGTH } from './schoolPortalClient';
 
 // The verifier step of the apply-job demo as a small state machine (vc-api.md section 6).
 // Stable keys only: every sentence is chosen at render time from the translations.
+// Countdowns use the server clock: `clockOffsetMs` = serverTime - local time when the answer arrived.
 
-export type VerifierProblem = 'network' | 'rate_limited' | 'unavailable';
+export type VerifierProblem = 'network' | 'rate_limited' | 'unavailable' | 'rejected' | 'unreadable';
 
 export type VerifierStepState =
   | { phase: 'idle' }
@@ -27,20 +29,23 @@ export type VerifierStepState =
       sessionId: string;
       qr: string;
       expiresAt: string;
+      clockOffsetMs: number;
       status: 'pending' | 'request_retrieved';
       reconnecting: boolean;
     }
   | { phase: 'verified' | 'failed'; sessionId: string; verifierName: string; result: SessionResult }
   | { phase: 'expired' }
-  | { phase: 'error'; problem: VerifierProblem };
+  | { phase: 'error'; problem: VerifierProblem; retryAt: number | null };
 
 export type VerifierStepEvent =
   | { type: 'start' }
-  | { type: 'created'; sessionId: string; qr: string; expiresAt: string }
-  | { type: 'update'; session: VerificationSession }
+  | { type: 'created'; sessionId: string; qr: string; expiresAt: string; clockOffsetMs: number }
+  | { type: 'update'; session: VerificationSession; clockOffsetMs: number }
   | { type: 'retrying' }
+  | { type: 'recovered' }
   | { type: 'expired' }
-  | { type: 'error'; problem: VerifierProblem }
+  /** `retryAt`: local time before which a retry is pointless (from a 429's Retry-After). */
+  | { type: 'error'; problem: VerifierProblem; retryAt?: number }
   | { type: 'reset' };
 
 export const INITIAL_VERIFIER_STEP_STATE: VerifierStepState = { phase: 'idle' };
@@ -53,30 +58,48 @@ export const verifierStepReducer = (state: VerifierStepState, event: VerifierSte
       return { phase: 'creating' };
     case 'created':
       return state.phase === 'creating'
-        ? { phase: 'waiting', sessionId: event.sessionId, qr: event.qr, expiresAt: event.expiresAt, status: 'pending', reconnecting: false }
+        ? {
+            phase: 'waiting',
+            sessionId: event.sessionId,
+            qr: event.qr,
+            expiresAt: event.expiresAt,
+            clockOffsetMs: event.clockOffsetMs,
+            status: 'pending',
+            reconnecting: false,
+          }
         : state;
     case 'expired':
-      if (state.phase === 'creating') return { phase: 'error', problem: 'unavailable' };
+      if (state.phase === 'creating') return { phase: 'error', problem: 'unavailable', retryAt: null };
       return state.phase === 'waiting' ? { phase: 'expired' } : state;
     case 'retrying':
       return state.phase === 'waiting' ? { ...state, reconnecting: true } : state;
+    case 'recovered':
+      return state.phase === 'waiting' && state.reconnecting ? { ...state, reconnecting: false } : state;
     case 'error':
-      return state.phase === 'creating' || state.phase === 'waiting' ? { phase: 'error', problem: event.problem } : state;
+      return state.phase === 'creating' || state.phase === 'waiting'
+        ? { phase: 'error', problem: event.problem, retryAt: event.retryAt ?? null }
+        : state;
     case 'update': {
       if (state.phase !== 'waiting' || event.session.id !== state.sessionId) return state;
       const { session } = event;
       if (session.status === 'expired') return { phase: 'expired' };
       if ((session.status === 'verified' || session.status === 'failed') && session.result) {
-        // The result decides the outcome: a "verified" session whose result is not ok is shown as failed.
+        // The result decides the outcome; the client already rejects a status that disagrees with it.
         return {
-          phase: session.status === 'verified' && session.result.ok ? 'verified' : 'failed',
+          phase: session.result.ok ? 'verified' : 'failed',
           sessionId: session.id,
           verifierName: session.verifier.name,
           result: session.result,
         };
       }
       if (session.status === 'pending' || session.status === 'request_retrieved') {
-        return { ...state, status: session.status, expiresAt: session.expiresAt, reconnecting: false };
+        return {
+          ...state,
+          status: session.status,
+          expiresAt: session.expiresAt,
+          clockOffsetMs: event.clockOffsetMs,
+          reconnecting: false,
+        };
       }
       return state;
     }
@@ -85,10 +108,13 @@ export const verifierStepReducer = (state: VerifierStepState, event: VerifierSte
   }
 };
 
-const problemFor = (error: unknown): VerifierProblem => {
-  const kind = (error as Partial<VerifierClientError> | null)?.kind;
-  if (kind === 'network') return 'network';
+/** Branches on the client error's kind and code, never on a message. */
+export const problemFor = (error: unknown): VerifierProblem => {
+  const { kind, status } = (error as Partial<VerifierClientError> | null) ?? {};
+  if (kind === 'network' || kind === 'timeout') return 'network';
   if (kind === 'rate_limited') return 'rate_limited';
+  if (kind === 'malformed') return 'unreadable';
+  if (kind === 'http' && status !== undefined && status >= 400 && status < 500) return 'rejected';
   return 'unavailable';
 };
 
@@ -99,9 +125,15 @@ const problemFor = (error: unknown): VerifierProblem => {
 export const runVerifierSession = async (
   client: VerifierClient,
   input: { verifier: string; scenario: string },
-  options: { signal: AbortSignal; dispatch: (event: VerifierStepEvent) => void; intervalMs?: number },
+  options: {
+    signal: AbortSignal;
+    dispatch: (event: VerifierStepEvent) => void;
+    intervalMs?: number;
+    now?: () => number;
+  },
 ): Promise<void> => {
   const { signal } = options;
+  const now = options.now ?? Date.now;
   const dispatch = (event: VerifierStepEvent) => {
     if (!signal.aborted) options.dispatch(event);
   };
@@ -109,14 +141,23 @@ export const runVerifierSession = async (
   dispatch({ type: 'start' });
   try {
     const created = await client.createSession(input, { signal });
-    dispatch({ type: 'created', sessionId: created.id, qr: created.qr, expiresAt: created.expiresAt });
+    dispatch({
+      type: 'created',
+      sessionId: created.id,
+      qr: created.qr,
+      expiresAt: created.expiresAt,
+      clockOffsetMs: serverClockOffset(created.serverTime, now()),
+    });
     const final = await client.watchSession(created.id, {
       signal,
       intervalMs: options.intervalMs ?? 1000,
-      onUpdate: (session) => dispatch({ type: 'update', session }),
+      expiresAt: created.expiresAt,
+      serverTime: created.serverTime,
+      onUpdate: (session) => dispatch({ type: 'update', session, clockOffsetMs: serverClockOffset(session.serverTime, now()) }),
       onError: () => dispatch({ type: 'retrying' }),
+      onRecover: () => dispatch({ type: 'recovered' }),
     });
-    dispatch({ type: 'update', session: final });
+    dispatch({ type: 'update', session: final, clockOffsetMs: serverClockOffset(final.serverTime, now()) });
   } catch (error) {
     if (signal.aborted) return;
     // A session that disappeared from the server has expired from the user's point of view.
@@ -124,7 +165,12 @@ export const runVerifierSession = async (
       dispatch({ type: 'expired' });
       return;
     }
-    dispatch({ type: 'error', problem: problemFor(error) });
+    const retryAfterSeconds = (error as Partial<VerifierClientError> | null)?.retryAfterSeconds;
+    dispatch({
+      type: 'error',
+      problem: problemFor(error),
+      ...(retryAfterSeconds !== undefined && { retryAt: now() + retryAfterSeconds * 1000 }),
+    });
   }
 };
 
@@ -155,7 +201,15 @@ export const ALL_ERROR_CODES = [
   'REVOKED', 'SUSPENDED', 'STATUS_UNAVAILABLE', 'DISCLOSURE_INVALID', 'KB_INVALID',
   'NONCE_MISMATCH', 'AUD_MISMATCH', 'CHAIN_BROKEN', 'CLIENT_ID_MISMATCH', 'VERIFIER_NOT_TRUSTED',
   'DID_RESOLUTION_FAILED', 'KEY_NOT_FOUND', 'SKIPPED',
+  // Wallet operation codes (SDK architecture section 8): never in a verifier result, but every code has a sentence.
+  'OFFER_INVALID', 'URL_NOT_ALLOWED', 'TX_CODE_WRONG', 'OFFER_EXPIRED', 'NETWORK_ERROR', 'ISSUER_ERROR',
+  'CREDENTIAL_INVALID', 'CNF_MISMATCH', 'CLAIMS_INCOMPLETE', 'STORAGE_ERROR', 'CREDENTIAL_NOT_FOUND',
+  'QUERY_NOT_SATISFIED', 'REQUEST_INVALID', 'REQUEST_EXPIRED', 'VERIFIER_ERROR', 'KEY_INVALIDATED',
+  'USER_CANCELLED', 'DEVICE_LOCKED',
 ] as const satisfies readonly ErrorCode[];
+
+/** Failures that may pass on a later try; every other failure is final for this diploma. */
+export const RETRYABLE_REASONS: ReadonlySet<FailureReasonKey> = new Set(['STATUS_UNAVAILABLE', 'TRUST_LIST_UNAVAILABLE']);
 
 const isKnownCheckId = (id: string): id is KnownCheckId => (KNOWN_CHECK_IDS as readonly string[]).includes(id);
 const isKnownErrorCode = (code: string): code is ErrorCode => (ALL_ERROR_CODES as readonly string[]).includes(code);
@@ -180,6 +234,12 @@ export const toCheckRows = (result: SessionResult): CheckRow[] => result.checks.
 
 /** The first failed check, which is what the result's headline explains. */
 export const firstFailure = (rows: CheckRow[]): CheckRow | null => rows.find((row) => row.outcome === 'failed') ?? null;
+
+/** True when trying again with the same diploma cannot help (revoked, suspended, untrusted issuer, ...). */
+export const isFinalFailure = (rows: CheckRow[]): boolean => {
+  const failure = firstFailure(rows);
+  return failure !== null && !RETRYABLE_REASONS.has(failure.reasonKey ?? 'UNKNOWN');
+};
 
 export const DIPLOMA_CLAIM_KEYS = ['ho_ten', 'nganh', 'hang_tot_nghiep', 'nam_tot_nghiep'] as const;
 export type DiplomaClaimKey = typeof DIPLOMA_CLAIM_KEYS[number];

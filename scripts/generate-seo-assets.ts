@@ -25,6 +25,7 @@ import {
   STRUCTURED_BLOG_ARTICLES,
 } from '../src/content/blog/structuredBlogArticles';
 import { DEFAULT_SITE_URL } from '../src/utils/seo';
+import { SEO_ROUTE_GROUPS } from '../src/translations/SeoTranslations';
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const publicDir = resolve(projectRoot, 'public');
 const socialDir = resolve(publicDir, 'social');
@@ -62,7 +63,8 @@ const latestBlogModifiedAt = STRUCTURED_BLOG_ARTICLES.reduce(
   '',
 );
 const staticRoutes: SitemapRoute[] = APP_VIEWS
-  .filter((view) => view !== 'blog-detail' && view !== 'login' && view !== 'dashboard')
+  // Private pages (the 'account' group: sign-in screens, workspaces) stay out of the sitemap.
+  .filter((view) => view !== 'blog-detail' && SEO_ROUTE_GROUPS[view] !== 'account')
   .map((view) => ({
     locales: getViewLocales(view),
     pathForLocale: (locale: Locale) => viewToPath(view, locale),

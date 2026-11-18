@@ -45,6 +45,14 @@ for (const locale of LOCALES) {
   });
 }
 
+test('check labels read correctly under a tick and under a cross (no "not revoked" wording)', () => {
+  assert.equal(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.checks.status, 'Tình trạng thu hồi, tạm dừng');
+  assert.equal(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.checks.issuer_trust, 'Nơi cấp có trong danh sách được Identra công nhận');
+  for (const locale of LOCALES) {
+    assert.ok(!/chưa|not revoked|noch nicht|未/.test(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS[locale].checks.status), locale);
+  }
+});
+
 test('the Vietnamese sentence for a revoked diploma is the agreed one', () => {
   assert.equal(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.reasons.REVOKED, 'Bằng này đã bị nơi cấp thu hồi.');
 });
@@ -52,7 +60,6 @@ test('the Vietnamese sentence for a revoked diploma is the agreed one', () => {
 test('check rows: passed, failed with a reason from the code, skipped, unknown ids and codes', () => {
   const rows = toCheckRows({
     ok: false,
-    issuer: null,
     verifiedAt: '2026-11-19T00:00:00Z',
     checks: [
       { id: 'structure', ok: true, code: null },

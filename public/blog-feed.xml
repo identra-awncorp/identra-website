@@ -5,15 +5,15 @@
      xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>Identra Blog</title>
-    <link>https://www.identra.id.vn/vi/blog</link>
+    <link>https://identra.awncorp.vn/vi/blog</link>
     <description>Phân tích chuyên sâu về định danh tự chủ, thực chứng và hạ tầng niềm tin số.</description>
     <language>vi</language>
     <lastBuildDate>Thu, 10 Sep 2026 00:00:00 GMT</lastBuildDate>
-    <atom:link href="https://www.identra.id.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://identra.awncorp.vn/blog-feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Dự thảo mới về định danh và xác thực: Cơ hội nào đang mở ra cho SSI tại Việt Nam?</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam</guid>
       <description>Dự thảo về định danh, xác thực và truy xuất nguồn gốc đang mở ra hành lang mới cho DID, bằng chứng số và hạ tầng SSI tại Việt Nam.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>
@@ -22,12 +22,12 @@
       <category>DID</category>
       <category>Chính sách số</category>
       <category>Chuỗi khối quốc gia</category>
-      <media:content url="https://www.identra.id.vn/blog/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam/du-thao-moi-ve-dinh-danh-va-xac-thuc-co-hoi-nao-dang-mo-ra-cho-ssi-tai-viet-nam-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>EUDI Wallet bước vào đời sống: 2026–2027 và bước ngoặt của định danh số Châu Âu</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au</guid>
       <description>EUDI Wallet đang chuyển từ thử nghiệm sang triển khai rộng rãi, mở ra giai đoạn mới cho dịch vụ công, giao dịch xuyên biên giới và định danh số tại châu Âu.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
@@ -36,12 +36,12 @@
       <category>eIDAS 2.0</category>
       <category>Định danh tự chủ</category>
       <category>Quyền riêng tư</category>
-      <media:content url="https://www.identra.id.vn/blog/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au/eudi-wallet-2026-2027-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/eudi-wallet-buoc-vao-doi-song-2026-2027-va-buoc-ngoat-dinh-danh-so-tai-chau-au/eudi-wallet-2026-2027-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Từ GDPR đến SSI: Vì sao Châu Âu muốn trao lại quyền kiểm soát dữ liệu cho người dùng</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung</guid>
       <description>Từ các quyền dữ liệu trong GDPR đến EUDI Wallet, châu Âu đang đưa quyền kiểm soát của người dùng từ khuôn khổ pháp lý vào kiến trúc danh tính số.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
@@ -50,12 +50,12 @@
       <category>EUDI Wallet</category>
       <category>Quyền kiểm soát dữ liệu</category>
       <category>Chủ quyền số</category>
-      <media:content url="https://www.identra.id.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/gdpr-to-ssi-eu-data-control-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/tu-gdpr-den-ssi-vi-sao-chau-au-lai-muon-trao-quyen-kiem-soat-du-lieu-cho-nguoi-dung/gdpr-to-ssi-eu-data-control-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Lừa đảo trực tuyến và bài toán bảo vệ dữ liệu cá nhân trong thời đại số</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so</guid>
       <description>Dữ liệu cá nhân bị rò rỉ khiến giả mạo ngày càng thuyết phục; SSI bổ sung khả năng xác minh danh tính, vai trò và quyền hạn trong giao dịch số.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -63,12 +63,12 @@
       <category>Bảo vệ dữ liệu</category>
       <category>Định danh tự chủ</category>
       <category>Xác minh danh tính</category>
-      <media:content url="https://www.identra.id.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-data-protection-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/lua-dao-truc-tuyen-va-bai-toan-bao-ve-du-lieu-ca-nhan-trong-thoi-dai-so/online-fraud-data-protection-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Rò rỉ dữ liệu tại Trung Quốc và Ấn Độ: Bài học về an ninh dữ liệu và cách SSI thay đổi cách chúng ta bảo vệ thông tin</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin</guid>
       <description>Những vụ rò rỉ quy mô lớn cho thấy rủi ro của việc sao chép dữ liệu định danh và cách SSI có thể giảm lượng thông tin phải lưu giữ.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -76,12 +76,12 @@
       <category>An ninh dữ liệu</category>
       <category>Định danh tự chủ</category>
       <category>Tối thiểu hóa dữ liệu</category>
-      <media:content url="https://www.identra.id.vn/blog/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin/data-breach-ssi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/ro-ri-du-lieu-tai-trung-quoc-va-an-do-bai-hoc-ve-an-ninh-du-lieu-va-cach-ssi-thay-doi-cach-chung-ta-bao-ve-thong-tin/data-breach-ssi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Tiết lộ có chọn lọc là gì? Cách xác minh thông tin mà không chia sẻ quá nhiều dữ liệu</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/tiet-lo-co-chon-loc-la-gi</guid>
       <description>Tiết lộ có chọn lọc giúp chủ thể chỉ trình đúng bằng chứng cần thiết, giảm dữ liệu phải chia sẻ mà vẫn giữ được khả năng xác minh.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -89,12 +89,12 @@
       <category>Tối thiểu hóa dữ liệu</category>
       <category>Quyền riêng tư</category>
       <category>Thực chứng</category>
-      <media:content url="https://www.identra.id.vn/blog/tiet-lo-co-chon-loc-la-gi/tiet-lo-co-chon-loc-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/tiet-lo-co-chon-loc-la-gi/tiet-lo-co-chon-loc-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Thực chứng là gì? Cách dữ liệu số trở nên đáng tin cậy và có thể kiểm chứng</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/thuc-chung-la-gi</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/thuc-chung-la-gi</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/thuc-chung-la-gi</guid>
       <description>Thực chứng giúp phần mềm kiểm tra nguồn phát hành, tính toàn vẹn và trạng thái của dữ liệu số mà không phải xác minh thủ công từ đầu.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -102,12 +102,12 @@
       <category>Nguồn gốc dữ liệu</category>
       <category>Mật mã học</category>
       <category>Tiết lộ có chọn lọc</category>
-      <media:content url="https://www.identra.id.vn/blog/thuc-chung-la-gi/thuc-chung-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/thuc-chung-la-gi/thuc-chung-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Ví định tín là gì?</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/vi-dinh-tin-la-gi</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/vi-dinh-tin-la-gi</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/vi-dinh-tin-la-gi</guid>
       <description>Ví định tín giúp con người, tổ chức, thiết bị và phần mềm nhận, quản lý và sử dụng những thông tin có thể kiểm chứng giữa nhiều hệ thống.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -115,12 +115,12 @@
       <category>Thực chứng</category>
       <category>Định danh tự chủ</category>
       <category>Tiết lộ có chọn lọc</category>
-      <media:content url="https://www.identra.id.vn/blog/vi-dinh-tin-la-gi/vi-dinh-tin-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/vi-dinh-tin-la-gi/vi-dinh-tin-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>DID là gì? Một cách mới để xây dựng định danh trên Internet</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/did-la-gi</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/did-la-gi</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/did-la-gi</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/did-la-gi</guid>
       <description>DID cho phép con người, tổ chức, thiết bị và phần mềm sở hữu một định danh có thể được nhiều hệ thống độc lập nhận biết và xác minh.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -128,12 +128,12 @@
       <category>Định danh phi tập trung</category>
       <category>Định danh số</category>
       <category>SSI</category>
-      <media:content url="https://www.identra.id.vn/blog/did-la-gi/did-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/did-la-gi/did-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Giải bài toán niềm tin dữ liệu để phát triển kinh tế số, kinh tế AI</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai</guid>
       <description>AI chỉ có thể tham gia sâu vào nền kinh tế khi dữ liệu đầu vào có nguồn gốc rõ ràng, có thể kiểm chứng và đủ tin cậy để làm căn cứ cho quyết định.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 30 Aug 2026 00:00:00 GMT</pubDate>
@@ -142,12 +142,12 @@
       <category>Niềm tin dữ liệu</category>
       <category>SSI</category>
       <category>AI Agent</category>
-      <media:content url="https://www.identra.id.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai/giai-bai-toan-niem-tin-du-lieu-de-phat-trien-kinh-te-so-kinh-te-ai-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Châu Âu đang dẫn đầu cuộc chuyển dịch sang định danh tự chủ</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu</guid>
       <description>Liên minh châu Âu đang đưa các nguyên tắc của định danh tự chủ từ nghiên cứu và thử nghiệm vào khuôn khổ pháp lý, tiêu chuẩn và hạ tầng số quy mô lớn.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
@@ -155,12 +155,12 @@
       <category>EUDI Wallet</category>
       <category>Liên minh châu Âu</category>
       <category>Thực chứng</category>
-      <media:content url="https://www.identra.id.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu/chau-au-dang-dan-dau-cuoc-chuyen-dich-sang-dinh-danh-tu-chu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>SSI, blockchain và tương lai xuất khẩu hàng hóa Việt Nam sang EU</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu</guid>
       <description>Năng lực cung cấp dữ liệu sản phẩm đáng tin cậy đang dần trở thành một phần của năng lực xuất khẩu hàng hóa Việt Nam sang thị trường EU.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
@@ -169,12 +169,12 @@
       <category>SSI</category>
       <category>Blockchain</category>
       <category>Hộ chiếu Sản phẩm Số</category>
-      <media:content url="https://www.identra.id.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu/ssi-blockchain-va-tuong-lai-xuat-khau-hang-hoa-viet-nam-sang-eu-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Vượt xa Super App: Kỷ nguyên Ultra App</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/vuot-xa-super-app-ky-nguyen-ultra-app</guid>
       <description>AI Agent, SSI, blockchain và hợp đồng thông minh có thể đưa ứng dụng từ nơi tập hợp dịch vụ thành lớp điều phối mới cho đời sống số như thế nào?</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
@@ -183,12 +183,12 @@
       <category>SSI</category>
       <category>Blockchain</category>
       <category>Hợp đồng thông minh</category>
-      <media:content url="https://www.identra.id.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/vuot-xa-super-app-ky-nguyen-ultra-app-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/vuot-xa-super-app-ky-nguyen-ultra-app/vuot-xa-super-app-ky-nguyen-ultra-app-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Tương lai của xác thực và truy xuất nguồn gốc sản phẩm, hàng hóa: Không chỉ nhìn thấy, mà còn có thể kiểm chứng</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham</guid>
       <description>Truy xuất nguồn gốc chỉ cho biết dữ liệu được công bố ở đâu. Thực chứng giúp xác định ai đã phát hành, dữ liệu có toàn vẹn và còn hiệu lực hay không.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
@@ -196,12 +196,12 @@
       <category>Truy xuất nguồn gốc</category>
       <category>Thực chứng</category>
       <category>SSI</category>
-      <media:content url="https://www.identra.id.vn/blog/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham/tuong-lai-cua-xac-thuc-va-truy-xuat-nguon-goc-san-pham-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Rào cản pháp lý trong tuyển dụng quốc tế: SSI mở đường cho nhân sự remote như thế nào?</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao</guid>
       <description>Phân tích cách SSI hỗ trợ xác minh danh tính, năng lực và lý lịch trong tuyển dụng Việt Nam–EU mà vẫn tôn trọng GDPR cùng chủ quyền pháp lý.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
@@ -210,12 +210,12 @@
       <category>SSI</category>
       <category>GDPR</category>
       <category>Thực chứng</category>
-      <media:content url="https://www.identra.id.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao/rao-can-phap-ly-trong-tuyen-dung-quoc-te-ssi-mo-duong-cho-nhan-su-remote-nhu-the-nao-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Từ thí điểm của MIT đến làn sóng số hóa bằng cấp không thể đảo ngược</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc</guid>
       <description>Nhìn lại thí điểm bằng số của MIT năm 2017 và hành trình đưa thực chứng giáo dục từ một thử nghiệm blockchain đến tiêu chuẩn mở cùng hạ tầng liên thông.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
@@ -224,12 +224,12 @@
       <category>Thực chứng</category>
       <category>SSI</category>
       <category>Giáo dục số</category>
-      <media:content url="https://www.identra.id.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc/tu-thi-diem-cua-mit-den-lan-song-so-hoa-bang-cap-khong-the-dao-nguoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Hồ sơ học tập suốt đời: Lợi ích của mô hình định danh tự chủ cho người học</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc</guid>
       <description>Tìm hiểu cách SSI giúp người học trực tiếp nắm giữ, kết hợp và sử dụng những thành tích có thể kiểm chứng trong suốt hành trình học tập và nghề nghiệp.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
@@ -238,12 +238,12 @@
       <category>Giáo dục số</category>
       <category>Thực chứng</category>
       <category>Quyền dữ liệu</category>
-      <media:content url="https://www.identra.id.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc/ho-so-hoc-tap-suot-doi-loi-ich-cua-mo-hinh-dinh-danh-tu-chu-doi-voi-nguoi-hoc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>SSI trong giáo dục: Giải pháp số hóa bằng cấp và xác minh năng lực</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc</guid>
       <description>Tìm hiểu cách SSI biến bằng cấp và kết quả học tập thành thực chứng có thể kiểm tra, giúp trường học, người học và nhà tuyển dụng trao đổi dữ liệu đáng tin cậy hơn.</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
@@ -252,12 +252,12 @@
       <category>Thực chứng</category>
       <category>Bằng cấp số</category>
       <category>Xác minh năng lực</category>
-      <media:content url="https://www.identra.id.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc/ssi-trong-giao-duc-giai-phap-so-hoa-bang-cap-va-xac-minh-nang-luc-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
     <item>
       <title>Định danh tự chủ (SSI) là gì? Từ giới hạn của định danh số hiện nay đến một mô hình mới</title>
-      <link>https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</link>
-      <guid isPermaLink="true">https://www.identra.id.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</guid>
+      <link>https://identra.awncorp.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</link>
+      <guid isPermaLink="true">https://identra.awncorp.vn/vi/blog-detail/dinh-danh-tu-chu-ssi-la-gi</guid>
       <description>Vì sao các mô hình định danh số hiện nay còn nhiều giới hạn, định danh tự chủ ra đời để giải quyết điều gì và SSI vận hành như thế nào?</description>
       <dc:creator>Identra</dc:creator>
       <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
@@ -266,7 +266,7 @@
       <category>Danh tính số</category>
       <category>Verifiable Credentials</category>
       <category>DID</category>
-      <media:content url="https://www.identra.id.vn/blog/dinh-danh-tu-chu-ssi-la-gi/dinh-danh-tu-chu-ssi-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
+      <media:content url="https://identra.awncorp.vn/blog/dinh-danh-tu-chu-ssi-la-gi/dinh-danh-tu-chu-ssi-la-gi-og.jpg" medium="image" type="image/jpeg" width="1200" height="630" />
     </item>
   </channel>
 </rss>

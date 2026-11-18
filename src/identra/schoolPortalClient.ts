@@ -26,15 +26,17 @@ export interface RegistrarProfile {
   donVi: string;
 }
 
+/** `serverTime` accompanies every `expiresAt` (vc-api.md section 2): count down against the server clock. */
 export type PortalSession =
-  | { role: 'student'; token: string; expiresAt: string; profile: StudentProfile }
-  | { role: 'registrar'; token: string; expiresAt: string; profile: RegistrarProfile };
+  | { role: 'student'; token: string; expiresAt: string; serverTime: string; profile: StudentProfile }
+  | { role: 'registrar'; token: string; expiresAt: string; serverTime: string; profile: RegistrarProfile };
 
 export interface CredentialOffer {
   offerId: string;
   offerUri: string;
   txCode: string;
   expiresAt: string;
+  serverTime: string;
 }
 
 export interface IssuedCredential {
@@ -51,14 +53,23 @@ export interface CredentialStatusChange {
   updatedAt: string;
 }
 
+/** The closed list of error codes of vc-api.md section 2, plus what can go wrong before a code exists. */
+export const PORTAL_ERROR_CODES = {
+  INVALID_CREDENTIALS: 'invalid_credentials',
+  SESSION_EXPIRED: 'session_expired',
+  FORBIDDEN: 'forbidden',
+  NOT_FOUND: 'not_found',
+  CONFLICT: 'conflict',
+  VALIDATION_FAILED: 'validation_failed',
+  RATE_LIMITED: 'rate_limited',
+  INTERNAL_ERROR: 'internal_error',
+  UNAVAILABLE: 'unavailable',
+} as const;
+
 export type PortalApiErrorKind =
+  | (typeof PORTAL_ERROR_CODES)[keyof typeof PORTAL_ERROR_CODES]
   | 'network'
-  | 'invalid_credentials'
-  | 'session_expired'
-  | 'forbidden'
-  | 'not_found'
-  | 'conflict'
-  | 'rate_limited'
+  | 'timeout'
   | 'http'
   | 'malformed';
 
@@ -79,6 +90,12 @@ export class PortalApiError extends Error {
 
 /** Longest text accepted from the API for any single field; the UI never shows more. */
 export const MAX_FIELD_LENGTH = 500;
+export const MAX_URI_LENGTH = 2048;
+export const REQUEST_TIMEOUT_MS = 10_000;
+
+/** C0/C1 controls, bidirectional overrides and isolates, zero-width characters and the BOM. */
+// eslint-disable-next-line no-control-regex
+export const UNSAFE_TEXT = /[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/;
 
 type Json = Record<string, unknown>;
 
@@ -90,11 +107,13 @@ const asObject = (value: unknown, path: string): Json =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Json : malformed(path);
 
 const asText = (value: unknown, path: string, maxLength = MAX_FIELD_LENGTH): string =>
-  typeof value === 'string' && value.length > 0 && value.length <= maxLength ? value : malformed(path);
+  typeof value === 'string' && value.length > 0 && value.length <= maxLength && !UNSAFE_TEXT.test(value)
+    ? value
+    : malformed(path);
 
-// Integers are accepted for numeric fields such as a graduation year, and kept as text.
+// The record's year may arrive as an integer or as text; it is kept as text.
 const asTextOrInteger = (value: unknown, path: string): string =>
-  typeof value === 'number' && Number.isInteger(value) ? String(value) : asText(value, path);
+  typeof value === 'number' && Number.isInteger(value) && value > 0 ? String(value) : asText(value, path);
 
 const asDate = (value: unknown, path: string): string => {
   const text = asText(value, path, 64);
@@ -115,6 +134,7 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
   const body = asObject(raw, 'body');
   const token = asText(body.token, 'token', 1024);
   const expiresAt = asDate(body.expiresAt, 'expiresAt');
+  const serverTime = asDate(body.serverTime, 'serverTime');
   const role = asEnum(body.role, ['student', 'registrar'] as const, 'role');
   const profile = asObject(body.profile, 'profile');
 
@@ -123,6 +143,7 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
       role,
       token,
       expiresAt,
+      serverTime,
       profile: { hoTen: asText(profile.hoTen, 'profile.hoTen'), donVi: asText(profile.donVi, 'profile.donVi') },
     };
   }
@@ -131,6 +152,7 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
     role,
     token,
     expiresAt,
+    serverTime,
     profile: {
       hoTen: asText(profile.hoTen, 'profile.hoTen'),
       ngaySinh: asDate(profile.ngaySinh, 'profile.ngaySinh'),
@@ -143,17 +165,34 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
   };
 };
 
-export const parseCredentialOffer = (raw: unknown): CredentialOffer => {
+/**
+ * The offer URI must be exactly
+ * `openid-credential-offer://?credential_offer_uri=<apiOrigin>/issuers/<issuer>/offers/<offerId>` (vc-api.md section 4).
+ */
+export const isValidOfferUri = (offerUri: string, offerId: string, apiOrigin: string, issuer: string): boolean => {
+  const prefix = 'openid-credential-offer://?';
+  if (offerUri.length > MAX_URI_LENGTH || !offerUri.startsWith(prefix)) return false;
+  const params = new URLSearchParams(offerUri.slice(prefix.length));
+  const names: string[] = [];
+  params.forEach((_, name) => names.push(name));
+  return names.length === 1
+    && names[0] === 'credential_offer_uri'
+    && params.get('credential_offer_uri') === `${apiOrigin}/issuers/${issuer}/offers/${offerId}`;
+};
+
+export const parseCredentialOffer = (raw: unknown, apiOrigin: string, issuer: string): CredentialOffer => {
   const body = asObject(raw, 'body');
-  const offerUri = asText(body.offerUri, 'offerUri', 2048);
-  if (!offerUri.startsWith('openid-credential-offer://?credential_offer_uri=')) malformed('offerUri');
+  const offerId = asId(body.offerId, 'offerId');
+  const offerUri = asText(body.offerUri, 'offerUri', MAX_URI_LENGTH);
+  if (!isValidOfferUri(offerUri, offerId, apiOrigin, issuer)) malformed('offerUri');
   const txCode = asText(body.txCode, 'txCode', 6);
   if (!/^\d{6}$/.test(txCode)) malformed('txCode');
   return {
-    offerId: asId(body.offerId, 'offerId'),
+    offerId,
     offerUri,
     txCode,
     expiresAt: asDate(body.expiresAt, 'expiresAt'),
+    serverTime: asDate(body.serverTime, 'serverTime'),
   };
 };
 
@@ -184,22 +223,34 @@ export const parseStatusChange = (raw: unknown): CredentialStatusChange => {
   };
 };
 
-const errorFor = (status: number, isLogin: boolean, retryAfter: string | null): PortalApiError => {
-  const message = `HTTP ${status}`;
-  if (status === 401) return new PortalApiError(isLogin ? 'invalid_credentials' : 'session_expired', message, status);
-  if (status === 403) return new PortalApiError('forbidden', message, status);
-  if (status === 404) return new PortalApiError('not_found', message, status);
-  if (status === 409) return new PortalApiError('conflict', message, status);
-  if (status === 429) {
-    const seconds = Number(retryAfter);
-    return new PortalApiError(
-      'rate_limited',
-      message,
-      status,
-      Number.isFinite(seconds) && seconds > 0 && seconds <= 3600 ? Math.ceil(seconds) : undefined,
-    );
+const STATUS_FALLBACK: Partial<Record<number, PortalApiErrorKind>> = {
+  401: 'session_expired',
+  403: 'forbidden',
+  404: 'not_found',
+  409: 'conflict',
+  400: 'validation_failed',
+  429: 'rate_limited',
+  500: 'internal_error',
+  503: 'unavailable',
+};
+
+/** Branches on the error `code` of section 2; the HTTP status decides only when the body carries no known code. */
+const errorFor = (status: number, bodyText: string, retryAfter: string | null): PortalApiError => {
+  let code: unknown;
+  try {
+    const body: unknown = JSON.parse(bodyText);
+    if (body !== null && typeof body === 'object') code = (body as Json).code;
+  } catch {
+    // Not the section 2 error body.
   }
-  return new PortalApiError('http', message, status);
+  const kind: PortalApiErrorKind = typeof code === 'string' && Object.hasOwn(PORTAL_ERROR_CODES, code)
+    ? PORTAL_ERROR_CODES[code as keyof typeof PORTAL_ERROR_CODES]
+    : STATUS_FALLBACK[status] ?? 'http';
+  const seconds = Number(retryAfter);
+  const retryAfterSeconds = kind === 'rate_limited' && retryAfter !== null && Number.isInteger(seconds) && seconds >= 0 && seconds <= 3600
+    ? seconds
+    : undefined;
+  return new PortalApiError(kind, `HTTP ${status}`, status, retryAfterSeconds);
 };
 
 export interface SchoolPortalClient {
@@ -217,23 +268,38 @@ export interface SchoolPortalClient {
 
 export const createSchoolPortalClient = (options: {
   baseUrl: string;
+  /** The canonical API origin that offer URIs point at (vc-api.md section 1). */
+  apiOrigin: string;
   issuer: string;
   fetch?: typeof fetch;
+  timeoutMs?: number;
 }): SchoolPortalClient => {
   const baseUrl = options.baseUrl.replace(/\/+$/, '');
+  const timeoutMs = options.timeoutMs ?? REQUEST_TIMEOUT_MS;
   const doFetch = options.fetch ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args));
 
   const request = async <T>(
     method: 'GET' | 'POST',
     path: string,
     parse: (raw: unknown) => T,
-    init: { token?: string; body?: unknown; signal?: AbortSignal; isLogin?: boolean },
+    init: { token?: string; body?: unknown; signal?: AbortSignal },
   ): Promise<T> => {
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (init.body !== undefined) headers['Content-Type'] = 'application/json';
     if (init.token) headers.Authorization = `Bearer ${init.token}`;
 
+    // Each request ends on the caller's abort or after `timeoutMs`, whichever comes first.
+    const controller = new AbortController();
+    const onAbort = () => controller.abort(init.signal?.reason);
+    init.signal?.addEventListener('abort', onAbort, { once: true });
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+    }, timeoutMs);
+
     let response: Response;
+    let text: string;
     try {
       response = await doFetch(`${baseUrl}${path}`, {
         method,
@@ -241,22 +307,23 @@ export const createSchoolPortalClient = (options: {
         body: init.body === undefined ? undefined : JSON.stringify(init.body),
         credentials: 'omit',
         cache: 'no-store',
-        signal: init.signal,
+        signal: controller.signal,
       });
+      text = await response.text();
     } catch (error) {
       if (init.signal?.aborted) throw error;
-      throw new PortalApiError('network', 'network error');
+      throw new PortalApiError(timedOut ? 'timeout' : 'network', timedOut ? 'request timed out' : 'network error');
+    } finally {
+      clearTimeout(timer);
+      init.signal?.removeEventListener('abort', onAbort);
     }
 
-    if (!response.ok) {
-      throw errorFor(response.status, init.isLogin === true, response.headers.get('Retry-After'));
-    }
+    if (!response.ok) throw errorFor(response.status, text, response.headers.get('Retry-After'));
 
     let raw: unknown;
     try {
-      raw = JSON.parse(await response.text());
-    } catch (error) {
-      if (init.signal?.aborted) throw error;
+      raw = JSON.parse(text);
+    } catch {
       return malformed('body');
     }
     return parse(raw);
@@ -268,9 +335,13 @@ export const createSchoolPortalClient = (options: {
     login: (username, password, signal) => request('POST', '/v1/demo/school/login', parsePortalSession, {
       body: { username, password },
       signal,
-      isLogin: true,
     }),
-    createOffer: (token, signal) => request('POST', '/v1/demo/school/offers', parseCredentialOffer, { token, signal }),
+    createOffer: (token, signal) => request(
+      'POST',
+      '/v1/demo/school/offers',
+      (raw) => parseCredentialOffer(raw, options.apiOrigin, options.issuer),
+      { token, signal },
+    ),
     getOfferStatus: (token, offerId, signal) => request(
       'GET',
       `/v1/demo/school/offers/${encodeURIComponent(offerId)}`,

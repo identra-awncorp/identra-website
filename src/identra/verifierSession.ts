@@ -187,6 +187,7 @@ export const KNOWN_CHECK_IDS = [
   'status',
   'holder_binding',
   'product_chain',
+  'query',
 ] as const satisfies readonly CheckId[];
 
 export type KnownCheckId = typeof KNOWN_CHECK_IDS[number];

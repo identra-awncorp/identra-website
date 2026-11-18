@@ -139,6 +139,7 @@ const vi: ApplyJobVerifierDialogCopy = {
     status: 'Tình trạng thu hồi, tạm dừng',
     holder_binding: 'Do chính chủ bằng gửi, đúng cho yêu cầu này',
     product_chain: 'Chuỗi sự kiện của sản phẩm liền mạch',
+    query: 'Thông tin chia sẻ đáp ứng đúng yêu cầu của nhà tuyển dụng',
     other: 'Một bước kiểm tra khác',
   },
   claims: {
@@ -270,6 +271,7 @@ const en: ApplyJobVerifierDialogCopy = {
     status: 'Revocation and suspension status',
     holder_binding: 'Sent by the holder, for this request',
     product_chain: 'Product history is unbroken',
+    query: 'The shared details answer the employer\'s request',
     other: 'Another check',
   },
   claims: {
@@ -401,6 +403,7 @@ const es: ApplyJobVerifierDialogCopy = {
     status: 'Estado de revocación y suspensión',
     holder_binding: 'Enviado por su titular, para esta solicitud',
     product_chain: 'El historial del producto está completo',
+    query: 'Los datos compartidos responden a lo que pidió el empleador',
     other: 'Otra comprobación',
   },
   claims: {
@@ -532,6 +535,7 @@ const ja: ApplyJobVerifierDialogCopy = {
     status: '取り消し・停止の状態',
     holder_binding: '本人がこのリクエストに対して送信したこと',
     product_chain: '製品の履歴のつながり',
+    query: '共有した情報が採用企業の依頼を満たしている',
     other: 'その他の確認',
   },
   claims: {
@@ -663,6 +667,7 @@ const de: ApplyJobVerifierDialogCopy = {
     status: 'Widerrufs- und Sperrstatus',
     holder_binding: 'Vom Inhaber gesendet, für diese Anfrage',
     product_chain: 'Produkthistorie lückenlos',
+    query: 'Die geteilten Angaben erfüllen die Anfrage des Arbeitgebers',
     other: 'Weitere Prüfung',
   },
   claims: {

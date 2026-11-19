@@ -3,7 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useCallback, useEffect, useReducer, useRef, useState, type FormEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type ReactNode,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, CheckCircle2, Clock, Eye, EyeOff, Info, Loader2, LogOut, RefreshCw, Wallet } from 'lucide-react';
@@ -16,6 +25,7 @@ import {
   createSchoolPortalClient,
   PortalApiError,
   type CredentialStatus,
+  type CredentialStatusChange,
   type IssuedCredential,
   type PortalSession,
   type StudentProfile,
@@ -23,20 +33,25 @@ import {
 import {
   actionsFor,
   authReducer,
+  CONFIRM_IDLE,
+  confirmReducer,
   countByStatus,
   CREDENTIALS_LOADING,
   credentialsReducer,
   loadProblemFor,
   OFFER_IDLE,
+  offerProblemFor,
   offerReducer,
+  pendingOfferId,
+  replaceOffer,
   SIGNED_OUT,
   signInProblemFor,
   STATUS_FOR_ACTION,
   statusChangeProblemFor,
   type AuthState,
+  type ConfirmState,
   type LoadProblem,
   type StatusAction,
-  type StatusChangeProblem,
 } from '../identra/schoolPortalState';
 import { formatCountdown, secondsUntil } from '../identra/verifierSession';
 import {
@@ -109,6 +124,12 @@ function useSecondsUntilLocal(deadline: number | null): number {
   return deadline === null ? 0 : Math.max(0, Math.floor((deadline - now) / 1000));
 }
 
+/** A local deadline from a 429's or 503's Retry-After, when the server sent one. */
+const retryAtFor = (error: unknown): number | undefined => {
+  const seconds = error instanceof PortalApiError ? error.retryAfterSeconds : undefined;
+  return seconds === undefined ? undefined : Date.now() + seconds * 1000;
+};
+
 function ServerCountdown({ expiresAt, offsetMs, template }: { expiresAt: string; offsetMs: number; template: string }) {
   const now = useNow();
   return <span className="tabular-nums">{fill(template, { time: formatCountdown(secondsUntil(expiresAt, now + offsetMs)) })}</span>;
@@ -116,7 +137,7 @@ function ServerCountdown({ expiresAt, offsetMs, template }: { expiresAt: string;
 
 // ---- Sign-in ------------------------------------------------------------------------------------
 
-function SignInView({
+export function SignInView({
   state,
   onSubmit,
   copy,
@@ -172,7 +193,7 @@ function SignInView({
           </p>
         )}
 
-        <form className="mt-6 max-w-md space-y-4" onSubmit={submit} noValidate>
+        <form className="mt-6 max-w-md space-y-4" onSubmit={submit} noValidate data-testid="portal-signin-form">
           <div className="space-y-2">
             <label htmlFor="school-portal-username" className="type-body block font-medium text-slate-800">{copy.usernameLabel}</label>
             <input
@@ -184,6 +205,7 @@ function SignInView({
               spellCheck={false}
               value={username}
               onChange={(event) => setUsername(event.target.value)}
+              data-testid="portal-signin-username"
               aria-invalid={state.problem === 'invalid_credentials'}
               aria-describedby={problem ? 'school-portal-problem' : undefined}
               className={inputClass}
@@ -200,6 +222,7 @@ function SignInView({
                 autoComplete="current-password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
+                data-testid="portal-signin-password"
                 aria-invalid={state.problem === 'invalid_credentials'}
                 aria-describedby={problem ? 'school-portal-problem' : undefined}
                 className={`${inputClass} pr-12`}
@@ -218,13 +241,13 @@ function SignInView({
           </div>
 
           {problem && (
-            <p id="school-portal-problem" role="alert" tabIndex={-1} className="type-body flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-rose-800 focus:outline-none">
+            <p id="school-portal-problem" role="alert" tabIndex={-1} data-testid="portal-signin-problem" className="type-body flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-rose-800 focus:outline-none">
               <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{problem}</span>
             </p>
           )}
 
-          <button type="submit" disabled={state.submitting || waitSeconds > 0} className={primaryButton}>
+          <button type="submit" disabled={state.submitting || waitSeconds > 0} className={primaryButton} data-testid="portal-signin-submit">
             {state.submitting && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
             {state.submitting ? copy.signingIn : copy.signIn}
           </button>
@@ -235,21 +258,26 @@ function SignInView({
         <section className={panel} aria-labelledby="school-portal-samples">
           <h2 id="school-portal-samples" className="type-card-title text-[#0F1E36]">{copy.sampleAccountsTitle}</h2>
           <p className="type-body mt-1 text-slate-600">{copy.sampleAccountsIntro}</p>
+          <p className="type-body-sm mt-2 flex items-start gap-2 rounded-xl bg-slate-50 px-3 py-2 text-slate-700" data-testid="portal-shared-note">
+            <Info aria-hidden="true" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-slate-500" />
+            <span>{copy.sharedAccountsNote}</span>
+          </p>
           <ul className="mt-3 divide-y divide-slate-100">
             {SCHOOL_PORTAL_SAMPLE_ACCOUNTS.map((account) => (
-              <li key={account.username} className="flex items-center justify-between gap-3 py-2">
+              <li key={account} className="flex items-center justify-between gap-3 py-2">
                 <div className="min-w-0">
-                  <p className="font-mono text-sm text-slate-900">{account.username}</p>
-                  <p className="type-body-sm text-slate-600">{account.role === 'student' ? copy.roleStudent : copy.roleRegistrar}</p>
+                  <p className="font-mono text-sm text-slate-900">{account}</p>
+                  <p className="type-body-sm text-slate-600">{copy.roleStudent}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
-                    setUsername(account.username);
+                    setUsername(account);
                     setPassword(SCHOOL_PORTAL_SAMPLE_PASSWORD);
                     passwordRef.current?.focus();
                   }}
-                  aria-label={fill(copy.useAccountLabel, { username: account.username })}
+                  aria-label={fill(copy.useAccountLabel, { username: account })}
+                  data-testid={`portal-sample-account-${account}`}
                   className={`${secondaryButton} px-4`}
                 >
                   {copy.useAccount}
@@ -261,6 +289,7 @@ function SignInView({
             {copy.samplePasswordLabel}{' '}
             <span className="font-mono">{SCHOOL_PORTAL_SAMPLE_PASSWORD}</span>
           </p>
+          <p className="type-body-sm mt-3 border-t border-slate-100 pt-3 text-slate-600">{copy.presenterNote}</p>
         </section>
 
         <section className="rounded-3xl bg-[#E2E6FF] p-5 sm:p-6" aria-labelledby="school-portal-how">
@@ -283,30 +312,37 @@ const useCredentialList = (token: string, onSessionExpired: () => void) => {
   const [state, dispatch] = useReducer(credentialsReducer, CREDENTIALS_LOADING);
   const controllerRef = useRef<AbortController | null>(null);
 
-  const load = useCallback(async () => {
+  /** `cursor` null: (re)load from the first page; otherwise append the page after it. */
+  const loadPage = useCallback(async (cursor: string | null) => {
     controllerRef.current?.abort();
     const controller = new AbortController();
     controllerRef.current = controller;
-    dispatch({ type: 'load' });
+    dispatch(cursor === null ? { type: 'load' } : { type: 'loadMore' });
     try {
-      const items = await portalClient.listCredentials(token, controller.signal);
-      if (!controller.signal.aborted) dispatch({ type: 'loaded', items, at: Date.now() });
+      const page = await portalClient.listCredentials(token, { signal: controller.signal, ...(cursor !== null && { cursor }) });
+      if (controller.signal.aborted) return;
+      dispatch(cursor === null
+        ? { type: 'loaded', items: page.items, nextCursor: page.nextCursor, at: Date.now() }
+        : { type: 'moreLoaded', items: page.items, nextCursor: page.nextCursor });
     } catch (error) {
       if (controller.signal.aborted) return;
       if (error instanceof PortalApiError && error.kind === 'session_expired') {
         onSessionExpired();
         return;
       }
-      dispatch({ type: 'loadFailed', problem: error instanceof PortalApiError ? loadProblemFor(error) : 'unavailable' });
+      const problem = error instanceof PortalApiError ? loadProblemFor(error) : 'unavailable';
+      dispatch(cursor === null ? { type: 'loadFailed', problem } : { type: 'moreFailed', problem });
     }
   }, [onSessionExpired, token]);
+
+  const load = useCallback(() => loadPage(null), [loadPage]);
 
   useEffect(() => {
     void load();
     return () => controllerRef.current?.abort();
   }, [load]);
 
-  return { state, dispatch, load };
+  return { state, dispatch, load, loadPage };
 };
 
 function LoadProblemNotice({ problem, onRetry, copy }: { problem: LoadProblem; onRetry: () => void; copy: SchoolPortalPageCopy }) {
@@ -332,6 +368,229 @@ function RefreshButton({ onClick, busy, copy }: { onClick: () => void; busy: boo
   );
 }
 
+/** "Show more" under a list that has another page, with its own loading and failure. */
+function LoadMore({
+  state,
+  onLoadMore,
+  copy,
+}: {
+  state: ReturnType<typeof useCredentialList>['state'];
+  onLoadMore: (cursor: string) => void;
+  copy: SchoolPortalPageCopy;
+}) {
+  if (state.phase !== 'ready' || state.nextCursor === null) return null;
+  const cursor = state.nextCursor;
+  if (state.more !== 'idle' && state.more !== 'loading') {
+    return <div className="mt-4"><LoadProblemNotice problem={state.more} onRetry={() => onLoadMore(cursor)} copy={copy} /></div>;
+  }
+  const busy = state.more === 'loading';
+  return (
+    <div className="mt-4 flex justify-center">
+      <button type="button" onClick={() => onLoadMore(cursor)} disabled={busy} className={secondaryButton} data-testid="portal-load-more">
+        {busy && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
+        {busy ? copy.loading : copy.loadMore}
+      </button>
+    </div>
+  );
+}
+
+// ---- Confirming a status change ---------------------------------------------------------------------
+
+/**
+ * Drives the confirmation dialog of a status change: no optimistic update, the row changes only with the
+ * server's answer (or a 409, which is the server saying it is already revoked).
+ */
+function useStatusChange<T>({
+  idOf,
+  perform,
+  onApplied,
+  onSessionExpired,
+  doneFocusId,
+}: {
+  idOf: (target: T) => string;
+  perform: (target: T, signal: AbortSignal) => Promise<CredentialStatusChange>;
+  onApplied: (id: string, status: CredentialStatus) => void;
+  onSessionExpired: () => void;
+  /** Where focus goes when the dialog closes and its trigger is gone (the row changed). */
+  doneFocusId: string;
+}) {
+  const [state, dispatch] = useReducer(confirmReducer<T>, CONFIRM_IDLE as ConfirmState<T>);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const controllerRef = useRef<AbortController | null>(null);
+
+  useEffect(() => () => controllerRef.current?.abort(), []);
+
+  const open = (target: T, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger;
+    dispatch({ type: 'open', target });
+  };
+
+  const cancel = () => {
+    dispatch({ type: 'cancel' });
+    window.requestAnimationFrame(() => {
+      const trigger = triggerRef.current;
+      if (trigger?.isConnected) trigger.focus();
+      else document.getElementById(doneFocusId)?.focus();
+    });
+  };
+
+  const save = async () => {
+    if (state.phase !== 'confirm' && state.phase !== 'failed') return;
+    const { target } = state;
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    dispatch({ type: 'save' });
+    try {
+      const result = await perform(target, controller.signal);
+      if (controller.signal.aborted) return;
+      onApplied(result.id, result.status);
+      dispatch({ type: 'saved', status: result.status });
+      focusById(doneFocusId);
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      const problem = error instanceof PortalApiError ? statusChangeProblemFor(error) : 'no_answer';
+      if (problem === 'session_expired') {
+        onSessionExpired();
+        return;
+      }
+      if (problem === 'already_revoked') onApplied(idOf(target), 'revoked');
+      const retryAt = retryAtFor(error);
+      dispatch({ type: 'failed', problem, ...(retryAt !== undefined && { retryAt }) });
+    }
+  };
+
+  return { state, open, cancel, save };
+}
+
+function ConfirmDialog({
+  title,
+  subtitle,
+  body,
+  confirmLabel,
+  destructive,
+  state,
+  problemText,
+  onConfirm,
+  onCancel,
+  copy,
+}: {
+  title: ReactNode;
+  subtitle: ReactNode;
+  body: ReactNode;
+  confirmLabel: string;
+  destructive: boolean;
+  state: Extract<ConfirmState<unknown>, { phase: 'confirm' | 'saving' | 'failed' }>;
+  problemText: string | null;
+  onConfirm: () => void;
+  onCancel: () => void;
+  copy: SchoolPortalPageCopy;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const saving = state.phase === 'saving';
+  const problem = state.phase === 'failed' ? state.problem : null;
+  const waitSeconds = useSecondsUntilLocal(state.phase === 'failed' ? state.retryAt : null);
+  const blocked = saving || waitSeconds > 0;
+  useInertAppRoot(true);
+
+  useEffect(() => {
+    cancelRef.current?.focus();
+  }, []);
+
+  // While saving, the buttons stay focusable (aria-disabled), so focus never falls out of the dialog.
+  const handleKeyDown = (event: ReactKeyboardEvent) => {
+    if (event.key === 'Escape') {
+      event.stopPropagation();
+      if (!saving) onCancel();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button') ?? []);
+    if (focusable.length === 0) {
+      event.preventDefault();
+      return;
+    }
+    const first = focusable[0]!;
+    const last = focusable[focusable.length - 1]!;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 sm:items-center sm:p-4">
+      <div
+        ref={dialogRef}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="school-portal-confirm-title"
+        aria-describedby="school-portal-confirm-body"
+        aria-busy={saving}
+        onKeyDown={handleKeyDown}
+        data-testid="portal-confirm-dialog"
+        className="max-h-[100dvh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
+      >
+        <h2 id="school-portal-confirm-title" className={`type-featured-title text-[#0F1E36] ${apiText}`}>{title}</h2>
+        <div className="type-body-sm mt-1 text-slate-600">{subtitle}</div>
+        <div id="school-portal-confirm-body" className="mt-4 space-y-3">
+          {body}
+          <p className="type-body text-slate-600">{copy.timingNote}</p>
+        </div>
+        {problem && problemText && (
+          <div role="alert" data-testid="portal-confirm-problem" className="type-body mt-4 flex items-start gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-amber-900">
+            <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+            <div>
+              <p>{problemText}</p>
+              {waitSeconds > 0 && (
+                <p className="tabular-nums">{fill(copy.retryIn, { time: formatCountdown(waitSeconds) })}</p>
+              )}
+            </div>
+          </div>
+        )}
+        {saving && (
+          <p role="status" className="type-body mt-4 flex items-center gap-2 text-slate-700">
+            <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />
+            {copy.saving}
+          </p>
+        )}
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            ref={cancelRef}
+            type="button"
+            onClick={() => { if (!saving) onCancel(); }}
+            aria-disabled={saving}
+            data-testid="portal-confirm-cancel"
+            className={secondaryButton}
+          >
+            {copy.cancel}
+          </button>
+          {problem !== 'already_revoked' && problem !== 'not_found' && (
+            <button
+              type="button"
+              onClick={() => { if (!blocked) onConfirm(); }}
+              aria-disabled={blocked}
+              data-testid="portal-confirm-submit"
+              className={destructive
+                ? `type-control inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-rose-700 px-5 text-white transition-colors hover:bg-rose-800 aria-disabled:cursor-not-allowed aria-disabled:opacity-60 ${focusRing}`
+                : primaryButton}
+            >
+              {problem ? copy.retry : confirmLabel}
+            </button>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+const isDialogOpen = <T,>(state: ConfirmState<T>): state is Extract<ConfirmState<T>, { phase: 'confirm' | 'saving' | 'failed' }> =>
+  state.phase === 'confirm' || state.phase === 'saving' || state.phase === 'failed';
+
 // ---- Student --------------------------------------------------------------------------------------
 
 function StudentView({
@@ -350,22 +609,55 @@ function StudentView({
   const format = useDateFormat(locale);
   const [offer, dispatchOffer] = useReducer(offerReducer, OFFER_IDLE);
   const credentials = useCredentialList(session.token, onSessionExpired);
-  const { load: reloadCredentials } = credentials;
+  const { load: reloadCredentials, dispatch: dispatchCredentials } = credentials;
   const createController = useRef<AbortController | null>(null);
+  const pendingRef = useRef<string | null>(null);
   const isTouch = useIsTouchDevice();
   const retrySeconds = useSecondsUntilLocal(offer.phase === 'error' ? offer.retryAt : null);
+
+  const revoke = useStatusChange<IssuedCredential>({
+    idOf: (item) => item.id,
+    perform: (item, signal) => portalClient.revokeCredential(session.token, item.id, signal),
+    onApplied: (id, status) => {
+      dispatchCredentials({ type: 'statusChanged', id, status });
+      if (status === 'revoked') dispatchOffer({ type: 'dismissIssued' });
+    },
+    onSessionExpired,
+    doneFocusId: 'school-portal-announcement',
+  });
 
   useEffect(() => {
     focusById('school-portal-title');
   }, []);
 
+  // The code still waiting for a wallet is cancelled when the visitor leaves (closing the tab, reloading,
+  // signing out, another page of the site), so it does not hold one of the five places of their network.
+  useEffect(() => {
+    pendingRef.current = pendingOfferId(offer);
+  }, [offer]);
+  useEffect(() => {
+    const cancelPending = () => {
+      const offerId = pendingRef.current;
+      if (!offerId) return;
+      pendingRef.current = null;
+      portalClient.cancelOffer(session.token, offerId, { keepalive: true }).catch(() => undefined);
+    };
+    window.addEventListener('pagehide', cancelPending);
+    return () => {
+      window.removeEventListener('pagehide', cancelPending);
+      cancelPending();
+    };
+  }, [session.token]);
+
+  // One code in focus: asking for another cancels the one still pending first (best effort).
   const createOffer = async () => {
+    const previous = pendingOfferId(offer);
     createController.current?.abort();
     const controller = new AbortController();
     createController.current = controller;
     dispatchOffer({ type: 'create' });
     try {
-      const created = await portalClient.createOffer(session.token, controller.signal);
+      const created = await replaceOffer(portalClient, session.token, previous, controller.signal);
       if (!controller.signal.aborted) {
         dispatchOffer({ type: 'created', offer: created, clockOffsetMs: serverClockOffset(created.serverTime, Date.now()) });
       }
@@ -375,11 +667,11 @@ function StudentView({
         onSessionExpired();
         return;
       }
-      const retryAfter = error instanceof PortalApiError ? error.retryAfterSeconds : undefined;
+      const retryAt = retryAtFor(error);
       dispatchOffer({
         type: 'failed',
-        problem: error instanceof PortalApiError ? loadProblemFor(error) : 'unavailable',
-        ...(retryAfter !== undefined && { retryAt: Date.now() + retryAfter * 1000 }),
+        problem: error instanceof PortalApiError ? offerProblemFor(error) : 'unavailable',
+        ...(retryAt !== undefined && { retryAt }),
       });
     }
   };
@@ -443,6 +735,7 @@ function StudentView({
     };
   }, [activeOfferExpiresAt, activeOfferId, activeOfferOffset, onSessionExpired, session.token]);
 
+  // The new diploma appears in the list by itself, with its revoke action.
   const isIssued = offer.phase === 'issued';
   useEffect(() => {
     if (isIssued) void reloadCredentials();
@@ -468,11 +761,12 @@ function StudentView({
         : offer.phase === 'expired'
           ? copy.expiredTitle
           : offer.phase === 'error'
-            ? copy.loadProblems[offer.problem]
+            ? copy.offerProblems[offer.problem]
             : '';
 
   const credentialItems = credentials.state.items;
   const holdsDiploma = (credentialItems?.length ?? 0) > 0;
+  const issuedAt = (iso: string) => fill(copy.issuedAtTime, { time: format.time(iso), date: format.date(iso) });
 
   return (
     <div className="space-y-6">
@@ -482,26 +776,168 @@ function StudentView({
       </div>
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-        <div className="space-y-6 lg:col-span-5">
-          <section className={panel} aria-labelledby="school-portal-record">
-            <h2 id="school-portal-record" className="type-card-title text-[#0F1E36]">{copy.recordTitle}</h2>
-            <dl className="mt-2 divide-y divide-slate-100">
-              {recordRows.map(([key, value]) => (
-                <div key={key} className="flex items-baseline justify-between gap-4 py-2.5">
-                  <dt className="type-body shrink-0 text-slate-600">{copy.recordFields[key]}</dt>
-                  <dd className={`type-body min-w-0 text-right font-semibold text-slate-900 ${apiText} ${key === 'maSinhVien' || key === 'soHieuBang' ? 'font-mono' : ''}`}>
-                    <bdi>{value}</bdi>
-                  </dd>
+        <section className={`${panel} lg:col-span-5`} aria-labelledby="school-portal-record">
+          <h2 id="school-portal-record" className="type-card-title text-[#0F1E36]">{copy.recordTitle}</h2>
+          <dl className="mt-2 divide-y divide-slate-100">
+            {recordRows.map(([key, value]) => (
+              <div key={key} className="flex items-baseline justify-between gap-4 py-2.5">
+                <dt className="type-body shrink-0 text-slate-600">{copy.recordFields[key]}</dt>
+                <dd className={`type-body min-w-0 text-right font-semibold text-slate-900 ${apiText} ${key === 'maSinhVien' || key === 'soHieuBang' ? 'font-mono' : ''}`}>
+                  <bdi>{value}</bdi>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <div className="order-first space-y-6 lg:order-none lg:col-span-7">
+          <section className={panel} aria-labelledby="school-portal-wallet">
+            <div className="flex items-start gap-3">
+              <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-[#354CE1]" />
+              <div className="min-w-0">
+                <h2 id="school-portal-wallet" className="type-card-title text-[#0F1E36]">{copy.walletTitle}</h2>
+                <p className="type-body mt-1 text-slate-700">{copy.walletIntro}</p>
+              </div>
+            </div>
+
+            <p role="status" aria-live="polite" className="sr-only" data-testid="portal-offer-status">{offerLiveText}</p>
+
+            <div className="mt-5">
+              {offer.phase === 'idle' && (
+                <div className="space-y-3">
+                  <button type="button" onClick={() => void createOffer()} className={primaryButton} data-testid="portal-receive">
+                    {holdsDiploma ? copy.reissue : copy.receive}
+                  </button>
+                  {holdsDiploma && <p className="type-body max-w-prose text-slate-600">{copy.reissueHint}</p>}
                 </div>
-              ))}
-            </dl>
+              )}
+
+              {offer.phase === 'creating' && (
+                <p className="type-body flex min-h-11 items-center gap-2 text-slate-700">
+                  <Loader2 aria-hidden="true" className="h-4 w-4 text-[#354CE1] motion-safe:animate-spin" />
+                  {copy.creatingOffer}
+                </p>
+              )}
+
+              {offer.phase === 'active' && (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_minmax(0,1fr)]">
+                    <div className={`mx-auto w-full max-w-60 sm:mx-0 ${isTouch ? 'order-2 sm:order-none' : ''}`} data-testid="portal-offer-qr">
+                      <IdentraQrCode
+                        value={offer.offer.offerUri}
+                        label={copy.offerQrLabel}
+                        className="h-auto w-full rounded-2xl border border-slate-200"
+                        fallback={<p role="note" className="type-body rounded-2xl bg-amber-50 p-4 text-amber-950">{copy.qrUnavailable}</p>}
+                      />
+                    </div>
+                    <div className={`min-w-0 space-y-4 ${isTouch ? 'order-1 sm:order-none' : ''}`}>
+                      <div>
+                        <p className="type-body text-slate-600">{copy.pinLabel}</p>
+                        <p className="type-metric tabular-nums text-[#0F1E36]" aria-label={offer.offer.txCode.split('').join(' ')} data-testid="portal-offer-pin">
+                          {`${offer.offer.txCode.slice(0, 3)} ${offer.offer.txCode.slice(3)}`}
+                        </p>
+                        <p className="type-body mt-1 text-slate-600">{copy.pinHelp}</p>
+                      </div>
+                      <p className="type-body flex items-center gap-2 text-slate-700" data-testid="portal-offer-countdown">
+                        <Clock aria-hidden="true" className="h-4 w-4 text-slate-500" />
+                        <ServerCountdown expiresAt={offer.offer.expiresAt} offsetMs={offer.clockOffsetMs} template={copy.expiresIn} />
+                      </p>
+                      <p className={`type-body flex items-start gap-2 rounded-2xl px-4 py-3 font-medium ${offer.reconnecting ? 'bg-amber-50 text-amber-900' : 'bg-slate-50 text-slate-800'}`}>
+                        {offer.reconnecting
+                          ? <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                          : <span aria-hidden="true" className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[#354CE1] motion-safe:animate-pulse" />}
+                        {offer.reconnecting ? copy.reconnecting : copy.waitingForWallet}
+                      </p>
+                      <div data-testid="portal-offer-link">
+                        <IdentraWalletLink
+                          href={offer.offer.offerUri}
+                          openLabel={copy.openInWallet}
+                          linkLabel={copy.linkLabel}
+                          copyLabel={copy.copyLink}
+                          copiedLabel={copy.linkCopied}
+                          emphasizeOpen={isTouch}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="type-card-title-sm text-slate-900">{copy.firstTimeTitle}</h3>
+                    <ol className="type-body mt-2 list-decimal space-y-1.5 pl-5 text-slate-700">
+                      {copy.firstTimeSteps.map((step) => <li key={step}>{step}</li>)}
+                    </ol>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-100 pt-4">
+                    <button type="button" onClick={() => void createOffer()} className={secondaryButton} data-testid="portal-offer-new">
+                      <RefreshCw aria-hidden="true" className="h-4 w-4" />
+                      {copy.anotherCode}
+                    </button>
+                    <p className="type-body-sm text-slate-600">{copy.anotherCodeHint}</p>
+                  </div>
+                </div>
+              )}
+
+              {offer.phase === 'issued' && (
+                <div className="space-y-4" data-testid="portal-offer-issued">
+                  <p className="type-card-title flex items-center gap-2 text-emerald-800">
+                    <CheckCircle2 aria-hidden="true" className="h-5 w-5" />
+                    {copy.issuedTitle}
+                  </p>
+                  <p className="type-body text-slate-700">{copy.issuedBody}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link to={employerDemoPath} className={primaryButton}>{copy.tryEmployerDemo}</Link>
+                    <button type="button" onClick={() => void createOffer()} className={secondaryButton} data-testid="portal-receive">{copy.reissue}</button>
+                  </div>
+                  <p className="type-body max-w-prose text-slate-600">{copy.reissueHint}</p>
+                </div>
+              )}
+
+              {(offer.phase === 'expired' || offer.phase === 'error') && (
+                <div className="space-y-4" data-testid={offer.phase === 'error' ? 'portal-offer-problem' : 'portal-offer-expired'} data-problem={offer.phase === 'error' ? offer.problem : undefined}>
+                  <div className="flex items-start gap-3">
+                    {offer.phase === 'expired'
+                      ? <Clock aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-slate-600" />
+                      : <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />}
+                    <div className="min-w-0">
+                      <p className="type-card-title text-slate-900">
+                        {offer.phase === 'expired'
+                          ? copy.expiredTitle
+                          : offer.problem === 'too_many_offers' ? copy.offerLimitTitle : copy.offerProblems[offer.problem]}
+                      </p>
+                      {offer.phase === 'expired' && <p className="type-body mt-1 text-slate-700">{copy.expiredBody}</p>}
+                      {offer.phase === 'error' && offer.problem === 'too_many_offers' && (
+                        <p className="type-body mt-1 text-slate-700">{copy.offerProblems.too_many_offers}</p>
+                      )}
+                      {retrySeconds > 0 && (
+                        <p className="type-body mt-1 tabular-nums text-slate-700">{fill(copy.retryIn, { time: formatCountdown(retrySeconds) })}</p>
+                      )}
+                    </div>
+                  </div>
+                  <button type="button" onClick={() => void createOffer()} disabled={retrySeconds > 0} className={primaryButton} data-testid="portal-offer-retry">
+                    <RefreshCw aria-hidden="true" className="h-4 w-4" />
+                    {offer.phase === 'expired' ? copy.newOffer : copy.retry}
+                  </button>
+                </div>
+              )}
+            </div>
           </section>
 
           <section className={panel} aria-labelledby="school-portal-mine" aria-busy={credentials.state.phase === 'loading'}>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h2 id="school-portal-mine" className="type-card-title text-[#0F1E36]">{copy.myDiplomasTitle}</h2>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h2 id="school-portal-mine" tabIndex={-1} className="type-card-title text-[#0F1E36] focus:outline-none">{copy.myDiplomasTitle}</h2>
+                <p className="type-body-sm mt-0.5 text-slate-600">{copy.myDiplomasNote}</p>
+              </div>
               <RefreshButton onClick={() => void reloadCredentials()} busy={credentials.state.phase === 'loading'} copy={copy} />
             </div>
+            <p
+              id="school-portal-announcement"
+              role="status"
+              aria-live="polite"
+              tabIndex={-1}
+              className={revoke.state.phase === 'done' ? 'type-body mt-3 rounded-2xl bg-slate-100 px-4 py-3 text-slate-800 focus:outline-none' : 'sr-only'}
+            >
+              {revoke.state.phase === 'done' ? fill(copy.revokedAnnouncement, { time: format.time(revoke.state.target.issuedAt) }) : ''}
+            </p>
             <div className="mt-3 space-y-3">
               {credentials.state.phase === 'error' && (
                 <LoadProblemNotice problem={credentials.state.problem} onRetry={() => void reloadCredentials()} copy={copy} />
@@ -514,133 +950,63 @@ function StudentView({
               )}
               {credentialItems?.length === 0 && <p className="type-body text-slate-600">{copy.myDiplomasEmpty}</p>}
               {credentialItems && credentialItems.length > 0 && (
-                <ul className="divide-y divide-slate-100">
+                <ul className="divide-y divide-slate-100" data-testid="portal-diplomas">
                   {credentialItems.map((item) => (
-                    <li key={item.id} className="flex items-center justify-between gap-3 py-2.5">
-                      <span className="type-body text-slate-800">{fill(copy.issuedOn, { date: format.date(item.issuedAt) })}</span>
-                      <StatusPill status={item.status} copy={copy} />
+                    <li key={item.id} className="space-y-1 py-3" data-testid="portal-diploma-row" data-credential-id={item.id} data-status={item.status}>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="type-body tabular-nums text-slate-800">{issuedAt(item.issuedAt)}</span>
+                        <span data-testid="portal-diploma-status"><StatusPill status={item.status} copy={copy} /></span>
+                      </div>
+                      {item.canRevoke && (
+                        <button
+                          type="button"
+                          onClick={(event) => revoke.open(item, event.currentTarget)}
+                          data-testid="portal-revoke"
+                          className={`type-control -ml-3 inline-flex min-h-11 cursor-pointer items-center rounded-full px-3 text-rose-700 transition-colors hover:bg-rose-50 ${focusRing}`}
+                        >
+                          {copy.revokeAction}
+                        </button>
+                      )}
+                      {item.status === 'revoked' && (
+                        <p className="type-body-sm text-slate-600" data-testid="portal-revoked-hint">
+                          {copy.revokedHint}{' '}
+                          <Link
+                            to={employerDemoPath}
+                            data-testid="portal-revoked-try"
+                            className={`type-control inline-flex min-h-11 items-center text-[#2539BE] underline underline-offset-2 hover:no-underline ${focusRing}`}
+                          >
+                            {copy.revokedTry}
+                          </Link>
+                        </p>
+                      )}
                     </li>
                   ))}
                 </ul>
               )}
+              <LoadMore state={credentials.state} onLoadMore={(cursor) => void credentials.loadPage(cursor)} copy={copy} />
             </div>
           </section>
         </div>
-
-        <section className={`${panel} order-first lg:order-none lg:col-span-7`} aria-labelledby="school-portal-wallet">
-          <div className="flex items-start gap-3">
-            <Wallet aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-[#354CE1]" />
-            <div className="min-w-0">
-              <h2 id="school-portal-wallet" className="type-card-title text-[#0F1E36]">{copy.walletTitle}</h2>
-              <p className="type-body mt-1 text-slate-700">{copy.walletIntro}</p>
-            </div>
-          </div>
-
-          <p role="status" aria-live="polite" className="sr-only">{offerLiveText}</p>
-
-          <div className="mt-5">
-            {offer.phase === 'idle' && (
-              <div className="space-y-3">
-                <button type="button" onClick={() => void createOffer()} className={primaryButton}>
-                  {holdsDiploma ? copy.reissue : copy.receive}
-                </button>
-                {holdsDiploma && <p className="type-body max-w-prose text-slate-600">{copy.reissueHint}</p>}
-              </div>
-            )}
-
-            {offer.phase === 'creating' && (
-              <p className="type-body flex min-h-11 items-center gap-2 text-slate-700">
-                <Loader2 aria-hidden="true" className="h-4 w-4 text-[#354CE1] motion-safe:animate-spin" />
-                {copy.creatingOffer}
-              </p>
-            )}
-
-            {offer.phase === 'active' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-[auto_minmax(0,1fr)]">
-                  <div className={`mx-auto w-full max-w-60 sm:mx-0 ${isTouch ? 'order-2 sm:order-none' : ''}`}>
-                    <IdentraQrCode
-                      value={offer.offer.offerUri}
-                      label={copy.offerQrLabel}
-                      className="h-auto w-full rounded-2xl border border-slate-200"
-                      fallback={<p role="note" className="type-body rounded-2xl bg-amber-50 p-4 text-amber-950">{copy.qrUnavailable}</p>}
-                    />
-                  </div>
-                  <div className={`min-w-0 space-y-4 ${isTouch ? 'order-1 sm:order-none' : ''}`}>
-                    <div>
-                      <p className="type-body text-slate-600">{copy.pinLabel}</p>
-                      <p className="type-metric tabular-nums text-[#0F1E36]" aria-label={offer.offer.txCode.split('').join(' ')}>
-                        {`${offer.offer.txCode.slice(0, 3)} ${offer.offer.txCode.slice(3)}`}
-                      </p>
-                      <p className="type-body mt-1 text-slate-600">{copy.pinHelp}</p>
-                    </div>
-                    <p className="type-body flex items-center gap-2 text-slate-700">
-                      <Clock aria-hidden="true" className="h-4 w-4 text-slate-500" />
-                      <ServerCountdown expiresAt={offer.offer.expiresAt} offsetMs={offer.clockOffsetMs} template={copy.expiresIn} />
-                    </p>
-                    <p className={`type-body flex items-start gap-2 rounded-2xl px-4 py-3 font-medium ${offer.reconnecting ? 'bg-amber-50 text-amber-900' : 'bg-slate-50 text-slate-800'}`}>
-                      {offer.reconnecting
-                        ? <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-                        : <span aria-hidden="true" className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[#354CE1] motion-safe:animate-pulse" />}
-                      {offer.reconnecting ? copy.reconnecting : copy.waitingForWallet}
-                    </p>
-                    <IdentraWalletLink
-                      href={offer.offer.offerUri}
-                      openLabel={copy.openInWallet}
-                      linkLabel={copy.linkLabel}
-                      copyLabel={copy.copyLink}
-                      copiedLabel={copy.linkCopied}
-                      emphasizeOpen={isTouch}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <h3 className="type-card-title-sm text-slate-900">{copy.firstTimeTitle}</h3>
-                  <ol className="type-body mt-2 list-decimal space-y-1.5 pl-5 text-slate-700">
-                    {copy.firstTimeSteps.map((step) => <li key={step}>{step}</li>)}
-                  </ol>
-                </div>
-              </div>
-            )}
-
-            {offer.phase === 'issued' && (
-              <div className="space-y-4">
-                <p className="type-card-title flex items-center gap-2 text-emerald-800">
-                  <CheckCircle2 aria-hidden="true" className="h-5 w-5" />
-                  {copy.issuedTitle}
-                </p>
-                <p className="type-body text-slate-700">{copy.issuedBody}</p>
-                <div className="flex flex-wrap gap-3">
-                  <Link to={employerDemoPath} className={primaryButton}>{copy.tryEmployerDemo}</Link>
-                  <button type="button" onClick={() => void createOffer()} className={secondaryButton}>{copy.reissue}</button>
-                </div>
-                <p className="type-body max-w-prose text-slate-600">{copy.reissueHint}</p>
-              </div>
-            )}
-
-            {(offer.phase === 'expired' || offer.phase === 'error') && (
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  {offer.phase === 'expired'
-                    ? <Clock aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-slate-600" />
-                    : <AlertTriangle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />}
-                  <div>
-                    <p className="type-card-title text-slate-900">
-                      {offer.phase === 'expired' ? copy.expiredTitle : copy.loadProblems[offer.problem]}
-                    </p>
-                    {offer.phase === 'expired' && <p className="type-body mt-1 text-slate-700">{copy.expiredBody}</p>}
-                    {retrySeconds > 0 && <p className="type-body mt-1 text-slate-700">{fill(copy.retryAfter, { seconds: retrySeconds })}</p>}
-                  </div>
-                </div>
-                <button type="button" onClick={() => void createOffer()} disabled={retrySeconds > 0} className={primaryButton}>
-                  <RefreshCw aria-hidden="true" className="h-4 w-4" />
-                  {offer.phase === 'expired' ? copy.newOffer : copy.retry}
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
       </div>
+
+      {isDialogOpen(revoke.state) && (
+        <ConfirmDialog
+          title={copy.revokeTitle}
+          subtitle={issuedAt(revoke.state.target.issuedAt)}
+          body={(
+            <ul className="type-body list-disc space-y-1.5 rounded-2xl bg-rose-50 py-3 pl-9 pr-4 text-rose-900">
+              {copy.revokePoints.map((point) => <li key={point}>{point}</li>)}
+            </ul>
+          )}
+          confirmLabel={copy.revokeConfirm}
+          destructive
+          state={revoke.state}
+          problemText={revoke.state.phase === 'failed' ? copy.revokeProblems[revoke.state.problem] : null}
+          onConfirm={() => void revoke.save()}
+          onCancel={revoke.cancel}
+          copy={copy}
+        />
+      )}
     </div>
   );
 }
@@ -650,117 +1016,6 @@ function StudentView({
 interface PendingChange {
   item: IssuedCredential;
   action: StatusAction;
-}
-
-function ConfirmStatusDialog({
-  change,
-  saving,
-  problem,
-  onConfirm,
-  onCancel,
-  copy,
-}: {
-  change: PendingChange;
-  saving: boolean;
-  problem: StatusChangeProblem | null;
-  onConfirm: () => void;
-  onCancel: () => void;
-  copy: SchoolPortalPageCopy;
-}) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  const isRevoke = change.action === 'revoke';
-  useInertAppRoot(true);
-
-  useEffect(() => {
-    cancelRef.current?.focus();
-  }, []);
-
-  // While saving, the buttons stay focusable (aria-disabled), so focus never falls out of the dialog.
-  const handleKeyDown = (event: ReactKeyboardEvent) => {
-    if (event.key === 'Escape') {
-      event.stopPropagation();
-      if (!saving) onCancel();
-      return;
-    }
-    if (event.key !== 'Tab') return;
-    const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button') ?? []);
-    if (focusable.length === 0) {
-      event.preventDefault();
-      return;
-    }
-    const first = focusable[0]!;
-    const last = focusable[focusable.length - 1]!;
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
-
-  return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 sm:items-center sm:p-4">
-      <div
-        ref={dialogRef}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="school-portal-confirm-title"
-        aria-describedby="school-portal-confirm-body"
-        aria-busy={saving}
-        onKeyDown={handleKeyDown}
-        className="w-full max-w-md rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
-      >
-        <h2 id="school-portal-confirm-title" className={`type-featured-title text-[#0F1E36] ${apiText}`}>
-          {fillNodes(copy.confirmTitle[change.action], { name: <bdi>{change.item.studentName}</bdi> })}
-        </h2>
-        <p className="mt-1 font-mono text-sm text-slate-600">{change.item.studentCode}</p>
-        <div id="school-portal-confirm-body" className="mt-4 space-y-2">
-          <p className={`type-body ${isRevoke ? 'rounded-2xl bg-rose-50 px-4 py-3 text-rose-900' : 'text-slate-700'}`}>
-            {copy.confirmBody[change.action]}
-          </p>
-          <p className="type-body text-slate-600">{copy.timingNote}</p>
-        </div>
-        {problem && (
-          <p role="alert" className="type-body mt-4 flex items-start gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-amber-900">
-            <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-            {copy.statusChangeProblems[problem]}
-          </p>
-        )}
-        {saving && (
-          <p role="status" className="type-body mt-4 flex items-center gap-2 text-slate-700">
-            <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />
-            {copy.saving}
-          </p>
-        )}
-        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <button
-            ref={cancelRef}
-            type="button"
-            onClick={() => { if (!saving) onCancel(); }}
-            aria-disabled={saving}
-            className={secondaryButton}
-          >
-            {copy.cancel}
-          </button>
-          {problem !== 'already_revoked' && problem !== 'not_found' && (
-            <button
-              type="button"
-              onClick={() => { if (!saving) onConfirm(); }}
-              aria-disabled={saving}
-              className={isRevoke
-                ? `type-control inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-rose-700 px-5 text-white transition-colors hover:bg-rose-800 aria-disabled:cursor-not-allowed aria-disabled:opacity-60 ${focusRing}`
-                : primaryButton}
-            >
-              {copy.confirmAction[change.action]}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
 }
 
 function RegistrarView({
@@ -775,78 +1030,34 @@ function RegistrarView({
   onSessionExpired: () => void;
 }) {
   const format = useDateFormat(locale);
-  const { state, dispatch, load } = useCredentialList(session.token, onSessionExpired);
-  const [pending, setPending] = useState<PendingChange | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [problem, setProblem] = useState<StatusChangeProblem | null>(null);
-  const [announcement, setAnnouncement] = useState<{ name: string; status: CredentialStatus } | null>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const saveController = useRef<AbortController | null>(null);
+  const { state, dispatch, load, loadPage } = useCredentialList(session.token, onSessionExpired);
+  const change = useStatusChange<PendingChange>({
+    idOf: ({ item }) => item.id,
+    perform: ({ item, action }, signal) => portalClient.changeCredentialStatus(session.token, item.id, STATUS_FOR_ACTION[action], signal),
+    onApplied: (id, status) => dispatch({ type: 'statusChanged', id, status }),
+    onSessionExpired,
+    doneFocusId: 'school-portal-announcement',
+  });
 
   useEffect(() => {
     focusById('school-portal-title');
-    return () => saveController.current?.abort();
   }, []);
-
-  const openConfirm = (item: IssuedCredential, action: StatusAction, trigger: HTMLButtonElement) => {
-    triggerRef.current = trigger;
-    setProblem(null);
-    setPending({ item, action });
-  };
-
-  const closeConfirm = () => {
-    setPending(null);
-    setProblem(null);
-    window.requestAnimationFrame(() => triggerRef.current?.focus());
-  };
-
-  // No optimistic update: the row changes only with the server's answer.
-  const confirm = async () => {
-    if (!pending) return;
-    const controller = new AbortController();
-    saveController.current = controller;
-    setSaving(true);
-    setProblem(null);
-    try {
-      const result = await portalClient.changeCredentialStatus(
-        session.token,
-        pending.item.id,
-        STATUS_FOR_ACTION[pending.action],
-        controller.signal,
-      );
-      if (controller.signal.aborted) return;
-      dispatch({ type: 'statusChanged', id: result.id, status: result.status });
-      setAnnouncement({ name: pending.item.studentName, status: result.status });
-      setSaving(false);
-      setPending(null);
-      focusById('school-portal-announcement');
-    } catch (error) {
-      if (controller.signal.aborted) return;
-      setSaving(false);
-      const nextProblem = error instanceof PortalApiError ? statusChangeProblemFor(error) : 'unavailable';
-      if (nextProblem === 'session_expired') {
-        setPending(null);
-        onSessionExpired();
-        return;
-      }
-      setProblem(nextProblem);
-      if (nextProblem === 'already_revoked') dispatch({ type: 'statusChanged', id: pending.item.id, status: 'revoked' });
-    }
-  };
 
   const items = state.items;
   const counts = items ? countByStatus(items) : null;
+  const done = change.state.phase === 'done' ? change.state : null;
 
   const rowActions = (item: IssuedCredential) => {
-    const actions = actionsFor(item.status);
+    const actions = actionsFor(item.status, item.canRevoke);
     if (actions.length === 0) return <p className="type-body text-slate-600 md:text-right">{copy.revokedFinal}</p>;
     return (
-      <div className="flex flex-wrap gap-2 md:justify-end">
+      <div className="flex flex-wrap gap-2 md:flex-nowrap md:justify-end">
         {actions.map((action) => (
           <button
             key={action}
             type="button"
-            onClick={(event) => openConfirm(item, action, event.currentTarget)}
+            onClick={(event) => change.open({ item, action }, event.currentTarget)}
+            data-testid={`portal-registrar-${action}`}
             className={`type-control min-h-11 cursor-pointer rounded-full border px-4 transition-colors ${focusRing} ${
               action === 'revoke' ? 'border-rose-200 text-rose-700 hover:bg-rose-50' : 'border-slate-300 text-slate-700 hover:bg-slate-50'
             }`}
@@ -879,17 +1090,21 @@ function RegistrarView({
         role="status"
         aria-live="polite"
         tabIndex={-1}
-        className={announcement ? `type-body rounded-2xl bg-emerald-50 px-4 py-3 text-emerald-900 focus:outline-none ${apiText}` : 'sr-only'}
+        className={done ? `type-body rounded-2xl bg-emerald-50 px-4 py-3 text-emerald-900 focus:outline-none ${apiText}` : 'sr-only'}
       >
-        {announcement
-          ? fillNodes(copy.statusChanged, { name: <bdi>{announcement.name}</bdi>, status: copy.statusLabels[announcement.status] })
+        {done
+          ? fillNodes(copy.statusChanged, { name: <bdi>{done.target.item.studentName}</bdi>, status: copy.statusLabels[done.status] })
           : ''}
       </p>
 
       <section className={panel} aria-labelledby="school-portal-table-title" aria-busy={state.phase === 'loading'}>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="school-portal-table-title" className="type-card-title text-[#0F1E36]">{copy.universityName}</h2>
-          {counts && <p className="type-body tabular-nums text-slate-600">{fill(copy.counts, counts)}</p>}
+          {counts && items && (
+            <p className="type-body tabular-nums text-slate-600">
+              {state.nextCursor === null ? fill(copy.counts, counts) : fill(copy.countsPartial, { ...counts, total: items.length })}
+            </p>
+          )}
         </div>
 
         {state.phase === 'error' && (
@@ -919,7 +1134,7 @@ function RegistrarView({
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {items.map((item) => (
-                  <tr key={item.id} className="align-middle">
+                  <tr key={item.id} className="align-middle" data-testid="portal-registrar-row" data-credential-id={item.id} data-status={item.status}>
                     <td className="py-3.5 pr-4">
                       <p className={`font-semibold text-slate-900 ${apiText}`}><bdi>{item.studentName}</bdi></p>
                       <p className="font-mono text-xs text-slate-600"><bdi>{item.studentCode}</bdi></p>
@@ -934,7 +1149,7 @@ function RegistrarView({
 
             <ul className="mt-4 divide-y divide-slate-100 md:hidden">
               {items.map((item) => (
-                <li key={item.id} className="space-y-3 py-4">
+                <li key={item.id} className="space-y-3 py-4" data-testid="portal-registrar-row" data-credential-id={item.id} data-status={item.status}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className={`type-body font-semibold text-slate-900 ${apiText}`}><bdi>{item.studentName}</bdi></p>
@@ -952,15 +1167,25 @@ function RegistrarView({
             </ul>
           </>
         )}
+
+        <LoadMore state={state} onLoadMore={(cursor) => void loadPage(cursor)} copy={copy} />
       </section>
 
-      {pending && (
-        <ConfirmStatusDialog
-          change={pending}
-          saving={saving}
-          problem={problem}
-          onConfirm={() => void confirm()}
-          onCancel={closeConfirm}
+      {isDialogOpen(change.state) && (
+        <ConfirmDialog
+          title={fillNodes(copy.confirmTitle[change.state.target.action], { name: <bdi>{change.state.target.item.studentName}</bdi> })}
+          subtitle={<span className="font-mono"><bdi>{change.state.target.item.studentCode}</bdi></span>}
+          body={(
+            <p className={`type-body ${change.state.target.action === 'revoke' ? 'rounded-2xl bg-rose-50 px-4 py-3 text-rose-900' : 'text-slate-700'}`}>
+              {copy.confirmBody[change.state.target.action]}
+            </p>
+          )}
+          confirmLabel={copy.confirmAction[change.state.target.action]}
+          destructive={change.state.target.action === 'revoke'}
+          state={change.state}
+          problemText={change.state.phase === 'failed' ? copy.statusChangeProblems[change.state.problem] : null}
+          onConfirm={() => void change.save()}
+          onCancel={change.cancel}
           copy={copy}
         />
       )}
@@ -1050,7 +1275,7 @@ export default function SchoolPortalPage() {
                   <p className="type-body-sm text-slate-600">{fill(copy.sessionUntil, { time: format.time(sessionEndsLocal) })}</p>
                 )}
               </div>
-              <button type="button" onClick={() => dispatch({ type: 'signOut' })} className={secondaryButton}>
+              <button type="button" onClick={() => dispatch({ type: 'signOut' })} className={secondaryButton} data-testid="portal-signout">
                 <LogOut aria-hidden="true" className="h-4 w-4" />
                 {copy.signOut}
               </button>

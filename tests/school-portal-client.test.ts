@@ -91,6 +91,19 @@ test('failures branch on the error code of section 2, the status only when the b
 
   const limited = client(() => json({ statusCode: 429, code: 'RATE_LIMITED', message: 'x' }, 429, { 'Retry-After': '42' }));
   await assert.rejects(limited.api.login('sv001', 'x'), (error: PortalApiError) => error.kind === 'rate_limited' && error.retryAfterSeconds === 42);
+  // Section 5: creating an offer is 429 (this client's share) or 503 (everyone's cap), both with Retry-After.
+  const share = client(() => json({ statusCode: 429, code: 'RATE_LIMITED', message: 'x' }, 429, { 'Retry-After': '540' }));
+  await assert.rejects(share.api.createOffer('t'), (error: PortalApiError) => error.kind === 'rate_limited' && error.retryAfterSeconds === 540);
+  const cap = client(() => json({ statusCode: 503, code: 'UNAVAILABLE', message: 'x' }, 503, { 'Retry-After': '90' }));
+  await assert.rejects(cap.api.createOffer('t'), (error: PortalApiError) => error.kind === 'unavailable' && error.retryAfterSeconds === 90);
+  // A Retry-After that is not a sane number of seconds is ignored, never trusted.
+  for (const header of ['soon', '-1', '99999', '1.5', '']) {
+    const odd = client(() => json({ statusCode: 429, code: 'RATE_LIMITED', message: 'x' }, 429, { 'Retry-After': header }));
+    await assert.rejects(odd.api.createOffer('t'), (error: PortalApiError) => error.kind === 'rate_limited' && error.retryAfterSeconds === undefined);
+  }
+  // A Retry-After on another kind of failure means nothing to the page.
+  const conflict = client(() => json({ statusCode: 409, code: 'CONFLICT', message: 'x' }, 409, { 'Retry-After': '5' }));
+  await assert.rejects(conflict.api.revokeCredential('t', 'c1'), (error: PortalApiError) => error.kind === 'conflict' && error.retryAfterSeconds === undefined);
 });
 
 test('a request that hangs times out', async () => {
@@ -141,8 +154,85 @@ test('malformed responses are rejected instead of trusted', async () => {
     await rejectsWith(client(() => json(body)).api.createOffer('t'), 'malformed');
   }
   await rejectsWith(client(() => json({ status: 'done' })).api.getOfferStatus('t', 'abc'), 'malformed');
-  await rejectsWith(client(() => json({ items: [{ id: 'a', studentCode: 'SV1', studentName: 'A', issuedAt: '2026-01-01', status: 'deleted' }] })).api.listCredentials('t'), 'malformed');
-  await rejectsWith(client(() => json({ items: {} })).api.listCredentials('t'), 'malformed');
+
+  const row = { id: 'a', studentCode: 'SV1', studentName: 'A', issuedAt: '2026-01-01T00:00:00Z', status: 'valid', canRevoke: true };
+  for (const body of [
+    { items: [{ ...row, status: 'deleted' }], nextCursor: null },
+    { items: {}, nextCursor: null },
+    { items: [{ ...row, canRevoke: undefined }], nextCursor: null },
+    { items: [{ ...row, canRevoke: 'true' }], nextCursor: null },
+    { items: [{ ...row, canRevoke: 1 }], nextCursor: null },
+    // Revocation is final: a revoked row that could be revoked again is contradictory.
+    { items: [{ ...row, status: 'revoked', canRevoke: true }], nextCursor: null },
+    { items: [{ ...row, id: 'a/../b' }], nextCursor: null },
+    { items: [{ ...row, studentName: '<b>\u202E</b>' }], nextCursor: null },
+    { items: [row] },
+    { items: [row], nextCursor: '' },
+    { items: [row], nextCursor: 42 },
+    { items: [row], nextCursor: 'x'.repeat(513) },
+    { items: Array.from({ length: 101 }, (_, index) => ({ ...row, id: `r${index}` })), nextCursor: null },
+  ]) {
+    await rejectsWith(client(() => json(body)).api.listCredentials('t'), 'malformed');
+  }
+
+  // Answers about another item than the one asked for, or that did not do what was asked, are not trusted.
+  for (const body of [
+    { id: 'other', status: 'revoked', updatedAt: '2026-11-19T02:00:00Z' },
+    { id: 'c1', status: 'suspended', updatedAt: '2026-11-19T02:00:00Z' },
+    { id: 'c1', status: 'revoked' },
+  ]) {
+    await rejectsWith(client(() => json(body)).api.revokeCredential('t', 'c1'), 'malformed');
+  }
+  await rejectsWith(client(() => json({ id: 'other', status: 'valid', updatedAt: '2026-11-19T02:00:00Z' })).api.changeCredentialStatus('t', 'c1', 'valid'), 'malformed');
+  for (const body of [
+    { offerId: 'other', status: 'expired', serverTime: '2026-11-19T02:00:00Z' },
+    { offerId: 'o1', status: 'pending', serverTime: '2026-11-19T02:00:00Z' },
+    { offerId: 'o1', status: 'cancelled', serverTime: '2026-11-19T02:00:00Z' },
+  ]) {
+    await rejectsWith(client(() => json(body)).api.cancelOffer('t', 'o1'), 'malformed');
+  }
+});
+
+test('the credentials list is read page by page, with canRevoke and an opaque cursor', async () => {
+  const { api, calls } = client((call) => (call.url.includes('cursor=')
+    ? json({ items: [{ id: 'c2', studentCode: 'SV0098', studentName: 'Phạm Ngọc Mẫu', issuedAt: '2026-10-31T00:00:00Z', status: 'revoked', canRevoke: false }], nextCursor: null })
+    : json({ items: [{ id: 'c1', studentCode: 'SV0003', studentName: 'Lê Hoàng Mẫu', issuedAt: '2026-11-16T00:00:00Z', status: 'valid', canRevoke: true }], nextCursor: 'p+1/=' })));
+
+  const first = await api.listCredentials('tok');
+  assert.deepEqual(first, {
+    items: [{ id: 'c1', studentCode: 'SV0003', studentName: 'Lê Hoàng Mẫu', issuedAt: '2026-11-16T00:00:00Z', status: 'valid', canRevoke: true }],
+    nextCursor: 'p+1/=',
+  });
+  const second = await api.listCredentials('tok', { cursor: first.nextCursor!, limit: 20 });
+  assert.equal(second.nextCursor, null);
+  assert.equal(second.items[0]?.canRevoke, false);
+  assert.deepEqual(calls.map((call) => call.url.replace('https://api.example.test', '')), [
+    '/v1/demo/school/credentials',
+    '/v1/demo/school/credentials?limit=20&cursor=p%2B1%2F%3D',
+  ]);
+});
+
+test('a student revokes a diploma of this session and cancels an offer, keepalive when leaving', async () => {
+  const { api, calls } = client((call) => (call.init.method === 'DELETE'
+    ? json({ offerId: 'o-1', status: 'expired', serverTime: '2026-11-19T02:00:00Z' })
+    : json({ id: 'c_1', status: 'revoked', updatedAt: '2026-11-19T02:00:00Z' })));
+
+  assert.deepEqual(await api.revokeCredential('tok', 'c_1'), { id: 'c_1', status: 'revoked', updatedAt: '2026-11-19T02:00:00Z' });
+  assert.deepEqual(await api.cancelOffer('tok', 'o-1', { keepalive: true }), { offerId: 'o-1', status: 'expired' });
+  await api.cancelOffer('tok', 'o-1');
+
+  assert.deepEqual(calls.map((call) => [call.init.method, call.url.replace('https://api.example.test', '')]), [
+    ['POST', '/v1/demo/school/credentials/c_1/revoke'],
+    ['DELETE', '/v1/demo/school/offers/o-1'],
+    ['DELETE', '/v1/demo/school/offers/o-1'],
+  ]);
+  assert.equal(calls[0]?.init.body, undefined, 'the revoke route takes no body');
+  assert.equal(calls[1]?.init.keepalive, true);
+  assert.equal(calls[2]?.init.keepalive, undefined);
+  for (const call of calls) {
+    assert.equal((call.init.headers as Record<string, string>).Authorization, 'Bearer tok');
+    assert.equal(call.init.credentials, 'omit');
+  }
 });
 
 test('authenticated calls send the bearer token and hit the contract paths', async () => {
@@ -152,12 +242,12 @@ test('authenticated calls send the bearer token and hit the contract paths', asy
     }
     if (call.url.includes('/offers/')) return json({ status: 'issued' });
     if (call.url.endsWith('/status')) return json({ id: 'c 1', status: 'revoked', updatedAt: '2026-11-19T02:00:00Z' });
-    return json({ items: [{ id: 'c1', studentCode: 'SV0003', studentName: 'Lê Hoàng Mẫu', issuedAt: '2026-11-16T00:00:00Z', status: 'valid' }] });
+    return json({ items: [{ id: 'c1', studentCode: 'SV0003', studentName: 'Lê Hoàng Mẫu', issuedAt: '2026-11-16T00:00:00Z', status: 'valid', canRevoke: true }], nextCursor: null });
   });
 
   assert.equal((await api.createOffer('tok')).txCode, '000123');
   assert.equal(await api.getOfferStatus('tok', 'o/1'), 'issued');
-  assert.equal((await api.listCredentials('tok'))[0]?.status, 'valid');
+  assert.equal((await api.listCredentials('tok')).items[0]?.status, 'valid');
   await rejectsWith(api.changeCredentialStatus('tok', 'c 1', 'revoked'), 'malformed');
 
   assert.deepEqual(calls.map((call) => [call.init.method, call.url.replace('https://api.example.test', '')]), [

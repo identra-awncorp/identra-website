@@ -5,7 +5,8 @@
 
 // Client for the school-portal demo endpoints (vc-api.md section 5) and the registrar's status change
 // (section 3). Demo-specific, so it lives in the website rather than in @identra/sdk-client.
-// Every response is validated before use; nothing here logs tokens, PINs or personal data.
+// Every response is validated before use; nothing here logs or stores tokens, PINs or personal data.
+// Everything a student creates belongs to the portal session (one login), not to the shared account.
 
 export type PortalRole = 'student' | 'registrar';
 export type CredentialStatus = 'valid' | 'revoked' | 'suspended';
@@ -45,6 +46,20 @@ export interface IssuedCredential {
   studentName: string;
   issuedAt: string;
   status: CredentialStatus;
+  /** The server's word on whether this session may revoke the item now; `false` once revoked. */
+  canRevoke: boolean;
+}
+
+export interface CredentialPage {
+  items: IssuedCredential[];
+  /** Opaque; `null` on the last page. */
+  nextCursor: string | null;
+}
+
+/** The answer to cancelling an offer: a pending one becomes `expired`, an issued one stays `issued`. */
+export interface CancelledOffer {
+  offerId: string;
+  status: 'expired' | 'issued';
 }
 
 export interface CredentialStatusChange {
@@ -76,7 +91,7 @@ export type PortalApiErrorKind =
 export class PortalApiError extends Error {
   readonly kind: PortalApiErrorKind;
   readonly status?: number;
-  /** Seconds from a 429's Retry-After header, when the server sent one. */
+  /** Seconds from the Retry-After header of a 429 or a 503, when the server sent one. */
   readonly retryAfterSeconds?: number;
 
   constructor(kind: PortalApiErrorKind, message: string, status?: number, retryAfterSeconds?: number) {
@@ -199,27 +214,56 @@ export const parseCredentialOffer = (raw: unknown, apiOrigin: string, issuer: st
 export const parseOfferStatus = (raw: unknown): OfferStatus =>
   asEnum(asObject(raw, 'body').status, ['pending', 'issued', 'expired'] as const, 'status');
 
-export const parseIssuedCredentials = (raw: unknown): IssuedCredential[] => {
-  const items = asObject(raw, 'body').items;
-  if (!Array.isArray(items) || items.length > 1000) malformed('items');
-  return (items as unknown[]).map((item, index) => {
-    const row = asObject(item, `items[${index}]`);
-    return {
-      id: asId(row.id, `items[${index}].id`),
-      studentCode: asText(row.studentCode, `items[${index}].studentCode`),
-      studentName: asText(row.studentName, `items[${index}].studentName`),
-      issuedAt: asDate(row.issuedAt, `items[${index}].issuedAt`),
-      status: asEnum(row.status, CREDENTIAL_STATUSES, `items[${index}].status`),
-    };
-  });
+/** A page holds at most 100 items (`limit` 1-100, vc-api.md section 5). */
+export const MAX_PAGE_SIZE = 100;
+
+export const parseCredentialPage = (raw: unknown): CredentialPage => {
+  const body = asObject(raw, 'body');
+  const { items } = body;
+  if (!Array.isArray(items) || items.length > MAX_PAGE_SIZE) malformed('items');
+  const nextCursor = body.nextCursor === null ? null : asText(body.nextCursor, 'nextCursor', 512);
+  return {
+    items: (items as unknown[]).map((item, index) => {
+      const row = asObject(item, `items[${index}]`);
+      const status = asEnum(row.status, CREDENTIAL_STATUSES, `items[${index}].status`);
+      if (typeof row.canRevoke !== 'boolean') malformed(`items[${index}].canRevoke`);
+      // Revocation is final: a revoked item that could be revoked again is not an answer to trust.
+      if (status === 'revoked' && row.canRevoke) malformed(`items[${index}].canRevoke`);
+      return {
+        id: asId(row.id, `items[${index}].id`),
+        studentCode: asText(row.studentCode, `items[${index}].studentCode`),
+        studentName: asText(row.studentName, `items[${index}].studentName`),
+        issuedAt: asDate(row.issuedAt, `items[${index}].issuedAt`),
+        status,
+        canRevoke: row.canRevoke as boolean,
+      };
+    }),
+    nextCursor,
+  };
 };
 
-export const parseStatusChange = (raw: unknown): CredentialStatusChange => {
+/** The answer must be about the item asked for; anything else is not trusted. */
+const sameId = (id: string, expected: string, path: string) => (id === expected ? id : malformed(path));
+
+export const parseStatusChange = (raw: unknown, expectedId: string): CredentialStatusChange => {
   const body = asObject(raw, 'body');
   return {
-    id: asId(body.id, 'id'),
+    id: sameId(asId(body.id, 'id'), expectedId, 'id'),
     status: asEnum(body.status, CREDENTIAL_STATUSES, 'status'),
     updatedAt: asDate(body.updatedAt, 'updatedAt'),
+  };
+};
+
+export const parseRevocation = (raw: unknown, expectedId: string): CredentialStatusChange => {
+  const change = parseStatusChange(raw, expectedId);
+  return change.status === 'revoked' ? change : malformed('status');
+};
+
+export const parseCancelledOffer = (raw: unknown, expectedOfferId: string): CancelledOffer => {
+  const body = asObject(raw, 'body');
+  return {
+    offerId: sameId(asId(body.offerId, 'offerId'), expectedOfferId, 'offerId'),
+    status: asEnum(body.status, ['expired', 'issued'] as const, 'status'),
   };
 };
 
@@ -247,7 +291,7 @@ const errorFor = (status: number, bodyText: string, retryAfter: string | null): 
     ? PORTAL_ERROR_CODES[code as keyof typeof PORTAL_ERROR_CODES]
     : STATUS_FALLBACK[status] ?? 'http';
   const seconds = Number(retryAfter);
-  const retryAfterSeconds = kind === 'rate_limited' && retryAfter !== null && Number.isInteger(seconds) && seconds >= 0 && seconds <= 3600
+  const retryAfterSeconds = (kind === 'rate_limited' || kind === 'unavailable') && retryAfter !== null && retryAfter.trim() !== '' && Number.isInteger(seconds) && seconds >= 0 && seconds <= 3600
     ? seconds
     : undefined;
   return new PortalApiError(kind, `HTTP ${status}`, status, retryAfterSeconds);
@@ -257,7 +301,11 @@ export interface SchoolPortalClient {
   login(username: string, password: string, signal?: AbortSignal): Promise<PortalSession>;
   createOffer(token: string, signal?: AbortSignal): Promise<CredentialOffer>;
   getOfferStatus(token: string, offerId: string, signal?: AbortSignal): Promise<OfferStatus>;
-  listCredentials(token: string, signal?: AbortSignal): Promise<IssuedCredential[]>;
+  /** Ends a pending offer of this session. `keepalive` lets it outlive the page (sent on `pagehide`). */
+  cancelOffer(token: string, offerId: string, options?: { signal?: AbortSignal; keepalive?: boolean }): Promise<CancelledOffer>;
+  listCredentials(token: string, options?: { cursor?: string; limit?: number; signal?: AbortSignal }): Promise<CredentialPage>;
+  /** A student revokes a diploma issued in this session ("I lost my phone"). Final. */
+  revokeCredential(token: string, credentialId: string, signal?: AbortSignal): Promise<CredentialStatusChange>;
   changeCredentialStatus(
     token: string,
     credentialId: string,
@@ -279,10 +327,10 @@ export const createSchoolPortalClient = (options: {
   const doFetch = options.fetch ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args));
 
   const request = async <T>(
-    method: 'GET' | 'POST',
+    method: 'GET' | 'POST' | 'DELETE',
     path: string,
     parse: (raw: unknown) => T,
-    init: { token?: string; body?: unknown; signal?: AbortSignal },
+    init: { token?: string; body?: unknown; signal?: AbortSignal; keepalive?: boolean },
   ): Promise<T> => {
     const headers: Record<string, string> = { Accept: 'application/json' };
     if (init.body !== undefined) headers['Content-Type'] = 'application/json';
@@ -308,6 +356,7 @@ export const createSchoolPortalClient = (options: {
         credentials: 'omit',
         cache: 'no-store',
         signal: controller.signal,
+        ...(init.keepalive && { keepalive: true }),
       });
       text = await response.text();
     } catch (error) {
@@ -330,6 +379,7 @@ export const createSchoolPortalClient = (options: {
   };
 
   const issuerPath = `/v1/issuers/${encodeURIComponent(options.issuer)}`;
+  const offerPath = (offerId: string) => `/v1/demo/school/offers/${encodeURIComponent(offerId)}`;
 
   return {
     login: (username, password, signal) => request('POST', '/v1/demo/school/login', parsePortalSession, {
@@ -342,20 +392,30 @@ export const createSchoolPortalClient = (options: {
       (raw) => parseCredentialOffer(raw, options.apiOrigin, options.issuer),
       { token, signal },
     ),
-    getOfferStatus: (token, offerId, signal) => request(
-      'GET',
-      `/v1/demo/school/offers/${encodeURIComponent(offerId)}`,
-      parseOfferStatus,
+    getOfferStatus: (token, offerId, signal) => request('GET', offerPath(offerId), parseOfferStatus, { token, signal }),
+    cancelOffer: (token, offerId, { signal, keepalive } = {}) => request(
+      'DELETE',
+      offerPath(offerId),
+      (raw) => parseCancelledOffer(raw, offerId),
+      { token, signal, keepalive },
+    ),
+    listCredentials: (token, { cursor, limit, signal } = {}) => {
+      const query = new URLSearchParams();
+      if (limit !== undefined) query.set('limit', String(limit));
+      if (cursor !== undefined) query.set('cursor', cursor);
+      const search = query.toString() ? `?${query.toString()}` : '';
+      return request('GET', `/v1/demo/school/credentials${search}`, parseCredentialPage, { token, signal });
+    },
+    revokeCredential: (token, credentialId, signal) => request(
+      'POST',
+      `/v1/demo/school/credentials/${encodeURIComponent(credentialId)}/revoke`,
+      (raw) => parseRevocation(raw, credentialId),
       { token, signal },
     ),
-    listCredentials: (token, signal) => request('GET', '/v1/demo/school/credentials', parseIssuedCredentials, {
-      token,
-      signal,
-    }),
     changeCredentialStatus: (token, credentialId, status, signal) => request(
       'POST',
       `${issuerPath}/credentials/${encodeURIComponent(credentialId)}/status`,
-      parseStatusChange,
+      (raw) => parseStatusChange(raw, credentialId),
       { token, body: { status }, signal },
     ),
   };

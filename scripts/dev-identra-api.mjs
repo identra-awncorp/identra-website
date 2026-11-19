@@ -33,14 +33,26 @@
  *   DEV_EMPTY_CREDENTIALS=1          start with no seeded credentials (or --empty-credentials)
  *   DEV_AUTO=1                       (or --auto) a new verifier session goes to request_retrieved
  *                                    after 4 s and verified after 8 s; a new offer is issued after 10 s
+ *   DEV_REGISTRAR_PASSWORD=...       the registrar's PRIVATE password (default: dev-registrar-only;
+ *                                    never shown on the website, the public student password does
+ *                                    not open it)
+ *   DEV_MAX_LIVE_OFFERS=500          global cap of live (pending) offers; beyond it 503 UNAVAILABLE
+ *   DEV_CREDENTIALS_PAGE=50          page size of GET /v1/demo/school/credentials when the client sends
+ *                                    no limit (set it to 2 to try "Show more" with the seeded rows)
  *
- * Accounts (password for all: Identra@2026)
- *   sv001, sv002, sv003              students
- *   phongdaotao                      registrar
- *   hethan                           student (copy of sv001's profile, own credentials),
+ * Accounts (§5)
+ *   sv001, sv002, sv003              students, public password Identra@2026, shared by every visitor:
+ *                                    offers and credentials belong to the PORTAL SESSION (one login),
+ *                                    another session of the same account gets 404 for them
+ *   phongdaotao                      registrar, password DEV_REGISTRAR_PASSWORD (private)
+ *   hethan                           student (copy of sv001's profile), password Identra@2026,
  *                                    token expires 20 s after login
  *   loi429                           login always answers 429 RATE_LIMITED (any password)
  *   loi500                           login always answers 500 INTERNAL_ERROR (any password)
+ *
+ * Offers (§5, §8): a session may hold several live offers; per client (IP) at most 5 live offers and
+ * 30 created in 30 minutes (429 RATE_LIMITED), all clients together DEV_MAX_LIVE_OFFERS (503 UNAVAILABLE),
+ * both with Retry-After = seconds until the oldest entry of that share or cap ends.
  *
  * Dev hooks (POST only, 200 JSON on success, 404 unknown id, 409 when the
  * transition is impossible in the real server, e.g. completing an expired session)
@@ -51,10 +63,13 @@
  *   /__dev/sessions/:id/expire                   -> expired now
  *   /__dev/offers/:offerId/complete              -> issued; a new valid credential for that student
  *   /__dev/offers/:offerId/expire                -> expired now
- *   /__dev/fail-next?route=<r>&status=<s>&count=<n>
- *        r = create-session | get-session | login | offers | credentials | status
- *        s = 500 | 503 | 429, n = 1..100 (default 1): the next n matching requests fail
- *        ("offers" matches both POST /offers and GET /offers/:offerId)
+ *   /__dev/fail-next?route=<r>&status=<s>&count=<n>[&retryAfter=<sec>]
+ *        r = create-session | get-session | login | offers | create-offer | cancel-offer | credentials |
+ *            revoke | status
+ *        s = 500 | 503 | 429, n = 1..100 (default 1): the next n matching requests fail; a 429 or 503
+ *        carries Retry-After <sec> (1..3600, default 5)
+ *        ("offers" matches both POST /offers and GET /offers/:offerId; "create-offer" only the POST,
+ *        "cancel-offer" only DELETE /offers/:offerId, "revoke" the student's revoke)
  *   /__dev/hostile-next?kind=<k>                 k = long-qr | rtl-issuer: the next created session
  *                                                answers with a 5000-character QR, or the next completed
  *                                                verified session names its issuer with a bidi override
@@ -101,6 +116,11 @@ let emptyCredentials = flag('DEV_EMPTY_CREDENTIALS', '--empty-credentials');
 
 const API = 'https://api-identra.awncorp.vn';
 const PASSWORD = 'Identra@2026';
+const REGISTRAR_PASSWORD = process.env.DEV_REGISTRAR_PASSWORD || 'dev-registrar-only';
+const MAX_LIVE_OFFERS = envInt('DEV_MAX_LIVE_OFFERS', 500, 1, 100_000);
+const CREDENTIALS_PAGE = envInt('DEV_CREDENTIALS_PAGE', 50, 1, 100);
+const OFFERS_PER_CLIENT = 5;
+const OFFERS_PER_30_MIN = 30;
 const RETENTION = 30 * 60 * 1000; // expired / finished items keep answering for 30 min
 const HETHAN_TTL = 20 * 1000;
 const STATUS_DELAY = 600;
@@ -164,7 +184,7 @@ const OUTCOMES = {
   expired_credential: { fail: { validity_time: 'EXPIRED' } },
   holder: { fail: { holder_binding: 'KB_INVALID' } },
 };
-const FAIL_ROUTES = new Set(['create-session', 'get-session', 'login', 'offers', 'credentials', 'status']);
+const FAIL_ROUTES = new Set(['create-session', 'get-session', 'login', 'offers', 'create-offer', 'cancel-offer', 'credentials', 'revoke', 'status']);
 
 // ---------------------------------------------------------------- state (in memory)
 
@@ -185,8 +205,9 @@ function reset() {
   addCredential(null, 'SV0102', 'Võ Đức Mẫu', now - 46 * DAY, 'revoked');
 }
 
-function addCredential(owner, studentCode, studentName, issuedAt, status) {
-  const c = { id: newId(), owner, studentCode, studentName, issuedAt, status, updatedAt: issuedAt };
+// `session`: the portal token whose offer produced it (§5); seeded credentials belong to no live session.
+function addCredential(session, studentCode, studentName, issuedAt, status) {
+  const c = { id: newId(), session, studentCode, studentName, issuedAt, status, updatedAt: issuedAt };
   credentials.set(c.id, c);
   return c;
 }
@@ -274,12 +295,14 @@ function rateLimit(ip, kind) {
   hits.push(now);
 }
 
-function forcedFailure(routeKey) {
+function forcedFailure(routeKeys) {
+  const routeKey = routeKeys.find((k) => failNext.has(k));
+  if (!routeKey) return;
   const rule = failNext.get(routeKey);
-  if (!rule) return;
   if (--rule.remaining <= 0) failNext.delete(routeKey);
-  if (rule.status === 429) fail(429, 'Too many requests. Try again later.', 'RATE_LIMITED', { 'retry-after': '5' });
-  if (rule.status === 503) fail(503, 'Service temporarily unavailable.', 'UNAVAILABLE');
+  const retry = { 'retry-after': String(rule.retryAfter) };
+  if (rule.status === 429) fail(429, 'Too many requests. Try again later.', 'RATE_LIMITED', retry);
+  if (rule.status === 503) fail(503, 'Service temporarily unavailable.', 'UNAVAILABLE', retry);
   fail(500, 'Internal server error.', 'INTERNAL_ERROR');
 }
 
@@ -290,11 +313,13 @@ function login({ body }) {
   if (username === 'loi429') fail(429, 'Too many requests. Try again later.', 'RATE_LIMITED', { 'retry-after': '30' });
   if (username === 'loi500') fail(500, 'Internal server error.', 'INTERNAL_ERROR');
   const acc = ACCOUNTS.get(username);
-  if (!acc || password !== PASSWORD) fail(401, 'Wrong username or password.', 'INVALID_CREDENTIALS');
+  const expected = acc?.role === 'registrar' ? REGISTRAR_PASSWORD : PASSWORD;
+  if (!acc || password !== expected) fail(401, 'Wrong username or password.', 'INVALID_CREDENTIALS');
   const token = randomBytes(32).toString('base64url');
   const expiresAt = Date.now() + (acc.ttl ?? TOKEN_TTL);
-  tokens.set(token, { username, role: acc.role, expiresAt });
-  return [200, { token, expiresAt: iso(expiresAt), serverTime: iso(Date.now()), role: acc.role, profile: acc.profile }];
+  // The token is the portal session: everything a student creates belongs to it (§5).
+  tokens.set(token, { token, username, role: acc.role, expiresAt });
+  return [201, { token, expiresAt: iso(expiresAt), serverTime: iso(Date.now()), role: acc.role, profile: acc.profile }];
 }
 
 function offerState(o, now = Date.now()) {
@@ -304,18 +329,41 @@ function offerState(o, now = Date.now()) {
 
 function issueOffer(o) {
   const now = Date.now();
-  const { profile } = ACCOUNTS.get(o.owner);
+  const { profile } = ACCOUNTS.get(o.username);
   o.status = 'issued';
-  return addCredential(o.owner, profile.maSinhVien, profile.hoTen, now, 'valid');
+  return addCredential(o.session, profile.maSinhVien, profile.hoTen, now, 'valid');
+}
+
+// Seconds until the oldest of `times` leaves a window of `windowMs` (the Retry-After of §8).
+const secondsUntilFree = (times, windowMs, now) => Math.max(1, Math.ceil((Math.min(...times) + windowMs - now) / 1000));
+
+// Per client: 5 live offers, 30 created in 30 minutes (429); all clients: MAX_LIVE_OFFERS live (503).
+// A pending offer holds its place until it is redeemed, cancelled or 10 minutes pass.
+function reserveOfferPlace(client, now) {
+  const all = [...offers.values()];
+  const live = all.filter((o) => offerState(o, now) === 'pending');
+  const mineLive = live.filter((o) => o.client === client);
+  if (mineLive.length >= OFFERS_PER_CLIENT) {
+    fail(429, 'Too many requests; try again later.', 'RATE_LIMITED', { 'retry-after': String(secondsUntilFree(mineLive.map((o) => o.createdAt), OFFER_TTL, now)) });
+  }
+  const mineRecent = all.filter((o) => o.client === client && o.createdAt > now - RETENTION);
+  if (mineRecent.length >= OFFERS_PER_30_MIN) {
+    fail(429, 'Too many requests; try again later.', 'RATE_LIMITED', { 'retry-after': String(secondsUntilFree(mineRecent.map((o) => o.createdAt), RETENTION, now)) });
+  }
+  if (live.length >= MAX_LIVE_OFFERS) {
+    fail(503, 'Too many live offers; try again later.', 'UNAVAILABLE', { 'retry-after': String(secondsUntilFree(live.map((o) => o.createdAt), OFFER_TTL, now)) });
+  }
 }
 
 function createOffer({ req }) {
-  const { username } = auth(req, 'student');
-  const offerId = newId();
+  const { token, username } = auth(req, 'student');
+  const client = req.socket.remoteAddress ?? 'unknown';
   const createdAt = Date.now();
+  reserveOfferPlace(client, createdAt);
+  const offerId = newId();
   const expiresAt = createdAt + OFFER_TTL;
-  // Readable for 30 minutes after creation, then 404 (§5).
-  const o = { offerId, owner: username, status: 'pending', expiresAt, keepUntil: createdAt + RETENTION };
+  // Readable for 30 minutes after creation, then 404 (§5). Creating one never ends another.
+  const o = { offerId, session: token, username, client, status: 'pending', createdAt, expiresAt, keepUntil: createdAt + RETENTION };
   offers.set(offerId, o);
   if (AUTO) later(10_000, () => { if (offers.get(offerId) === o && offerState(o) === 'pending') issueOffer(o); });
   const txCode = String(randomInt(0, 1_000_000)).padStart(6, '0');
@@ -324,20 +372,68 @@ function createOffer({ req }) {
   return [201, { offerId, offerUri, txCode, expiresAt: iso(expiresAt), serverTime: iso(createdAt) }];
 }
 
-function getOffer({ req, params: [offerId] }) {
-  const { username } = auth(req, 'student');
+// Unknown, older than 30 minutes, or another session's (even of the same account): 404 (§5).
+function ownOffer(req, offerId) {
+  const { token } = auth(req, 'student');
   const o = offers.get(offerId);
-  if (!o || o.owner !== username) notFound();
-  return [200, { status: offerState(o) }];
+  if (!o || o.session !== token) notFound();
+  return o;
 }
 
-function listCredentials({ req }) {
-  const { username, role } = auth(req);
-  const items = [...credentials.values()]
-    .filter((c) => role === 'registrar' || c.owner === username)
-    .sort((a, b) => b.issuedAt - a.issuedAt)
-    .map((c) => ({ id: c.id, studentCode: c.studentCode, studentName: c.studentName, issuedAt: iso(c.issuedAt), status: c.status }));
-  return [200, { items }];
+function getOffer({ req, params: [offerId] }) {
+  const o = ownOffer(req, offerId);
+  return [200, { status: offerState(o), serverTime: iso(Date.now()) }];
+}
+
+// A pending offer is cancelled (its code stops working, its place is freed); an issued one stays issued;
+// repeating it is harmless.
+function cancelOffer({ req, params: [offerId] }) {
+  const o = ownOffer(req, offerId);
+  if (offerState(o) === 'pending') {
+    o.status = 'expired';
+    o.expiresAt = Date.now();
+  }
+  return [200, { offerId: o.offerId, status: o.status, serverTime: iso(Date.now()) }];
+}
+
+// The cursor is opaque to clients; here it is the base64url of the next item's position.
+function listCredentials({ req, query }) {
+  const { token, role } = auth(req);
+  const rawLimit = query.get('limit');
+  const limit = rawLimit === null ? CREDENTIALS_PAGE : Number(rawLimit);
+  if (!/^\d{1,3}$/.test(rawLimit ?? '1') || !Number.isInteger(limit) || limit < 1 || limit > 100) invalid('limit must be an integer in 1..100.');
+  const rawCursor = query.get('cursor');
+  let start = 0;
+  if (rawCursor !== null) {
+    const decoded = /^[A-Za-z0-9_-]{1,64}$/.test(rawCursor) ? Buffer.from(rawCursor, 'base64url').toString('utf8') : '';
+    if (!/^p[1-9]\d{0,6}$/.test(decoded)) invalid('cursor is not valid.');
+    start = Number(decoded.slice(1));
+  }
+  const all = [...credentials.values()]
+    .filter((c) => role === 'registrar' || c.session === token)
+    .sort((a, b) => b.issuedAt - a.issuedAt);
+  const items = all.slice(start, start + limit).map((c) => ({
+    id: c.id,
+    studentCode: c.studentCode,
+    studentName: c.studentName,
+    issuedAt: iso(c.issuedAt),
+    status: c.status,
+    canRevoke: c.status !== 'revoked',
+  }));
+  const next = start + limit;
+  return [200, { items, nextCursor: next < all.length ? Buffer.from(`p${next}`).toString('base64url') : null }];
+}
+
+// The student revokes a credential issued in this session ("I lost my phone"); final (§5).
+async function revokeOwn({ req, params: [id] }) {
+  await delay(STATUS_DELAY); // visible pending state in the UI
+  const { token } = auth(req, 'student');
+  const c = credentials.get(id);
+  if (!c || c.session !== token) notFound();
+  if (c.status === 'revoked') fail(409, 'The credential is revoked; revocation is final.', 'CONFLICT');
+  c.status = 'revoked';
+  c.updatedAt = Date.now();
+  return [200, { id: c.id, status: c.status, updatedAt: iso(c.updatedAt) }];
 }
 
 async function changeStatus({ req, body, params: [id] }) {
@@ -471,10 +567,12 @@ const dev = {
     const route = query.get('route');
     const status = Number(query.get('status'));
     const count = Number(query.get('count') ?? 1);
-    if (!FAIL_ROUTES.has(route) || ![500, 503, 429].includes(status) || !Number.isInteger(count) || count < 1 || count > 100) {
-      invalid(`Use route=${[...FAIL_ROUTES].join('|')}&status=500|503|429&count=1..100.`);
+    const retryAfter = Number(query.get('retryAfter') ?? 5);
+    if (!FAIL_ROUTES.has(route) || ![500, 503, 429].includes(status) || !Number.isInteger(count) || count < 1 || count > 100
+      || !Number.isInteger(retryAfter) || retryAfter < 1 || retryAfter > 3600) {
+      invalid(`Use route=${[...FAIL_ROUTES].join('|')}&status=500|503|429&count=1..100[&retryAfter=1..3600].`);
     }
-    failNext.set(route, { status, remaining: count });
+    failNext.set(route, { status, remaining: count, retryAfter });
     return [200, { ok: true, failNext: Object.fromEntries(failNext) }];
   },
   hostileNext({ query }) {
@@ -548,18 +646,20 @@ async function getProductEvents({ params: [gtinSegment, serialSegment] }) {
 const ID = '([A-Za-z0-9_-]{1,64})';
 // Public signed resources (§2): any origin may read them, and the Date header.
 const PUBLIC = new Set([getTrustList, getStatusList, getProductEvents]);
-// [method, path, fail-next key, rate-limit kind, handler]
+// [method, path, fail-next keys, rate-limit kind, handler]
 const ROUTES = [
-  ['GET', '/trust-list', null, 'read', getTrustList],
-  ['GET', '/issuers/([a-z0-9]+(?:-[a-z0-9]+)*)/status/([1-9][0-9]{0,8})', null, 'read', getStatusList],
-  ['GET', '/v1/products/([^/]{1,20})/([^/]{1,80})/events', null, 'read', getProductEvents],
-  ['POST', '/v1/demo/school/login', 'login', 'login', login],
-  ['POST', '/v1/demo/school/offers', 'offers', 'write', createOffer],
-  ['GET', `/v1/demo/school/offers/${ID}`, 'offers', 'read', getOffer],
-  ['GET', '/v1/demo/school/credentials', 'credentials', 'read', listCredentials],
-  ['POST', `/v1/issuers/truong-mau/credentials/${ID}/status`, 'status', 'write', changeStatus],
-  ['POST', '/v1/verification/sessions', 'create-session', 'session', createSession],
-  ['GET', `/v1/verification/sessions/${ID}`, 'get-session', 'read', getSession],
+  ['GET', '/trust-list', [], 'read', getTrustList],
+  ['GET', '/issuers/([a-z0-9]+(?:-[a-z0-9]+)*)/status/([1-9][0-9]{0,8})', [], 'read', getStatusList],
+  ['GET', '/v1/products/([^/]{1,20})/([^/]{1,80})/events', [], 'read', getProductEvents],
+  ['POST', '/v1/demo/school/login', ['login'], 'login', login],
+  ['POST', '/v1/demo/school/offers', ['create-offer', 'offers'], 'write', createOffer],
+  ['GET', `/v1/demo/school/offers/${ID}`, ['offers'], 'read', getOffer],
+  ['DELETE', `/v1/demo/school/offers/${ID}`, ['cancel-offer'], 'write', cancelOffer],
+  ['GET', '/v1/demo/school/credentials', ['credentials'], 'read', listCredentials],
+  ['POST', `/v1/demo/school/credentials/${ID}/revoke`, ['revoke'], 'write', revokeOwn],
+  ['POST', `/v1/issuers/truong-mau/credentials/${ID}/status`, ['status'], 'write', changeStatus],
+  ['POST', '/v1/verification/sessions', ['create-session'], 'session', createSession],
+  ['GET', `/v1/verification/sessions/${ID}`, ['get-session'], 'read', getSession],
   ['GET', '/oid4vp/request/[^/]+', null, null, notImplemented],
   ['GET', '/issuers/truong-mau/offers/[^/]+', null, null, notImplemented],
   ['POST', `/__dev/sessions/${ID}/retrieve`, null, null, dev.retrieve],
@@ -570,7 +670,7 @@ const ROUTES = [
   ['POST', '/__dev/fail-next', null, null, dev.failNext],
   ['POST', '/__dev/hostile-next', null, null, dev.hostileNext],
   ['POST', '/__dev/reset', null, null, dev.reset],
-].map(([method, path, key, limit, handler]) => ({ method, re: new RegExp(`^${path}$`), key, limit, handler }));
+].map(([method, path, keys, limit, handler]) => ({ method, re: new RegExp(`^${path}$`), keys: keys ?? [], limit, handler }));
 
 const maskPath = (p) => p.split('/').map((s) => (s.length >= 16 ? ':id' : s)).join('/').slice(0, 200);
 
@@ -586,7 +686,7 @@ const server = http.createServer(async (req, res) => {
   const origin = req.headers.origin;
   if (origin && ORIGIN_RE.test(origin)) {
     res.setHeader('access-control-allow-origin', origin);
-    res.setHeader('access-control-allow-methods', 'GET, POST, OPTIONS');
+    res.setHeader('access-control-allow-methods', 'GET, POST, DELETE, OPTIONS');
     res.setHeader('access-control-allow-headers', 'content-type, authorization');
     res.setHeader('access-control-expose-headers', 'retry-after');
     res.setHeader('access-control-max-age', '600');
@@ -604,7 +704,7 @@ const server = http.createServer(async (req, res) => {
       res.setHeader('access-control-expose-headers', 'Date, Retry-After');
     }
     const body = req.method === 'POST' ? await readJson(req) : undefined;
-    if (route.key) forcedFailure(route.key);
+    forcedFailure(route.keys);
     if (route.limit) rateLimit(req.socket.remoteAddress ?? 'unknown', route.limit);
     // [status, json] or [status, raw text, content type]
     const [status, payload, type] = await route.handler({ req, body, params: match.slice(1), query: url.searchParams });

@@ -9,7 +9,7 @@ import {
   X, ShieldCheck, Cpu, CheckCircle2, AlertTriangle,
   TrendingUp, ArrowRight, Lock, Shield, Sparkles, Check,
   Clock, Database, Activity, Eye, Info, Fingerprint, Terminal,
-  Copy, Download, QrCode, FileText, BadgeCheck, ShieldAlert, Award
+  Copy, QrCode, FileText, BadgeCheck, ShieldAlert, Award
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts } from '../../hooks/useManagedTimeouts';
@@ -58,8 +58,6 @@ export default function DemoSummaryModal({
   const [activeNodeIdx, setActiveNodeIdx] = useState<number>(pointsCount - 1);
   const [activeTab, setActiveTab] = useState<'verdict' | 'evidence' | 'certificate'>('verdict');
   const [copyStatus, setCopyStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [exporting, setExporting] = useState(false);
-  const [exportSuccess, setExportSuccess] = useState(false);
   const { clearTimeouts, scheduleTimeout } = useManagedTimeouts();
 
   // Sync activeNodeIdx to the last element of the new trend when scenario shifts
@@ -89,8 +87,6 @@ export default function DemoSummaryModal({
     if (!isOpen) {
       clearTimeouts();
       setCopyStatus('idle');
-      setExporting(false);
-      setExportSuccess(false);
     }
   }, [isOpen, clearTimeouts]);
 
@@ -133,14 +129,6 @@ export default function DemoSummaryModal({
     scheduleTimeout(() => setCopyStatus('idle'), 2000);
   };
 
-  const handleExportReport = () => {
-    setExporting(true);
-    scheduleTimeout(() => {
-      setExporting(false);
-      setExportSuccess(true);
-      scheduleTimeout(() => setExportSuccess(false), 3000);
-    }, 1500);
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden select-none" id="decision-logic-modal">
@@ -857,54 +845,10 @@ export default function DemoSummaryModal({
                         <Clock className="w-3.5 h-3.5 text-slate-500" />
                         <span>{t.officiallyCertified}</span>
                       </div>
-                      {/* Interactive Buttons */}
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <button
-                          onClick={handleExportReport}
-                          disabled={exporting}
-                          className="flex-1 sm:flex-none px-4 py-2 bg-gradient-to-r from-emerald-500 to-[#354CE1] hover:from-emerald-600 hover:to-[#2539BE] text-white font-bold text-xs rounded-xl transition shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
-                        >
-                          {exporting ? (
-                            <>
-                              <motion.span
-                                className="h-3 w-3 border-2 border-white border-t-transparent rounded-full block animate-spin"
-                              />
-                              <span>{t.exporting}</span>
-                            </>
-                          ) : exportSuccess ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 stroke-[3]" />
-                              <span>{t.reportExported}</span>
-                            </>
-                          ) : (
-                            <>
-                              <Download className="w-3.5 h-3.5" />
-                              <span>{t.downloadAuditPass}</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Animated Export Toast notification */}
-                <AnimatePresence>
-                  {exportSuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-center gap-3 text-emerald-800 text-xs font-medium"
-                    >
-                      <BadgeCheck className="w-5 h-5 text-emerald-600 shrink-0" />
-                      <div>
-                        <span className="font-bold block">{t.auditReportDownloaded}</span>
-                        <span className="text-emerald-600">{t.reportSavedDescription}</span>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>

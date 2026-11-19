@@ -49,11 +49,14 @@ test('claims, claim names and issuer names are escaped and isolated in <bdi>', (
   assert.ok(html.includes('<bdi>&lt;script&gt;alert(1)&lt;/script&gt;</bdi>'));
 });
 
-test('a known sample issuer is shown by its localised name; a failure shows no issuer row at all', () => {
+test('an issuer is shown by the trust list\'s name (a sample name only as its translation); a failure shows no issuer row at all', () => {
   // Organisations are identified by maToChuc = VATVN-<tax code>, never by a slug.
-  const known = render({ ...hostileResult, issuer: { maToChuc: 'VATVN-0100000001', ten: 'Server name' } });
-  assert.ok(known.includes(IDENTRA_ORGANISATION_NAME_TRANSLATIONS.vi['VATVN-0100000001']));
-  assert.ok(!known.includes('Server name'));
+  const sampleName = IDENTRA_ORGANISATION_NAME_TRANSLATIONS.vi['VATVN-0100000001'];
+  assert.ok(render({ ...hostileResult, issuer: { maToChuc: 'VATVN-0100000001', ten: sampleName } }).includes(`<bdi>${sampleName}</bdi>`));
+  // A renamed organisation, or a real one reusing the identifier: what the trust list says, never the sample name.
+  const renamed = render({ ...hostileResult, issuer: { maToChuc: 'VATVN-0100000001', ten: 'Server name' } });
+  assert.ok(renamed.includes('<bdi>Server name</bdi>'));
+  assert.ok(!renamed.includes(sampleName));
   const failed = render({ ok: false, checks: [{ id: 'status', ok: false, code: 'REVOKED' }], verifiedAt: hostileResult.verifiedAt });
   assert.ok(!failed.includes(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.issuedBy));
 });

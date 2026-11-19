@@ -1,0 +1,14 @@
+/* The product page's own stylesheet: Tailwind generates only the classes of the files listed here. */
+@import "tailwindcss" source(none);
+@import "../styles/typography.css";
+
+@source "../../product/index.html";
+@source "../components/ProductPage.tsx";
+@source "../components/ProductStageItem.tsx";
+@source "../components/IdentraQrCode.tsx";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}

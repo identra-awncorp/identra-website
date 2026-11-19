@@ -635,8 +635,11 @@ expect(
   'The global 404 page must be noindex and must not expose canonical or hreflang links.',
 );
 
-// The product page shell, served by nginx for every GS1 Digital Link path /01/<GTIN>/21/<serial>.
-const productShellHtml = readDistFile('product/index.html');
+// The product page shell (its own build, vite.product.config.ts), served by nginx for every GS1 Digital
+// Link path /01/<GTIN>/21/<serial>. Not a site page: no SEO fallback skeleton, and a shared product link
+// must not point anywhere else (no og:url) or claim another language (og:locale matches lang="vi").
+const PRODUCT_SHELL_FILE = 'product/index.html';
+const productShellHtml = readDistFile(PRODUCT_SHELL_FILE);
 expect(
   metaContent(productShellHtml, 'name', 'robots') === 'noindex, nofollow'
     && canonicalLinks(productShellHtml).length === 0
@@ -644,11 +647,22 @@ expect(
     && !withoutRootLocaleScript(productShellHtml).includes('window.location.replace('),
   'The product page shell must be noindex, without canonical or hreflang links, and without the root locale redirect.',
 );
+expect(
+  !/property="og:url"/.test(productShellHtml)
+    && /<html lang="vi">/.test(productShellHtml)
+    && metaContent(productShellHtml, 'property', 'og:locale') === 'vi_VN',
+  'The product page shell must have no og:url and an og:locale matching its lang="vi".',
+);
+expect(
+  /<noscript>[\s\S]*Cần bật JavaScript để kiểm tra sản phẩm\.[\s\S]*<\/noscript>/.test(productShellHtml)
+    && /<link rel="modulepreload" crossorigin href="\/assets\/product-productLoader-[\w-]+\.js">/.test(productShellHtml),
+  'The product page shell must explain that JavaScript is needed and modulepreload the verifier chunk.',
+);
 
 const expectedHtmlFiles = new Set([
   'index.html',
   '404.html',
-  'product/index.html',
+  PRODUCT_SHELL_FILE,
   ...indexablePages.map(({ path }) => routeFile(path)),
   ...privatePages.map(routeFile),
   ...legacyPages.map(({ path }) => routeFile(path)),
@@ -661,7 +675,7 @@ expect(
   'The build contains a missing or unexpected HTML route outside the typed route registry.',
 );
 
-for (const relativeFile of actualHtmlFiles) {
+for (const relativeFile of actualHtmlFiles.filter((file) => file !== PRODUCT_SHELL_FILE)) {
   verifyInitialLoadingShell(readDistFile(relativeFile), relativeFile);
 }
 

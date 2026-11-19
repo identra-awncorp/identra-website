@@ -11,6 +11,7 @@
 #   /{locale}/{view}/index.html      pages, e.g. /vi/blog/index.html, /vi/school-portal/index.html
 #   /{locale}/demo/{id}/index.html   demo scenarios
 #   /{locale}/404/index.html         localized not-found pages; /404.html is the neutral one
+#   /product/index.html              the product page shell for every /01/ path (its own build, vite.product.config.ts)
 #   /assets/*                        content-hashed JS/CSS/images (safe to cache forever)
 #   /trust/identra-root-ca.pem       the published Identra Root CA certificate (and -next.pem in a rollover)
 
@@ -33,6 +34,15 @@ map $uri $identra_cache_control {
 map $uri $identra_link_header {
     default                                    "";
     /white-paper/Identra-White-Paper-v1.0.pdf  '<https://identra.awncorp.vn/vi/white-paper>; rel="canonical"';
+}
+
+# Target of the trailing-slash redirect, built from the raw request line ($request_uri: percent-encoded
+# exactly as the client sent it, query string included), never from the decoded $uri, so no decoded byte
+# (CR, LF, NUL, a backslash, ...) can reach the Location header. Empty when the raw path does not itself
+# end in "/" (e.g. /vi/blog%2F, which decodes to a trailing slash): that request gets a 404, not a redirect.
+map $request_uri $identra_without_trailing_slash {
+    default                                                        "";
+    "~^(?<identra_path>/[^?]*?)/+(?<identra_query>\?.*)?$"         $identra_path$identra_query;
 }
 
 # Unknown paths get the not-found page of the locale they were asked in.
@@ -80,9 +90,15 @@ server {
     }
 
     # Like vercel.json "trailingSlash": false: /vi/blog/ -> /vi/blog (the root "/" is left alone).
-    # The target is absolute and on this host only, so no path can turn it into an off-site redirect.
+    # The target is absolute and on this host only, so no path can turn it into an off-site redirect, and
+    # it comes from the raw request line (see the map above). /01/ paths never get here: `^~ /01/` below
+    # is a prefix match that stops the regex search, so /01/<GTIN>/21/<serial>/ gets the product shell
+    # (which shows "invalid code").
     location ~ ^(.+)/$ {
-        return 308 https://identra.awncorp.vn$1$is_args$args;
+        if ($identra_without_trailing_slash = "") {
+            return 404;
+        }
+        return 308 https://identra.awncorp.vn$identra_without_trailing_slash;
     }
 
     # from vercel.json: temporary redirect of the unlisted Vietnamese book shortcut (no-store via the map).

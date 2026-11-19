@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>%PRODUCT_TITLE%</title>
+    <meta name="description" content="%PRODUCT_DESCRIPTION%" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="application-name" content="Identra" />
+    <meta name="theme-color" content="#354CE1" />
+    <link rel="icon" type="image/svg+xml" href="/identra-logo.svg" />
+    <meta property="og:site_name" content="Identra" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="%PRODUCT_TITLE%" />
+    <meta property="og:description" content="%PRODUCT_DESCRIPTION%" />
+    <meta property="og:image" content="%PRODUCT_SITE_URL%/social/identra-og.jpg" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="%PRODUCT_TITLE%" />
+    <meta name="twitter:description" content="%PRODUCT_DESCRIPTION%" />
+    <meta name="twitter:image" content="%PRODUCT_SITE_URL%/social/identra-og.jpg" />
+    <script type="module" src="/src/product/main.tsx"></script>
+  </head>
+  <body>
+    <!-- The product page (ADR-0012): one shell for every /01/<GTIN>/21/<serial> path, noindex, not in the
+         sitemap. Until the page script runs, a wordless skeleton of the page (the language is chosen later). -->
+    <div id="root">
+      <div class="flex min-h-screen flex-col bg-[#FAFBFD]">
+        <header class="border-b border-slate-200 bg-white">
+          <div class="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-2 sm:px-6">
+            <span class="inline-flex min-h-11 items-center gap-2">
+              <img src="/identra-logo.svg" alt="" width="28" height="28" class="h-7 w-auto" />
+              <span class="type-card-title text-[#0F1E36]">Identra</span>
+            </span>
+            <span data-shell-skeleton class="block h-[3.25rem] w-44 rounded-full bg-slate-100"></span>
+          </div>
+        </header>
+        <main class="mx-auto w-full max-w-3xl flex-1 space-y-6 px-4 py-6 sm:px-6 sm:py-10">
+          <noscript>
+            <div class="rounded-3xl bg-white p-5 ring-1 ring-inset ring-slate-200 sm:p-7">
+              <p class="type-featured-title text-[#0F1E36]">Cần bật JavaScript để kiểm tra sản phẩm.</p>
+              <p lang="en" class="type-body mt-2 text-slate-700">JavaScript is needed to check the product.</p>
+            </div>
+            <style>[data-shell-skeleton] { display: none; }</style>
+          </noscript>
+          <div data-shell-skeleton class="h-32 rounded-3xl bg-white ring-1 ring-inset ring-slate-200"></div>
+          <div data-shell-skeleton class="h-48 rounded-3xl border border-slate-200 bg-white"></div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

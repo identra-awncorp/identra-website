@@ -40,34 +40,74 @@ const externalShortcuts = (): Plugin => {
   };
 };
 
-// The product page answers every GS1 Digital Link path (/01/<GTIN>/21/<serial>) with one shell, like the
-// `location ^~ /01/` block of deploy/nginx/identra-web.conf.example; the page decides what is valid.
+// The product page answers every GS1 Digital Link path (/01/<GTIN>/21/<serial>) with its own shell
+// (product/index.html, built by vite.product.config.ts), like the `location ^~ /01/` block of
+// deploy/nginx/identra-web.conf.example; the page decides what is valid.
 const productShellEntries = (): Plugin => {
-  const rewrite = (target: string): Connect.NextHandleFunction => (request, _response, next) => {
-    if (request.url?.startsWith('/01/')) request.url = target;
+  const rewrite: Connect.NextHandleFunction = (request, _response, next) => {
+    if (request.url?.startsWith('/01/')) request.url = '/product/index.html';
     next();
   };
   return {
     name: 'identra-product-shell',
-    configureServer(server) { server.middlewares.use(rewrite('/')); },
-    configurePreviewServer(server) { server.middlewares.use(rewrite('/product/index.html')); },
+    configureServer(server) { server.middlewares.use(rewrite); },
+    configurePreviewServer(server) { server.middlewares.use(rewrite); },
   };
 };
 
 // cbor-x (used by the SDK's status-list code on the product page) probes `new Function('')` when it
 // loads. Under the site's `script-src 'self'` that probe is blocked and reported as a CSP violation, and
 // cbor-x then falls back to its no-eval decoder anyway. Build that no-eval behaviour in directly, as
-// cbor-x's own "no-eval" builds do, so the page raises no violation. Fails loudly if cbor-x changes.
-const cborWithoutEval = (): Plugin => ({
-  name: 'identra-cbor-x-no-eval',
-  enforce: 'pre',
-  transform(code, id) {
-    if (!/[\\/]cbor-x[\\/]decode\.js$/.test(id)) return null;
-    const probe = /try \{\s*new Function\(''\)\s*\} catch\(error\) \{[^}]*inlineObjectReadThreshold = Infinity\s*\}/;
-    if (!probe.test(code)) this.error('cbor-x/decode.js changed: update the no-eval transform in vite.config.ts');
-    return { code: code.replace(probe, 'inlineObjectReadThreshold = Infinity'), map: null };
-  },
-});
+// cbor-x's own "no-eval" builds do, so the page raises no violation. With `required` (the product build)
+// the build fails when the transform did not run at all, and the emitted chunks are scanned: every
+// reference to `Function` or `eval` must be one of the known, unreachable ones listed below.
+const CBOR_PROBE = /try \{\s*new Function\(''\)\s*\} catch\(error\) \{[^}]*inlineObjectReadThreshold = Infinity\s*\}/;
+/**
+ * The only `Function` / `eval` references allowed in the product chunks, as the minifier writes them:
+ * cbor-x's compiled object reader (two branches) runs only once `slowReads` reaches
+ * `inlineObjectReadThreshold`, which the transform pins to Infinity; zod's eval probe and its
+ * compiled-parser `compile()` run only without `jitless`, which ProductPage sets before the chunk loads.
+ */
+export const KNOWN_EVAL_SITES: ReadonlyArray<{ name: string; pattern: RegExp }> = [
+  { name: 'cbor-x compiled reader (keyMap branch), dead: inlineObjectReadThreshold = Infinity', pattern: /\?new Function\("r","return \{"\+\w+\.map\(\w+=>\w+\.decodeKey\(\w+\)\)/g },
+  { name: 'cbor-x compiled reader, dead: inlineObjectReadThreshold = Infinity', pattern: /:new Function\("r","return \{"\+\w+\.map\(\w+=>\w+\.test\(\w+\)\?/g },
+  { name: 'zod allowsEval probe, off: jitless', pattern: /const \w+=Function;return new \w+\(""\),!0/g },
+  { name: 'zod Doc.compile, off: jitless', pattern: /compile\(\)\{const \w+=Function,/g },
+];
+const EVAL_REFERENCE = /(?<![\w$.'"`])(?:Function|eval)(?![\w$'"`])/g;
+
+/** Every `Function` / `eval` reference in `code` that is not a known site (exported for tests). */
+export const unknownEvalSites = (code: string): string[] => {
+  let rest = code;
+  for (const { pattern } of KNOWN_EVAL_SITES) rest = rest.replace(pattern, (match) => match.replace(/Function/g, 'KNOWN_SITE'));
+  return [...rest.matchAll(EVAL_REFERENCE)].map((match) => rest.slice(Math.max(0, match.index - 60), match.index + 60));
+};
+
+export const cborWithoutEval = ({ required = false }: { required?: boolean } = {}): Plugin => {
+  let transformed = false;
+  return {
+    name: 'identra-cbor-x-no-eval',
+    enforce: 'pre',
+    buildStart() { transformed = false; },
+    transform(code, id) {
+      if (!/[\\/]cbor-x[\\/]decode\.js$/.test(id)) return null;
+      if (!CBOR_PROBE.test(code)) this.error('cbor-x/decode.js changed: update the no-eval transform in vite.config.ts');
+      transformed = true;
+      return { code: code.replace(CBOR_PROBE, 'inlineObjectReadThreshold = Infinity'), map: null };
+    },
+    generateBundle(_options, bundle) {
+      if (!required) return;
+      if (!transformed) this.error('the cbor-x no-eval transform did not run on any module (cbor-x moved or was renamed?): update vite.config.ts');
+      for (const chunk of Object.values(bundle)) {
+        if (chunk.type !== 'chunk') continue;
+        const unknown = unknownEvalSites(chunk.code);
+        if (unknown.length > 0) {
+          this.error(`${chunk.fileName}: ${unknown.length} reference(s) to Function/eval that are not known to be unreachable under script-src 'self':\n${unknown.join('\n')}`);
+        }
+      }
+    },
+  };
+};
 
 const localizedPreviewEntries = (): Plugin => ({
   name: 'identra-localized-preview-entries',

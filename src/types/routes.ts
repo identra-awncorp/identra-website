@@ -377,13 +377,6 @@ export const dashboardFlowPath = (
 export const legacyViewAliasPath = (alias: LegacyViewAlias, locale: Locale) =>
   `/${locale}/${alias}`;
 
-/**
- * Paths of the product page: every GS1 Digital Link path (`/01/...`). Which ones are valid is decided
- * by the page itself with the SDK's parser, so a malformed code gets a proper "invalid code" state.
- */
-export const PRODUCT_PATH_PREFIX = '/01/';
-export const isProductPath = (pathname: string): boolean => pathname.startsWith(PRODUCT_PATH_PREFIX);
-
 export const viewToPath = (view: AppView, locale: Locale) => {
   const resolvedLocale = resolveViewLocale(view, locale);
   if (view === 'landing') return `/${resolvedLocale}`;

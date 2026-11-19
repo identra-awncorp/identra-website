@@ -18,6 +18,7 @@ import {
   type SeoRouteGroup,
 } from '../src/translations/SeoTranslations';
 import { NOT_FOUND_PAGE_TRANSLATIONS } from '../src/translations/NotFoundPageTranslations';
+import { PRODUCT_PAGE_TRANSLATIONS } from '../src/translations/ProductPageTranslations';
 import {
   APP_VIEWS,
   PUBLIC_BLOG_DETAIL_IDS,
@@ -954,6 +955,27 @@ writeFileSync(
   renderNotFoundHtml(sourceHtml, DEFAULT_LOCALE, siteUrl),
   'utf8',
 );
+
+// The product page shell (ADR-0012): nginx serves it for every GS1 Digital Link path /01/<GTIN>/21/<serial>.
+// One file, not locale-prefixed, noindex and absent from the sitemap; the page renders client-side,
+// picks Vietnamese or English itself and verifies the product in the browser.
+const renderProductShellHtml = (source: string): string => {
+  const copy = PRODUCT_PAGE_TRANSLATIONS.vi;
+  let html = injectSeoFallback(withoutRootLocaleScript(source), renderSeoFallback(copy.loadingTitle, copy.loadingBody))
+    .replace(/<html lang="[^"]*">/, '<html lang="vi">')
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(copy.documentTitle)}</title>`)
+    .replace(/\s*<link rel="canonical" href="[^"]*" \/>/g, '')
+    .replace(/\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>/g, '');
+  html = replaceMeta(html, 'name', 'description', copy.documentDescription);
+  html = replaceMeta(html, 'name', 'robots', 'noindex, nofollow');
+  html = replaceMeta(html, 'property', 'og:title', copy.documentTitle);
+  html = replaceMeta(html, 'property', 'og:description', copy.documentDescription);
+  html = replaceMeta(html, 'name', 'twitter:title', copy.documentTitle);
+  html = replaceMeta(html, 'name', 'twitter:description', copy.documentDescription);
+  return html;
+};
+mkdirSync(resolve(distDir, 'product'), { recursive: true });
+writeFileSync(resolve(distDir, 'product', 'index.html'), renderProductShellHtml(sourceHtml), 'utf8');
 
 // Keep the neutral root readable without JavaScript. The template script is
 // restored only here so localized pages contain no redirect markup at all.

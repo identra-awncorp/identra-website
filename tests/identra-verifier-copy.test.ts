@@ -59,8 +59,6 @@ test('the Vietnamese sentence for a revoked diploma is the agreed one', () => {
 
 test('check rows: passed, failed with a reason from the code, skipped, unknown ids and codes', () => {
   const rows = toCheckRows({
-    ok: false,
-    verifiedAt: '2026-11-19T00:00:00Z',
     checks: [
       { id: 'structure', ok: true, code: null },
       { id: 'issuer_trust', ok: true, code: null },

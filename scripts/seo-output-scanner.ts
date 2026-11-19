@@ -635,9 +635,20 @@ expect(
   'The global 404 page must be noindex and must not expose canonical or hreflang links.',
 );
 
+// The product page shell, served by nginx for every GS1 Digital Link path /01/<GTIN>/21/<serial>.
+const productShellHtml = readDistFile('product/index.html');
+expect(
+  metaContent(productShellHtml, 'name', 'robots') === 'noindex, nofollow'
+    && canonicalLinks(productShellHtml).length === 0
+    && alternateLinks(productShellHtml).size === 0
+    && !withoutRootLocaleScript(productShellHtml).includes('window.location.replace('),
+  'The product page shell must be noindex, without canonical or hreflang links, and without the root locale redirect.',
+);
+
 const expectedHtmlFiles = new Set([
   'index.html',
   '404.html',
+  'product/index.html',
   ...indexablePages.map(({ path }) => routeFile(path)),
   ...privatePages.map(routeFile),
   ...legacyPages.map(({ path }) => routeFile(path)),

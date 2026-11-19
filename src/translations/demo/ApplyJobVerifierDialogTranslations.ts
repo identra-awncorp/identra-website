@@ -5,9 +5,6 @@
 
 import type { CheckLabelKey, DiplomaClaimKey, FailureReasonKey } from '../../identra/verifierSession';
 
-/** The sample organisations of vc-api.md section 1 whose names the page localises. */
-export type KnownOrganisation = 'truong-mau' | 'nha-tuyen-dung-mau';
-
 export interface ApplyJobVerifierDialogCopy {
   title: string;
   subtitle: string;
@@ -63,7 +60,6 @@ export interface ApplyJobVerifierDialogCopy {
   close: string;
   noDiplomaHint: string;
   portalLink: string;
-  orgNames: Record<KnownOrganisation, string>;
   checks: Record<CheckLabelKey, string>;
   claims: Record<DiplomaClaimKey, string>;
   reasons: Record<FailureReasonKey, string>;
@@ -124,10 +120,6 @@ const vi: ApplyJobVerifierDialogCopy = {
   close: 'Đóng',
   noDiplomaHint: 'Chưa có bằng trong ví? Nhận một bằng mẫu ở',
   portalLink: 'Cổng trường mẫu',
-  orgNames: {
-    'truong-mau': 'Trường Đại học Mẫu (DEMO)',
-    'nha-tuyen-dung-mau': 'Nhà tuyển dụng mẫu (DEMO)',
-  },
   checks: {
     structure: 'Bằng được gửi đúng định dạng',
     algorithm: 'Bằng được ký theo cách được chấp nhận',
@@ -197,6 +189,7 @@ const vi: ApplyJobVerifierDialogCopy = {
     KEY_INVALIDATED: 'Khóa bảo mật trong ví không còn dùng được; cần nhận lại giấy tờ.',
     USER_CANCELLED: 'Thao tác đã bị hủy.',
     DEVICE_LOCKED: 'Điện thoại đang khóa; mở khóa rồi thử lại.',
+    TOO_MANY_ATTEMPTS: 'Đã nhập sai quá nhiều lần; hãy thử lại sau.',
     UNKNOWN: 'Bước này không đạt vì một lý do mà trang này chưa nhận ra.',
   },
 };
@@ -256,10 +249,6 @@ const en: ApplyJobVerifierDialogCopy = {
   close: 'Close',
   noDiplomaHint: 'No diploma in your wallet yet? Get a sample one from the',
   portalLink: 'sample university portal',
-  orgNames: {
-    'truong-mau': 'Sample University (DEMO)',
-    'nha-tuyen-dung-mau': 'Sample employer (DEMO)',
-  },
   checks: {
     structure: 'Diploma arrived in the expected format',
     algorithm: 'Signed in an accepted way',
@@ -329,6 +318,7 @@ const en: ApplyJobVerifierDialogCopy = {
     KEY_INVALIDATED: "The wallet's security key can no longer be used; the credential must be received again.",
     USER_CANCELLED: 'The action was cancelled.',
     DEVICE_LOCKED: 'The phone is locked; unlock it and try again.',
+    TOO_MANY_ATTEMPTS: 'Too many wrong attempts; try again later.',
     UNKNOWN: 'This check failed for a reason this page does not recognise yet.',
   },
 };
@@ -388,10 +378,6 @@ const es: ApplyJobVerifierDialogCopy = {
   close: 'Cerrar',
   noDiplomaHint: '¿Aún no tienes un título en la billetera? Consigue uno de ejemplo en el',
   portalLink: 'portal universitario de ejemplo',
-  orgNames: {
-    'truong-mau': 'Universidad de ejemplo (DEMO)',
-    'nha-tuyen-dung-mau': 'Empleador de ejemplo (DEMO)',
-  },
   checks: {
     structure: 'El título llegó en el formato esperado',
     algorithm: 'Firmado de una forma aceptada',
@@ -461,6 +447,7 @@ const es: ApplyJobVerifierDialogCopy = {
     KEY_INVALIDATED: 'La clave de seguridad de la billetera ya no se puede usar; hay que volver a recibir la credencial.',
     USER_CANCELLED: 'La acción se canceló.',
     DEVICE_LOCKED: 'El móvil está bloqueado; desbloquéalo e inténtalo de nuevo.',
+    TOO_MANY_ATTEMPTS: 'Demasiados intentos fallidos; inténtalo más tarde.',
     UNKNOWN: 'Esta comprobación falló por un motivo que esta página aún no reconoce.',
   },
 };
@@ -520,10 +507,6 @@ const ja: ApplyJobVerifierDialogCopy = {
   close: '閉じる',
   noDiplomaHint: 'ウォレットにまだ卒業証書がありませんか？サンプルを受け取れます：',
   portalLink: 'サンプル大学ポータル',
-  orgNames: {
-    'truong-mau': 'サンプル大学（DEMO）',
-    'nha-tuyen-dung-mau': 'サンプル採用企業（DEMO）',
-  },
   checks: {
     structure: '卒業証書の形式',
     algorithm: '認められた方法による署名',
@@ -593,6 +576,7 @@ const ja: ApplyJobVerifierDialogCopy = {
     KEY_INVALIDATED: 'ウォレットのセキュリティキーが使えなくなりました。書類を受け取り直す必要があります。',
     USER_CANCELLED: '操作はキャンセルされました。',
     DEVICE_LOCKED: 'スマートフォンがロックされています。ロックを解除してもう一度お試しください。',
+    TOO_MANY_ATTEMPTS: '誤りの回数が多すぎます。後でもう一度お試しください。',
     UNKNOWN: 'このページがまだ認識できない理由で不合格になりました。',
   },
 };
@@ -652,10 +636,6 @@ const de: ApplyJobVerifierDialogCopy = {
   close: 'Schließen',
   noDiplomaHint: 'Noch kein Zeugnis in der Wallet? Holen Sie sich ein Beispiel im',
   portalLink: 'Beispiel-Hochschulportal',
-  orgNames: {
-    'truong-mau': 'Beispiel-Hochschule (DEMO)',
-    'nha-tuyen-dung-mau': 'Beispiel-Arbeitgeber (DEMO)',
-  },
   checks: {
     structure: 'Zeugnis im erwarteten Format',
     algorithm: 'Auf zulässige Weise signiert',
@@ -725,6 +705,7 @@ const de: ApplyJobVerifierDialogCopy = {
     KEY_INVALIDATED: 'Der Sicherheitsschlüssel der Wallet ist nicht mehr nutzbar; der Nachweis muss neu empfangen werden.',
     USER_CANCELLED: 'Der Vorgang wurde abgebrochen.',
     DEVICE_LOCKED: 'Das Smartphone ist gesperrt; entsperren Sie es und versuchen Sie es erneut.',
+    TOO_MANY_ATTEMPTS: 'Zu viele Fehlversuche; versuchen Sie es später erneut.',
     UNKNOWN: 'Diese Prüfung ist aus einem Grund fehlgeschlagen, den diese Seite noch nicht kennt.',
   },
 };

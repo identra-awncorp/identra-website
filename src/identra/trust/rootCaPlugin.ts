@@ -29,6 +29,8 @@ export interface PublishedRoot {
   slot: RootCaSlot;
   fingerprint: string;
   downloadPath: string;
+  /** The certificate's DER, base64: the product page pins it for its in-browser verification. */
+  der: string;
 }
 
 /** What pages import: zero, one or two published roots. */
@@ -173,7 +175,13 @@ export const loadRootCas = (options: {
     .filter((slot) => slot === 'current' || existsSync(files[slot]))
     .map((slot) => {
       const parsed = parseRootCaPem(readFileSync(files[slot], 'utf8'), files[slot], options.now);
-      return { slot, fingerprint: parsed.fingerprint, downloadPath: ROOT_CA_DOWNLOAD_PATHS[slot], pem: parsed.pem };
+      return {
+        slot,
+        fingerprint: parsed.fingerprint,
+        downloadPath: ROOT_CA_DOWNLOAD_PATHS[slot],
+        der: parsed.der.toString('base64'),
+        pem: parsed.pem,
+      };
     });
   if (roots.length === 2 && roots[0]!.fingerprint === roots[1]!.fingerprint) fail(files.next, 'is the same certificate as the current root');
 
@@ -220,7 +228,7 @@ export const identraRootCaPlugin = (options: { defaultDir: string }): Plugin => 
     load(id) {
       if (id !== resolvedId) return null;
       const exported: RootCaModule = {
-        roots: roots.map(({ slot, fingerprint, downloadPath }) => ({ slot, fingerprint, downloadPath })),
+        roots: roots.map(({ slot, fingerprint, downloadPath, der }) => ({ slot, fingerprint, downloadPath, der })),
       };
       return `export default ${JSON.stringify(exported)};`;
     },

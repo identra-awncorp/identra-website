@@ -67,7 +67,7 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
     add_header X-Frame-Options "DENY" always;
     add_header Cross-Origin-Opener-Policy "same-origin" always;
-    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), browsing-topics=()" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), browsing-topics=()" always;
     add_header Cache-Control $identra_cache_control always;
     add_header Link $identra_link_header always;
 
@@ -101,7 +101,7 @@ server {
         add_header Referrer-Policy "strict-origin-when-cross-origin" always;
         add_header X-Frame-Options "DENY" always;
         add_header Cross-Origin-Opener-Policy "same-origin" always;
-        add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=(), browsing-topics=()" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), browsing-topics=()" always;
         add_header Cache-Control $identra_cache_control always;
         try_files $uri =404;
     }
@@ -110,11 +110,12 @@ server {
         try_files $uri =404;
     }
 
-    # Reserved for the product lifecycle page (later task): GS1 Digital Link URLs
-    # /01/<GTIN>/21/<serial> are printed in product QR codes and are served by one shell page that
-    # reads the path in the browser. The build will emit dist/01/index.html; until then this 404s.
+    # The product page (ADR-0012): the QR printed on a product is https://identra.awncorp.vn/01/<GTIN-14>/21/<serial>
+    # (GS1 Digital Link). Every /01/ path gets the one prerendered shell (noindex, not in the sitemap);
+    # the page parses the path with the SDK and shows "invalid code" for a malformed one. No other path
+    # is affected. The server-level security headers apply (no add_header here).
     location ^~ /01/ {
-        try_files /01/index.html =404;
+        try_files /product/index.html =404;
     }
 
     location / {

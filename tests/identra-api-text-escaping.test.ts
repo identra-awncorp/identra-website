@@ -12,6 +12,7 @@ import { PRESENTATION_CHECK_IDS, type SessionResult } from '@identra/sdk-client'
 import IdentraQrCode from '../src/components/IdentraQrCode';
 import { ApplyJobVerifierResult } from '../src/components/demo/ApplyJobVerifierDialog';
 import { APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS } from '../src/translations/demo/ApplyJobVerifierDialogTranslations';
+import { IDENTRA_ORGANISATION_NAME_TRANSLATIONS } from '../src/translations/IdentraOrganisationNameTranslations';
 
 const SCRIPT = '<script>alert(1)</script>';
 const IMG = '<img src=x onerror=alert(1)>';
@@ -26,7 +27,7 @@ const hostileResult: SessionResult = {
     '<b>tên</b>': '"><svg onload=alert(1)>',
   },
   // An organisation the page does not know keeps the server's name, escaped.
-  issuer: { maToChuc: 'other-university', ten: IMG },
+  issuer: { maToChuc: 'VATVN-0999999999', ten: IMG },
   verifiedAt: '2026-11-19T01:00:00.000Z',
 };
 
@@ -49,8 +50,9 @@ test('claims, claim names and issuer names are escaped and isolated in <bdi>', (
 });
 
 test('a known sample issuer is shown by its localised name; a failure shows no issuer row at all', () => {
-  const known = render({ ...hostileResult, issuer: { maToChuc: 'truong-mau', ten: 'Server name' } });
-  assert.ok(known.includes(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.orgNames['truong-mau']));
+  // Organisations are identified by maToChuc = VATVN-<tax code>, never by a slug.
+  const known = render({ ...hostileResult, issuer: { maToChuc: 'VATVN-0100000001', ten: 'Server name' } });
+  assert.ok(known.includes(IDENTRA_ORGANISATION_NAME_TRANSLATIONS.vi['VATVN-0100000001']));
   assert.ok(!known.includes('Server name'));
   const failed = render({ ok: false, checks: [{ id: 'status', ok: false, code: 'REVOKED' }], verifiedAt: hostileResult.verifiedAt });
   assert.ok(!failed.includes(APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi.issuedBy));

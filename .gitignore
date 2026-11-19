@@ -35,3 +35,6 @@ Thumbs.db
 
 # Design inspection screenshots (design-taste-frontend skill)
 .taste-skill/
+
+# Development-only PKI, keys and signed chains of the API stand-in (scripts/dev-identra-products.mjs)
+.dev-identra/

@@ -92,6 +92,8 @@ test('one or two roots are published, each with its fingerprint and download pat
     ]);
     writeFileSync(files.next, ROOT2);
     const roots = loadRootCas({ files, isBuild: true });
+    // The product page pins the very same certificates, as DER.
+    assert.deepEqual(roots.map((root) => Buffer.from(root.der, 'base64')), [new X509Certificate(ROOT1).raw, new X509Certificate(ROOT2).raw]);
     assert.deepEqual(roots.map((root) => [root.slot, root.fingerprint, root.downloadPath]), [
       ['current', fingerprintOf(ROOT1), '/trust/identra-root-ca.pem'],
       ['next', fingerprintOf(ROOT2), '/trust/identra-root-ca-next.pem'],

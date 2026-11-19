@@ -17,6 +17,12 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { demoScenarioPath, viewToPath, type DemoScenarioId, type Locale } from '../types/routes';
+
+// The sample products the server provisions (GS1 sample GTIN, prefix 952): GS1 Digital Link paths.
+const SAMPLE_PRODUCT_PATHS = [
+  { path: '/01/09520123456788/21/SN-2026-000001', labelKey: 'sampleProductComplete' },
+  { path: '/01/09520123456788/21/SN-2026-000002', labelKey: 'sampleProductInProgress' },
+] as const;
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
 
@@ -225,6 +231,25 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
                 <span>{t.samplePortalAction}</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+              <div className="space-y-1 flex-1">
+                <h3 className="type-card-title text-[#0F1E36]">{t.sampleProductTitle}</h3>
+                <p className="type-body text-slate-700">{t.sampleProductDesc}</p>
+              </div>
+              <div className="flex flex-wrap gap-3 shrink-0">
+                {SAMPLE_PRODUCT_PATHS.map(({ path, labelKey }) => (
+                  <a
+                    key={path}
+                    href={path}
+                    className="type-control inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
+                  >
+                    <span>{t[labelKey]}</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6">

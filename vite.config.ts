@@ -40,6 +40,35 @@ const externalShortcuts = (): Plugin => {
   };
 };
 
+// The product page answers every GS1 Digital Link path (/01/<GTIN>/21/<serial>) with one shell, like the
+// `location ^~ /01/` block of deploy/nginx/identra-web.conf.example; the page decides what is valid.
+const productShellEntries = (): Plugin => {
+  const rewrite = (target: string): Connect.NextHandleFunction => (request, _response, next) => {
+    if (request.url?.startsWith('/01/')) request.url = target;
+    next();
+  };
+  return {
+    name: 'identra-product-shell',
+    configureServer(server) { server.middlewares.use(rewrite('/')); },
+    configurePreviewServer(server) { server.middlewares.use(rewrite('/product/index.html')); },
+  };
+};
+
+// cbor-x (used by the SDK's status-list code on the product page) probes `new Function('')` when it
+// loads. Under the site's `script-src 'self'` that probe is blocked and reported as a CSP violation, and
+// cbor-x then falls back to its no-eval decoder anyway. Build that no-eval behaviour in directly, as
+// cbor-x's own "no-eval" builds do, so the page raises no violation. Fails loudly if cbor-x changes.
+const cborWithoutEval = (): Plugin => ({
+  name: 'identra-cbor-x-no-eval',
+  enforce: 'pre',
+  transform(code, id) {
+    if (!/[\\/]cbor-x[\\/]decode\.js$/.test(id)) return null;
+    const probe = /try \{\s*new Function\(''\)\s*\} catch\(error\) \{[^}]*inlineObjectReadThreshold = Infinity\s*\}/;
+    if (!probe.test(code)) this.error('cbor-x/decode.js changed: update the no-eval transform in vite.config.ts');
+    return { code: code.replace(probe, 'inlineObjectReadThreshold = Infinity'), map: null };
+  },
+});
+
 const localizedPreviewEntries = (): Plugin => ({
   name: 'identra-localized-preview-entries',
   configurePreviewServer(server) {
@@ -132,6 +161,8 @@ export default defineConfig(() => {
   return {
     plugins: [
       externalShortcuts(),
+      productShellEntries(),
+      cborWithoutEval(),
       localizedPreviewEntries(),
       identraRootCaPlugin({defaultDir: path.resolve(__dirname, 'src/identra/trust')}),
       react(),

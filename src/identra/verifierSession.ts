@@ -205,7 +205,7 @@ export const ALL_ERROR_CODES = [
   // Wallet operation codes (SDK architecture section 8): never in a verifier result, but every code has a sentence.
   'OFFER_INVALID', 'URL_NOT_ALLOWED', 'TX_CODE_WRONG', 'OFFER_EXPIRED', 'NETWORK_ERROR', 'ISSUER_ERROR',
   'CREDENTIAL_INVALID', 'CNF_MISMATCH', 'CLAIMS_INCOMPLETE', 'STORAGE_ERROR', 'CREDENTIAL_NOT_FOUND',
-  'QUERY_NOT_SATISFIED', 'REQUEST_INVALID', 'REQUEST_EXPIRED', 'VERIFIER_ERROR', 'KEY_INVALIDATED',
+  'QUERY_NOT_SATISFIED', 'TOO_MANY_ATTEMPTS', 'REQUEST_INVALID', 'REQUEST_EXPIRED', 'VERIFIER_ERROR', 'KEY_INVALIDATED',
   'USER_CANCELLED', 'DEVICE_LOCKED',
 ] as const satisfies readonly ErrorCode[];
 
@@ -222,7 +222,7 @@ export interface CheckRow {
   reasonKey: FailureReasonKey | null;
 }
 
-export const toCheckRows = (result: SessionResult): CheckRow[] => result.checks.map((check) => {
+export const toCheckRows = (result: Pick<SessionResult, 'checks'>): CheckRow[] => result.checks.map((check) => {
   const outcome = check.ok ? 'passed' : check.skipped || check.code === 'SKIPPED' ? 'skipped' : 'failed';
   return {
     labelKey: isKnownCheckId(check.id) ? check.id : 'other',

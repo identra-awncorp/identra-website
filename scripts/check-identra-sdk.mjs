@@ -1,40 +1,38 @@
-// Fails fast when the linked Identra SDK packages have not been built, or were built before their
-// sources last changed, so Vite never bundles a missing or stale `dist` silently.
+// Fails fast when the linked Identra SDK packages are not built, or their build lacks what the website
+// imports. It checks content, not file times: a git checkout that touches SDK sources but leaves an
+// equivalent `dist` must not fail here, while a missing or outdated `dist` must.
 // Fix: `npm run sdk:build` (builds packages/client and, through its project reference, packages/core).
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const packages = ['client', 'core'].map((name) => ({
-  name: `@identra/sdk-${name}`,
-  dir: path.resolve(root, '../identra-sdk/packages', name),
-}));
+const sdk = path.resolve(root, '../identra-sdk/packages');
 
-const newestMtime = (dir) => readdirSync(dir, { withFileTypes: true }).reduce((newest, entry) => {
-  const full = path.join(dir, entry.name);
-  const mtime = entry.isDirectory() ? newestMtime(full) : entry.name.endsWith('.ts') ? statSync(full).mtimeMs : 0;
-  return Math.max(newest, mtime);
-}, 0);
-
-// tsc -b rewrites only changed outputs but always refreshes the build info of a checked project.
-const builtAt = (dir) => Math.max(
-  ...['dist/index.js', 'dist/.tsbuildinfo'].map((file) => (existsSync(path.join(dir, file)) ? statSync(path.join(dir, file)).mtimeMs : 0)),
-);
+// Every runtime export the website uses, per built entry point.
+const required = [
+  { name: '@identra/sdk-client', file: 'client/dist/index.js', exports: ['createVerifierClient', 'serverClockOffset', 'isValidVerifierQr', 'PRESENTATION_CHECK_IDS', 'VerifierClientError'] },
+  { name: '@identra/sdk-client/product', file: 'client/dist/product.js', exports: ['createProductVerifier'] },
+  { name: '@identra/sdk-core', file: 'core/dist/index.js', exports: ['ErrorCodes', 'parseDigitalLinkPath', 'formatProductCode', 'formatDigitalLinkPath'] },
+];
 
 const problems = [];
-for (const pkg of packages) {
-  const entry = path.join(pkg.dir, 'dist/index.js');
-  if (!existsSync(pkg.dir)) {
-    problems.push(`${pkg.name}: ${pkg.dir} not found (the website expects identra-sdk next to it).`);
-  } else if (!existsSync(entry)) {
-    problems.push(`${pkg.name}: dist/index.js is missing.`);
-  } else if (newestMtime(path.join(pkg.dir, 'src')) > builtAt(pkg.dir)) {
-    problems.push(`${pkg.name}: dist is older than src.`);
+for (const entry of required) {
+  const file = path.join(sdk, entry.file);
+  if (!existsSync(file)) {
+    problems.push(`${entry.name}: ${path.relative(root, file)} is missing.`);
+    continue;
+  }
+  try {
+    const module = await import(pathToFileURL(file).href);
+    const missing = entry.exports.filter((name) => !(name in module));
+    if (missing.length > 0) problems.push(`${entry.name}: the build does not export ${missing.join(', ')} (outdated dist?).`);
+  } catch (error) {
+    problems.push(`${entry.name}: cannot load ${path.relative(root, file)} (${error.code ?? error.name}).`);
   }
 }
 
 if (problems.length > 0) {
-  console.error(`\nIdentra SDK is not built:\n  - ${problems.join('\n  - ')}\nRun: npm run sdk:build\n`);
+  console.error(`\nIdentra SDK is not built or out of date:\n  - ${problems.join('\n  - ')}\nRun: npm run sdk:build\n`);
   process.exit(1);
 }

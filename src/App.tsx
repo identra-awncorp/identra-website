@@ -11,7 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SeoMetadata from './components/SeoMetadata';
 import type { AppView, BlogDetailId, DemoScenarioId } from './types/routes';
-import { blogDetailPath, dashboardPath, localizePath, pathToBlogDetailId, pathToDemoScenarioId, pathToView, viewToPath } from './types/routes';
+import { blogDetailPath, dashboardPath, isProductPath, localizePath, pathToBlogDetailId, pathToDemoScenarioId, pathToView, viewToPath } from './types/routes';
 
 type DemoScenarioPageProps = {
   onBackToList: () => void;
@@ -116,6 +116,7 @@ const HealthcareDemoPage = lazy(() => import('./components/demo/HealthcareDemoPa
 const TicketTransferDemoPage = lazy(() => import('./components/demo/TicketTransferDemoPage'));
 const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
 const SchoolPortalPage = lazy(() => import('./components/SchoolPortalPage'));
+const ProductPage = lazy(() => import('./components/ProductPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 const DEMO_SCENARIO_PAGE_COMPONENTS: Record<DemoScenarioId, LazyExoticComponent<ComponentType<DemoScenarioPageProps>>> = {
@@ -276,6 +277,16 @@ export default function App() {
     </div>
   );
   const suspenseFallback = !hasCompletedInitialLoad || isStandaloneView ? pageSkeleton : layoutSkeleton;
+
+  // GS1 Digital Link paths printed on products (/01/<GTIN>/21/<serial>): a standalone page outside the
+  // locale-prefixed routes, served by one prerendered shell (noindex). It manages its own title.
+  if (isProductPath(location.pathname)) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-[#FAFBFD]" />}>
+        <ProductPage />
+      </Suspense>
+    );
+  }
 
   return (
     <>

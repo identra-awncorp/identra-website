@@ -37,6 +37,10 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     samplePortalTitle: 'Sample university portal (DEMO)',
     samplePortalDesc: 'Need a diploma in your Identra wallet for the job application demo? Sign in to the fictional university with a sample account and receive one by scanning a QR code.',
     samplePortalAction: 'Open the sample university portal',
+    sampleProductTitle: 'Sample product journey (DEMO)',
+    sampleProductDesc: 'Scan the QR on a product and your browser verifies its journey from production to the shop by itself. Try the two sample products.',
+    sampleProductComplete: 'Complete journey',
+    sampleProductInProgress: 'Two stages so far',
     comingSoon: 'Coming soon',
     scenarios: [
       {
@@ -166,6 +170,10 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     samplePortalTitle: 'Portal universitario de ejemplo (DEMO)',
     samplePortalDesc: '¿Necesita un título en su billetera Identra para la demo de solicitud de empleo? Inicie sesión en la universidad ficticia con una cuenta de ejemplo y reciba uno escaneando un código QR.',
     samplePortalAction: 'Abrir el portal universitario de ejemplo',
+    sampleProductTitle: 'Recorrido de un producto de ejemplo (DEMO)',
+    sampleProductDesc: 'Escanee el QR de un producto y su navegador verifica por sí mismo su recorrido desde la fábrica hasta la tienda. Pruebe los dos productos de ejemplo.',
+    sampleProductComplete: 'Recorrido completo',
+    sampleProductInProgress: 'Dos etapas por ahora',
     comingSoon: 'Próximamente',
     scenarios: [
       {
@@ -283,6 +291,10 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     samplePortalTitle: 'サンプル大学ポータル（DEMO）',
     samplePortalDesc: '求人応募デモ用に Identra ウォレットへ卒業証書が必要ですか？架空の大学にサンプルアカウントでログインし、QR コードを読み取って受け取れます。',
     samplePortalAction: 'サンプル大学ポータルを開く',
+    sampleProductTitle: 'サンプル製品の流通履歴（DEMO）',
+    sampleProductDesc: '製品の QR を読み取ると、製造から店舗までの履歴をブラウザ自身が検証します。2 つのサンプル製品をお試しください。',
+    sampleProductComplete: 'すべての工程',
+    sampleProductInProgress: '現在 2 工程まで',
     comingSoon: '近日公開',
     scenarios: [
       {
@@ -400,6 +412,10 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     samplePortalTitle: 'Beispiel-Hochschulportal (DEMO)',
     samplePortalDesc: 'Brauchen Sie für die Bewerbungsdemo ein Zeugnis in Ihrer Identra-Wallet? Melden Sie sich mit einem Beispielkonto bei der fiktiven Hochschule an und erhalten Sie es per QR-Code.',
     samplePortalAction: 'Beispiel-Hochschulportal öffnen',
+    sampleProductTitle: 'Weg eines Beispielprodukts (DEMO)',
+    sampleProductDesc: 'Scannen Sie den QR-Code eines Produkts, und Ihr Browser prüft dessen Weg von der Herstellung bis zum Handel selbst. Probieren Sie die zwei Beispielprodukte.',
+    sampleProductComplete: 'Vollständiger Weg',
+    sampleProductInProgress: 'Bisher zwei Stationen',
     comingSoon: 'Demnächst verfügbar',
     scenarios: [
       {
@@ -517,6 +533,10 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     samplePortalTitle: 'Cổng trường mẫu (DEMO)',
     samplePortalDesc: 'Cần một bằng tốt nghiệp trong ví Identra cho bản demo ứng tuyển? Đăng nhập trường đại học hư cấu bằng tài khoản mẫu và nhận bằng chỉ với một lần quét mã QR.',
     samplePortalAction: 'Mở cổng trường mẫu',
+    sampleProductTitle: 'Hành trình sản phẩm mẫu (DEMO)',
+    sampleProductDesc: 'Quét mã QR trên sản phẩm, trình duyệt của bạn tự kiểm chứng hành trình từ nhà máy tới cửa hàng. Thử với hai sản phẩm mẫu.',
+    sampleProductComplete: 'Đủ ba công đoạn',
+    sampleProductInProgress: 'Mới qua hai công đoạn',
     comingSoon: 'Sắp ra mắt',
     scenarios: [
       {

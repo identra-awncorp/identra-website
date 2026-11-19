@@ -11,7 +11,7 @@ import { createVerifierClient, type SessionResult } from '@identra/sdk-client';
 import { useLanguage } from '../../context/LanguageContext';
 import { useInertAppRoot, useIsTouchDevice } from '../../hooks/useModalLayer';
 import { useNow } from '../../hooks/useNow';
-import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
+import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_ORGANISATION, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
 import {
   firstFailure,
   formatCountdown,
@@ -29,10 +29,10 @@ import {
 import {
   APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS,
   type ApplyJobVerifierDialogCopy,
-  type KnownOrganisation,
 } from '../../translations/demo/ApplyJobVerifierDialogTranslations';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
+import IdentraOrganisationName from '../IdentraOrganisationName';
 import IdentraQrCode from '../IdentraQrCode';
 import IdentraWalletLink from '../IdentraWalletLink';
 
@@ -41,9 +41,6 @@ const verifierClient = createVerifierClient({ baseUrl: IDENTRA_API_URL, apiOrigi
 const fill = (template: string, values: Record<string, string>) =>
   template.replace(/\{(\w+)\}/g, (_, key: string) => values[key] ?? '');
 
-/** A localised name for a known sample organisation; any other organisation keeps the server's name. */
-const organisationName = (copy: ApplyJobVerifierDialogCopy, maToChuc: string, serverName: string): string =>
-  Object.hasOwn(copy.orgNames, maToChuc) ? copy.orgNames[maToChuc as KnownOrganisation] : truncateText(serverName);
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2';
 const primaryButton = `type-control inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full bg-[#354CE1] px-5 text-white transition-colors hover:bg-[#2539BE] disabled:cursor-not-allowed disabled:bg-[#354CE1]/60 ${focusRing}`;
@@ -147,13 +144,15 @@ export function ApplyJobVerifierResult({
           <div className="min-w-0">
             <dt className="type-body-sm text-slate-600">{copy.issuedBy}</dt>
             <dd className="type-body font-medium text-slate-900 [overflow-wrap:anywhere]">
-              <bdi>{organisationName(copy, result.issuer.maToChuc, result.issuer.ten)}</bdi>
+              <IdentraOrganisationName maToChuc={result.issuer.maToChuc} serverName={result.issuer.ten} language={language} />
             </dd>
           </div>
         )}
         <div className="min-w-0">
           <dt className="type-body-sm text-slate-600">{copy.verifiedBy}</dt>
-          <dd className="type-body font-medium text-slate-900">{copy.orgNames[SAMPLE_VERIFIER]}</dd>
+          <dd className="type-body font-medium text-slate-900">
+            <IdentraOrganisationName maToChuc={SAMPLE_VERIFIER_ORGANISATION} serverName="" language={language} />
+          </dd>
         </div>
         {checkedAt && <p className="type-body-sm text-slate-600 sm:col-span-2">{fill(copy.checkedAt, { time: checkedAt })}</p>}
       </dl>

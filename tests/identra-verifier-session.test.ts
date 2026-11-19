@@ -263,3 +263,31 @@ test('shared fields: known claims first with labels, others kept as text, every 
   assert.equal(secondsUntil('2026-01-01T00:00:10Z', Date.parse('2026-01-01T00:00:00Z')), 10);
   assert.equal(secondsUntil('2026-01-01T00:00:00Z', Date.parse('2026-01-01T00:00:10Z')), 0);
 });
+
+test('run with a fake clock: the dialog reaches "expired" without waiting five minutes, and stops polling', async () => {
+  // Each exchange takes two minutes of the fake clock (server and device agree); the session expires
+  // five minutes after the start.
+  let fakeNow = Date.parse('2026-11-19T10:00:00.000Z');
+  const expiresAt = new Date(fakeNow + 5 * 60_000).toISOString();
+  const requests: number[] = [];
+  const client = createVerifierClient({
+    baseUrl: 'https://api.example.test',
+    now: () => fakeNow,
+    fetch: (async (input: RequestInfo | URL) => {
+      requests.push(fakeNow); // when the request leaves
+      fakeNow += 2 * 60_000;
+      const serverTime = new Date(fakeNow).toISOString();
+      const body = String(input).endsWith('/v1/verification/sessions')
+        ? { id: ID, qr: QR, expiresAt, serverTime }
+        : { ...session('pending'), expiresAt, serverTime };
+      return new Response(JSON.stringify(body), { status: 200 });
+    }) as typeof fetch,
+  });
+  const log = recorder();
+  await runVerifierSession(client, INPUT, { signal: new AbortController().signal, dispatch: log.dispatch, intervalMs: 1, now: () => fakeNow });
+  assert.equal(log.state.phase, 'expired');
+  assert.ok(requests.every((at) => at < Date.parse(expiresAt)), 'no request at or after expiry');
+  const count = requests.length;
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  assert.equal(requests.length, count);
+});

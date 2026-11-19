@@ -6,10 +6,20 @@
  * portal demo and verifier page) can be developed without identra-server.
  * It is NEVER deployed and is NOT referenced by the production build: nothing
  * in src/ imports it, Vite does not bundle scripts/. It refuses to start when
- * NODE_ENV=production. All data is fictional and public on purpose. It signs
- * nothing and verifies nothing: verification results are canned.
+ * NODE_ENV=production. All data is fictional and public on purpose. Verifier
+ * session results are canned; the product routes below serve REAL signed data.
  *
- * Contract: identra-server/docs/vc-api.md §2, §3 (status change only), §5, §6, §8;
+ * Product lifecycle (§3, §7), public, Access-Control-Allow-Origin: *, counted as reads:
+ *   GET /trust-list                          application/jwt (exp 24 h, re-signed hourly)
+ *   GET /issuers/:name/status/:n             application/statuslist+jwt, 404 for an unknown list
+ *   GET /v1/products/:gtin/:serial/events    { gtin, serial, serverTime, events }, 404 NOT_FOUND unknown,
+ *                                            400 VALIDATION_FAILED for a path parseDigitalLinkPath refuses
+ * Signed by scripts/dev-identra-products.mjs (imported at start; its header lists every serial
+ * and what it yields) with a DEMO PKI in .dev-identra/. Run Vite with
+ * IDENTRA_ROOT_CA_FILE=.dev-identra/root-ca.pem so the page pins that root. If generation fails
+ * these routes answer 503 UNAVAILABLE and everything else keeps working.
+ *
+ * Contract: identra-server/docs/vc-api.md §2, §3, §5, §6, §7 (GET only), §8;
  * errors are exactly { statusCode, code, message } with the closed code list of §2, every
  * response with an expiresAt carries serverTime, creations answer 201, 429 carries Retry-After;
  * check ids/codes: identra-sdk/docs/architecture.md §3.
@@ -54,6 +64,8 @@
  *                                                DEV_EMPTY_CREDENTIALS from now on
  *
  * Not implemented (501): GET /oid4vp/request/:requestId, GET /issuers/truong-mau/offers/:offerId.
+ * A verifier session changes only through the hooks above: like the real server, a response it cannot
+ * use (a photographed-QR garbage post) never ends a session, so nothing here models that.
  * Logs: one line per request (method, path with ids masked, no query, status, ms).
  * Never logs tokens, passwords, txCodes, claims or profile data.
  */
@@ -121,8 +133,9 @@ const ACCOUNTS = new Map([
     hoTen: 'Đỗ Thị Mẫu', donVi: 'Phòng Đào tạo — Trường Đại học Mẫu (DEMO)' } }],
 ]);
 
-const VERIFIER_NAME = 'Nhà tuyển dụng mẫu (DEMO)';
-const ISSUER = { maToChuc: 'truong-mau', ten: 'Trường Đại học Mẫu (DEMO)' };
+const VERIFIER_NAME = 'Nhà tuyển dụng Mẫu (DEMO)';
+// Organisations are identified as in the trust list: maToChuc = VATVN-<tax code> (ADR-0015 section 9).
+const ISSUER = { maToChuc: 'VATVN-0100000001', ten: 'Trường Đại học Mẫu (DEMO)' };
 // Stable fake x509_hash (43 chars base64url, like SHA-256 of a leaf certificate).
 const CLIENT_ID = 'x509_hash:' + createHash('sha256').update('identra dev stand-in verifier').digest('base64url');
 
@@ -480,11 +493,66 @@ const dev = {
 
 const notImplemented = () => [501, { error: 'not_implemented_in_dev_stand_in' }];
 
+// ---------------------------------------------------------------- product lifecycle (§3, §7), real signatures
+
+const productsReady = import('./dev-identra-products.mjs')
+  .then((m) => m.loadProducts())
+  .then((p) => {
+    console.log(`${TAG} product chains signed in ${p.ms} ms (PKI ${p.pkiGenerated ? 'generated' : 'reused'} in .dev-identra/).`
+      + ' Run Vite with IDENTRA_ROOT_CA_FILE=.dev-identra/root-ca.pem so the page pins this dev root.');
+    return p;
+  }, (e) => {
+    console.error(`${TAG} product chains unavailable (product routes answer 503): ${e?.message ?? e}`);
+    return null;
+  });
+
+async function productSet() {
+  return (await productsReady) ?? fail(503, 'Product chains are not available in this stand-in.', 'UNAVAILABLE');
+}
+
+async function getTrustList() {
+  const p = await productSet();
+  try {
+    return [200, await p.trustList(), 'application/jwt'];
+  } catch {
+    return fail(503, 'No valid trust list is available.', 'UNAVAILABLE');
+  }
+}
+
+async function getStatusList({ params: [name, n] }) {
+  const p = await productSet();
+  let token;
+  try {
+    token = await p.statusList(name, Number(n));
+  } catch {
+    fail(503, 'The status list cannot be signed.', 'UNAVAILABLE');
+  }
+  if (token === null) fail(404, 'No such status list.', 'NOT_FOUND');
+  return [200, token, 'application/statuslist+jwt'];
+}
+
+async function getProductEvents({ params: [gtinSegment, serialSegment] }) {
+  const p = await productSet();
+  const code = p.parseDigitalLinkPath(`/01/${gtinSegment}/21/${serialSegment}`);
+  if (!code) invalid('gtin must be a GTIN-14 with a valid check digit and serial 1..20 GS1 characters, percent-encoded.');
+  const { gtin, serial } = code;
+  const product = p.product(gtin, serial) ?? notFound();
+  if (product.fail) fail(500, 'Internal server error.', 'INTERNAL_ERROR');
+  if (product.garbage) return [200, '<!doctype html><title>502</title><p>Bad gateway</p>', 'text/html; charset=utf-8'];
+  if (product.delayMs) await delay(product.delayMs);
+  return [200, { gtin, serial, serverTime: iso(Date.now() + (product.serverTimeOffsetMs ?? 0)), events: product.events }];
+}
+
 // ---------------------------------------------------------------- routing
 
 const ID = '([A-Za-z0-9_-]{1,64})';
+// Public signed resources (§2): any origin may read them, and the Date header.
+const PUBLIC = new Set([getTrustList, getStatusList, getProductEvents]);
 // [method, path, fail-next key, rate-limit kind, handler]
 const ROUTES = [
+  ['GET', '/trust-list', null, 'read', getTrustList],
+  ['GET', '/issuers/([a-z0-9]+(?:-[a-z0-9]+)*)/status/([1-9][0-9]{0,8})', null, 'read', getStatusList],
+  ['GET', '/v1/products/([^/]{1,20})/([^/]{1,80})/events', null, 'read', getProductEvents],
   ['POST', '/v1/demo/school/login', 'login', 'login', login],
   ['POST', '/v1/demo/school/offers', 'offers', 'write', createOffer],
   ['GET', `/v1/demo/school/offers/${ID}`, 'offers', 'read', getOffer],
@@ -531,12 +599,18 @@ const server = http.createServer(async (req, res) => {
     let match;
     const route = ROUTES.find((r) => r.method === req.method && (match = r.re.exec(url.pathname)));
     if (!route) notFound();
+    if (PUBLIC.has(route.handler)) {
+      res.setHeader('access-control-allow-origin', '*');
+      res.setHeader('access-control-expose-headers', 'Date, Retry-After');
+    }
     const body = req.method === 'POST' ? await readJson(req) : undefined;
     if (route.key) forcedFailure(route.key);
     if (route.limit) rateLimit(req.socket.remoteAddress ?? 'unknown', route.limit);
-    const [status, json] = await route.handler({ req, body, params: match.slice(1), query: url.searchParams });
+    // [status, json] or [status, raw text, content type]
+    const [status, payload, type] = await route.handler({ req, body, params: match.slice(1), query: url.searchParams });
+    if (type) res.setHeader('content-type', type);
     res.writeHead(status);
-    res.end(JSON.stringify(json));
+    res.end(type ? payload : JSON.stringify(payload));
   } catch (err) {
     let e = err;
     if (!(e instanceof HttpError)) {

@@ -192,7 +192,7 @@ const vi: SchoolPortalPageCopy = {
   anotherCodeHint: 'Mã đang hiện sẽ ngừng dùng được.',
   offerLimitTitle: 'Tạm thời chưa tạo được mã mới',
   offerProblems: {
-    too_many_offers: 'Mạng bạn đang dùng đã giữ 5 mã nhận bằng chưa dùng, hoặc đã tạo 30 mã trong 30 phút qua. Mã chưa dùng tự hết hạn sau 10 phút.',
+    too_many_offers: 'Mạng bạn đang dùng đã giữ 5 mã nhận bằng chưa dùng, hoặc đã tạo 100 mã trong 30 phút qua. Mã chưa dùng tự hết hạn sau 10 phút.',
     busy: 'Hệ thống đang đông, thử lại sau ít phút.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
     forbidden: 'Tài khoản này không nhận bằng được.',
@@ -363,7 +363,7 @@ const en: SchoolPortalPageCopy = {
   anotherCodeHint: 'The code shown now will stop working.',
   offerLimitTitle: 'No new code for the moment',
   offerProblems: {
-    too_many_offers: 'The network you are on already holds 5 unused codes, or made 30 codes in the last 30 minutes. Unused codes expire by themselves after 10 minutes.',
+    too_many_offers: 'The network you are on already holds 5 unused codes, or made 100 codes in the last 30 minutes. Unused codes expire by themselves after 10 minutes.',
     busy: 'The system is busy. Try again in a few minutes.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
     forbidden: 'This account cannot receive a diploma.',

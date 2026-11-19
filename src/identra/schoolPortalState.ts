@@ -69,7 +69,7 @@ export type LoadProblem = 'network' | 'rate_limited' | 'unavailable' | 'forbidde
 
 /**
  * Why a new code could not be made. `too_many_offers`: this network already holds 5 unused codes or made
- * 30 in 30 minutes (429); `busy`: all visitors together reached the server's cap (503). Both carry a wait.
+ * 100 in 30 minutes (429); `busy`: all visitors together reached the server's cap (503). Both carry a wait.
  */
 export type OfferProblem = 'too_many_offers' | 'busy' | 'network' | 'forbidden' | 'rejected' | 'unavailable';
 

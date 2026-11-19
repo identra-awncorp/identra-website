@@ -233,6 +233,34 @@ export const toCheckRows = (result: Pick<SessionResult, 'checks'>): CheckRow[] =
   };
 });
 
+/**
+ * The checks in four plain statements: who signed (and is the signer recognised), unchanged since issued,
+ * still valid, sent by the holder for this request. A group fails if any of its checks failed, is "not
+ * checked" if any was skipped, and passes only when all of its checks passed.
+ */
+export const CHECK_GROUPS = {
+  signer: ['certificate_chain', 'issuer_trust'],
+  unchanged: ['structure', 'algorithm', 'signature', 'product_chain', 'other'],
+  valid: ['validity_time', 'status'],
+  holder: ['holder_binding', 'credential_type', 'query'],
+} as const satisfies Record<string, readonly CheckLabelKey[]>;
+
+export type CheckGroupId = keyof typeof CHECK_GROUPS;
+
+export interface CheckGroup {
+  id: CheckGroupId;
+  outcome: 'passed' | 'failed' | 'skipped';
+  rows: CheckRow[];
+}
+
+export const groupCheckRows = (rows: CheckRow[]): CheckGroup[] =>
+  (Object.keys(CHECK_GROUPS) as CheckGroupId[]).flatMap((id) => {
+    const members = rows.filter((row) => (CHECK_GROUPS[id] as readonly CheckLabelKey[]).includes(row.labelKey));
+    if (members.length === 0) return [];
+    const outcome = members.some((row) => row.outcome === 'failed') ? 'failed' : members.some((row) => row.outcome === 'skipped') ? 'skipped' : 'passed';
+    return [{ id, outcome, rows: members }];
+  });
+
 /** The first failed check, which is what the result's headline explains. */
 export const firstFailure = (rows: CheckRow[]): CheckRow | null => rows.find((row) => row.outcome === 'failed') ?? null;
 

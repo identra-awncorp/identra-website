@@ -46,6 +46,11 @@ export interface ApplyJobVerifierDialogCopy {
   failedFinalHint: string;
   failedRetryHint: string;
   checksTitle: string;
+  groupsTitle: string;
+  groups: { signer: string; signerNamed: string; unchanged: string; valid: string; holder: string };
+  groupNotChecked: string;
+  showDetails: string;
+  hideDetails: string;
   checkPassed: string;
   checkFailed: string;
   checkSkipped: string;
@@ -108,6 +113,11 @@ const vi: ApplyJobVerifierDialogCopy = {
   failedFinalHint: 'Bằng này không dùng được cho hồ sơ. Bạn vẫn có thể tự điền hồ sơ.',
   failedRetryHint: 'Lỗi này có thể chỉ là tạm thời. Hãy thử lại sau ít phút.',
   checksTitle: 'Các bước kiểm tra',
+  groupsTitle: 'Kết quả kiểm tra',
+  groups: { signer: 'Nơi ký có trong danh sách tổ chức được công nhận', signerNamed: 'Ai ký: {issuer}, có trong danh sách được công nhận', unchanged: 'Không bị sửa từ khi cấp', valid: 'Còn hiệu lực, chưa bị thu hồi', holder: 'Đúng người giữ bằng gửi, cho đúng lần hỏi này' },
+  groupNotChecked: 'Chưa kiểm',
+  showDetails: 'Xem {count} bước chi tiết',
+  hideDetails: 'Ẩn các bước chi tiết',
   checkPassed: 'Đạt',
   checkFailed: 'Không đạt',
   checkSkipped: 'Bỏ qua',
@@ -126,8 +136,8 @@ const vi: ApplyJobVerifierDialogCopy = {
   trialWalletLink: 'Dùng ví thử trên web',
   checks: {
     structure: 'Bằng được gửi đúng định dạng',
-    algorithm: 'Bằng được ký theo cách được chấp nhận',
-    certificate_chain: 'Giấy chứng nhận của nơi cấp hợp lệ',
+    algorithm: 'Chữ ký dùng cách ký an toàn được chấp nhận',
+    certificate_chain: 'Chữ ký truy được về chứng thư gốc của Identra',
     signature: 'Bằng không bị sửa kể từ khi cấp',
     validity_time: 'Bằng đang trong thời hạn',
     credential_type: 'Đúng loại giấy tờ được hỏi',
@@ -240,6 +250,11 @@ const en: ApplyJobVerifierDialogCopy = {
   failedFinalHint: 'This diploma cannot be used for the application. You can still fill in the form yourself.',
   failedRetryHint: 'This may be temporary. Try again in a few minutes.',
   checksTitle: 'Checks',
+  groupsTitle: 'Result of the checks',
+  groups: { signer: 'The signer is on the list of recognised organisations', signerNamed: 'Signed by {issuer}, on the list of recognised organisations', unchanged: 'Not changed since it was issued', valid: 'Still valid, not revoked', holder: 'Sent by the holder, for this very request' },
+  groupNotChecked: 'Not checked',
+  showDetails: 'See the {count} detailed checks',
+  hideDetails: 'Hide the detailed checks',
   checkPassed: 'Passed',
   checkFailed: 'Failed',
   checkSkipped: 'Skipped',
@@ -258,8 +273,8 @@ const en: ApplyJobVerifierDialogCopy = {
   trialWalletLink: 'Use the web trial wallet',
   checks: {
     structure: 'Diploma arrived in the expected format',
-    algorithm: 'Signed in an accepted way',
-    certificate_chain: 'Issuer\'s certificate is valid',
+    algorithm: 'Signed with an accepted, secure method',
+    certificate_chain: 'Signature traces back to Identra\'s root certificate',
     signature: 'Unchanged since it was issued',
     validity_time: 'Within its validity period',
     credential_type: 'The kind of document that was asked for',
@@ -372,6 +387,11 @@ const es: ApplyJobVerifierDialogCopy = {
   failedFinalHint: 'Este título no se puede usar para la solicitud. Aún puedes rellenar el formulario tú mismo.',
   failedRetryHint: 'Puede ser temporal. Inténtalo de nuevo en unos minutos.',
   checksTitle: 'Comprobaciones',
+  groupsTitle: 'Resultado de las comprobaciones',
+  groups: { signer: 'El firmante está en la lista de organizaciones reconocidas', signerNamed: 'Firmado por {issuer}, en la lista de organizaciones reconocidas', unchanged: 'Sin cambios desde que se emitió', valid: 'Sigue vigente, no revocado', holder: 'Enviado por su titular, para esta misma solicitud' },
+  groupNotChecked: 'No comprobado',
+  showDetails: 'Ver las {count} comprobaciones detalladas',
+  hideDetails: 'Ocultar las comprobaciones detalladas',
   checkPassed: 'Superada',
   checkFailed: 'No superada',
   checkSkipped: 'Omitida',
@@ -390,8 +410,8 @@ const es: ApplyJobVerifierDialogCopy = {
   trialWalletLink: 'Usar la billetera de prueba en la web (en inglés)',
   checks: {
     structure: 'El título llegó en el formato esperado',
-    algorithm: 'Firmado de una forma aceptada',
-    certificate_chain: 'El certificado del emisor es válido',
+    algorithm: 'Firmado con un método seguro aceptado',
+    certificate_chain: 'La firma se remonta al certificado raíz de Identra',
     signature: 'Sin cambios desde su emisión',
     validity_time: 'Dentro de su periodo de vigencia',
     credential_type: 'El tipo de documento solicitado',
@@ -504,6 +524,11 @@ const ja: ApplyJobVerifierDialogCopy = {
   failedFinalHint: 'この卒業証書は応募に使えません。フォームはご自身で入力できます。',
   failedRetryHint: '一時的な問題かもしれません。数分後にもう一度お試しください。',
   checksTitle: '確認項目',
+  groupsTitle: '確認の結果',
+  groups: { signer: '署名者は認定組織リストに載っている', signerNamed: '{issuer} が署名し、認定組織リストに載っている', unchanged: '発行後に改ざんされていない', valid: '有効で、失効していない', holder: '本人が、この依頼のために送った' },
+  groupNotChecked: '未確認',
+  showDetails: '{count} 件の詳細を見る',
+  hideDetails: '詳細を閉じる',
   checkPassed: '合格',
   checkFailed: '不合格',
   checkSkipped: 'スキップ',
@@ -522,8 +547,8 @@ const ja: ApplyJobVerifierDialogCopy = {
   trialWalletLink: 'ウェブのお試しウォレットを使う（英語）',
   checks: {
     structure: '卒業証書の形式',
-    algorithm: '認められた方法による署名',
-    certificate_chain: '発行元の証明書の有効性',
+    algorithm: '認められた安全な方式で署名',
+    certificate_chain: '署名が Identra のルート証明書までたどれる',
     signature: '発行後の改ざんの有無',
     validity_time: '有効期間',
     credential_type: '求められた書類の種類',
@@ -636,6 +661,11 @@ const de: ApplyJobVerifierDialogCopy = {
   failedFinalHint: 'Dieses Zeugnis kann für die Bewerbung nicht verwendet werden. Sie können das Formular aber selbst ausfüllen.',
   failedRetryHint: 'Das ist vielleicht nur vorübergehend. Versuchen Sie es in einigen Minuten erneut.',
   checksTitle: 'Prüfungen',
+  groupsTitle: 'Ergebnis der Prüfungen',
+  groups: { signer: 'Der Unterzeichner steht auf der Liste anerkannter Organisationen', signerNamed: 'Signiert von {issuer}, auf der Liste anerkannter Organisationen', unchanged: 'Seit der Ausstellung unverändert', valid: 'Weiterhin gültig, nicht widerrufen', holder: 'Vom Inhaber gesendet, für genau diese Anfrage' },
+  groupNotChecked: 'Nicht geprüft',
+  showDetails: 'Die {count} Einzelprüfungen ansehen',
+  hideDetails: 'Einzelprüfungen ausblenden',
   checkPassed: 'Bestanden',
   checkFailed: 'Nicht bestanden',
   checkSkipped: 'Übersprungen',
@@ -654,8 +684,8 @@ const de: ApplyJobVerifierDialogCopy = {
   trialWalletLink: 'Test-Wallet im Web nutzen (auf Englisch)',
   checks: {
     structure: 'Zeugnis im erwarteten Format',
-    algorithm: 'Auf zulässige Weise signiert',
-    certificate_chain: 'Zertifikat des Ausstellers gültig',
+    algorithm: 'Mit einem zulässigen, sicheren Verfahren signiert',
+    certificate_chain: 'Signatur führt zum Identra-Stammzertifikat zurück',
     signature: 'Seit der Ausstellung unverändert',
     validity_time: 'Im Gültigkeitszeitraum',
     credential_type: 'Die angefragte Art von Dokument',

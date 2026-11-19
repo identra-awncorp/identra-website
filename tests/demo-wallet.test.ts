@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { X509Certificate } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { createBrowserFetch, createDemoWallet, ResponseTooLargeError } from '../src/identra/demoWallet';
+import { createBrowserFetch, createDemoWallet } from '../src/identra/demoWallet';
 import {
   chooseMatch,
   displayName,
@@ -64,15 +64,16 @@ test('browser fetch: a redirect the browser withheld is reported as a 3xx, never
   assert.equal(response.status, 302);
 });
 
-test('browser fetch: a declared or streamed body over maxBytes is refused', async () => {
-  const declared = createBrowserFetch(async () => new Response('x'.repeat(10), { headers: { 'content-length': '5000' } }));
-  await assert.rejects(declared('https://api-identra.awncorp.vn/x', { maxBytes: 100 }), ResponseTooLargeError);
+test('browser fetch: a body over maxBytes is not read further and comes back declaring its size (the guard calls it the server\'s fault)', async () => {
+  const declared = await createBrowserFetch(async () => new Response('x'.repeat(10), { headers: { 'content-length': '5000' } }))('https://api-identra.awncorp.vn/x', { maxBytes: 100 });
+  assert.equal(declared.headers.get('content-length'), '5000');
+  assert.equal(await declared.text(), '');
 
-  const streamed = createBrowserFetch(async () => new Response('x'.repeat(200)));
-  await assert.rejects(streamed('https://api-identra.awncorp.vn/x', { maxBytes: 100 }), ResponseTooLargeError);
+  const streamed = await createBrowserFetch(async () => new Response('x'.repeat(200)))('https://api-identra.awncorp.vn/x', { maxBytes: 100 });
+  assert.ok(Number(streamed.headers.get('content-length')) > 100);
 
-  const multibyte = createBrowserFetch(async () => new Response('đ'.repeat(60)));
-  await assert.rejects(multibyte('https://api-identra.awncorp.vn/x', { maxBytes: 100 }), ResponseTooLargeError, 'bytes, not characters');
+  const multibyte = await createBrowserFetch(async () => new Response('đ'.repeat(60)))('https://api-identra.awncorp.vn/x', { maxBytes: 100 });
+  assert.ok(Number(multibyte.headers.get('content-length')) > 100, 'bytes, not characters');
 });
 
 test('browser fetch: aborts at timeoutMs', async () => {
@@ -113,6 +114,19 @@ test('wallet: canonical URLs go to the configured API address; an expired offer 
   assert.deepEqual(result, { ok: false, code: 'OFFER_EXPIRED' });
   assert.equal(calls[0]!.url, `${LOCAL}/issuers/truong-mau/offers/abc`);
   assert.equal(calls[0]!.init.redirect, 'manual');
+});
+
+test('wallet: an oversized answer is ISSUER_ERROR (the server\'s fault), not a network problem', async () => {
+  const wallet = createDemoWallet({
+    apiOrigin: CANONICAL,
+    apiUrl: CANONICAL,
+    trustedRoots,
+    fetch: (async () => new Response('x'.repeat(70_000))) as typeof fetch,
+  });
+  const result = await wallet.offers.resolve(
+    `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(`${CANONICAL}/issuers/truong-mau/offers/abc`)}`,
+  );
+  assert.deepEqual(result, { ok: false, code: 'ISSUER_ERROR' });
 });
 
 test('wallet: an unreachable API is NETWORK_ERROR; a fresh wallet holds nothing', async () => {
@@ -208,7 +222,7 @@ test('wallet screens: a wrong PIN stays on the offer, an expired offer ends it, 
   assert.deepEqual(expired, { name: 'offerFailed', problem: 'offerExpired' });
 
   const saved = walletReducer(screen, { type: 'accepted', result: { ok: true, credentialId: 'c1', vct: match.vct, issuerName: 'X', status: 'valid' } });
-  assert.deepEqual(saved, { name: 'offerSaved', credentialId: 'c1', checked: true });
+  assert.deepEqual(saved, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: 'X' });
 });
 
 test('wallet screens: an offer refused while checking, and late answers after leaving, are handled', () => {
@@ -234,4 +248,27 @@ test('wallet screens: share, decline, and a submit failure that needs a new requ
   assert.deepEqual(walletReducer(sending, { type: 'submitFailed', code: 'REQUEST_INVALID' }), { name: 'requestFailed', problem: 'requestClosed' });
   const storage = walletReducer(sending, { type: 'submitFailed', code: 'STORAGE_ERROR' });
   assert.equal(storage.name === 'requestConsent' && storage.problem, 'storage', 'a failure before sending leaves the request usable');
+});
+
+test('build check: every chunk the wallet chunk imports (shared ones too) is scanned for Function/eval', async () => {
+  const { cborWithoutEval } = await import('../vite.config');
+  const plugin = cborWithoutEval({ scanChunk: (chunk) => chunk.moduleIds.some((id) => id.includes('/identra-sdk/packages/app/')) });
+  const chunk = (fileName: string, code: string, imports: string[] = [], moduleIds: string[] = []) =>
+    ({ type: 'chunk', fileName, code, imports, moduleIds });
+  const run = (bundle: Record<string, unknown>) => {
+    const errors: string[] = [];
+    const generate = plugin.generateBundle as unknown as (this: { error: (m: string) => never }, o: unknown, b: unknown) => void;
+    try {
+      generate.call({ error: (message: string) => { errors.push(message); throw new Error(message); } }, {}, bundle);
+    } catch {
+      // The plugin stops the build at the first unknown reference.
+    }
+    return errors;
+  };
+  const wallet = chunk('wallet.js', 'export const w=1;', ['shared.js'], ['/home/x/identra-sdk/packages/app/dist/index.js']);
+  const bad = 'const f=new Function("r","return r");';
+  assert.match(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', bad, ['deeper.js']), 'deeper.js': chunk('deeper.js', '') }).join(), /shared\.js/);
+  assert.match(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', '', ['deeper.js']), 'deeper.js': chunk('deeper.js', bad) }).join(), /deeper\.js/, 'transitively');
+  assert.deepEqual(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', ''), 'unrelated.js': chunk('unrelated.js', bad) }), [], 'chunks the wallet does not load are not its concern');
+  assert.deepEqual(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', 'x instanceof Function?x:y') }), [], 'a type test is allowed');
 });

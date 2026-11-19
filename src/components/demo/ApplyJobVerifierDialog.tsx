@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useCallback, useEffect, useReducer, useRef, type KeyboardEvent as ReactKeyboardEvent } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { AlertTriangle, Check, Clock, Loader2, Minus, QrCode, RefreshCw, ShieldCheck, Smartphone, X, XCircle } from 'lucide-react';
+import { AlertTriangle, Check, ChevronDown, Clock, Loader2, Minus, QrCode, RefreshCw, ShieldCheck, Smartphone, X, XCircle } from 'lucide-react';
 import { createVerifierClient, type SessionResult } from '@identra/sdk-client';
 import { useLanguage } from '../../context/LanguageContext';
 import { useInertAppRoot, useIsTouchDevice } from '../../hooks/useModalLayer';
@@ -15,6 +15,7 @@ import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_O
 import {
   firstFailure,
   formatCountdown,
+  groupCheckRows,
   INITIAL_VERIFIER_STEP_STATE,
   isFinalFailure,
   runVerifierSession,
@@ -30,6 +31,7 @@ import {
   APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS,
   type ApplyJobVerifierDialogCopy,
 } from '../../translations/demo/ApplyJobVerifierDialogTranslations';
+import { fillNodes } from '../../utils/fillTemplate';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
 import IdentraOrganisationName from '../IdentraOrganisationName';
@@ -110,6 +112,7 @@ export function ApplyJobVerifierResult({
 }) {
   const rows = toCheckRows(result);
   const failure = firstFailure(rows);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const fields = result.ok ? toSharedFields(result.claims) : [];
   const checkedAt = Number.isNaN(Date.parse(result.verifiedAt))
     ? null
@@ -165,10 +168,51 @@ export function ApplyJobVerifierResult({
         {checkedAt && <p className="type-body-sm text-slate-600 sm:col-span-2">{fill(copy.checkedAt, { time: checkedAt })}</p>}
       </dl>
 
-      <section aria-labelledby="apply-job-verifier-checks" className="space-y-1">
-        <h3 id="apply-job-verifier-checks" className="type-card-title-sm text-slate-900">{copy.checksTitle}</h3>
-        <CheckList rows={rows} copy={copy} headlineRow={failure} />
+      <section aria-labelledby="apply-job-verifier-groups" className="space-y-2" data-testid="verifier-check-groups">
+        <h3 id="apply-job-verifier-groups" className="type-card-title-sm text-slate-900">{copy.groupsTitle}</h3>
+        <ul className="space-y-2">
+          {groupCheckRows(rows).map((group) => (
+            <li key={group.id} className="flex items-start gap-3" data-testid="verifier-check-group" data-group={group.id} data-outcome={group.outcome}>
+              <span
+                aria-hidden="true"
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
+                  group.outcome === 'passed' ? 'bg-emerald-100 text-emerald-700' : group.outcome === 'failed' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-500'
+                }`}
+              >
+                {group.outcome === 'passed' ? <Check className="h-4 w-4" strokeWidth={3} /> : group.outcome === 'failed' ? <X className="h-4 w-4" strokeWidth={3} /> : <Minus className="h-4 w-4" />}
+              </span>
+              <p className={`type-body min-w-0 ${group.outcome === 'failed' ? 'font-semibold text-rose-900' : 'text-slate-900'} [overflow-wrap:anywhere]`}>
+                {group.id === 'signer' && result.issuer
+                  ? fillNodes(copy.groups.signerNamed, { issuer: <IdentraOrganisationName maToChuc={result.issuer.maToChuc} serverName={result.issuer.ten} language={language} /> })
+                  : copy.groups[group.id === 'signer' ? 'signer' : group.id]}
+                <span className="sr-only">
+                  {': '}
+                  {group.outcome === 'passed' ? copy.checkPassed : group.outcome === 'failed' ? copy.checkFailed : copy.groupNotChecked}
+                </span>
+                {group.outcome === 'skipped' && <span aria-hidden="true" className="type-caption ml-2 text-slate-600">{copy.groupNotChecked}</span>}
+              </p>
+            </li>
+          ))}
+        </ul>
+        <button
+          type="button"
+          onClick={() => setDetailsOpen((open) => !open)}
+          aria-expanded={detailsOpen}
+          aria-controls="apply-job-verifier-checks-list"
+          data-testid="verifier-checks-toggle"
+          className={`type-control inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-[#2539BE] underline-offset-2 hover:underline ${focusRing}`}
+        >
+          <ChevronDown aria-hidden="true" className={`h-4 w-4 transition-transform ${detailsOpen ? 'rotate-180' : ''}`} />
+          {detailsOpen ? copy.hideDetails : fill(copy.showDetails, { count: String(rows.length) })}
+        </button>
       </section>
+
+      {detailsOpen && (
+        <section id="apply-job-verifier-checks-list" aria-labelledby="apply-job-verifier-checks" className="space-y-1" data-testid="verifier-checks">
+          <h3 id="apply-job-verifier-checks" className="type-card-title-sm text-slate-900">{copy.checksTitle}</h3>
+          <CheckList rows={rows} copy={copy} headlineRow={failure} />
+        </section>
+      )}
     </div>
   );
 }

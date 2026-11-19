@@ -15,6 +15,11 @@ const fromBase64 = (value: string): Uint8Array => Uint8Array.from(atob(value), (
 /** The Identra root certificate(s) published on the Security page, pinned from the same build-time source. */
 export const PINNED_ROOTS: Uint8Array[] = rootCa.roots.map((root) => fromBase64(root.der));
 
+/** What the page shows of the pinned root: its fingerprint and where the certificate file can be downloaded. */
+export const PUBLISHED_ROOT: { fingerprint: string; downloadPath: string } | null = rootCa.roots[0]
+  ? { fingerprint: rootCa.roots[0].fingerprint, downloadPath: rootCa.roots[0].downloadPath }
+  : null;
+
 /**
  * Verifies the product's whole chain in the browser. A fresh verifier per run, so "check again" also
  * re-fetches the trust list and status lists (the SDK itself never uses the HTTP cache).

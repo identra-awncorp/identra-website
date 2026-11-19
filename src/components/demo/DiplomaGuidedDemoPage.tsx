@@ -5,8 +5,9 @@
 
 import { useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertTriangle, ArrowLeft, ArrowRight, Briefcase, CheckCircle2, Clock, Loader2, RefreshCw, RotateCcw, Wallet } from 'lucide-react';
-import { createVerifierClient, serverClockOffset } from '@identra/sdk-client';
+import { AlertTriangle, ArrowLeft, ArrowRight, Briefcase, CheckCircle2, Clock, Download, GraduationCap, Info, Loader2, RefreshCw, RotateCcw, Wallet } from 'lucide-react';
+import { createVerifierClient, serverClockOffset, type SessionResult } from '@identra/sdk-client';
+import rootCa from 'virtual:identra-root-ca';
 import { useLanguage } from '../../context/LanguageContext';
 import { useNow } from '../../hooks/useNow';
 import {
@@ -18,7 +19,7 @@ import {
   useStudentOffer,
 } from '../../hooks/useSchoolPortal';
 import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
-import type { WalletInboxItem } from '../../identra/demoWalletModel';
+import { DIPLOMA_FIELDS, isDiplomaField, type WalletInboxItem } from '../../identra/demoWalletModel';
 import {
   canView,
   currentPosition,
@@ -43,6 +44,7 @@ import {
   type VerifierProblem,
 } from '../../identra/verifierSession';
 import { APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS, type ApplyJobVerifierDialogCopy } from '../../translations/demo/ApplyJobVerifierDialogTranslations';
+import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../../translations/demo/DemoWalletPanelTranslations';
 import { DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS, type DiplomaGuidedDemoPageCopy } from '../../translations/demo/DiplomaGuidedDemoPageTranslations';
 import {
   SCHOOL_PORTAL_PAGE_TRANSLATIONS,
@@ -52,20 +54,26 @@ import {
 } from '../../translations/SchoolPortalPageTranslations';
 import { demoScenarioPath, resolveDemoScenarioLocale, viewToPath } from '../../types/routes';
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
+import IdentraHowItWorks from '../IdentraHowItWorks';
+import IdentraQrCode from '../IdentraQrCode';
 import ConfirmDialog from '../SchoolPortalConfirmDialog';
 import UniversityCrest from '../UniversityCrest';
 import { ApplyJobVerifierResult } from './ApplyJobVerifierDialog';
 import DemoWalletPanel, { type WalletPanelEvent } from './DemoWalletPanel';
 
 // The guided diploma demo: the organisation's side of the current step on the left, the web trial wallet
-// on the right (stacked on a phone, with a button that always brings the wallet into view). Everything runs
-// against the real API with the existing portal and verifier clients; progress follows what really happened.
+// on the right. On a phone the three actors (school, employer, wallet) are tabs that switch by themselves
+// when it is that actor's turn. Everything runs against the real API with the existing portal and verifier
+// clients; progress follows what really happened. Each step says what to press, then what really happened.
 
 type StudentSession = Extract<PortalSession, { role: 'student' }>;
 type Locale2 = 'vi' | 'en';
+type Actor = 'school' | 'employer' | 'wallet';
 
 const verifierClient = createVerifierClient({ baseUrl: IDENTRA_API_URL, apiOrigin: IDENTRA_API_ORIGIN });
 const SAMPLE_ACCOUNT = SCHOOL_PORTAL_SAMPLE_ACCOUNTS[0];
+/** Beyond this the device clock is called wrong (the wallet allows 60 s of skew on a request's issue time). */
+const CLOCK_SKEW_NOTICE_MS = 60_000;
 
 // Memory only: survives a language switch or a visit to another page of the site, not a reload. Tokens never
 // go to storage; the session flag below is a bare "a run was in progress", so a reload can be explained.
@@ -97,18 +105,17 @@ const secondaryButton = `type-control inline-flex min-h-11 cursor-pointer items-
 const panel = 'rounded-3xl border border-slate-200 bg-white p-5 sm:p-6';
 const apiText = 'break-words [overflow-wrap:anywhere]';
 
-/** Stable test ids of the employer check, per step (`guided-apply-…`, `guided-again-…`). */
-const testId = (variant: 'apply' | 'again', part: string) => ['guided', variant, part].join('-');
-
 const isNarrow = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches;
 const scrollBehavior = (): ScrollBehavior => (window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
+/** Stable test ids of the employer check, per step (`guided-apply-…`, `guided-again-…`). */
+const testId = (variant: 'apply' | 'again', part: string) => ['guided', variant, part].join('-');
 
 function Countdown({ expiresAt, offsetMs, template }: { expiresAt: string; offsetMs: number; template: string }) {
   const now = useNow();
   return <span className="tabular-nums">{fill(template, { time: formatCountdown(secondsUntil(expiresAt, now + offsetMs)) })}</span>;
 }
 
-function Notice({ tone, children, testId }: { tone: 'info' | 'warning' | 'success' | 'error'; children: ReactNode; testId?: string }) {
+function Notice({ tone, children, testId: id }: { tone: 'info' | 'warning' | 'success' | 'error'; children: ReactNode; testId?: string }) {
   const styles = {
     info: 'bg-slate-100 text-slate-800',
     warning: 'bg-amber-50 text-amber-950',
@@ -117,7 +124,7 @@ function Notice({ tone, children, testId }: { tone: 'info' | 'warning' | 'succes
   }[tone];
   const Icon = tone === 'success' ? CheckCircle2 : tone === 'info' ? Clock : AlertTriangle;
   return (
-    <div className={`type-body flex items-start gap-3 rounded-2xl px-4 py-3 ${styles}`} data-testid={testId}>
+    <div className={`type-body flex items-start gap-3 rounded-2xl px-4 py-3 ${styles}`} data-testid={id}>
       <Icon aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0" />
       <div className="min-w-0 flex-1 space-y-2">{children}</div>
     </div>
@@ -138,18 +145,55 @@ function OrganisationHeader({ kind, name, detail, crestLabel }: { kind: 'school'
   );
 }
 
+/** "What just happened": where the data is now and who did what, after a step. */
+function WhatHappened({ title, lines, testId: id }: { title: string; lines: readonly ReactNode[]; testId: string }) {
+  return (
+    <section aria-label={title} className="rounded-3xl bg-[#0F1E36] p-5 text-white sm:p-6" data-testid={id}>
+      <h3 className="type-card-title-sm flex items-center gap-2 text-white">
+        <Info aria-hidden="true" className="h-4 w-4 shrink-0 text-emerald-300" />
+        {title}
+      </h3>
+      <ul className="type-body mt-3 space-y-2 text-white/90">
+        {lines.map((line, index) => (
+          <li key={index} className="flex gap-2">
+            <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+            <span className="min-w-0">{line}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** The real QR next to the button that stands in for scanning it. */
+function QrHandoff({ value, qrLabel, caption, testId: id, children }: { value: string; qrLabel: string; caption: string; testId: string; children: ReactNode }) {
+  return (
+    <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-[auto_minmax(0,1fr)]">
+      <div className="mx-auto w-40 sm:mx-0" data-testid={id}>
+        <IdentraQrCode value={value} label={qrLabel} className="h-auto w-full rounded-2xl border border-slate-200 bg-white" fallback={null} />
+      </div>
+      <div className="min-w-0 space-y-3">
+        <p className="type-body-sm text-slate-700">{caption}</p>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 // ---- Step 1: the school issues the diploma ---------------------------------------------------------
 
 function ReceiveSignedIn({
   session,
   copy,
   portalCopy,
+  walletBusy,
   onSessionExpired,
   onHandoff,
 }: {
   session: StudentSession;
   copy: DiplomaGuidedDemoPageCopy;
   portalCopy: SchoolPortalPageCopy;
+  walletBusy: boolean;
   onSessionExpired: () => void;
   onHandoff: (offerUri: string) => void;
 }) {
@@ -195,18 +239,22 @@ function ReceiveSignedIn({
             </p>
           </div>
           <p className="type-body-sm text-slate-600">{copy.pinHint}</p>
-          <button
-            type="button"
-            onClick={() => {
-              onHandoff(offer.offer.offerUri);
-              setHandedOver(offer.offer.offerId);
-            }}
-            className={handedOver === activeOfferId ? secondaryButton : primaryButton}
-            data-testid="guided-send-offer"
-          >
-            <Wallet aria-hidden="true" className="h-4 w-4" />
-            {handedOver === activeOfferId ? copy.sendAgain : copy.sendToWallet}
-          </button>
+          <QrHandoff value={offer.offer.offerUri} qrLabel={copy.qrOfferLabel} caption={copy.qrOfferCaption} testId="guided-qr-offer">
+            <button
+              type="button"
+              onClick={() => {
+                onHandoff(offer.offer.offerUri);
+                setHandedOver(offer.offer.offerId);
+              }}
+              disabled={walletBusy}
+              className={handedOver === activeOfferId ? secondaryButton : primaryButton}
+              data-testid="guided-send-offer"
+            >
+              <Wallet aria-hidden="true" className="h-4 w-4" />
+              {handedOver === activeOfferId ? copy.sendAgain : copy.sendToWallet}
+            </button>
+            {walletBusy && <p className="type-body-sm text-slate-600" data-testid="guided-wallet-busy">{copy.walletBusy}</p>}
+          </QrHandoff>
           {handedOver === activeOfferId && (
             <p className="type-body font-medium text-[#0F1E36]" data-testid="guided-offer-sent">{fill(copy.sentToWallet, { pin: offer.offer.txCode })}</p>
           )}
@@ -244,26 +292,36 @@ function EmployerCheck({
   dialogCopy,
   language,
   startLabel,
+  walletBusy,
+  declinedQr,
   onHandoff,
+  onClockOffset,
   onResult,
-  resultNote,
+  renderResult,
 }: {
   variant: 'apply' | 'again';
   copy: DiplomaGuidedDemoPageCopy;
   dialogCopy: ApplyJobVerifierDialogCopy;
   language: string;
   startLabel: string;
+  walletBusy: boolean;
+  /** The request the visitor declined in the wallet: the employer side says so at once. */
+  declinedQr: string | null;
   onHandoff: (qr: string) => void;
+  onClockOffset: (offsetMs: number) => void;
   onResult: (ok: boolean, reason: FailureReasonKey | null) => void;
-  /** A sentence under the result that says what it means for this step. */
-  resultNote?: ReactNode;
+  /** What the result means for this step, under the employer's result. */
+  renderResult?: (result: SessionResult) => ReactNode;
 }) {
   const [state, dispatch] = useReducer(verifierStepReducer, INITIAL_VERIFIER_STEP_STATE);
   const controllerRef = useRef<AbortController | null>(null);
   const [handedOver, setHandedOver] = useState<string | null>(null);
+  const [declined, setDeclined] = useState(false);
   const onResultRef = useRef(onResult);
+  const onClockOffsetRef = useRef(onClockOffset);
   useEffect(() => {
     onResultRef.current = onResult;
+    onClockOffsetRef.current = onClockOffset;
   });
   const now = useNow();
   const retryWait = state.phase === 'error' && state.retryAt !== null ? Math.max(0, Math.floor((state.retryAt - now) / 1000)) : 0;
@@ -273,9 +331,24 @@ function EmployerCheck({
     const controller = new AbortController();
     controllerRef.current = controller;
     setHandedOver(null);
+    setDeclined(false);
     void runVerifierSession(verifierClient, { verifier: SAMPLE_VERIFIER, scenario: SAMPLE_VERIFIER_SCENARIO }, { signal: controller.signal, dispatch });
   }, []);
   useEffect(() => () => controllerRef.current?.abort(), []);
+
+  const waitingOffset = state.phase === 'waiting' ? state.clockOffsetMs : null;
+  useEffect(() => {
+    if (waitingOffset !== null) onClockOffsetRef.current(waitingOffset);
+  }, [waitingOffset]);
+
+  // Declined in the wallet: nothing will come, so stop waiting and say so.
+  const waitingQr = state.phase === 'waiting' ? state.qr : null;
+  useEffect(() => {
+    if (waitingQr && declinedQr === waitingQr) {
+      controllerRef.current?.abort();
+      setDeclined(true);
+    }
+  }, [declinedQr, waitingQr]);
 
   const settledId = state.phase === 'verified' || state.phase === 'failed' ? state.sessionId : null;
   useEffect(() => {
@@ -296,9 +369,9 @@ function EmployerCheck({
   };
 
   return (
-    <div className="space-y-4" data-testid={`guided-${variant}`} data-phase={state.phase}>
+    <div className="space-y-4" data-testid={`guided-${variant}`} data-phase={declined ? 'declined' : state.phase}>
       <p role="status" aria-live="polite" className="sr-only">
-        {state.phase === 'creating' ? dialogCopy.creating : state.phase === 'waiting' ? (state.status === 'request_retrieved' ? copy.requestSentToWallet : copy.requestReady) : ''}
+        {declined ? copy.requestDeclinedTitle : state.phase === 'creating' ? dialogCopy.creating : state.phase === 'waiting' ? (state.status === 'request_retrieved' ? copy.requestSentToWallet : copy.requestReady) : ''}
       </p>
 
       {state.phase === 'idle' && (
@@ -312,27 +385,53 @@ function EmployerCheck({
         </p>
       )}
 
-      {state.phase === 'waiting' && (
+      {declined && (
+        <div className="space-y-3" data-testid={testId(variant, 'declined')}>
+          <Notice tone="info">
+            <p className="font-semibold">{copy.requestDeclinedTitle}</p>
+            <p>{copy.requestDeclinedBody}</p>
+          </Notice>
+          <button type="button" onClick={start} className={primaryButton} data-testid={testId(variant, 'retry')}>
+            <RefreshCw aria-hidden="true" className="h-4 w-4" />
+            {copy.newRequest}
+          </button>
+        </div>
+      )}
+
+      {state.phase === 'waiting' && !declined && (
         <div className="space-y-4 rounded-2xl bg-slate-50 p-4 sm:p-5" data-testid={testId(variant, 'waiting')} data-status={state.status}>
           <p className="type-body flex items-center gap-2 text-slate-700">
             <Clock aria-hidden="true" className="h-4 w-4 text-slate-500" />
             <Countdown expiresAt={state.expiresAt} offsetMs={state.clockOffsetMs} template={copy.requestExpiresIn} />
           </p>
-          <button
-            type="button"
-            onClick={() => {
-              onHandoff(state.qr);
-              setHandedOver(state.sessionId);
-            }}
-            className={handedOver === state.sessionId ? secondaryButton : primaryButton}
-            data-testid={testId(variant, 'open-request')}
-          >
-            <Wallet aria-hidden="true" className="h-4 w-4" />
-            {copy.openRequestInWallet}
-          </button>
+          <QrHandoff value={state.qr} qrLabel={copy.qrRequestLabel} caption={copy.qrRequestCaption} testId={testId(variant, 'qr')}>
+            <button
+              type="button"
+              onClick={() => {
+                onHandoff(state.qr);
+                setHandedOver(state.sessionId);
+              }}
+              disabled={walletBusy}
+              className={handedOver === state.sessionId ? secondaryButton : primaryButton}
+              data-testid={testId(variant, 'open-request')}
+            >
+              <Wallet aria-hidden="true" className="h-4 w-4" />
+              {copy.openRequestInWallet}
+            </button>
+            {walletBusy && <p className="type-body-sm text-slate-600" data-testid="guided-wallet-busy">{copy.walletBusy}</p>}
+          </QrHandoff>
           <p className={`type-body font-medium ${state.reconnecting ? 'text-amber-800' : 'text-[#0F1E36]'}`}>
             {state.reconnecting ? dialogCopy.reconnecting : state.status === 'request_retrieved' || handedOver === state.sessionId ? copy.requestSentToWallet : copy.requestReady}
           </p>
+          {variant === 'apply' && (
+            <details className="group rounded-2xl bg-white p-4 ring-1 ring-slate-200" open data-testid="guided-qr-explained">
+              <summary className={`type-card-title-sm cursor-pointer list-none text-[#0F1E36] ${focusRing}`}>{copy.qrBeatsTitle}</summary>
+              <ol className="type-body-sm mt-3 list-decimal space-y-2 pl-5 text-slate-800">
+                {copy.qrBeats.map((beat) => <li key={beat}>{beat}</li>)}
+              </ol>
+              <p className="type-body-sm mt-3 text-slate-700">{copy.qrDirection}</p>
+            </details>
+          )}
         </div>
       )}
 
@@ -355,7 +454,7 @@ function EmployerCheck({
           <div id={`guided-${variant}-outcome`} tabIndex={-1} className="focus:outline-none">
             <ApplyJobVerifierResult result={state.result} copy={dialogCopy} language={language} verifierName={state.verifierName} showFailureHint={false} />
           </div>
-          {resultNote}
+          {renderResult?.(state.result)}
         </div>
       )}
     </div>
@@ -450,6 +549,7 @@ function RevokeOnSchoolSide({
       <p id="guided-revoked-note" tabIndex={-1} role="status" aria-live="polite" className={latestRevoked ? 'type-body font-medium text-[#0F1E36] focus:outline-none' : 'sr-only'} data-testid={latestRevoked ? 'guided-revoked-note' : undefined}>
         {latestRevoked ? copy.revokedNote : ''}
       </p>
+      <p className="type-body-sm text-slate-600">{portalCopy.timingNote}</p>
       {isDialogOpen(revoke.state) && (
         <ConfirmDialog
           title={portalCopy.revokeTitle}
@@ -474,26 +574,36 @@ function RevokeOnSchoolSide({
 
 // ---- Page -----------------------------------------------------------------------------------------
 
+/** The actor whose turn it is when a step opens (before anything happened in it). */
+const actorForStep = (step: GuidedStepId, state: GuidedState): Actor =>
+  step === 'receive' ? 'school' : step === 'apply' ? 'employer' : state.revoked ? 'employer' : 'school';
+
 export default function DiplomaGuidedDemoPage() {
   const { language } = useLanguage();
   const locale = resolveDemoScenarioLocale('diploma', language) as Locale2;
   const copy = DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale];
   const portalCopy = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
   const dialogCopy = APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS[locale];
+  const claimLabels = DEMO_WALLET_PANEL_TRANSLATIONS[locale].claims;
 
   const [guided, dispatch] = useReducer(guidedReducer, remembered?.guided ?? GUIDED_START);
   const [portal, setPortal] = useState(remembered?.session ?? null);
   const [generation, setGeneration] = useState(remembered?.generation ?? 0);
   const [signIn, setSignIn] = useState<{ submitting: boolean; problem: SignInProblem | null; retryAt: number | null }>({ submitting: false, problem: null, retryAt: null });
   const [inbox, setInbox] = useState<WalletInboxItem | null>(null);
-  const [walletWaiting, setWalletWaiting] = useState(false);
-  const [walletInView, setWalletInView] = useState(false);
+  const [walletBusy, setWalletBusy] = useState(false);
+  const [clockOffsetMs, setClockOffsetMs] = useState(remembered?.session?.clockOffsetMs ?? 0);
+  const [declinedQr, setDeclinedQr] = useState<string | null>(null);
+  const [mobileTab, setMobileTab] = useState<Actor>(() => actorForStep(guided.viewing === 'done' ? 'revoke' : guided.viewing, guided));
+  const [turn, setTurn] = useState<Actor>(mobileTab);
   const inboxSeq = useRef(0);
+  const inboxQrs = useRef(new Map<number, string>());
   const signInController = useRef<AbortController | null>(null);
-  const walletRef = useRef<HTMLElement>(null);
+  const workAreaRef = useRef<HTMLDivElement>(null);
   const signInWait = useSecondsUntilLocal(signIn.retryAt);
   const position = currentPosition(guided);
   const viewing = guided.viewing === 'done' ? 'revoke' : guided.viewing;
+  const root = rootCa.roots[0] ?? null;
 
   useEffect(() => {
     remembered = { guided, session: portal, generation };
@@ -511,6 +621,13 @@ export default function DiplomaGuidedDemoPage() {
   }, [portal, position]);
 
   useEffect(() => () => signInController.current?.abort(), []);
+
+  /** It is `actor`'s turn: on a phone, show that actor's tab and bring the work area into view. */
+  const turnTo = useCallback((actor: Actor) => {
+    setTurn(actor);
+    setMobileTab(actor);
+    if (isNarrow()) window.requestAnimationFrame(() => workAreaRef.current?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' }));
+  }, []);
 
   const onSessionExpired = useCallback(() => {
     setPortal(null);
@@ -536,7 +653,9 @@ export default function DiplomaGuidedDemoPage() {
       const session = await schoolPortalClient.login(SAMPLE_ACCOUNT, SCHOOL_PORTAL_SAMPLE_PASSWORD, controller.signal);
       if (controller.signal.aborted) return;
       if (session.role !== 'student') throw new PortalApiError('malformed', 'not a student');
-      setPortal({ session, clockOffsetMs: serverClockOffset(session.serverTime, Date.now()) });
+      const offset = serverClockOffset(session.serverTime, Date.now());
+      setPortal({ session, clockOffsetMs: offset });
+      setClockOffsetMs(offset);
       setSignIn({ submitting: false, problem: null, retryAt: null });
     } catch (error) {
       if (controller.signal.aborted) return;
@@ -549,85 +668,143 @@ export default function DiplomaGuidedDemoPage() {
     }
   };
 
+  // Nothing is handed over while the wallet is busy (an accept or a share in flight): the buttons are disabled
+  // too, and the wallet refuses it as well.
   const handoff = (kind: WalletInboxItem['kind'], text: string) => {
+    if (walletBusy) return;
+    window.clearTimeout(handBackTimer.current);
     inboxSeq.current += 1;
+    inboxQrs.current.set(inboxSeq.current, text);
     setInbox({ id: inboxSeq.current, kind, text });
-    setWalletWaiting(true);
-    if (isNarrow()) walletRef.current?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
+    turnTo('wallet');
   };
 
+  // After the wallet's part, the employer's turn: on a phone the tab switches a moment later, so the wallet's
+  // own confirmation ("saved", "sent") is seen first.
+  const handBackTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(handBackTimer.current), []);
+  const turnToEmployerSoon = useCallback(() => {
+    window.clearTimeout(handBackTimer.current);
+    setTurn('employer');
+    handBackTimer.current = window.setTimeout(() => turnTo('employer'), 1500);
+  }, [turnTo]);
+
+  const onRevoked = useCallback(() => {
+    dispatch({ type: 'revoked' });
+    turnToEmployerSoon();
+  }, [turnToEmployerSoon]);
+
   const onWalletEvent = useCallback((event: WalletPanelEvent) => {
-    setWalletWaiting(false);
     if (event.type === 'credentialReceived') {
       dispatch({ type: 'received' });
-      focusById('guided-step-title');
+      turnToEmployerSoon();
     }
-    if (event.type === 'presentationBlocked') dispatch({ type: 'walletRefused' });
-  }, []);
+    if (event.type === 'presentationSent') turnToEmployerSoon();
+    if (event.type === 'presentationDeclined') {
+      setDeclinedQr(inboxQrs.current.get(event.itemId) ?? null);
+      turnToEmployerSoon();
+    }
+    if (event.type === 'presentationBlocked') {
+      dispatch({ type: 'walletRefused', status: event.status });
+      turnToEmployerSoon();
+    }
+  }, [turnToEmployerSoon]);
 
   const restart = () => {
     signInController.current?.abort();
     setPortal(null);
     setSignIn({ submitting: false, problem: null, retryAt: null });
     setInbox(null);
-    setWalletWaiting(false);
+    setWalletBusy(false);
+    setDeclinedQr(null);
     setGeneration((value) => value + 1);
     dispatch({ type: 'restart' });
     writeProgressFlag(false);
+    setTurn('school');
+    setMobileTab('school');
     window.scrollTo({ top: 0, behavior: 'auto' });
     focusById('guided-title');
   };
 
-  const onRevoked = useCallback(() => dispatch({ type: 'revoked' }), []);
 
-  // On a phone the wallet sits below the steps; a button keeps it one tap away while it is out of view.
-  useEffect(() => {
-    const target = walletRef.current;
-    if (!target || typeof IntersectionObserver === 'undefined') return undefined;
-    const observer = new IntersectionObserver(([entry]) => setWalletInView(Boolean(entry?.isIntersecting)), { threshold: 0.15 });
-    observer.observe(target);
-    return () => observer.disconnect();
-  }, []);
+  const view = (step: GuidedStepId) => {
+    dispatch({ type: 'view', position: step });
+    turnTo(actorForStep(step, guided));
+  };
 
   const stepCopy = copy.steps[viewing];
   const viewingIndex = GUIDED_STEPS.indexOf(viewing) + 1;
+  const fieldLabel = (name: string) => (isDiplomaField(name) ? claimLabels[name] : name);
+  const fieldsText = (names: readonly string[]) => names.map(fieldLabel).join(', ');
 
-  const signInBlock = (
+  /** Under a result: what stayed in the wallet, and who contacted whom. */
+  const resultExtras = (result: SessionResult, extra?: ReactNode) => {
+    const received = Object.keys(result.claims ?? {});
+    const stayed = DIPLOMA_FIELDS.filter((name) => !received.includes(name));
+    return (
+      <div className="space-y-4">
+        {result.ok && (
+          <section aria-label={copy.stayedTitle} className="rounded-2xl bg-emerald-50 p-4 text-emerald-950" data-testid="guided-fields-stayed">
+            <h4 className="type-card-title-sm">{copy.stayedTitle}</h4>
+            <p className="type-body mt-1">{fieldsText(stayed)}</p>
+            <p className="type-body-sm mt-1 text-emerald-900">{copy.stayedNote}</p>
+          </section>
+        )}
+        {result.ok && (
+          <WhatHappened
+            title={copy.contactsTitle}
+            testId="guided-contacts"
+            lines={[
+              fill(copy.contactWallet, { fields: fieldsText(received) }),
+              copy.contactSchool,
+              copy.contactChecks,
+              <span className="text-white/75">{copy.contactDemoNote}</span>,
+            ]}
+          />
+        )}
+        {extra}
+      </div>
+    );
+  };
+
+  const signInBlock = guided.received ? null : (
     <div className="space-y-3">
-      {guided.received ? null : (
-        <>
-          <button type="button" onClick={() => void signInSample()} disabled={signIn.submitting || signInWait > 0} className={primaryButton} data-testid="guided-signin">
-            {signIn.submitting && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
-            {signIn.submitting ? copy.signingIn : copy.signInSample}
-          </button>
-          {signIn.problem && (
-            <p role="alert" className="type-body flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-rose-800" data-testid="guided-signin-problem" data-problem={signIn.problem}>
-              <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-              <span>
-                {copy.signInProblems[signIn.problem]}
-                {signInWait > 0 && ` ${fill(portalCopy.retryAfter, { seconds: signInWait })}`}
-              </span>
-            </p>
-          )}
-        </>
+      <button type="button" onClick={() => void signInSample()} disabled={signIn.submitting || signInWait > 0} className={primaryButton} data-testid="guided-signin">
+        {signIn.submitting && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
+        {signIn.submitting ? copy.signingIn : copy.signInSample}
+      </button>
+      {signIn.problem && (
+        <p role="alert" className="type-body flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-rose-800" data-testid="guided-signin-problem" data-problem={signIn.problem}>
+          <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>
+            {copy.signInProblems[signIn.problem]}
+            {signInWait > 0 && ` ${fill(portalCopy.retryAfter, { seconds: signInWait })}`}
+          </span>
+        </p>
       )}
     </div>
   );
 
-  let organisationSide: ReactNode;
+  const happenedReceive = <WhatHappened title={copy.happenedTitle} lines={copy.happenedReceive} testId="guided-happened-receive" />;
+
+  // The organisation's side of the step on screen, per actor (null: that actor has no part in this step).
+  let common: ReactNode = null;
+  let schoolSide: ReactNode = null;
+  let employerSide: ReactNode = null;
   if (viewing === 'receive') {
-    organisationSide = (
+    schoolSide = (
       <section className={panel} aria-label={portalCopy.universityName}>
         <OrganisationHeader kind="school" name={portalCopy.universityName} detail={portalCopy.portalName} crestLabel={portalCopy.crestLabel} />
         <div className="mt-5">
           {guided.received ? (
-            <Notice tone="success" testId="guided-receive-done"><p>{copy.receivedBanner}</p></Notice>
+            <Notice tone="success" testId="guided-receive-done"><p>{portalCopy.issuedTitle}</p></Notice>
           ) : portal ? (
             <ReceiveSignedIn
               key={portal.session.token}
               session={portal.session}
               copy={copy}
               portalCopy={portalCopy}
+              walletBusy={walletBusy}
               onSessionExpired={onSessionExpired}
               onHandoff={(text) => handoff('offer', text)}
             />
@@ -635,89 +812,104 @@ export default function DiplomaGuidedDemoPage() {
         </div>
       </section>
     );
+    if (guided.received) common = happenedReceive;
   } else if (viewing === 'apply') {
-    organisationSide = (
+    if (guided.received && !guided.applied) common = <div data-testid="guided-received-banner">{happenedReceive}</div>;
+    employerSide = (
+      <section className={panel} aria-label={copy.employerName}>
+        <OrganisationHeader kind="employer" name={copy.employerName} detail={copy.employerJob} crestLabel="" />
+        <div className="mt-5 space-y-4">
+          <div>
+            <p className="type-card-title-sm text-slate-900">{copy.requestedTitle}</p>
+            <p className="type-body text-slate-700">{copy.requestedBody}</p>
+          </div>
+          <EmployerCheck
+            variant="apply"
+            copy={copy}
+            dialogCopy={dialogCopy}
+            language={locale}
+            startLabel={copy.apply}
+            walletBusy={walletBusy}
+            declinedQr={declinedQr}
+            onHandoff={(qr) => handoff('request', qr)}
+            onClockOffset={setClockOffsetMs}
+            onResult={(ok, reason) => dispatch({ type: 'verified', ok, reason })}
+            renderResult={(result) => resultExtras(result, guided.applied ? (
+              <button type="button" onClick={() => { view('revoke'); focusById('guided-step-title'); }} className={primaryButton} data-testid="guided-next-step">
+                {copy.appliedNext}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              </button>
+            ) : null)}
+          />
+        </div>
+      </section>
+    );
+  } else {
+    const refusedNote = guided.refusedBy === 'employer' ? (
       <div className="space-y-4">
-        {guided.received && !guided.applied && <Notice tone="success" testId="guided-received-banner"><p>{copy.receivedBanner}</p></Notice>}
-        <section className={panel} aria-label={copy.employerName}>
-          <OrganisationHeader kind="employer" name={copy.employerName} detail={copy.employerJob} crestLabel="" />
-          <div className="mt-5 space-y-4">
-            <div>
-              <p className="type-card-title-sm text-slate-900">{copy.requestedTitle}</p>
-              <p className="type-body text-slate-700">{copy.requestedBody}</p>
+        <Notice tone="error" testId="guided-refused"><p data-by="employer">{copy.refusedByEmployer}</p></Notice>
+        <WhatHappened title={copy.happenedTitle} lines={copy.happenedRevoke} testId="guided-happened-revoke" />
+      </div>
+    ) : null;
+    schoolSide = (
+      <section className={panel} aria-label={copy.schoolRevokeTitle}>
+        <OrganisationHeader kind="school" name={portalCopy.universityName} detail={copy.schoolRevokeTitle} crestLabel={portalCopy.crestLabel} />
+        <div className="mt-5 space-y-4">
+          <p className="type-body text-slate-700" data-testid="guided-revoke-reasons">{copy.schoolRevokeBody}</p>
+          {portal ? (
+            <RevokeOnSchoolSide
+              key={portal.session.token}
+              session={portal.session}
+              copy={copy}
+              portalCopy={portalCopy}
+              locale={locale}
+              onSessionExpired={onSessionExpired}
+              onRevoked={onRevoked}
+            />
+          ) : guided.revoked ? (
+            <p className="type-body font-medium text-[#0F1E36]" data-testid="guided-revoked-note">{copy.revokedNote}</p>
+          ) : null}
+        </div>
+      </section>
+    );
+    employerSide = guided.revoked ? (
+      <section className={panel} aria-label={copy.employerAgainTitle}>
+        <OrganisationHeader kind="employer" name={copy.employerName} detail={copy.employerAgainTitle} crestLabel="" />
+        <div className="mt-5 space-y-4">
+          <p className="type-body text-slate-700">{copy.employerAgainBody}</p>
+          {guided.refusedBy === 'wallet' ? (
+            <div className="space-y-4">
+              <Notice tone="error" testId="guided-refused">
+                <p data-by="wallet" data-status={guided.walletStatus ?? undefined}>{copy.refusedByWallet[guided.walletStatus ?? 'revoked']}</p>
+              </Notice>
+              <WhatHappened title={copy.happenedTitle} lines={copy.happenedRevoke} testId="guided-happened-revoke" />
             </div>
+          ) : (
             <EmployerCheck
-              variant="apply"
+              variant="again"
               copy={copy}
               dialogCopy={dialogCopy}
               language={locale}
-              startLabel={copy.apply}
+              startLabel={copy.verifyAgain}
+              walletBusy={walletBusy}
+              declinedQr={declinedQr}
               onHandoff={(qr) => handoff('request', qr)}
+              onClockOffset={setClockOffsetMs}
               onResult={(ok, reason) => dispatch({ type: 'verified', ok, reason })}
-              resultNote={guided.applied ? (
-                <button type="button" onClick={() => { dispatch({ type: 'view', position: 'revoke' }); focusById('guided-step-title'); }} className={primaryButton} data-testid="guided-next-step">
-                  {copy.appliedNext}
-                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
-                </button>
-              ) : null}
+              renderResult={(result) => resultExtras(result, refusedNote ?? (
+                guided.lastFailure
+                  ? <Notice tone="warning"><p>{copy.otherFailure}</p></Notice>
+                  : <Notice tone="warning"><p>{copy.passedAfterRevoke}</p></Notice>
+              ))}
             />
-          </div>
-        </section>
-      </div>
-    );
-  } else {
-    organisationSide = (
-      <div className="space-y-4">
-        <section className={panel} aria-label={copy.schoolRevokeTitle}>
-          <OrganisationHeader kind="school" name={portalCopy.universityName} detail={copy.schoolRevokeTitle} crestLabel={portalCopy.crestLabel} />
-          <div className="mt-5 space-y-4">
-            <p className="type-body text-slate-700">{copy.schoolRevokeBody}</p>
-            {portal ? (
-              <RevokeOnSchoolSide
-                key={portal.session.token}
-                session={portal.session}
-                copy={copy}
-                portalCopy={portalCopy}
-                locale={locale}
-                onSessionExpired={onSessionExpired}
-                onRevoked={onRevoked}
-              />
-            ) : guided.revoked ? (
-              <p className="type-body font-medium text-[#0F1E36]" data-testid="guided-revoked-note">{copy.revokedNote}</p>
-            ) : null}
-          </div>
-        </section>
-        {guided.revoked && (
-          <section className={panel} aria-label={copy.employerAgainTitle}>
-            <OrganisationHeader kind="employer" name={copy.employerName} detail={copy.employerAgainTitle} crestLabel="" />
-            <div className="mt-5 space-y-4">
-              <p className="type-body text-slate-700">{copy.employerAgainBody}</p>
-              {guided.refusedBy === 'wallet' ? (
-                <Notice tone="error" testId="guided-refused" ><p data-by="wallet">{copy.refusedByWallet}</p></Notice>
-              ) : (
-                <EmployerCheck
-                  variant="again"
-                  copy={copy}
-                  dialogCopy={dialogCopy}
-                  language={locale}
-                  startLabel={copy.verifyAgain}
-                  onHandoff={(qr) => handoff('request', qr)}
-                  onResult={(ok, reason) => dispatch({ type: 'verified', ok, reason })}
-                  resultNote={guided.refusedBy === 'employer' ? (
-                    <Notice tone="error" testId="guided-refused"><p data-by="employer">{copy.refusedByEmployer}</p></Notice>
-                  ) : guided.lastFailure ? (
-                    <Notice tone="warning"><p>{copy.otherFailure}</p></Notice>
-                  ) : (
-                    <Notice tone="warning"><p>{copy.passedAfterRevoke}</p></Notice>
-                  )}
-                />
-              )}
-            </div>
-          </section>
-        )}
-      </div>
-    );
+          )}
+        </div>
+      </section>
+    ) : null;
   }
+
+  const actorClass = (actor: Actor) => `${mobileTab === actor ? '' : 'hidden'} lg:block`;
+  const skewMinutes = Math.round(Math.abs(clockOffsetMs) / 60_000);
 
   return (
     <div className="bg-[#FAFBFD] pb-28 lg:pb-20" data-testid="guided-page" data-position={position}>
@@ -741,6 +933,8 @@ export default function DiplomaGuidedDemoPage() {
             <p className="type-body mt-1 text-slate-800">{copy.noAppBody}</p>
           </div>
         </header>
+
+        <IdentraHowItWorks locale={locale} variant="summary" />
 
         <nav aria-label={copy.stepperLabel}>
           <ol className="grid grid-cols-1 gap-3 md:grid-cols-3" data-testid="guided-stepper">
@@ -772,7 +966,7 @@ export default function DiplomaGuidedDemoPage() {
               return (
                 <li key={step} data-testid={`guided-step-${step}`} data-status={status} aria-current={status === 'current' ? 'step' : undefined}>
                   {canView(guided, step) && !selected ? (
-                    <button type="button" onClick={() => dispatch({ type: 'view', position: step })} className={`${frame} cursor-pointer hover:ring-[#354CE1]/60 ${focusRing}`} data-testid={`guided-step-view-${step}`}>
+                    <button type="button" onClick={() => view(step)} className={`${frame} cursor-pointer hover:ring-[#354CE1]/60 ${focusRing}`} data-testid={`guided-step-view-${step}`}>
                       {content}
                     </button>
                   ) : (
@@ -795,7 +989,11 @@ export default function DiplomaGuidedDemoPage() {
           </Notice>
         )}
 
-        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
+        {skewMinutes >= 1 && Math.abs(clockOffsetMs) > CLOCK_SKEW_NOTICE_MS && (
+          <Notice tone="warning" testId="guided-clock-skew"><p>{fill(copy.clockSkew, { minutes: skewMinutes })}</p></Notice>
+        )}
+
+        <div ref={workAreaRef} className="grid scroll-mt-24 grid-cols-1 items-start gap-8 lg:grid-cols-12">
           <div className="space-y-5 lg:col-span-7">
             <div className="space-y-1">
               <h2 id="guided-step-title" tabIndex={-1} className="type-section-title-compact text-[#0F1E36] focus:outline-none">
@@ -811,12 +1009,22 @@ export default function DiplomaGuidedDemoPage() {
                 {stepCopy.instructions.map((line) => <li key={line}>{line}</li>)}
               </ol>
             </section>
-            <IdentraErrorBoundary>{organisationSide}</IdentraErrorBoundary>
+            <IdentraErrorBoundary>
+              {common}
+              {(['school', 'employer'] as const).map((actor) => {
+                const side = actor === 'school' ? schoolSide : employerSide;
+                return (
+                  <div key={actor} className={`${actorClass(actor)} ${side ? 'mt-5 first:mt-0' : ''}`} data-testid={`guided-actor-${actor}`}>
+                    {side ?? <p className="type-body rounded-2xl bg-slate-100 px-4 py-6 text-center text-slate-600 lg:hidden">{copy.notThisStep[actor]}</p>}
+                  </div>
+                );
+              })}
+            </IdentraErrorBoundary>
           </div>
 
-          <aside ref={walletRef} id="demo-wallet" aria-label={copy.walletSide} className="scroll-mt-24 lg:sticky lg:top-24 lg:col-span-5">
+          <aside id="demo-wallet" aria-label={copy.walletSide} className={`scroll-mt-24 lg:sticky lg:top-24 lg:col-span-5 ${actorClass('wallet')}`}>
             <IdentraErrorBoundary>
-              <DemoWalletPanel locale={locale} inbox={inbox} generation={generation} onEvent={onWalletEvent} />
+              <DemoWalletPanel locale={locale} inbox={inbox} generation={generation} clockOffsetMs={clockOffsetMs} onEvent={onWalletEvent} onBusyChange={setWalletBusy} />
             </IdentraErrorBoundary>
           </aside>
         </div>
@@ -832,13 +1040,21 @@ export default function DiplomaGuidedDemoPage() {
                 </li>
               ))}
             </ol>
+            {root && (
+              <div className="mt-8 rounded-2xl bg-white/5 p-4" data-testid="guided-end-root">
+                <p className="type-card-title-sm text-white">{copy.endRootTitle}</p>
+                <p className="type-body-sm mt-1 text-white/85">{copy.endRootBody}</p>
+                <p className="type-body-sm mt-1 break-all font-mono text-white" translate="no">{root.fingerprint}</p>
+                <a href={root.downloadPath} download className="type-control mt-2 inline-flex min-h-11 items-center gap-2 text-white underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-root-download">
+                  <Download aria-hidden="true" className="h-4 w-4" />
+                  {copy.endRootDownload}
+                </a>
+              </div>
+            )}
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to={viewToPath('security', language)} className="type-control inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 text-[#0F1E36] transition-colors hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-security">
-                {copy.endSecurity}
-                <ArrowRight aria-hidden="true" className="h-4 w-4" />
-              </Link>
-              <Link to={demoScenarioPath('product-journey', language)} className="type-control inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-product">
+              <Link to={demoScenarioPath('product-journey', language)} className="type-control inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 text-[#0F1E36] transition-colors hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-product">
                 {copy.endProductDemo}
+                <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </Link>
               <button type="button" onClick={restart} className="type-control inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-white/40 px-5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-restart">
                 <RotateCcw aria-hidden="true" className="h-4 w-4" />
@@ -859,20 +1075,37 @@ export default function DiplomaGuidedDemoPage() {
         )}
       </div>
 
-      {!walletInView && (
-        <div className="fixed inset-x-4 bottom-4 z-30 lg:hidden">
-          <button
-            type="button"
-            onClick={() => walletRef.current?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' })}
-            className={`type-control flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full px-5 text-white shadow-lg ${walletWaiting ? 'bg-[#354CE1]' : 'bg-[#0F1E36]'} ${focusRing}`}
-            data-testid="guided-open-wallet"
-          >
-            <Wallet aria-hidden="true" className="h-4 w-4" />
-            {walletWaiting ? copy.walletHasSomething : copy.openWallet}
-          </button>
+      <nav aria-label={copy.tabsLabel} className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden" data-testid="guided-tabs">
+        <div className="mx-auto grid max-w-md grid-cols-3 gap-1" role="tablist">
+          {(['school', 'employer', 'wallet'] as const).map((actor) => {
+            const Icon = actor === 'school' ? GraduationCap : actor === 'employer' ? Briefcase : Wallet;
+            const active = mobileTab === actor;
+            return (
+              <button
+                key={actor}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => {
+                  setMobileTab(actor);
+                  workAreaRef.current?.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
+                }}
+                className={`relative flex min-h-12 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl px-2 ${active ? 'bg-[#354CE1] text-white' : 'text-slate-700 hover:bg-slate-100'} ${focusRing}`}
+                data-testid={`guided-tab-${actor}`}
+                data-active={active || undefined}
+              >
+                <Icon aria-hidden="true" className="h-4 w-4" />
+                <span className="type-body-sm font-semibold">{copy.tabs[actor]}</span>
+                {turn === actor && !active && (
+                  <span className="absolute right-2 top-1.5 h-2.5 w-2.5 rounded-full bg-emerald-500">
+                    <span className="sr-only">{copy.tabTurn}</span>
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
-      )}
+      </nav>
     </div>
   );
 }
-

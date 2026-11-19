@@ -16,6 +16,8 @@ import {
   type ProductStage,
 } from '../identra/productPage';
 import { PRODUCT_PAGE_TRANSLATIONS, type ProductPageCopy } from '../translations/ProductPageTranslations';
+import IdentraOrganisationName from './IdentraOrganisationName';
+import { truncateText } from '../identra/verifierSession';
 import ProductStageItem from './ProductStageItem';
 
 // Drawn only for sample products, after the verdict: its QR encoder stays off the critical path.
@@ -172,10 +174,12 @@ export interface ProductPageViewProps {
   model: ProductPageModel | null;
   onRecheck: () => void;
   headingRef?: Ref<HTMLHeadingElement>;
+  /** The pinned root's fingerprint and file, once the verifier chunk has loaded. */
+  root?: { fingerprint: string; downloadPath: string } | null;
 }
 
 /** Everything the shopper sees, from props only (render-tested without a browser). */
-export function ProductPageView({ locale, onLocaleChange, product, phase, model, onRecheck, headingRef }: ProductPageViewProps) {
+export function ProductPageView({ locale, onLocaleChange, product, phase, model, onRecheck, headingRef, root = null }: ProductPageViewProps) {
   const copy = PRODUCT_PAGE_TRANSLATIONS[locale];
   const done = phase === 'done' ? model : null;
   const checked = done?.kind === 'checked' ? done : null;
@@ -193,6 +197,10 @@ export function ProductPageView({ locale, onLocaleChange, product, phase, model,
   // The verdict already says why every step could not be checked (trust list, clock): the pills suffice.
   const quietUnchecked = checked !== null && checked.verdict === 'unchecked' && checked.uncheckedCause !== 'status';
   const showLimits = checked !== null && (checked.verdict === 'verified' || checked.verdict === 'in_progress');
+  // What the product is, before its numbers: only from events the SDK hands out (their signer is recognised).
+  const verifiedEvents = checked ? [...checked.rows, ...checked.extraRows].flatMap((row) => (row.event ? [row.event] : [])) : [];
+  const production = checked?.rows.find((row) => row.stage === 'san_xuat')?.event ?? null;
+  const signers = verifiedEvents.filter((event, index) => verifiedEvents.findIndex((other) => other.issuer.maToChuc === event.issuer.maToChuc) === index);
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FAFBFD] font-sans text-slate-800 antialiased">
@@ -248,6 +256,24 @@ export function ProductPageView({ locale, onLocaleChange, product, phase, model,
         {product && (
           <section aria-labelledby="product-identity" className="rounded-3xl border border-slate-200 bg-white p-5 sm:p-6 print:hidden">
             <h2 id="product-identity" className="type-card-title text-[#0F1E36]">{copy.productTitle}</h2>
+            {production && (
+              <div className="mt-3" data-testid="product-description">
+                <p className="type-body-sm text-slate-600">{copy.productDescriptionLabel}</p>
+                <p className={`type-lead whitespace-pre-line text-slate-900 ${apiText}`}><bdi>{truncateText(production.moTa)}</bdi></p>
+              </div>
+            )}
+            {signers.length > 0 && (
+              <p className={`type-body mt-2 text-slate-700 ${apiText}`} data-testid="product-signers">
+                {copy.signersLabel}
+                {': '}
+                {signers.map((event, index) => (
+                  <span key={event.issuer.maToChuc}>
+                    {index > 0 && ', '}
+                    <IdentraOrganisationName maToChuc={event.issuer.maToChuc} serverName={event.issuer.ten} language={locale} />
+                  </span>
+                ))}
+              </p>
+            )}
             <dl className="mt-3 grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
               <div className="min-w-0">
                 <dt className="type-body-sm text-slate-600">{copy.gtinLabel}</dt>
@@ -299,11 +325,13 @@ export function ProductPageView({ locale, onLocaleChange, product, phase, model,
               {copy.deviceTitle}
             </h2>
             <p className="type-body text-blue-50">{copy.deviceBody}</p>
-            <p className="type-body text-blue-50">
-              {copy.rootLinkLead}{' '}
-              <a href={`/${locale}/security#root-certificate`} className={`font-semibold text-white underline underline-offset-2 ${focusRing}`}>{copy.rootLink}</a>
-              {copy.rootLinkEnd}
-            </p>
+            {root && (
+              <div className="type-body text-blue-50">
+                <p>{copy.rootLinkLead}</p>
+                <p className="mt-1 break-all font-mono text-sm text-white" translate="no">{root.fingerprint}</p>
+                <a href={root.downloadPath} download className={`mt-1 inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-2 ${focusRing}`}>{copy.rootLink}</a>
+              </div>
+            )}
             {showLimits && (
               <div>
                 <h3 className="type-card-title-sm text-white">{copy.limitsTitle}</h3>
@@ -347,7 +375,6 @@ export function ProductPageView({ locale, onLocaleChange, product, phase, model,
           <span className="type-body-sm text-slate-600">{copy.brandName}</span>
           <nav aria-label={copy.brandName} className="flex gap-4">
             <a href={`/${locale}`} className={`type-body-sm inline-flex min-h-11 items-center rounded text-slate-700 underline-offset-2 hover:underline ${focusRing}`}>{copy.footerHome}</a>
-            <a href={`/${locale}/security`} className={`type-body-sm inline-flex min-h-11 items-center rounded text-slate-700 underline-offset-2 hover:underline ${focusRing}`}>{copy.footerSecurity}</a>
           </nav>
         </div>
       </footer>
@@ -375,6 +402,7 @@ export default function ProductPage({ pathname }: { pathname: string }) {
   const [phase, setPhase] = useState<ProductPhase>(product ? 'loading' : 'done');
   const [model, setModel] = useState<ProductPageModel | null>(product ? null : { kind: 'invalid_code' });
   const [run, setRun] = useState(0);
+  const [root, setRoot] = useState<{ fingerprint: string; downloadPath: string } | null>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const focusResult = useRef(false);
   const copy = PRODUCT_PAGE_TRANSLATIONS[locale];
@@ -398,6 +426,7 @@ export default function ProductPage({ pathname }: { pathname: string }) {
         return;
       }
       if (cancelled) return;
+      setRoot(loader.PUBLISHED_ROOT);
       setPhase('checking');
       const { view, eventsHttpStatus } = await loader.verifyProduct(product.gtin, product.serial);
       if (cancelled) return;
@@ -441,6 +470,7 @@ export default function ProductPage({ pathname }: { pathname: string }) {
       model={model}
       onRecheck={recheck}
       headingRef={headingRef}
+      root={root}
     />
   );
 }

@@ -13,7 +13,7 @@ export interface ProductJourneyDemoPageCopy {
   browserTitle: string;
   browserBody: string;
   listTitle: string;
-  products: readonly { title: string; lookFor: string }[];
+  products: readonly { title: string; lookFor: string; why?: string }[];
   productNumber: string;
   serialLabel: string;
   open: string;
@@ -33,7 +33,7 @@ const vi: ProductJourneyDemoPageCopy = {
   intro: 'Mỗi sản phẩm mẫu mang một mã QR. Mở trang sản phẩm hoặc quét mã bằng camera điện thoại: trang tự kiểm tra từng chặng do nhà sản xuất, đơn vị kiểm định và nhà phân phối ký. Không cần ứng dụng.',
   browserTitle: 'Việc kiểm tra chạy trên máy của bạn',
   browserBody: 'Trình duyệt của bạn tải các bản ghi có chữ ký và danh sách đơn vị được Identra công nhận, rồi tự kiểm tra; không phải tin vào lời của một máy chủ nào.',
-  listTitle: 'Ba sản phẩm mẫu để mở',
+  listTitle: 'Bốn sản phẩm mẫu để mở',
   products: [
     {
       title: 'Đủ ba chặng',
@@ -46,6 +46,11 @@ const vi: ProductJourneyDemoPageCopy = {
     {
       title: 'Bản ghi kiểm định đã bị thu hồi',
       lookFor: 'Chặng kiểm định chuyển sang đỏ: đơn vị kiểm định đã thu hồi bản ghi của họ, nên trang không xác nhận hành trình này.',
+    },
+    {
+      title: 'Một bản ghi bị sửa thẳng trong kho dữ liệu',
+      lookFor: 'Bản ghi kiểm định lưu trên máy chủ khác một ký tự so với bản đã ký. Trang báo: “Bản ghi đã bị sửa sau khi ký, hoặc không phải do bên này ký.”',
+      why: 'Vì sao điều này quan trọng: máy chủ vẫn trả về bản ghi đã bị sửa mà không hề hay biết; chính trình duyệt của bạn phát hiện ra.',
     },
   ],
   productNumber: 'Sản phẩm mẫu {number}',
@@ -71,7 +76,7 @@ const en: ProductJourneyDemoPageCopy = {
   intro: 'Each sample product carries a QR code. Open its page or scan the code with your phone camera: the page checks each stage signed by the manufacturer, the inspector and the distributor by itself. No app needed.',
   browserTitle: 'The check runs on your device',
   browserBody: 'Your browser fetches the signed records and the list of organisations Identra recognises, then checks them itself; it does not have to take any server\'s word for it.',
-  listTitle: 'Three sample products to open',
+  listTitle: 'Four sample products to open',
   products: [
     {
       title: 'All three stages',
@@ -84,6 +89,11 @@ const en: ProductJourneyDemoPageCopy = {
     {
       title: 'Inspection record revoked',
       lookFor: 'The inspection stage turns red: the inspector revoked its record, so the page does not confirm this journey.',
+    },
+    {
+      title: 'A record edited directly in the database',
+      lookFor: 'The stored inspection record differs by one character from what was signed. The page says: “The record was changed after it was signed, or was not signed by this party.”',
+      why: 'Why it matters: the server served the altered record without noticing; your own browser caught it.',
     },
   ],
   productNumber: 'Sample product {number}',

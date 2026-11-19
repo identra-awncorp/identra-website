@@ -20,6 +20,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { demoScenarioPath, isRealDemoScenarioId, viewToPath, type DemoScenarioId, type Locale } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
+import IdentraHowItWorks from './IdentraHowItWorks';
 
 interface ListDemoPageProps {
   onBackToLanding: () => void;
@@ -198,6 +199,8 @@ export default function ListDemoPage({ onBackToLanding }: ListDemoPageProps) {
                 })}
               </div>
             </div>
+
+            <IdentraHowItWorks locale={routeLocale} variant="full" />
 
             <p className="type-body text-slate-700">
               {t.appNote}{' '}

@@ -13,8 +13,16 @@ import { PINNED_ROOTS } from './pinnedRoots';
 // switch), not a reload. `resetDemoWallet` is "a new phone".
 let current: Wallet | null = null;
 
+// The wallet's clock follows the server's (the page knows the offset from every answer that carries
+// `serverTime`): a device clock a minute slow or five minutes fast would otherwise fail every request.
+let clockOffsetMs = 0;
+const clock = { now: () => new Date(Date.now() + clockOffsetMs) };
+export const setDemoWalletClockOffset = (offsetMs: number) => {
+  clockOffsetMs = Number.isFinite(offsetMs) ? offsetMs : 0;
+};
+
 export const getDemoWallet = (): Wallet => {
-  current ??= createDemoWallet({ apiOrigin: IDENTRA_API_ORIGIN, apiUrl: IDENTRA_API_URL, trustedRoots: PINNED_ROOTS });
+  current ??= createDemoWallet({ apiOrigin: IDENTRA_API_ORIGIN, apiUrl: IDENTRA_API_URL, trustedRoots: PINNED_ROOTS, clock });
   return current;
 };
 

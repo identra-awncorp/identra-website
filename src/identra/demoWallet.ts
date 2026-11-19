@@ -21,13 +21,13 @@ import {
   type Wallet,
 } from '@identra/sdk-app';
 
-/** A response bigger than the wallet allowed for this call; the guard reports it as an issuer error. */
-export class ResponseTooLargeError extends Error {
-  constructor() {
-    super('response too large');
-    this.name = 'ResponseTooLargeError';
-  }
-}
+/**
+ * An answer bigger than the call allows is not read further. It comes back as an empty answer that declares
+ * the bytes seen, so the SDK's guard refuses it as the server's fault (ISSUER_ERROR, "sent more than"), not as
+ * the visitor's network: throwing here would be reported as NETWORK_ERROR.
+ */
+const tooLarge = (status: number, size: number) =>
+  ({ status, headers: new Headers({ 'content-length': String(size) }), text: async () => '' });
 
 /**
  * The SDK's HttpFetch on top of the browser's fetch (architecture section 2): never follows a redirect
@@ -54,9 +54,10 @@ export const createBrowserFetch = (doFetch: typeof fetch = (...args) => globalTh
       if (response.type === 'opaqueredirect') {
         return { status: 302, headers: new Headers(), text: async () => '' };
       }
-      if (Number(response.headers.get('content-length') ?? 0) > maxBytes) {
+      const declared = Number(response.headers.get('content-length') ?? 0);
+      if (declared > maxBytes) {
         controller.abort();
-        throw new ResponseTooLargeError();
+        return tooLarge(response.status, declared);
       }
       const chunks: Uint8Array[] = [];
       let size = 0;
@@ -68,7 +69,7 @@ export const createBrowserFetch = (doFetch: typeof fetch = (...args) => globalTh
           size += value.byteLength;
           if (size > maxBytes) {
             controller.abort();
-            throw new ResponseTooLargeError();
+            return tooLarge(response.status, size);
           }
           chunks.push(value);
         }
@@ -95,14 +96,15 @@ export interface DemoWalletOptions {
   trustedRoots: Uint8Array[];
   /** Tests only: the browser's fetch stand-in. */
   fetch?: typeof fetch;
+  /** The wallet's clock; the page passes one corrected by the server's clock (a wrong device clock breaks every time check). */
+  clock?: { now(): Date };
 }
 
 /** A fresh wallet with nothing in it. Each call is a new "phone": new keys, empty vault. */
-export const createDemoWallet = ({ apiOrigin, apiUrl, trustedRoots, fetch: doFetch }: DemoWalletOptions): Wallet => {
+export const createDemoWallet = ({ apiOrigin, apiUrl, trustedRoots, fetch: doFetch, clock = { now: () => new Date() } }: DemoWalletOptions): Wallet => {
   const browserFetch = createBrowserFetch(doFetch);
   const fetchForWallet = apiUrl === apiOrigin ? browserFetch : createMappedFetch(browserFetch, { [apiOrigin]: apiUrl });
   const random = { bytes: (n: number) => globalThis.crypto.getRandomValues(new Uint8Array(n)) };
-  const clock = { now: () => new Date() };
   return createWallet({
     keyStore: createSoftwareKeyStore({ secrets: createInMemorySecretStorage(), random }),
     vault: createCredentialVault({

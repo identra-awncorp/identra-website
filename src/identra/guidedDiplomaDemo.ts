@@ -14,7 +14,7 @@ export type GuidedStepId = typeof GUIDED_STEPS[number];
 export type GuidedPosition = GuidedStepId | 'done';
 
 /** Why the run cannot go on as it is and has to start again. */
-export type GuidedNotice = 'reloaded' | 'sessionLost' | 'walletEmpty';
+export type GuidedNotice = 'reloaded' | 'sessionLost';
 
 export interface GuidedState {
   /** The trial wallet saved the diploma the school issued in this run. */
@@ -28,6 +28,8 @@ export interface GuidedState {
    * or the wallet itself (it already knew and would not share, as the Identra app does).
    */
   refusedBy: 'employer' | 'wallet' | null;
+  /** When the wallet refused: the status it knew (revoked, suspended, or no longer valid). */
+  walletStatus: 'revoked' | 'suspended' | 'invalid' | null;
   /** The last check after the revocation failed for another reason (for example the list was unreachable). */
   lastFailure: FailureReasonKey | null;
   /** The step on screen: the current one, or an earlier one the visitor went back to. */
@@ -40,7 +42,7 @@ export type GuidedEvent =
   /** A verification session ended with a result. `reason`: the first failed check's code. */
   | { type: 'verified'; ok: boolean; reason: FailureReasonKey | null }
   | { type: 'revoked' }
-  | { type: 'walletRefused' }
+  | { type: 'walletRefused'; status: 'revoked' | 'suspended' | 'invalid' }
   | { type: 'view'; position: GuidedPosition }
   | { type: 'notice'; notice: GuidedNotice }
   | { type: 'restart' };
@@ -50,6 +52,7 @@ export const GUIDED_START: GuidedState = {
   applied: false,
   revoked: false,
   refusedBy: null,
+  walletStatus: null,
   lastFailure: null,
   viewing: 'receive',
   notice: null,
@@ -102,7 +105,7 @@ export const guidedReducer = (state: GuidedState, event: GuidedEvent): GuidedSta
     case 'revoked':
       return state.applied ? { ...state, revoked: true } : state;
     case 'walletRefused':
-      return state.revoked && !state.refusedBy ? { ...state, refusedBy: 'wallet', viewing: 'done' } : state;
+      return state.revoked && !state.refusedBy ? { ...state, refusedBy: 'wallet', walletStatus: event.status, viewing: 'done' } : state;
     default:
       return state;
   }

@@ -11,11 +11,11 @@ import { demoScenarioPath, resolveDemoScenarioLocale, viewToPath } from '../../t
 import { DEFAULT_SITE_URL } from '../../utils/seo';
 import IdentraQrCode from '../IdentraQrCode';
 
-// The guided entry to Demo B: three sample products the server provisions (GS1 sample GTIN, prefix 952),
+// The guided entry to Demo B: four sample products (the fourth has a record edited in the store after signing) the server provisions (GS1 sample GTIN, prefix 952),
 // each opened on the product page (/01/<GTIN>/21/<serial>), which verifies the signed journey in the
 // browser. The page itself fetches nothing: a missing product is the product page's own "not found".
 const SAMPLE_GTIN = '09520123456788';
-const SAMPLE_SERIALS = ['SN-2026-000001', 'SN-2026-000002', 'SN-2026-000003'] as const;
+const SAMPLE_SERIALS = ['SN-2026-000001', 'SN-2026-000002', 'SN-2026-000003', 'SN-2026-000004'] as const;
 const productPath = (serial: string) => `/01/${SAMPLE_GTIN}/21/${serial}`;
 
 const fill = (template: string, values: Record<string, string | number>) =>
@@ -56,7 +56,7 @@ export default function ProductJourneyDemoPage() {
 
         <section aria-labelledby="product-journey-list" className="space-y-5">
           <h2 id="product-journey-list" className="type-section-title-compact text-[#0F1E36]">{copy.listTitle}</h2>
-          <ol className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <ol className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {SAMPLE_SERIALS.map((serial, index) => {
               const product = copy.products[index]!;
               const number = index + 1;
@@ -69,7 +69,10 @@ export default function ProductJourneyDemoPage() {
                       <h3 className="type-card-title text-[#0F1E36]">{product.title}</h3>
                     </div>
                   </div>
-                  <p className="type-body mt-4 flex-1 text-slate-700">{product.lookFor}</p>
+                  <div className="mt-4 flex-1 space-y-2">
+                    <p className="type-body text-slate-700">{product.lookFor}</p>
+                    {product.why && <p className="type-body rounded-2xl bg-amber-50 px-4 py-3 text-amber-950" data-testid={`product-journey-why-${number}`}>{product.why}</p>}
+                  </div>
                   <div className="mt-5 flex items-center gap-4 rounded-2xl bg-slate-50 p-3">
                     <IdentraQrCode
                       value={`${DEFAULT_SITE_URL}${productPath(serial)}`}

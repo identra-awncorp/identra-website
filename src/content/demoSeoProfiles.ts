@@ -37,13 +37,13 @@ export const DEMO_SEO_PROFILES = {
   'product-journey': {
     en: {
       title: 'Guided demo: check a product\'s journey',
-      headline: 'Open three sample products and see their signed journeys checked',
-      description: 'Three sample products, each with a QR you can scan with your own phone: a complete journey, one still on its way, and one whose inspection record was revoked.',
+      headline: 'Open four sample products and see their signed journeys checked',
+      description: 'Four sample products, each with a QR you can scan with your own phone: a complete journey, one still on its way, a revoked inspection record and a record edited in the database.',
     },
     vi: {
       title: 'Demo có hướng dẫn: kiểm tra hành trình sản phẩm',
-      headline: 'Mở ba sản phẩm mẫu và xem hành trình có chữ ký được kiểm tra',
-      description: 'Ba sản phẩm mẫu, mỗi sản phẩm có mã QR để quét bằng điện thoại của bạn: đủ hành trình, đang đi tiếp, và một sản phẩm có bản ghi kiểm định đã bị thu hồi.',
+      headline: 'Mở bốn sản phẩm mẫu và xem hành trình có chữ ký được kiểm tra',
+      description: 'Bốn sản phẩm mẫu, mỗi sản phẩm có mã QR để quét bằng điện thoại của bạn: đủ hành trình, đang đi tiếp, bản ghi kiểm định bị thu hồi và bản ghi bị sửa trong kho dữ liệu.',
     },
   },
   'bank-account': {

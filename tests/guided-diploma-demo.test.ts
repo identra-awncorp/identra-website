@@ -35,7 +35,7 @@ test('a saved diploma completes step 1 and moves to step 2 by itself', () => {
 });
 
 test('nothing before the diploma is received counts as a check', () => {
-  const state = run({ type: 'verified', ok: true, reason: null }, { type: 'revoked' }, { type: 'walletRefused' });
+  const state = run({ type: 'verified', ok: true, reason: null }, { type: 'revoked' }, { type: 'walletRefused', status: 'revoked' });
   assert.deepEqual(state, GUIDED_START);
 });
 
@@ -79,9 +79,10 @@ test('a check before the revocation is confirmed does not count as step 3', () =
 });
 
 test('the wallet refusing a revoked diploma also ends the run, only after the revocation', () => {
-  assert.equal(run(...applied, { type: 'walletRefused' }).refusedBy, null);
-  const state = run(...applied, { type: 'revoked' }, { type: 'walletRefused' });
+  assert.equal(run(...applied, { type: 'walletRefused', status: 'revoked' }).refusedBy, null);
+  const state = run(...applied, { type: 'revoked' }, { type: 'walletRefused', status: 'revoked' });
   assert.equal(state.refusedBy, 'wallet');
+  assert.equal(state.walletStatus, 'revoked', 'the sentence follows the status the wallet knew');
   assert.equal(currentPosition(state), 'done');
 });
 
@@ -96,4 +97,14 @@ test('a notice (reload, lost session) keeps the facts; restart clears everything
   assert.equal(state.notice, 'sessionLost');
   assert.equal(state.applied, true);
   assert.deepEqual(guidedReducer(state, { type: 'restart' }), GUIDED_START);
+});
+
+test('a failed employer result is never a pass: not in step 2, not after the revocation', () => {
+  for (const reason of ['REVOKED', 'SIGNATURE_INVALID', 'ISSUER_NOT_TRUSTED', 'QUERY_NOT_SATISFIED', 'UNKNOWN', null] as const) {
+    const step2 = run({ type: 'received' }, { type: 'verified', ok: false, reason });
+    assert.equal(step2.applied, false, `step 2 with ${reason}`);
+    assert.equal(currentPosition(step2), 'apply');
+  }
+  const afterRevoke = run(...applied, { type: 'revoked' }, { type: 'verified', ok: false, reason: 'SIGNATURE_INVALID' });
+  assert.equal(afterRevoke.refusedBy, null, 'only a failure AT the revocation ends step 3');
 });

@@ -3,24 +3,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { AlertTriangle, ArrowLeft, Building2, Check, ChevronRight, GraduationCap, Info, Loader2, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react';
-import type { CredentialDetails, CredentialSummary, Wallet, WalletCredentialStatus } from '@identra/sdk-app';
+import type { Wallet, WalletCredentialStatus } from '@identra/sdk-app';
 import { useNow } from '../../hooks/useNow';
 import {
-  chooseMatch,
+  consentView,
+  createWalletController,
   DIPLOMA_VCT,
   displayName,
-  isBusyScreen,
   isDiplomaField,
   normalizePin,
   orderFields,
-  purposeText,
-  requiredFields,
   safeText,
-  sharingOptions,
   WALLET_HOME,
-  walletReducer,
+  type HeldCredential,
+  type WalletControllerEvent,
+  type WalletControllerState,
   type WalletInboxItem,
   type WalletLocale,
   type WalletScreen,
@@ -29,27 +28,22 @@ import { formatCountdown, secondsUntil } from '../../identra/verifierSession';
 import { DEMO_WALLET_PANEL_TRANSLATIONS, type DemoWalletPanelCopy } from '../../translations/demo/DemoWalletPanelTranslations';
 
 // The web trial wallet as a phone-shaped panel, laid out after the Identra app's wallet screens
-// (identra-app .review/wallet). The wallet code itself (@identra/sdk-app) is a lazy chunk loaded on mount.
+// (identra-app .review/wallet). Its behaviour lives in createWalletController (demoWalletModel.ts, tested);
+// the wallet code itself (@identra/sdk-app) is a lazy chunk loaded on mount.
 
-export type WalletPanelEvent =
-  | { type: 'credentialReceived'; credentialId: string }
-  | { type: 'presentationSent' }
-  | { type: 'presentationDeclined' }
-  /** The wallet already knows the credential is no longer good and will not share it (as the app does). */
-  | { type: 'presentationBlocked'; status: 'revoked' | 'suspended' | 'invalid' };
+export type WalletPanelEvent = WalletControllerEvent;
 
 interface DemoWalletPanelProps {
   locale: WalletLocale;
-  /** The latest offer or request the page handed over; a new `id` opens it. */
+  /** The latest offer or request the page handed over; a new `id` opens it (refused while the wallet is busy). */
   inbox: WalletInboxItem | null;
   /** Changing it empties the wallet ("a new phone"). */
   generation: number;
+  /** Server time minus local time, from the page's last server answer: the wallet's clock follows the server. */
+  clockOffsetMs: number;
   onEvent: (event: WalletPanelEvent) => void;
-}
-
-interface HeldCredential {
-  summary: CredentialSummary;
-  details: CredentialDetails | null;
+  /** True while an accept or a share runs (or a code is being read): the page must not hand over anything then. */
+  onBusyChange?: (busy: boolean) => void;
 }
 
 let walletModule: Promise<typeof import('../../identra/demoWalletLoader')> | null = null;
@@ -89,6 +83,14 @@ const timeFormat = (locale: WalletLocale) => new Intl.DateTimeFormat(locale === 
   month: '2-digit',
   year: 'numeric',
 });
+
+const hostOf = (origin: string) => {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return origin;
+  }
+};
 
 function StatusLine({ status, copy }: { status: WalletCredentialStatus | null; copy: DemoWalletPanelCopy }) {
   const value = status ?? 'unknown';
@@ -140,38 +142,37 @@ function Problem({ text, testId, problem }: { text: string; testId: string; prob
   );
 }
 
+const focusTitle = () => window.requestAnimationFrame(() => document.getElementById('demo-wallet-screen-title')?.focus({ preventScroll: true }));
 const focusPin = () => window.requestAnimationFrame(() => {
   const input = document.getElementById('demo-wallet-pin');
   if (!input) return focusTitle();
   input.scrollIntoView({ block: 'nearest' });
   input.focus({ preventScroll: true });
 });
-const focusTitle = () => window.requestAnimationFrame(() => document.getElementById('demo-wallet-screen-title')?.focus({ preventScroll: true }));
 
 const claimText = (value: unknown): string | null => safeText(typeof value === 'number' ? String(value) : value, 200);
 
-export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: DemoWalletPanelProps) {
+const IDLE_STATE: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null };
+const noop = () => () => undefined;
+
+export default function DemoWalletPanel({ locale, inbox, generation, clockOffsetMs, onEvent, onBusyChange }: DemoWalletPanelProps) {
   const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
-  const [screen, dispatch] = useReducer(walletReducer, WALLET_HOME);
-  const [held, setHeld] = useState<HeldCredential[]>([]);
   const [pin, setPin] = useState('');
   const [pinTouched, setPinTouched] = useState(false);
-  const [checking, setChecking] = useState<{ id: string; failed: boolean } | null>(null);
   const [announcement, setAnnouncement] = useState('');
   const handledInbox = useRef<number | null>(null);
   const handledGeneration = useRef(generation);
-  const operation = useRef(0);
   const mounted = useRef(true);
   const onEventRef = useRef(onEvent);
-  const screenRef = useRef<WalletScreen>(screen);
-  const blockedReported = useRef<object | null>(null);
+  const localeRef = useRef(locale);
+  const moduleRef = useRef<typeof import('../../identra/demoWalletLoader') | null>(null);
   const time = timeFormat(locale);
 
   useEffect(() => {
     onEventRef.current = onEvent;
-    screenRef.current = screen;
+    localeRef.current = locale;
   });
   useEffect(() => {
     mounted.current = true;
@@ -185,6 +186,8 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
     loadWalletModule()
       .then((module) => {
         if (!mounted.current) return;
+        moduleRef.current = module;
+        module.setDemoWalletClockOffset(clockOffsetMs);
         if (handledGeneration.current !== generation) {
           handledGeneration.current = generation;
           setWallet(module.resetDemoWallet());
@@ -195,132 +198,71 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
       .catch(() => {
         if (mounted.current) setLoadFailed(true);
       });
+    // The clock offset is applied by its own effect below; reloading the wallet for it would empty nothing but is not needed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [generation]);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  // A new generation is a new phone: nothing held, back to the list.
   useEffect(() => {
-    if (!wallet) return;
-    operation.current += 1;
-    dispatch({ type: 'home' });
+    moduleRef.current?.setDemoWalletClockOffset(clockOffsetMs);
+  }, [clockOffsetMs]);
+
+  // One controller per wallet ("phone"): a new generation is a new phone with nothing in it.
+  const controller = useMemo(
+    () => (wallet ? createWalletController(wallet, (event) => onEventRef.current(event), () => localeRef.current) : null),
+    [wallet],
+  );
+  const state = useSyncExternalStore(controller?.subscribe ?? noop, controller?.getState ?? (() => IDLE_STATE), () => IDLE_STATE);
+  const { screen, held, busy, checking } = state;
+
+  useEffect(() => {
+    if (!controller) return;
     setPin('');
     setPinTouched(false);
-  }, [wallet]);
-
-  const refreshHeld = useCallback(async (target: Wallet) => {
-    const summaries = await target.credentials.list();
-    const details = await Promise.all(summaries.map(async (summary) => {
-      const result = await target.credentials.get(summary.id);
-      return { summary, details: result.ok ? result.credential : null };
-    }));
-    if (mounted.current) setHeld(details.sort((a, b) => Date.parse(b.summary.createdAt) - Date.parse(a.summary.createdAt)));
-    return details;
-  }, []);
+    void controller.refresh();
+  }, [controller]);
 
   useEffect(() => {
-    if (wallet) void refreshHeld(wallet);
-  }, [refreshHeld, wallet]);
+    onBusyChange?.(busy);
+  }, [busy, onBusyChange]);
 
+  // Focus what the visitor has to do next when a screen opens.
+  const screenName = screen.name;
+  useEffect(() => {
+    if (screenName === 'offerConsent') focusPin();
+    else if (screenName !== 'home' && screenName !== 'offerChecking' && screenName !== 'requestChecking') focusTitle();
+  }, [screenName]);
 
   // Open what the page handed over: an offer or a presentation request (the QR text, no camera needed).
   useEffect(() => {
-    if (!wallet || !inbox || handledInbox.current === inbox.id) return;
+    if (!controller || !inbox || handledInbox.current === inbox.id) return;
     handledInbox.current = inbox.id;
-    const current = screenRef.current;
-    if (current.name === 'offerConsent') void wallet.offers.discard(current.offer);
-    const op = ++operation.current;
-    setAnnouncement(copy.inboxAnnouncement);
-    if (inbox.kind === 'offer') {
-      setPin('');
-      setPinTouched(false);
-      dispatch({ type: 'checkOffer' });
-      void wallet.offers.resolve(inbox.text).then((result) => {
-        if (!mounted.current || op !== operation.current) return;
-        dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code });
-        // The PIN is what the visitor has to do next: bring it into view inside the phone and focus it.
-        if (result.ok) focusPin();
-        else focusTitle();
-      });
-    } else {
-      dispatch({ type: 'checkRequest' });
-      void Promise.all([wallet.presentations.resolve(inbox.text), refreshHeld(wallet)]).then(([result]) => {
-        if (!mounted.current || op !== operation.current) return;
-        dispatch(result.ok ? { type: 'requestResolved', request: result.request } : { type: 'requestRefused', code: result.code });
-        focusTitle();
-      });
+    if (controller.open(inbox)) {
+      setAnnouncement(copy.inboxAnnouncement);
+      if (inbox.kind === 'offer') {
+        setPin('');
+        setPinTouched(false);
+      }
     }
-  }, [copy.inboxAnnouncement, inbox, refreshHeld, wallet]);
-
-  const goHome = () => {
-    if (screen.name === 'offerConsent' && wallet) void wallet.offers.discard(screen.offer);
-    operation.current += 1;
-    dispatch({ type: 'home' });
-    focusTitle();
-  };
+  }, [controller, copy.inboxAnnouncement, inbox]);
 
   const accept = async () => {
-    if (!wallet || screen.name !== 'offerConsent' || screen.busy) return;
-    const needsPin = !screen.offer.codeRedeemed && screen.offer.txCode !== null;
-    if (needsPin && pin.length < (screen.offer.txCode?.length ?? 6)) {
+    if (!controller) return;
+    const outcome = await controller.accept(pin);
+    if (!mounted.current) return;
+    if (outcome === 'pinIncomplete') {
       setPinTouched(true);
       document.getElementById('demo-wallet-pin')?.focus();
       return;
     }
-    const op = operation.current;
-    dispatch({ type: 'accept' });
-    const result = await wallet.offers.accept(screen.offer, needsPin ? { txCode: pin } : {});
-    if (!mounted.current || op !== operation.current) return;
-    dispatch({ type: 'accepted', result });
-    if (result.ok) {
-      await refreshHeld(wallet);
-      onEventRef.current({ type: 'credentialReceived', credentialId: result.credentialId });
-      focusTitle();
-    } else if (result.code === 'TX_CODE_WRONG') {
+    const after = controller.getState().screen;
+    if (after.name === 'offerConsent' && after.problem === 'pinWrong') {
       setPin('');
       document.getElementById('demo-wallet-pin')?.focus();
     }
-  };
-
-  const share = async () => {
-    if (!wallet || screen.name !== 'requestConsent' || screen.busy) return;
-    const chosen = chooseMatch(screen.request.matches, held.map((item) => item.summary));
-    if (!chosen) return;
-    const options = sharingOptions(chosen.match);
-    const option = options[screen.optionIndex] ?? options[0];
-    if (!option) return;
-    const verifierName = screen.request.verifier.trusted ? safeText(screen.request.verifier.ten) : null;
-    const op = operation.current;
-    dispatch({ type: 'submit' });
-    const result = await wallet.presentations.submit(screen.request, { credentialId: chosen.match.credentialId, claimSetIndex: option.index });
-    if (!mounted.current || op !== operation.current) return;
-    if (result.ok) {
-      dispatch({ type: 'submitted', verifierName, fields: option.fields });
-      onEventRef.current({ type: 'presentationSent' });
-      focusTitle();
-      // The wallet learns the credential's current status afterwards, as the app refreshes it.
-      void wallet.credentials.refreshStatus(chosen.match.credentialId).then(() => refreshHeld(wallet));
-    } else {
-      dispatch({ type: 'submitFailed', code: result.code });
-    }
-  };
-
-  const decline = () => {
-    if (!wallet || screen.name !== 'requestConsent' || screen.busy) return;
-    wallet.presentations.decline(screen.request);
-    dispatch({ type: 'declined' });
-    onEventRef.current({ type: 'presentationDeclined' });
-    focusTitle();
-  };
-
-  const checkAgain = async (id: string) => {
-    if (!wallet) return;
-    setChecking({ id, failed: false });
-    const result = await wallet.credentials.refreshStatus(id);
-    await refreshHeld(wallet);
-    if (mounted.current) setChecking(result.ok && result.status !== 'unknown' ? null : { id, failed: true });
   };
 
   // ---- Screens ----------------------------------------------------------------------------------
@@ -331,7 +273,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
   let body: ReactNode;
   let actions: ReactNode = null;
 
-  if (!wallet) {
+  if (!controller) {
     body = loadFailed ? (
       <div className="space-y-4 pt-6">
         <Problem text={copy.loadFailed} testId="wallet-load-failed" />
@@ -359,10 +301,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
                 <li key={summary.id} data-testid="wallet-credential" data-status={summary.status ?? 'unknown'}>
                   <button
                     type="button"
-                    onClick={() => {
-                      dispatch({ type: 'openDetail', credentialId: summary.id });
-                      focusTitle();
-                    }}
+                    onClick={() => controller.openDetail(summary.id)}
                     aria-label={fill(copy.openDocument, { document: documentName(summary.vct) })}
                     data-testid="wallet-credential-open"
                     className={`flex w-full cursor-pointer items-center gap-3 rounded-2xl py-3 text-left ${focusRing}`}
@@ -386,10 +325,10 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
   } else if (screen.name === 'detail') {
     const item = held.find((candidate) => candidate.summary.id === screen.credentialId);
     const claims = item?.details?.claims ?? {};
-    const busy = checking?.id === screen.credentialId && !checking.failed;
+    const checkingThis = checking?.id === screen.credentialId;
     body = (
       <div className="space-y-4" data-testid="wallet-detail">
-        <ScreenHeader title={copy.detailTitle} onBack={goHome} backLabel={copy.backToList} />
+        <ScreenHeader title={copy.detailTitle} onBack={() => controller.home()} backLabel={copy.backToList} />
         {item && (
           <>
             <div className={`${card} flex items-center gap-3`}>
@@ -405,10 +344,10 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
               {item.summary.statusCheckedAt && (
                 <p className="type-body-sm mt-1 text-slate-600">{fill(copy.checkedAt, { time: time.format(new Date(item.summary.statusCheckedAt)) })}</p>
               )}
-              {checking?.id === screen.credentialId && checking.failed && <p className="type-body-sm mt-2 text-amber-800">{copy.checkFailed}</p>}
-              <button type="button" onClick={() => void checkAgain(screen.credentialId)} disabled={busy} className={`${quietButton} mt-2`} data-testid="wallet-check-again">
-                {busy ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
-                {busy ? copy.checking : copy.checkAgain}
+              {checkingThis && checking.failed && <p className="type-body-sm mt-2 text-amber-800">{copy.checkFailed}</p>}
+              <button type="button" onClick={() => void controller.checkAgain(screen.credentialId)} disabled={checkingThis && !checking.failed} className={`${quietButton} mt-2`} data-testid="wallet-check-again">
+                {checkingThis && !checking.failed ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
+                {checkingThis && !checking.failed ? copy.checking : copy.checkAgain}
               </button>
             </section>
             <section className={card} aria-labelledby="demo-wallet-fields">
@@ -433,24 +372,24 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
   } else if (screen.name === 'offerChecking') {
     body = (
       <div className="space-y-4">
-        <ScreenHeader title={copy.receiveTitle} onBack={goHome} backLabel={copy.backHome} />
+        <ScreenHeader title={copy.receiveTitle} onBack={() => controller.home()} backLabel={copy.backHome} />
         <Working text={copy.checkingOffer} testId="wallet-offer-checking" />
       </div>
     );
   } else if (screen.name === 'offerConsent') {
     const { offer } = screen;
-    const issuer = displayName(offer.issuerDisplay, locale);
+    // Before the wallet has checked the issuer, the only fact it knows is where the offer came from: the
+    // issuer's own display name is not shown as if it were verified (the trust-list name comes after the check).
+    const host = hostOf(offer.issuerOrigin);
     const documentTitle = displayName(offer.configuration.display, locale) ?? documentName(offer.configuration.vct);
     const pinLength = offer.txCode?.length ?? 6;
     const needsPin = !offer.codeRedeemed && offer.txCode !== null;
     const showIncomplete = pinTouched && needsPin && pin.length < pinLength;
     body = (
       <div className="space-y-4" data-testid="wallet-offer-consent">
-        <ScreenHeader title={copy.receiveTitle} onBack={screen.busy ? undefined : goHome} backLabel={copy.cancel} />
+        <ScreenHeader title={copy.receiveTitle} onBack={screen.busy ? undefined : () => controller.home()} backLabel={copy.cancel} />
         <div className="space-y-1">
-          <p className={`type-featured-title text-[#0F1E36] ${apiText}`}>
-            {fill(copy.offerTitle, { issuer: issuer ?? new URL(offer.issuerOrigin).host, document: documentTitle })}
-          </p>
+          <p className={`type-featured-title text-[#0F1E36] ${apiText}`}>{fill(copy.offerTitle, { document: documentTitle })}</p>
           <p className="type-body text-slate-600">{copy.lead}</p>
         </div>
         <div className={`${card} divide-y divide-slate-100 py-1`}>
@@ -464,16 +403,15 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
           <div className="flex items-start gap-3 py-3">
             <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#0F1E36]"><Building2 className="h-6 w-6" /></span>
             <div className="min-w-0 space-y-0.5">
-              <p className="type-body-sm text-slate-600">{copy.issuerLabel}</p>
-              <p className={`type-card-title-sm text-[#0F1E36] ${apiText}`} data-testid="wallet-offer-issuer">{issuer ? fill(copy.issuerClaimed, { name: issuer }) : new URL(offer.issuerOrigin).host}</p>
-              <p className="type-body-sm text-slate-600">{new URL(offer.issuerOrigin).host}</p>
-              <p className="type-body-sm text-slate-600">{copy.issuerChecked}</p>
+              <p className="type-body-sm text-slate-600">{copy.senderLabel}</p>
+              <p className={`type-card-title-sm text-[#0F1E36] ${apiText}`} data-testid="wallet-offer-issuer">{host}</p>
+              <p className="type-body-sm text-slate-600">{copy.senderHint}</p>
             </div>
           </div>
         </div>
         {needsPin && (
           <div className="space-y-2">
-            <label htmlFor="demo-wallet-pin" className="type-body block font-semibold text-[#0F1E36]">{fill(copy.pinLabel, { length: pinLength })}</label>
+            <label htmlFor="demo-wallet-pin" className="type-body block font-semibold text-[#0F1E36]">{copy.pinLabel}</label>
             <input
               id="demo-wallet-pin"
               value={pin}
@@ -505,7 +443,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
           {screen.busy ? copy.accepting : copy.accept}
         </button>
         {showIncomplete && <p className="type-body-sm text-center text-slate-600">{copy.pinIncomplete}</p>}
-        <button type="button" onClick={goHome} disabled={screen.busy} className={quietButton} data-testid="wallet-cancel">{copy.cancel}</button>
+        <button type="button" onClick={() => controller.home()} disabled={screen.busy} className={quietButton} data-testid="wallet-cancel">{copy.cancel}</button>
       </>
     );
   } else if (screen.name === 'offerSaved') {
@@ -513,13 +451,16 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
       <div className="space-y-4 pt-4" data-testid="wallet-offer-saved">
         <span aria-hidden="true" className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700"><Check className="h-8 w-8" strokeWidth={3} /></span>
         <h3 id="demo-wallet-screen-title" tabIndex={-1} className="type-featured-title text-center text-[#0F1E36] focus:outline-none">{copy.savedTitle}</h3>
+        {screen.issuerName && (
+          <p className={`type-body text-center font-semibold text-[#0F1E36] ${apiText}`} data-testid="wallet-saved-issuer">{fill(copy.savedIssuer, { name: screen.issuerName })}</p>
+        )}
         <p className="type-body text-center text-slate-700">{screen.checked ? copy.savedLead : copy.savedLeadUnchecked}</p>
       </div>
     );
     actions = (
       <>
-        <button type="button" onClick={() => { dispatch({ type: 'openDetail', credentialId: screen.credentialId }); focusTitle(); }} className={primaryButton} data-testid="wallet-view-document">{copy.viewDocument}</button>
-        <button type="button" onClick={goHome} className={quietButton} data-testid="wallet-back-home">{copy.backHome}</button>
+        <button type="button" onClick={() => controller.openDetail(screen.credentialId)} className={primaryButton} data-testid="wallet-view-document">{copy.viewDocument}</button>
+        <button type="button" onClick={() => controller.home()} className={quietButton} data-testid="wallet-back-home">{copy.backHome}</button>
       </>
     );
   } else if (screen.name === 'offerFailed' || screen.name === 'requestFailed') {
@@ -532,44 +473,63 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
         {isOffer && <p className="type-body-sm text-center text-slate-600">{copy.nothingSaved}</p>}
       </div>
     );
-    actions = <button type="button" onClick={goHome} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
+    actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
   } else if (screen.name === 'requestChecking') {
     body = (
       <div className="space-y-4">
-        <ScreenHeader title={copy.presentTitle} onBack={goHome} backLabel={copy.backHome} />
+        <ScreenHeader title={copy.presentTitle} onBack={() => controller.home()} backLabel={copy.backHome} />
         <Working text={copy.checkingRequest} testId="wallet-request-checking" />
       </div>
     );
   } else if (screen.name === 'requestConsent') {
-    body = (
-      <RequestConsent
-        screen={screen}
-        held={held}
-        copy={copy}
-        locale={locale}
-        fieldList={fieldList}
-        documentName={documentName}
-        time={time}
-        onChoose={(optionIndex) => dispatch({ type: 'chooseOption', optionIndex })}
-        onBlocked={(status) => {
-          if (blockedReported.current === screen.request) return;
-          blockedReported.current = screen.request;
-          onEventRef.current({ type: 'presentationBlocked', status });
-        }}
-      />
-    );
-    const chosen = chooseMatch(screen.request.matches, held.map((item) => item.summary));
-    const status = chosen?.summary?.status;
-    const canShare = screen.request.verifier.trusted && chosen !== null && status !== 'revoked' && status !== 'suspended' && status !== 'invalid';
+    const view = consentView(screen.request, held, screen.optionIndex, locale);
+    body = <RequestConsent screen={screen} view={view} held={held} copy={copy} fieldList={fieldList} documentName={documentName} time={time} clockOffsetMs={clockOffsetMs} />;
+    const choosable = view.trusted && view.match !== null && view.blocked === null;
     actions = (
       <>
-        {canShare && (
-          <button type="button" onClick={() => void share()} disabled={screen.busy} className={primaryButton} data-testid="wallet-share">
+        {choosable && (
+          <>
+            {view.staying.length > 0 && (
+              <p className="type-body-sm rounded-xl bg-emerald-50 px-3 py-2 text-emerald-950" data-testid="wallet-staying">
+                {fill(copy.stayingLine, { fields: fieldList(view.staying) })}
+              </p>
+            )}
+            {view.options.length > 0 && (
+              <fieldset className="space-y-1.5 pt-1" data-testid="wallet-options">
+                <legend className="type-body-sm font-semibold text-[#0F1E36]">{copy.optionsTitle}</legend>
+                {view.options.map((option, index) => (
+                  <label
+                    key={option.index}
+                    className={`flex cursor-pointer items-start gap-2.5 rounded-xl bg-white px-3 py-2 ${index === screen.optionIndex ? 'ring-2 ring-[#354CE1]' : 'ring-1 ring-slate-200'}`}
+                  >
+                    <input
+                      type="radio"
+                      name="demo-wallet-option"
+                      checked={index === screen.optionIndex}
+                      onChange={() => controller.choose(index)}
+                      disabled={screen.busy}
+                      data-testid={`wallet-option-${index}`}
+                      className="mt-1 h-4 w-4 shrink-0 accent-[#354CE1]"
+                    />
+                    <span className="type-body-sm text-[#0F1E36]">
+                      {option.withheld.length === 0
+                        ? fill(copy.optionFull, { count: option.fields.length })
+                        : fill(copy.optionOnly, { fields: fieldList(option.fields) })}
+                    </span>
+                  </label>
+                ))}
+              </fieldset>
+            )}
+          </>
+        )}
+        {choosable && (
+          <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
             {screen.busy && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
             {screen.busy ? copy.sending : copy.share}
           </button>
         )}
-        <button type="button" onClick={decline} disabled={screen.busy} className={canShare ? quietButton : primaryButton} data-testid="wallet-decline">{copy.decline}</button>
+        {choosable && !view.canShare && !screen.busy && <p className="type-body-sm text-center text-slate-600" data-testid="wallet-choose-first">{copy.chooseFirst}</p>}
+        <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={choosable ? quietButton : primaryButton} data-testid="wallet-decline">{copy.decline}</button>
       </>
     );
   } else if (screen.name === 'requestSent') {
@@ -583,7 +543,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
         <p className="type-body-sm rounded-2xl bg-white px-4 py-3 text-slate-700">{fill(copy.sentFields, { fields: fieldList(screen.fields) })}</p>
       </div>
     );
-    actions = <button type="button" onClick={goHome} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
+    actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
   } else {
     body = (
       <div className="space-y-4 pt-4" data-testid="wallet-request-declined">
@@ -591,15 +551,15 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
         <p className="type-body text-center text-slate-700">{copy.declinedBody}</p>
       </div>
     );
-    actions = <button type="button" onClick={goHome} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
+    actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
   }
 
   return (
-    <div className="space-y-4" data-testid="wallet-panel" data-screen={wallet ? screen.name : 'loading'} data-busy={isBusyScreen(screen) || undefined}>
+    <div className="space-y-4" data-testid="wallet-panel" data-screen={controller ? screen.name : 'loading'} data-busy={busy || undefined}>
       <div
         role="group"
         aria-label={copy.phoneLabel}
-        className="mx-auto flex h-[640px] w-full max-w-[400px] lg:mr-0 flex-col overflow-hidden rounded-[44px] bg-[#0F1E36] p-2.5 sm:h-[700px] lg:h-[min(780px,calc(100vh-7.5rem))] lg:min-h-[600px]"
+        className="mx-auto flex h-[640px] w-full max-w-[400px] flex-col overflow-hidden rounded-[44px] bg-[#0F1E36] p-2.5 sm:h-[700px] lg:mr-0 lg:h-[min(780px,calc(100vh-7.5rem))] lg:min-h-[600px]"
       >
         <div className="px-4 pb-2 pt-1 text-center text-white" data-testid="wallet-trial-label">
           <p className="type-body-sm font-semibold">{copy.trialBadge}</p>
@@ -621,62 +581,48 @@ export default function DemoWalletPanel({ locale, inbox, generation, onEvent }: 
 
 function RequestConsent({
   screen,
+  view,
   held,
   copy,
-  locale,
   fieldList,
   documentName,
   time,
-  onChoose,
-  onBlocked,
+  clockOffsetMs,
 }: {
   screen: Extract<WalletScreen, { name: 'requestConsent' }>;
+  view: ReturnType<typeof consentView>;
   held: HeldCredential[];
   copy: DemoWalletPanelCopy;
-  locale: WalletLocale;
   fieldList: (fields: readonly string[]) => string;
   documentName: (vct: string) => string;
   time: Intl.DateTimeFormat;
-  onChoose: (optionIndex: number) => void;
-  onBlocked: (status: 'revoked' | 'suspended' | 'invalid') => void;
+  clockOffsetMs: number;
 }) {
   const now = useNow();
   const { request } = screen;
-  const trusted = request.verifier.trusted;
-  const name = request.verifier.trusted ? safeText(request.verifier.ten) : null;
-  const purpose = trusted ? purposeText(request.purpose, locale) : null;
-  const chosen = chooseMatch(request.matches, held.map((item) => item.summary));
-  const options = chosen ? sharingOptions(chosen.match) : [];
-  const option = options[screen.optionIndex] ?? options[0];
-  const required = requiredFields(options);
-  const status = chosen?.summary?.status;
-  const blocked = status === 'revoked' || status === 'suspended' || status === 'invalid' ? status : null;
-  const chosenDetails = chosen ? held.find((item) => item.summary.id === chosen.match.credentialId) : undefined;
-
-  useEffect(() => {
-    if (blocked && trusted) onBlocked(blocked);
-  }, [blocked, onBlocked, trusted]);
+  const details = view.match ? held.find((item) => item.summary.id === view.match?.credentialId)?.details : undefined;
+  const shownFields = view.selected?.fields ?? view.requested;
 
   return (
     <div className="space-y-4" data-testid="wallet-request-consent">
       <ScreenHeader title={copy.presentTitle} />
       <div className="flex flex-wrap items-center justify-between gap-2">
-        {trusted ? (
+        {view.trusted ? (
           <span className="type-body-sm inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-slate-800" data-testid="wallet-verifier-trusted">
             <ShieldCheck aria-hidden="true" className="h-4 w-4 text-emerald-600" />
             {copy.verifiedMark}
           </span>
         ) : <span />}
         <span className="type-body-sm rounded-full bg-white px-3 py-1 tabular-nums text-slate-700">
-          {fill(copy.expiresIn, { time: formatCountdown(secondsUntil(request.expiresAt, now)) })}
+          {fill(copy.expiresIn, { time: formatCountdown(secondsUntil(request.expiresAt, now + clockOffsetMs)) })}
         </span>
       </div>
-      {trusted ? (
+      {view.trusted ? (
         <div className="space-y-1">
           <p className={`type-featured-title text-[#0F1E36] ${apiText}`} data-testid="wallet-verifier-name">
-            {name ? fill(copy.wantsToSee, { name }) : copy.wantsToSeeUnnamed}
+            {view.verifierName ? fill(copy.wantsToSee, { name: view.verifierName }) : copy.wantsToSeeUnnamed}
           </p>
-          {purpose && <p className={`type-body text-slate-600 ${apiText}`}>{fill(copy.purpose, { purpose })}</p>}
+          {view.purpose && <p className={`type-body text-slate-600 ${apiText}`} data-testid="wallet-purpose">{fill(copy.purpose, { purpose: view.purpose })}</p>}
         </div>
       ) : (
         <div className="space-y-2 rounded-3xl border-2 border-rose-500 bg-white p-4" data-testid="wallet-verifier-untrusted">
@@ -685,84 +631,52 @@ function RequestConsent({
         </div>
       )}
 
-      {trusted && !chosen && (
+      {view.trusted && !view.match && (
         <div className={card} data-testid="wallet-no-match">
           <p className="type-card-title-sm text-[#0F1E36]">{copy.noMatchTitle}</p>
           <p className="type-body mt-1 text-slate-700">{copy.noMatchBody}</p>
         </div>
       )}
 
-      {trusted && chosen && blocked && (
-        <p role="alert" className="type-body rounded-3xl border-2 border-rose-500 bg-white px-4 py-3 text-slate-800" data-testid="wallet-blocked" data-status={blocked}>
-          {copy.blocked[blocked]}
+      {view.trusted && view.match && view.blocked && (
+        <p role="alert" className="type-body rounded-3xl border-2 border-rose-500 bg-white px-4 py-3 text-slate-800" data-testid="wallet-blocked" data-status={view.blocked}>
+          {copy.blocked[view.blocked]}
         </p>
       )}
 
-      {trusted && chosen && option && (
+      {view.trusted && view.match && (
         <>
-          {!blocked && <p className="type-body rounded-2xl bg-[#EEF1FF] px-4 py-3 font-semibold text-[#0F1E36]">{fieldList(option.fields)}</p>}
           <section aria-labelledby="demo-wallet-document" className="space-y-2">
             <h4 id="demo-wallet-document" className="type-card-title-sm text-[#0F1E36]">{copy.documentInUse}</h4>
             <div className={`${card} flex items-center gap-3`}>
               <DocumentIcon />
               <div className="min-w-0 space-y-0.5">
-                <p className="type-card-title-sm text-[#0F1E36]">{documentName(chosen.match.vct)}</p>
-                <p className={`type-body-sm text-slate-600 ${apiText}`}>{safeText(chosen.match.issuerName) ?? copy.issuerUnknown}</p>
-                {chosen.summary && <p className="type-body-sm text-slate-600">{fill(copy.receivedOn, { time: time.format(new Date(chosen.summary.createdAt)) })}</p>}
-                <StatusLine status={status ?? null} copy={copy} />
+                <p className="type-card-title-sm text-[#0F1E36]">{documentName(view.match.vct)}</p>
+                <p className={`type-body-sm text-slate-600 ${apiText}`}>{safeText(view.match.issuerName) ?? copy.issuerUnknown}</p>
+                {view.summary && <p className="type-body-sm text-slate-600">{fill(copy.receivedOn, { time: time.format(new Date(view.summary.createdAt)) })}</p>}
+                <StatusLine status={view.summary?.status ?? null} copy={copy} />
               </div>
             </div>
           </section>
-          {!blocked && (
-            <>
-              <section aria-labelledby="demo-wallet-leaving" className="space-y-2">
-                <h4 id="demo-wallet-leaving" className="type-card-title-sm text-[#0F1E36]">{copy.fieldsTitle}</h4>
-                <dl className={`${card} divide-y divide-slate-100 py-1`} data-testid="wallet-fields">
-                  {option.fields.map((field) => {
-                    const value = claimText(chosenDetails?.details?.claims[field]);
-                    return (
-                      <div key={field} className="py-2.5" data-testid="wallet-field" data-field={field}>
-                        <dt className="type-body-sm flex items-center gap-2 text-slate-600">
-                          {isDiplomaField(field) ? copy.claims[field] : <bdi>{safeText(field, 64)}</bdi>}
-                          {required.includes(field) && <span className="type-caption rounded-full border border-slate-200 px-2 text-slate-600">{copy.required}</span>}
-                        </dt>
-                        {value && <dd className={`type-body font-semibold text-slate-900 ${apiText}`}><bdi>{value}</bdi></dd>}
-                      </div>
-                    );
-                  })}
-                </dl>
-                <p className="type-body-sm text-slate-600">{copy.requiredHint}</p>
-              </section>
-              {options.length > 1 && (
-                <fieldset className="space-y-2">
-                  <legend className="type-card-title-sm text-[#0F1E36]">{copy.optionsTitle}</legend>
-                  {options.map((candidate, index) => (
-                    <label
-                      key={candidate.index}
-                      className={`flex cursor-pointer items-start gap-3 rounded-2xl bg-white px-4 py-3 ${index === screen.optionIndex ? 'ring-2 ring-[#354CE1]' : ''}`}
-                    >
-                      <input
-                        type="radio"
-                        name="demo-wallet-option"
-                        checked={index === screen.optionIndex}
-                        onChange={() => onChoose(index)}
-                        disabled={screen.busy}
-                        data-testid={`wallet-option-${index}`}
-                        className="mt-1 h-4 w-4 accent-[#354CE1]"
-                      />
-                      <span className="min-w-0">
-                        <span className="type-body block font-semibold text-[#0F1E36]">
-                          {candidate.withheld.length === 0 ? copy.optionFull : fill(copy.optionLess, { fields: fieldList(candidate.withheld) })}
-                        </span>
-                        {candidate.withheld.length > 0 && (
-                          <span className="type-body-sm block text-slate-600">{fill(copy.withheld, { fields: fieldList(candidate.withheld) })}</span>
-                        )}
-                      </span>
-                    </label>
-                  ))}
-                </fieldset>
-              )}
-            </>
+          {!view.blocked && (
+            <section aria-labelledby="demo-wallet-leaving" className="space-y-2">
+              <h4 id="demo-wallet-leaving" className="type-card-title-sm text-[#0F1E36]">{view.selected ? copy.fieldsTitle : copy.requestedTitle}</h4>
+              <dl className={`${card} divide-y divide-slate-100 py-1`} data-testid="wallet-fields">
+                {shownFields.map((field: string) => {
+                  const value = claimText(details?.claims[field]);
+                  return (
+                    <div key={field} className="py-2.5" data-testid="wallet-field" data-field={field}>
+                      <dt className="type-body-sm flex items-center gap-2 text-slate-600">
+                        {isDiplomaField(field) ? copy.claims[field] : <bdi>{safeText(field, 64)}</bdi>}
+                        {view.required.includes(field) && <span className="type-caption rounded-full border border-slate-200 px-2 text-slate-600">{copy.required}</span>}
+                      </dt>
+                      {value && <dd className={`type-body font-semibold text-slate-900 ${apiText}`}><bdi>{value}</bdi></dd>}
+                    </div>
+                  );
+                })}
+              </dl>
+              <p className="type-body-sm text-slate-600">{fill(copy.requiredHint, { fields: fieldList(view.required) })}</p>
+            </section>
           )}
         </>
       )}

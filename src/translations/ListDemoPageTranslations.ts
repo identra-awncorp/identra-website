@@ -28,7 +28,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     contactAction: "Contact us",
     realScenarios: [
       { id: "diploma", tag: "Education", title: "Receive and use a diploma", desc: "A university issues a diploma into a trial wallet in your browser, an employer checks it, then a revoked diploma is refused. Guided step by step.", security: "Trial wallet in the browser, no app needed" },
-      { id: "product-journey", tag: "Traceability", title: "Check a product's journey", desc: "Open three sample products or scan their QR with your phone: your browser checks each signed stage, including a revoked record.", security: "Checked in your own browser" },
+      { id: "product-journey", tag: "Traceability", title: "Check a product's journey", desc: "Open four sample products or scan their QR with your phone: your browser checks each signed stage, and catches a revoked record and one edited in the database.", security: "Checked in your own browser" },
     ],
     scenarios: [
       {
@@ -149,7 +149,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     contactAction: "Contactar",
     realScenarios: [
       { id: "diploma", tag: "Educación", title: "Recibir y usar un título", desc: "Una universidad emite un título a una billetera de prueba en tu navegador, una empresa lo comprueba y después un título revocado es rechazado. Guiado paso a paso (en inglés).", security: "Billetera de prueba en el navegador, sin app" },
-      { id: "product-journey", tag: "Trazabilidad", title: "Comprobar el recorrido de un producto", desc: "Abre tres productos de ejemplo o escanea su QR con el teléfono: tu navegador comprueba cada etapa firmada, incluido un registro revocado (en inglés).", security: "Comprobado en tu propio navegador" },
+      { id: "product-journey", tag: "Trazabilidad", title: "Comprobar el recorrido de un producto", desc: "Abre cuatro productos de ejemplo o escanea su QR con el teléfono: tu navegador comprueba cada etapa firmada y detecta un registro revocado y otro editado en la base de datos (en inglés).", security: "Comprobado en tu propio navegador" },
     ],
     scenarios: [
       {
@@ -270,7 +270,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     contactAction: "お問い合わせ",
     realScenarios: [
       { id: "diploma", tag: "教育", title: "卒業証書を受け取って使う", desc: "大学がブラウザ内のお試しウォレットに卒業証書を発行し、企業が確認し、取り消された証書が拒否されるまでを順に案内します（英語）。", security: "ブラウザ内のお試しウォレット、アプリ不要" },
-      { id: "product-journey", tag: "トレーサビリティ", title: "製品の流通履歴を確認する", desc: "3 つのサンプル製品を開くか、スマートフォンで QR を読み取ります。取り消された記録も含め、署名された各工程をブラウザ自身が確認します（英語）。", security: "あなたのブラウザで確認" },
+      { id: "product-journey", tag: "トレーサビリティ", title: "製品の流通履歴を確認する", desc: "4 つのサンプル製品を開くか、スマートフォンで QR を読み取ります。署名された各工程をブラウザ自身が確認し、取り消された記録とデータベースで書き換えられた記録も見つけます（英語）。", security: "あなたのブラウザで確認" },
     ],
     scenarios: [
       {
@@ -391,7 +391,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     contactAction: "Kontakt aufnehmen",
     realScenarios: [
       { id: "diploma", tag: "Bildung", title: "Ein Zeugnis erhalten und nutzen", desc: "Eine Hochschule stellt ein Zeugnis in eine Test-Wallet im Browser aus, ein Arbeitgeber prüft es, dann wird ein widerrufenes Zeugnis abgelehnt. Schritt für Schritt geführt (auf Englisch).", security: "Test-Wallet im Browser, keine App nötig" },
-      { id: "product-journey", tag: "Rückverfolgbarkeit", title: "Den Weg eines Produkts prüfen", desc: "Öffnen Sie drei Beispielprodukte oder scannen Sie ihren QR-Code mit dem Smartphone: Ihr Browser prüft jede signierte Station, auch einen widerrufenen Eintrag (auf Englisch).", security: "Im eigenen Browser geprüft" },
+      { id: "product-journey", tag: "Rückverfolgbarkeit", title: "Den Weg eines Produkts prüfen", desc: "Öffnen Sie vier Beispielprodukte oder scannen Sie ihren QR-Code mit dem Smartphone: Ihr Browser prüft jede signierte Station und erkennt einen widerrufenen und einen in der Datenbank geänderten Eintrag (auf Englisch).", security: "Im eigenen Browser geprüft" },
     ],
     scenarios: [
       {
@@ -512,7 +512,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
     contactAction: "Liên hệ với chúng tôi",
     realScenarios: [
       { id: "diploma", tag: "Giáo dục", title: "Nhận và dùng bằng tốt nghiệp", desc: "Trường cấp bằng vào ví thử ngay trên trình duyệt, nhà tuyển dụng kiểm tra, rồi xem bằng bị thu hồi bị từ chối. Có hướng dẫn từng bước.", security: "Ví thử trên web, không cần ứng dụng" },
-      { id: "product-journey", tag: "Truy xuất nguồn gốc", title: "Kiểm tra hành trình sản phẩm", desc: "Mở ba sản phẩm mẫu hoặc quét mã QR bằng điện thoại: trình duyệt tự kiểm tra từng chặng có chữ ký, kể cả một bản ghi đã bị thu hồi.", security: "Kiểm tra ngay trên trình duyệt của bạn" },
+      { id: "product-journey", tag: "Truy xuất nguồn gốc", title: "Kiểm tra hành trình sản phẩm", desc: "Mở bốn sản phẩm mẫu hoặc quét mã QR bằng điện thoại: trình duyệt tự kiểm tra từng chặng có chữ ký, phát hiện cả bản ghi đã bị thu hồi lẫn bản ghi bị sửa trong kho dữ liệu.", security: "Kiểm tra ngay trên trình duyệt của bạn" },
     ],
     scenarios: [
       {

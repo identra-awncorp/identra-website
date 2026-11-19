@@ -5,11 +5,13 @@
 
 import type {
   AcceptResult,
+  CredentialDetails,
   CredentialSummary,
   DisplayEntry,
   PresentationMatch,
   ResolvedOffer,
   ResolvedPresentation,
+  Wallet,
   WalletErrorCode,
 } from '@identra/sdk-app';
 import { truncateText } from './verifierSession';
@@ -203,10 +205,12 @@ export type WalletScreen =
   | { name: 'detail'; credentialId: string }
   | { name: 'offerChecking' }
   | { name: 'offerConsent'; offer: ResolvedOffer; busy: boolean; problem: WalletProblem | null }
-  | { name: 'offerSaved'; credentialId: string; checked: boolean }
+  /** `issuerName`: the trust-list name, known only once the wallet checked the issuer (null when it could not). */
+  | { name: 'offerSaved'; credentialId: string; checked: boolean; issuerName: string | null }
   | { name: 'offerFailed'; problem: WalletProblem }
   | { name: 'requestChecking' }
-  | { name: 'requestConsent'; request: ResolvedPresentation; optionIndex: number; busy: boolean; problem: WalletProblem | null }
+  /** `optionIndex` null until the visitor chooses how much to share: nothing is preselected. */
+  | { name: 'requestConsent'; request: ResolvedPresentation; optionIndex: number | null; busy: boolean; problem: WalletProblem | null }
   | { name: 'requestSent'; verifierName: string | null; fields: string[] }
   | { name: 'requestFailed'; problem: WalletProblem }
   | { name: 'requestDeclined' };
@@ -247,7 +251,9 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
     case 'accepted': {
       if (state.name !== 'offerConsent') return state;
       const { result } = event;
-      if (result.ok) return { name: 'offerSaved', credentialId: result.credentialId, checked: result.status === 'valid' };
+      if (result.ok) {
+        return { name: 'offerSaved', credentialId: result.credentialId, checked: result.status === 'valid', issuerName: safeText(result.issuerName) };
+      }
       // A wrong PIN, a lost answer or a held token: the same offer can still complete, so stay on it.
       return result.retryable
         ? { ...state, busy: false, problem: offerProblemFor(result.code) }
@@ -257,7 +263,7 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
       return { name: 'requestChecking' };
     case 'requestResolved':
       return state.name === 'requestChecking'
-        ? { name: 'requestConsent', request: event.request, optionIndex: 0, busy: false, problem: null }
+        ? { name: 'requestConsent', request: event.request, optionIndex: null, busy: false, problem: null }
         : state;
     case 'requestRefused':
       return state.name === 'requestChecking' ? { name: 'requestFailed', problem: requestProblemFor(event.code, 'resolve') } : state;
@@ -289,3 +295,239 @@ export const isBusyScreen = (screen: WalletScreen): boolean =>
 
 /** The six-digit PIN as typed: digits only, at most `length`. */
 export const normalizePin = (value: string, length = 6): string => value.replace(/\D/g, '').slice(0, length);
+
+// ---- Consent ----------------------------------------------------------------------------------------
+
+export interface HeldCredential {
+  summary: CredentialSummary;
+  details: CredentialDetails | null;
+}
+
+export type BlockedStatus = 'revoked' | 'suspended' | 'invalid';
+
+/** Everything the share screen may show and do, decided in one place (and tested). */
+export interface ConsentView {
+  trusted: boolean;
+  /** The verifier's trust-list name and stated purpose: only for a trusted verifier, never what an unknown party claims. */
+  verifierName: string | null;
+  purpose: string | null;
+  match: PresentationMatch | null;
+  summary: CredentialSummary | null;
+  /** The wallet already knows the credential is no longer good: it will not share it (as the app does). */
+  blocked: BlockedStatus | null;
+  options: SharingOption[];
+  selected: SharingOption | null;
+  /** Fields in every option: cannot be withheld. */
+  required: string[];
+  /** What the verifier asks for (the fullest option). */
+  requested: string[];
+  /** Fields of the credential that do not leave the wallet this time (with the current choice, or whatever is chosen). */
+  staying: string[];
+  canShare: boolean;
+}
+
+export const consentView = (
+  request: ResolvedPresentation,
+  held: readonly HeldCredential[],
+  optionIndex: number | null,
+  locale: WalletLocale,
+): ConsentView => {
+  const trusted = request.verifier.trusted;
+  const chosen = chooseMatch(request.matches, held.map((item) => item.summary));
+  const options = chosen ? sharingOptions(chosen.match) : [];
+  const selected = optionIndex === null ? null : options[optionIndex] ?? null;
+  const status = chosen?.summary?.status;
+  const blocked: BlockedStatus | null = status === 'revoked' || status === 'suspended' || status === 'invalid' ? status : null;
+  const requested = options[0]?.fields ?? [];
+  const claims = Object.keys(held.find((item) => item.summary.id === chosen?.match.credentialId)?.details?.claims ?? {});
+  const leaving = selected ? selected.fields : requested;
+  return {
+    trusted,
+    verifierName: request.verifier.trusted ? safeText(request.verifier.ten) : null,
+    purpose: trusted ? purposeText(request.purpose, locale) : null,
+    match: chosen?.match ?? null,
+    summary: chosen?.summary ?? null,
+    blocked,
+    options,
+    selected,
+    required: requiredFields(options),
+    requested,
+    staying: orderFields(claims.filter((name) => !leaving.includes(name))),
+    canShare: trusted && chosen !== null && blocked === null && selected !== null,
+  };
+};
+
+// ---- The wallet's behaviour, independent of React ------------------------------------------------------
+
+export type WalletControllerEvent =
+  | { type: 'credentialReceived'; credentialId: string }
+  | { type: 'presentationSent'; itemId: number }
+  | { type: 'presentationDeclined'; itemId: number }
+  | { type: 'presentationBlocked'; itemId: number; status: BlockedStatus };
+
+export interface WalletControllerState {
+  screen: WalletScreen;
+  held: HeldCredential[];
+  /** True while the wallet works on something that must not be interrupted (an accept or a share in flight, a code being read). */
+  busy: boolean;
+  checking: { id: string; failed: boolean } | null;
+}
+
+export type WalletLike = Pick<Wallet, 'offers' | 'credentials' | 'presentations'>;
+
+/**
+ * Drives one trial wallet. A new hand-off is refused while an accept or a share is in flight (it would
+ * leave the outcome of that call unseen), and an outcome that arrives after the visitor moved on is still
+ * reported: a credential the SDK stored is announced and listed, a sent answer is announced.
+ */
+export const createWalletController = (wallet: WalletLike, onEvent: (event: WalletControllerEvent) => void, locale: () => WalletLocale) => {
+  let state: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null };
+  const listeners = new Set<() => void>();
+  let operation = 0;
+  let inFlight = false;
+  let currentItem: WalletInboxItem | null = null;
+  const blockedReported = new Set<number>();
+
+  const set = (patch: Partial<WalletControllerState>) => {
+    const next = { ...state, ...patch };
+    state = { ...next, busy: inFlight || isBusyScreen(next.screen) };
+    listeners.forEach((listener) => listener());
+  };
+  const dispatch = (event: WalletEvent) => set({ screen: walletReducer(state.screen, event) });
+
+  const refreshHeld = async () => {
+    const summaries = await wallet.credentials.list();
+    const held = await Promise.all(summaries.map(async (summary) => {
+      const result = await wallet.credentials.get(summary.id);
+      return { summary, details: result.ok ? result.credential : null };
+    }));
+    set({ held: held.sort((a, b) => Date.parse(b.summary.createdAt) - Date.parse(a.summary.createdAt)) });
+    return held;
+  };
+
+  const reportBlocked = () => {
+    if (state.screen.name !== 'requestConsent' || !currentItem || blockedReported.has(currentItem.id)) return;
+    const view = consentView(state.screen.request, state.held, state.screen.optionIndex, locale());
+    if (view.trusted && view.blocked) {
+      blockedReported.add(currentItem.id);
+      onEvent({ type: 'presentationBlocked', itemId: currentItem.id, status: view.blocked });
+    }
+  };
+
+  return {
+    getState: () => state,
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    refresh: refreshHeld,
+
+    /** Opens what the page handed over. Refused (false) while an accept or a share is in flight. */
+    open(item: WalletInboxItem): boolean {
+      if (inFlight) return false;
+      if (state.screen.name === 'offerConsent') void wallet.offers.discard(state.screen.offer);
+      const op = ++operation;
+      currentItem = item;
+      if (item.kind === 'offer') {
+        dispatch({ type: 'checkOffer' });
+        void wallet.offers.resolve(item.text).then((result) => {
+          if (op !== operation) return;
+          dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code });
+        });
+      } else {
+        dispatch({ type: 'checkRequest' });
+        void Promise.all([wallet.presentations.resolve(item.text), refreshHeld()]).then(([result]) => {
+          if (op !== operation) return;
+          dispatch(result.ok ? { type: 'requestResolved', request: result.request } : { type: 'requestRefused', code: result.code });
+          reportBlocked();
+        });
+      }
+      return true;
+    },
+
+    /** `pin` is needed only while the offer's code is not redeemed. 'pinIncomplete': nothing was sent. */
+    async accept(pin: string): Promise<'pinIncomplete' | 'done' | 'ignored'> {
+      const screen = state.screen;
+      if (screen.name !== 'offerConsent' || screen.busy || inFlight) return 'ignored';
+      const needsPin = !screen.offer.codeRedeemed && screen.offer.txCode !== null;
+      if (needsPin && pin.length < (screen.offer.txCode?.length ?? 6)) return 'pinIncomplete';
+      const op = operation;
+      inFlight = true;
+      dispatch({ type: 'accept' });
+      let result: AcceptResult;
+      try {
+        result = await wallet.offers.accept(screen.offer, needsPin ? { txCode: pin } : {});
+      } finally {
+        inFlight = false;
+      }
+      if (result.ok) {
+        // Stored by the SDK: list it and say so, whatever the screen shows now.
+        await refreshHeld();
+        onEvent({ type: 'credentialReceived', credentialId: result.credentialId });
+      }
+      if (op === operation) dispatch({ type: 'accepted', result });
+      else set({});
+      return 'done';
+    },
+
+    choose(optionIndex: number) {
+      dispatch({ type: 'chooseOption', optionIndex });
+    },
+
+    async share(): Promise<void> {
+      const screen = state.screen;
+      if (screen.name !== 'requestConsent' || screen.busy || inFlight || !currentItem) return;
+      const view = consentView(screen.request, state.held, screen.optionIndex, locale());
+      if (!view.canShare || !view.match || !view.selected) return;
+      const item = currentItem;
+      const op = operation;
+      inFlight = true;
+      dispatch({ type: 'submit' });
+      let result: Awaited<ReturnType<WalletLike['presentations']['submit']>>;
+      try {
+        result = await wallet.presentations.submit(screen.request, { credentialId: view.match.credentialId, claimSetIndex: view.selected.index });
+      } finally {
+        inFlight = false;
+      }
+      if (result.ok) {
+        onEvent({ type: 'presentationSent', itemId: item.id });
+        // The wallet learns the credential's current status afterwards, as the app refreshes it.
+        void wallet.credentials.refreshStatus(view.match.credentialId).then(() => refreshHeld());
+      }
+      if (op !== operation) {
+        set({});
+        return;
+      }
+      dispatch(result.ok ? { type: 'submitted', verifierName: view.verifierName, fields: view.selected.fields } : { type: 'submitFailed', code: result.code });
+    },
+
+    decline() {
+      const screen = state.screen;
+      if (screen.name !== 'requestConsent' || screen.busy || inFlight || !currentItem) return;
+      wallet.presentations.decline(screen.request);
+      dispatch({ type: 'declined' });
+      onEvent({ type: 'presentationDeclined', itemId: currentItem.id });
+    },
+
+    home() {
+      if (inFlight) return;
+      if (state.screen.name === 'offerConsent') void wallet.offers.discard(state.screen.offer);
+      operation += 1;
+      dispatch({ type: 'home' });
+    },
+
+    openDetail(credentialId: string) {
+      if (inFlight) return;
+      dispatch({ type: 'openDetail', credentialId });
+    },
+
+    async checkAgain(credentialId: string) {
+      set({ checking: { id: credentialId, failed: false } });
+      const result = await wallet.credentials.refreshStatus(credentialId);
+      await refreshHeld();
+      set({ checking: result.ok && result.status !== 'unknown' ? null : { id: credentialId, failed: true } });
+    },
+  };
+};
+
+export type WalletController = ReturnType<typeof createWalletController>;

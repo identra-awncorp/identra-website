@@ -38,6 +38,8 @@ export interface ProductPageCopy {
   recheck: string;
   busy: string;
   productTitle: string;
+  productDescriptionLabel: string;
+  signersLabel: string;
   gtinLabel: string;
   serialLabel: string;
   elementStringLabel: string;
@@ -60,7 +62,6 @@ export interface ProductPageCopy {
   deviceNote: string;
   rootLinkLead: string;
   rootLink: string;
-  rootLinkEnd: string;
   limitsTitle: string;
   limits: readonly string[];
   invalidTitle: string;
@@ -79,7 +80,6 @@ export interface ProductPageCopy {
   labelQrAlt: string;
   print: string;
   footerHome: string;
-  footerSecurity: string;
 }
 
 const vi: ProductPageCopy = {
@@ -112,6 +112,8 @@ const vi: ProductPageCopy = {
   recheck: 'Kiểm tra lại',
   busy: 'Đang kiểm tra…',
   productTitle: 'Sản phẩm',
+  productDescriptionLabel: 'Theo bản ghi sản xuất đã được kiểm chứng',
+  signersLabel: 'Các bên đã ký',
   gtinLabel: 'Mã sản phẩm (GTIN)',
   serialLabel: 'Số sê-ri',
   elementStringLabel: 'Mã đầy đủ',
@@ -184,9 +186,8 @@ const vi: ProductPageCopy = {
   deviceTitle: 'Kiểm tra này diễn ra ngay trên máy của bạn',
   deviceBody: 'Trình duyệt của bạn đã tự kiểm tra chữ ký của từng bước, xem bên ký có được Identra công nhận cho đúng công đoạn không, bản ghi có bị thu hồi không và các bước có nối liền nhau không.',
   deviceNote: 'Trang này kiểm tra hồ sơ ngay trên máy của bạn, không qua máy chủ nào khác.',
-  rootLinkLead: 'Chữ ký của mọi bên đều phải dẫn về chứng thư gốc của Identra; dấu vân tay của chứng thư này được công bố tại',
-  rootLink: 'trang Bảo mật',
-  rootLinkEnd: '.',
+  rootLinkLead: 'Chữ ký của mọi bên đều phải dẫn về chứng thư gốc của Identra. Dấu vân tay SHA-256 của chứng thư gốc DEMO mà trang này tin:',
+  rootLink: 'Tải tệp chứng thư gốc',
   limitsTitle: 'Bạn nên biết',
   limits: [
     'Kết quả này chứng minh hồ sơ của sản phẩm là thật, không chứng minh chiếc hộp trên tay bạn đúng là sản phẩm trong hồ sơ: một mã QR thật vẫn có thể bị in lại lên hàng giả.',
@@ -208,7 +209,6 @@ const vi: ProductPageCopy = {
   labelQrAlt: 'Mã QR dẫn tới trang kiểm tra sản phẩm này',
   print: 'In nhãn',
   footerHome: 'Về Identra',
-  footerSecurity: 'Bảo mật',
 };
 
 const en: ProductPageCopy = {
@@ -241,6 +241,8 @@ const en: ProductPageCopy = {
   recheck: 'Check again',
   busy: 'Checking…',
   productTitle: 'Product',
+  productDescriptionLabel: 'From the verified production record',
+  signersLabel: 'Signed by',
   gtinLabel: 'Product code (GTIN)',
   serialLabel: 'Serial number',
   elementStringLabel: 'Full code',
@@ -313,9 +315,8 @@ const en: ProductPageCopy = {
   deviceTitle: 'This check runs right on your device',
   deviceBody: 'Your browser checked each step\'s signature itself, whether the signer is recognised by Identra for that stage, whether the record was revoked, and whether the steps link up.',
   deviceNote: 'This page checks the record right on your device, without going through any other server.',
-  rootLinkLead: 'Every party\'s signature must lead back to Identra\'s root certificate; its fingerprint is published on the',
-  rootLink: 'Security page',
-  rootLinkEnd: '.',
+  rootLinkLead: 'Every party\'s signature must lead back to Identra\'s root certificate. SHA-256 fingerprint of the DEMO root this page trusts:',
+  rootLink: 'Download the root certificate',
   limitsTitle: 'Good to know',
   limits: [
     'This proves the product\'s record is genuine, not that the box in your hand is the product it describes: a real QR code can still be printed on fakes.',
@@ -337,7 +338,6 @@ const en: ProductPageCopy = {
   labelQrAlt: 'QR code leading to this product\'s check page',
   print: 'Print label',
   footerHome: 'About Identra',
-  footerSecurity: 'Security',
 };
 
 export const PRODUCT_PAGE_TRANSLATIONS = {

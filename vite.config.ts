@@ -73,6 +73,8 @@ export const KNOWN_EVAL_SITES: ReadonlyArray<{ name: string; pattern: RegExp }> 
   { name: 'cbor-x compiled reader, dead: inlineObjectReadThreshold = Infinity', pattern: /:new Function\("r","return \{"\+\w+\.map\(\w+=>\w+\.test\(\w+\)\?/g },
   { name: 'zod allowsEval probe, off: jitless', pattern: /const \w+=Function;return new \w+\(""\),!0/g },
   { name: 'zod Doc.compile, off: jitless', pattern: /compile\(\)\{const \w+=Function,/g },
+  // A type test (React Flow, in the shared vendor chunk): reads the global, constructs no code.
+  { name: '`x instanceof Function`, a type test that constructs nothing', pattern: /instanceof Function(?![\w$])/g },
 ];
 const EVAL_REFERENCE = /(?<![\w$.'"`])(?:Function|eval)(?![\w$'"`])/g;
 
@@ -85,7 +87,7 @@ export const unknownEvalSites = (code: string): string[] => {
 
 export const cborWithoutEval = ({ required = false, scanChunk }: {
   required?: boolean;
-  /** Without `required`: which emitted chunks to scan for unknown Function/eval references anyway. */
+  /** Without `required`: which emitted chunks to scan (with everything they import) for unknown Function/eval references. */
   scanChunk?: (chunk: { moduleIds: readonly string[] }) => boolean;
 } = {}): Plugin => {
   let transformed = false;
@@ -102,8 +104,20 @@ export const cborWithoutEval = ({ required = false, scanChunk }: {
     generateBundle(_options, bundle) {
       if (!required && !scanChunk) return;
       if (required && !transformed) this.error('the cbor-x no-eval transform did not run on any module (cbor-x moved or was renamed?): update vite.config.ts');
+      // Without `required`: the chunks `scanChunk` picks AND every chunk they import, transitively (the code
+      // that runs with them, shared chunks included).
+      const picked = new Set<string>();
+      if (!required) {
+        const visit = (fileName: string) => {
+          const chunk = bundle[fileName];
+          if (picked.has(fileName) || chunk?.type !== 'chunk') return;
+          picked.add(fileName);
+          chunk.imports.forEach(visit);
+        };
+        for (const chunk of Object.values(bundle)) if (chunk.type === 'chunk' && scanChunk?.(chunk)) visit(chunk.fileName);
+      }
       for (const chunk of Object.values(bundle)) {
-        if (chunk.type !== 'chunk' || (!required && !scanChunk?.(chunk))) continue;
+        if (chunk.type !== 'chunk' || (!required && !picked.has(chunk.fileName))) continue;
         const unknown = unknownEvalSites(chunk.code);
         if (unknown.length > 0) {
           this.error(`${chunk.fileName}: ${unknown.length} reference(s) to Function/eval that are not known to be unreachable under script-src 'self':\n${unknown.join('\n')}`);

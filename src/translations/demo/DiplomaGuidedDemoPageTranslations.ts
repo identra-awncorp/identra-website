@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type { BlockedStatus } from '../../identra/demoWalletModel';
 import type { GuidedNotice, GuidedStepId } from '../../identra/guidedDiplomaDemo';
 import type { SignInProblem } from '../../identra/schoolPortalState';
 
@@ -23,8 +24,6 @@ export interface DiplomaGuidedDemoPageCopy {
   instructionsTitle: string;
   organisationSide: string;
   walletSide: string;
-  openWallet: string;
-  walletHasSomething: string;
   // Step 1: the school
   signInSample: string;
   signingIn: string;
@@ -36,7 +35,31 @@ export interface DiplomaGuidedDemoPageCopy {
   sendToWallet: string;
   sentToWallet: string;
   sendAgain: string;
-  receivedBanner: string;
+  walletBusy: string;
+  qrOfferLabel: string;
+  qrOfferCaption: string;
+  qrRequestLabel: string;
+  qrRequestCaption: string;
+  qrBeatsTitle: string;
+  qrBeats: readonly string[];
+  qrDirection: string;
+  happenedTitle: string;
+  happenedReceive: readonly string[];
+  happenedRevoke: readonly string[];
+  contactsTitle: string;
+  contactWallet: string;
+  contactSchool: string;
+  contactChecks: string;
+  contactDemoNote: string;
+  stayedTitle: string;
+  stayedNote: string;
+  requestDeclinedTitle: string;
+  requestDeclinedBody: string;
+  clockSkew: string;
+  tabsLabel: string;
+  tabs: { school: string; employer: string; wallet: string };
+  tabTurn: string;
+  notThisStep: { school: string; employer: string };
   // Step 2: the employer
   employerName: string;
   employerJob: string;
@@ -62,7 +85,7 @@ export interface DiplomaGuidedDemoPageCopy {
   employerAgainBody: string;
   verifyAgain: string;
   refusedByEmployer: string;
-  refusedByWallet: string;
+  refusedByWallet: Record<BlockedStatus, string>;
   otherFailure: string;
   passedAfterRevoke: string;
   // Problems that end the run
@@ -72,7 +95,9 @@ export interface DiplomaGuidedDemoPageCopy {
   // The end
   endTitle: string;
   endPoints: readonly string[];
-  endSecurity: string;
+  endRootTitle: string;
+  endRootBody: string;
+  endRootDownload: string;
   endProductDemo: string;
   endAllDemos: string;
 }
@@ -94,7 +119,7 @@ const vi: DiplomaGuidedDemoPageCopy = {
       instructions: [
         'Bấm “Đăng nhập bằng tài khoản mẫu”. Bạn thấy hồ sơ tốt nghiệp của một sinh viên mẫu.',
         'Bấm “Nhận bằng tốt nghiệp”. Trường hiện mã nhận bằng và mã PIN 6 số.',
-        'Bấm “Đưa mã này vào ví thử”. Ví bên cạnh cho xem ai cấp và cấp gì.',
+        'Bấm “Đưa mã này vào ví thử” (ngoài đời, bạn quét mã QR). Ví cho xem nơi gửi và loại giấy tờ.',
         'Gõ mã PIN vào ví rồi bấm “Nhận giấy tờ”. Bằng hiện trong ví và demo sang bước 2.',
       ],
     },
@@ -110,7 +135,7 @@ const vi: DiplomaGuidedDemoPageCopy = {
     },
     revoke: {
       title: 'Thu hồi và thử lại',
-      summary: 'Bằng bị thu hồi thì lần kiểm tra sau bị từ chối.',
+      summary: 'Bản bằng bị thu hồi thì lần kiểm tra sau bị từ chối.',
       instructions: [
         'Giả sử điện thoại giữ bằng bị mất. Bấm “Thu hồi bằng này” ở phía trường rồi xác nhận.',
         'Bấm “Kiểm tra lại bằng này” ở phía nhà tuyển dụng, rồi “Mở yêu cầu trong ví thử” và “Chia sẻ” như ở bước 2.',
@@ -121,8 +146,6 @@ const vi: DiplomaGuidedDemoPageCopy = {
   instructionsTitle: 'Bấm gì, sẽ thấy gì',
   organisationSide: 'Phía tổ chức',
   walletSide: 'Ví của bạn',
-  openWallet: 'Mở ví thử',
-  walletHasSomething: 'Ví thử đang chờ bạn',
   signInSample: 'Đăng nhập bằng tài khoản mẫu',
   signingIn: 'Đang đăng nhập…',
   signInProblems: {
@@ -139,7 +162,44 @@ const vi: DiplomaGuidedDemoPageCopy = {
   sendToWallet: 'Đưa mã này vào ví thử',
   sentToWallet: 'Đã đưa mã vào ví thử. Gõ mã PIN {pin} vào ví.',
   sendAgain: 'Đưa mã vào ví lần nữa',
-  receivedBanner: 'Xong bước 1: bằng đã nằm trong ví thử. Giờ dùng nó để ứng tuyển.',
+  walletBusy: 'Ví đang xử lý, đợi một chút.',
+  qrOfferLabel: 'Mã QR nhận bằng tốt nghiệp',
+  qrOfferCaption: 'Ngoài đời, trường hiện mã QR này và bạn quét bằng ứng dụng Identra. Ở đây, nút bên cạnh làm thay việc quét.',
+  qrRequestLabel: 'Mã QR yêu cầu xem bằng của nhà tuyển dụng',
+  qrRequestCaption: 'Ngoài đời, trang tuyển dụng hiện mã này và bạn quét bằng điện thoại. Ở đây, nút bên cạnh làm thay việc quét.',
+  qrBeatsTitle: 'Mã này là gì, và cái gì đi đâu',
+  qrBeats: [
+    'Mã là một phiếu yêu cầu có chữ ký của nhà tuyển dụng: ai hỏi, để làm gì, cần thông tin nào, hết hạn sau 5 phút. Trong mã không có thông tin của ai.',
+    'Ví kiểm chữ ký trên phiếu và xem nhà tuyển dụng có trong danh sách được công nhận không, trước khi bạn đưa bất cứ thứ gì.',
+    'Cái đi ra: những thông tin bạn chọn, chữ ký của trường trên chúng, và chữ ký của ví chỉ dùng được cho đúng phiếu này. Tất cả được mã hóa, gửi tới máy chủ xác minh của nhà tuyển dụng.',
+    'Cái không đi: các thông tin khác trên bằng. Không có gì gửi tới trường.',
+  ],
+  qrDirection: 'Vì sao nhà tuyển dụng hiện mã và bạn quét, chứ không ngược lại: bạn cần biết ai đang hỏi trước khi đưa. Một mã chứa tấm bằng thì ai quét cũng đọc được.',
+  happenedTitle: 'Điều vừa xảy ra',
+  happenedReceive: [
+    'Trường ký tấm bằng bằng khóa riêng của trường rồi gửi thẳng vào ví của bạn.',
+    'Bằng nằm trong ví này. Máy chủ chỉ ghi lại bằng đã cấp cho sinh viên nào và ô của nó trong danh sách thu hồi; nó không giữ nội dung bằng.',
+    'Ví tự kiểm trước khi lưu: đúng chữ ký của trường, trường có trong danh sách được công nhận, bằng còn hiệu lực.',
+  ],
+  happenedRevoke: [
+    'Trường đánh dấu bản bằng này trong danh sách thu hồi có chữ ký. Không ai phải báo riêng cho nhà tuyển dụng.',
+    'Lần kiểm sau, nhà tuyển dụng đọc danh sách đó và thấy ngay. Bên kiểm khác dùng bản lưu tạm có thể chậm tới 15 phút.',
+    'Không ai xóa hay sửa được ví của bạn từ xa: bản bằng vẫn nằm trong ví, chỉ là không còn qua kiểm tra.',
+  ],
+  contactsTitle: 'Điều vừa xảy ra: ai đã liên lạc với ai',
+  contactWallet: 'Ví → Nhà tuyển dụng: {fields}, kèm chữ ký của trường và chữ ký của ví cho riêng yêu cầu này.',
+  contactSchool: 'Nhà tuyển dụng → Trường: không lần nào.',
+  contactChecks: 'Để kiểm, nhà tuyển dụng chỉ dùng danh sách tổ chức được công nhận và danh sách thu hồi, cả hai đều có chữ ký; không hỏi ai về bạn.',
+  contactDemoNote: 'Trong bản demo, máy chủ Identra chạy cả phần của trường lẫn phần của nhà tuyển dụng. Kết quả kiểm tra và các thông tin đã gửi được giữ 30 phút rồi xóa.',
+  stayedTitle: 'Ở lại trong ví của bạn',
+  stayedNote: 'Nhà tuyển dụng không nhận các thông tin này.',
+  requestDeclinedTitle: 'Bạn đã từ chối trong ví',
+  requestDeclinedBody: 'Không có thông tin nào được gửi; nhà tuyển dụng không nhận được gì. Yêu cầu này không dùng được nữa.',
+  clockSkew: 'Giờ trên máy bạn đang lệch khoảng {minutes} phút so với giờ của máy chủ. Ví thử đã tự chỉnh theo giờ máy chủ; ngoài đời, hãy đặt lại giờ trên máy.',
+  tabsLabel: 'Xem phía nào',
+  tabs: { school: 'Trường', employer: 'Nhà tuyển dụng', wallet: 'Ví của bạn' },
+  tabTurn: 'đến lượt',
+  notThisStep: { school: 'Ở bước này, trường không cần làm gì.', employer: 'Nhà tuyển dụng chưa tham gia ở bước này.' },
   employerName: 'Nhà tuyển dụng Mẫu (DEMO)',
   employerJob: 'Tuyển kỹ sư phần mềm',
   requestedTitle: 'Hồ sơ cần',
@@ -154,16 +214,20 @@ const vi: DiplomaGuidedDemoPageCopy = {
   requestSentToWallet: 'Đã mở yêu cầu trong ví thử. Xem ví rồi bấm “Chia sẻ”.',
   appliedNext: 'Tiếp: thu hồi và thử lại',
   verifierUnavailableHint: 'Nếu lỗi kéo dài, hãy thử lại sau ít phút.',
-  schoolRevokeTitle: 'Phía trường: thu hồi bằng',
-  schoolRevokeBody: 'Điện thoại giữ bằng bị mất thì sinh viên tự thu hồi bản bằng đó. Thu hồi là vĩnh viễn.',
+  schoolRevokeTitle: 'Phía trường: thu hồi bản bằng trên điện thoại bị mất',
+  schoolRevokeBody: 'Có hai lý do thu hồi: phòng đào tạo thu hồi một bằng cấp nhầm; hoặc bạn thu hồi bản bằng trên chiếc điện thoại bị mất, rồi nhận lại bản mới. Bản demo cho bạn tự làm cách thứ hai. Thu hồi bản này không xóa bằng cấp của bạn.',
   diplomaRow: 'Bằng cấp lúc {time} ngày {date}',
   noDiplomaListed: 'Trường không còn thấy bằng đã cấp trong lần đăng nhập này.',
-  revokedNote: 'Trường đã thu hồi bằng. Ví thử chưa biết điều đó; giờ thử dùng bằng thêm một lần.',
+  revokedNote: 'Bản bằng này đã bị thu hồi. Ví thử chưa biết điều đó; giờ thử dùng nó thêm một lần.',
   employerAgainTitle: 'Phía nhà tuyển dụng: kiểm tra lại',
   employerAgainBody: 'Nhà tuyển dụng tạo một yêu cầu mới và kiểm tra lại bằng như ở bước 2.',
   verifyAgain: 'Kiểm tra lại bằng này',
-  refusedByEmployer: 'Nhà tuyển dụng từ chối vì trường đã thu hồi bằng: chữ ký vẫn đúng, chỉ bước kiểm tra bằng còn hiệu lực không đạt.',
-  refusedByWallet: 'Ví thử đã biết bằng bị thu hồi nên không cho chia sẻ, đúng như ứng dụng Identra sẽ làm. Nhà tuyển dụng không nhận được gì.',
+  refusedByEmployer: 'Nhà tuyển dụng từ chối vì bản bằng này đã bị thu hồi: chữ ký vẫn đúng, chỉ bước kiểm tra còn hiệu lực không đạt.',
+  refusedByWallet: {
+    revoked: 'Ví thử đã biết bản bằng này bị thu hồi nên không cho chia sẻ, đúng như ứng dụng Identra sẽ làm. Nhà tuyển dụng không nhận được gì.',
+    suspended: 'Ví thử đã biết bản bằng này đang bị tạm dừng nên không cho chia sẻ, đúng như ứng dụng Identra sẽ làm. Nhà tuyển dụng không nhận được gì.',
+    invalid: 'Ví thử thấy bản bằng này không còn qua kiểm tra nên không cho chia sẻ, đúng như ứng dụng Identra sẽ làm. Nhà tuyển dụng không nhận được gì.',
+  },
   otherFailure: 'Lần kiểm tra này không đạt vì một lý do khác. Thử kiểm tra lại.',
   passedAfterRevoke: 'Lần kiểm tra này vẫn đạt, có thể vì thu hồi chưa tới kịp. Thử kiểm tra lại.',
   notices: {
@@ -175,10 +239,6 @@ const vi: DiplomaGuidedDemoPageCopy = {
       title: 'Phiên đăng nhập của trường đã hết hạn',
       body: 'Phiên chỉ kéo dài 30 phút, và chỉ chính phiên đã cấp bằng mới thu hồi được bằng đó. Làm lại từ đầu để tiếp tục.',
     },
-    walletEmpty: {
-      title: 'Ví thử không còn giữ bằng',
-      body: 'Bằng của lần chạy này không còn trong ví thử. Làm lại từ đầu để nhận bằng mới.',
-    },
   },
   restart: 'Làm lại từ đầu',
   restartConfirmHint: 'Ví thử sẽ được làm trống và bạn đăng nhập lại từ bước 1.',
@@ -186,9 +246,11 @@ const vi: DiplomaGuidedDemoPageCopy = {
   endPoints: [
     'Trường cấp bằng có chữ ký số vào ví của bạn. Bằng nằm trong ví của bạn, không cần hỏi lại trường mỗi lần dùng.',
     'Bạn chọn đúng những thông tin gửi đi, và nhà tuyển dụng tự kiểm tra được bằng là thật.',
-    'Khi trường thu hồi bằng, lần kiểm tra kế tiếp thấy ngay và từ chối.',
+    'Khi bản bằng bị thu hồi, lần kiểm tra kế tiếp thấy ngay và từ chối; bằng cấp của bạn không bị xóa.',
   ],
-  endSecurity: 'Cách Identra giữ an toàn',
+  endRootTitle: 'Chứng thư gốc mà ví và nhà tuyển dụng tin',
+  endRootBody: 'Mọi chữ ký trong demo truy về chứng thư gốc DEMO này. Dấu vân tay SHA-256:',
+  endRootDownload: 'Tải tệp chứng thư gốc',
   endProductDemo: 'Demo hành trình sản phẩm',
   endAllDemos: 'Tất cả demo',
 };
@@ -210,7 +272,7 @@ const en: DiplomaGuidedDemoPageCopy = {
       instructions: [
         'Press “Sign in with a sample account”. You see a sample student\'s graduation record.',
         'Press “Receive the diploma”. The university shows a diploma code and a 6-digit PIN.',
-        'Press “Put this code into the trial wallet”. The wallet shows who is issuing what.',
+        'Press “Put this code into the trial wallet” (in real life, you scan the QR code). The wallet shows where it comes from and what it is.',
         'Type the PIN into the wallet and press “Accept document”. The diploma appears in the wallet and the demo moves to step 2.',
       ],
     },
@@ -226,7 +288,7 @@ const en: DiplomaGuidedDemoPageCopy = {
     },
     revoke: {
       title: 'Revoke and try again',
-      summary: 'A revoked diploma is refused at the next check.',
+      summary: 'A revoked copy is refused at the next check.',
       instructions: [
         'Suppose the phone holding the diploma was lost. Press “Revoke this diploma” on the university\'s side and confirm.',
         'Press “Check this diploma again” on the employer\'s side, then “Open the request in the trial wallet” and “Share” as in step 2.',
@@ -237,8 +299,6 @@ const en: DiplomaGuidedDemoPageCopy = {
   instructionsTitle: 'What to press, what you will see',
   organisationSide: 'The organisation\'s side',
   walletSide: 'Your wallet',
-  openWallet: 'Open the trial wallet',
-  walletHasSomething: 'The trial wallet is waiting for you',
   signInSample: 'Sign in with a sample account',
   signingIn: 'Signing in…',
   signInProblems: {
@@ -255,7 +315,44 @@ const en: DiplomaGuidedDemoPageCopy = {
   sendToWallet: 'Put this code into the trial wallet',
   sentToWallet: 'The code is in the trial wallet. Type the PIN {pin} into the wallet.',
   sendAgain: 'Put the code into the wallet again',
-  receivedBanner: 'Step 1 done: the diploma is in the trial wallet. Now use it to apply.',
+  walletBusy: 'The wallet is working; wait a moment.',
+  qrOfferLabel: 'QR code to receive the diploma',
+  qrOfferCaption: 'In real life the university shows this QR code and you scan it with the Identra app. Here, the button next to it does the scanning for you.',
+  qrRequestLabel: 'The employer\'s QR code asking to see a diploma',
+  qrRequestCaption: 'In real life the job site shows this code and you scan it with your phone. Here, the button next to it does the scanning for you.',
+  qrBeatsTitle: 'What this code is, and what goes where',
+  qrBeats: [
+    'The code is a request slip signed by the employer: who asks, why, which details, expiring in 5 minutes. It contains nobody\'s data.',
+    'The wallet checks the signature on the slip and whether the employer is on the list of recognised organisations, before you give anything.',
+    'What leaves: the details you choose, the university\'s signature on them, and a wallet signature that only works for this very slip. All encrypted, sent to the employer\'s verification server.',
+    'What does not: the other details on the diploma. Nothing goes to the university.',
+  ],
+  qrDirection: 'Why the employer shows the code and you scan, not the other way round: you need to know who is asking before you give. A code holding your diploma could be read by anyone who scans it.',
+  happenedTitle: 'What just happened',
+  happenedReceive: [
+    'The university signed the diploma with its own private key and sent it straight to your wallet.',
+    'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
+    'Before saving, the wallet checked by itself: the university\'s signature, the university is on the recognised list, the diploma is valid.',
+  ],
+  happenedRevoke: [
+    'The university marked this copy in its signed revocation list. Nobody had to tell the employer.',
+    'At the next check the employer reads that list and sees it at once. Other verifiers using a cached copy may take up to 15 minutes.',
+    'Nobody can delete or change your wallet remotely: the copy is still in the wallet, it simply no longer passes the checks.',
+  ],
+  contactsTitle: 'What just happened: who contacted whom',
+  contactWallet: 'Wallet → Employer: {fields}, with the university\'s signature and the wallet\'s signature for this request only.',
+  contactSchool: 'Employer → University: never.',
+  contactChecks: 'To check, the employer used only the list of recognised organisations and the revocation list, both signed; it asked nobody about you.',
+  contactDemoNote: 'In this demo, Identra\'s server runs both the university\'s side and the employer\'s side. The result and the details sent are kept for 30 minutes, then deleted.',
+  stayedTitle: 'Stayed in your wallet',
+  stayedNote: 'The employer did not receive these details.',
+  requestDeclinedTitle: 'You declined in the wallet',
+  requestDeclinedBody: 'Nothing was sent; the employer received nothing. This request can no longer be used.',
+  clockSkew: 'Your device clock is about {minutes} minutes off the server\'s time. The trial wallet follows the server\'s time; in real life, set your device clock right.',
+  tabsLabel: 'Which side to show',
+  tabs: { school: 'University', employer: 'Employer', wallet: 'Your wallet' },
+  tabTurn: 'your turn here',
+  notThisStep: { school: 'The university has nothing to do in this step.', employer: 'The employer is not part of this step yet.' },
   employerName: 'Sample Employer (DEMO)',
   employerJob: 'Hiring a software engineer',
   requestedTitle: 'What they ask for',
@@ -270,16 +367,20 @@ const en: DiplomaGuidedDemoPageCopy = {
   requestSentToWallet: 'The request is open in the trial wallet. Look at the wallet and press “Share”.',
   appliedNext: 'Next: revoke and try again',
   verifierUnavailableHint: 'If this keeps happening, try again in a few minutes.',
-  schoolRevokeTitle: 'The university\'s side: revoke the diploma',
-  schoolRevokeBody: 'When the phone holding a diploma is lost, the student revokes that copy. Revocation is permanent.',
+  schoolRevokeTitle: 'The university\'s side: revoke the copy on a lost phone',
+  schoolRevokeBody: 'There are two reasons to revoke: the registrar revokes a diploma issued by mistake; or you revoke the copy on a lost phone and receive a new one. The demo lets you do the second. Revoking this copy does not cancel your degree.',
   diplomaRow: 'Diploma issued at {time} on {date}',
   noDiplomaListed: 'The university no longer lists the diploma issued in this session.',
-  revokedNote: 'The university revoked the diploma. The trial wallet does not know yet; now try to use the diploma once more.',
+  revokedNote: 'This copy of the diploma has been revoked. The trial wallet does not know yet; now try to use it once more.',
   employerAgainTitle: 'The employer\'s side: check again',
   employerAgainBody: 'The employer creates a new request and checks the diploma again, as in step 2.',
   verifyAgain: 'Check this diploma again',
-  refusedByEmployer: 'The employer refuses because the university revoked the diploma: the signature is still correct, only the check that the diploma is still valid fails.',
-  refusedByWallet: 'The trial wallet already knew the diploma was revoked and would not share it, as the Identra app does. The employer received nothing.',
+  refusedByEmployer: 'The employer refuses because this copy was revoked: the signature is still correct, only the validity check fails.',
+  refusedByWallet: {
+    revoked: 'The trial wallet already knew this copy was revoked and would not share it, as the Identra app does. The employer received nothing.',
+    suspended: 'The trial wallet already knew this copy was suspended and would not share it, as the Identra app does. The employer received nothing.',
+    invalid: 'The trial wallet saw that this copy no longer passes the checks and would not share it, as the Identra app does. The employer received nothing.',
+  },
   otherFailure: 'This check failed for another reason. Check again.',
   passedAfterRevoke: 'This check still passed, perhaps because the revocation had not arrived yet. Check again.',
   notices: {
@@ -291,10 +392,6 @@ const en: DiplomaGuidedDemoPageCopy = {
       title: 'The university sign-in has expired',
       body: 'A sign-in lasts 30 minutes, and only the session that issued a diploma can revoke it. Start again to continue.',
     },
-    walletEmpty: {
-      title: 'The trial wallet no longer holds the diploma',
-      body: 'This run\'s diploma is no longer in the trial wallet. Start again to receive a new one.',
-    },
   },
   restart: 'Start again',
   restartConfirmHint: 'The trial wallet is emptied and you sign in again at step 1.',
@@ -302,9 +399,11 @@ const en: DiplomaGuidedDemoPageCopy = {
   endPoints: [
     'The university put a digitally signed diploma into your wallet. It stays with you; nobody has to ask the university each time it is used.',
     'You chose exactly what to send, and the employer checked by itself that the diploma is genuine.',
-    'Once the university revoked the diploma, the next check saw it at once and refused it.',
+    'Once the copy was revoked, the next check saw it at once and refused it; your degree itself is not cancelled.',
   ],
-  endSecurity: 'How Identra keeps this safe',
+  endRootTitle: 'The root certificate the wallet and the employer trust',
+  endRootBody: 'Every signature in this demo traces back to this DEMO root certificate. SHA-256 fingerprint:',
+  endRootDownload: 'Download the root certificate',
   endProductDemo: 'Product journey demo',
   endAllDemos: 'All demos',
 };

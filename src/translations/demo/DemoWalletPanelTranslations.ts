@@ -41,8 +41,8 @@ export interface DemoWalletPanelCopy {
   offerTitle: string;
   lead: string;
   documentLabel: string;
-  issuerClaimed: string;
-  issuerChecked: string;
+  senderLabel: string;
+  senderHint: string;
   pinLabel: string;
   pinHint: string;
   pinIncomplete: string;
@@ -51,6 +51,7 @@ export interface DemoWalletPanelCopy {
   accepting: string;
   cancel: string;
   savedTitle: string;
+  savedIssuer: string;
   savedLead: string;
   savedLeadUnchecked: string;
   viewDocument: string;
@@ -67,11 +68,13 @@ export interface DemoWalletPanelCopy {
   expiresIn: string;
   documentInUse: string;
   fieldsTitle: string;
+  requestedTitle: string;
   required: string;
   optionsTitle: string;
   optionFull: string;
-  optionLess: string;
-  withheld: string;
+  optionOnly: string;
+  stayingLine: string;
+  chooseFirst: string;
   requiredHint: string;
   share: string;
   sending: string;
@@ -128,11 +131,11 @@ const vi: DemoWalletPanelCopy = {
   backToList: 'Về danh sách giấy tờ',
   receiveTitle: 'Nhận giấy tờ',
   checkingOffer: 'Đang kiểm tra mã nhận bằng…',
-  offerTitle: '{issuer} gửi cho bạn {document}',
-  lead: 'Kiểm tra lại nơi cấp và loại giấy tờ trước khi nhận.',
+  offerTitle: 'Bạn được mời nhận {document}',
+  lead: 'Xem nơi gửi và loại giấy tờ trước khi nhận.',
   documentLabel: 'Giấy tờ',
-  issuerClaimed: '{name} (theo lời bên gửi)',
-  issuerChecked: 'Ví sẽ kiểm tra nơi cấp này có được Identra công nhận trước khi lưu.',
+  senderLabel: 'Nơi gửi',
+  senderHint: 'Lúc này ví mới chỉ biết địa chỉ nơi gửi. Trước khi lưu, ví kiểm tra nơi cấp có được Identra công nhận, rồi cho bạn biết tên chính thức.',
   pinLabel: 'Mã PIN 6 chữ số nơi cấp đưa cho bạn',
   pinHint: 'Mã PIN hiện ngay cạnh mã nhận bằng trên trang của trường.',
   pinIncomplete: 'Nhập đủ mã PIN để tiếp tục.',
@@ -141,6 +144,7 @@ const vi: DemoWalletPanelCopy = {
   accepting: 'Đang nhận và kiểm tra giấy tờ…',
   cancel: 'Hủy',
   savedTitle: 'Đã lưu vào ví',
+  savedIssuer: 'Nơi cấp: {name}, được Identra công nhận.',
   savedLead: 'Giấy tờ đã qua kiểm tra: chữ ký của nơi cấp khớp, nơi cấp được Identra công nhận và giấy tờ còn hiệu lực.',
   savedLeadUnchecked: 'Giấy tờ đã được lưu. Ví chưa kiểm được trạng thái của nó lúc nhận; hãy kiểm tra lại khi có mạng.',
   viewDocument: 'Xem giấy tờ',
@@ -157,11 +161,13 @@ const vi: DemoWalletPanelCopy = {
   expiresIn: 'Còn {time}',
   documentInUse: 'Giấy tờ sẽ dùng',
   fieldsTitle: 'Thông tin sẽ rời ví',
+  requestedTitle: 'Họ yêu cầu',
   required: 'Bắt buộc',
-  optionsTitle: 'Chọn mức chia sẻ',
-  optionFull: 'Đủ như họ yêu cầu',
-  optionLess: 'Ít hơn: không gửi {fields}',
-  withheld: 'Ở lại trong ví: {fields}',
+  optionsTitle: 'Bạn muốn gửi bao nhiêu?',
+  optionFull: 'Gửi đủ {count} thông tin họ hỏi',
+  optionOnly: 'Chỉ gửi {fields}',
+  stayingLine: 'Không rời ví lần này: {fields}',
+  chooseFirst: 'Chọn mức chia sẻ để tiếp tục.',
   requiredHint: 'Thông tin bắt buộc không bỏ được. Nếu không muốn gửi, hãy từ chối.',
   share: 'Chia sẻ',
   sending: 'Đang ký và gửi…',
@@ -249,11 +255,11 @@ const en: DemoWalletPanelCopy = {
   backToList: 'Back to my documents',
   receiveTitle: 'Receive a document',
   checkingOffer: 'Checking the code…',
-  offerTitle: '{issuer} is sending you a {document}',
-  lead: 'Check who is issuing it and what it is before you accept.',
+  offerTitle: 'You are invited to receive a {document}',
+  lead: 'Look at where it comes from and what it is before you accept.',
   documentLabel: 'Document',
-  issuerClaimed: '{name} (as the sender says)',
-  issuerChecked: 'The wallet checks that Identra recognises this issuer before saving.',
+  senderLabel: 'Sent from',
+  senderHint: 'For now the wallet only knows the sender\'s address. Before saving, it checks that Identra recognises the issuer, then tells you its official name.',
   pinLabel: 'The 6-digit PIN the issuer gave you',
   pinHint: 'The PIN is shown right next to the diploma code on the university\'s page.',
   pinIncomplete: 'Enter the whole PIN to continue.',
@@ -262,6 +268,7 @@ const en: DemoWalletPanelCopy = {
   accepting: 'Receiving and checking the document…',
   cancel: 'Cancel',
   savedTitle: 'Saved to the wallet',
+  savedIssuer: 'Issued by {name}, recognised by Identra.',
   savedLead: 'The document passed the checks: the issuer\'s signature matches, Identra recognises the issuer and the document is valid.',
   savedLeadUnchecked: 'The document is saved. The wallet could not check its status on receipt; check again when you are online.',
   viewDocument: 'View document',
@@ -278,11 +285,13 @@ const en: DemoWalletPanelCopy = {
   expiresIn: '{time} left',
   documentInUse: 'Document to use',
   fieldsTitle: 'What leaves the wallet',
+  requestedTitle: 'What they ask for',
   required: 'Required',
-  optionsTitle: 'How much to share',
-  optionFull: 'All they asked for',
-  optionLess: 'Less: without {fields}',
-  withheld: 'Stays in the wallet: {fields}',
+  optionsTitle: 'How much do you want to send?',
+  optionFull: 'Send all {count} details they asked for',
+  optionOnly: 'Send only {fields}',
+  stayingLine: 'Not leaving the wallet this time: {fields}',
+  chooseFirst: 'Choose how much to share to continue.',
   requiredHint: 'Required details cannot be left out. If you do not want to send them, decline.',
   share: 'Share',
   sending: 'Signing and sending…',

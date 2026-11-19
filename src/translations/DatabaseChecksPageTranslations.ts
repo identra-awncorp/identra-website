@@ -14,7 +14,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     pillars: [
       {
         title: 'Global coverage',
-        desc: 'Match user data against multiple authoritative and issuing sources across 40+ countries to maximize coverage.'
+        desc: 'Match user data against multiple authoritative and issuing sources to maximize coverage.'
       },
       {
         title: 'Custom matching logic',
@@ -69,8 +69,8 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     dbCards: [
       {
         title: 'Database Verification',
-        desc: 'Verify collected and extracted PII against authoritative databases and issuing sources across 40+ countries. Achieve immediate identity validation for major geographic jurisdictions.',
-        footer: 'Coverage: Global (40+ Countries)'
+        desc: 'Verify collected and extracted PII against authoritative databases and issuing sources. Achieve immediate identity validation for major geographic jurisdictions.',
+        footer: 'Coverage: Global'
       },
       {
         title: 'eCBSV Validation',
@@ -137,7 +137,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       attributeMetrics: 'Attribute Grid Metrics',
       systemStatement: 'SYSTEM STATEMENT:',
       protocol: 'Protocol: SHA-256 Auth Endpoint',
-      certification: 'ISO 27001 Certified System',
       fields: {
         firstName: 'First Name',
         lastName: 'Last Name',
@@ -171,7 +170,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       {
         id: 'geo',
         title: 'Comprehensive geographic coverage',
-        desc: 'Validate collected PII and national IDs against issuing sources in 40+ countries without needing to integrate multiple vendors.'
+        desc: 'Validate collected PII and national IDs against issuing sources without needing to integrate multiple vendors.'
       },
       {
         id: 'match',
@@ -237,10 +236,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     faqTitle: 'Frequently Asked Questions',
     faqs: [
       {
-        q: "What countries do Identra's database checks cover?",
-        a: 'We integrate with authoritative sources, credit bureaus, civil registries, and utility data streams across 40+ countries. This includes deep coverage for US records (eCBSV, AAMVA DMV, IRS TIN), Canadian credit sources, European civil indexes, and APAC/Latin American tax systems.'
-      },
-      {
         q: 'How fast are database query checks completed?',
         a: 'Database checks are processed via secure direct API channels and are typically completed in under 1 second. This makes them ideal for low-friction, high-conversion customer signups.'
       },
@@ -263,7 +258,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     pillars: [
       {
         title: 'Cobertura global',
-        desc: 'Compara datos de usuarios con múltiples fuentes oficiales y emisoras en más de 40 países para maximizar la cobertura.'
+        desc: 'Compara datos de usuarios con múltiples fuentes oficiales y emisoras para maximizar la cobertura.'
       },
       {
         title: 'Lógica de coincidencia personalizada',
@@ -318,8 +313,8 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     dbCards: [
       {
         title: 'Verificación de bases de datos',
-        desc: 'Verifica PII recopilada y extraída contra bases de datos oficiales y fuentes emisoras en más de 40 países. Logra validación de identidad inmediata en jurisdicciones clave.',
-        footer: 'Cobertura: global (más de 40 países)'
+        desc: 'Verifica PII recopilada y extraída contra bases de datos oficiales y fuentes emisoras. Logra validación de identidad inmediata en jurisdicciones clave.',
+        footer: 'Cobertura: global'
       },
       {
         title: 'Validación eCBSV',
@@ -386,7 +381,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       attributeMetrics: 'Métricas de atributos',
       systemStatement: 'DECLARACIÓN DEL SISTEMA:',
       protocol: 'Protocolo: punto de conexión autenticado SHA-256',
-      certification: 'Sistema certificado ISO 27001',
       fields: {
         firstName: 'Nombre',
         lastName: 'Apellido',
@@ -420,7 +414,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       {
         id: 'geo',
         title: 'Cobertura geográfica integral',
-        desc: 'Valida PII recopilada e identificaciones nacionales contra fuentes emisoras en más de 40 países sin integrar múltiples proveedores.'
+        desc: 'Valida PII recopilada e identificaciones nacionales contra fuentes emisoras sin integrar múltiples proveedores.'
       },
       {
         id: 'match',
@@ -486,10 +480,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     faqTitle: 'Preguntas frecuentes',
     faqs: [
       {
-        q: '¿Qué países cubren las verificaciones de bases de datos de Identra?',
-        a: 'Integramos fuentes oficiales, burós de crédito, registros civiles y flujos de datos de servicios públicos en más de 40 países. Esto incluye cobertura profunda para registros de EE. UU. (eCBSV, AAMVA DMV, IRS TIN), fuentes crediticias canadienses, índices civiles europeos y sistemas tributarios de APAC y América Latina.'
-      },
-      {
         q: '¿Qué tan rápido se completan las consultas de bases de datos?',
         a: 'Las verificaciones de bases de datos se procesan mediante canales API directos y seguros, y normalmente se completan en menos de 1 segundo. Son ideales para altas de clientes con poca fricción y alta conversión.'
       },
@@ -512,7 +502,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     pillars: [
       {
         title: 'グローバルカバレッジ',
-        desc: '40か国以上の複数の公的情報源や発行元データとユーザーデータを照合し、カバレッジを最大化します。'
+        desc: '複数の公的情報源や発行元データとユーザーデータを照合し、カバレッジを最大化します。'
       },
       {
         title: 'カスタム照合ロジック',
@@ -567,8 +557,8 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     dbCards: [
       {
         title: 'データベース検証',
-        desc: '収集・抽出したPIIを、40か国以上の公的データベースと発行元情報で検証します。主要地域で即時の本人確認を実現します。',
-        footer: 'カバレッジ: グローバル（40か国以上）'
+        desc: '収集・抽出したPIIを、公的データベースと発行元情報で検証します。主要地域で即時の本人確認を実現します。',
+        footer: 'カバレッジ: グローバル'
       },
       {
         title: 'eCBSV 検証',
@@ -635,7 +625,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       attributeMetrics: '属性グリッド指標',
       systemStatement: 'システム判定:',
       protocol: 'プロトコル: SHA-256認証エンドポイント',
-      certification: 'ISO 27001認証システム',
       fields: {
         firstName: '名',
         lastName: '姓',
@@ -669,7 +658,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       {
         id: 'geo',
         title: '包括的な地域カバレッジ',
-        desc: '複数ベンダーを統合せずに、収集したPIIや国民IDを40か国以上の発行元情報で検証します。'
+        desc: '複数ベンダーを統合せずに、収集したPIIや国民IDを発行元情報で検証します。'
       },
       {
         id: 'match',
@@ -735,10 +724,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     faqTitle: 'よくある質問',
     faqs: [
       {
-        q: 'Identraのデータベースチェックはどの国をカバーしていますか？',
-        a: '40か国以上で、公的情報源、信用情報機関、住民登録、公共料金データストリームと連携しています。米国記録（eCBSV、AAMVA DMV、IRS TIN）、カナダの信用情報、欧州の住民インデックス、APAC/ラテンアメリカの税務システムを深くカバーします。'
-      },
-      {
         q: 'データベース照会チェックはどのくらい速く完了しますか？',
         a: 'データベースチェックは安全な直接APIチャネルで処理され、通常1秒未満で完了します。低摩擦で高コンバージョンの顧客登録に適しています。'
       },
@@ -761,7 +746,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     pillars: [
       {
         title: 'Globale Abdeckung',
-        desc: 'Gleichen Sie Nutzerdaten mit mehreren amtlichen und ausstellenden Quellen in über 40 Ländern ab, um die Abdeckung zu maximieren.'
+        desc: 'Gleichen Sie Nutzerdaten mit mehreren amtlichen und ausstellenden Quellen ab, um die Abdeckung zu maximieren.'
       },
       {
         title: 'Individuelle Abgleichlogik',
@@ -816,8 +801,8 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     dbCards: [
       {
         title: 'Datenbankverifizierung',
-        desc: 'Verifizieren Sie erfasste und extrahierte PII gegen amtliche Datenbanken und ausstellende Quellen in über 40 Ländern. Erreichen Sie sofortige Identitätsvalidierung in wichtigen geografischen Rechtsräumen.',
-        footer: 'Abdeckung: Global (über 40 Länder)'
+        desc: 'Verifizieren Sie erfasste und extrahierte PII gegen amtliche Datenbanken und ausstellende Quellen. Erreichen Sie sofortige Identitätsvalidierung in wichtigen geografischen Rechtsräumen.',
+        footer: 'Abdeckung: Global'
       },
       {
         title: 'eCBSV-Validierung',
@@ -884,7 +869,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       attributeMetrics: 'Attributraster-Metriken',
       systemStatement: 'SYSTEMAUSSAGE:',
       protocol: 'Protokoll: SHA-256-Auth-Endpunkt',
-      certification: 'ISO 27001-zertifiziertes System',
       fields: {
         firstName: 'Vorname',
         lastName: 'Nachname',
@@ -918,7 +902,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       {
         id: 'geo',
         title: 'Umfassende geografische Abdeckung',
-        desc: 'Validieren Sie erfasste PII und nationale IDs gegen ausstellende Quellen in über 40 Ländern, ohne mehrere Anbieter integrieren zu müssen.'
+        desc: 'Validieren Sie erfasste PII und nationale IDs gegen ausstellende Quellen, ohne mehrere Anbieter integrieren zu müssen.'
       },
       {
         id: 'match',
@@ -984,10 +968,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     faqTitle: 'Häufig gestellte Fragen',
     faqs: [
       {
-        q: 'Welche Länder decken Identras Datenbankprüfungen ab?',
-        a: 'Wir integrieren amtliche Quellen, Kreditbüros, Personenstandsregister und Versorgungsdatenströme in über 40 Ländern. Dazu gehören tiefe Abdeckung für US-Datensätze (eCBSV, AAMVA DMV, IRS TIN), kanadische Kreditquellen, europäische Personenstandsindizes sowie Steuerverwaltungssysteme in APAC und Lateinamerika.'
-      },
-      {
         q: 'Wie schnell werden Datenbankabfragen abgeschlossen?',
         a: 'Datenbankprüfungen werden über sichere direkte API-Kanäle verarbeitet und normalerweise in unter 1 Sekunde abgeschlossen. Dadurch eignen sie sich ideal für reibungsarme Kundenregistrierungen mit hoher Conversion.'
       },
@@ -1010,7 +990,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     pillars: [
       {
         title: 'Độ phủ toàn cầu',
-        desc: 'Đối chiếu dữ liệu người dùng với nhiều nguồn chính thức và nguồn phát hành tại hơn 40 quốc gia để tối đa hóa độ phủ.'
+        desc: 'Đối chiếu dữ liệu người dùng với nhiều nguồn chính thức và nguồn phát hành để tối đa hóa độ phủ.'
       },
       {
         title: 'Logic đối chiếu tùy chỉnh',
@@ -1065,8 +1045,8 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     dbCards: [
       {
         title: 'Xác minh cơ sở dữ liệu',
-        desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu chính thức và nguồn phát hành tại hơn 40 quốc gia. Xác thực danh tính tức thì tại các khu vực pháp lý quan trọng.',
-        footer: 'Độ phủ: toàn cầu (hơn 40 quốc gia)'
+        desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu chính thức và nguồn phát hành. Xác thực danh tính tức thì tại các khu vực pháp lý quan trọng.',
+        footer: 'Độ phủ: toàn cầu'
       },
       {
         title: 'Xác thực eCBSV',
@@ -1133,7 +1113,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       attributeMetrics: 'Chỉ số lưới thuộc tính',
       systemStatement: 'TUYÊN BỐ HỆ THỐNG:',
       protocol: 'Giao thức: điểm cuối xác thực SHA-256',
-      certification: 'Hệ thống được chứng nhận ISO 27001',
       fields: {
         firstName: 'Tên',
         lastName: 'Họ',
@@ -1167,7 +1146,7 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
       {
         id: 'geo',
         title: 'Độ phủ địa lý toàn diện',
-        desc: 'Xác thực PII đã thu thập và ID quốc gia với nguồn phát hành tại hơn 40 quốc gia mà không cần tích hợp nhiều nhà cung cấp.'
+        desc: 'Xác thực PII đã thu thập và ID quốc gia với nguồn phát hành mà không cần tích hợp nhiều nhà cung cấp.'
       },
       {
         id: 'match',
@@ -1232,10 +1211,6 @@ export const DATABASE_CHECKS_TRANSLATIONS: any = {
     ],
     faqTitle: 'Câu hỏi thường gặp',
     faqs: [
-      {
-        q: 'Kiểm tra cơ sở dữ liệu của Identra hỗ trợ những quốc gia nào?',
-        a: 'Chúng tôi tích hợp với nguồn chính thức, tổ chức tín dụng, sổ đăng ký hộ tịch và luồng dữ liệu tiện ích tại hơn 40 quốc gia. Bao gồm độ phủ sâu cho hồ sơ Hoa Kỳ (eCBSV, AAMVA DMV, IRS TIN), nguồn tín dụng Canada, chỉ mục hộ tịch châu Âu và hệ thống thuế tại APAC/Mỹ Latinh.'
-      },
       {
         q: 'Kiểm tra truy vấn cơ sở dữ liệu hoàn tất nhanh đến mức nào?',
         a: 'Kiểm tra cơ sở dữ liệu được xử lý qua các kênh API trực tiếp an toàn và thường hoàn tất trong chưa đến 1 giây. Điều này phù hợp cho quy trình đăng ký khách hàng ít ma sát, tỷ lệ chuyển đổi cao.'

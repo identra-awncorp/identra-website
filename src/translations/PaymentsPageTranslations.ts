@@ -14,7 +14,7 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     heroBenefits: [
       {
         title: 'Verify globally without complexity',
-        desc: 'Verify individuals and businesses in more than 200 countries and territories with support for local documents, databases, and compliance regulations.'
+        desc: 'Verify individuals and businesses with support for local documents, databases, and compliance regulations.'
       },
       {
         title: 'Onboard users faster with less friction',
@@ -25,10 +25,6 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
         desc: 'Adapt to evolving regulations like AMLD6 and FinCEN with customizable workflows that automate filings and centralize audit-ready logs.'
       }
     ],
-    trust: {
-      title: "Trusted by startups & the world's largest companies",
-      logos: ['Petal', 'Payoneer', '[AngelList]', 'Branch Payments']
-    },
     ecosystem: {
       title: 'Customize identity flows to fit your payments ecosystem',
       desc: 'Dynamically gather documentation, query authoritative sources, and perform compliance checks from a single, integrated console.',
@@ -227,12 +223,6 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
         { title: 'B2B payments and platforms', desc: 'Verify complex corporate structures, beneficial owners (UBOs), and tax filings to establish robust trust for high-value accounts payable and receivable workflows.' }
       ]
     },
-    testimonial: {
-      quote: '"We want to automate the decision making process as much as possible during KYB and KYC. Identra not only lets us do that and saves us time but also ensures that we can be flexible with changing our workflows and rules when we discover new fraud rings."',
-      name: 'Amanda Hodgetts-Martin',
-      title: 'Director of risk management at Branch',
-      cta: 'Read case study'
-    },
     explore: {
       title: "Explore more of Identra's identity platform",
       cards: [
@@ -255,11 +245,10 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     tryDemo: 'Probar la demo',
     trySandbox: 'Probar sandbox de identidad',
     heroBenefits: [
-      { title: 'Verifica globalmente sin complejidad', desc: 'Verifica personas y empresas en más de 200 países y territorios con soporte para documentos locales, bases de datos y regulaciones de cumplimiento.' },
+      { title: 'Verifica globalmente sin complejidad', desc: 'Verifica personas y empresas con soporte para documentos locales, bases de datos y regulaciones de cumplimiento.' },
       { title: 'Incorpora usuarios más rápido y con menos fricción', desc: 'Diseña flujos optimizados para conversión que permiten a usuarios y comercios legítimos empezar a transaccionar al instante.' },
       { title: 'Simplifica cumplimiento y auditoría', desc: 'Adáptate a normas como AMLD6 y FinCEN con workflows configurables que automatizan reportes y centralizan logs listos para auditoría.' }
     ],
-    trust: { title: 'Con la confianza de startups y de las empresas más grandes del mundo', logos: ['Petal', 'Payoneer', '[AngelList]', 'Branch Payments'] },
     ecosystem: {
       title: 'Personaliza flujos de identidad para tu ecosistema de pagos',
       desc: 'Recopila documentación, consulta fuentes autorizadas y ejecuta controles de cumplimiento desde una consola integrada.',
@@ -332,7 +321,6 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
       badge: 'Entorno de demo en vivo', title: 'Inicia tu demo personalizada', desc: 'Cuéntanos un poco sobre ti y personalizaremos la experiencia, sin llamada de ventas.', app: 'checkout_onboarding.app', merchantApplication: 'Solicitud de comercio', identityVerified: 'Identidad verificada', kybAudit: 'Auditoría registral KYB', launchSandbox: 'Iniciar sandbox', firstName: 'Nombre *', lastName: 'Apellido *', workEmail: 'Email laboral *', companyWebsite: 'Sitio web de la empresa', companyName: 'Nombre de empresa *', jobTitle: 'Cargo', placeholders: { firstName: 'Juan', lastName: 'Pérez', email: 'juan.perez@empresa.com', website: 'https://empresa.com', companyName: 'Ej. Paytech LLC', jobTitle: 'Gerente de cumplimiento' }, viewDemo: 'Ver demo', requiredAlert: 'Completa todos los campos obligatorios.', successTitle: 'Código de sandbox generado', successDesc: 'Hola {firstName}, generamos un token persistente de desarrollador para {companyName}. Revisa tu correo {email} para finalizar la configuración.', submitAnother: 'Enviar otra solicitud'
     },
     help: { title: 'Cómo puede ayudar Identra', desc: 'Simplifica el cumplimiento global con soluciones rápidas y escalables.', cards: [{ title: 'Cumplimiento en remesas', desc: 'Verifica remitentes y destinatarios en tiempo real, filtra sanciones y cumple AML transfronterizo sin fricción innecesaria.' }, { title: 'POS y pagos presenciales', desc: 'Onboarding rápido y conforme para comercios físicos con documentos flexibles y consulta registral instantánea.' }, { title: 'Pagos B2B y plataformas', desc: 'Verifica estructuras corporativas, UBOs y declaraciones fiscales para flujos de alto valor.' }] },
-    testimonial: { quote: '"Queremos automatizar el proceso de decisión tanto como sea posible durante KYB y KYC. Identra nos permite hacerlo, nos ahorra tiempo y nos da flexibilidad para cambiar workflows y reglas cuando descubrimos nuevos grupos de fraude."', name: 'Amanda Hodgetts-Martin', title: 'Directora de gestión de riesgo en Branch', cta: 'Leer caso de estudio' },
     explore: { title: 'Explora más de la plataforma de identidad de Identra', cards: [{ view: 'platform', title: 'Expándete globalmente con KYB/KYC internacional.' }, { view: 'kyb', title: 'Verifica cualquier empresa y las personas detrás de ella con KYB-KYC integrado.' }] },
     finalCta: { title: '¿Quieres mover dinero sin cuellos de botella?', desc: 'Descubre cómo Identra ayuda a empresas de pagos globales a simplificar cumplimiento sin sacrificar velocidad.', primary: 'Probar la demo', secondary: 'Pruébalo ahora' }
   },
@@ -344,11 +332,10 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     tryDemo: 'デモを試す',
     trySandbox: '本人確認サンドボックスを試す',
     heroBenefits: [
-      { title: '複雑さなしにグローバル検証', desc: '200 以上の国と地域で、現地書類、データベース、規制に対応しながら個人と事業者を検証します。' },
+      { title: '複雑さなしにグローバル検証', desc: '現地書類、データベース、規制に対応しながら個人と事業者を検証します。' },
       { title: '少ない摩擦でより早くオンボード', desc: '正当なユーザーと加盟店がすぐに取引を開始できる、コンバージョン重視のオンボーディングを設計できます。' },
       { title: 'コンプライアンスと監査準備を効率化', desc: 'AMLD6 や FinCEN など進化する規制に合わせ、申告を自動化し監査ログを一元化します。' }
     ],
-    trust: { title: 'スタートアップから世界最大級の企業まで信頼されています', logos: ['Petal', 'Payoneer', '[AngelList]', 'Branch Payments'] },
     ecosystem: {
       title: '決済エコシステムに合わせて本人確認フローをカスタマイズ',
       desc: '書類収集、公式ソース照会、コンプライアンスチェックを単一の統合コンソールから動的に実行します。',
@@ -385,7 +372,6 @@ export const PAYMENTS_PAGE_TRANSLATIONS: any = {
     features: { title: '決済事業に合わせて本人確認ワークフローをカスタマイズ', desc: '市場、事業セグメント、リスク姿勢に合わせて各チェックを調整します。', cards: [{ title: 'グローバル対応', desc: '単一統合で 150 以上のグローバルデータソースへアクセスし、オンボーディングを加速します。' }, { title: '柔軟な書類収集', desc: '形式を問わず事業登記や設立証明などを収集・検証します。' }, { title: '事業体登記検索', desc: '公的登記を取得し、事業の良好な状態を確認します。' }, { title: 'TIN と VAT 検証', desc: '米国および世界の税番号を公式ネットワークで即時検証します。' }, { title: '業種分類', desc: 'NAICS と MCC 分類で事業リスクを評価します。' }, { title: '財務データ', desc: '担保権や判決、Marketplace 連携で財務健全性を評価します。' }, { title: '事業主スクリーニング', desc: 'UBO をウォッチリストや adverse media などで確認します。' }, { title: 'カスタムワークフロー', desc: 'KYB プロセスのあらゆる側面を自動化・調整します。' }, { title: '自動監査ログ', desc: 'KYB/KYC チェックと判断を一箇所に記録します。' }] },
     demo: { badge: 'ライブデモ環境', title: 'カスタムデモを開始', desc: '少し情報を入力すると、営業電話なしで体験をパーソナライズします。', app: 'checkout_onboarding.app', merchantApplication: '加盟店申請', identityVerified: '本人確認済み', kybAudit: 'KYB 登記監査', launchSandbox: 'サンドボックスを起動', firstName: '名 *', lastName: '姓 *', workEmail: '勤務先メール *', companyWebsite: '会社 Web サイト', companyName: '会社名 *', jobTitle: '役職', placeholders: { firstName: 'Taro', lastName: 'Yamada', email: 'taro.yamada@company.com', website: 'https://company.com', companyName: '例: Paytech LLC', jobTitle: 'コンプライアンスマネージャー' }, viewDemo: 'デモを見る', requiredAlert: '必須項目をすべて入力してください。', successTitle: 'サンドボックスコードを生成しました', successDesc: '{firstName} さん、{companyName} 用の永続サンドボックス開発者トークンを生成しました。{email} の受信箱を確認して設定を完了してください。', submitAnother: '別のリクエストを送信' },
     help: { title: 'Identra でできること', desc: '高速で拡張可能なソリューションによりグローバルコンプライアンスを簡素化します。', cards: [{ title: '送金コンプライアンス', desc: '送金者と受取人をリアルタイムで検証し、制裁チェックを行います。' }, { title: 'POS と対面決済', desc: '実店舗加盟店の迅速で準拠したオンボーディングを実現します。' }, { title: 'B2B 決済とプラットフォーム', desc: '複雑な法人構造、UBO、税務申告を検証します。' }] },
-    testimonial: { quote: '「KYB と KYC の意思決定をできる限り自動化したいと考えています。Identra はそれを実現して時間を節約するだけでなく、新しい不正リングを発見したときにワークフローやルールを柔軟に変更できます。」', name: 'Amanda Hodgetts-Martin', title: 'Branch リスク管理ディレクター', cta: '事例を読む' },
     explore: { title: 'Identra の本人確認プラットフォームをさらに見る', cards: [{ view: 'platform', title: '国際 KYB/KYC でグローバルに拡大。' }, { view: 'kyb', title: '統合 KYB-KYC であらゆる事業と関係者を検証。' }] },
     finalCta: { title: '資金移動を滞らせたくありませんか？', desc: 'Identra がグローバル決済企業のコンプライアンスを速度を犠牲にせず効率化する方法をご覧ください。', primary: 'デモを試す', secondary: '今すぐ試す' }
   },
@@ -402,11 +388,10 @@ PAYMENTS_PAGE_TRANSLATIONS.de = {
   tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Identity-Sandbox testen',
   heroBenefits: [
-    { title: 'Weltweit verifizieren, ohne Komplexität', desc: 'Verifizieren Sie Personen und Unternehmen in mehr als 200 Ländern und Regionen mit Unterstützung für lokale Dokumente, Datenbanken und Compliance-Vorgaben.' },
+    { title: 'Weltweit verifizieren, ohne Komplexität', desc: 'Verifizieren Sie Personen und Unternehmen mit Unterstützung für lokale Dokumente, Datenbanken und Compliance-Vorgaben.' },
     { title: 'Nutzer schneller mit weniger Reibung onboarden', desc: 'Gestalten Sie konversionsstarke Onboarding-Abläufe, damit legitime Nutzer und Händler ohne Hürden sofort Transaktionen starten können.' },
     { title: 'Compliance und Audit-Vorbereitung vereinfachen', desc: 'Reagieren Sie auf Vorschriften wie AMLD6 und FinCEN mit anpassbaren Workflows, die Meldungen automatisieren und auditfähige Protokolle bündeln.' }
   ],
-  trust: { title: 'Vertraut von Startups und den größten Unternehmen der Welt', logos: ['Petal', 'Payoneer', '[AngelList]', 'Branch Payments'] },
   ecosystem: {
     title: 'Identitätsabläufe passend zu Ihrem Zahlungsökosystem anpassen',
     desc: 'Sammeln Sie Dokumente dynamisch, fragen Sie offizielle Quellen ab und führen Sie Compliance-Prüfungen aus einer integrierten Konsole durch.',
@@ -577,12 +562,6 @@ PAYMENTS_PAGE_TRANSLATIONS.de = {
       { title: 'B2B-Zahlungen und Plattformen', desc: 'Prüfen Sie komplexe Unternehmensstrukturen, UBOs und Steuerunterlagen, um Vertrauen für hochwertige Zahlungsabläufe aufzubauen.' }
     ]
   },
-  testimonial: {
-    quote: '"Wir möchten den Entscheidungsprozess während KYB und KYC so weit wie möglich automatisieren. Identra hilft uns nicht nur dabei und spart Zeit, sondern gibt uns auch die Flexibilität, Workflows und Regeln anzupassen, wenn wir neue Betrugsmuster entdecken."',
-    name: 'Amanda Hodgetts-Martin',
-    title: 'Director of Risk Management bei Branch',
-    cta: 'Fallstudie lesen'
-  },
   explore: { title: 'Mehr von Identras Identitätsplattform entdecken', cards: [{ view: 'platform', title: 'Global expandieren mit internationalem KYB/KYC.' }, { view: 'kyb', title: 'Jedes Unternehmen und die Menschen dahinter mit integriertem KYB-KYC verifizieren.' }] },
   finalCta: { title: 'Geld bewegen, ohne ausgebremst zu werden?', desc: 'Erfahren Sie, wie Identra globalen Zahlungsunternehmen hilft, Compliance zu vereinfachen, ohne Geschwindigkeit zu opfern.', primary: 'Demo testen', secondary: 'Jetzt ausprobieren' }
 } as any;
@@ -595,11 +574,10 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
   tryDemo: 'Trải nghiệm demo',
   trySandbox: 'Dùng thử sandbox định danh',
   heroBenefits: [
-    { title: 'Xác minh toàn cầu mà không phức tạp', desc: 'Xác minh cá nhân và doanh nghiệp tại hơn 200 quốc gia và vùng lãnh thổ với hỗ trợ cho giấy tờ, cơ sở dữ liệu và quy định tuân thủ tại địa phương.' },
+    { title: 'Xác minh toàn cầu mà không phức tạp', desc: 'Xác minh cá nhân và doanh nghiệp với hỗ trợ cho giấy tờ, cơ sở dữ liệu và quy định tuân thủ tại địa phương.' },
     { title: 'Onboard người dùng nhanh hơn, ít ma sát hơn', desc: 'Thiết kế luồng onboarding tối ưu chuyển đổi để người dùng và merchant hợp lệ có thể bắt đầu giao dịch ngay.' },
     { title: 'Tinh gọn tuân thủ và chuẩn bị kiểm toán', desc: 'Thích ứng với các quy định như AMLD6 và FinCEN bằng workflow tùy chỉnh, tự động hóa báo cáo và tập trung nhật ký sẵn sàng kiểm toán.' }
   ],
-  trust: { title: 'Được các startup và doanh nghiệp lớn nhất thế giới tin dùng', logos: ['Petal', 'Payoneer', '[AngelList]', 'Branch Payments'] },
   ecosystem: {
     title: 'Tùy chỉnh luồng định danh phù hợp với hệ sinh thái thanh toán',
     desc: 'Thu thập tài liệu linh hoạt, truy vấn nguồn có thẩm quyền và thực hiện kiểm tra tuân thủ từ một bảng điều khiển tích hợp.',
@@ -769,12 +747,6 @@ PAYMENTS_PAGE_TRANSLATIONS.vi = {
       { title: 'POS và thanh toán trực tiếp', desc: 'Onboard nhanh và đúng chuẩn cho merchant tại cửa hàng bằng thu thập tài liệu linh hoạt và tra cứu đăng ký tức thì trên nhiều khu vực.' },
       { title: 'Thanh toán B2B và nền tảng', desc: 'Xác minh cấu trúc doanh nghiệp phức tạp, UBO và hồ sơ thuế để xây dựng niềm tin cho các luồng phải thu, phải trả giá trị cao.' }
     ]
-  },
-  testimonial: {
-    quote: '"Chúng tôi muốn tự động hóa quá trình ra quyết định nhiều nhất có thể trong KYB và KYC. Identra không chỉ giúp chúng tôi làm điều đó và tiết kiệm thời gian, mà còn bảo đảm chúng tôi có thể linh hoạt thay đổi workflow và quy tắc khi phát hiện các nhóm gian lận mới."',
-    name: 'Amanda Hodgetts-Martin',
-    title: 'Giám đốc quản lý rủi ro tại Branch',
-    cta: 'Đọc nghiên cứu điển hình'
   },
   explore: { title: 'Khám phá thêm nền tảng định danh của Identra', cards: [{ view: 'platform', title: 'Mở rộng toàn cầu với KYB/KYC quốc tế.' }, { view: 'kyb', title: 'Xác minh mọi doanh nghiệp và những người đứng sau họ bằng KYB-KYC tích hợp.' }] },
   finalCta: { title: 'Bạn muốn chuyển tiền mà không bị nghẽn quy trình?', desc: 'Xem cách Identra giúp các công ty thanh toán toàn cầu tinh gọn tuân thủ mà không đánh đổi tốc độ.', primary: 'Trải nghiệm demo', secondary: 'Dùng thử ngay' }

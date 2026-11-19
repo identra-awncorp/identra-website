@@ -99,6 +99,7 @@ export interface DiplomaGuidedDemoPageCopy {
   endRootBody: string;
   endRootDownload: string;
   endProductDemo: string;
+  endSecurity: string;
   endAllDemos: string;
 }
 
@@ -252,6 +253,7 @@ const vi: DiplomaGuidedDemoPageCopy = {
   endRootBody: 'Mọi chữ ký trong demo truy về chứng thư gốc DEMO này. Dấu vân tay SHA-256:',
   endRootDownload: 'Tải tệp chứng thư gốc',
   endProductDemo: 'Demo hành trình sản phẩm',
+  endSecurity: 'Bảo mật: đã có gì, chưa có gì',
   endAllDemos: 'Tất cả demo',
 };
 
@@ -405,6 +407,7 @@ const en: DiplomaGuidedDemoPageCopy = {
   endRootBody: 'Every signature in this demo traces back to this DEMO root certificate. SHA-256 fingerprint:',
   endRootDownload: 'Download the root certificate',
   endProductDemo: 'Product journey demo',
+  endSecurity: 'Security: what is built, what is not yet',
   endAllDemos: 'All demos',
 };
 

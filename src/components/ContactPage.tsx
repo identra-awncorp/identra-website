@@ -4,35 +4,21 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  ArrowLeft, ArrowRight, PhoneCall, MapPin, Clock, 
-  CheckCircle2, ShieldCheck, AlertCircle, Loader2, Building2, 
-  HelpCircle, ChevronDown, ChevronUp, Search, Sparkles, Send, Check
+import {
+  ArrowLeft, ArrowRight, PhoneCall, CheckCircle2, AlertCircle, Loader2,
+  HelpCircle, ChevronDown, ChevronUp, Search, Send, Check
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { CONTACT_TRANSLATIONS } from '../translations/ContactPageTranslations';
-import { viewToPath } from '../types/routes';
+import { Link } from 'react-router-dom';
+import { demoScenarioPath, viewToPath } from '../types/routes';
 
 interface ContactPageProps {
-  onOpenSandbox: () => void;
   onBackToLanding: () => void;
 }
 
-interface Office {
-  id: 'sf' | 'ny' | 'london' | 'tokyo';
-  timezone: string;
-  phone: string;
-}
-
-const OFFICES: Office[] = [
-  { id: 'sf', timezone: 'America/Los_Angeles', phone: '+1 (800) 555-0199' },
-  { id: 'ny', timezone: 'America/New_York', phone: '+1 (800) 555-0212' },
-  { id: 'london', timezone: 'Europe/London', phone: '+44 20 7946 0192' },
-  { id: 'tokyo', timezone: 'Asia/Tokyo', phone: '+81 3 5555 0173' }
-];
-
-export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactPageProps) {
+export default function ContactPage({ onBackToLanding }: ContactPageProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(CONTACT_TRANSLATIONS, language as keyof typeof CONTACT_TRANSLATIONS, 'CONTACT_TRANSLATIONS');
   const tabs = useMemo(() => [
@@ -40,16 +26,9 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
     { id: 'support' as const, ...t.tabs.support },
     { id: 'partnership' as const, ...t.tabs.partnership }
   ], [t.tabs]);
-  const offices = useMemo(() => OFFICES.map(office => ({
-    ...office,
-    ...t.offices[office.id]
-  })), [t.offices]);
 
   // Tabs for Inquiry Types
   const [activeTab, setActiveTab] = useState<'sales' | 'support' | 'partnership'>('sales');
-  
-  // Local Clocks State
-  const [officeTimes, setOfficeTimes] = useState<Record<string, string>>({});
   
   // Form State
   const [formData, setFormData] = useState({
@@ -72,31 +51,6 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
   // FAQs Search and Expand State
   const [faqSearch, setFaqSearch] = useState('');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-
-  // Update clocks every second
-  useEffect(() => {
-    const updateClocks = () => {
-      const times: Record<string, string> = {};
-      offices.forEach(office => {
-        try {
-          times[office.id] = new Intl.DateTimeFormat('en-US', {
-            timeZone: office.timezone,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-          }).format(new Date());
-        } catch (e) {
-          times[office.id] = new Date().toLocaleTimeString();
-        }
-      });
-      setOfficeTimes(times);
-    };
-
-    updateClocks();
-    const interval = setInterval(updateClocks, 1000);
-    return () => clearInterval(interval);
-  }, [offices]);
 
   // Set default message subject based on active tab
   useEffect(() => {
@@ -165,9 +119,6 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
       t.terminal.routingAnalyze,
       t.terminal.routingType.replace('{type}', activeTab.toUpperCase()),
       t.terminal.parsing.replace('{name}', formData.name).replace('{company}', formData.company),
-      t.terminal.integration,
-      t.terminal.agent,
-      t.terminal.queue,
       t.terminal.database,
       t.terminal.success.replace('{ticket}', generatedTicket)
     ];
@@ -230,31 +181,8 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                 {t.heroDesc}
               </p>
               
-              <div className="type-body-sm flex flex-wrap items-center gap-6 text-blue-100 pt-2">
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4.5 h-4.5 text-yellow-300" />
-                  {t.slaResponse}
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4.5 h-4.5 text-yellow-300" />
-                  {t.liveSupport}
-                </span>
-              </div>
             </div>
 
-            {/* Quick Metrics Cards */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-              <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                <p className="type-label text-blue-200 uppercase">{t.inquiriesHandled}</p>
-                <p className="type-metric mt-1 text-white">{t.inquiriesValue}</p>
-                <p className="type-caption text-blue-100/80 mt-1">{t.slaDeliveries}</p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/15">
-                <p className="type-label text-blue-200 uppercase">{t.globalPresence}</p>
-                <p className="type-metric mt-1 text-white">{t.globalPresenceValue}</p>
-                <p className="type-caption text-blue-100/80 mt-1">{t.hubOffices}</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -513,8 +441,6 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
                 <div><span className="text-slate-500">{t.ticketId}</span> {ticketId}</div>
                 <div><span className="text-slate-500">{t.senderOrg}</span> {formData.company}</div>
                 <div><span className="text-slate-500">{t.category}</span> {activeTab.toUpperCase()}</div>
-                <div><span className="text-slate-500">{t.slaPriority}</span> {t.tierCritical}</div>
-                <div><span className="text-slate-500">{t.avgResponse}</span> {t.avgResponseValue}</div>
               </div>
 
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -539,82 +465,31 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
 
         </div>
 
-        {/* Right Info Column: Global Clocks & Details (4 of 12) */}
-        <div className="lg:col-span-5 space-y-8" id="contact-info-grid">
-          
-          {/* Support Channels Card */}
-          <div className="bg-gradient-to-tr from-[#0F1E36] to-[#1E355E] text-white rounded-3xl p-6 md:p-8 border border-[#354CE1]/10 shadow-xl space-y-6">
+        {/* Right column: the two working demos and the security page */}
+        <div className="lg:col-span-5" id="contact-info-grid">
+          <div className="bg-[#0F1E36] text-white rounded-3xl p-6 md:p-8 space-y-6">
             <div className="space-y-2">
-              <h4 className="type-card-title">{t.channelsTitle}</h4>
-              <p className="type-body-sm text-indigo-200">
-                {t.channelsDesc}
-              </p>
+              <h2 className="type-section-title-compact">{t.channelsTitle}</h2>
+              <p className="type-body text-blue-100">{t.channelsDesc}</p>
             </div>
-
-            <div className="space-y-4 pt-2">
-              <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
-                <ShieldCheck className="w-6 h-6 text-yellow-300 shrink-0" />
-                <div>
-                  <p className="type-body-sm font-bold">{t.securityTitle}</p>
-                  <p className="type-caption text-indigo-200/80 mt-1">
-                    {t.securityDesc}
-                  </p>
-                  <a href="mailto:security@withidentra.com" className="text-xs text-yellow-300 hover:underline font-semibold mt-1.5 block">
-                    {t.securityEmail}
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition">
-                <Building2 className="w-6 h-6 text-[#00E5FF] shrink-0" />
-                <div>
-                  <p className="type-body-sm font-bold">{t.pressTitle}</p>
-                  <p className="type-caption text-indigo-200/80 mt-1">
-                    {t.pressDesc}
-                  </p>
-                  <a href="mailto:press@withidentra.com" className="text-xs text-[#00E5FF] hover:underline font-semibold mt-1.5 block">
-                    {t.pressEmail}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Global Office Clocks Board */}
-          <div className="bg-white rounded-3xl border border-slate-150 p-6 md:p-8 shadow-lg shadow-indigo-950/5 space-y-6">
-            <div className="space-y-2">
-              <h4 className="type-card-title text-[#0F1E36]">{t.officesTitle}</h4>
-              <p className="type-body-sm text-slate-500">
-                {t.officesDesc}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {offices.map((office, idx) => (
-                <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between space-y-3">
-                  <div>
-                    <span className="type-label inline-flex items-center gap-1.5 text-slate-400 uppercase">
-                      <MapPin className="w-3 h-3 text-[#354CE1]" />
-                      {office.location}
-                    </span>
-                    <p className="text-xs font-bold text-slate-900 mt-1 leading-tight">{office.name}</p>
-                    <p className="type-caption text-slate-400 mt-1.5">{office.address}</p>
-                  </div>
-                  
-                  <div className="border-t border-slate-200/60 pt-3 flex items-center justify-between">
-                    <span className="type-technical text-[#354CE1] uppercase flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {t.localTime}
-                    </span>
-                    <span className="text-xs font-mono font-bold text-slate-800">
-                      {officeTimes[office.id] || '--:--:-- --'}
-                    </span>
-                  </div>
-                </div>
+            <ul className="space-y-3">
+              {[
+                { label: t.demoDiploma, to: demoScenarioPath('diploma', language) },
+                { label: t.demoProduct, to: demoScenarioPath('product-journey', language) },
+                { label: t.securityLink, to: viewToPath('security', language) },
+              ].map((item) => (
+                <li key={item.to}>
+                  <Link
+                    to={item.to}
+                    className="type-control flex min-h-11 items-center justify-between gap-3 rounded-2xl bg-white/5 px-4 py-3 text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  >
+                    <span>{item.label}</span>
+                    <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
-
         </div>
       </section>
 
@@ -684,39 +559,6 @@ export default function ContactPage({ onOpenSandbox, onBackToLanding }: ContactP
             )}
           </div>
 
-        </div>
-      </section>
-
-      {/* 4. Footer CTA (as shown in standard subpages) */}
-      <section className="px-6 py-20 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-tr from-[#354CE1] via-[#5F3CF3] to-[#00D4B2] rounded-[2.5rem] p-8 sm:p-16 text-white text-left relative overflow-hidden shadow-2xl">
-          {/* Decorative shapes */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.25),transparent_60%)]" />
-          <div className="absolute -right-32 -bottom-32 w-96 h-96 bg-yellow-400/20 rounded-full filter blur-2xl animate-pulse" />
-          <div className="absolute left-1/3 top-10 w-48 h-48 bg-indigo-400/20 rounded-full filter blur-xl" />
-
-          <div className="max-w-2xl space-y-8 relative z-10">
-            <span className="type-label inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full uppercase text-yellow-300 border border-white/25">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t.footerBadge}</span>
-            </span>
-            <h2 className="type-section-title">
-              {t.footerTitle}
-            </h2>
-            <p className="type-lead text-indigo-50 max-w-xl">
-              {t.footerDesc}
-            </p>
-            <div>
-              <button 
-                onClick={onOpenSandbox}
-                className="type-control inline-flex items-center gap-2 px-6 py-4 bg-white hover:bg-teal-50 text-[#354CE1] rounded-full shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
-                id="contact-footer-sandbox-btn"
-              >
-                <span>{t.launchSandbox}</span>
-                <ArrowRight className="w-4 h-4 text-[#354CE1]" />
-              </button>
-            </div>
-          </div>
         </div>
       </section>
 

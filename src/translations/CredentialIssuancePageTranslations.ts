@@ -152,9 +152,9 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
             'Use the API or SDK to add credential issuance to an existing service without rebuilding the user journey around a separate workspace.',
         },
         constraints: {
-          title: 'Choose the trust network',
+          title: 'Trust anyone can check',
           description:
-            'Use CertNet or connect a blockchain, ledger, or registry selected by your organization and its governance requirements.',
+            'Each credential is digitally signed by an organisation whose certificate chains to the Identra root and which is named on a signed list of recognised organisations.',
         },
         delivery: {
           title: 'Reach the wallet people choose',
@@ -244,12 +244,12 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
         points: [
           'Private keys remain outside Identra',
           'Connect supported signing infrastructure',
-          'Choose did:web, ION, or an internal registry',
+          'Choose did:web or an internal registry',
         ],
       },
-      registryTitle: 'Registry and network choice',
+      registryTitle: 'Certificate chain and recognised organisations',
       registryDescription:
-        'Start with CertNet or connect a blockchain, ledger, or registry chosen by your organization. The right option depends on governance, interoperability, and operating requirements.',
+        'A verifier checks the issuer\'s certificate chain up to the Identra root and the signed list of recognised organisations, then reads the status list to see whether the credential was suspended or revoked.',
     },
     ecosystem: {
       label: 'API and SDK at the core',
@@ -358,7 +358,7 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       description: 'Ofrece a los equipos control para emitir credenciales valiosas sin ocultar las decisiones de confianza que las respaldan.',
       items: {
         modules: { title: 'Emitir desde tus propios productos', description: 'Usa la API o el SDK para incorporar la emisión de credenciales a un servicio existente, sin trasladar la experiencia a un espacio de trabajo independiente.' },
-        constraints: { title: 'Elegir la red de confianza', description: 'Utiliza CertNet o conecta la cadena de bloques, el libro mayor o el registro que elija tu organización según sus requisitos de gobernanza.' },
+        constraints: { title: 'Confianza que cualquiera puede comprobar', description: 'Cada credencial va firmada digitalmente por una organización cuyo certificado se encadena a la raíz de Identra y que figura en una lista firmada de organizaciones reconocidas.' },
         delivery: { title: 'Llegar a la billetera elegida', description: 'Prioriza OpenID4VCI mediante QR y enlaces profundos para Identra Wallet y billeteras externas compatibles.' },
         lifecycle: { title: 'Operar más allá de la emisión', description: 'Gestiona versiones, historial, estado, suspensión, revocación, caducidad y auditorías.' },
       },
@@ -381,9 +381,9 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       managedLabel: 'Gestionado por Identra',
       managed: { title: 'Empieza con una base gestionada', description: 'Identra puede encargarse de las operaciones esenciales de emisión para que tu equipo se concentre en el servicio y en quienes reciben las credenciales.', points: ['Un camino más corto de la integración a la emisión', 'Identidad y firma gestionadas', 'Gestión guiada del estado y el ciclo de vida'] },
       selfManagedLabel: 'Autogestionado',
-      selfManaged: { title: 'Conserva la autoridad de firma', description: 'Conecta KMS, HSM o un firmante externo mientras Identra coordina módulos y entrega.', points: ['Las claves privadas quedan fuera de Identra', 'Infraestructura de firma compatible', 'did:web, ION o registro interno'] },
-      registryTitle: 'Elección de red y registro',
-      registryDescription: 'La organización puede empezar con CertNet o conectar la cadena de bloques, el libro mayor o el registro que responda a sus requisitos de gobernanza e interoperabilidad.',
+      selfManaged: { title: 'Conserva la autoridad de firma', description: 'Conecta KMS, HSM o un firmante externo mientras Identra coordina módulos y entrega.', points: ['Las claves privadas quedan fuera de Identra', 'Infraestructura de firma compatible', 'did:web o registro interno'] },
+      registryTitle: 'Cadena de certificados y organizaciones reconocidas',
+      registryDescription: 'Quien verifica comprueba la cadena de certificados del emisor hasta la raíz de Identra y la lista firmada de organizaciones reconocidas, y consulta la lista de estado para saber si la credencial fue suspendida o revocada.',
     },
     ecosystem: {
       label: 'API y SDK como núcleo',
@@ -451,7 +451,7 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       description: 'クレデンシャルの価値を支える信頼条件を守りながら、発行に必要なコントロールをチームに提供します。',
       items: {
         modules: { title: '既存の製品からそのまま発行', description: 'APIやSDKを使い、別のワークスペースへ利用者を移動させることなく、現在のサービスにクレデンシャル発行を組み込めます。' },
-        constraints: { title: '信頼ネットワークを選択', description: 'CertNetのほか、組織のガバナンス要件に合うブロックチェーン、台帳、レジストリを接続できます。' },
+        constraints: { title: '誰でも確認できる信頼', description: '各クレデンシャルは、証明書がIdentraのルートにつながり、署名済みの認定組織リストに掲載された組織によってデジタル署名されています。' },
         delivery: { title: '選ばれたウォレットへ配信', description: 'QRとディープリンクによるOpenID4VCIを優先し、Identra Walletと対応外部ウォレットへ届けます。' },
         lifecycle: { title: '発行後も運用', description: 'バージョン、発行履歴、状態、停止、失効、有効期限、監査イベントを管理します。' },
       },
@@ -474,9 +474,9 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       managedLabel: 'Identra管理型',
       managed: { title: '管理型の基盤ですばやく開始', description: 'Identraが発行の中核運用を担い、組織はサービスとクレデンシャルを受け取る人に集中できます。', points: ['連携から発行までを短縮', 'IDと署名の運用を管理', '状態とライフサイクルをガイド'] },
       selfManagedLabel: '自己管理型',
-      selfManaged: { title: '署名権限を自社環境に保持', description: 'KMS、HSM、外部署名サービスを接続し、秘密鍵を自社環境に残します。', points: ['秘密鍵はIdentraの外部に保持', '対応する署名基盤を接続', 'did:web、ION、内部レジストリを選択'] },
-      registryTitle: 'ネットワークとレジストリの選択',
-      registryDescription: 'CertNetから始めることも、組織のガバナンスや相互運用要件に合うブロックチェーン、台帳、レジストリを接続することもできます。',
+      selfManaged: { title: '署名権限を自社環境に保持', description: 'KMS、HSM、外部署名サービスを接続し、秘密鍵を自社環境に残します。', points: ['秘密鍵はIdentraの外部に保持', '対応する署名基盤を接続', 'did:webまたは内部レジストリを選択'] },
+      registryTitle: '証明書チェーンと認定組織',
+      registryDescription: '検証者は発行者の証明書チェーンをIdentraのルートまで確認し、署名済みの認定組織リストを照合したうえで、ステータスリストで停止や失効の有無を確認します。',
     },
     ecosystem: {
       label: 'API・SDKを中心に設計',
@@ -544,7 +544,7 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       description: 'Teams erhalten die nötige Kontrolle, ohne die Vertrauensentscheidungen zu verbergen, die einen Nachweis wertvoll machen.',
       items: {
         modules: { title: 'Aus den eigenen Produkten ausgeben', description: 'Erweitern Sie bestehende Services per API oder SDK um Credential Issuance, ohne die Nutzerführung in einen separaten Workspace zu verlagern.' },
-        constraints: { title: 'Das Vertrauensnetzwerk wählen', description: 'Nutzen Sie CertNet oder verbinden Sie eine Blockchain, ein Ledger oder Register passend zu den Governance-Anforderungen Ihrer Organisation.' },
+        constraints: { title: 'Vertrauen, das jeder prüfen kann', description: 'Jeder Nachweis ist digital von einer Organisation signiert, deren Zertifikat bis zur Identra-Wurzel reicht und die in einer signierten Liste anerkannter Organisationen steht.' },
         delivery: { title: 'Die gewählte Wallet erreichen', description: 'OpenID4VCI per QR und Deep Link verbindet Identra Wallet und kompatible externe Wallets.' },
         lifecycle: { title: 'Über die Ausgabe hinaus arbeiten', description: 'Verwalten Sie Versionen, Verlauf, Status, Sperrung, Widerruf, Ablauf und Audit-Ereignisse.' },
       },
@@ -567,9 +567,9 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       managedLabel: 'Identra-verwaltet',
       managed: { title: 'Mit einer verwalteten Grundlage starten', description: 'Identra kann die zentralen Ausgabeprozesse übernehmen, damit Ihr Team sich auf den Service und die empfangenden Personen konzentriert.', points: ['Kürzerer Weg von Integration zu Ausgabe', 'Verwaltete Identitäts- und Signaturprozesse', 'Geführte Status- und Lebenszyklusverwaltung'] },
       selfManagedLabel: 'Selbstverwaltet',
-      selfManaged: { title: 'Signaturhoheit in Ihrer Umgebung', description: 'Verbinden Sie KMS, HSM oder externe Signierer, während Identra Module und Zustellung koordiniert.', points: ['Private Schlüssel bleiben außerhalb von Identra', 'Unterstützte Signaturinfrastruktur verbinden', 'did:web, ION oder internes Register wählen'] },
-      registryTitle: 'Netzwerk und Register wählen',
-      registryDescription: 'Starten Sie mit CertNet oder verbinden Sie die Blockchain, das Ledger oder das Register, das zu Governance und Interoperabilität Ihrer Organisation passt.',
+      selfManaged: { title: 'Signaturhoheit in Ihrer Umgebung', description: 'Verbinden Sie KMS, HSM oder externe Signierer, während Identra Module und Zustellung koordiniert.', points: ['Private Schlüssel bleiben außerhalb von Identra', 'Unterstützte Signaturinfrastruktur verbinden', 'did:web oder internes Register wählen'] },
+      registryTitle: 'Zertifikatskette und anerkannte Organisationen',
+      registryDescription: 'Die prüfende Stelle verfolgt die Zertifikatskette des Ausstellers bis zur Identra-Wurzel, gleicht die signierte Liste anerkannter Organisationen ab und liest in der Statusliste, ob der Nachweis gesperrt oder widerrufen wurde.',
     },
     ecosystem: {
       label: 'API und SDK im Mittelpunkt',
@@ -637,7 +637,7 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       description: 'Trao cho đội ngũ khả năng phát hành thực chứng hữu ích mà vẫn bảo toàn những quyết định tin cậy tạo nên giá trị của thực chứng.',
       items: {
         modules: { title: 'Phát hành ngay trong sản phẩm của bạn', description: 'Dùng API hoặc SDK để bổ sung khả năng phát hành thực chứng vào dịch vụ hiện có mà không buộc người dùng chuyển sang một workspace riêng.' },
-        constraints: { title: 'Chủ động lựa chọn mạng tin cậy', description: 'Sử dụng CertNet hoặc kết nối blockchain, sổ cái hay sổ đăng ký do tổ chức lựa chọn theo yêu cầu quản trị.' },
+        constraints: { title: 'Niềm tin ai cũng kiểm được', description: 'Mỗi chứng nhận được ký số bởi một tổ chức có chứng thư nối tới chứng thư gốc Identra và có tên trong danh sách tổ chức được công nhận đã ký.' },
         delivery: { title: 'Chuyển tới chiếc ví người dùng lựa chọn', description: 'Ưu tiên OpenID4VCI qua mã QR và deep link cho Identra Wallet cũng như các ví bên ngoài tương thích.' },
         lifecycle: { title: 'Vận hành sau lần phát hành đầu tiên', description: 'Quản lý phiên bản, lịch sử phát hành, trạng thái, tạm ngưng, thu hồi, hết hạn và các sự kiện kiểm toán.' },
       },
@@ -660,9 +660,9 @@ export const CREDENTIAL_ISSUANCE_TRANSLATIONS = {
       managedLabel: 'Identra quản lý',
       managed: { title: 'Bắt đầu nhanh với hạ tầng được quản lý', description: 'Identra có thể vận hành các thành phần phát hành cốt lõi để đội ngũ của bạn tập trung vào dịch vụ và người nhận thực chứng.', points: ['Rút ngắn thời gian tích hợp', 'Quản lý danh tính và hoạt động ký', 'Hướng dẫn quản lý trạng thái và vòng đời'] },
       selfManagedLabel: 'Tự quản lý',
-      selfManaged: { title: 'Giữ quyền ký trong hạ tầng của bạn', description: 'Kết nối KMS, HSM hoặc bộ ký bên ngoài trong khi Identra điều phối mô-đun, chuyển tới ví và quản lý vòng đời.', points: ['Khóa bí mật không đi qua Identra', 'Kết nối hạ tầng ký được hỗ trợ', 'Chọn did:web, ION hoặc sổ đăng ký nội bộ'] },
-      registryTitle: 'Lựa chọn mạng và sổ đăng ký',
-      registryDescription: 'Tổ chức có thể bắt đầu với CertNet hoặc kết nối blockchain, sổ cái hay sổ đăng ký phù hợp với yêu cầu quản trị và khả năng liên thông của mình.',
+      selfManaged: { title: 'Giữ quyền ký trong hạ tầng của bạn', description: 'Kết nối KMS, HSM hoặc bộ ký bên ngoài trong khi Identra điều phối mô-đun, chuyển tới ví và quản lý vòng đời.', points: ['Khóa bí mật không đi qua Identra', 'Kết nối hạ tầng ký được hỗ trợ', 'Chọn did:web hoặc sổ đăng ký nội bộ'] },
+      registryTitle: 'Chuỗi chứng thư và tổ chức được công nhận',
+      registryDescription: 'Bên kiểm tra lần chuỗi chứng thư của tổ chức cấp tới chứng thư gốc Identra, đối chiếu danh sách tổ chức được công nhận đã ký, rồi đọc danh sách trạng thái để biết chứng nhận có bị tạm dừng hay thu hồi không.',
     },
     ecosystem: {
       label: 'API và SDK là nền tảng',

@@ -19,7 +19,6 @@ import {
   COMPLIANCE_RULE_TRANSLATIONS,
   COMPLIANCE_APPLICANT_TRANSLATIONS,
   COMPLIANCE_PILLARS,
-  COMPLIANCE_TRUSTED_LOGOS,
   COMPLIANCE_PREVIEW,
   COMPLIANCE_FEATURES
 } from '../translations/CompliancePageTranslations';
@@ -116,7 +115,6 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
   const ruleText = COMPLIANCE_RULE_TRANSLATIONS[lang];
   const applicantText = COMPLIANCE_APPLICANT_TRANSLATIONS[lang];
   const pillarText = COMPLIANCE_PILLARS[lang];
-  const trustedLogos = COMPLIANCE_TRUSTED_LOGOS[lang];
   const previewText = COMPLIANCE_PREVIEW[lang];
   const featureText = COMPLIANCE_FEATURES[lang];
 
@@ -398,7 +396,6 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
                     </div>
                     <div>
                       <h4 className="text-sm font-bold text-slate-900">{t.flowEngine}</h4>
-                      <p className="text-[10px] font-mono text-slate-400">{t.engineStatus}</p>
                     </div>
                   </div>
                   <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -451,23 +448,6 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
 
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Trusted By Branding Logos */}
-      <section className="bg-white py-12 border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-6">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-            {t.trustedBy}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-300">
-            {trustedLogos.map((name, idx) => (
-              <span key={idx} className="font-display font-extrabold text-lg md:text-xl text-slate-600 tracking-tight flex items-center gap-1.5">
-                <Building2 className="w-4 h-4 text-slate-400" />
-                {name}
-              </span>
-            ))}
           </div>
         </div>
       </section>
@@ -1093,11 +1073,6 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
               </div>
 
               <div className="sm:col-span-5 bg-[#FAFBFD] p-5 rounded-2xl border border-slate-100 space-y-3 shrink-0">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-slate-400">{t.auditCertId}</span>
-                  <span className="text-[9px] text-[#354CE1] bg-[#E2E6FF] px-1.5 py-0.5 rounded-md font-bold uppercase tracking-wider">{t.certified}</span>
-                </div>
-                
                 <div className="space-y-1 text-xs text-slate-600 font-medium">
                   <p className="flex justify-between"><span>{t.ruleEvaluated}</span> <span className="font-bold text-slate-800">{t.micaStandard}</span></p>
                   <p className="flex justify-between"><span>{t.riskSignal}</span> <span className="font-bold text-slate-800">{t.lowRiskSignal}</span></p>
@@ -1129,18 +1104,6 @@ export default function CompliancePage({ onOpenSandbox, onBackToLanding, onViewC
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-semibold text-slate-800 pt-2">
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{t.ctaPoint1}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
-                    <Check className="w-3.5 h-3.5" />
-                  </div>
-                  <span>{t.ctaPoint2}</span>
-                </div>
                 <div className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
                     <Check className="w-3.5 h-3.5" />

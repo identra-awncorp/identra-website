@@ -446,7 +446,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                   </div>
                 </div>
 
-                {/* Coursera/Udemy style Quick Status Counter */}
+                {/* Quick status counter */}
                 <div className="lg:col-span-5">
                   <div className="bg-white border border-slate-200 p-6 sm:p-8 rounded-3xl shadow-xl shadow-slate-100/40 space-y-6">
                     <div className="flex items-center justify-between">
@@ -639,7 +639,7 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
             </div>
           </div>
 
-          {/* Immersive Coursera Banner Section */}
+          {/* Immersive banner section */}
           <section className="bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 text-slate-800 py-16 px-6 relative overflow-hidden border-b border-slate-200">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(53,76,225,0.06),transparent_60%)] pointer-events-none" />
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 text-left">
@@ -730,7 +730,6 @@ export default function AcademyPage({ onOpenSandbox, onBackToLanding, onViewChan
                   {/* Pricing / Access representation */}
                   <div className="flex items-baseline gap-2">
                     <span className="text-3xl font-bold font-display text-slate-900">{t.freeAccess}</span>
-                    <span className="text-xs text-slate-400 line-through">{t.freePricePlaceholder}</span>
                   </div>
 
                   <div className="space-y-3.5">

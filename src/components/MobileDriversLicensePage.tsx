@@ -500,7 +500,7 @@ export default function MobileDriversLicensePage({ onOpenSandbox, onBackToLandin
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {t.resources.map((resource, index) => {
             const ResourceIcon = resourceIcons[index];
             const style = resourceStyles[index];

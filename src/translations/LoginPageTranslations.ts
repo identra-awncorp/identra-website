@@ -62,19 +62,12 @@ export const LOGIN_PAGE_TRANSLATIONS = {
       saml: 'Continue with Corporate SAML',
       back: 'Back to standard login'
     },
-    compliance: 'Protected by Identra Shield • SOC2 Type II Certified • GDPR Compliant',
     sidePanel: {
       badge: 'Identra Enterprise Identity',
       titleLine1: 'A single platform for',
       titleLine2: 'every stage of user trust',
       desc: 'Dynamically verify IDs, screen against sanctions lists, run behavioral check algorithms, and manage manual case queues within a unified, secure dashboard ecosystem.',
-      metrics: [
-        { value: '99.8%', label: 'AI Match Accuracy' },
-        { value: '< 3.5s', label: 'Verification Speed' },
-        { value: '195+', label: 'Countries Supported' },
-        { value: '0%', label: 'Exposed Personal Data' }
-      ],
-      copyright: 'Identra identities, Inc. © 2026'
+      copyright: '© 2026 AwnCorp'
     }
   },
   es: {
@@ -135,19 +128,12 @@ export const LOGIN_PAGE_TRANSLATIONS = {
       saml: 'Continuar con SAML corporativo',
       back: 'Volver al inicio estándar'
     },
-    compliance: 'Protegido por Identra Shield • Certificación SOC2 Tipo II • Cumple GDPR',
     sidePanel: {
       badge: 'Identidad empresarial de Identra',
       titleLine1: 'Una sola plataforma para',
       titleLine2: 'cada etapa de confianza del usuario',
       desc: 'Verifica documentos de identidad de forma dinámica, revisa listas de sanciones, ejecuta algoritmos de comportamiento y gestiona colas de casos manuales en un panel unificado y seguro.',
-      metrics: [
-        { value: '99,8%', label: 'Precisión de coincidencia con IA' },
-        { value: '< 3,5 s', label: 'Velocidad de verificación' },
-        { value: '195+', label: 'Países compatibles' },
-        { value: '0%', label: 'Datos personales expuestos' }
-      ],
-      copyright: 'Identra identities, Inc. © 2026'
+      copyright: '© 2026 AwnCorp'
     }
   },
   ja: {
@@ -208,19 +194,12 @@ export const LOGIN_PAGE_TRANSLATIONS = {
       saml: '企業 SAML で続行',
       back: '標準ログインに戻る'
     },
-    compliance: 'Identra Shield で保護 • SOC2 Type II 認証 • GDPR 準拠',
     sidePanel: {
       badge: 'Identra エンタープライズ本人確認',
       titleLine1: 'ユーザー信頼のあらゆる段階に対応する',
       titleLine2: '単一プラットフォーム',
       desc: 'ID を動的に検証し、制裁リストを照合し、行動チェックアルゴリズムを実行し、手動ケースキューを統合された安全なダッシュボードで管理します。',
-      metrics: [
-        { value: '99.8%', label: 'AI 照合精度' },
-        { value: '< 3.5秒', label: '検証速度' },
-        { value: '195+', label: '対応国' },
-        { value: '0%', label: '公開された個人データ' }
-      ],
-      copyright: 'Identra identities, Inc. © 2026'
+      copyright: '© 2026 AwnCorp'
     }
   },
   de: {
@@ -281,19 +260,12 @@ export const LOGIN_PAGE_TRANSLATIONS = {
       saml: 'Mit Unternehmens-SAML fortfahren',
       back: 'Zurück zum Standard-Login'
     },
-    compliance: 'Geschützt durch Identra Shield • SOC2 Type II zertifiziert • GDPR-konform',
     sidePanel: {
       badge: 'Identra Enterprise Identity',
       titleLine1: 'Eine Plattform für',
       titleLine2: 'jede Phase des Nutzervertrauens',
       desc: 'Prüfen Sie IDs dynamisch, screenen Sie Sanktionslisten, führen Sie Verhaltensalgorithmen aus und verwalten Sie manuelle Fallqueues in einem einheitlichen, sicheren Dashboard.',
-      metrics: [
-        { value: '99,8%', label: 'KI-Treffergenauigkeit' },
-        { value: '< 3,5 s', label: 'Verifizierungsgeschwindigkeit' },
-        { value: '195+', label: 'Unterstützte Länder' },
-        { value: '0%', label: 'Offengelegte personenbezogene Daten' }
-      ],
-      copyright: 'Identra identities, Inc. © 2026'
+      copyright: '© 2026 AwnCorp'
     }
   },
   vi: {
@@ -354,19 +326,12 @@ export const LOGIN_PAGE_TRANSLATIONS = {
       saml: 'Tiếp tục với SAML doanh nghiệp',
       back: 'Quay lại đăng nhập tiêu chuẩn'
     },
-    compliance: 'Được bảo vệ bởi Identra Shield • Chứng nhận SOC2 Type II • Tuân thủ GDPR',
     sidePanel: {
       badge: 'Danh tính doanh nghiệp Identra',
       titleLine1: 'Một nền tảng duy nhất cho',
       titleLine2: 'mọi giai đoạn xây dựng niềm tin người dùng',
       desc: 'Xác minh ID linh hoạt, sàng lọc danh sách cấm vận, chạy thuật toán kiểm tra hành vi và quản lý hàng đợi hồ sơ thủ công trong một bảng điều khiển hợp nhất, an toàn.',
-      metrics: [
-        { value: '99,8%', label: 'Độ chính xác khớp bằng AI' },
-        { value: '< 3,5 giây', label: 'Tốc độ xác minh' },
-        { value: '195+', label: 'Quốc gia được hỗ trợ' },
-        { value: '0%', label: 'Dữ liệu cá nhân bị lộ' }
-      ],
-      copyright: 'Identra identities, Inc. © 2026'
+      copyright: '© 2026 AwnCorp'
     }
   }
 } as const;

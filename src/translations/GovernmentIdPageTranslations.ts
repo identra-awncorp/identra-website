@@ -8,10 +8,10 @@ export const GOVERNMENT_ID_TRANSLATIONS = {
     backToMain: 'Back to main platform',
     govIdVerification: 'Government ID Verification',
     heroTitle: 'Verify government IDs all over the world',
-    heroDesc: 'Collect and verify government-issued IDs to identify users across 200+ countries and territories. Most decisions take just 5–10 seconds.',
+    heroDesc: 'Collect and verify government-issued IDs to identify users. Most decisions take just 5–10 seconds.',
     tryDemo: 'Try the demo',
     heroPillar1Title: 'International coverage',
-    heroPillar1Desc: 'Verify hundreds of unique government IDs, including passports and driver\'s licenses, from 200+ countries and territories.',
+    heroPillar1Desc: 'Verify hundreds of unique government IDs, including passports and driver\'s licenses.',
     heroPillar2Title: 'Advanced fraud detection',
     heroPillar2Desc: 'Catch even expertly doctored IDs with capture methods and verification checks configured to your business\'s needs.',
     heroPillar3Title: 'Fully automated decisions',
@@ -104,7 +104,7 @@ Identra enables organizations to design these branching pathways visually withou
     features: [
       {
         title: 'Global coverage across document types',
-        description: 'Collect and verify government ID documents, such as passports and driver\'s licenses, from 200+ countries and territories.'
+        description: 'Collect and verify government ID documents, such as passports and driver\'s licenses.'
       },
       {
         title: 'Live user guidance',
@@ -204,11 +204,6 @@ Identra enables organizations to design these branching pathways visually withou
     visualPlayground: 'Visual Playground',
     inputCredentialsToPreview: 'Input your credentials to preview custom branding flow.',
     personalizeYourSandbox: 'Personalize Your Sandbox',
-    testimonialQuote: '"When you think about how Identra verifies government IDs and selfies, it gives you peace of mind. It’s not only the different checks that the solution performs, but the contextual data you’re using to analyze and understand the images against. When you combine them all together, it starts to paint a picture of the individual that provides a higher level of due diligence."',
-    testimonialAuthor: 'Todd Sorrel',
-    testimonialRole: 'Co-founder and CEO at 6lock',
-    testimonialCompanyDesc: "6lock's secure payments platform leverages Identra's flexible IDV system to reduce wire fraud exposure.",
-    readCaseStudy: 'Read 6lock case study',
     demoFirstName: 'First Name *',
     demoLastName: 'Last Name *',
     emailAddress: 'Email address *',
@@ -286,8 +281,6 @@ Identra enables organizations to design these branching pathways visually withou
     mdlTag: 'Mobile driver\'s license',
     selfieLivenessTag: 'Selfie Liveness',
     articleSeparator: '?',
-    quoteMark: '?',
-    sixLockLogo: '6l',
 logs: [
       'Inbound query received: Initializing Demo Verification sandbox...',
       'Generating temporary identity credentials for {name}...',
@@ -304,10 +297,10 @@ logs: [
     backToMain: 'Volver a la plataforma principal',
     govIdVerification: 'Verificación de identificación gubernamental',
     heroTitle: 'Verifique las identificaciones gubernamentales en todo el mundo',
-    heroDesc: 'Recopile y verifique identificaciones emitidas por el gobierno para identificar usuarios en más de 200 países y territorios. La mayoría de las decisiones toman sólo entre 5 y 10 segundos.',
+    heroDesc: 'Recopile y verifique identificaciones emitidas por el gobierno para identificar usuarios. La mayoría de las decisiones toman sólo entre 5 y 10 segundos.',
     tryDemo: 'Probar la demo',
     heroPillar1Title: 'Cobertura internacional',
-    heroPillar1Desc: 'Verifique cientos de identificaciones gubernamentales únicas, incluidos pasaportes y licencias de conducir, de más de 200 países y territorios.',
+    heroPillar1Desc: 'Verifique cientos de identificaciones gubernamentales únicas, incluidos pasaportes y licencias de conducir.',
     heroPillar2Title: 'Detección avanzada de fraude',
     heroPillar2Desc: 'Capture incluso identificaciones manipuladas por expertos con métodos de captura y controles de verificación configurados según las necesidades de su empresa.',
     heroPillar3Title: 'Decisiones totalmente automatizadas',
@@ -400,7 +393,7 @@ Identra enables organizations to design these branching pathways visually withou
     features: [
       {
         title: 'Cobertura global en todos los tipos de documentos',
-        description: 'Recopile y verifique documentos de identificación gubernamentales, como pasaportes y licencias de conducir, de más de 200 países y territorios.'
+        description: 'Recopile y verifique documentos de identificación gubernamentales, como pasaportes y licencias de conducir.'
       },
       {
         title: 'Guía de usuario en vivo',
@@ -500,11 +493,6 @@ Identra enables organizations to design these branching pathways visually withou
     visualPlayground: 'Patio de juegos visuales',
     inputCredentialsToPreview: 'Ingrese sus credenciales para obtener una vista previa del flujo de marca personalizado.',
     personalizeYourSandbox: 'Personaliza tu zona de pruebas',
-    testimonialQuote: '"Cuando piensas en cómo Identra verifica las identificaciones gubernamentales y los selfies, te da tranquilidad. No son solo las diferentes comprobaciones que realiza la solución, sino también los datos contextuales que estás utilizando para analizar y comprender las imágenes. Cuando los combinas todos juntos, comienza a pintar una imagen del individuo que proporciona un mayor nivel de debida diligencia".',
-    testimonialAuthor: 'Todd Sorrel',
-    testimonialRole: 'Cofundador y director ejecutivo de 6lock',
-    testimonialCompanyDesc: "La plataforma de pagos seguros de 6lock aprovecha el sistema IDV flexible de Identra para reducir la exposición al fraude electrónico.",
-    readCaseStudy: 'Lea el estudio de caso de 6lock',
     demoFirstName: 'Nombre de pila *',
     demoLastName: 'Apellido *',
     emailAddress: 'Dirección de correo electrónico *',
@@ -582,8 +570,6 @@ Identra enables organizations to design these branching pathways visually withou
     mdlTag: 'Licencia de conducir m?vil',
     selfieLivenessTag: 'Prueba de vida con selfie',
     articleSeparator: '?',
-    quoteMark: '?',
-    sixLockLogo: '6l',
 logs: [
       'Inbound query received: Initializing Demo Verification sandbox...',
       'Generating temporary identity credentials for {name}...',
@@ -601,10 +587,10 @@ logs: [
     backToMain: 'メインプラットフォームに戻る',
     govIdVerification: '政府IDの検証',
     heroTitle: '世界中の政府 ID を検証する',
-    heroDesc: '政府発行の ID を収集して検証し、200 以上の国と地域のユーザーを識別します。ほとんどの意思決定には 5 ～ 10 秒しかかかりません。',
+    heroDesc: '政府発行の ID を収集して検証し、ユーザーを識別します。ほとんどの意思決定には 5 ～ 10 秒しかかかりません。',
     tryDemo: 'デモを試す',
     heroPillar1Title: '国際的な報道',
-    heroPillar1Desc: '200 以上の国と地域のパスポートや運転免許証など、数百もの固有の政府 ID を検証します。',
+    heroPillar1Desc: 'パスポートや運転免許証など、数百もの固有の政府 ID を検証します。',
     heroPillar2Title: '高度な不正行為検出',
     heroPillar2Desc: 'ビジネスのニーズに合わせて構成された取得方法と検証チェックを使用して、専門家によって改ざんされた ID も取得します。',
     heroPillar3Title: '完全に自動化された意思決定',
@@ -625,7 +611,7 @@ logs: [
     allCountries: 'すべての国',
     usAndCanadaOnly: '米国とカナダのみ',
     euOnly: 'EUのみ',
-    step2Desc: 'ユーザーは、自分のデバイスで直感的でブランド化可能なフローに従います。ペルソナは、リアルタイムのガイダンス (例: 「もっと近づく」、「グレアを避ける」) を提供し、画像が鮮明で焦点が合っている瞬間に画像を自動キャプチャして、コンバージョン率を最大化します。',
+    step2Desc: 'ユーザーは、自分のデバイスで直感的でブランド化可能なフローに従います。Identraは、リアルタイムのガイダンス (例: 「もっと近づく」、「グレアを避ける」) を提供し、画像が鮮明で焦点が合っている瞬間に画像を自動キャプチャして、コンバージョン率を最大化します。',
     mobilePreview: 'モバイルプレビュー',
     identraVerification: '本人確認',
     takePhotoOfId: '身分証明書の写真を撮ります',
@@ -637,7 +623,7 @@ logs: [
     uploadSuccessful: 'アップロード成功',
     docCapturedAndReady: '文書が取得され、分析の準備が整いました。',
     resetSimulator: 'リセットシミュレーター',
-    step3Desc: 'ペルソナの意思決定エンジンは、OCR、レイアウト分析、生体認証アルゴリズムを使用して文書を即座に分析します。すべてがチェックアウトされると、ユーザーは承認されます。異常が見つかった場合、ケースは手動レビューのためにチームに転送されます。',
+    step3Desc: 'Identraの意思決定エンジンは、OCR、レイアウト分析、生体認証アルゴリズムを使用して文書を即座に分析します。すべてがチェックアウトされると、ユーザーは承認されます。異常が見つかった場合、ケースは手動レビューのためにチームに転送されます。',
     analysisResults: '分析結果',
     decision: '決断',
     approved: '承認された',
@@ -697,7 +683,7 @@ Identra enables organizations to design these branching pathways visually withou
     features: [
       {
         title: '文書タイプ全体をグローバルにカバー',
-        description: '200 以上の国と地域から、パスポートや運転免許証などの政府 ID 書類を収集して検証します。'
+        description: 'パスポートや運転免許証などの政府 ID 書類を収集して検証します。'
       },
       {
         title: 'ライブユーザーガイダンス',
@@ -753,7 +739,7 @@ Identra enables organizations to design these branching pathways visually withou
     readArticle: '記事を読む',
     closeArticle: '記事を閉じる',
     readyToGetStarted: '始める準備はできていますか?',
-    readyDesc: 'ペルソナを使用して ID 操作を自動化し、不正行為を阻止し、ユーザーを安全にオンボーディングする何百もの革新的な企業に加わりましょう。',
+    readyDesc: 'Identraを使用して ID 操作を自動化し、不正行為を阻止し、ユーザーを安全にオンボーディングする何百もの革新的な企業に加わりましょう。',
     tryItNow: '今すぐ試してください',
     contactSales: '営業担当者へのお問い合わせ',
     restartPlayground: '遊び場を再開する',
@@ -780,7 +766,7 @@ Identra enables organizations to design these branching pathways visually withou
     passLiveness: 'PASS（ライブネス）',
     keyFeaturesHeading: '主な特長',
     keyFeaturesTitle: 'クラス最高のテクノロジーを活用して政府 ID を世界中で検証します',
-    keyFeaturesDesc: 'オンボーディングに極度の摩擦を加えることなく、セキュリティ保証基準を満たします。ペルソナは、数百もの固有の属性を数秒で自動的に評価します。',
+    keyFeaturesDesc: 'オンボーディングに極度の摩擦を加えることなく、セキュリティ保証基準を満たします。Identraは、数百もの固有の属性を数秒で自動的に評価します。',
     requestFullFeatures: '全機能シートをリクエストする',
     enterpriseWorkflows: 'エンタープライズワークフロー',
     howTeamsUse: 'チームが政府の ID 検証を使用する方法',
@@ -797,11 +783,6 @@ Identra enables organizations to design these branching pathways visually withou
     visualPlayground: '視覚的な遊び場',
     inputCredentialsToPreview: '資格情報を入力してカスタム ブランド フローをプレビューします。',
     personalizeYourSandbox: 'サンドボックスをパーソナライズする',
-    testimonialQuote: '「ペルソナが政府の身分証明書や自撮り写真をどのように検証するかを考えると、安心感が得られます。ソリューションが実行するさまざまなチェックだけではなく、画像を分析して理解するために使用するコンテキスト データも重要です。これらをすべて組み合わせると、より高いレベルのデューデリジェンスを提供する個人の全体像が描かれ始めます。」',
-    testimonialAuthor: 'トッド・ソレル',
-    testimonialRole: '6lock の共同創設者兼 CEO',
-    testimonialCompanyDesc: "6lock の安全な支払いプラットフォームは、ペルソナの柔軟な IDV システムを活用して通信詐欺の被害を軽減します。",
-    readCaseStudy: '6lock のケーススタディを読む',
     demoFirstName: 'ファーストネーム *',
     demoLastName: '苗字 *',
     emailAddress: '電子メールアドレス *',
@@ -824,7 +805,7 @@ Identra enables organizations to design these branching pathways visually withou
     guidesAndArticles: 'ガイドと記事',
     demoKeepLearning: '学び続ける',
     viewAllResources: 'すべてのリソース ライブラリを表示する',
-    exploreMorePlatform: 'ペルソナのアイデンティティ プラットフォームをさらに詳しく見る',
+    exploreMorePlatform: 'Identraのアイデンティティ プラットフォームをさらに詳しく見る',
     exploreMorePlatformDesc: '製品を組み合わせて包括的な信頼フットプリントを確立し、悪意のある行為者をブロックします。',
     mdlVerifications: 'mDL 検証の煩雑さを軽減',
     mdlVerificationsDesc: '法的デジタル ID 認証情報をサポートします。ユーザーは国家承認の電子認証情報を数秒で安全に共有できます。',
@@ -833,7 +814,7 @@ Identra enables organizations to design these branching pathways visually withou
     selfieLivenessDesc: '合成スプーフィングやディープフェイクを防ぎます。動的な活性フレームと高忠実度のドキュメント チェックポイントを自動的に照合します。',
     learnAboutSelfie: 'Selfie Liveness について学ぶ',
     readyToGetStartedTitle: '始める準備はできていますか?',
-    readyToGetStartedDesc: '今すぐお問い合わせいただくか、ペルソナの探索を始めてください。アイデンティティの信頼を即座に体験してください。',
+    readyToGetStartedDesc: '今すぐお問い合わせいただくか、Identraの探索を始めてください。アイデンティティの信頼を即座に体験してください。',
     demoTryDemo: 'デモを試す',
     doneReading: '読書完了',
     close: '近い',
@@ -879,8 +860,6 @@ Identra enables organizations to design these branching pathways visually withou
     mdlTag: '?????????',
     selfieLivenessTag: 'Selfie Liveness',
     articleSeparator: '?',
-    quoteMark: '?',
-    sixLockLogo: '6l',
 logs: [
       'Inbound query received: Initializing Demo Verification sandbox...',
       'Generating temporary identity credentials for {name}...',
@@ -898,10 +877,10 @@ logs: [
     backToMain: 'Zurück zur Hauptplattform',
     govIdVerification: 'Überprüfung des amtlichen Ausweises',
     heroTitle: 'Überprüfen Sie Regierungsausweise auf der ganzen Welt',
-    heroDesc: 'Sammeln und überprüfen Sie von der Regierung ausgestellte Ausweise, um Benutzer in über 200 Ländern und Territorien zu identifizieren. Die meisten Entscheidungen dauern nur 5–10 Sekunden.',
+    heroDesc: 'Sammeln und überprüfen Sie von der Regierung ausgestellte Ausweise, um Benutzer zu identifizieren. Die meisten Entscheidungen dauern nur 5–10 Sekunden.',
     tryDemo: 'Demo testen',
     heroPillar1Title: 'Internationale Abdeckung',
-    heroPillar1Desc: 'Überprüfen Sie Hunderte einzigartiger Regierungsausweise, einschließlich Pässe und Führerscheine, aus über 200 Ländern und Territorien.',
+    heroPillar1Desc: 'Überprüfen Sie Hunderte einzigartiger Regierungsausweise, einschließlich Pässe und Führerscheine.',
     heroPillar2Title: 'Erweiterte Betrugserkennung',
     heroPillar2Desc: 'Erfassen Sie selbst professionell manipulierte Ausweise mit Erfassungsmethoden und Verifizierungsprüfungen, die auf die Anforderungen Ihres Unternehmens zugeschnitten sind.',
     heroPillar3Title: 'Vollautomatische Entscheidungen',
@@ -994,7 +973,7 @@ Identra enables organizations to design these branching pathways visually withou
     features: [
       {
         title: 'Globale Abdeckung aller Dokumenttypen',
-        description: 'Sammeln und überprüfen Sie staatliche Ausweisdokumente wie Reisepässe und Führerscheine aus über 200 Ländern und Territorien.'
+        description: 'Sammeln und überprüfen Sie staatliche Ausweisdokumente wie Reisepässe und Führerscheine.'
       },
       {
         title: 'Live-Benutzerführung',
@@ -1094,11 +1073,6 @@ Identra enables organizations to design these branching pathways visually withou
     visualPlayground: 'Visueller Spielplatz',
     inputCredentialsToPreview: 'Geben Sie Ihre Anmeldeinformationen ein, um eine Vorschau des benutzerdefinierten Branding-Ablaufs anzuzeigen.',
     personalizeYourSandbox: 'Personalisieren Sie Ihre Sandbox',
-    testimonialQuote: '„Wenn Sie darüber nachdenken, wie Identra Regierungsausweise und Selfies überprüft, können Sie beruhigt sein. Es sind nicht nur die verschiedenen Prüfungen, die die Lösung durchführt, sondern auch die Kontextdaten, die Sie zum Analysieren und Verstehen der Bilder verwenden. Wenn Sie sie alle miteinander kombinieren, entsteht ein Bild der Person, das ein höheres Maß an Sorgfaltspflicht bietet.“',
-    testimonialAuthor: 'Todd Sorrel',
-    testimonialRole: 'Mitbegründer und CEO von 6lock',
-    testimonialCompanyDesc: "Die sichere Zahlungsplattform von 6lock nutzt das flexible IDV-System von Identra, um das Risiko von Überweisungsbetrug zu reduzieren.",
-    readCaseStudy: 'Lesen Sie die 6lock-Fallstudie',
     demoFirstName: 'Vorname *',
     demoLastName: 'Nachname *',
     emailAddress: 'E-Mail-Adresse *',
@@ -1176,8 +1150,6 @@ Identra enables organizations to design these branching pathways visually withou
     mdlTag: 'Mobiler F?hrerschein',
     selfieLivenessTag: 'Selfie Liveness',
     articleSeparator: '?',
-    quoteMark: '?',
-    sixLockLogo: '6l',
 logs: [
       'Inbound query received: Initializing Demo Verification sandbox...',
       'Generating temporary identity credentials for {name}...',
@@ -1194,10 +1166,10 @@ logs: [
     backToMain: 'Quay lại nền tảng chính',
     govIdVerification: 'Xác minh ID chính phủ',
     heroTitle: 'Xác minh ID chính phủ trên toàn thế giới',
-    heroDesc: 'Thu thập và xác minh ID do chính phủ cấp để xác định người dùng tại hơn 200 quốc gia và vùng lãnh thổ. Hầu hết các quyết định chỉ mất 5–10 giây.',
+    heroDesc: 'Thu thập và xác minh ID do chính phủ cấp để xác định người dùng. Hầu hết các quyết định chỉ mất 5–10 giây.',
     tryDemo: 'Trải nghiệm demo',
     heroPillar1Title: 'Phạm vi phủ sóng quốc tế',
-    heroPillar1Desc: 'Xác minh hàng trăm ID do chính phủ cấp duy nhất, bao gồm hộ chiếu và giấy phép lái xe, từ hơn 200 quốc gia và vùng lãnh thổ.',
+    heroPillar1Desc: 'Xác minh hàng trăm ID do chính phủ cấp duy nhất, bao gồm hộ chiếu và giấy phép lái xe.',
     heroPillar2Title: 'Phát hiện gian lận nâng cao',
     heroPillar2Desc: 'Bắt ngay cả các ID bị giả mạo tinh vi với các phương pháp chụp và kiểm tra xác minh được định cấu hình cho nhu cầu kinh doanh của bạn.',
     heroPillar3Title: 'Quyết định hoàn toàn tự động',
@@ -1290,7 +1262,7 @@ Identra cho phép các tổ chức thiết kế các đường dẫn phân nhán
     features: [
       {
         title: 'Phạm vi phủ sóng toàn cầu trên các loại tài liệu',
-        description: 'Thu thập và xác minh các tài liệu ID do chính phủ cấp, chẳng hạn như hộ chiếu và giấy phép lái xe, từ hơn 200 quốc gia và vùng lãnh thổ.'
+        description: 'Thu thập và xác minh các tài liệu ID do chính phủ cấp, chẳng hạn như hộ chiếu và giấy phép lái xe.'
       },
       {
         title: 'Hướng dẫn người dùng trực tiếp',
@@ -1390,11 +1362,6 @@ Identra cho phép các tổ chức thiết kế các đường dẫn phân nhán
     visualPlayground: 'Sân chơi Hình ảnh',
     inputCredentialsToPreview: 'Nhập thông tin của bạn để xem trước luồng xây dựng thương hiệu tùy chỉnh.',
     personalizeYourSandbox: 'Cá nhân hóa Hộp cát của bạn',
-    testimonialQuote: '"Khi bạn nghĩ về cách Identra xác minh ID chính phủ và ảnh tự chụp, điều đó mang lại cho bạn sự an tâm. Không chỉ là các bước kiểm tra khác nhau mà giải pháp thực hiện, mà còn là dữ liệu ngữ cảnh mà bạn đang sử dụng để phân tích và hiểu các hình ảnh. Khi bạn kết hợp tất cả chúng lại với nhau, nó bắt đầu vẽ nên một bức tranh về cá nhân cung cấp mức độ thẩm định chuyên sâu cao hơn."',
-    testimonialAuthor: 'Todd Sorrel',
-    testimonialRole: 'Đồng sáng lập và Giám đốc điều hành tại 6lock',
-    testimonialCompanyDesc: "Nền tảng thanh toán an toàn của 6lock tận dụng hệ thống IDV linh hoạt của Identra để giảm rủi ro gian lận chuyển khoản ngân hàng.",
-    readCaseStudy: 'Đọc nghiên cứu tình huống 6lock',
     demoFirstName: 'Tên *',
     demoLastName: 'Họ *',
     emailAddress: 'Địa chỉ email *',
@@ -1472,8 +1439,6 @@ Identra cho phép các tổ chức thiết kế các đường dẫn phân nhán
     mdlTag: 'Giấy phép lái xe di động',
     selfieLivenessTag: 'Xác minh hiện diện qua selfie',
     articleSeparator: '•',
-    quoteMark: '“',
-    sixLockLogo: '6l',
 logs: [
       'Đã nhận được truy vấn nội bộ: Đang khởi tạo hộp cát Xác minh Demo...',
       'Đang tạo thông tin đăng nhập danh tính tạm thời cho {name}...',

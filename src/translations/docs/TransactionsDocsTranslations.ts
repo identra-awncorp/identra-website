@@ -1,6 +1,6 @@
 import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
-const createTransactionCode = `const transaction = await fetch('https://api.withidentra.com/v1/transactions', {
+const createTransactionCode = `const transaction = await fetch('https://api-identra.awncorp.vn/v1/transactions', {
   method: 'POST',
   headers: {
     Authorization: \`Bearer \${process.env.IDENTRA_API_KEY}\`,

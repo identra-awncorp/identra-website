@@ -6,7 +6,7 @@
 import { type AppView, viewToPath } from '../types/routes';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Smile, Star } from 'lucide-react';
+import { ArrowRight, Smile } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord, getLocalizedValue } from '../utils/i18nRuntime';
 import {
@@ -176,24 +176,7 @@ export default function Footer({ onOpenSandbox, onViewChange }: FooterProps) {
         </div>
 
         <div className="space-y-8 text-xs text-indigo-100">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 border-b border-indigo-400/40 pb-8">
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-center lg:text-left">
-              <div className="space-y-1">
-                <p className="font-semibold text-white">
-                  {translate('gartnerRating')}
-                </p>
-                <div className="flex gap-0.5 justify-center lg:justify-start">
-                  {[...Array(5)].map((_, index) => (
-                    <Star key={index} className="w-3.5 h-3.5 fill-[#FFBF43] text-[#FFBF43]" />
-                  ))}
-                </div>
-              </div>
-              <span className="hidden lg:block h-4 w-px bg-indigo-300" />
-              <p className="font-medium">
-                {translate('g2Reviews')}
-              </p>
-            </div>
-
+          <div className="flex items-center justify-center lg:justify-start">
             <div className="flex items-center gap-4">
               <span className="text-white font-semibold font-display flex items-center gap-1 select-none">
                 <Smile className="w-4.5 h-4.5" />

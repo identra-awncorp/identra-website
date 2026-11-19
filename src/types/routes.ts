@@ -8,27 +8,23 @@ export const APP_VIEWS = [
   'landing',
   'government-id',
   'about',
-  'pricing',
   'login',
   'dashboard',
   'blog',
   'ebooks',
   'blog-detail',
   'events',
-  'careers',
   'research',
   'compliance',
   'connect',
   'credential-issuance',
   'platform',
   'nfc',
-  'customers',
   'dynamic-flow',
   'interface-studio',
   'kyb',
   'business-fraud',
   'contact',
-  'partners',
   'security',
   'docs',
   'passive-signals',
@@ -72,7 +68,6 @@ export const APP_VIEWS = [
   'privacy-overview',
   'academy',
   'demo',
-  'white-paper',
   'school-portal'
 ] as const;
 
@@ -83,7 +78,6 @@ export const LEGACY_VIEW_ALIASES = {} as const satisfies Record<string, AppView>
 export type LegacyViewAlias = keyof typeof LEGACY_VIEW_ALIASES;
 
 const VIEW_LOCALE_OVERRIDES: Partial<Record<AppView, readonly Locale[]>> = {
-  'white-paper': ['vi'],
   'school-portal': ['en', 'vi'],
 };
 

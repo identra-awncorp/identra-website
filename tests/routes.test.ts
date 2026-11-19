@@ -57,11 +57,15 @@ test('the Vietnamese SSI book is an unlisted, temporary server redirect', () => 
   assert.ok(!config.redirects.some((entry) => entry.source === '/self-sovereign-identity-book'));
 });
 
-test('white paper is exposed only through its Vietnamese route', () => {
-  assert.deepEqual(getViewLocales('white-paper'), ['vi']);
-  assert.equal(resolveViewLocale('white-paper', 'en'), 'vi');
-  assert.equal(viewToPath('white-paper', 'ja'), '/vi/white-paper');
-  assert.equal(localizePath('/en/white-paper', 'de'), '/vi/white-paper');
+test('withdrawn pages are plain not-found routes, not redirects', () => {
+  // Customers, pricing, partners, careers and the white paper had no true content; they are gone, not hidden.
+  for (const view of ['customers', 'pricing', 'partners', 'careers', 'white-paper']) {
+    assert.ok(!(APP_VIEWS as readonly string[]).includes(view));
+    for (const locale of SUPPORTED_LOCALES) {
+      assert.equal(pathToView(`/${locale}/${view}`), null);
+      assert.equal(localizePath(`/${locale}/${view}`, 'en'), null);
+    }
+  }
 });
 
 test('fully translated views keep all supported locales', () => {

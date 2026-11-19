@@ -9,7 +9,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     badge: 'Higher education',
     heroTitleStart: 'Verify student, faculty, and alumni identities. Prevent student aid',
     heroFraud: 'fraud',
-    heroTitleEnd: 'and secure account access more efficiently with an automated, NIST IAL2-compliant identity verification solution.',
+    heroTitleEnd: 'and secure account access more efficiently with an automated identity verification solution.',
     tryDemo: 'Try the demo',
     pillars: [
       {
@@ -18,15 +18,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       },
       {
         title: 'Confidently and securely manage identities',
-        desc: 'Choose from a variety of verification methods, such as government ID, selfie, document, and 2FA. Stay compliant with NIST IAL2 standards without disrupting the user experience.'
+        desc: 'Choose from a variety of verification methods, such as government ID, selfie, document, and 2FA.'
       },
       {
         title: 'Embed identity verification into existing systems',
         desc: 'Verify anyone in your university ecosystem across any device or region. Use Identra\'s low-code solution to easily build identity flows, configure decision logic, and automate actions.'
       }
     ],
-    trustedBy: 'Trusted by startups and the world\'s largest companies',
-    universities: ['STANFORD', 'UNIVERSITY OF MARYLAND', 'MIT'],
     mainHeadline: 'Support faculty, student, and alumni accounts at scale while deterring risky behavior',
     steps: [
       {
@@ -95,7 +93,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
           'Selfie perfectly matches Government ID with 99.4% confidence.',
           'Enrollment records and high-school database matched.',
           'No network or device risk indicators identified.',
-          'NIST IAL2-compliant identity assertion generated.'
+          'Identity assertion generated.'
         ]
       },
       priya: {
@@ -143,19 +141,9 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       { title: 'Cases', desc: 'Perform additional screening in Identra\'s investigation hub to review any discrepancies in collected data.' },
       { title: 'Duplicate account detection', desc: 'Keep registrar records up to date and ensure each active account is tied to only one person by uncovering accounts with duplicate emails or phone numbers.' }
     ],
-    securityTitle: 'Security and privacy section',
-    securityDesc: 'Trust is built on security and privacy. That is why Identra adheres to the highest industry standards, maintaining compliance and certifications to safeguard you and your customers.',
+    securityTitle: 'Security and privacy',
+    securityDesc: 'See what Identra protects today, and what is not in place yet.',
     learnMore: 'Learn more',
-    modalTitle: 'Identra Security and Compliance',
-    close: 'Close',
-    modalIntro: 'Identra is engineered as an enterprise-grade trust platform. We maintain deep alignment with institutional compliance mandates and state privacy statutes:',
-    complianceCards: [
-      { title: 'FERPA Compliance', desc: 'Supports strict guidelines for protecting educational student records from non-consensual disclosure.' },
-      { title: 'NIST IAL2 Standards', desc: 'Achieve NIST Identity Assurance Level 2 for student aid disbursement and credential protection.' },
-      { title: 'SOC 2 Type II Certified', desc: 'Regular audits to guarantee enterprise-level security controls, availability, and process integrity.' },
-      { title: 'CCPA and GDPR Compliant', desc: 'Fully structured to allow individual data subject access requests, absolute data erasure, and strict mask processing.' }
-    ],
-    acknowledge: 'Acknowledge',
     exploreTitle: 'Explore more of Identra\'s identity platform',
     exploreCards: [
       { title: 'Build better identity flows.', cta: 'Open the developer Sandbox' },
@@ -163,7 +151,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     ],
     readyTitle: 'Ready to get started?',
     readyDesc: 'Get in touch or start exploring Identra today. Secure your university community from fraud.',
-    readyBullets: ['NIST IAL2 and FERPA aligned', 'Flexible integration APIs'],
+    readyBullets: ['Flexible integration APIs'],
     firstNameLabel: 'First Name',
     firstNamePlaceholder: 'Alex',
     lastNameLabel: 'Last Name',
@@ -186,15 +174,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     badge: 'Educación superior',
     heroTitleStart: 'Verifique identidades de estudiantes, docentes y egresados. Prevenga el',
     heroFraud: 'fraude',
-    heroTitleEnd: 'en ayuda estudiantil y proteja el acceso a cuentas con mayor eficiencia mediante una solución automatizada de verificación de identidad compatible con NIST IAL2.',
+    heroTitleEnd: 'en ayuda estudiantil y proteja el acceso a cuentas con mayor eficiencia mediante una solución automatizada de verificación de identidad.',
     tryDemo: 'Probar la demo',
     pillars: [
       { title: 'Reduzca la carga manual de TI y admisiones', desc: 'Elimine intercambios lentos y apoye a estudiantes a escala con recopilación, verificación y decisiones automatizadas.' },
-      { title: 'Gestione identidades con confianza y seguridad', desc: 'Elija entre métodos como documento oficial, selfie, documentos y 2FA. Cumpla NIST IAL2 sin afectar la experiencia.' },
+      { title: 'Gestione identidades con confianza y seguridad', desc: 'Elija entre métodos como documento oficial, selfie, documentos y 2FA.' },
       { title: 'Integre la verificación en sistemas existentes', desc: 'Verifique a cualquier identra del ecosistema universitario en cualquier dispositivo o región. Use la solución low-code de Identra para crear flujos, reglas y automatizaciones.' }
     ],
-    trustedBy: 'De confianza para startups y las empresas más grandes del mundo',
-    universities: ['STANFORD', 'UNIVERSIDAD DE MARYLAND', 'MIT'],
     mainHeadline: 'Apoye cuentas de docentes, estudiantes y egresados a escala mientras disuade conductas de riesgo',
     steps: [
       { step: 'Paso 1', title: 'Recopile información para expedientes académicos con mayor rapidez', desc: 'Recopile automáticamente documentos oficiales, fotos y documentos complementarios durante la inscripción o solicitudes de ayuda estudiantil.' },
@@ -237,7 +223,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       final: 'Acción final del sistema:'
     },
     scenarios: {
-      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Estudiante de primer año', statusKey: 'approve', status: 'Aprobar', riskRating: 'Bajo', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['La selfie coincide con el documento oficial con 99,4% de confianza.', 'Los registros de inscripción y secundaria coinciden.', 'No se detectaron indicadores de riesgo de red o dispositivo.', 'Se generó una afirmación de identidad compatible con NIST IAL2.'] },
+      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Estudiante de primer año', statusKey: 'approve', status: 'Aprobar', riskRating: 'Bajo', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['La selfie coincide con el documento oficial con 99,4% de confianza.', 'Los registros de inscripción y secundaria coinciden.', 'No se detectaron indicadores de riesgo de red o dispositivo.', 'Se generó una afirmación de identidad.'] },
       priya: { name: 'Priya Patel', firstName: 'Priya', role: 'Egresada de posgrado', statusKey: 'review', status: 'Revisar', riskRating: 'Medio', databaseVerified: false, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120&h=120', notes: ['La selfie coincide con la foto del documento oficial.', 'Existe registro académico, pero el correo registrado ya no está activo.', 'Acceso a expedientes desde una IP extranjera con VPN detectada.', 'Enrutado a SMS secundario y cola de revisión manual.'] },
       fraud: { name: 'Solicitante desconocido', firstName: 'Solicitante', role: 'Solicitante de ayuda financiera', statusKey: 'denied', status: 'Denegar', riskRating: 'Alto', databaseVerified: false, livenessChecked: false, avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120&h=120', notes: ['La huella del dispositivo coincide con 14 intentos de admisión denegados.', 'Ataque de presentación detectado: retrato impreso en papel.', 'SSN vinculado a una lista activa de robo de identidad.', 'Alerta FAFSA: teléfono duplicado asociado a una red de fraude.'] }
     },
@@ -252,23 +238,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       { title: 'Detección de cuentas duplicadas', desc: 'Mantenga registros actualizados y asegure que cada cuenta activa esté vinculada a una sola identra.' }
     ],
     securityTitle: 'Seguridad y privacidad',
-    securityDesc: 'La confianza se construye con seguridad y privacidad. Por eso Identra cumple los estándares más altos del sector y mantiene certificaciones para protegerle a usted y a sus clientes.',
+    securityDesc: 'Vea qué protege Identra hoy y qué aún no está implementado.',
     learnMore: 'Más información',
-    modalTitle: 'Seguridad y cumplimiento de Identra',
-    close: 'Cerrar',
-    modalIntro: 'Identra está diseñada como una plataforma de confianza empresarial. Mantenemos alineación profunda con mandatos institucionales y leyes estatales de privacidad:',
-    complianceCards: [
-      { title: 'Cumplimiento FERPA', desc: 'Apoya reglas estrictas para proteger registros educativos de estudiantes contra divulgación no consentida.' },
-      { title: 'Estándares NIST IAL2', desc: 'Alcanza NIST Identity Assurance Level 2 para desembolsos de ayuda estudiantil y protección de credenciales.' },
-      { title: 'Certificación SOC 2 Type II', desc: 'Auditorías regulares para garantizar controles de seguridad, disponibilidad e integridad de procesos.' },
-      { title: 'Cumple CCPA y GDPR', desc: 'Estructurado para solicitudes de acceso, eliminación de datos y procesamiento estricto con enmascaramiento.' }
-    ],
-    acknowledge: 'Aceptar',
     exploreTitle: 'Explore más de la plataforma de identidad de Identra',
     exploreCards: [{ title: 'Cree mejores flujos de identidad.', cta: 'Abrir Sandbox para desarrolladores' }, { title: 'Cree una comunidad educativa en línea segura.', cta: 'Explorar soluciones de E-learning' }],
     readyTitle: '¿Listo para empezar?',
     readyDesc: 'Póngase en contacto o empiece a explorar Identra hoy. Proteja su comunidad universitaria contra el fraude.',
-    readyBullets: ['Alineado con NIST IAL2 y FERPA', 'APIs de integración flexibles'],
+    readyBullets: ['APIs de integración flexibles'],
     firstNameLabel: 'Nombre',
     firstNamePlaceholder: 'Alex',
     lastNameLabel: 'Apellido',
@@ -291,15 +267,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     badge: '高等教育',
     heroTitleStart: '学生、教職員、卒業生の本人確認を行い、学生支援金の',
     heroFraud: '不正',
-    heroTitleEnd: 'を防ぎます。NIST IAL2 に準拠した自動本人確認で、アカウントアクセスをより効率的に保護します。',
+    heroTitleEnd: 'を防ぎます。自動本人確認で、アカウントアクセスをより効率的に保護します。',
     tryDemo: 'デモを試す',
     pillars: [
       { title: 'IT と入学事務の手作業を削減', desc: '情報収集、確認、判定を自動化し、学生を大規模に支援します。' },
-      { title: 'ID を安全かつ確実に管理', desc: '政府ID、selfie、書類、2FA などを選択できます。体験を損なわず NIST IAL2 に準拠します。' },
+      { title: 'ID を安全かつ確実に管理', desc: '政府ID、selfie、書類、2FA などを選択できます。' },
       { title: '既存システムに本人確認を組み込む', desc: '大学エコシステム内の誰でも、どの端末や地域からでも確認できます。Identra の low-code でフロー、判定ロジック、自動化を構築できます。' }
     ],
-    trustedBy: 'スタートアップから世界最大級の企業まで信頼されています',
-    universities: ['STANFORD', 'メリーランド大学', 'MIT'],
     mainHeadline: '教職員、学生、卒業生アカウントを大規模に支援しながらリスク行動を抑止',
     steps: [
       { step: 'ステップ 1', title: '学籍情報をより速く収集', desc: '入学手続きや学生支援金申請で、政府ID、写真、補足書類を自動収集します。' },
@@ -342,7 +316,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       final: '最終システム処理:'
     },
     scenarios: {
-      alex: { name: 'Alex Rivera', firstName: 'Alex', role: '新入生', statusKey: 'approve', status: '承認', riskRating: '低', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie が政府IDと 99.4% の信頼度で一致。', '入学記録と高校データベースが一致。', 'ネットワークや端末リスク指標は検出されません。', 'NIST IAL2 準拠のIDアサーションを生成。'] },
+      alex: { name: 'Alex Rivera', firstName: 'Alex', role: '新入生', statusKey: 'approve', status: '承認', riskRating: '低', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie が政府IDと 99.4% の信頼度で一致。', '入学記録と高校データベースが一致。', 'ネットワークや端末リスク指標は検出されません。', 'IDアサーションを生成。'] },
       priya: { name: 'Priya Patel', firstName: 'Priya', role: '大学院卒業生', statusKey: 'review', status: '審査', riskRating: '中', databaseVerified: false, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie が政府ID写真と一致。', '学籍記録は存在しますが、登録メールは無効です。', '外国IPアドレスから成績証明書へアクセス（VPN検出）。', '二次 SMS 確認 / 手動審査キューへ送信。'] },
       fraud: { name: '不明な申請者', firstName: '不明', role: '学生支援金申請者', statusKey: 'denied', status: '否認', riskRating: '高', databaseVerified: false, livenessChecked: false, avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120&h=120', notes: ['端末フィンガープリントが過去14件の否認済み入学試行と一致。', '提示攻撃を検出: ID写真が紙に印刷されています。', 'SSN が有効なID盗難ウォッチリストと一致。', 'FAFSA 警告: 不正ネットワークに紐づく重複電話番号。'] }
     },
@@ -357,23 +331,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       { title: '重複アカウント検出', desc: '重複メールや電話番号を見つけ、各アクティブアカウントを1人に紐づけます。' }
     ],
     securityTitle: 'セキュリティとプライバシー',
-    securityDesc: '信頼はセキュリティとプライバシーの上に築かれます。そのため Identra は業界最高水準に準拠し、認証を維持してお客様と顧客を保護します。',
+    securityDesc: 'Identraが現在保護している内容と、まだ整っていない内容をご覧ください。',
     learnMore: '詳しく見る',
-    modalTitle: 'Identra のセキュリティとコンプライアンス',
-    close: '閉じる',
-    modalIntro: 'Identra はエンタープライズ級の信頼プラットフォームとして設計されています。機関のコンプライアンス要件と州のプライバシー法に深く対応します:',
-    complianceCards: [
-      { title: 'FERPA 準拠', desc: '教育記録を同意のない開示から守る厳格なガイドラインを支援します。' },
-      { title: 'NIST IAL2 標準', desc: '学生支援金の支払いと資格情報保護に NIST Identity Assurance Level 2 を実現します。' },
-      { title: 'SOC 2 Type II 認証', desc: 'セキュリティ、可用性、プロセス整合性を保証する定期監査。' },
-      { title: 'CCPA と GDPR 準拠', desc: 'データ主体アクセス、完全削除、厳格なマスク処理に対応します。' }
-    ],
-    acknowledge: '確認',
     exploreTitle: 'Identra のIDプラットフォームをさらに見る',
     exploreCards: [{ title: 'より良いIDフローを構築。', cta: '開発者 Sandbox を開く' }, { title: '安全なオンライン教育コミュニティを構築。', cta: 'E-learning ソリューションを見る' }],
     readyTitle: '始める準備はできましたか？',
     readyDesc: 'お問い合わせいただくか、今すぐ Identra をご覧ください。大学コミュニティを不正から守ります。',
-    readyBullets: ['NIST IAL2 と FERPA に対応', '柔軟な統合 API'],
+    readyBullets: ['柔軟な統合 API'],
     firstNameLabel: '名',
     firstNamePlaceholder: 'Alex',
     lastNameLabel: '姓',
@@ -396,15 +360,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     badge: 'Hochschulbildung',
     heroTitleStart: 'Verifizieren Sie Identitäten von Studierenden, Lehrkräften und Alumni. Verhindern Sie',
     heroFraud: 'Betrug',
-    heroTitleEnd: 'bei Studienförderung und schützen Sie Kontozugriff effizienter mit einer automatisierten, NIST-IAL2-konformen Identitätsprüfung.',
+    heroTitleEnd: 'bei Studienförderung und schützen Sie Kontozugriff effizienter mit einer automatisierten Identitätsprüfung.',
     tryDemo: 'Demo testen',
     pillars: [
       { title: 'Manuelle Arbeit für IT und Zulassung reduzieren', desc: 'Vermeiden Sie zeitaufwendige Abstimmungen und unterstützen Sie Studierende skalierbar mit automatisierter Datenerfassung, Prüfung und Entscheidung.' },
-      { title: 'Identitäten sicher verwalten', desc: 'Wählen Sie aus Methoden wie behördlichem Ausweis, selfie, Dokument und 2FA. Bleiben Sie NIST-IAL2-konform ohne Reibung.' },
+      { title: 'Identitäten sicher verwalten', desc: 'Wählen Sie aus Methoden wie behördlichem Ausweis, selfie, Dokument und 2FA.' },
       { title: 'Identitätsprüfung in bestehende Systeme einbetten', desc: 'Verifizieren Sie jede Person im Universitätsumfeld auf jedem Gerät und in jeder Region. Identra low-code hilft beim Aufbau von Flows, Regeln und Automatisierung.' }
     ],
-    trustedBy: 'Vertraut von Startups und den größten Unternehmen der Welt',
-    universities: ['STANFORD', 'UNIVERSITY OF MARYLAND', 'MIT'],
     mainHeadline: 'Konten von Lehrkräften, Studierenden und Alumni skalierbar unterstützen und riskantes Verhalten abschrecken',
     steps: [
       { step: 'Schritt 1', title: 'Informationen für akademische Datensätze schneller erfassen', desc: 'Erfassen Sie behördliche Ausweise, Fotos und Zusatzdokumente bei Immatrikulation oder Förderanträgen automatisch.' },
@@ -447,7 +409,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       final: 'Finale Systemaktion:'
     },
     scenarios: {
-      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Erstsemester', statusKey: 'approve', status: 'Genehmigen', riskRating: 'Niedrig', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie stimmt mit 99,4% Konfidenz mit dem Ausweis überein.', 'Immatrikulationsdaten und Schuldatenbank stimmen überein.', 'Keine Netzwerk- oder Geräterisikoindikatoren erkannt.', 'NIST-IAL2-konforme Identitätsaussage generiert.'] },
+      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Erstsemester', statusKey: 'approve', status: 'Genehmigen', riskRating: 'Niedrig', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie stimmt mit 99,4% Konfidenz mit dem Ausweis überein.', 'Immatrikulationsdaten und Schuldatenbank stimmen überein.', 'Keine Netzwerk- oder Geräterisikoindikatoren erkannt.', 'Identitätsaussage generiert.'] },
       priya: { name: 'Priya Patel', firstName: 'Priya', role: 'Alumna mit Abschluss', statusKey: 'review', status: 'Prüfen', riskRating: 'Mittel', databaseVerified: false, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie stimmt erfolgreich mit Ausweisfoto überein.', 'Registereintrag vorhanden, aber registrierte E-Mail ist nicht mehr aktiv.', 'Zugriff auf Zeugnisse von ausländischer IP-Adresse (VPN erkannt).', 'An sekundäre SMS-Prüfung / manuelle Prüfung weitergeleitet.'] },
       fraud: { name: 'Unbekannte antragstellende Person', firstName: 'Unbekannt', role: 'Förderantragsteller', statusKey: 'denied', status: 'Ablehnen', riskRating: 'Hoch', databaseVerified: false, livenessChecked: false, avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Gerätefingerabdruck entspricht 14 zuvor abgelehnten Zulassungsversuchen.', 'Präsentationsangriff erkannt: Ausweisfoto ist auf Papier gedruckt.', 'SSN stimmt mit aktiver Identitätsdiebstahl-Watchlist überein.', 'FAFSA-Warnung: doppelte Telefonnummer mit aktivem Betrugsring verbunden.'] }
     },
@@ -462,23 +424,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       { title: 'Erkennung doppelter Konten', desc: 'Halten Sie Registerdaten aktuell und binden Sie jedes aktive Konto eindeutig an eine Person.' }
     ],
     securityTitle: 'Sicherheit und Datenschutz',
-    securityDesc: 'Vertrauen entsteht durch Sicherheit und Datenschutz. Deshalb hält Identra höchste Branchenstandards ein und pflegt Zertifizierungen, um Sie und Ihre Kunden zu schützen.',
+    securityDesc: 'Sehen Sie, was Identra heute schützt und was noch nicht umgesetzt ist.',
     learnMore: 'Mehr erfahren',
-    modalTitle: 'Identra Sicherheit und Compliance',
-    close: 'Schließen',
-    modalIntro: 'Identra ist als Enterprise-Trust-Plattform konzipiert. Wir richten uns eng an institutionellen Compliance-Vorgaben und Datenschutzgesetzen der Bundesstaaten aus:',
-    complianceCards: [
-      { title: 'FERPA-Konformität', desc: 'Unterstützt strenge Vorgaben zum Schutz von Studierendendaten vor nicht einvernehmlicher Offenlegung.' },
-      { title: 'NIST IAL2 Standards', desc: 'Erreichen Sie NIST Identity Assurance Level 2 für Förderauszahlungen und Schutz von Zugangsdaten.' },
-      { title: 'SOC 2 Type II zertifiziert', desc: 'Regelmäßige Audits sichern Sicherheitskontrollen, Verfügbarkeit und Prozessintegrität.' },
-      { title: 'CCPA- und GDPR-konform', desc: 'Strukturiert für Datenzugriffsanfragen, vollständige Löschung und strenge Maskierungsprozesse.' }
-    ],
-    acknowledge: 'Bestätigen',
     exploreTitle: 'Mehr von Identra Identitätsplattform entdecken',
     exploreCards: [{ title: 'Bessere Identitäts-Flows erstellen.', cta: 'Developer Sandbox öffnen' }, { title: 'Eine sichere Online-Bildungscommunity aufbauen.', cta: 'E-learning-Lösungen ansehen' }],
     readyTitle: 'Bereit loszulegen?',
     readyDesc: 'Nehmen Sie Kontakt auf oder erkunden Sie Identra noch heute. Schützen Sie Ihre Universitätsgemeinschaft vor Betrug.',
-    readyBullets: ['An NIST IAL2 und FERPA ausgerichtet', 'Flexible Integrations-APIs'],
+    readyBullets: ['Flexible Integrations-APIs'],
     firstNameLabel: 'Vorname',
     firstNamePlaceholder: 'Alex',
     lastNameLabel: 'Nachname',
@@ -501,15 +453,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
     badge: 'Giáo dục đại học',
     heroTitleStart: 'Xác minh danh tính sinh viên, giảng viên và cựu sinh viên. Ngăn chặn',
     heroFraud: 'gian lận',
-    heroTitleEnd: 'trong hỗ trợ sinh viên và bảo vệ quyền truy cập tài khoản hiệu quả hơn bằng giải pháp xác minh danh tính tự động, tuân thủ NIST IAL2.',
+    heroTitleEnd: 'trong hỗ trợ sinh viên và bảo vệ quyền truy cập tài khoản hiệu quả hơn bằng giải pháp xác minh danh tính tự động.',
     tryDemo: 'Trải nghiệm demo',
     pillars: [
       { title: 'Giảm gánh nặng thủ công cho CNTT và tuyển sinh', desc: 'Loại bỏ trao đổi qua lại tốn thời gian và hỗ trợ sinh viên ở quy mô lớn bằng thu thập thông tin, xác minh và ra quyết định tự động.' },
-      { title: 'Quản lý danh tính tự tin và an toàn', desc: 'Chọn nhiều phương thức xác minh như giấy tờ tùy thân, selfie, tài liệu và 2FA. Tuân thủ NIST IAL2 mà không làm gián đoạn trải nghiệm.' },
+      { title: 'Quản lý danh tính tự tin và an toàn', desc: 'Chọn nhiều phương thức xác minh như giấy tờ tùy thân, selfie, tài liệu và 2FA.' },
       { title: 'Nhúng xác minh danh tính vào hệ thống hiện có', desc: 'Xác minh mọi người trong hệ sinh thái đại học trên mọi thiết bị hoặc khu vực. Dùng giải pháp low-code của Identra để xây dựng luồng, cấu hình logic quyết định và tự động hóa hành động.' }
     ],
-    trustedBy: 'Được các startup và những công ty lớn nhất thế giới tin dùng',
-    universities: ['STANFORD', 'ĐẠI HỌC MARYLAND', 'MIT'],
     mainHeadline: 'Hỗ trợ tài khoản giảng viên, sinh viên và cựu sinh viên ở quy mô lớn đồng thời răn đe hành vi rủi ro',
     steps: [
       { step: 'Bước 1', title: 'Thu thập thông tin học vụ nhanh hơn', desc: 'Tự động thu thập giấy tờ tùy thân, ảnh và tài liệu bổ sung trong quá trình ghi danh hoặc xử lý hồ sơ hỗ trợ sinh viên.' },
@@ -552,7 +502,7 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       final: 'Hành động cuối của hệ thống:'
     },
     scenarios: {
-      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Sinh viên năm nhất', statusKey: 'approve', status: 'Phê duyệt', riskRating: 'Thấp', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie khớp hoàn hảo với giấy tờ tùy thân với độ tin cậy 99,4%.', 'Hồ sơ ghi danh và cơ sở dữ liệu trung học đã khớp.', 'Không phát hiện chỉ báo rủi ro từ mạng hoặc thiết bị.', 'Đã tạo xác nhận danh tính tuân thủ NIST IAL2.'] },
+      alex: { name: 'Alex Rivera', firstName: 'Alex', role: 'Sinh viên năm nhất', statusKey: 'approve', status: 'Phê duyệt', riskRating: 'Thấp', databaseVerified: true, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie khớp hoàn hảo với giấy tờ tùy thân với độ tin cậy 99,4%.', 'Hồ sơ ghi danh và cơ sở dữ liệu trung học đã khớp.', 'Không phát hiện chỉ báo rủi ro từ mạng hoặc thiết bị.', 'Đã tạo xác nhận danh tính.'] },
       priya: { name: 'Priya Patel', firstName: 'Priya', role: 'Cựu học viên sau đại học', statusKey: 'review', status: 'Rà soát', riskRating: 'Trung bình', databaseVerified: false, livenessChecked: true, avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Selfie khớp thành công với ảnh trên giấy tờ tùy thân.', 'Có hồ sơ phòng đào tạo, nhưng email đăng ký không còn hoạt động.', 'Truy cập bảng điểm từ địa chỉ IP nước ngoài, phát hiện VPN.', 'Chuyển sang xác minh SMS bổ sung / hàng đợi rà soát thủ công.'] },
       fraud: { name: 'Người nộp hồ sơ không xác định', firstName: 'Không xác định', role: 'Người nộp hồ sơ hỗ trợ tài chính', statusKey: 'denied', status: 'Từ chối', riskRating: 'Cao', databaseVerified: false, livenessChecked: false, avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=120&h=120', notes: ['Dấu vân tay thiết bị khớp với 14 lần nộp hồ sơ tuyển sinh từng bị từ chối.', 'Phát hiện tấn công trình chiếu: ảnh giấy tờ được in trên giấy.', 'SSN khớp với danh sách theo dõi đánh cắp danh tính đang hoạt động.', 'Cảnh báo FAFSA: số điện thoại trùng liên quan đến đường dây gian lận.'] }
     },
@@ -567,23 +517,13 @@ export const HIGHER_EDUCATION_PAGE_TRANSLATIONS = {
       { title: 'Phát hiện tài khoản trùng lặp', desc: 'Giữ hồ sơ phòng đào tạo luôn cập nhật và bảo đảm mỗi tài khoản đang hoạt động chỉ gắn với một người.' }
     ],
     securityTitle: 'Bảo mật và quyền riêng tư',
-    securityDesc: 'Niềm tin được xây dựng trên bảo mật và quyền riêng tư. Vì vậy Identra tuân thủ các tiêu chuẩn cao nhất của ngành, duy trì chứng nhận và tuân thủ để bảo vệ bạn cùng khách hàng của bạn.',
+    securityDesc: 'Xem Identra đang bảo vệ những gì và những gì chưa có.',
     learnMore: 'Tìm hiểu thêm',
-    modalTitle: 'Bảo mật và tuân thủ của Identra',
-    close: 'Đóng',
-    modalIntro: 'Identra được thiết kế như một nền tảng niềm tin cấp doanh nghiệp. Chúng tôi duy trì sự phù hợp sâu với yêu cầu tuân thủ của tổ chức và luật quyền riêng tư cấp bang:',
-    complianceCards: [
-      { title: 'Tuân thủ FERPA', desc: 'Hỗ trợ hướng dẫn nghiêm ngặt để bảo vệ hồ sơ giáo dục của sinh viên khỏi việc tiết lộ khi chưa đồng ý.' },
-      { title: 'Tiêu chuẩn NIST IAL2', desc: 'Đạt NIST Identity Assurance Level 2 cho giải ngân hỗ trợ sinh viên và bảo vệ thực chứng.' },
-      { title: 'Chứng nhận SOC 2 Type II', desc: 'Kiểm toán định kỳ để bảo đảm kiểm soát bảo mật, tính sẵn sàng và toàn vẹn quy trình ở cấp doanh nghiệp.' },
-      { title: 'Tuân thủ CCPA và GDPR', desc: 'Được cấu trúc để hỗ trợ yêu cầu truy cập dữ liệu cá nhân, xóa dữ liệu tuyệt đối và xử lý che giấu nghiêm ngặt.' }
-    ],
-    acknowledge: 'Đã hiểu',
     exploreTitle: 'Khám phá thêm nền tảng danh tính của Identra',
     exploreCards: [{ title: 'Xây dựng luồng danh tính tốt hơn.', cta: 'Mở Sandbox dành cho nhà phát triển' }, { title: 'Xây dựng cộng đồng giáo dục trực tuyến an toàn.', cta: 'Khám phá giải pháp E-learning' }],
     readyTitle: 'Bạn đã sẵn sàng bắt đầu?',
     readyDesc: 'Liên hệ với chúng tôi hoặc bắt đầu khám phá Identra ngay hôm nay. Bảo vệ cộng đồng đại học của bạn khỏi gian lận.',
-    readyBullets: ['Phù hợp NIST IAL2 và FERPA', 'API tích hợp linh hoạt'],
+    readyBullets: ['API tích hợp linh hoạt'],
     firstNameLabel: 'Tên',
     firstNamePlaceholder: 'Alex',
     lastNameLabel: 'Họ',

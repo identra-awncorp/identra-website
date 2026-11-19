@@ -33,7 +33,6 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
   const [activeScenario, setActiveScenario] = useState<ScenarioKey>('alex');
   const [isVerifying, setIsVerifying] = useState(false);
   const [verifyStep, setVerifyStep] = useState(0);
-  const [showComplianceModal, setShowComplianceModal] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -132,17 +131,6 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
             ))}
           </div>
 
-          <div className="mt-16 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-blue-200">
-            <span className="font-light tracking-wider uppercase">{t.trustedBy}</span>
-            <div className="flex flex-wrap items-center gap-6 md:gap-10 opacity-80">
-              {t.universities.map((university, index) => (
-                <React.Fragment key={university}>
-                  {index > 0 && <div className="h-4 w-px bg-white/20 hidden sm:block" />}
-                  <span className="font-bold tracking-wide text-xs text-white">{university}</span>
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
 
@@ -343,7 +331,7 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
           <h3 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-4">{t.securityTitle}</h3>
           <p className="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto mb-8 font-light">{t.securityDesc}</p>
           <button
-            onClick={() => setShowComplianceModal(true)}
+            onClick={() => onViewChange?.('security')}
             className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-medium px-6 py-3 rounded-full transition shadow-sm"
           >
             {t.learnMore}
@@ -351,58 +339,6 @@ export default function HigherEducationPage({ onOpenSandbox, onBackToLanding, on
           </button>
         </div>
       </div>
-
-      <AnimatePresence>
-        {showComplianceModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-white rounded-3xl border border-slate-200 shadow-xl max-w-xl w-full overflow-hidden p-6 md:p-8"
-            >
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-blue-600" />
-                  <h4 className="font-bold text-slate-900">{t.modalTitle}</h4>
-                </div>
-                <button
-                  onClick={() => setShowComplianceModal(false)}
-                  className="text-xs text-slate-400 hover:text-slate-600 bg-slate-100 px-2 py-1 rounded"
-                >
-                  {t.close}
-                </button>
-              </div>
-
-              <div className="py-6 space-y-4 text-xs text-slate-600 leading-relaxed">
-                <p>{t.modalIntro}</p>
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  {t.complianceCards.map((card) => (
-                    <div key={card.title} className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                      <span className="font-semibold text-slate-900 block mb-1">{card.title}</span>
-                      <span>{card.desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="pt-4 border-t border-slate-100 flex justify-end">
-                <button
-                  onClick={() => setShowComplianceModal(false)}
-                  className="bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs px-4 py-2 rounded-lg"
-                >
-                  {t.acknowledge}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <div className="max-w-7xl mx-auto px-4 py-16 md:px-8">
         <h3 className="text-xl md:text-2xl font-semibold text-slate-900 text-center mb-8">{t.exploreTitle}</h3>

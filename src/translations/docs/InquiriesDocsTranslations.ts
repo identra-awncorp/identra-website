@@ -1,6 +1,6 @@
 import type { LocalizedDocsContent } from '../../components/docs/docsModel';
 
-const createInquiryCode = `const response = await fetch('https://api.withidentra.com/v1/inquiries', {
+const createInquiryCode = `const response = await fetch('https://api-identra.awncorp.vn/v1/inquiries', {
   method: 'POST',
   headers: {
     Authorization: \`Bearer \${process.env.IDENTRA_API_KEY}\`,

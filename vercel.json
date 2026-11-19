@@ -12,15 +12,9 @@
     {
       "source": "/vi/self-sovereign-identity-book",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
-      ]
-    },
-    {
-      "source": "/white-paper/Identra-White-Paper-v1.0.pdf",
-      "headers": [
         {
-          "key": "Link",
-          "value": "<https://identra.awncorp.vn/vi/white-paper>; rel=\"canonical\""
+          "key": "Cache-Control",
+          "value": "no-store"
         }
       ]
     }

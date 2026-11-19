@@ -5,7 +5,7 @@
 
 // How Identra works, in plain words: the seal, the list of recognised organisations, who holds what, and the
 // comparison with an ordinary database. Shown on the demo hub (five locales) and, in short, at the top of the
-// guided diploma demo. Every row must stay true of the product as deployed (no blockchain, a real database
+// guided diploma demo. Every row must stay true of the product as deployed (no distributed ledger, a real database
 // that is only a store, revocation seen at once by Identra's server and up to 15 minutes later elsewhere).
 export interface IdentraHowItWorksCopy {
   summaryTitle: string;

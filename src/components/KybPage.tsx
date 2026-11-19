@@ -44,7 +44,6 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
   const dataT = getLocalizedRecord(KYB_PAGE_DATA_TRANSLATIONS, language as keyof typeof KYB_PAGE_DATA_TRANSLATIONS, 'KYB_PAGE_DATA_TRANSLATIONS');
   const businesses = dataT.businesses;
   const kybFaqs = dataT.faqs;
-  const testimonials = dataT.testimonials;
   const formatText = (template: string, values: Record<string, string | number>) =>
     Object.entries(values).reduce((result, [key, value]) => result.replaceAll(`{${key}}`, String(value)), template);
 
@@ -73,9 +72,6 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
 
   // 3. Interactive Accordion (FAQ) State
   const [expandedFaq, setExpandedFaq] = useState<string | null>('ubo');
-
-  // 4. Testimonial Index State
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   React.useEffect(() => {
     setIsSimulating(false);
@@ -231,30 +227,6 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. Key Statistics Banner */}
-      <section className="bg-white border-b border-slate-100 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-1">
-              <p className="text-3xl md:text-4xl font-sans font-semibold text-slate-900">150+</p>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{t.copy.countriesCovered}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-3xl md:text-4xl font-sans font-semibold text-[#354CE1]">30M+</p>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{t.copy.directRegistryIntegrations}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-3xl md:text-4xl font-sans font-semibold text-slate-900">&lt;60s</p>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{t.copy.avgVerificationTime}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-3xl md:text-4xl font-sans font-semibold text-[#354CE1]">92%</p>
-              <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{t.copy.automatedDirectMatchRate}</p>
             </div>
           </div>
         </div>
@@ -697,7 +669,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
             {/* Explanation card (Col-span-5) */}
             <div className="lg:col-span-5 bg-[#FAFBFD] rounded-2xl border border-slate-200/60 p-6 space-y-5">
               <h4 className="font-bold text-slate-900 text-sm">{t.copy.flexibleBusinessOrchestration}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">{t.copy.withIdentraYouDontBuyARigidDatabase}</p>
+              <p className="text-xs text-slate-500 leading-relaxed">{t.copy.notARigidDatabase}</p>
               
               <ul className="space-y-3.5 text-xs text-slate-600">
                 <li className="flex items-start gap-2">
@@ -718,41 +690,7 @@ export default function KybPage({ onOpenSandbox, onBackToLanding, onViewChange }
         </div>
       </section>
 
-      {/* 6. Success Stories / Testimonials */}
-      <section className="py-20 bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-2">
-            <span className="text-[#354CE1] text-xs font-bold uppercase tracking-wider">{t.copy.successStories}</span>
-            <h3 className="text-2xl md:text-3xl font-sans font-semibold text-slate-900 tracking-tight">{t.copy.trustedByScalingMerchantsAndFinancialLeaders}</h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((test, idx) => (
-              <div 
-                key={idx} 
-                className="p-8 rounded-2xl border border-slate-100 bg-[#FAFBFD] flex flex-col justify-between space-y-6 transition hover:border-[#354CE1]/25"
-              >
-                <p className="text-slate-600 italic text-sm md:text-base leading-relaxed">
-                  "{test.quote}"
-                </p>
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-xs">{test.author}</h4>
-                    <p className="text-[10px] text-slate-400 mt-0.5">{test.role}</p>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-xs font-bold text-[#354CE1] bg-[#E2E6FF] border border-[#354CE1]/20 px-2.5 py-1 rounded-full uppercase">
-                      {test.metric}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. FAQs Accordion */}
+      {/* 6. FAQs Accordion */}
       <section className="py-20 md:py-24 bg-[#FAFBFD]">
         <div className="max-w-3xl mx-auto px-6 space-y-12">
           <div className="text-center space-y-3">

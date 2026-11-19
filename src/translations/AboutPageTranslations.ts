@@ -3,345 +3,193 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const ABOUT_TRANSLATIONS = {
-  en: {
-    backToPlatform: 'Back to Platform',
-    heroTitleBefore: 'We’re building a ',
-    heroTitleHighlighted: 'more human',
-    heroTitleAfter: ' internet',
-    commitment1Badge: 'Commitment 01',
-    commitment1Title: 'Lead by serving',
-    commitment1Desc: 'Listening, respect, and humility in support of others.',
-    commitment2Badge: 'Commitment 02',
-    commitment2Title: 'People first',
-    commitment2Desc: 'Decisions that protect and support our customers, their users, and our team.',
-    commitment3Badge: 'Commitment 03',
-    commitment3Title: 'Work in public',
-    commitment3Desc: 'Sharing early and often to create an open space for questions and collaboration.',
-    ourValuesBadge: 'Our Values',
-    ourValuesTitle: 'At Identra, we\'re united by our desire to continue improving and use these values as our guiding principles.',
-    
-    // Values
-    value1Title: 'People first',
-    value1Desc: 'We will not make decisions that are good for the business but are not good for people — whether those people are our customers, their customers, or our team.',
-    value2Title: 'Pursue relentlessly high standards',
-    value2Desc: 'We hold ourselves to a high bar today — and an even higher one tomorrow. While we celebrate our wins, we constantly strive to raise the bar.',
-    value3Title: 'Lead by serving',
-    value3Desc: 'Leadership requires listening, respect, humility, and a commitment to helping others. We lead by supporting and teaching each other, and backing up our words with actions.',
-    value4Title: 'Work in public',
-    value4Desc: 'We share early and often to push our work forward, creating a space where it\'s ok to ask questions and show unfinished demos instead of waiting for a perfect spec.',
-    value5Title: 'Start small, think big',
-    value5Desc: 'Starting small allows us to provide value while learning lessons without losing sight of our vision.',
-    value6Title: 'Speed is not a tradeoff',
-    value6Desc: 'Going fast doesn\'t mean our quality has to suffer. Instead, we focus on being efficient while continuing to operate at a high level.',
+// Only true company facts: who builds Identra, what exists today, what does not exist yet.
 
-    // Press
-    inThePressTitle: 'In the press',
-    pressInquiriesText: 'For press inquiries or media assets, please contact us at ',
-    press1Headline: "AI is making the internet's bot problem worse. This $2 billion startup is on the front lines",
-    press2Headline: "You can't stop generative AI fraud—but you can keep the criminals guessing",
-    press3Headline: "Founders Fund values identity startup Identra at $1.5 billion",
-    press4Headline: "Identra lands $50M for identity verification after seeing 10x YoY revenue growth",
-    press5Headline: "Identra raises $17.5 million to verify identities without humans in the loop",
+export interface AboutPoint {
+  title: string;
+  body: string;
+  link: string;
+}
 
-    // Investors
-    ourInvestorsTitle: 'Our investors',
-    ourInvestorsDesc: 'Identra is grateful to be backed by industry-leading investors and advisors who share our long-term vision of humanizing online identity.',
-    seriesC: 'Lead Investor (Series C)',
-    seriesB: 'Lead Investor (Series B)',
-    seriesA: 'Lead Investor (Series A)',
-    growthPartner: 'Growth Stage Partner',
-    lateStage: 'Late Stage Investor',
-    seedPartner: 'Seed / Early Stage Partner',
+export interface AboutPageCopy {
+  title: string;
+  intro: string;
+  ctaDemo: string;
+  ctaContact: string;
+  notYetTitle: string;
+  notYet: string[];
+  haveTitle: string;
+  haveDemos: AboutPoint;
+  haveRoot: AboutPoint;
+  haveWallet: AboutPoint;
+  nextTitle: string;
+  nextBody: string;
+  nextCta: string;
+}
 
-    // Join Team CTA
-    joinTeamTitle: 'Interested in joining our team?',
-    joinTeamDesc: 'Check out our open positions and learn more about life as a Personerd, including benefits, perks, and how we collaborate to build a better web.',
-    seeOpenPositions: 'See open positions',
-
-    // Our Journey
-    journeyBadge: 'Milestones',
-    journeyTitle: 'Our Journey',
-    journeyDesc: 'From the belief that online identity should be safer, more human, and easier to trust, Identra has grown into a platform that helps teams verify users and reduce risk at scale.',
-    journey2022Title: 'The Beginning',
-    journey2022Desc: 'Identra began with a simple goal: make identity verification more reliable, accessible, and human.',
-    journey2023Title: 'Laying the Foundation',
-    journey2023Desc: 'We built the foundation of a flexible identity platform that brings document checks, biometrics, and risk signals into one flow.',
-    journey2026Title: 'Research & Development',
-    journey2026Desc: 'We expanded passive signals, graph analysis, and developer tooling to help teams respond to faster, more sophisticated fraud.',
-    journey2027Title: 'Next Chapter',
-    journey2027Desc: 'Identra will continue extending adaptive identity infrastructure for teams that need trust decisions in every critical moment.',
+const en: AboutPageCopy = {
+  title: 'Identra is in its pilot stage',
+  intro: 'Identra is a verifiable-credential system built by AwnCorp in Vietnam. An organisation issues a signed digital credential, such as a diploma or a product\'s journey, and anyone can check it without calling the issuer.',
+  ctaDemo: 'Try the demos',
+  ctaContact: 'Contact us',
+  notYetTitle: 'What does not exist yet',
+  notYet: [
+    'No customers yet.',
+    'No public price list.',
+    'No security certification and no third-party audit.',
+    'The mobile wallet app is not published.',
+  ],
+  haveTitle: 'What exists today',
+  haveDemos: {
+    title: 'Two working demos',
+    body: 'A diploma issued by a sample university, shown to an employer and then revoked; and products whose every step is signed and checked in your browser. Both run on the live server with real cryptography.',
+    link: 'Open the demos',
   },
-  es: {
-    backToPlatform: 'Volver a la plataforma',
-    heroTitleBefore: 'Estamos construyendo un internet ',
-    heroTitleHighlighted: 'más humano',
-    heroTitleAfter: '',
-    commitment1Badge: 'Compromiso 01',
-    commitment1Title: 'Liderar sirviendo',
-    commitment1Desc: 'Escuchar, respetar y actuar con humildad en apoyo de los demás.',
-    commitment2Badge: 'Compromiso 02',
-    commitment2Title: 'Las personas primero',
-    commitment2Desc: 'Decisiones que protegen y apoyan a nuestros clientes, sus usuarios y nuestro equipo.',
-    commitment3Badge: 'Compromiso 03',
-    commitment3Title: 'Trabajar en público',
-    commitment3Desc: 'Compartir temprano y con frecuencia para crear un espacio abierto para preguntas y colaboración.',
-    ourValuesBadge: 'Nuestros valores',
-    ourValuesTitle: 'En Identra, nos une nuestro deseo de seguir mejorando y utilizamos estos valores como nuestros principios rectores.',
-    
-    // Values
-    value1Title: 'Las personas primero',
-    value1Desc: 'No tomaremos decisiones que sean buenas para el negocio pero que no sean buenas para las personas, ya sean nuestros clientes, sus clientes o nuestro equipo.',
-    value2Title: 'Perseguir incansablemente altos estándares',
-    value2Desc: 'Nos exigimos un nivel alto hoy, y uno aún más alto mañana. Aunque celebramos nuestros éxitos, nos esforzamos constantemente por elevar el listón.',
-    value3Title: 'Liderar sirviendo',
-    value3Desc: 'El liderazgo requiere escucha, respeto, humildad y un compromiso de ayudar a los demás. Lideramos apoyándonos y enseñándonos mutuamente, y respaldando nuestras palabras con acciones.',
-    value4Title: 'Trabajar en público',
-    value4Desc: 'Compartimos temprano y con frecuencia para impulsar nuestro trabajo, creando un espacio donde está bien hacer preguntas y mostrar demostraciones sin terminar en lugar de esperar una especificación perfecta.',
-    value5Title: 'Comenzar pequeño, pensar en grande',
-    value5Desc: 'Comenzar pequeño nos permite aportar valor mientras aprendemos lecciones sin perder de vista nuestra visión.',
-    value6Title: 'La velocidad no es un compromiso',
-    value6Desc: 'Ir rápido no significa que nuestra calidad deba verse afectada. En cambio, nos enfocamos en ser eficientes mientras continuamos operando a un alto nivel.',
-
-    // Press
-    inThePressTitle: 'En la prensa',
-    pressInquiriesText: 'Para consultas de prensa o activos multimedia, contáctenos en ',
-    press1Headline: 'La IA está empeorando el problema de los bots en internet. Esta startup de $2 mil millones de dólares está en primera línea',
-    press2Headline: 'No puedes detener el fraude de IA generativa, pero puedes mantener a los criminales adivinando',
-    press3Headline: 'Founders Fund valora a la startup de identidad Identra en $1.5 mil millones de dólares',
-    press4Headline: 'Identra obtiene $50 millones para verificación de identidad tras ver un crecimiento de ingresos de 10 veces año tras año',
-    press5Headline: 'Identra recauda $17.5 millones para verificar identidades sin humanos en el circuito',
-
-    // Investors
-    ourInvestorsTitle: 'Nuestros inversionistas',
-    ourInvestorsDesc: 'Identra agradece el respaldo de inversionistas y asesores líderes de la industria que comparten nuestra visión a largo plazo de humanizar la identidad en línea.',
-    seriesC: 'Inversionista líder (Serie C)',
-    seriesB: 'Inversionista líder (Serie B)',
-    seriesA: 'Inversionista líder (Serie A)',
-    growthPartner: 'Socio de etapa de crecimiento',
-    lateStage: 'Inversionista de etapa tardía',
-    seedPartner: 'Socio de etapa semilla / temprana',
-
-    // Join Team CTA
-    joinTeamTitle: '¿Te interesa unirte a nuestro equipo?',
-    joinTeamDesc: 'Conoce nuestras vacantes y aprende más sobre la vida como Personerd, incluyendo beneficios, ventajas y cómo colaboramos para construir una mejor red.',
-    seeOpenPositions: 'Ver vacantes',
-
-    // Our Journey
-    journeyBadge: 'Hitos clave',
-    journeyTitle: 'Nuestra Trayectoria',
-    journeyDesc: 'Desde la convicción de que la identidad en línea debe ser más segura, más humana y más fácil de confiar, Identra ha crecido hasta convertirse en una plataforma que ayuda a los equipos a verificar usuarios y reducir riesgos a escala.',
-    journey2022Title: 'El Comienzo',
-    journey2022Desc: 'Identra comenzó con un objetivo sencillo: hacer que la verificación de identidad sea más confiable, accesible y humana.',
-    journey2023Title: 'Sentando las Bases',
-    journey2023Desc: 'Construimos la base de una plataforma de identidad flexible que reúne verificaciones de documentos, biometría y señales de riesgo en un solo flujo.',
-    journey2026Title: 'Investigación y Desarrollo',
-    journey2026Desc: 'Ampliamos señales pasivas, análisis de grafos y herramientas para desarrolladores para ayudar a los equipos a responder a fraudes más rápidos y sofisticados.',
-    journey2027Title: 'Próximo capítulo',
-    journey2027Desc: 'Identra seguirá ampliando infraestructura de identidad adaptativa para equipos que necesitan decisiones de confianza en cada momento crítico.',
+  haveRoot: {
+    title: 'A published root certificate',
+    body: 'Every check leads back to one root certificate. Today it is a DEMO root. The security page lists what is built and what is not yet.',
+    link: 'Read the security page',
   },
-  ja: {
-    backToPlatform: 'プラットフォームに戻る',
-    heroTitleBefore: '私たちは、',
-    heroTitleHighlighted: 'より人間らしい',
-    heroTitleAfter: 'インターネットを構築しています',
-    commitment1Badge: 'コミットメント 01',
-    commitment1Title: '奉仕することでリードする',
-    commitment1Desc: '他者をサポートするための傾聴、敬意、そして謙虚さ。',
-    commitment2Badge: 'コミットメント 02',
-    commitment2Title: 'ピープルファースト',
-    commitment2Desc: '顧客、そのユーザー、そして私たちのチームを保護し、サポートする意思決定。',
-    commitment3Badge: 'コミットメント 03',
-    commitment3Title: 'パブリックに働く',
-    commitment3Desc: '早期かつ頻繁に共有し、質問や共同作業のためのオープンなスペースを作ること。',
-    ourValuesBadge: '私たちの価値観',
-    ourValuesTitle: 'Identraでは、向上し続けたいという願いのもと結束し、これらの価値観を指針としています。',
-    
-    // Values
-    value1Title: 'ピープルファースト',
-    value1Desc: 'ビジネスにとって良くても、人（顧客、その顧客、または私たちのチーム）にとって良くない意思決定は行いません。',
-    value2Title: '執拗に高い基準を追求する',
-    value2Desc: '私たちは今日、高い基準を自分自身に課し、明日にはさらに高い基準を課します。勝利を祝いながらも、常にバーを上げるよう努めています。',
-    value3Title: '奉仕することでリードする',
-    value3Desc: 'リーダーシップには、傾聴、敬意、謙虚さ、そして他者を助けるコミットメントが必要です。私たちは互いをサポートし、教え合い、言葉を行動で裏付けることでリードします。',
-    value4Title: 'パブリックに働く',
-    value4Desc: '私たちは仕事を前進させるために早期かつ頻繁に共有し、完璧な仕様を待つのではなく、質問をしたり未完成のデモを披露したりしても大丈夫な空間を作ります。',
-    value5Title: '小さく始め、大きく考える',
-    value5Desc: '小さく始めることで、ビジョンを見失うことなく、教訓を学びながら価値を提供することができます。',
-    value6Title: 'スピードは妥協ではない',
-    value6Desc: '迅速に行動することは、品質を犠牲にすることを意味しません。代わりに、高いレベルでの運用を維持しながら効率的であることに重点を置きます。',
-
-    // Press
-    inThePressTitle: 'メディア掲載',
-    pressInquiriesText: 'プレス関係のお問い合わせやメディア素材については、下記までご連絡ください：',
-    press1Headline: 'AIがインターネットのボット問題を悪化させている。この20億ドルのスタートアップが最前線に立つ',
-    press2Headline: '生成AIによる詐欺を止めることはできない。しかし、犯罪者を迷わせ続けることはできる',
-    press3Headline: 'Founders Fundが身元確認スタートアップのIdentraを15億ドルと評価',
-    press4Headline: 'Identraが前年比10倍の売上成長を記録、身元確認に5,000万ドルを調達',
-    press5Headline: 'Identraが人間の介在なしに身元を検証するために1,750万ドルを調達',
-
-    // Investors
-    ourInvestorsTitle: '投資家紹介',
-    ourInvestorsDesc: 'Identraは、オンラインアイデンティティを人間らしいものにするという長期的なビジョンを共有する、業界をリードする投資家やアドバイザーから支援を受けていることに感謝しています。',
-    seriesC: 'リード投資家 (シリーズC)',
-    seriesB: 'リード投資家 (シリーズB)',
-    seriesA: 'リード投資家 (シリーズA)',
-    growthPartner: 'グロースステージパートナー',
-    lateStage: 'レイトステージ投資家',
-    seedPartner: 'シード / アーリーステージパートナー',
-
-    // Join Team CTA
-    joinTeamTitle: '私たちのチームに加わりませんか？',
-    joinTeamDesc: '募集中の職種を確認し、福利厚生や特典、より良いウェブを築くための協働のあり方など、Personerdとしての働き方について詳しくご覧ください。',
-    seeOpenPositions: '募集職種を見る',
-
-    // Our Journey
-    journeyBadge: 'マイルストーン',
-    journeyTitle: '私たちの歩み',
-    journeyDesc: 'オンラインアイデンティティはより安全で、人間らしく、信頼しやすいものであるべきだという考えから、Identraはユーザー確認とリスク低減を大規模に支えるプラットフォームへと成長してきました。',
-    journey2022Title: '始まり',
-    journey2022Desc: 'Identraは、本人確認をより信頼でき、使いやすく、人間らしいものにするというシンプルな目標から始まりました。',
-    journey2023Title: '基盤作り',
-    journey2023Desc: '本人確認書類チェック、生体認証、リスクシグナルを一つのフローにまとめる柔軟なアイデンティティ基盤を構築しました。',
-    journey2026Title: '研究開発',
-    journey2026Desc: 'より速く巧妙化する不正に対応できるよう、パッシブシグナル、グラフ分析、開発者向けツールを拡張しました。',
-    journey2027Title: '次の章',
-    journey2027Desc: 'Identraは、重要なあらゆる瞬間に信頼判断を必要とするチームのため、適応型アイデンティティ基盤をさらに広げていきます。',
+  haveWallet: {
+    title: 'A wallet app in internal testing',
+    body: 'The mobile wallet is built and tested but has not yet run on a physical phone. The demos use a trial wallet in the browser that runs the same library.',
+    link: 'Try the guided demo',
   },
-  de: {
-    backToPlatform: 'Zurück zur Plattform',
-    heroTitleBefore: 'Wir bauen ein ',
-    heroTitleHighlighted: 'menschlicheres',
-    heroTitleAfter: ' Internet',
-    commitment1Badge: 'Engagement 01',
-    commitment1Title: 'Führen durch Dienen',
-    commitment1Desc: 'Zuhören, Respekt und Demut zur Unterstützung anderer.',
-    commitment2Badge: 'Engagement 02',
-    commitment2Title: 'Menschen zuerst',
-    commitment2Desc: 'Entscheidungen, die unsere Kunden, ihre Nutzer und unser Team schützen und unterstützen.',
-    commitment3Badge: 'Engagement 03',
-    commitment3Title: 'Öffentlich arbeiten',
-    commitment3Desc: 'Frühzeitig und oft teilen, um einen offenen Raum für Fragen und Zusammenarbeit zu schaffen.',
-    ourValuesBadge: 'Unsere Werte',
-    ourValuesTitle: 'Bei Identra verbindet uns der Wunsch, uns ständig zu verbessern, und wir nutzen diese Werte als unsere Leitprinzipien.',
-    
-    // Values
-    value1Title: 'Menschen zuerst',
-    value1Desc: 'Wir treffen keine Entscheidungen, die gut für das Geschäft, aber nicht gut für die Menschen sind – seien es unsere Kunden, deren Kunden oder unser Team.',
-    value2Title: 'Unablässig hohe Standards verfolgen',
-    value2Desc: 'Wir legen die Messlatte heute hoch – und morgen noch höher. Während wir unsere Erfolge feiern, bemühen wir uns ständig, die Messlatte höher zu legen.',
-    value3Title: 'Führen durch Dienen',
-    value3Desc: 'Führung erfordert Zuhören, Respekt, Demut und das Engagement, anderen zu helfen. Wir führen, indem wir uns gegenseitig unterstützen und anleiten und unseren Worten Taten folgen lassen.',
-    value4Title: 'Öffentlich arbeiten',
-    value4Desc: 'Wir teilen früh und oft, um unsere Arbeit voranzutreiben. So schaffen wir einen Raum, in dem es in Ordnung ist, Fragen zu stellen und unfertige Demos zu zeigen, anstatt auf eine perfekte Spezifikation zu warten.',
-    value5Title: 'Klein anfangen, groß denken',
-    value5Desc: 'Klein anzufangen ermöglicht es uns, Werte zu schaffen und gleichzeitig Lehren zu ziehen, ohne unsere Vision aus den Augen zu verlieren.',
-    value6Title: 'Schnelligkeit ist kein Kompromiss',
-    value6Desc: 'Schnelligkeit bedeutet nicht, dass unsere Qualität leiden muss. Stattdessen konzentrieren wir uns darauf, effizient zu sein und gleichzeitig auf hohem Niveau zu arbeiten.',
-
-    // Press
-    inThePressTitle: 'In der Presse',
-    pressInquiriesText: 'Für Presseanfragen oder Medien-Assets kontaktieren Sie uns bitte unter ',
-    press1Headline: 'KI verschlimmert das Bot-Problem des Internets. Dieses 2-Milliarden-Dollar-Startup steht an der vordersten Front',
-    press2Headline: 'Sie können Betrug durch generative KI nicht stoppen – aber Sie können die Kriminellen im Ungewissen lassen',
-    press3Headline: 'Founders Fund bewertet das Identitäts-Startup Identra mit 1,5 Milliarden Dollar',
-    press4Headline: 'Identra erhält 50 Millionen Dollar für Identitätsprüfung nach einem 10-fachen Umsatzwachstum im Jahresvergleich',
-    press5Headline: 'Identra sammelt 17,5 Millionen Dollar, um Identitäten ohne menschliches Zutun zu verifizieren',
-
-    // Investors
-    ourInvestorsTitle: 'Unsere Investoren',
-    ourInvestorsDesc: 'Identra ist dankbar für die Unterstützung von branchenführenden Investoren und Beratern, die unsere langfristige Vision teilen, die Online-Identität menschlicher zu gestalten.',
-    seriesC: 'Lead-Investor (Series C)',
-    seriesB: 'Lead-Investor (Series B)',
-    seriesA: 'Lead-Investor (Series A)',
-    growthPartner: 'Wachstumsphase-Partner',
-    lateStage: 'Spätphasen-Investor',
-    seedPartner: 'Seed- / Frühphasen-Partner',
-
-    // Join Team CTA
-    joinTeamTitle: 'Haben Sie Interesse, unserem Team beizutreten?',
-    joinTeamDesc: 'Sehen Sie sich unsere offenen Stellen an und erfahren Sie mehr über das Leben als Personerd, einschließlich Sozialleistungen, Vergünstigungen und wie wir zusammenarbeiten, um ein besseres Web zu bauen.',
-    seeOpenPositions: 'Offene Stellen ansehen',
-
-    // Our Journey
-    journeyBadge: 'Meilensteine',
-    journeyTitle: 'Unsere Reise',
-    journeyDesc: 'Aus der Überzeugung, dass Online-Identität sicherer, menschlicher und vertrauenswürdiger sein sollte, ist Identra zu einer Plattform gewachsen, die Teams hilft, Nutzer zu verifizieren und Risiken in großem Maßstab zu reduzieren.',
-    journey2022Title: 'Der Anfang',
-    journey2022Desc: 'Identra begann mit einem einfachen Ziel: Identitätsprüfung zuverlässiger, zugänglicher und menschlicher zu machen.',
-    journey2023Title: 'Grundsteinlegung',
-    journey2023Desc: 'Wir legten die Grundlage für eine flexible Identitätsplattform, die Dokumentenprüfung, Biometrie und Risikosignale in einem Flow zusammenführt.',
-    journey2026Title: 'Forschung & Entwicklung',
-    journey2026Desc: 'Wir erweiterten passive Signale, Graph-Analysen und Entwicklerwerkzeuge, damit Teams schneller auf ausgefeilteren Betrug reagieren können.',
-    journey2027Title: 'Nächstes Kapitel',
-    journey2027Desc: 'Identra wird adaptive Identitätsinfrastruktur weiter ausbauen, für Teams, die in jedem kritischen Moment Vertrauensentscheidungen treffen müssen.',
-  },
-  vi: {
-    backToPlatform: 'Quay lại Nền tảng',
-    heroTitleBefore: 'Chúng tôi đang xây dựng một internet ',
-    heroTitleHighlighted: 'nhân văn hơn',
-    heroTitleAfter: '',
-    commitment1Badge: 'Cam kết 01',
-    commitment1Title: 'Dẫn đầu bằng cách phục vụ',
-    commitment1Desc: 'Lắng nghe, tôn trọng và khiêm tốn để hỗ trợ người khác.',
-    commitment2Badge: 'Cam kết 02',
-    commitment2Title: 'Đặt con người lên hàng đầu',
-    commitment2Desc: 'Các quyết định bảo vệ và hỗ trợ khách hàng, người dùng của họ và đội ngũ của chúng tôi.',
-    commitment3Badge: 'Cam kết 03',
-    commitment3Title: 'Làm việc công khai',
-    commitment3Desc: 'Chia sẻ sớm và thường xuyên để tạo không gian cởi mở cho các câu hỏi và sự hợp tác.',
-    ourValuesBadge: 'Giá trị cốt lõi',
-    ourValuesTitle: 'Tại Identra, chúng tôi đoàn kết bởi mong muốn không ngừng cải tiến và lấy các giá trị này làm nguyên tắc dẫn đường.',
-    
-    // Values
-    value1Title: 'Đặt con người lên hàng đầu',
-    value1Desc: 'Chúng tôi sẽ không đưa ra các quyết định tốt cho doanh nghiệp nhưng lại không tốt cho con người — cho dù đó là khách hàng, người dùng của họ hay đội ngũ của chúng tôi.',
-    value2Title: 'Không ngừng theo đuổi các tiêu chuẩn cực cao',
-    value2Desc: 'Hôm nay chúng tôi tự đặt ra một tiêu chuẩn cao — và ngày mai sẽ còn cao hơn nữa. Dù ăn mừng chiến thắng, chúng tôi vẫn không ngừng nỗ lực nâng tầm các tiêu chuẩn.',
-    value3Title: 'Dẫn đầu bằng cách phục vụ',
-    value3Desc: 'Lãnh đạo đòi hỏi sự lắng nghe, tôn trọng, khiêm tốn và cam kết giúp đỡ người khác. Chúng tôi dẫn đầu bằng cách hỗ trợ và học hỏi lẫn nhau, đồng thời biến lời nói thành hành động.',
-    value4Title: 'Làm việc công khai',
-    value4Desc: 'Chúng tôi chia sẻ sớm và thường xuyên để thúc đẩy công việc, tạo ra một không gian nơi việc đặt câu hỏi và giới thiệu các bản thử nghiệm chưa hoàn thiện là điều bình thường thay vì chờ đợi một thông số hoàn hảo.',
-    value5Title: 'Bắt đầu nhỏ, nghĩ lớn',
-    value5Desc: 'Bắt đầu từ việc nhỏ cho phép chúng tôi cung cấp giá trị hữu ích trong khi đúc rút các bài học kinh nghiệm mà không làm mất đi tầm nhìn dài hạn.',
-    value6Title: 'Tốc độ không phải là sự đánh đổi',
-    value6Desc: 'Đi nhanh không có nghĩa là chất lượng của chúng tôi phải giảm sút. Thay vào thế, chúng tôi tập trung vào việc đạt hiệu quả tối ưu trong khi vẫn tiếp tục vận hành ở cấp độ cao nhất.',
-
-    // Press
-    inThePressTitle: 'Góc báo chí',
-    pressInquiriesText: 'Đối với các yêu cầu báo chí hoặc tài nguyên truyền thông, vui lòng liên hệ với chúng tôi tại ',
-    press1Headline: 'AI đang làm trầm trọng thêm vấn đề bot của internet. Công ty khởi nghiệp trị giá 2 tỷ USD này đang ở tuyến đầu',
-    press2Headline: 'Bạn không thể ngăn chặn gian lận AI tạo sinh—nhưng bạn có thể khiến tội phạm liên tục phải đoán mò',
-    press3Headline: 'Founders Fund định giá công ty khởi nghiệp danh tính Identra ở mức 1,5 tỷ USD',
-    press4Headline: 'Identra nhận được 50 triệu USD cho việc xác minh danh tính sau khi chứng kiến doanh thu tăng trưởng gấp 10 lần so với cùng kỳ năm ngoái',
-    press5Headline: 'Identra huy động được 17,5 triệu USD để xác minh danh tính mà không cần con người trực tiếp tham gia',
-
-    // Investors
-    ourInvestorsTitle: 'Nhà đầu tư của chúng tôi',
-    ourInvestorsDesc: 'Identra rất biết ơn khi được hậu thuẫn bởi các nhà đầu tư và cố vấn hàng đầu trong ngành, những người cùng chia sẻ tầm nhìn dài hạn về việc nhân văn hóa danh tính trực tuyến.',
-    seriesC: 'Nhà đầu tư dẫn đầu (Vòng C)',
-    seriesB: 'Nhà đầu tư dẫn đầu (Vòng B)',
-    seriesA: 'Nhà đầu tư dẫn đầu (Vòng A)',
-    growthPartner: 'Đối tác giai đoạn tăng trưởng',
-    lateStage: 'Nhà đầu tư giai đoạn cuối',
-    seedPartner: 'Đối tác giai đoạn hạt giống / đầu',
-
-    // Join Team CTA
-    joinTeamTitle: 'Bạn muốn gia nhập đội ngũ của chúng tôi?',
-    joinTeamDesc: 'Khám phá các vị trí tuyển dụng của chúng tôi và tìm hiểu thêm về cuộc sống của một Personerd, bao gồm các chế độ đãi ngộ, đặc quyền và cách chúng tôi cùng nhau xây dựng một mạng web tốt đẹp hơn.',
-    seeOpenPositions: 'Xem các vị trí tuyển dụng',
-
-    // Our Journey
-    journeyBadge: 'Các cột mốc',
-    journeyTitle: 'Hành trình của chúng tôi',
-    journeyDesc: 'Từ niềm tin rằng danh tính trực tuyến cần an toàn hơn, nhân văn hơn và dễ tin cậy hơn, Identra đã phát triển thành nền tảng giúp các đội ngũ xác minh người dùng và giảm rủi ro ở quy mô lớn.',
-    journey2022Title: 'Khởi đầu',
-    journey2022Desc: 'Identra bắt đầu với một mục tiêu đơn giản: giúp xác minh danh tính đáng tin cậy hơn, dễ tiếp cận hơn và nhân văn hơn.',
-    journey2023Title: 'Đặt nền móng',
-    journey2023Desc: 'Chúng tôi xây dựng nền móng cho một nền tảng danh tính linh hoạt, kết hợp kiểm tra giấy tờ, sinh trắc học và tín hiệu rủi ro trong một luồng.',
-    journey2026Title: 'Nghiên cứu & phát triển',
-    journey2026Desc: 'Chúng tôi mở rộng tín hiệu thụ động, phân tích liên kết và công cụ cho nhà phát triển để giúp các đội ngũ ứng phó với gian lận nhanh và tinh vi hơn.',
-    journey2027Title: 'Chặng tiếp theo',
-    journey2027Desc: 'Identra sẽ tiếp tục mở rộng hạ tầng danh tính thích ứng cho các đội ngũ cần đưa ra quyết định tin cậy ở mọi thời điểm quan trọng.',
-  },
+  nextTitle: 'Next: a pilot with a school and an employer',
+  nextBody: 'The next step is to issue real diplomas with one school and check them with one employer. If you would like to take part, tell us.',
+  nextCta: 'Contact us',
 };
+
+const es: AboutPageCopy = {
+  title: 'Identra está en fase piloto',
+  intro: 'Identra es un sistema de credenciales verificables desarrollado por AwnCorp en Vietnam. Una organización emite una credencial digital firmada, como un título o el recorrido de un producto, y cualquiera puede comprobarla sin llamar al emisor.',
+  ctaDemo: 'Probar las demos',
+  ctaContact: 'Contactar',
+  notYetTitle: 'Lo que aún no existe',
+  notYet: [
+    'Todavía no hay clientes.',
+    'No hay una lista de precios pública.',
+    'No hay certificación de seguridad ni auditoría de terceros.',
+    'La app de billetera móvil no está publicada.',
+  ],
+  haveTitle: 'Lo que existe hoy',
+  haveDemos: {
+    title: 'Dos demos que funcionan',
+    body: 'Un título emitido por una universidad de ejemplo, mostrado a un empleador y luego revocado; y productos cuyas etapas están todas firmadas y se comprueban en su navegador. Ambas funcionan en el servidor real con criptografía real.',
+    link: 'Abrir las demos',
+  },
+  haveRoot: {
+    title: 'Un certificado raíz publicado',
+    body: 'Cada comprobación conduce a un único certificado raíz. Hoy es una raíz DEMO. La página de seguridad explica lo que existe y lo que aún no.',
+    link: 'Leer la página de seguridad',
+  },
+  haveWallet: {
+    title: 'Una app de billetera en pruebas internas',
+    body: 'La billetera móvil está construida y probada, pero aún no se ha ejecutado en un teléfono físico. Las demos usan una billetera de prueba en el navegador con la misma biblioteca.',
+    link: 'Probar la demo guiada',
+  },
+  nextTitle: 'Próximo paso: un piloto con una universidad y un empleador',
+  nextBody: 'El siguiente paso es emitir títulos reales con una universidad y comprobarlos con un empleador. Si quiere participar, escríbanos.',
+  nextCta: 'Contactar',
+};
+
+const ja: AboutPageCopy = {
+  title: 'Identra はパイロット段階です',
+  intro: 'Identra は、ベトナムの AwnCorp が開発する検証可能な資格情報のシステムです。組織が卒業証書や製品の流通履歴などの署名付きデジタル資格情報を発行し、誰でも発行者に問い合わせることなく確認できます。',
+  ctaDemo: 'デモを試す',
+  ctaContact: 'お問い合わせ',
+  notYetTitle: 'まだないもの',
+  notYet: [
+    'まだ顧客はいません。',
+    '公開の料金表はありません。',
+    'セキュリティ認証も第三者監査もありません。',
+    'モバイルウォレットアプリは公開されていません。',
+  ],
+  haveTitle: 'いまあるもの',
+  haveDemos: {
+    title: '動く 2 つのデモ',
+    body: 'サンプル大学が発行し、採用担当者に提示され、その後失効する卒業証書。そして、すべての工程に署名があり、あなたのブラウザで確認される製品。どちらも本番サーバー上で本物の暗号技術によって動きます。',
+    link: 'デモを開く',
+  },
+  haveRoot: {
+    title: '公開されたルート証明書',
+    body: 'すべての検証は 1 つのルート証明書にたどり着きます。現在は DEMO 用のルートです。できていることとまだのことはセキュリティのページにまとめています。',
+    link: 'セキュリティのページを読む',
+  },
+  haveWallet: {
+    title: '社内テスト中のウォレットアプリ',
+    body: 'モバイルウォレットは構築・テスト済みですが、実機のスマートフォンではまだ動かしていません。デモでは同じライブラリで動くブラウザ上の試用ウォレットを使います。',
+    link: 'ガイド付きデモを試す',
+  },
+  nextTitle: '次のステップ：大学と採用企業でのパイロット',
+  nextBody: '次は、1 つの大学で本物の卒業証書を発行し、1 つの採用企業で確認することです。参加をご希望の方はご連絡ください。',
+  nextCta: 'お問い合わせ',
+};
+
+const de: AboutPageCopy = {
+  title: 'Identra ist in der Pilotphase',
+  intro: 'Identra ist ein System für verifizierbare Nachweise, entwickelt von AwnCorp in Vietnam. Eine Organisation stellt einen signierten digitalen Nachweis aus, etwa einen Abschluss oder den Weg eines Produkts, und jeder kann ihn prüfen, ohne beim Aussteller nachzufragen.',
+  ctaDemo: 'Demos testen',
+  ctaContact: 'Kontakt',
+  notYetTitle: 'Was es noch nicht gibt',
+  notYet: [
+    'Noch keine Kunden.',
+    'Keine öffentliche Preisliste.',
+    'Keine Sicherheitszertifizierung und kein Audit durch Dritte.',
+    'Die mobile Wallet-App ist nicht veröffentlicht.',
+  ],
+  haveTitle: 'Was es heute gibt',
+  haveDemos: {
+    title: 'Zwei funktionierende Demos',
+    body: 'Ein Abschluss einer Beispieluniversität, der einem Arbeitgeber vorgelegt und dann widerrufen wird; und Produkte, deren Schritte alle signiert sind und in Ihrem Browser geprüft werden. Beide laufen auf dem echten Server mit echter Kryptografie.',
+    link: 'Demos öffnen',
+  },
+  haveRoot: {
+    title: 'Ein veröffentlichtes Wurzelzertifikat',
+    body: 'Jede Prüfung führt zu einem einzigen Wurzelzertifikat. Heute ist es eine DEMO-Wurzel. Die Sicherheitsseite zeigt, was steht und was noch fehlt.',
+    link: 'Zur Sicherheitsseite',
+  },
+  haveWallet: {
+    title: 'Eine Wallet-App im internen Test',
+    body: 'Die mobile Wallet ist gebaut und getestet, lief aber noch nicht auf einem echten Smartphone. Die Demos nutzen eine Test-Wallet im Browser mit derselben Bibliothek.',
+    link: 'Geführte Demo testen',
+  },
+  nextTitle: 'Als Nächstes: ein Pilot mit einer Hochschule und einem Arbeitgeber',
+  nextBody: 'Der nächste Schritt ist, mit einer Hochschule echte Abschlüsse auszustellen und sie mit einem Arbeitgeber zu prüfen. Wenn Sie mitmachen möchten, schreiben Sie uns.',
+  nextCta: 'Kontakt aufnehmen',
+};
+
+const vi: AboutPageCopy = {
+  title: 'Identra đang ở giai đoạn thí điểm',
+  intro: 'Identra là hệ thống chứng nhận số có thể kiểm chứng do AwnCorp (Việt Nam) xây dựng. Một tổ chức phát hành chứng nhận số có chữ ký, như một tấm bằng hay hành trình của một sản phẩm, và ai cũng kiểm tra được mà không cần gọi cho bên phát hành.',
+  ctaDemo: 'Thử các bản demo',
+  ctaContact: 'Liên hệ',
+  notYetTitle: 'Những gì chưa có',
+  notYet: [
+    'Chưa có khách hàng.',
+    'Chưa có bảng giá công khai.',
+    'Chưa có chứng nhận bảo mật, chưa có kiểm toán của bên thứ ba.',
+    'Ứng dụng ví di động chưa phát hành.',
+  ],
+  haveTitle: 'Những gì đang có',
+  haveDemos: {
+    title: 'Hai bản demo chạy thật',
+    body: 'Một tấm bằng do trường mẫu phát hành, xuất trình cho nhà tuyển dụng rồi bị thu hồi; và các sản phẩm có từng công đoạn được ký, kiểm tra ngay trên trình duyệt của bạn. Cả hai chạy trên máy chủ thật, bằng mật mã thật.',
+    link: 'Mở các bản demo',
+  },
+  haveRoot: {
+    title: 'Chứng thư gốc được công bố',
+    body: 'Mọi lần kiểm tra đều dẫn về một chứng thư gốc. Hiện đó là chứng thư gốc bản DEMO. Trang bảo mật ghi rõ những gì đã có và chưa có.',
+    link: 'Đọc trang bảo mật',
+  },
+  haveWallet: {
+    title: 'Ứng dụng ví đang thử nghiệm nội bộ',
+    body: 'Ví di động đã xây và qua kiểm thử nhưng chưa chạy trên điện thoại thật. Các bản demo dùng ví thử trên trình duyệt, chạy cùng thư viện với ứng dụng.',
+    link: 'Thử demo từng bước',
+  },
+  nextTitle: 'Bước tiếp theo: thí điểm với một trường và một nhà tuyển dụng',
+  nextBody: 'Bước tiếp theo là phát hành bằng thật với một trường và kiểm tra bằng đó với một nhà tuyển dụng. Nếu bạn muốn tham gia, hãy cho chúng tôi biết.',
+  nextCta: 'Liên hệ với chúng tôi',
+};
+
+export const ABOUT_TRANSLATIONS = { en, es, ja, de, vi } as const;

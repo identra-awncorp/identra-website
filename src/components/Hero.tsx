@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle, Lock } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import TechGridBg from './TechGridBg';
 import { HERO_TRANSLATIONS } from '../translations/HeroTranslations';
 import type { AppView } from '../types/routes';
@@ -17,90 +17,11 @@ interface HeroProps {
   onViewChange?: (view: AppView) => void;
 }
 
-// 3D Flipping Logo Card Component
-function FlippingLogo({ 
-  front, 
-  back, 
-  isFlipped, 
-  index 
-}: { 
-  front: React.ReactNode; 
-  back: React.ReactNode; 
-  isFlipped: boolean; 
-  index: number; 
-}) {
-  const [localFlipped, setLocalFlipped] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLocalFlipped(isFlipped);
-    }, index * 100); // Staggered delays
-    return () => clearTimeout(timer);
-  }, [isFlipped, index]);
-
-  return (
-    <div className="relative w-full h-20 flex items-center justify-center [perspective:1000px] select-none">
-      <motion.div
-        className="relative w-full h-full flex items-center justify-center [transform-style:preserve-3d]"
-        animate={{ rotateX: localFlipped ? 180 : 0 }}
-        transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-      >
-        {/* Front Side */}
-        <div className="absolute inset-0 flex items-center justify-center [backface-visibility:hidden]">
-          {front}
-        </div>
-        
-        {/* Back Side */}
-        <div className="absolute inset-0 flex items-center justify-center [backface-visibility:hidden] [transform:rotateX(180deg)]">
-          {back}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-const FRONT_PARTNER_LOGOS = [
-  { id: 'vingroup', name: 'Vingroup' },
-  { id: 'vietcombank', name: 'Vietcombank' },
-  { id: 'viettel', name: 'Viettel' },
-  { id: 'vpbank', name: 'VPBank' },
-  { id: 'mbbank', name: 'MBBank' },
-  { id: 'hoaphat', name: 'Hoa Phat' }
-] as const;
-
-const BACK_PARTNER_LOGOS = [
-  { id: 'vietjet', name: 'VIETJET' },
-  { id: 'masan', name: 'Masan' },
-  { id: 'fpt', name: 'FPT' },
-  { id: 'cellphones', name: 'CellphoneS' },
-  { id: 'vinamilk', name: 'Vinamilk' },
-  { id: 'vccorp', name: 'VCCorp' }
-] as const;
-
-function PartnerLogo({ name }: { name: string }) {
-  return (
-    <div className="flex h-20 w-full items-center justify-center px-1 text-slate-400 transition-colors hover:text-slate-600">
-      <span className="block whitespace-nowrap text-center font-sans text-base font-bold leading-none text-current sm:text-lg lg:text-xl">
-        {name}
-      </span>
-    </div>
-  );
-}
-
 export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(HERO_TRANSLATIONS, language as keyof typeof HERO_TRANSLATIONS, 'HERO_TRANSLATIONS');
-  const [isFlipped, setIsFlipped] = useState(false);
   const [activeSlide, setActiveSlide] = useState(1); // Default center slide
   const [isMobile, setIsMobile] = useState(false);
-
-  // Auto-flip partner logos periodically
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsFlipped((prev) => !prev);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, []);
 
   // Auto-play timer for Large Three-Card Interactive Slider (7 seconds)
   // Recreating the interval on activeSlide change ensures manual clicks/drags reset the timer
@@ -219,31 +140,12 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
           </button>
           <button
             type="button"
-            onClick={() => onViewChange?.('white-paper')}
+            onClick={() => onViewChange?.('security')}
             className="type-control text-[#04081E]/70 hover:text-[#04081E] flex items-center justify-center gap-1.5 transition cursor-pointer"
           >
-            {t.seeWhitePaper}
+            {t.seeTrustChain}
             <ArrowRight className="w-3 h-3 text-slate-400" />
           </button>
-        </div>
-
-        {/* Trust Banner Logos with vertical flip effect */}
-        <div className="max-w-5xl mx-auto mb-0 mt-16 md:mt-24">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 items-center justify-items-center gap-y-4 md:gap-y-6 py-4 md:py-6">
-            {FRONT_PARTNER_LOGOS.map((logo, idx) => (
-              <div 
-                key={logo.id} 
-                className="w-full px-2 flex items-center justify-center"
-              >
-                <FlippingLogo 
-                  front={<PartnerLogo name={logo.name} />}
-                  back={<PartnerLogo name={BACK_PARTNER_LOGOS[idx].name} />}
-                  isFlipped={isFlipped} 
-                  index={idx} 
-                />
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Large Slide containing three images */}
@@ -291,18 +193,6 @@ export default function Hero({ onOpenSandbox, onViewChange }: HeroProps) {
               );
             })}
           </div>
-        </div>
-
-        {/* Subtle certifications footer */}
-        <div className="type-technical flex items-center justify-center gap-8 text-slate-400 pt-4">
-          <span className="flex items-center gap-1.5">
-            <CheckCircle className="w-4 h-4 text-emerald-500" />
-            {t.soc2}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Lock className="w-4 h-4 text-indigo-500" />
-            {t.gdpr}
-          </span>
         </div>
 
       </div>

@@ -96,19 +96,10 @@ export const WORKFORCE_IDV_PAGE_TRANSLATIONS: any = {
       { title: "New Hire Onboarding", status: "Document check...", time: "Just Now" }
     ],
     protectionShield: "Enterprise Protection Shield",
-    protectionShieldDesc: "Securing over 2.5M corporate authentications daily",
-    trustedBy: "TRUSTED BY THE WORLD'S LEADING WORKFORCES",
-    trustLogos: { oktaMark: "O", okta: "okta", intercomMark: "I", intercom: "INTERCOM", ro: "ro" },
     scaleLabel: "Enterprise scale & coverage",
     scaleTitle: "Scale globally based on your business needs with Identra",
-    scaleDesc: "Ensure comprehensive identity verification with zero bottlenecks. Identra's enterprise platform processes transactions instantly while complying with local data privacy laws worldwide.",
-    stats: [
-      { value: "200+", label: "countries and territories covered to verify employees" },
-      { value: "<1 min", label: "for government ID and selfie verifications" },
-      { value: "50+", label: "integrations with leading tech platforms" }
-    ],
+    scaleDesc: "Ensure comprehensive identity verification with zero bottlenecks. Identra's enterprise platform processes transactions instantly.",
     globalGrid: "Global Verification Grid",
-    globalGridDesc: "GDPR, SOC 2, and CCPA regional routing active.",
     lifecycleLabel: "Full Employee Life Cycle",
     lifecycleTitle: "Protect your business at every stage of the employee life cycle",
     lifecycleDesc: "Verify real-world identities and protect logins automatically at standard milestones. Control access at hiring, secure onboarding, and mitigate password-recovery takeovers.",
@@ -220,7 +211,7 @@ export const WORKFORCE_IDV_PAGE_TRANSLATIONS: any = {
         title: "Robust library of verifications and signals",
         columns: [
           { title: "Identity and device binding", desc: "Fight deepfakes and other types of fraud with selfie liveness checks, video verifications, 2FA device binding, and more." },
-          { title: "Global verification coverage", desc: "Collect and verify government ID documents, such as passports and driver licenses, from more than 200 countries and territories." },
+          { title: "Global verification coverage", desc: "Collect and verify government ID documents, such as passports and driver licenses." },
           { title: "Configurable settings and checks", desc: "Adjust image quality requirements, face obstruction detection, retry attempts, and more to meet your requirements." },
           { title: "Non-documentary verification", desc: "Check collected PII and digital IDs against global issuing and authoritative sources securely." }
         ]
@@ -242,10 +233,6 @@ export const WORKFORCE_IDV_PAGE_TRANSLATIONS: any = {
         ]
       }
     ],
-    badges: ["CCPA Compliant", "GDPR Ready", "SOC 2 Type II", "ISO 27001", "HIPAA compliant", "FERPA certified", "Age Checked", "iBeta Level 2"],
-    trustTitle: "Trust is built on security and privacy",
-    trustDesc: "Identra adheres to the highest industry standards, maintaining strict compliance protocols and independent certifications to safeguard you and your employee records.",
-    securityCertsCta: "Explore security certifications",
     readyTitle: "Ready to get started?",
     readyDesc: "Get in touch or start exploring Identra today. Set up custom biometric workflows tailored specifically for your workforce operations.",
     tryDemo: "Try the demo",
@@ -259,23 +246,6 @@ export const WORKFORCE_IDV_PAGE_TRANSLATIONS: any = {
 
 WORKFORCE_IDV_PAGE_TRANSLATIONS.es = {
   coreLabel: "workforce-idv-core",
-  trustLogos: {
-      "oktaMark": "O",
-      "okta": "okta",
-      "intercomMark": "I",
-      "intercom": "INTERCOM",
-      "ro": "ro"
-    },
-  badges: [
-      "CCPA Compliant",
-      "GDPR Ready",
-      "SOC 2 Type II",
-      "ISO 27001",
-      "HIPAA compliant",
-      "FERPA certified",
-      "Age Checked",
-      "iBeta Level 2"
-    ],
   badge: "Protección de identidad empresarial",
   heroTitle: "Verifica empleados en los momentos que más atacan los adversarios.",
   heroDesc: "Detén ingeniería social, deepfakes e impostores en cada etapa del ciclo de vida del empleado. Protege tus sistemas con prueba de identidad criptográfica.",
@@ -292,18 +262,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.es = {
     { title: "Onboarding de nuevo empleado", status: "Comprobando documento...", time: "Ahora" }
   ],
   protectionShield: "Escudo de protección empresarial",
-  protectionShieldDesc: "Protege más de 2,5 M de autenticaciones corporativas diarias",
-  trustedBy: "CONFIADO POR LAS PRINCIPALES FUERZAS LABORALES DEL MUNDO",
   scaleLabel: "Escala y cobertura empresarial",
   scaleTitle: "Escala globalmente según las necesidades de tu negocio con Identra",
-  scaleDesc: "Garantiza una verificación de identidad integral sin cuellos de botella. La plataforma empresarial de Identra procesa transacciones al instante cumpliendo leyes locales de privacidad en todo el mundo.",
-  stats: [
-    { value: "200+", label: "países y territorios cubiertos para verificar empleados" },
-    { value: "<1 min", label: "para verificaciones de documento oficial y selfie" },
-    { value: "50+", label: "integraciones con plataformas tecnológicas líderes" }
-  ],
+  scaleDesc: "Garantiza una verificación de identidad integral sin cuellos de botella. La plataforma empresarial de Identra procesa transacciones al instante.",
   globalGrid: "Red global de verificación",
-  globalGridDesc: "Enrutamiento regional GDPR, SOC 2 y CCPA activo.",
   lifecycleLabel: "Ciclo de vida completo del empleado",
   lifecycleTitle: "Protege tu negocio en cada etapa del ciclo de vida del empleado",
   lifecycleDesc: "Verifica identidades reales y protege inicios de sesión automáticamente en hitos clave. Controla acceso durante contratación, asegura onboarding y reduce tomas de control por recuperación de contraseña.",
@@ -383,13 +345,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.es = {
   detailsLabel: "Detalles en profundidad",
   detailsTitle: "Una mirada más profunda a las funciones de seguridad Workforce",
   accordions: [
-    { id: "library", title: "Biblioteca sólida de verificaciones y señales", columns: [{ title: "Vinculación de identidad y dispositivo", desc: "Combate deepfakes y otros fraudes con liveness por selfie, videoverificación, vinculación 2FA de dispositivo y más." }, { title: "Cobertura global de verificación", desc: "Recopila y verifica documentos oficiales como pasaportes y licencias en más de 200 países y territorios." }, { title: "Configuraciones y comprobaciones ajustables", desc: "Ajusta requisitos de calidad de imagen, detección de obstrucción facial, reintentos y más." }, { title: "Verificación sin documento", desc: "Comprueba PII recopilada e IDs digitales contra fuentes emisoras y autorizadas globales." }] },
+    { id: "library", title: "Biblioteca sólida de verificaciones y señales", columns: [{ title: "Vinculación de identidad y dispositivo", desc: "Combate deepfakes y otros fraudes con liveness por selfie, videoverificación, vinculación 2FA de dispositivo y más." }, { title: "Cobertura global de verificación", desc: "Recopila y verifica documentos oficiales como pasaportes y licencias." }, { title: "Configuraciones y comprobaciones ajustables", desc: "Ajusta requisitos de calidad de imagen, detección de obstrucción facial, reintentos y más." }, { title: "Verificación sin documento", desc: "Comprueba PII recopilada e IDs digitales contra fuentes emisoras y autorizadas globales." }] },
     { id: "usability", title: "Equilibra seguridad y usabilidad", paragraphs: ["La seguridad solo funciona si tus empleados realmente la usan. Workforce IDV de Identra ofrece diseños intuitivos, responsivos y móviles que cargan en segundos.", "Los usuarios pueden pasar del portátil al teléfono con un código QR seguro para capturar documentos y completar escaneos faciales sin fricción."] },
     { id: "adaptive-controls", title: "Controles adaptativos para tu solución IAM", paragraphs: ["Cada empresa tiene un modelo de amenazas único. Configura rutas condicionales para exigir desafíos biométricos multifactor solo cuando el riesgo supere umbrales.", "Sincroniza con hubs de identidad como Okta, Duo y Azure AD mediante componentes SDK integrados para protección continua sin retrasos."] }
   ],
-  trustTitle: "La confianza se basa en seguridad y privacidad",
-  trustDesc: "Identra cumple los estándares más altos del sector, con protocolos estrictos de cumplimiento y certificaciones independientes para proteger tus registros de empleados.",
-  securityCertsCta: "Explorar certificaciones de seguridad",
   readyTitle: "¿Listo para empezar?",
   readyDesc: "Ponte en contacto o explora Identra hoy. Configura workflows biométricos personalizados para tus operaciones de workforce.",
   tryDemo: "Trải nghiệm demo",
@@ -398,23 +357,6 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.es = {
 
 WORKFORCE_IDV_PAGE_TRANSLATIONS.vi = {
   coreLabel: "workforce-idv-core",
-  trustLogos: {
-      "oktaMark": "O",
-      "okta": "okta",
-      "intercomMark": "I",
-      "intercom": "INTERCOM",
-      "ro": "ro"
-    },
-  badges: [
-      "CCPA Compliant",
-      "GDPR Ready",
-      "SOC 2 Type II",
-      "ISO 27001",
-      "HIPAA compliant",
-      "FERPA certified",
-      "Age Checked",
-      "iBeta Level 2"
-    ],
   badge: "Bảo vệ định danh doanh nghiệp",
   heroTitle: "Xác minh nhân viên vào đúng những thời điểm kẻ tấn công nhắm đến nhiều nhất.",
   heroDesc: "Chặn kỹ nghệ xã hội, deepfake và giả mạo ở mọi giai đoạn vòng đời nhân viên. Bảo vệ hệ thống bằng quy trình xác minh danh tính dựa trên mật mã.",
@@ -431,18 +373,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.vi = {
     { title: "Onboarding nhân viên mới", status: "Đang kiểm tra giấy tờ...", time: "Vừa xong" }
   ],
   protectionShield: "Lá chắn bảo vệ doanh nghiệp",
-  protectionShieldDesc: "Bảo vệ hơn 2,5 triệu lượt xác thực doanh nghiệp mỗi ngày",
-  trustedBy: "ĐƯỢC CÁC LỰC LƯỢNG LAO ĐỘNG HÀNG ĐẦU THẾ GIỚI TIN DÙNG",
   scaleLabel: "Quy mô & phạm vi doanh nghiệp",
   scaleTitle: "Mở rộng toàn cầu theo nhu cầu kinh doanh với Identra",
-  scaleDesc: "Đảm bảo xác minh định danh toàn diện mà không tạo điểm nghẽn. Nền tảng doanh nghiệp của Identra xử lý giao dịch tức thì và tuân thủ luật riêng tư dữ liệu địa phương trên toàn thế giới.",
-  stats: [
-    { value: "200+", label: "quốc gia và vùng lãnh thổ được hỗ trợ để xác minh nhân viên" },
-    { value: "<1 phút", label: "cho xác minh giấy tờ chính phủ và selfie" },
-    { value: "50+", label: "tích hợp với các nền tảng công nghệ hàng đầu" }
-  ],
+  scaleDesc: "Đảm bảo xác minh định danh toàn diện mà không tạo điểm nghẽn. Nền tảng doanh nghiệp của Identra xử lý giao dịch tức thì.",
   globalGrid: "Lưới xác minh toàn cầu",
-  globalGridDesc: "Định tuyến khu vực GDPR, SOC 2 và CCPA đang hoạt động.",
   lifecycleLabel: "Toàn bộ vòng đời nhân viên",
   lifecycleTitle: "Bảo vệ doanh nghiệp ở mọi giai đoạn vòng đời nhân viên",
   lifecycleDesc: "Xác minh danh tính đời thực và tự động bảo vệ đăng nhập tại các mốc quan trọng. Kiểm soát truy cập khi tuyển dụng, bảo vệ onboarding và giảm rủi ro chiếm đoạt qua khôi phục mật khẩu.",
@@ -522,13 +456,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.vi = {
   detailsLabel: "Chi tiết chuyên sâu",
   detailsTitle: "Tìm hiểu sâu hơn về tính năng bảo mật Workforce",
   accordions: [
-    { id: "library", title: "Thư viện xác minh và tín hiệu mạnh mẽ", columns: [{ title: "Liên kết danh tính và thiết bị", desc: "Chống deepfake và các hình thức gian lận khác bằng xác minh hiện diện qua selfie, xác minh video, liên kết thiết bị 2FA và nhiều phương thức khác." }, { title: "Phạm vi xác minh toàn cầu", desc: "Thu thập và xác minh giấy tờ do cơ quan nhà nước cấp như hộ chiếu, giấy phép lái xe từ hơn 200 quốc gia và vùng lãnh thổ." }, { title: "Thiết lập và kiểm tra có thể cấu hình", desc: "Điều chỉnh yêu cầu chất lượng ảnh, phát hiện che khuất khuôn mặt, số lần thử lại và nhiều yếu tố khác theo nhu cầu." }, { title: "Xác minh không dùng giấy tờ", desc: "Kiểm tra PII đã thu thập và danh tính số với nguồn phát hành cùng nguồn dữ liệu có thẩm quyền trên toàn cầu." }] },
+    { id: "library", title: "Thư viện xác minh và tín hiệu mạnh mẽ", columns: [{ title: "Liên kết danh tính và thiết bị", desc: "Chống deepfake và các hình thức gian lận khác bằng xác minh hiện diện qua selfie, xác minh video, liên kết thiết bị 2FA và nhiều phương thức khác." }, { title: "Phạm vi xác minh toàn cầu", desc: "Thu thập và xác minh giấy tờ do cơ quan nhà nước cấp như hộ chiếu, giấy phép lái xe." }, { title: "Thiết lập và kiểm tra có thể cấu hình", desc: "Điều chỉnh yêu cầu chất lượng ảnh, phát hiện che khuất khuôn mặt, số lần thử lại và nhiều yếu tố khác theo nhu cầu." }, { title: "Xác minh không dùng giấy tờ", desc: "Kiểm tra PII đã thu thập và danh tính số với nguồn phát hành cùng nguồn dữ liệu có thẩm quyền trên toàn cầu." }] },
     { id: "usability", title: "Cân bằng bảo mật với tính dễ dùng", paragraphs: ["Bảo mật chỉ hiệu quả khi nhân viên thật sự sử dụng. Workforce IDV của Identra cung cấp bố cục trực quan, đáp ứng và thân thiện di động, tải trong vài giây.", "Người dùng có thể chuyển mượt từ máy tính sang điện thoại bằng cách quét mã QR an toàn để chụp giấy tờ và hoàn tất quét khuôn mặt ít ma sát."] },
     { id: "adaptive-controls", title: "Kiểm soát thích ứng phù hợp giải pháp IAM", paragraphs: ["Mỗi doanh nghiệp có mô hình đe dọa riêng. Cấu hình tuyến điều kiện để chỉ áp dụng thử thách sinh trắc học đa yếu tố khi thông số rủi ro vượt ngưỡng.", "Đồng bộ hoàn hảo với các trung tâm định danh như Okta, Duo và Azure AD bằng thành phần SDK tích hợp, đảm bảo bảo vệ liên tục không trễ."] }
   ],
-  trustTitle: "Niềm tin được xây dựng trên bảo mật và quyền riêng tư",
-  trustDesc: "Identra tuân thủ các tiêu chuẩn ngành cao nhất, duy trì giao thức tuân thủ nghiêm ngặt và chứng nhận độc lập để bảo vệ bạn và hồ sơ nhân viên.",
-  securityCertsCta: "Khám phá chứng nhận bảo mật",
   readyTitle: "Sẵn sàng bắt đầu?",
   readyDesc: "Liên hệ hoặc bắt đầu khám phá Identra hôm nay. Thiết lập workflow sinh trắc học tùy chỉnh dành riêng cho vận hành workforce của bạn.",
   tryDemo: "Trải nghiệm demo",
@@ -537,23 +468,6 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.vi = {
 
 WORKFORCE_IDV_PAGE_TRANSLATIONS.ja = {
   coreLabel: "workforce-idv-core",
-  trustLogos: {
-      "oktaMark": "O",
-      "okta": "okta",
-      "intercomMark": "I",
-      "intercom": "INTERCOM",
-      "ro": "ro"
-    },
-  badges: [
-      "CCPA Compliant",
-      "GDPR Ready",
-      "SOC 2 Type II",
-      "ISO 27001",
-      "HIPAA compliant",
-      "FERPA certified",
-      "Age Checked",
-      "iBeta Level 2"
-    ],
   badge: "企業向けID保護",
   heroTitle: "攻撃者が最も狙う瞬間に従業員を確認。",
   heroDesc: "従業員ライフサイクル全体で、ソーシャルエンジニアリング、deepfake、なりすましを阻止します。暗号学的な本人確認でシステムを守ります。",
@@ -570,18 +484,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.ja = {
     { title: "新入社員オンボーディング", status: "書類確認中...", time: "たった今" }
   ],
   protectionShield: "企業保護シールド",
-  protectionShieldDesc: "1日250万件超の企業認証を保護",
-  trustedBy: "世界有数の従業員組織が信頼",
   scaleLabel: "企業規模とカバレッジ",
   scaleTitle: "Identraで事業ニーズに合わせてグローバルに拡張",
-  scaleDesc: "ボトルネックなしで包括的な本人確認を実現します。Identraの企業向けプラットフォームは、世界各地のデータプライバシー法に準拠しながら即時に処理します。",
-  stats: [
-    { value: "200+", label: "従業員確認に対応する国と地域" },
-    { value: "<1分", label: "公的IDとセルフィー確認に必要な時間" },
-    { value: "50+", label: "主要テクノロジープラットフォームとの連携" }
-  ],
+  scaleDesc: "ボトルネックなしで包括的な本人確認を実現します。Identraの企業向けプラットフォームは、即時に処理します。",
   globalGrid: "グローバル確認グリッド",
-  globalGridDesc: "GDPR、SOC 2、CCPAの地域ルーティングが有効です。",
   lifecycleLabel: "従業員ライフサイクル全体",
   lifecycleTitle: "従業員ライフサイクルの各段階でビジネスを保護",
   lifecycleDesc: "実在する身元を確認し、主要な節目でログインを自動保護します。採用時のアクセス制御、オンボーディングの保護、パスワード復旧乗っ取りの抑止を実現します。",
@@ -661,13 +567,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.ja = {
   detailsLabel: "詳細",
   detailsTitle: "Workforceセキュリティ機能の詳細",
   accordions: [
-    { id: "library", title: "確認とシグナルの堅牢なライブラリ", columns: [{ title: "IDと端末のバインド", desc: "セルフィーliveness、動画確認、2FA端末バインドなどでdeepfakeやその他の不正に対抗します。" }, { title: "グローバル確認範囲", desc: "200以上の国と地域から、パスポートや運転免許証などの公的ID書類を収集・確認します。" }, { title: "設定可能な確認項目", desc: "画像品質、顔の遮蔽検出、再試行回数などを要件に合わせて調整します。" }, { title: "非書類型確認", desc: "収集したPIIとデジタルIDを、世界の発行元および権威ある情報源と安全に照合します。" }] },
+    { id: "library", title: "確認とシグナルの堅牢なライブラリ", columns: [{ title: "IDと端末のバインド", desc: "セルフィーliveness、動画確認、2FA端末バインドなどでdeepfakeやその他の不正に対抗します。" }, { title: "グローバル確認範囲", desc: "パスポートや運転免許証などの公的ID書類を収集・確認します。" }, { title: "設定可能な確認項目", desc: "画像品質、顔の遮蔽検出、再試行回数などを要件に合わせて調整します。" }, { title: "非書類型確認", desc: "収集したPIIとデジタルIDを、世界の発行元および権威ある情報源と安全に照合します。" }] },
     { id: "usability", title: "セキュリティと使いやすさの両立", paragraphs: ["セキュリティは従業員が実際に使ってこそ機能します。IdentraのWorkforce IDVは、直感的でレスポンシブ、モバイルに適した画面を数秒で読み込みます。", "ユーザーは安全なQRコードをスキャンするだけでPCからスマートフォンへ移り、書類撮影と顔スキャンをスムーズに完了できます。"] },
     { id: "adaptive-controls", title: "IAMソリューションに合わせた適応制御", paragraphs: ["企業ごとに脅威モデルは異なります。リスクがしきい値を超えた場合のみ多要素生体チャレンジを適用する条件付きルーティングを設定できます。", "組み込みSDKコンポーネントにより、Okta、Duo、Azure ADなどのIDハブと完全に同期し、遅延のない継続保護を実現します。"] }
   ],
-  trustTitle: "信頼はセキュリティとプライバシーの上に築かれます",
-  trustDesc: "Identraは業界最高水準に準拠し、厳格なコンプライアンス手順と独立認証により、貴社と従業員記録を保護します。",
-  securityCertsCta: "セキュリティ認証を見る",
   readyTitle: "始める準備はできましたか？",
   readyDesc: "お問い合わせ、または今すぐIdentraをお試しください。従業員運用に合わせたカスタム生体認証ワークフローを設定できます。",
   tryDemo: "Trải nghiệm demo",
@@ -676,23 +579,6 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.ja = {
 
 WORKFORCE_IDV_PAGE_TRANSLATIONS.de = {
   coreLabel: "workforce-idv-core",
-  trustLogos: {
-      "oktaMark": "O",
-      "okta": "okta",
-      "intercomMark": "I",
-      "intercom": "INTERCOM",
-      "ro": "ro"
-    },
-  badges: [
-      "CCPA Compliant",
-      "GDPR Ready",
-      "SOC 2 Type II",
-      "ISO 27001",
-      "HIPAA compliant",
-      "FERPA certified",
-      "Age Checked",
-      "iBeta Level 2"
-    ],
   badge: "Enterprise-Identitätsschutz",
   heroTitle: "Verifizieren Sie Mitarbeitende genau in den Momenten, die Angreifer am stärksten ausnutzen.",
   heroDesc: "Stoppen Sie Social Engineering, Deepfakes und Identitätsmissbrauch in jeder Phase des Mitarbeiterlebenszyklus. Schützen Sie Systeme mit kryptografischem Identitätsnachweis.",
@@ -709,18 +595,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.de = {
     { title: "Onboarding neuer Mitarbeitender", status: "Dokumentprüfung...", time: "Gerade eben" }
   ],
   protectionShield: "Enterprise-Schutzschild",
-  protectionShieldDesc: "Schützt täglich über 2,5 Mio. Unternehmensauthentifizierungen",
-  trustedBy: "VERTRAUT VON FÜHRENDEN WORKFORCES WELTWEIT",
   scaleLabel: "Enterprise-Skalierung & Abdeckung",
   scaleTitle: "Skalieren Sie mit Identra global nach Ihren Geschäftsanforderungen",
-  scaleDesc: "Stellen Sie umfassende Identitätsprüfung ohne Engpässe sicher. Identras Enterprise-Plattform verarbeitet Transaktionen sofort und erfüllt lokale Datenschutzgesetze weltweit.",
-  stats: [
-    { value: "200+", label: "Länder und Regionen zur Verifizierung von Mitarbeitenden" },
-    { value: "<1 Min.", label: "für amtliche ID- und Selfie-Verifizierungen" },
-    { value: "50+", label: "Integrationen mit führenden Technologieplattformen" }
-  ],
+  scaleDesc: "Stellen Sie umfassende Identitätsprüfung ohne Engpässe sicher. Identras Enterprise-Plattform verarbeitet Transaktionen sofort.",
   globalGrid: "Globales Verifizierungsraster",
-  globalGridDesc: "Regionale Weiterleitung für GDPR, SOC 2 und CCPA aktiv.",
   lifecycleLabel: "Vollständiger Mitarbeiterlebenszyklus",
   lifecycleTitle: "Schützen Sie Ihr Unternehmen in jeder Phase des Mitarbeiterlebenszyklus",
   lifecycleDesc: "Verifizieren Sie reale Identitäten und schützen Sie Logins automatisch an wichtigen Meilensteinen. Kontrollieren Sie Zugriff bei Einstellung, sichern Sie Onboarding und verhindern Sie Übernahmen bei Passwortwiederherstellung.",
@@ -800,13 +678,10 @@ WORKFORCE_IDV_PAGE_TRANSLATIONS.de = {
   detailsLabel: "Detaillierte Einblicke",
   detailsTitle: "Ein tieferer Blick auf Workforce-Sicherheitsfunktionen",
   accordions: [
-    { id: "library", title: "Robuste Bibliothek aus Verifizierungen und Signalen", columns: [{ title: "Identitäts- und Gerätebindung", desc: "Bekämpfen Sie Deepfakes und andere Betrugsarten mit Selfie-liveness, Videoverifizierung, 2FA-Gerätebindung und mehr." }, { title: "Globale Verifizierungsabdeckung", desc: "Erfassen und prüfen Sie amtliche Dokumente wie Reisepässe und Führerscheine aus mehr als 200 Ländern und Regionen." }, { title: "Konfigurierbare Einstellungen und Prüfungen", desc: "Passen Sie Bildqualitätsanforderungen, Gesichtshinderniserkennung, Wiederholungsversuche und mehr an." }, { title: "Nicht dokumentbasierte Verifizierung", desc: "Prüfen Sie gesammelte PII und digitale IDs sicher gegen globale Aussteller- und Autoritätsquellen." }] },
+    { id: "library", title: "Robuste Bibliothek aus Verifizierungen und Signalen", columns: [{ title: "Identitäts- und Gerätebindung", desc: "Bekämpfen Sie Deepfakes und andere Betrugsarten mit Selfie-liveness, Videoverifizierung, 2FA-Gerätebindung und mehr." }, { title: "Globale Verifizierungsabdeckung", desc: "Erfassen und prüfen Sie amtliche Dokumente wie Reisepässe und Führerscheine." }, { title: "Konfigurierbare Einstellungen und Prüfungen", desc: "Passen Sie Bildqualitätsanforderungen, Gesichtshinderniserkennung, Wiederholungsversuche und mehr an." }, { title: "Nicht dokumentbasierte Verifizierung", desc: "Prüfen Sie gesammelte PII und digitale IDs sicher gegen globale Aussteller- und Autoritätsquellen." }] },
     { id: "usability", title: "Sicherheit und Nutzbarkeit ausbalancieren", paragraphs: ["Sicherheit wirkt nur, wenn Mitarbeitende sie tatsächlich nutzen. Identras Workforce IDV bietet intuitive, responsive und mobilfreundliche Oberflächen, die in Sekunden laden.", "Nutzer wechseln nahtlos vom Laptop zum Smartphone, indem sie einen sicheren QR-Code scannen, Dokumente erfassen und Gesichtsscans reibungslos abschließen."] },
     { id: "adaptive-controls", title: "Adaptive Kontrollen passend zu Ihrer IAM-Lösung", paragraphs: ["Jedes Unternehmen hat ein eigenes Bedrohungsmodell. Konfigurieren Sie bedingte Routingmuster, um biometrische Mehrfaktor-Challenges nur bei überschrittenen Risikoschwellen auszulösen.", "Synchronisieren Sie perfekt mit Identitätshubs wie Okta, Duo und Azure AD über integrierte SDK-Komponenten für kontinuierlichen Schutz ohne Verzögerung."] }
   ],
-  trustTitle: "Vertrauen entsteht durch Sicherheit und Datenschutz",
-  trustDesc: "Identra hält höchste Branchenstandards ein und nutzt strenge Compliance-Protokolle sowie unabhängige Zertifizierungen, um Sie und Mitarbeiterdaten zu schützen.",
-  securityCertsCta: "Sicherheitszertifizierungen entdecken",
   readyTitle: "Bereit loszulegen?",
   readyDesc: "Kontaktieren Sie uns oder erkunden Sie Identra noch heute. Richten Sie individuelle biometrische Workflows speziell für Ihre Workforce-Prozesse ein.",
   tryDemo: "Trải nghiệm demo",

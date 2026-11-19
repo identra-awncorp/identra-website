@@ -153,11 +153,6 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         meta: 'Guide - 8 mins read',
         title: 'How to integrate the ISO 18013-5 mDL protocol',
         desc: "Step-by-step developer's tutorial for setting up elliptic-curve handshakes and resolving trust anchors with DMV roots."
-      },
-      {
-        meta: 'Case study - 10 mins read',
-        title: 'How modern banks achieve 98% conversion with mDLs',
-        desc: 'Read how forward-thinking financial services reduced verification time down to 1.5 seconds while slashing fraud.'
       }
     ],
     exploreTitle: "Explore more of Identra's identity platform",
@@ -346,11 +341,6 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         meta: 'Guía - lectura de 8 min',
         title: 'Cómo integrar el protocolo mDL ISO 18013-5',
         desc: 'Tutorial paso a paso para desarrolladores sobre configuración de intercambios de curva elíptica y resolución de anclajes de confianza con raíces DMV.'
-      },
-      {
-        meta: 'Caso de estudio - lectura de 10 min',
-        title: 'Cómo los bancos modernos logran 98% de conversión con mDL',
-        desc: 'Lee cómo servicios financieros innovadores redujeron el tiempo de verificación a 1,5 segundos y disminuyeron el fraude.'
       }
     ],
     exploreTitle: 'Explora más de la plataforma de identidad de Identra',
@@ -539,11 +529,6 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         meta: 'ガイド - 8 分で読めます',
         title: 'ISO 18013-5 mDL プロトコルの統合方法',
         desc: '楕円曲線ハンドシェイクの設定と DMV ルートによる信頼アンカー解決を行う開発者向け手順ガイドです。'
-      },
-      {
-        meta: '事例 - 10 分で読めます',
-        title: '現代的な銀行が mDL で 98% のコンバージョンを達成する方法',
-        desc: '先進的な金融サービスが検証時間を 1.5 秒まで短縮し、不正を削減した方法を紹介します。'
       }
     ],
     exploreTitle: 'Identra の本人確認プラットフォームをさらに見る',
@@ -732,11 +717,6 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         meta: 'Leitfaden - 8 Min. Lesezeit',
         title: 'So integrieren Sie das ISO 18013-5 mDL-Protokoll',
         desc: 'Eine Schritt-für-Schritt-Anleitung für Entwickler zur Einrichtung elliptischer Kurven-Handshakes und zur Auflösung von Trust Anchors mit DMV-Roots.'
-      },
-      {
-        meta: 'Fallstudie - 10 Min. Lesezeit',
-        title: 'Wie moderne Banken mit mDLs 98% Konversion erreichen',
-        desc: 'Lesen Sie, wie zukunftsorientierte Finanzdienste die Verifizierungszeit auf 1,5 Sekunden senkten und Betrug reduzierten.'
       }
     ],
     exploreTitle: 'Mehr von Identras Identitätsplattform entdecken',
@@ -925,11 +905,6 @@ export const MOBILE_DRIVERS_LICENSE_PAGE_TRANSLATIONS = {
         meta: 'Hướng dẫn - đọc trong 8 phút',
         title: 'Cách tích hợp giao thức mDL ISO 18013-5',
         desc: 'Hướng dẫn từng bước cho nhà phát triển để thiết lập bắt tay đường cong elliptic và phân giải điểm neo tin cậy với gốc DMV.'
-      },
-      {
-        meta: 'Nghiên cứu điển hình - đọc trong 10 phút',
-        title: 'Cách các ngân hàng hiện đại đạt 98% chuyển đổi với mDL',
-        desc: 'Đọc cách các dịch vụ tài chính tiên phong giảm thời gian xác minh xuống còn 1,5 giây đồng thời cắt giảm gian lận.'
       }
     ],
     exploreTitle: 'Khám phá thêm nền tảng định danh của Identra',

@@ -19,7 +19,6 @@ export type GlobalExpansionTextKey =
   | 'registryLatency'
   | 'throughput'
   | 'online'
-  | 'trustedBy'
   | 'globalPipelineEyebrow'
   | 'globalPipelineTitle'
   | 'globalPipelineDesc'
@@ -133,7 +132,6 @@ type GlobalExpansionTranslations = Record<GlobalExpansionTextKey, string> & {
   gridItems: GridItem[];
   regions: RegionOption[];
   consoleLogs: Record<GlobalExpansionRegionKey, string[]>;
-  trustedLogos: string[];
   infoSections: InfoSection[];
   exploreCards: ExploreCard[];
   placeholders: {
@@ -158,7 +156,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     registryLatency: 'Registry latency',
     throughput: 'KYC-KYB throughput',
     online: '99.8% Online',
-    trustedBy: "Trusted by startups & the world's largest companies",
     globalPipelineEyebrow: 'Global Identity Pipeline',
     globalPipelineTitle: 'Verify any individual or business',
     globalPipelineDesc: 'Choose from a robust verification library and adjust verification flows based on consumer preferences, fraud types, and global availability. Leverage immediate API pipelines connecting you to verified registries worldwide.',
@@ -169,7 +166,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     complianceTitle: 'Adapt to regional regulations and user populations',
     complianceDesc: 'Tailor flows and translations for local populations. Build user risk profiles with automated screenings and reports, then automatically approve, deny, or escalate users for manual review based on local guidelines.',
     translationMappingTitle: 'Dynamic Translation Mapping',
-    translationMappingDesc: 'Our system auto-detects user browser environments to serve translated capture portals in 45+ languages.',
+    translationMappingDesc: 'Our system auto-detects user browser environments to serve translated capture portals.',
     screeningBlueprintsTitle: 'Adaptive Screening Blueprints',
     screeningBlueprintsDesc: 'Configure conditional branches to trigger elevated KYC checks only when users cross specific regional transaction thresholds.',
     hubEyebrow: 'Unified Identity Hub',
@@ -228,17 +225,17 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { key: 'frankfurt', city: 'Frankfurt', tab: 'Frankfurt', tz: 'Europe/Berlin', latency: '35ms', status: 'optimal' }
     ],
     scenarios: {
-      eu: { tab: 'European', title: 'European Union Expansion', badge: 'GDPR Compliant', requirements: ['VAT Verification', 'German Commercial Register Lookup', 'eIDAS-compliant Signatures'], description: 'Automatically route users through regional checks. Verify VAT details against VIES, check national registers, and satisfy strict European KYC/AML regulations with zero local overhead.', riskLevel: 'Low-to-Mid Risk', autoPassRate: '94.2%' },
+      eu: { tab: 'European', title: 'European Union Expansion', badge: 'GDPR requirements', requirements: ['VAT Verification', 'German Commercial Register Lookup', 'eIDAS-compliant Signatures'], description: 'Automatically route users through regional checks. Verify VAT details against VIES, check national registers, and satisfy strict European KYC/AML regulations with zero local overhead.', riskLevel: 'Low-to-Mid Risk', autoPassRate: '94.2%' },
       latam: { tab: 'Latin', title: 'Latin America Localization', badge: 'Local Databases', requirements: ['CPF Validation (Brazil)', 'CURP Validation (Mexico)', 'Device Fingerprinting'], description: 'Maximize conversions in emerging markets with ultra-fast mobile document scans. Authenticate identity variables instantly through country-specific governmental sources.', riskLevel: 'High Fraud Density', autoPassRate: '88.6%' },
       apac: { tab: 'APAC', title: 'APAC Market Compliance', badge: 'Multilingual KYC', requirements: ['My Number Card (Japan)', 'Singpass Authentication (Singapore)', 'Sanctions Screening'], description: 'Onboard clients instantly by verifying native-script ID characters. Seamlessly handle Japanese, Chinese, and Korean alphabets via AI-driven translation tables.', riskLevel: 'Regulated Financials', autoPassRate: '91.7%' },
       na: { tab: 'North', title: 'North American Operations', badge: 'Instant KYC-KYB', requirements: ['SSN/TIN Verification', 'FINTRAC AML Rules', 'Holographic Document Review'], description: 'Ensure total regulatory compliance in the USA and Canada. Seamlessly screen prospective employees and businesses against comprehensive national risk lists.', riskLevel: 'Low-to-High Risk', autoPassRate: '96.8%' }
     },
     gridItems: [
-      { title: 'Database checks', description: 'Verify collected and extracted PII against authoritative databases and issuing sources across 40+ countries.', detail: 'Instantly cross-reference full names, dates of birth, and national identifiers against direct government and utility source lines.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
-      { title: 'Global business registry verification', description: "Verify business names, registry numbers, and addresses against 100+ countries' registries.", detail: 'Direct programmatic API links to national registers, company houses, and tax departments globally with active parent-subsidiary resolution.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
-      { title: 'Document AI', description: 'Collect and extract documents, like articles of incorporation or bank statements, from more than 90 supported countries.', detail: 'Leverage deep OCR to read native alphabets, validate watermarks, identify document boundaries, and check security hologram consistency.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
+      { title: 'Database checks', description: 'Verify collected and extracted PII against authoritative databases and issuing sources.', detail: 'Instantly cross-reference full names, dates of birth, and national identifiers against direct government and utility source lines.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
+      { title: 'Global business registry verification', description: "Verify business names, registry numbers, and addresses against company registries.", detail: 'Direct programmatic API links to national registers, company houses, and tax departments globally with active parent-subsidiary resolution.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
+      { title: 'Document AI', description: 'Collect and extract documents, like articles of incorporation or bank statements.', detail: 'Leverage deep OCR to read native alphabets, validate watermarks, identify document boundaries, and check security hologram consistency.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
       { title: 'Watchlist screening', description: 'Screen against 100+ global warning and sanctions lists to meet KYC requirements.', detail: 'Continuous background monitoring against PEP, OFAC, HM Treasury, UN sanctions, and local law enforcement suspect bulletins.', icon: 'shield', color: 'text-rose-500 bg-rose-50' },
-      { title: 'Government ID verification', description: 'Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories.', detail: 'Dynamic web/mobile interfaces that adjust languages and accepted cards based on local user IP, driving maximum conversions.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
+      { title: 'Government ID verification', description: 'Collect and verify your choice of government-issued IDs to identify users.', detail: 'Dynamic web/mobile interfaces that adjust languages and accepted cards based on local user IP, driving maximum conversions.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
       { title: 'NFC verification', description: 'Verify passports and IDs globally via NFC chips and increase conversion with user-friendly, country-specific guidance.', detail: 'Bypasses visual spoofing by fetching raw cryptographic biometric files and digital signatures directly from the passport chip.', icon: 'radio', color: 'text-teal-500 bg-teal-50' },
       { title: 'VAT verification', description: 'Verify the VAT number of any EU country and avoid downtime with automated retry logic.', detail: 'Saves hours of manual tax validation by verifying registrations with VIES databases instantly at checkout or company sign-up.', icon: 'landmark', color: 'text-amber-500 bg-amber-50' },
       { title: 'FINTRAC solutions', description: 'Comply with Canadian AML requirements via a robust library of verifications and reports for KYC and KYB.', detail: 'Pre-packaged reporting layouts, record-retention schedules, and continuous compliance checklists configured for Canada.', icon: 'shieldCheck', color: 'text-blue-500 bg-blue-50' },
@@ -256,7 +253,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       APAC: ['↻ INITIALIZING GLOBAL KYC-KYB PIPELINE [REGION: ASIA-PACIFIC]', '▣ Localizing verification rules: Adjusting to multi-language and Japanese My Number rules...', '⌕ Reading native Kanji scripts: Extracting company details from Japanese registry...', '◉ query_Singpass_authentication_node: Verifying Singapore identity vectors... [SUCCESS]', '◆ Running AML screenings across regional financial databases & Asian enforcement logs...', '◌ Analyzing OCR text layouts: Matching non-Latin characters directly to regional databases...', '✦ Biometric Face Match: Biometric similarity verification index: 97.6%', '✓ CONSOLE STATUS: COMPLIANT. Corporate verification token generated successfully!'],
       NA: ['↻ INITIALIZING GLOBAL KYC-KYB PIPELINE [REGION: NORTH AMERICA]', '▣ Localizing verification rules: Syncing USA Patriot Act & Canada FINTRAC checklists...', '⌕ Querying IRS TIN matching databases & Canadian business registries...', '◉ crosscheck_state_corporation_filings: Querying Delaware Division of Corporations...', '◆ Running immediate OFAC sanctions screenings and continuous monitoring locks...', '◌ Verifying physical ID card holographic properties via Document AI...', '✦ Biometric Face Match: Checking selfie liveness against spoofing engines... [CLEARED]', '✓ CONSOLE STATUS: COMPLIANT. Corporate verification token generated successfully!']
     },
-    trustedLogos: ['GET YOUR GUIDE', 'remote', 'Ume'],
     infoSections: [
       { eyebrow: 'complianceEyebrow', title: 'complianceTitle', desc: 'complianceDesc' },
       { eyebrow: 'hubEyebrow', title: 'hubTitle', desc: 'hubDesc' }
@@ -278,7 +274,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     registryLatency: 'Latencia del registro',
     throughput: 'Rendimiento KYC-KYB',
     online: '99,8% en línea',
-    trustedBy: 'Con la confianza de startups y de las empresas más grandes del mundo',
     globalPipelineEyebrow: 'Canal global de identidad',
     globalPipelineTitle: 'Verifique a cualquier identra o empresa',
     globalPipelineDesc: 'Elija una biblioteca robusta de verificaciones y ajuste los flujos según preferencias del usuario, tipos de fraude y disponibilidad global. Use canales API inmediatos que conectan con registros verificados en todo el mundo.',
@@ -289,7 +284,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     complianceTitle: 'Adáptese a regulaciones regionales y poblaciones locales',
     complianceDesc: 'Adapte flujos y traducciones para poblaciones locales. Cree perfiles de riesgo con evaluaciones e informes automatizados, y apruebe, rechace o escale a revisión manual según directrices locales.',
     translationMappingTitle: 'Mapeo dinámico de traducciones',
-    translationMappingDesc: 'Nuestro sistema detecta el navegador del usuario para servir portales de captura traducidos en más de 45 idiomas.',
+    translationMappingDesc: 'Nuestro sistema detecta el navegador del usuario para servir portales de captura traducidos.',
     screeningBlueprintsTitle: 'Plantillas de evaluación adaptativa',
     screeningBlueprintsDesc: 'Configure ramas condicionales para activar verificaciones KYC reforzadas solo cuando se crucen umbrales regionales específicos.',
     hubEyebrow: 'Hub unificado de identidad',
@@ -348,7 +343,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { key: 'frankfurt', city: 'Fráncfort', tab: 'Fráncfort', tz: 'Europe/Berlin', latency: '35ms', status: 'optimal' }
     ],
     scenarios: {
-      eu: { tab: 'Europa', title: 'Expansión en la Unión Europea', badge: 'Cumple GDPR', requirements: ['Verificación de VAT', 'Consulta del registro mercantil alemán', 'Firmas compatibles con eIDAS'], description: 'Dirija usuarios automáticamente por verificaciones regionales. Verifique VAT contra VIES, consulte registros nacionales y cumpla reglas KYC/AML europeas sin sobrecarga local.', riskLevel: 'Riesgo bajo a medio', autoPassRate: '94,2%' },
+      eu: { tab: 'Europa', title: 'Expansión en la Unión Europea', badge: 'Requisitos GDPR', requirements: ['Verificación de VAT', 'Consulta del registro mercantil alemán', 'Firmas compatibles con eIDAS'], description: 'Dirija usuarios automáticamente por verificaciones regionales. Verifique VAT contra VIES, consulte registros nacionales y cumpla reglas KYC/AML europeas sin sobrecarga local.', riskLevel: 'Riesgo bajo a medio', autoPassRate: '94,2%' },
       latam: { tab: 'LATAM', title: 'Localización en América Latina', badge: 'Bases locales', requirements: ['Validación CPF (Brasil)', 'Validación CURP (México)', 'Huella del dispositivo'], description: 'Maximice conversiones en mercados emergentes con escaneos móviles ultrarrápidos. Autentique variables de identidad al instante con fuentes gubernamentales locales.', riskLevel: 'Alta densidad de fraude', autoPassRate: '88,6%' },
       apac: { tab: 'APAC', title: 'Cumplimiento para APAC', badge: 'KYC multilingüe', requirements: ['My Number Card (Japón)', 'Autenticación Singpass (Singapur)', 'Sanciones'], description: 'Incorpore clientes al verificar caracteres de ID en escritura nativa. Maneje alfabetos japonés, chino y coreano con tablas de traducción impulsadas por IA.', riskLevel: 'Finanzas reguladas', autoPassRate: '91,7%' },
       na: { tab: 'Norteamérica', title: 'Operaciones en Norteamérica', badge: 'KYC-KYB instantáneo', requirements: ['Verificación SSN/TIN', 'Reglas AML FINTRAC', 'Revisión holográfica de documentos'], description: 'Asegure cumplimiento normativo en EE. UU. y Canadá. Evalúe empleados y empresas frente a listas nacionales completas de riesgo.', riskLevel: 'Riesgo bajo a alto', autoPassRate: '96,8%' }
@@ -361,7 +356,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { value: 'NA', label: 'Norteamérica (FINTRAC y bases TIN)' }
     ],
     consoleLogs: {} as Record<GlobalExpansionRegionKey, string[]>,
-    trustedLogos: ['GET YOUR GUIDE', 'remote', 'Ume'],
     infoSections: [
       { eyebrow: 'complianceEyebrow', title: 'complianceTitle', desc: 'complianceDesc' },
       { eyebrow: 'hubEyebrow', title: 'hubTitle', desc: 'hubDesc' }
@@ -383,7 +377,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     registryLatency: '登録簿レイテンシ',
     throughput: 'KYC-KYB処理能力',
     online: '99.8% オンライン',
-    trustedBy: 'スタートアップから世界最大級の企業までが信頼',
     globalPipelineEyebrow: 'グローバル本人確認パイプライン',
     globalPipelineTitle: 'あらゆる個人と企業を確認',
     globalPipelineDesc: '強力な確認ライブラリから選び、ユーザーの希望、不正タイプ、グローバル可用性に基づいてフローを調整できます。世界中の検証済み登録簿につながるAPIパイプラインを活用できます。',
@@ -394,7 +387,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     complianceTitle: '地域規制と利用者層に適応',
     complianceDesc: '地域の利用者に合わせてフローと翻訳を調整します。自動スクリーニングとレポートでリスクプロファイルを作成し、地域ルールに基づいて承認、拒否、手動レビューへのエスカレーションを行います。',
     translationMappingTitle: '動的翻訳マッピング',
-    translationMappingDesc: 'ユーザーのブラウザ環境を自動検出し、45以上の言語で翻訳済みの入力ポータルを表示します。',
+    translationMappingDesc: 'ユーザーのブラウザ環境を自動検出し、翻訳済みの入力ポータルを表示します。',
     screeningBlueprintsTitle: '適応型スクリーニング設計',
     screeningBlueprintsDesc: '地域ごとの取引しきい値を超えた場合だけ、強化KYCを起動する条件分岐を設定できます。',
     hubEyebrow: '統合本人確認ハブ',
@@ -453,7 +446,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { key: 'frankfurt', city: 'フランクフルト', tab: 'フランクフルト', tz: 'Europe/Berlin', latency: '35ms', status: 'optimal' }
     ],
     scenarios: {
-      eu: { tab: '欧州', title: '欧州連合への展開', badge: 'GDPR準拠', requirements: ['VAT確認', 'ドイツ商業登記照会', 'eIDAS準拠署名'], description: '地域チェックへユーザーを自動振り分け。VIESでVATを確認し、各国登録簿を照会し、欧州の厳格なKYC/AML規制を現地運用なしで満たします。', riskLevel: '低〜中リスク', autoPassRate: '94.2%' },
+      eu: { tab: '欧州', title: '欧州連合への展開', badge: 'GDPR要件', requirements: ['VAT確認', 'ドイツ商業登記照会', 'eIDAS準拠署名'], description: '地域チェックへユーザーを自動振り分け。VIESでVATを確認し、各国登録簿を照会し、欧州の厳格なKYC/AML規制を現地運用なしで満たします。', riskLevel: '低〜中リスク', autoPassRate: '94.2%' },
       latam: { tab: 'LATAM', title: '中南米ローカライズ', badge: 'ローカルDB', requirements: ['CPF検証（ブラジル）', 'CURP検証（メキシコ）', 'デバイスフィンガープリント'], description: '高速なモバイル書類スキャンで新興市場の転換率を最大化。国別の政府情報源から本人確認変数を即時認証します。', riskLevel: '高い不正密度', autoPassRate: '88.6%' },
       apac: { tab: 'APAC', title: 'APAC市場コンプライアンス', badge: '多言語KYC', requirements: ['マイナンバーカード（日本）', 'Singpass認証（シンガポール）', '制裁スクリーニング'], description: 'ネイティブ文字のIDを確認して顧客を即時オンボーディング。AI翻訳テーブルで日本語、中国語、韓国語の文字体系を扱います。', riskLevel: '規制金融', autoPassRate: '91.7%' },
       na: { tab: '北米', title: '北米オペレーション', badge: '即時KYC-KYB', requirements: ['SSN/TIN確認', 'FINTRAC AMLルール', 'ホログラム書類レビュー'], description: '米国とカナダで規制準拠を確保。候補者や企業を包括的な国別リスクリストと照合します。', riskLevel: '低〜高リスク', autoPassRate: '96.8%' }
@@ -466,7 +459,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { value: 'NA', label: '北米（FINTRACとTINデータベース）' }
     ],
     consoleLogs: {} as Record<GlobalExpansionRegionKey, string[]>,
-    trustedLogos: ['GET YOUR GUIDE', 'remote', 'Ume'],
     infoSections: [
       { eyebrow: 'complianceEyebrow', title: 'complianceTitle', desc: 'complianceDesc' },
       { eyebrow: 'hubEyebrow', title: 'hubTitle', desc: 'hubDesc' }
@@ -488,7 +480,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     registryLatency: 'Registerlatenz',
     throughput: 'KYC-KYB-Durchsatz',
     online: '99,8% online',
-    trustedBy: 'Vertraut von Startups und den größten Unternehmen der Welt',
     globalPipelineEyebrow: 'Globale Identitätspipeline',
     globalPipelineTitle: 'Jede Person und jedes Unternehmen verifizieren',
     globalPipelineDesc: 'Wählen Sie aus einer robusten Verifizierungsbibliothek und passen Sie Flows nach Nutzerpräferenzen, Betrugsarten und globaler Verfügbarkeit an. Nutzen Sie direkte API-Pipelines zu verifizierten Registern weltweit.',
@@ -499,7 +490,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     complianceTitle: 'An regionale Vorschriften und Nutzergruppen anpassen',
     complianceDesc: 'Passen Sie Flows und Übersetzungen an lokale Nutzergruppen an. Erstellen Sie Risikoprofile mit automatisierten Screenings und Berichten und genehmigen, blockieren oder eskalieren Sie Nutzer anhand lokaler Vorgaben.',
     translationMappingTitle: 'Dynamische Übersetzungszuordnung',
-    translationMappingDesc: 'Unser System erkennt Browserumgebungen automatisch und liefert übersetzte Erfassungsportale in mehr als 45 Sprachen aus.',
+    translationMappingDesc: 'Unser System erkennt Browserumgebungen automatisch und liefert übersetzte Erfassungsportale aus.',
     screeningBlueprintsTitle: 'Adaptive Screening-Blueprints',
     screeningBlueprintsDesc: 'Konfigurieren Sie bedingte Verzweigungen, die erhöhte KYC-Prüfungen nur bei bestimmten regionalen Transaktionsschwellen auslösen.',
     hubEyebrow: 'Einheitlicher Identitäts-Hub',
@@ -558,7 +549,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { key: 'frankfurt', city: 'Frankfurt', tab: 'Frankfurt', tz: 'Europe/Berlin', latency: '35ms', status: 'optimal' }
     ],
     scenarios: {
-      eu: { tab: 'Europa', title: 'Expansion in der Europäischen Union', badge: 'GDPR-konform', requirements: ['VAT-Verifizierung', 'Abfrage des deutschen Handelsregisters', 'eIDAS-konforme Signaturen'], description: 'Leiten Sie Nutzer automatisch durch regionale Prüfungen. Verifizieren Sie VAT-Daten gegen VIES, prüfen Sie nationale Register und erfüllen Sie strenge europäische KYC/AML-Regeln ohne lokale Zusatzarbeit.', riskLevel: 'Niedriges bis mittleres Risiko', autoPassRate: '94,2%' },
+      eu: { tab: 'Europa', title: 'Expansion in der Europäischen Union', badge: 'GDPR-Anforderungen', requirements: ['VAT-Verifizierung', 'Abfrage des deutschen Handelsregisters', 'eIDAS-konforme Signaturen'], description: 'Leiten Sie Nutzer automatisch durch regionale Prüfungen. Verifizieren Sie VAT-Daten gegen VIES, prüfen Sie nationale Register und erfüllen Sie strenge europäische KYC/AML-Regeln ohne lokale Zusatzarbeit.', riskLevel: 'Niedriges bis mittleres Risiko', autoPassRate: '94,2%' },
       latam: { tab: 'LATAM', title: 'Lokalisierung in Lateinamerika', badge: 'Lokale Datenbanken', requirements: ['CPF-Validierung (Brasilien)', 'CURP-Validierung (Mexiko)', 'Gerätefingerabdruck'], description: 'Maximieren Sie Conversion in Wachstumsmärkten mit schnellen mobilen Dokumentenscans. Authentifizieren Sie Identitätsvariablen sofort über landesspezifische Regierungsquellen.', riskLevel: 'Hohe Betrugsdichte', autoPassRate: '88,6%' },
       apac: { tab: 'APAC', title: 'APAC-Marktkonformität', badge: 'Mehrsprachiges KYC', requirements: ['My Number Card (Japan)', 'Singpass-Authentifizierung (Singapur)', 'Sanktionsscreening'], description: 'Onboarden Sie Kunden sofort, indem Sie ID-Zeichen in nativer Schrift prüfen. Japanische, chinesische und koreanische Alphabete werden über KI-gestützte Übersetzungstabellen verarbeitet.', riskLevel: 'Regulierte Finanzbranche', autoPassRate: '91,7%' },
       na: { tab: 'Nordamerika', title: 'Nordamerikanische Abläufe', badge: 'Sofortiges KYC-KYB', requirements: ['SSN/TIN-Verifizierung', 'FINTRAC AML-Regeln', 'Holografische Dokumentenprüfung'], description: 'Sichern Sie vollständige regulatorische Compliance in den USA und Kanada. Prüfen Sie potenzielle Mitarbeiter und Unternehmen gegen umfassende nationale Risikolisten.', riskLevel: 'Niedriges bis hohes Risiko', autoPassRate: '96,8%' }
@@ -571,7 +562,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { value: 'NA', label: 'Nordamerika (FINTRAC & TIN-Datenbanken)' }
     ],
     consoleLogs: {} as Record<GlobalExpansionRegionKey, string[]>,
-    trustedLogos: ['GET YOUR GUIDE', 'remote', 'Ume'],
     infoSections: [
       { eyebrow: 'complianceEyebrow', title: 'complianceTitle', desc: 'complianceDesc' },
       { eyebrow: 'hubEyebrow', title: 'hubTitle', desc: 'hubDesc' }
@@ -593,7 +583,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     registryLatency: 'Độ trễ sổ đăng ký',
     throughput: 'Thông lượng KYC-KYB',
     online: '99,8% trực tuyến',
-    trustedBy: 'Được các startup và những công ty lớn nhất thế giới tin dùng',
     globalPipelineEyebrow: 'Quy trình danh tính toàn cầu',
     globalPipelineTitle: 'Xác minh mọi cá nhân hoặc doanh nghiệp',
     globalPipelineDesc: 'Chọn từ thư viện xác minh mạnh mẽ và điều chỉnh luồng theo sở thích người dùng, loại gian lận và mức độ sẵn có toàn cầu. Tận dụng các API kết nối tức thì đến sổ đăng ký đã xác thực trên toàn thế giới.',
@@ -604,7 +593,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
     complianceTitle: 'Thích ứng với quy định khu vực và nhóm người dùng',
     complianceDesc: 'Điều chỉnh luồng và bản dịch cho từng nhóm địa phương. Xây dựng hồ sơ rủi ro bằng sàng lọc và báo cáo tự động, rồi tự động duyệt, từ chối hoặc chuyển xem xét thủ công theo hướng dẫn địa phương.',
     translationMappingTitle: 'Ánh xạ bản dịch động',
-    translationMappingDesc: 'Hệ thống tự phát hiện môi trường trình duyệt của người dùng để cung cấp cổng thu thập đã dịch bằng hơn 45 ngôn ngữ.',
+    translationMappingDesc: 'Hệ thống tự phát hiện môi trường trình duyệt của người dùng để cung cấp cổng thu thập đã dịch.',
     screeningBlueprintsTitle: 'Bản thiết kế sàng lọc thích ứng',
     screeningBlueprintsDesc: 'Cấu hình nhánh điều kiện để chỉ kích hoạt kiểm tra KYC tăng cường khi người dùng vượt ngưỡng giao dịch khu vực cụ thể.',
     hubEyebrow: 'Hub danh tính hợp nhất',
@@ -663,7 +652,7 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { key: 'frankfurt', city: 'Frankfurt', tab: 'Frankfurt', tz: 'Europe/Berlin', latency: '35ms', status: 'optimal' }
     ],
     scenarios: {
-      eu: { tab: 'Châu Âu', title: 'Mở rộng tại Liên minh châu Âu', badge: 'Tuân thủ GDPR', requirements: ['Xác minh VAT', 'Tra cứu sổ đăng ký thương mại Đức', 'Chữ ký tuân thủ eIDAS'], description: 'Tự động định tuyến người dùng qua các kiểm tra khu vực. Xác minh VAT với VIES, kiểm tra sổ đăng ký quốc gia và đáp ứng quy định KYC/AML nghiêm ngặt của châu Âu mà không cần vận hành địa phương.', riskLevel: 'Rủi ro thấp đến trung bình', autoPassRate: '94,2%' },
+      eu: { tab: 'Châu Âu', title: 'Mở rộng tại Liên minh châu Âu', badge: 'Yêu cầu GDPR', requirements: ['Xác minh VAT', 'Tra cứu sổ đăng ký thương mại Đức', 'Chữ ký tuân thủ eIDAS'], description: 'Tự động định tuyến người dùng qua các kiểm tra khu vực. Xác minh VAT với VIES, kiểm tra sổ đăng ký quốc gia và đáp ứng quy định KYC/AML nghiêm ngặt của châu Âu mà không cần vận hành địa phương.', riskLevel: 'Rủi ro thấp đến trung bình', autoPassRate: '94,2%' },
       latam: { tab: 'LATAM', title: 'Bản địa hóa Mỹ Latinh', badge: 'Cơ sở dữ liệu địa phương', requirements: ['Xác thực CPF (Brazil)', 'Xác thực CURP (Mexico)', 'Dấu vân tay thiết bị'], description: 'Tối đa hóa chuyển đổi ở thị trường mới nổi bằng quét tài liệu di động siêu nhanh. Xác thực biến danh tính tức thì qua nguồn chính phủ theo từng quốc gia.', riskLevel: 'Mật độ gian lận cao', autoPassRate: '88,6%' },
       apac: { tab: 'APAC', title: 'Tuân thủ thị trường APAC', badge: 'KYC đa ngôn ngữ', requirements: ['My Number Card (Nhật Bản)', 'Xác thực Singpass (Singapore)', 'Sàng lọc trừng phạt'], description: 'Đăng ký khách hàng tức thì bằng cách xác minh ký tự ID bản địa. Xử lý mượt mà bảng chữ cái Nhật, Trung và Hàn bằng bảng dịch hỗ trợ AI.', riskLevel: 'Tài chính được quản lý', autoPassRate: '91,7%' },
       na: { tab: 'Bắc Mỹ', title: 'Vận hành Bắc Mỹ', badge: 'KYC-KYB tức thì', requirements: ['Xác minh SSN/TIN', 'Quy tắc AML FINTRAC', 'Xem xét hologram tài liệu'], description: 'Đảm bảo tuân thủ toàn diện tại Hoa Kỳ và Canada. Sàng lọc nhân viên tiềm năng và doanh nghiệp với danh sách rủi ro quốc gia đầy đủ.', riskLevel: 'Rủi ro thấp đến cao', autoPassRate: '96,8%' }
@@ -676,7 +665,6 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
       { value: 'NA', label: 'Bắc Mỹ (FINTRAC & cơ sở dữ liệu TIN)' }
     ],
     consoleLogs: {} as Record<GlobalExpansionRegionKey, string[]>,
-    trustedLogos: ['GET YOUR GUIDE', 'remote', 'Ume'],
     infoSections: [
       { eyebrow: 'complianceEyebrow', title: 'complianceTitle', desc: 'complianceDesc' },
       { eyebrow: 'hubEyebrow', title: 'hubTitle', desc: 'hubDesc' }
@@ -690,11 +678,11 @@ export const GLOBAL_EXPANSION_TRANSLATIONS: Record<GlobalExpansionLanguage, Glob
 };
 
 GLOBAL_EXPANSION_TRANSLATIONS.es.gridItems = [
-  { title: 'Comprobaciones de bases de datos', description: 'Verifique PII recopilada y extraída contra bases autorizadas y fuentes emisoras en más de 40 países.', detail: 'Cruce nombres completos, fechas de nacimiento e identificadores nacionales contra fuentes gubernamentales y servicios públicos.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
-  { title: 'Verificación de registros empresariales globales', description: 'Verifique nombres de empresas, números registrales y direcciones contra registros de más de 100 países.', detail: 'Enlaces API directos a registros nacionales, cámaras mercantiles y departamentos fiscales con resolución matriz-filial.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
-  { title: 'Document AI', description: 'Recoja y extraiga documentos, como actas de constitución o estados bancarios, de más de 90 países admitidos.', detail: 'Use OCR avanzado para leer alfabetos nativos, validar marcas de agua, detectar límites y revisar hologramas.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
+  { title: 'Comprobaciones de bases de datos', description: 'Verifique PII recopilada y extraída contra bases autorizadas y fuentes emisoras.', detail: 'Cruce nombres completos, fechas de nacimiento e identificadores nacionales contra fuentes gubernamentales y servicios públicos.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
+  { title: 'Verificación de registros empresariales globales', description: 'Verifique nombres de empresas, números registrales y direcciones contra registros.', detail: 'Enlaces API directos a registros nacionales, cámaras mercantiles y departamentos fiscales con resolución matriz-filial.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
+  { title: 'Document AI', description: 'Recoja y extraiga documentos, como actas de constitución o estados bancarios.', detail: 'Use OCR avanzado para leer alfabetos nativos, validar marcas de agua, detectar límites y revisar hologramas.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
   { title: 'Evaluación de listas de vigilancia', description: 'Evalúe contra más de 100 listas globales de alertas y sanciones para cumplir requisitos KYC.', detail: 'Monitoreo continuo contra PEP, OFAC, HM Treasury, sanciones ONU y boletines locales de fuerzas de seguridad.', icon: 'shield', color: 'text-rose-500 bg-rose-50' },
-  { title: 'Verificación de identificación oficial', description: 'Recoja y verifique identificaciones oficiales para reconocer usuarios en más de 200 países y territorios.', detail: 'Interfaces web y móviles que ajustan idioma y documentos aceptados según la IP local para maximizar conversiones.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
+  { title: 'Verificación de identificación oficial', description: 'Recoja y verifique identificaciones oficiales para reconocer usuarios.', detail: 'Interfaces web y móviles que ajustan idioma y documentos aceptados según la IP local para maximizar conversiones.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
   { title: 'Verificación NFC', description: 'Verifique pasaportes e identificaciones globalmente mediante chips NFC con guía específica por país.', detail: 'Evita falsificaciones visuales al leer archivos biométricos cifrados y firmas digitales desde el chip del pasaporte.', icon: 'radio', color: 'text-teal-500 bg-teal-50' },
   { title: 'Verificación de VAT', description: 'Verifique el número VAT de cualquier país de la UE y evite interrupciones con reintentos automáticos.', detail: 'Reduce validación fiscal manual al confirmar registros con bases VIES en checkout o alta de empresas.', icon: 'landmark', color: 'text-amber-500 bg-amber-50' },
   { title: 'Soluciones FINTRAC', description: 'Cumpla requisitos AML canadienses con una biblioteca robusta de verificaciones e informes para KYC y KYB.', detail: 'Diseños de informes, calendarios de retención y listas de cumplimiento configuradas para Canadá.', icon: 'shieldCheck', color: 'text-blue-500 bg-blue-50' },
@@ -702,11 +690,11 @@ GLOBAL_EXPANSION_TRANSLATIONS.es.gridItems = [
 ];
 
 GLOBAL_EXPANSION_TRANSLATIONS.ja.gridItems = [
-  { title: 'データベース照合', description: '収集・抽出したPIIを、40以上の国の権威あるデータベースや発行元情報と照合します。', detail: '氏名、生年月日、国民識別子を政府機関や公共サービスの情報源と即時照合します。', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
-  { title: 'グローバル法人登録確認', description: '100以上の国の登録簿に対して、法人名、登録番号、住所を確認します。', detail: '各国登録簿、会社登記機関、税務機関へAPIで直接接続し、親会社と子会社の関係も解決します。', icon: 'network', color: 'text-sky-500 bg-sky-50' },
-  { title: 'Document AI', description: '定款や銀行明細などの書類を、90以上の対応国から収集・抽出します。', detail: '高度なOCRでネイティブ文字を読み取り、透かし、書類境界、セキュリティホログラムを確認します。', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
+  { title: 'データベース照合', description: '収集・抽出したPIIを、権威あるデータベースや発行元情報と照合します。', detail: '氏名、生年月日、国民識別子を政府機関や公共サービスの情報源と即時照合します。', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
+  { title: 'グローバル法人登録確認', description: '登録簿に対して、法人名、登録番号、住所を確認します。', detail: '各国登録簿、会社登記機関、税務機関へAPIで直接接続し、親会社と子会社の関係も解決します。', icon: 'network', color: 'text-sky-500 bg-sky-50' },
+  { title: 'Document AI', description: '定款や銀行明細などの書類を収集・抽出します。', detail: '高度なOCRでネイティブ文字を読み取り、透かし、書類境界、セキュリティホログラムを確認します。', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
   { title: 'ウォッチリスト審査', description: 'KYC要件を満たすため、100以上のグローバル警告・制裁リストで審査します。', detail: 'PEP、OFAC、HM Treasury、国連制裁、地域の捜査機関リストを継続監視します。', icon: 'shield', color: 'text-rose-500 bg-rose-50' },
-  { title: '公的身分証確認', description: '200以上の国と地域の公的身分証を収集・確認してユーザーを識別します。', detail: 'ユーザーのIPに基づいて言語と受け付けるカードを調整し、コンバージョンを高めます。', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
+  { title: '公的身分証確認', description: '公的身分証を収集・確認してユーザーを識別します。', detail: 'ユーザーのIPに基づいて言語と受け付けるカードを調整し、コンバージョンを高めます。', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
   { title: 'NFC確認', description: 'NFCチップを使って世界中のパスポートとIDを確認し、国別ガイドで完了率を高めます。', detail: 'パスポートチップから暗号化された生体情報と電子署名を直接取得し、視覚的な偽装を回避します。', icon: 'radio', color: 'text-teal-500 bg-teal-50' },
   { title: 'VAT確認', description: 'EU各国のVAT番号を確認し、自動再試行で停止時間を抑えます。', detail: 'VIESデータベースで登録情報を即時確認し、税務確認の手作業を減らします。', icon: 'landmark', color: 'text-amber-500 bg-amber-50' },
   { title: 'FINTRACソリューション', description: 'KYCとKYB向けの確認・レポートライブラリでカナダAML要件に対応します。', detail: 'カナダ向けに構成されたレポート形式、記録保持スケジュール、継続チェックリストを提供します。', icon: 'shieldCheck', color: 'text-blue-500 bg-blue-50' },
@@ -714,11 +702,11 @@ GLOBAL_EXPANSION_TRANSLATIONS.ja.gridItems = [
 ];
 
 GLOBAL_EXPANSION_TRANSLATIONS.de.gridItems = [
-  { title: 'Datenbankprüfungen', description: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und Ausstellerquellen in über 40 Ländern.', detail: 'Gleichen Sie vollständige Namen, Geburtsdaten und nationale Kennungen sofort mit Regierungs- und Versorgungsquellen ab.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
-  { title: 'Globale Unternehmensregisterprüfung', description: 'Prüfen Sie Unternehmensnamen, Registernummern und Adressen gegen Register in über 100 Ländern.', detail: 'Direkte API-Verbindungen zu nationalen Registern, Handelsregistern und Steuerbehörden mit Mutter-Tochter-Auflösung.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
+  { title: 'Datenbankprüfungen', description: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und Ausstellerquellen.', detail: 'Gleichen Sie vollständige Namen, Geburtsdaten und nationale Kennungen sofort mit Regierungs- und Versorgungsquellen ab.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
+  { title: 'Globale Unternehmensregisterprüfung', description: 'Prüfen Sie Unternehmensnamen, Registernummern und Adressen gegen Register.', detail: 'Direkte API-Verbindungen zu nationalen Registern, Handelsregistern und Steuerbehörden mit Mutter-Tochter-Auflösung.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
   { title: 'Document AI', description: 'Erfassen und extrahieren Sie Dokumente wie Gründungsurkunden oder Kontoauszüge aus über 90 unterstützten Ländern.', detail: 'Nutzen Sie tiefes OCR zum Lesen lokaler Alphabete, Validieren von Wasserzeichen und Prüfen von Sicherheitshologrammen.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
   { title: 'Watchlist-Screening', description: 'Prüfen Sie gegen über 100 globale Warn- und Sanktionslisten, um KYC-Anforderungen zu erfüllen.', detail: 'Kontinuierliche Überwachung gegen PEP, OFAC, HM Treasury, UN-Sanktionen und lokale Fahndungslisten.', icon: 'shield', color: 'text-rose-500 bg-rose-50' },
-  { title: 'Amtliche Ausweisprüfung', description: 'Erfassen und prüfen Sie amtliche Ausweise, um Nutzer in über 200 Ländern und Regionen zu identifizieren.', detail: 'Web- und Mobiloberflächen passen Sprache und akzeptierte Dokumente anhand der lokalen IP an.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
+  { title: 'Amtliche Ausweisprüfung', description: 'Erfassen und prüfen Sie amtliche Ausweise, um Nutzer zu identifizieren.', detail: 'Web- und Mobiloberflächen passen Sprache und akzeptierte Dokumente anhand der lokalen IP an.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
   { title: 'NFC-Verifizierung', description: 'Prüfen Sie Reisepässe und IDs weltweit über NFC-Chips mit nutzerfreundlicher, länderspezifischer Anleitung.', detail: 'Umgeht visuelle Fälschungen durch direktes Auslesen kryptografischer Biometriedaten und digitaler Signaturen.', icon: 'radio', color: 'text-teal-500 bg-teal-50' },
   { title: 'VAT-Verifizierung', description: 'Prüfen Sie VAT-Nummern aller EU-Länder und vermeiden Sie Ausfälle durch automatische Wiederholungen.', detail: 'Spart manuelle Steuerprüfung, indem Registrierungen sofort mit VIES-Datenbanken bestätigt werden.', icon: 'landmark', color: 'text-amber-500 bg-amber-50' },
   { title: 'FINTRAC-Lösungen', description: 'Erfüllen Sie kanadische AML-Anforderungen mit Prüfungen und Berichten für KYC und KYB.', detail: 'Vorkonfigurierte Berichtslayouts, Aufbewahrungsfristen und laufende Compliance-Checklisten für Kanada.', icon: 'shieldCheck', color: 'text-blue-500 bg-blue-50' },
@@ -726,11 +714,11 @@ GLOBAL_EXPANSION_TRANSLATIONS.de.gridItems = [
 ];
 
 GLOBAL_EXPANSION_TRANSLATIONS.vi.gridItems = [
-  { title: 'Kiểm tra cơ sở dữ liệu', description: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành tại hơn 40 quốc gia.', detail: 'Đối chiếu tức thì họ tên, ngày sinh và mã định danh quốc gia với nguồn chính phủ và tiện ích trực tiếp.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
-  { title: 'Xác minh sổ đăng ký doanh nghiệp toàn cầu', description: 'Xác minh tên doanh nghiệp, số đăng ký và địa chỉ với sổ đăng ký tại hơn 100 quốc gia.', detail: 'Kết nối API trực tiếp đến sổ đăng ký quốc gia, cơ quan đăng ký công ty và cơ quan thuế, kèm phân giải quan hệ mẹ-con.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
-  { title: 'Document AI', description: 'Thu thập và trích xuất tài liệu như điều lệ thành lập hoặc sao kê ngân hàng từ hơn 90 quốc gia được hỗ trợ.', detail: 'Dùng OCR chuyên sâu để đọc chữ bản địa, xác thực hình mờ, nhận diện ranh giới tài liệu và kiểm tra hologram bảo mật.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
+  { title: 'Kiểm tra cơ sở dữ liệu', description: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành.', detail: 'Đối chiếu tức thì họ tên, ngày sinh và mã định danh quốc gia với nguồn chính phủ và tiện ích trực tiếp.', icon: 'database', color: 'text-indigo-500 bg-indigo-50' },
+  { title: 'Xác minh sổ đăng ký doanh nghiệp toàn cầu', description: 'Xác minh tên doanh nghiệp, số đăng ký và địa chỉ với sổ đăng ký.', detail: 'Kết nối API trực tiếp đến sổ đăng ký quốc gia, cơ quan đăng ký công ty và cơ quan thuế, kèm phân giải quan hệ mẹ-con.', icon: 'network', color: 'text-sky-500 bg-sky-50' },
+  { title: 'Document AI', description: 'Thu thập và trích xuất tài liệu như điều lệ thành lập hoặc sao kê ngân hàng.', detail: 'Dùng OCR chuyên sâu để đọc chữ bản địa, xác thực hình mờ, nhận diện ranh giới tài liệu và kiểm tra hologram bảo mật.', icon: 'clipboard', color: 'text-emerald-500 bg-emerald-50' },
   { title: 'Sàng lọc danh sách theo dõi', description: 'Sàng lọc với hơn 100 danh sách cảnh báo và trừng phạt toàn cầu để đáp ứng yêu cầu KYC.', detail: 'Giám sát liên tục với PEP, OFAC, HM Treasury, trừng phạt Liên Hợp Quốc và cảnh báo thực thi pháp luật địa phương.', icon: 'shield', color: 'text-rose-500 bg-rose-50' },
-  { title: 'Xác minh giấy tờ tùy thân', description: 'Thu thập và xác minh giấy tờ do chính phủ cấp để nhận diện người dùng tại hơn 200 quốc gia và vùng lãnh thổ.', detail: 'Giao diện web/di động tự điều chỉnh ngôn ngữ và giấy tờ được chấp nhận theo IP địa phương để tăng chuyển đổi.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
+  { title: 'Xác minh giấy tờ tùy thân', description: 'Thu thập và xác minh giấy tờ do chính phủ cấp để nhận diện người dùng.', detail: 'Giao diện web/di động tự điều chỉnh ngôn ngữ và giấy tờ được chấp nhận theo IP địa phương để tăng chuyển đổi.', icon: 'userCheck', color: 'text-violet-500 bg-violet-50' },
   { title: 'Xác minh NFC', description: 'Xác minh hộ chiếu và ID toàn cầu qua chip NFC với hướng dẫn thân thiện theo từng quốc gia.', detail: 'Vượt qua giả mạo hình ảnh bằng cách lấy trực tiếp tệp sinh trắc học mã hóa và chữ ký số từ chip hộ chiếu.', icon: 'radio', color: 'text-teal-500 bg-teal-50' },
   { title: 'Xác minh VAT', description: 'Xác minh số VAT của mọi quốc gia EU và tránh gián đoạn bằng logic thử lại tự động.', detail: 'Tiết kiệm thời gian xác thực thuế thủ công bằng cách xác nhận đăng ký qua cơ sở dữ liệu VIES tức thì.', icon: 'landmark', color: 'text-amber-500 bg-amber-50' },
   { title: 'Giải pháp FINTRAC', description: 'Tuân thủ yêu cầu AML của Canada bằng thư viện xác minh và báo cáo mạnh mẽ cho KYC và KYB.', detail: 'Mẫu báo cáo, lịch lưu giữ hồ sơ và danh sách kiểm tra tuân thủ liên tục được cấu hình cho Canada.', icon: 'shieldCheck', color: 'text-blue-500 bg-blue-50' },

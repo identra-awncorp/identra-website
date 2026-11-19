@@ -28,9 +28,6 @@ export const caseTranslations = {
     logicEqualsTrue: '=== true',
     logicThen: 'THEN',
     logicEscalateFunction: 'escalate_to_cases()',
-    logoDapper: 'Dapper Labs',
-    logoNewton: 'Newton',
-    logoRipple: 'ripple',
 
     resolveMoreCases: 'Resolve more cases in less time',
     resolveMoreCasesDesc: 'Automate routine cases with Case Review Agents and investigate complex ones faster with built-in collaboration tools that keep your team aligned.',
@@ -39,7 +36,6 @@ export const caseTranslations = {
     builtWithCompliance: 'Built with compliance in mind',
     builtWithComplianceDesc: 'Meet compliance requirements with comprehensive audit logging, checklists, comments, and encrypted storage structures.',
 
-    trustedBy: "Trusted by startups & the world's largest companies",
 
     sandboxBadge: 'Interactive sandbox demo',
     howItWorks: 'How it works',
@@ -121,12 +117,6 @@ export const caseTranslations = {
     appScenarios: 'Application Scenarios',
     howTeamsUse: 'How teams can use Cases',
 
-    readCaseStudy: 'Read case study',
-    bitgoResults: 'BitGo case study results',
-    bitgoLogoInitial: 'B',
-    bitgoDesc: "BitGo reduces manual review by 98% by leveraging Identra's case management solution, FinCEN 314a screening tool, and full identity platform.",
-    bitgoQuote: '“As a startup with multiple systems, we needed a way to consolidate our users across different BitGo affiliates and business units. We lacked a clear source of truth, and Identra gives us that. With the time saved on review, and the consolidated single source of truth, you could call the resources my team saves a return on investment.”',
-    bitgoCite: 'Director of trust administration at BitGo',
 
     resources: 'Resources',
     keepLearning: 'Keep learning',
@@ -169,9 +159,6 @@ export const caseTranslations = {
     logicEqualsTrue: '=== verdadero',
     logicThen: 'ENTONCES',
     logicEscalateFunction: 'escalate_to_cases()',
-    logoDapper: 'Dapper Labs',
-    logoNewton: 'Newton',
-    logoRipple: 'ripple',
 
     resolveMoreCases: 'Resolver más casos en menos tiempo',
     resolveMoreCasesDesc: 'Automatice casos de rutina con agentes de revisión de casos e investigue casos complejos más rápido con herramientas de colaboración integradas que mantienen a su equipo alineado.',
@@ -180,7 +167,6 @@ export const caseTranslations = {
     builtWithCompliance: 'Construido pensando en el cumplimiento',
     builtWithComplianceDesc: 'Cumpla con los requisitos de cumplimiento con registros de auditoría integrales, listas de verificación, comentarios y estructuras de almacenamiento cifradas.',
 
-    trustedBy: "Con la confianza de startups y las empresas más grandes del mundo",
 
     sandboxBadge: 'Demostración interactiva de zona de pruebas',
     howItWorks: 'como funciona',
@@ -262,12 +248,6 @@ export const caseTranslations = {
     appScenarios: 'Escenarios de aplicación',
     howTeamsUse: 'Cómo los equipos pueden utilizar los casos',
 
-    readCaseStudy: 'Leer estudio de caso',
-    bitgoResults: 'Resultados del estudio de caso de BitGo',
-    bitgoLogoInitial: 'B',
-    bitgoDesc: "BitGo reduce la revisión manual en un 98 % al aprovechar la solución de gestión de casos de Identra, la herramienta de detección FinCEN 314a y la plataforma de identidad completa.",
-    bitgoQuote: '"Como startup con múltiples sistemas, necesitábamos una forma de consolidar a nuestros usuarios en diferentes afiliados y unidades de negocios de BitGo. Carecíamos de una fuente de verdad clara, y Identra nos la brinda. Con el tiempo ahorrado en la revisión y la única fuente de verdad consolidada, se podría considerar que los recursos que mi equipo ahorra son un retorno de la inversión".',
-    bitgoCite: 'Director de administración de fideicomisos en BitGo',
 
     resources: 'Recursos',
     keepLearning: 'sigue aprendiendo',
@@ -310,18 +290,14 @@ export const caseTranslations = {
     logicEqualsTrue: '=== true',
     logicThen: 'なら',
     logicEscalateFunction: 'escalate_to_cases()',
-    logoDapper: 'Dapper Labs',
-    logoNewton: 'Newton',
-    logoRipple: 'ripple',
 
     resolveMoreCases: 'より多くの事件をより短時間で解決する',
     resolveMoreCasesDesc: 'Case Review Agent を使用して日常的なケースを自動化し、チームの連携を保つ組み込みのコラボレーション ツールを使用して複雑なケースをより迅速に調査します。',
     unlockSingleSource: '単一の真実の情報源を明らかにする',
-    unlockSingleSourceDesc: 'ペルソナや外部ソースからアクティブ、パッシブ、および行動のシグナルを収集して統合することで、エージェントとレビュー担当者がすべての関連コンテキストを 1 か所で把握できるようになります。',
+    unlockSingleSourceDesc: 'Identraや外部ソースからアクティブ、パッシブ、および行動のシグナルを収集して統合することで、エージェントとレビュー担当者がすべての関連コンテキストを 1 か所で把握できるようになります。',
     builtWithCompliance: 'コンプライアンスを念頭に置いて構築',
     builtWithComplianceDesc: '包括的な監査ログ、チェックリスト、コメント、暗号化されたストレージ構造により、コンプライアンス要件を満たします。',
 
-    trustedBy: "スタートアップ企業や世界最大手の企業から信頼されています",
 
     sandboxBadge: 'インタラクティブなサンドボックスのデモ',
     howItWorks: '仕組み',
@@ -403,28 +379,22 @@ export const caseTranslations = {
     appScenarios: 'アプリケーションシナリオ',
     howTeamsUse: 'チームが Case を使用する方法',
 
-    readCaseStudy: 'ケーススタディを読む',
-    bitgoResults: 'BitGo のケーススタディ結果',
-    bitgoLogoInitial: 'B',
-    bitgoDesc: "BitGo は、ペルソナのケース管理ソリューション、FinCEN 314a スクリーニング ツール、および完全な ID プラットフォームを活用することで、手動レビューを 98% 削減します。",
-    bitgoQuote: '「複数のシステムを持つスタートアップとして、私たちはさまざまな BitGo 関連会社やビジネス ユニットにまたがるユーザーを統合する方法を必要としていました。私たちには明確な真実の情報源が不足していましたが、ペルソナがそれを提供してくれます。レビューにかかる時間が節約され、統合された単一の真実の情報源により、私のチームが節約できるリソースは投資収益率と言えるでしょう。」',
-    bitgoCite: 'BitGo 信託管理ディレクター',
 
     resources: 'リソース',
     keepLearning: '学び続ける',
     readArticle: '記事を読む',
     blogLabel: 'ブログ',
 
-    exploreUpsell: "ペルソナのアイデンティティ プラットフォームをさらに詳しく見る",
+    exploreUpsell: "Identraのアイデンティティ プラットフォームをさらに詳しく見る",
     upsell1Title: 'すべての ID プロセスを自動化します。',
     upsell1Desc: 'トリガーを定義し、検証を動的に実行し、データベースをチェックし、リスク アルゴリズムを実行し、ワークフローを使用して手動タスクを調整します。',
     upsell1Link: '「ワークフロープラットフォーム」を参照',
-    upsell2Title: 'データとツールをペルソナに取り込みます。',
+    upsell2Title: 'データとツールをIdentraに取り込みます。',
     upsell2Desc: '堅牢な構築済みマーケットプレイス アプリを使用して、サードパーティのリスク システム、CRM サービス、チケット発行デスク、またはデータ レイクを接続します。',
     upsell2Link: '統合マーケットプレイスを見る',
 
     readyToGetStarted: '始める準備はできていますか?',
-    readyToGetStartedDesc: '今すぐお問い合わせいただくか、ペルソナの探索を始めてください。カスタム レビュー キューをセットアップしたり、自動化されたフロー サンドボックスを数分でテストしたりできます。',
+    readyToGetStartedDesc: '今すぐお問い合わせいただくか、Identraの探索を始めてください。カスタム レビュー キューをセットアップしたり、自動化されたフロー サンドボックスを数分でテストしたりできます。',
     tryItNow: '今すぐ試してください',
   },
   de: {
@@ -451,9 +421,6 @@ export const caseTranslations = {
     logicEqualsTrue: '=== wahr',
     logicThen: 'DANN',
     logicEscalateFunction: 'escalate_to_cases()',
-    logoDapper: 'Dapper Labs',
-    logoNewton: 'Newton',
-    logoRipple: 'ripple',
 
     resolveMoreCases: 'Lösen Sie mehr Fälle in kürzerer Zeit',
     resolveMoreCasesDesc: 'Automatisieren Sie Routinefälle mit Case Review Agents und untersuchen Sie komplexe Fälle schneller mit integrierten Tools für die Zusammenarbeit, die Ihr Team auf dem Laufenden halten.',
@@ -462,7 +429,6 @@ export const caseTranslations = {
     builtWithCompliance: 'Bei der Entwicklung wurde auf Compliance geachtet',
     builtWithComplianceDesc: 'Erfüllen Sie Compliance-Anforderungen mit umfassender Audit-Protokollierung, Checklisten, Kommentaren und verschlüsselten Speicherstrukturen.',
 
-    trustedBy: "Startups und die größten Unternehmen der Welt vertrauen darauf",
 
     sandboxBadge: 'Interaktive Sandbox-Demo',
     howItWorks: 'Wie es funktioniert',
@@ -544,12 +510,6 @@ export const caseTranslations = {
     appScenarios: 'Anwendungsszenarien',
     howTeamsUse: 'Wie Teams Fälle nutzen können',
 
-    readCaseStudy: 'Fallstudie lesen',
-    bitgoResults: 'Ergebnisse der BitGo-Fallstudie',
-    bitgoLogoInitial: 'B',
-    bitgoDesc: "BitGo reduziert die manuelle Überprüfung um 98 %, indem es die Fallmanagementlösung von Identra, das FinCEN 314a-Screening-Tool und die vollständige Identitätsplattform nutzt.",
-    bitgoQuote: '„Als Startup mit mehreren Systemen brauchten wir eine Möglichkeit, unsere Benutzer über verschiedene BitGo-Tochtergesellschaften und Geschäftseinheiten hinweg zu konsolidieren. Uns fehlte eine klare Quelle der Wahrheit, und Identra bietet uns diese. Mit der Zeitersparnis bei der Überprüfung und der konsolidierten einzigen Quelle der Wahrheit könnte man die Ressourcen, die mein Team einspart, als Kapitalrendite bezeichnen.“',
-    bitgoCite: 'Direktor der Treuhandverwaltung bei BitGo',
 
     resources: 'Ressourcen',
     keepLearning: 'Lerne weiter',
@@ -591,9 +551,6 @@ export const caseTranslations = {
     logicEqualsTrue: '=== đúng',
     logicThen: 'THÌ',
     logicEscalateFunction: 'escalate_to_cases()',
-    logoDapper: 'Dapper Labs',
-    logoNewton: 'Newton',
-    logoRipple: 'ripple',
 
     resolveMoreCases: 'Giải quyết nhiều hồ sơ hơn trong thời gian ngắn hơn',
     resolveMoreCasesDesc: 'Tự động hóa các hồ sơ thông thường với Đại lý Đánh giá Hồ sơ và điều tra các hồ sơ phức tạp nhanh hơn với các công cụ cộng tác tích hợp giúp nhóm của bạn luôn đồng bộ.',
@@ -602,7 +559,6 @@ export const caseTranslations = {
     builtWithCompliance: 'Xây dựng với định hướng tuân thủ',
     builtWithComplianceDesc: 'Đáp ứng các yêu cầu tuân thủ với ghi nhật ký kiểm toán toàn diện, danh sách kiểm tra, nhận xét và cấu trúc lưu trữ được mã hóa.',
 
-    trustedBy: 'Được tin dùng bởi các công ty khởi nghiệp & các tập đoàn lớn nhất thế giới',
 
     sandboxBadge: 'Hộp cát thử nghiệm tương tác',
     howItWorks: 'Cách thức hoạt động',
@@ -684,12 +640,6 @@ export const caseTranslations = {
     appScenarios: 'Các kịch bản ứng dụng',
     howTeamsUse: 'Cách các nhóm sử dụng Hồ sơ sự vụ',
 
-    readCaseStudy: 'Đọc nghiên cứu tình huống',
-    bitgoResults: 'Kết quả nghiên cứu thực tế BitGo',
-    bitgoLogoInitial: 'B',
-    bitgoDesc: 'BitGo giảm 98% số cuộc đánh giá thủ công nhờ tận dụng giải pháp quản lý hồ sơ của Identra, công cụ sàng lọc FinCEN 314a và toàn bộ nền tảng danh tính.',
-    bitgoQuote: '“Là một công ty khởi nghiệp sở hữu nhiều hệ thống, chúng tôi cần một cách để hợp nhất người dùng của mình trên các đơn vị liên kết và đơn vị kinh doanh khác nhau của BitGo. Chúng tôi đã thiếu một nguồn sự thật rõ ràng, và Identra đã mang lại cho chúng tôi điều đó. Với thời gian tiết kiệm được trong quá trình đánh giá cùng nguồn dữ liệu đáng tin cậy duy nhất được hợp nhất, bạn có thể gọi nguồn tài nguyên mà nhóm của tôi tiết kiệm được là một khoản lợi nhuận trên vốn đầu tư.”',
-    bitgoCite: 'Giám đốc quản trị ủy thác tại BitGo',
 
     resources: 'Tài nguyên',
     keepLearning: 'Tiếp tục tìm hiểu',
@@ -714,7 +664,7 @@ export const caseTranslations = {
 export const ruleTranslations = {
   en: {
     rule1Name: 'High-Value Transactions',
-    rule1Condition: 'If transaction amount > $10,000',
+    rule1Condition: 'If transaction amount > 10,000',
     rule1Action: 'Assign to Tier 2 Escalation Queue',
     rule2Name: 'VPN Proxy Guard',
     rule2Condition: 'If VPN or Proxy network is detected',
@@ -729,7 +679,7 @@ export const ruleTranslations = {
   es: {
 
     rule1Name: 'Transacciones de alto valor',
-    rule1Condition: 'Si el monto de la transacción es > $10,000',
+    rule1Condition: 'Si el monto de la transacción es > 10,000',
     rule1Action: 'Asignar a la cola de escalada de nivel 2',
     rule2Name: 'Guardia de proxy VPN',
     rule2Condition: 'Si se detecta una red VPN o Proxy',
@@ -744,7 +694,7 @@ export const ruleTranslations = {
   ja: {
 
     rule1Name: '高額取引',
-    rule1Condition: '取引金額 > $10,000の場合',
+    rule1Condition: '取引金額 > 10,000の場合',
     rule1Action: 'Tier 2 エスカレーション キューに割り当てる',
     rule2Name: 'VPN プロキシ ガード',
     rule2Condition: 'VPN または Proxy ネットワークが検出された場合',
@@ -759,7 +709,7 @@ export const ruleTranslations = {
   de: {
 
     rule1Name: 'Hochwertige Transaktionen',
-    rule1Condition: 'Wenn der Transaktionsbetrag > 10.000 $ ist',
+    rule1Condition: 'Wenn der Transaktionsbetrag > 10.000 ist',
     rule1Action: 'Der Eskalationswarteschlange der Stufe 2 zuweisen',
     rule2Name: 'VPN-Proxy-Guard',
     rule2Condition: 'Wenn ein VPN- oder Proxy-Netzwerk erkannt wird',
@@ -773,7 +723,7 @@ export const ruleTranslations = {
   },
   vi: {
     rule1Name: 'Giao dịch Giá trị cao',
-    rule1Condition: 'Nếu số tiền giao dịch > $10.000',
+    rule1Condition: 'Nếu số tiền giao dịch > 10.000',
     rule1Action: 'Phân công cho hàng đợi Chuyển tiếp Cấp 2',
     rule2Name: 'Bảo vệ Khỏi Proxy VPN',
     rule2Condition: 'Nếu phát hiện mạng VPN hoặc Proxy',
@@ -1388,7 +1338,7 @@ export const BLOG_TRANS = {
       readTime: '7分',
     },
     {
-      title: 'ペルソナ ケースを使用して手動レビュー プロセスを再考する',
+      title: 'Identra ケースを使用して手動レビュー プロセスを再考する',
       category: 'ブログ',
       readTime: '4分',
     },

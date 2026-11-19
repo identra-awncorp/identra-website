@@ -47,7 +47,7 @@ interface ResourceCenterPageProps {
   onBackToLanding: () => void;
 }
 
-const categoryFilters: ResourceCategoryFilter[] = ['All', 'Blog', 'Guides', 'Videos', 'Podcasts'];
+const categoryFilters: ResourceCategoryFilter[] = ['All', 'Blog', 'Guides', 'Videos'];
 
 const identity101ResourceMeta: ResourceMeta[] = [
   { id: 'id101-1', type: 'Guide', category: 'identity-101', gradient: 'from-[#354CE1]/10 to-indigo-500/5', icon: Shield },
@@ -60,8 +60,7 @@ const identity101ResourceMeta: ResourceMeta[] = [
 const complianceResourceMeta: ResourceMeta[] = [
   { id: 'comp-1', type: 'Webinar', category: 'compliance', gradient: 'from-rose-500/10 to-purple-500/5', icon: Video },
   { id: 'comp-2', type: 'Guide', category: 'compliance', gradient: 'from-[#354CE1]/10 to-sky-500/5', icon: Clock },
-  { id: 'comp-3', type: 'Blog', category: 'compliance', gradient: 'from-amber-500/10 to-yellow-500/5', icon: AlertTriangle },
-  { id: 'comp-4', type: 'Blog', category: 'compliance', gradient: 'from-emerald-500/10 to-teal-500/5', icon: CheckCircle2 }
+  { id: 'comp-3', type: 'Blog', category: 'compliance', gradient: 'from-amber-500/10 to-yellow-500/5', icon: AlertTriangle }
 ];
 
 const lifecycleResourceMeta: ResourceMeta[] = [
@@ -75,9 +74,7 @@ const latestResourceMeta: ResourceMeta[] = [
   { id: 'lat-1', type: 'Blog', category: 'latest', gradient: 'from-slate-900 to-slate-800', icon: Fingerprint },
   { id: 'lat-2', type: 'Guide', category: 'latest', gradient: 'from-blue-900 to-indigo-900', icon: Smartphone },
   { id: 'lat-3', type: 'Blog', category: 'latest', gradient: 'from-indigo-950 to-[#142FA0]', icon: Layers },
-  { id: 'lat-4', type: 'Guide', category: 'latest', gradient: 'from-teal-950 to-emerald-950', icon: FileText },
   { id: 'lat-5', type: 'Webinar', category: 'latest', gradient: 'from-purple-950 to-indigo-950', icon: Video },
-  { id: 'lat-6', type: 'Podcast', category: 'latest', gradient: 'from-amber-950 to-orange-950', icon: Mic },
   { id: 'lat-7', type: 'Guide', category: 'latest', gradient: 'from-rose-950 to-red-950', icon: Shield },
   { id: 'lat-8', type: 'Blog', category: 'latest', gradient: 'from-emerald-950 to-teal-950', icon: Globe },
   { id: 'lat-9', type: 'Webinar', category: 'latest', gradient: 'from-blue-950 to-slate-900', icon: Video }
@@ -150,17 +147,11 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
       title: text('evaluatorTitle'),
       duration: text('evaluatorDuration'),
       icon: Smartphone
-    },
-    {
-      ...latestResources[2],
-      id: 'featured-gartner',
-      title: text('gartnerTitle'),
-      duration: text('gartnerDuration')
     }
   ];
   const trendResources: Resource[] = [
     {
-      ...latestResources[4],
+      ...latestResources[3],
       id: 'trend-synthetic-identities',
       type: 'Blog',
       title: text('trend1Title'),
@@ -343,7 +334,7 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             
             {/* Stack Card 1: Shop like a pro */}
             <button type="button"
-              className="bg-white rounded-[2rem] p-5 md:p-6 flex flex-row gap-4 md:gap-6 cursor-pointer text-left shadow-sm hover:shadow-lg transition duration-300 group"
+              className="flex-1 bg-white rounded-[2rem] p-5 md:p-6 flex flex-row gap-4 md:gap-6 cursor-pointer text-left shadow-sm hover:shadow-lg transition duration-300 group"
               onClick={() => setActiveArticle(featuredResources[1])}
             >
               {/* Side vector illustration */}
@@ -378,52 +369,6 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     <span>{text('evaluatorDuration')}</span>
-                  </span>
-                </div>
-              </div>
-            </button>
-
-            {/* Stack Card 2: Gartner Leader */}
-            <button type="button"
-              className="bg-white rounded-[2rem] p-5 md:p-6 flex flex-row gap-4 md:gap-6 cursor-pointer text-left shadow-sm hover:shadow-lg transition duration-300 group"
-              onClick={() => setActiveArticle(featuredResources[2])}
-            >
-              {/* Gartner Magic Quadrant mockup */}
-              <div className="w-24 h-24 md:w-36 md:h-auto md:aspect-square bg-slate-900 rounded-2xl shrink-0 flex flex-col justify-between p-3 relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#121E36] to-indigo-950 opacity-90" />
-                
-                {/* 2x2 Quadrant Grid mockup */}
-                <div className="absolute inset-2 border-2 border-slate-750/50 grid grid-cols-2 grid-rows-2 z-10 text-[6px] font-bold text-slate-500 font-mono">
-                  <div className="border-r border-b border-slate-750/30 p-1">{text('quadrantChallengers')}</div>
-                  <div className="border-b border-slate-750/30 p-1 relative flex items-center justify-center bg-indigo-500/10">
-                    <span className="text-[#FFBF43] absolute top-1 right-1">{text('quadrantLeaders')}</span>
-                    <div className="w-2 h-2 rounded-full bg-[#354CE1] ring-2 ring-white animate-pulse" />
-                    <span className="text-[5px] text-white absolute bottom-1 text-center scale-90">{text('quadrantIdentra')}</span>
-                  </div>
-                  <div className="border-r border-slate-750/30 p-1">{text('quadrantNichePlayers')}</div>
-                  <div className="p-1">{text('quadrantVisionaries')}</div>
-                </div>
-              </div>
-
-              {/* Text content */}
-              <div className="min-w-0 flex flex-col justify-between py-1">
-                <div className="space-y-2">
-                  <span className="bg-amber-50 text-amber-700 text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider inline-block">
-                    {text('recognition')}
-                  </span>
-                  <h3 className="text-sm font-extrabold text-slate-900 leading-snug group-hover:text-[#354CE1] transition">
-                    {text('gartnerTitle')}
-                  </h3>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-slate-500 mt-4">
-                  <span className="flex items-center gap-1">
-                    <Newspaper className="w-3 h-3" />
-                    <span>{text('typeBlog')}</span>
-                  </span>
-                  <span>•</span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    <span>{text('gartnerDuration')}</span>
                   </span>
                 </div>
               </div>
@@ -939,69 +884,6 @@ export default function ResourceCenterPage({ onOpenSandbox }: ResourceCenterPage
             </button>
           </div>
         )}
-      </section>
-
-      {/* Real Stories, Real Results Section */}
-      <section className="bg-[#E2E6FF]/40 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-6 space-y-12">
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 max-w-3xl">
-            <div className="space-y-2">
-              <span className="text-[10px] font-bold text-[#354CE1] uppercase tracking-widest block">{text('customerSuccess')}</span>
-              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {text('customerStoriesTitle')}
-              </h2>
-              <p className="text-slate-600 text-sm md:text-base">
-                {text('customerStoriesDesc')}
-              </p>
-            </div>
-            <button 
-              onClick={() => onOpenSandbox()}
-              className="bg-slate-950 hover:bg-slate-900 text-white font-extrabold text-xs px-6 py-3.5 rounded-full flex items-center gap-1.5 shrink-0 shadow-md active:scale-95 transition"
-            >
-              <span>{text('viewAll')}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Customer Stories Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {pageCopy.customerStories.slice(0, 3).map((story) => (
-              <div key={story.company} className="bg-white rounded-3xl p-6 space-y-6 shadow-sm hover:shadow-lg transition">
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-[#354CE1] tracking-tighter text-sm">{text('identraBrand')}</span>
-                  <span className="text-slate-300">|</span>
-                  <span className="font-bold text-slate-800 text-xs">{story.company}</span>
-                </div>
-                <h4 className="text-sm font-extrabold text-slate-900 leading-relaxed">
-                  {story.title}
-                </h4>
-                {story.description && (
-                  <p className="text-[11px] text-slate-500 leading-relaxed">
-                    {story.description}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Secondary Bento Client Strip */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-            {pageCopy.customerStories.slice(3).map((story) => (
-              <div key={story.company} className="bg-white rounded-3xl p-6 space-y-6 shadow-sm hover:shadow-lg transition">
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-[#354CE1] tracking-tighter text-sm">{text('identraBrand')}</span>
-                  <span className="text-slate-300">|</span>
-                  <span className="font-bold text-slate-800 text-xs">{story.company}</span>
-                </div>
-                <p className="text-[11px] text-slate-600 italic">
-                  {story.title}
-                </p>
-              </div>
-            ))}
-          </div>
-
-        </div>
       </section>
 
       <AnimatePresence>

@@ -102,14 +102,6 @@ const BIOMETRIC_LINES = [
 
 const PERFORMANCE_CARD_ICONS = [Award, Globe, ShieldAlert, Sliders, TrendingUp, Activity];
 const EXPLANATION_CARD_ICONS = [UserCheck, Activity, Shield];
-const CERTIFICATION_LABEL_CLASSES = [
-  'text-[#1cb080] bg-emerald-50',
-  'text-[#1cb080] bg-emerald-50',
-  'text-blue-600 bg-blue-50 font-mono',
-  'text-slate-700 bg-slate-100',
-  'text-purple-600 bg-purple-50',
-  'text-[#354CE1] bg-indigo-50 font-bold'
-];
 const EXPLORE_CARD_CLASSES = [
   'from-[#1cb080] to-[#148e64]',
   'from-[#354CE1] to-[#2031a0]'
@@ -291,33 +283,6 @@ export default function SelfieRecognitionPage({ onOpenSandbox, onBackToLanding, 
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* THIRD PARTY TESTING SECTION */}
-      <section className="bg-emerald-50/50 py-20 px-6 rounded-[3rem] max-w-7xl mx-auto mb-24 border border-emerald-100/60">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900 tracking-tight">
-            {t.thirdPartyTitle}
-          </h2>
-          <p className="text-slate-500 text-sm mt-3 leading-relaxed">
-            {t.thirdPartyDesc}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {t.certifications.map((cert: any, index: number) => (
-            <div key={cert.title} className="bg-white p-8 rounded-2xl border border-slate-100 shadow-xs">
-              <div className="flex items-center justify-between mb-4">
-                <span className={['text-[10px] font-bold tracking-widest px-2.5 py-1 rounded-md uppercase', CERTIFICATION_LABEL_CLASSES[index]].join(' ')}>
-                  {cert.label}
-                </span>
-                <span className="font-mono text-slate-300 text-xs">{String(index + 1).padStart(2, '0')}</span>
-              </div>
-              <h4 className="text-sm font-bold text-slate-900 mb-2">{cert.title}</h4>
-              <p className="text-xs text-slate-500 leading-relaxed">{cert.desc}</p>
-            </div>
-          ))}
         </div>
       </section>
 

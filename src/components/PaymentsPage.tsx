@@ -158,22 +158,6 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
         </div>
       </section>
 
-      <section className="bg-white border-y border-slate-100 py-12">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-xs uppercase tracking-wider text-slate-400 font-bold mb-8">{t.trust.title}</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-70">
-            {t.trust.logos.map((logo: string, index: number) => (
-              <div key={logo} className="flex items-center gap-2 font-black text-slate-700 text-xl tracking-tight">
-                {index === 0 && <span className="w-3 h-3 bg-blue-600 inline-block" />}
-                {index === 1 && <span className="w-3 h-3 rounded-full bg-[#00D4B2] inline-block" />}
-                {index === 3 && <span className="w-3 h-3 rotate-45 bg-emerald-500 inline-block" />}
-                {logo}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-20">
@@ -529,20 +513,6 @@ export default function PaymentsPage({ onOpenSandbox, onBackToLanding, onViewCha
         </div>
       </section>
 
-      <section className="bg-blue-50 py-24 border-b border-slate-100 relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-100 rounded-full filter blur-3xl pointer-events-none opacity-50" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-8">
-          <p className="text-xl sm:text-2xl font-serif text-blue-900 leading-relaxed italic">{t.testimonial.quote}</p>
-          <div>
-            <h5 className="text-xs font-extrabold text-blue-950 uppercase tracking-widest">{t.testimonial.name}</h5>
-            <p className="text-[10px] text-blue-700 font-semibold mt-0.5 uppercase tracking-wider">{t.testimonial.title}</p>
-          </div>
-          <button onClick={onOpenSandbox} className="inline-flex items-center gap-2 bg-blue-600 text-white font-bold text-xs px-6 py-3 rounded-full hover:bg-blue-700 transition duration-200">
-            {t.testimonial.cta}
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </section>
 
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">

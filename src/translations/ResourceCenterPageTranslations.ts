@@ -25,14 +25,6 @@ export const resourceCenterPageTranslations = {
     evaluatorGuide: 'Evaluator Guide',
     evaluatorTitle: 'Shop like a pro: 4 questions experts ask when evaluating identity verification solutions',
     evaluatorDuration: '21 min read',
-    recognition: 'Recognition',
-    quadrantChallengers: 'CHALLENGERS',
-    quadrantLeaders: 'LEADERS',
-    quadrantIdentra: 'IDENTRA',
-    quadrantNichePlayers: 'NICHE PLAYERS',
-    quadrantVisionaries: 'VISIONARIES',
-    gartnerTitle: 'Identra named a Leader in the 2025 Gartner® Magic Quadrant™ for Identity Verification',
-    gartnerDuration: '4 min read',
     platformResearch: 'Platform Research',
     trendsTitle: 'Trends shaping the identity space',
     trendsDesc: 'From sophisticated synthetic account fraud networks to stringent cross-border biometric privacy compliance laws, explore how digital identity is pivoting.',
@@ -71,11 +63,6 @@ export const resourceCenterPageTranslations = {
     noResourcesFoundDesc: 'We could not find any resources matching your criteria "{query}". Try refining your keywords or checking another category.',
     resetFilters: 'Reset Filters',
     loadMore: 'Load more',
-    customerSuccess: 'Customer success',
-    customerStoriesTitle: 'Real stories, real results',
-    customerStoriesDesc: 'See how companies like yours partner with Identra to fight fraud, stay on top of changing regulations, and build trust.',
-    viewAll: 'View all',
-    identraBrand: 'identra',
     learnMoreTitle: 'Want to learn more about Identra?',
     learnMoreDesc: 'Get in touch or start exploring today',
     tryDemo: 'Try the demo',
@@ -91,8 +78,7 @@ export const resourceCenterPageTranslations = {
       compliance: [
         { title: 'Mastering the Travel Rule for Crypto compliance', duration: '45 min watch', description: 'A deep-dive discussion with top compliance officers on implementing global cryptocurrency transaction regulations.', date: 'April 20, 2026' },
         { title: 'The Blueprint for Age Assurance Compliance', duration: '15 min read', description: 'How dating, gaming, and digital entertainment platforms comply with emergent state-level age verification laws.', date: 'May 5, 2026' },
-        { title: 'Sanctions, Watchlists, and Adverse Media best practices', duration: '6 min read', description: 'Keep your continuous monitoring robust. Learn the right balance of false positive controls.', date: 'June 10, 2026' },
-        { title: "SOC 2 and HIPAA: Identra's Security Pillars", duration: '4 min read', description: 'An overview of how we maintain peak standard data confidentiality and client protection structures.', date: 'June 29, 2026' }
+        { title: 'Sanctions, Watchlists, and Adverse Media best practices', duration: '6 min read', description: 'Keep your continuous monitoring robust. Learn the right balance of false positive controls.', date: 'June 10, 2026' }
       ],
       lifecycle: [
         { title: 'Frictionless Customer Onboarding Flows', duration: '9 min read', description: 'Tactics to reduce drop-offs during identity verification while keeping high security guardrails intact.', date: 'Feb 14, 2026' },
@@ -104,22 +90,12 @@ export const resourceCenterPageTranslations = {
         { title: 'The Rise of Generative AI Deepfakes: What Verification Pros Need to Know', duration: '8 min read', description: 'A technical analysis of how bad actors utilize GenAI, face swaps, and video inject attacks to bypass legacy KYC.', date: 'July 8, 2026' },
         { title: 'Selfie Verification vs. NFC Chip Verification: A Head-to-Head Comparison', duration: '14 min read', description: 'Compare the friction, verification speed, and absolute spoof resistance of modern camera checks against ePassport NFC taps.', date: 'July 5, 2026' },
         { title: 'Why Global Fintech Platforms are Moving to Modular Identity Orchestration', duration: '6 min read', description: 'Static verification stacks are breaking. Learn why dynamic routing, custom fallbacks, and multi-vendor integrations win.', date: 'July 1, 2026' },
-        { title: 'Identity Verification Benchmarks 2026: Conversion & Fraud Rates', duration: '22 min read', description: 'Industry-standard benchmarks across fintech, marketplace, crypto, and gig-economy sectors compiled from over 50M verifications.', date: 'June 27, 2026' },
         { title: 'Tackling Synthetic Identity Fraud: Deep Analysis and Strategic Defense', duration: '50 min watch', description: 'Experts from Identra and top-tier financial service providers detail how synthetic profiles are constructed and detected.', date: 'June 20, 2026' },
-        { title: 'Identity Orchestration Podcast Ep 12: Scaling Trust at OpenAI', duration: '38 min listen', description: 'A conversational session covering high-velocity API access, combating bot signups, and keeping user onboarding frictionless.', date: 'June 15, 2026' },
         { title: 'Continuous AML Screening: How to Transition from Periodic Batch Audits', duration: '11 min read', description: 'Learn how instant alerts, continuous daily adverse media scans, and real-time sanctions screening protect modern platforms.', date: 'June 10, 2026' },
         { title: 'KYB for Onboarding Commercial Real Estate Tenants', duration: '5 min read', description: 'A localized guide on using automated state registry checks to verify corporate tenants swiftly and securely.', date: 'June 03, 2026' },
         { title: 'Building a Dynamic High-Trust User Portal', duration: '40 min watch', description: "A technical demo of Identra's dynamic flow builder allowing seamless identity verification portals without coding.", date: 'May 28, 2026' }
       ]
-    },
-    customerStories: [
-      { company: 'Square', title: '"Square Capital automatically verified Paycheck Protection Program loan applicants with Identra"', description: 'During critical high-velocity SBA applications, Square utilized Identra to instantly validate businesses and cross-match owner documentation to eliminate onboarding fraud.' },
-      { company: 'Brex', title: '"Brex unlocks automated ID verification in more than 100 countries with Identra"', description: 'By nesting custom ID workflows inside localized flows, Brex accelerated international entity onboarding checks while strictly respecting regional data retention boundaries.' },
-      { company: 'Twilio', title: '"Twilio expedites KYB decisions while complying with complex regional telecom requirements"', description: 'Twilio automated tedious business documentation audits using dynamic workflow modules, dropping manual review workloads by over 45% within three weeks.' },
-      { company: 'Discogs', title: '"Discogs quickly verifies music lovers to meet INFORM Consumers Act requirements with Identra\'s Know Your Seller solution."', description: '' },
-      { company: 'OpenAI', title: '"OpenAI uses Identra to screen millions of users each month with zero friction, validating API developers and mitigating API farming bots instantly."', description: '' },
-      { company: 'Coursera', title: '"Coursera scales its global user base and ensures strong academic integrity with Identra\'s secure automated student validation matrix."', description: '' }
-    ]
+    }
   },
   es: {
     resourceCenterTitle: 'Centro de recursos',
@@ -147,14 +123,6 @@ export const resourceCenterPageTranslations = {
     evaluatorGuide: 'Guía de evaluación',
     evaluatorTitle: 'Compra como experto: 4 preguntas que hacen los especialistas al evaluar soluciones de verificación de identidad',
     evaluatorDuration: '21 min de lectura',
-    recognition: 'Reconocimiento',
-    quadrantChallengers: 'RETADORES',
-    quadrantLeaders: 'LÍDERES',
-    quadrantIdentra: 'IDENTRA',
-    quadrantNichePlayers: 'JUGADORES DE NICHO',
-    quadrantVisionaries: 'VISIONARIOS',
-    gartnerTitle: 'Identra nombrada Líder en el Gartner® Magic Quadrant™ 2025 para verificación de identidad',
-    gartnerDuration: '4 min de lectura',
     platformResearch: 'Investigación de plataforma',
     trendsTitle: 'Tendencias que moldean la identidad digital',
     trendsDesc: 'Desde redes sofisticadas de fraude con cuentas sintéticas hasta leyes estrictas de privacidad biométrica transfronteriza, explora cómo está cambiando la identidad digital.',
@@ -193,11 +161,6 @@ export const resourceCenterPageTranslations = {
     noResourcesFoundDesc: 'No encontramos recursos que coincidan con tus criterios "{query}". Prueba con otras palabras clave o revisa otra categoría.',
     resetFilters: 'Restablecer filtros',
     loadMore: 'Cargar más',
-    customerSuccess: 'Éxito de clientes',
-    customerStoriesTitle: 'Historias reales, resultados reales',
-    customerStoriesDesc: 'Descubre cómo empresas como la tuya se asocian con Identra para combatir el fraude, cumplir regulaciones cambiantes y generar confianza.',
-    viewAll: 'Ver todo',
-    identraBrand: 'identra',
     learnMoreTitle: '¿Quieres saber más sobre Identra?',
     learnMoreDesc: 'Ponte en contacto o empieza a explorar hoy',
     tryDemo: 'Probar la demo',
@@ -213,8 +176,7 @@ export const resourceCenterPageTranslations = {
       compliance: [
         { title: 'Dominar la Travel Rule para cumplimiento cripto', duration: '45 min de video', description: 'Una conversación profunda con responsables de cumplimiento sobre cómo implementar regulaciones globales para transacciones de criptomonedas.', date: '20 de abril de 2026' },
         { title: 'El plan para cumplimiento de garantía de edad', duration: '15 min de lectura', description: 'Cómo plataformas de citas, videojuegos y entretenimiento digital cumplen nuevas leyes estatales de verificación de edad.', date: '5 de mayo de 2026' },
-        { title: 'Buenas prácticas en sanciones, listas de vigilancia y medios adversos', duration: '6 min de lectura', description: 'Mantén una supervisión continua sólida y encuentra el equilibrio correcto en el control de falsos positivos.', date: '10 de junio de 2026' },
-        { title: 'SOC 2 e HIPAA: pilares de seguridad de Identra', duration: '4 min de lectura', description: 'Un resumen de cómo mantenemos altos estándares de confidencialidad de datos y protección para clientes.', date: '29 de junio de 2026' }
+        { title: 'Buenas prácticas en sanciones, listas de vigilancia y medios adversos', duration: '6 min de lectura', description: 'Mantén una supervisión continua sólida y encuentra el equilibrio correcto en el control de falsos positivos.', date: '10 de junio de 2026' }
       ],
       lifecycle: [
         { title: 'Flujos de onboarding de clientes sin fricción', duration: '9 min de lectura', description: 'Tácticas para reducir abandonos durante la verificación de identidad sin perder controles de seguridad sólidos.', date: '14 de febrero de 2026' },
@@ -226,22 +188,12 @@ export const resourceCenterPageTranslations = {
         { title: 'El auge de deepfakes con IA generativa: lo que deben saber los profesionales de verificación', duration: '8 min de lectura', description: 'Análisis técnico de cómo los atacantes usan GenAI, intercambio de rostros e inyección de video para evadir KYC heredado.', date: '8 de julio de 2026' },
         { title: 'Verificación por selfie frente a chip NFC: comparación directa', duration: '14 min de lectura', description: 'Compara fricción, velocidad y resistencia absoluta a suplantación entre controles de cámara modernos y lectura NFC de ePassport.', date: '5 de julio de 2026' },
         { title: 'Por qué las fintech globales adoptan orquestación modular de identidad', duration: '6 min de lectura', description: 'Las pilas estáticas se están rompiendo. Descubre por qué ganan el enrutamiento dinámico, los respaldos personalizados y las integraciones multivendor.', date: '1 de julio de 2026' },
-        { title: 'Benchmarks de verificación de identidad 2026: conversión y fraude', duration: '22 min de lectura', description: 'Referencias por sector para fintech, marketplaces, cripto y economía gig, compiladas a partir de más de 50 millones de verificaciones.', date: '27 de junio de 2026' },
         { title: 'Fraude de identidad sintética: análisis profundo y defensa estratégica', duration: '50 min de video', description: 'Expertos de Identra y proveedores financieros líderes explican cómo se construyen y detectan perfiles sintéticos.', date: '20 de junio de 2026' },
-        { title: 'Podcast de orquestación de identidad Ep. 12: escalar la confianza en OpenAI', duration: '38 min de escucha', description: 'Conversación sobre acceso API de alta velocidad, combate de registros automatizados y onboarding sin fricción.', date: '15 de junio de 2026' },
         { title: 'Screening AML continuo: pasar de auditorías periódicas por lotes', duration: '11 min de lectura', description: 'Aprende cómo alertas instantáneas, escaneos diarios de medios adversos y screening de sanciones en tiempo real protegen plataformas modernas.', date: '10 de junio de 2026' },
         { title: 'KYB para incorporar arrendatarios comerciales inmobiliarios', duration: '5 min de lectura', description: 'Guía localizada sobre el uso de registros estatales automatizados para verificar arrendatarios corporativos con rapidez y seguridad.', date: '3 de junio de 2026' },
         { title: 'Crear un portal de usuario dinámico y de alta confianza', duration: '40 min de video', description: 'Demostración técnica del constructor de flujos dinámicos de Identra para portales de verificación sin código.', date: '28 de mayo de 2026' }
       ]
-    },
-    customerStories: [
-      { company: 'Square', title: '"Square Capital verificó automáticamente a solicitantes de préstamos del Paycheck Protection Program con Identra"', description: 'Durante solicitudes críticas y de alto volumen ante la SBA, Square usó Identra para validar empresas al instante y cruzar documentación de propietarios para eliminar fraude de onboarding.' },
-      { company: 'Brex', title: '"Brex habilita verificación de ID automatizada en más de 100 países con Identra"', description: 'Al incorporar flujos de ID personalizados dentro de experiencias localizadas, Brex aceleró el onboarding internacional de entidades respetando límites regionales de retención de datos.' },
-      { company: 'Twilio', title: '"Twilio acelera decisiones KYB cumpliendo requisitos regionales complejos de telecomunicaciones"', description: 'Twilio automatizó auditorías tediosas de documentación empresarial con módulos de workflow dinámicos y redujo la revisión manual en más del 45% en tres semanas.' },
-      { company: 'Discogs', title: '"Discogs verifica rápidamente a amantes de la música para cumplir la INFORM Consumers Act con Know Your Seller de Identra."', description: '' },
-      { company: 'OpenAI', title: '"OpenAI usa Identra para revisar millones de usuarios cada mes sin fricción, validar desarrolladores API y mitigar bots de farming de API al instante."', description: '' },
-      { company: 'Coursera', title: '"Coursera escala su base global de usuarios y asegura una sólida integridad académica con la matriz automatizada y segura de validación estudiantil de Identra."', description: '' }
-    ]
+    }
   },
   ja: {
     resourceCenterTitle: 'リソースセンター',
@@ -269,14 +221,6 @@ export const resourceCenterPageTranslations = {
     evaluatorGuide: '評価ガイド',
     evaluatorTitle: 'プロのように選ぶ: 本人確認ソリューションを評価する専門家が尋ねる4つの質問',
     evaluatorDuration: '読了21分',
-    recognition: '評価',
-    quadrantChallengers: 'チャレンジャー',
-    quadrantLeaders: 'リーダー',
-    quadrantIdentra: 'IDENTRA',
-    quadrantNichePlayers: 'ニッチプレイヤー',
-    quadrantVisionaries: 'ビジョナリー',
-    gartnerTitle: 'Identraが2025年Gartner® Magic Quadrant™本人確認部門でリーダーに選出',
-    gartnerDuration: '読了4分',
     platformResearch: 'プラットフォーム調査',
     trendsTitle: 'デジタルID領域を形づくるトレンド',
     trendsDesc: '高度な合成アカウント詐欺ネットワークから国境を越える厳格な生体情報プライバシー法まで、デジタルIDがどう変化しているかを探ります。',
@@ -315,11 +259,6 @@ export const resourceCenterPageTranslations = {
     noResourcesFoundDesc: '条件「{query}」に一致するリソースは見つかりませんでした。キーワードを調整するか、別のカテゴリを確認してください。',
     resetFilters: 'フィルターをリセット',
     loadMore: 'さらに読み込む',
-    customerSuccess: '顧客事例',
-    customerStoriesTitle: '実際のストーリー、実際の成果',
-    customerStoriesDesc: 'Identraと連携して不正を防ぎ、変化する規制に対応し、信頼を築く企業の事例をご覧ください。',
-    viewAll: 'すべて見る',
-    identraBrand: 'identra',
     learnMoreTitle: 'Identraについてもっと知りたいですか？',
     learnMoreDesc: 'お問い合わせいただくか、今すぐ探索を始めましょう',
     tryDemo: 'デモを試す',
@@ -335,8 +274,7 @@ export const resourceCenterPageTranslations = {
       compliance: [
         { title: '暗号資産コンプライアンスのTravel Ruleを理解する', duration: '視聴45分', description: 'グローバルな暗号資産取引規制の実装について、主要コンプライアンス責任者と深掘りする対談です。', date: '2026年4月20日' },
         { title: '年齢保証コンプライアンスの設計図', duration: '読了15分', description: '出会い系、ゲーム、デジタルエンタメのプラットフォームが新しい州レベルの年齢確認法に対応する方法。', date: '2026年5月5日' },
-        { title: '制裁、ウォッチリスト、有害メディアのベストプラクティス', duration: '読了6分', description: '継続的な監視を堅牢に保ち、誤検知制御の適切なバランスを学びます。', date: '2026年6月10日' },
-        { title: 'SOC 2とHIPAA: Identraのセキュリティ基盤', duration: '読了4分', description: '高水準のデータ機密性と顧客保護体制を維持する方法の概要です。', date: '2026年6月29日' }
+        { title: '制裁、ウォッチリスト、有害メディアのベストプラクティス', duration: '読了6分', description: '継続的な監視を堅牢に保ち、誤検知制御の適切なバランスを学びます。', date: '2026年6月10日' }
       ],
       lifecycle: [
         { title: '摩擦の少ない顧客オンボーディングフロー', duration: '読了9分', description: '高いセキュリティを保ちながら、本人確認中の離脱を減らす戦術。', date: '2026年2月14日' },
@@ -348,22 +286,12 @@ export const resourceCenterPageTranslations = {
         { title: '生成AIディープフェイクの台頭: 検証担当者が知るべきこと', duration: '読了8分', description: '攻撃者がGenAI、顔交換、動画インジェクションを使って旧来のKYCを回避する方法を技術的に分析します。', date: '2026年7月8日' },
         { title: 'セルフィー検証とNFCチップ検証: 直接比較', duration: '読了14分', description: '最新カメラチェックとePassportのNFCタップについて、摩擦、検証速度、なりすまし耐性を比較します。', date: '2026年7月5日' },
         { title: 'グローバルFintechがモジュール型IDオーケストレーションへ移行する理由', duration: '読了6分', description: '固定的な検証スタックは限界を迎えています。動的ルーティング、カスタムフォールバック、マルチベンダー連携が優位な理由。', date: '2026年7月1日' },
-        { title: '本人確認ベンチマーク2026: コンバージョンと不正率', duration: '読了22分', description: 'Fintech、マーケットプレイス、暗号資産、ギグエコノミーにおける5,000万件超の検証からまとめた業界標準ベンチマーク。', date: '2026年6月27日' },
         { title: '合成ID詐欺への対処: 詳細分析と戦略的防御', duration: '視聴50分', description: 'Identraと大手金融サービス企業の専門家が、合成プロフィールの作られ方と検出方法を解説します。', date: '2026年6月20日' },
-        { title: 'IDオーケストレーションPodcast Ep 12: OpenAIで信頼を拡張する', duration: '聴取38分', description: '高速APIアクセス、bot登録対策、摩擦の少ないオンボーディングについて語るセッションです。', date: '2026年6月15日' },
         { title: '継続的AMLスクリーニング: 定期バッチ監査から移行する方法', duration: '読了11分', description: '即時アラート、毎日の有害メディアスキャン、リアルタイム制裁スクリーニングが現代のプラットフォームを守る方法。', date: '2026年6月10日' },
         { title: '商業用不動産テナントのオンボーディング向けKYB', duration: '読了5分', description: '自動化された州登記チェックで法人テナントを迅速かつ安全に確認するためのローカルガイド。', date: '2026年6月3日' },
         { title: '動的で高信頼なユーザーポータルを構築する', duration: '視聴40分', description: 'コード不要で本人確認ポータルを作れるIdentraの動的フロービルダーの技術デモです。', date: '2026年5月28日' }
       ]
-    },
-    customerStories: [
-      { company: 'Square', title: '"Square CapitalはIdentraでPaycheck Protection Program融資申請者を自動確認"', description: '大量かつ緊急性の高いSBA申請で、SquareはIdentraを使い企業を即時検証し、所有者書類を照合してオンボーディング不正を排除しました。' },
-      { company: 'Brex', title: '"BrexはIdentraにより100か国以上で自動ID確認を実現"', description: '地域別フロー内にカスタムIDワークフローを組み込むことで、Brexは地域のデータ保持要件を守りながら国際的な法人オンボーディングを高速化しました。' },
-      { company: 'Twilio', title: '"Twilioは複雑な地域通信規制に準拠しながらKYB判断を迅速化"', description: 'Twilioは動的workflowモジュールで企業書類監査を自動化し、3週間で手動レビュー作業を45%以上削減しました。' },
-      { company: 'Discogs', title: '"DiscogsはIdentraのKnow Your SellerソリューションでINFORM Consumers Act要件に対応し、音楽ファンを迅速に確認しています。"', description: '' },
-      { company: 'OpenAI', title: '"OpenAIはIdentraで毎月数百万人を摩擦なくスクリーニングし、API開発者を検証してAPI farming botを即座に軽減しています。"', description: '' },
-      { company: 'Coursera', title: '"CourseraはIdentraの安全な自動学生検証マトリクスで、世界中のユーザー基盤を拡大しながら学術的完全性を守っています。"', description: '' }
-    ]
+    }
   },
   de: {
     resourceCenterTitle: 'Ressourcencenter',
@@ -391,14 +319,6 @@ export const resourceCenterPageTranslations = {
     evaluatorGuide: 'Evaluierungsleitfaden',
     evaluatorTitle: 'Wie ein Profi einkaufen: 4 Fragen, die Fachleute bei Identity-Verification-Lösungen stellen',
     evaluatorDuration: '21 Min. Lesezeit',
-    recognition: 'Auszeichnung',
-    quadrantChallengers: 'HERAUSFORDERER',
-    quadrantLeaders: 'FÜHRENDE',
-    quadrantIdentra: 'IDENTRA',
-    quadrantNichePlayers: 'NISCHENANBIETER',
-    quadrantVisionaries: 'VISIONÄRE',
-    gartnerTitle: 'Identra als Leader im Gartner® Magic Quadrant™ 2025 für Identity Verification ausgezeichnet',
-    gartnerDuration: '4 Min. Lesezeit',
     platformResearch: 'Plattformforschung',
     trendsTitle: 'Trends, die digitale Identität prägen',
     trendsDesc: 'Von ausgefeilten Betrugsnetzwerken mit synthetischen Konten bis zu strengen grenzüberschreitenden Gesetzen für biometrische Privatsphäre: So verändert sich digitale Identität.',
@@ -437,11 +357,6 @@ export const resourceCenterPageTranslations = {
     noResourcesFoundDesc: 'Wir konnten keine Ressourcen zu deinen Kriterien "{query}" finden. Verfeinere deine Stichwörter oder prüfe eine andere Kategorie.',
     resetFilters: 'Filter zurücksetzen',
     loadMore: 'Mehr laden',
-    customerSuccess: 'Kundenerfolg',
-    customerStoriesTitle: 'Echte Geschichten, echte Ergebnisse',
-    customerStoriesDesc: 'Sieh, wie Unternehmen wie deines mit Identra Betrug bekämpfen, regulatorische Änderungen meistern und Vertrauen aufbauen.',
-    viewAll: 'Alle ansehen',
-    identraBrand: 'identra',
     learnMoreTitle: 'Möchtest du mehr über Identra erfahren?',
     learnMoreDesc: 'Nimm Kontakt auf oder beginne noch heute mit der Erkundung',
     tryDemo: 'Demo testen',
@@ -457,8 +372,7 @@ export const resourceCenterPageTranslations = {
       compliance: [
         { title: 'Die Travel Rule für Krypto-Compliance meistern', duration: '45 Min. Video', description: 'Eine vertiefende Diskussion mit führenden Compliance-Verantwortlichen zur Umsetzung globaler Vorschriften für Kryptowährungstransaktionen.', date: '20. April 2026' },
         { title: 'Der Bauplan für Age-Assurance-Compliance', duration: '15 Min. Lesezeit', description: 'Wie Dating-, Gaming- und digitale Entertainment-Plattformen neue bundesstaatliche Gesetze zur Altersprüfung erfüllen.', date: '5. Mai 2026' },
-        { title: 'Best Practices für Sanktionen, Watchlists und Adverse Media', duration: '6 Min. Lesezeit', description: 'Halte kontinuierliches Monitoring robust und finde die richtige Balance bei False-Positive-Kontrollen.', date: '10. Juni 2026' },
-        { title: 'SOC 2 und HIPAA: Identras Sicherheitssäulen', duration: '4 Min. Lesezeit', description: 'Ein Überblick darüber, wie wir hohe Standards für Datenvertraulichkeit und Kundenschutzstrukturen sichern.', date: '29. Juni 2026' }
+        { title: 'Best Practices für Sanktionen, Watchlists und Adverse Media', duration: '6 Min. Lesezeit', description: 'Halte kontinuierliches Monitoring robust und finde die richtige Balance bei False-Positive-Kontrollen.', date: '10. Juni 2026' }
       ],
       lifecycle: [
         { title: 'Reibungsarme Kunden-Onboarding-Flows', duration: '9 Min. Lesezeit', description: 'Taktiken, um Abbrüche bei der Identitätsprüfung zu reduzieren und starke Sicherheitsleitplanken zu behalten.', date: '14. Februar 2026' },
@@ -470,22 +384,12 @@ export const resourceCenterPageTranslations = {
         { title: 'Der Aufstieg generativer KI-Deepfakes: Was Verifizierungsprofis wissen müssen', duration: '8 Min. Lesezeit', description: 'Technische Analyse dazu, wie Angreifer GenAI, Face Swaps und Video-Injection nutzen, um klassische KYC-Systeme zu umgehen.', date: '8. Juli 2026' },
         { title: 'Selfie-Verifizierung vs. NFC-Chip-Verifizierung: direkter Vergleich', duration: '14 Min. Lesezeit', description: 'Vergleiche Reibung, Geschwindigkeit und Spoofing-Resistenz moderner Kamera-Checks mit ePassport-NFC-Taps.', date: '5. Juli 2026' },
         { title: 'Warum globale Fintech-Plattformen zu modularer Identity Orchestration wechseln', duration: '6 Min. Lesezeit', description: 'Statische Verifizierungsstacks stoßen an Grenzen. Erfahre, warum dynamisches Routing, individuelle Fallbacks und Multi-Vendor-Integrationen gewinnen.', date: '1. Juli 2026' },
-        { title: 'Identity-Verification-Benchmarks 2026: Conversion und Betrugsraten', duration: '22 Min. Lesezeit', description: 'Branchenbenchmarks für Fintech, Marktplätze, Krypto und Gig Economy, zusammengestellt aus über 50 Mio. Verifizierungen.', date: '27. Juni 2026' },
         { title: 'Synthetischen Identitätsbetrug bekämpfen: Tiefenanalyse und strategische Verteidigung', duration: '50 Min. Video', description: 'Experten von Identra und führenden Finanzdienstleistern erläutern, wie synthetische Profile erstellt und erkannt werden.', date: '20. Juni 2026' },
-        { title: 'Identity Orchestration Podcast Ep. 12: Vertrauen bei OpenAI skalieren', duration: '38 Min. Anhören', description: 'Ein Gespräch über schnellen API-Zugang, Bekämpfung von Bot-Registrierungen und reibungsarmes Nutzer-Onboarding.', date: '15. Juni 2026' },
         { title: 'Kontinuierliches AML-Screening: Weg von periodischen Batch-Audits', duration: '11 Min. Lesezeit', description: 'Wie Sofortwarnungen, tägliche Adverse-Media-Scans und Echtzeit-Sanktionsscreening moderne Plattformen schützen.', date: '10. Juni 2026' },
         { title: 'KYB für das Onboarding gewerblicher Immobilientenantinnen und -tenants', duration: '5 Min. Lesezeit', description: 'Ein lokaler Leitfaden zur Nutzung automatisierter Registerprüfungen, um gewerbliche Mieter schnell und sicher zu verifizieren.', date: '3. Juni 2026' },
         { title: 'Ein dynamisches Portal mit hohem Vertrauensniveau aufbauen', duration: '40 Min. Video', description: 'Technische Demo des dynamischen Flow Builders von Identra für nahtlose Verifizierungsportale ohne Code.', date: '28. Mai 2026' }
       ]
-    },
-    customerStories: [
-      { company: 'Square', title: '"Square Capital verifizierte Antragsteller für Paycheck Protection Program-Darlehen automatisch mit Identra"', description: 'Bei kritischen SBA-Anträgen mit hohem Durchsatz nutzte Square Identra, um Unternehmen sofort zu validieren und Eigentümerdokumente abzugleichen, um Onboarding-Betrug zu beseitigen.' },
-      { company: 'Brex', title: '"Brex ermöglicht automatisierte ID-Verifizierung in über 100 Ländern mit Identra"', description: 'Durch eingebettete individuelle ID-Workflows in lokale Flows beschleunigte Brex internationale Entity-Onboarding-Prüfungen und respektierte regionale Datenaufbewahrungsgrenzen.' },
-      { company: 'Twilio', title: '"Twilio beschleunigt KYB-Entscheidungen und erfüllt komplexe regionale Telekom-Anforderungen"', description: 'Twilio automatisierte aufwendige Unternehmensdokumentenprüfungen mit dynamischen Workflow-Modulen und reduzierte manuelle Reviews innerhalb von drei Wochen um über 45%.' },
-      { company: 'Discogs', title: '"Discogs verifiziert Musikfans schnell, um mit Identras Know Your Seller-Lösung die INFORM Consumers Act-Anforderungen zu erfüllen."', description: '' },
-      { company: 'OpenAI', title: '"OpenAI nutzt Identra, um jeden Monat Millionen Nutzer ohne Reibung zu prüfen, API-Entwickler zu validieren und API-Farming-Bots sofort zu reduzieren."', description: '' },
-      { company: 'Coursera', title: '"Coursera skaliert seine globale Nutzerbasis und sichert akademische Integrität mit Identras sicherer automatisierter Studierendenvalidierung."', description: '' }
-    ]
+    }
   },
   vi: {
     resourceCenterTitle: 'Trung tâm tài nguyên',
@@ -513,14 +417,6 @@ export const resourceCenterPageTranslations = {
     evaluatorGuide: 'Hướng dẫn đánh giá',
     evaluatorTitle: 'Đánh giá như chuyên gia: 4 câu hỏi chuyên gia thường đặt ra khi chọn giải pháp xác minh danh tính',
     evaluatorDuration: '21 phút đọc',
-    recognition: 'Ghi nhận',
-    quadrantChallengers: 'THÁCH THỨC',
-    quadrantLeaders: 'DẪN ĐẦU',
-    quadrantIdentra: 'IDENTRA',
-    quadrantNichePlayers: 'NGÁCH',
-    quadrantVisionaries: 'TẦM NHÌN',
-    gartnerTitle: 'Identra được vinh danh là đơn vị Dẫn đầu trong Gartner® Magic Quadrant™ 2025 về xác minh danh tính',
-    gartnerDuration: '4 phút đọc',
     platformResearch: 'Nghiên cứu nền tảng',
     trendsTitle: 'Những xu hướng định hình không gian danh tính số',
     trendsDesc: 'Từ các mạng lưới gian lận tài khoản giả tinh vi đến luật bảo mật sinh trắc học xuyên biên giới ngày càng nghiêm ngặt, hãy khám phá cách danh tính số đang chuyển mình.',
@@ -559,11 +455,6 @@ export const resourceCenterPageTranslations = {
     noResourcesFoundDesc: 'Chúng tôi không tìm thấy tài nguyên nào khớp với tiêu chí "{query}". Hãy thử tinh chỉnh từ khóa hoặc chọn danh mục khác.',
     resetFilters: 'Đặt lại bộ lọc',
     loadMore: 'Tải thêm',
-    customerSuccess: 'Câu chuyện khách hàng',
-    customerStoriesTitle: 'Câu chuyện thật, kết quả thật',
-    customerStoriesDesc: 'Xem cách các công ty như bạn hợp tác với Identra để chống gian lận, theo kịp quy định thay đổi và xây dựng niềm tin.',
-    viewAll: 'Xem tất cả',
-    identraBrand: 'identra',
     learnMoreTitle: 'Bạn muốn tìm hiểu thêm về Identra?',
     learnMoreDesc: 'Liên hệ với chúng tôi hoặc bắt đầu khám phá ngay hôm nay',
     tryDemo: 'Trải nghiệm demo',
@@ -579,8 +470,7 @@ export const resourceCenterPageTranslations = {
       compliance: [
         { title: 'Làm chủ Travel Rule cho tuân thủ tiền mã hóa', duration: '45 phút xem', description: 'Cuộc thảo luận chuyên sâu với các lãnh đạo tuân thủ về triển khai quy định giao dịch tiền mã hóa trên toàn cầu.', date: '20 tháng 4, 2026' },
         { title: 'Bản thiết kế cho tuân thủ bảo đảm độ tuổi', duration: '15 phút đọc', description: 'Cách nền tảng hẹn hò, trò chơi và giải trí số đáp ứng các luật xác minh độ tuổi mới ở cấp bang.', date: '5 tháng 5, 2026' },
-        { title: 'Thực hành tốt nhất về lệnh trừng phạt, danh sách theo dõi và truyền thông bất lợi', duration: '6 phút đọc', description: 'Giữ giám sát liên tục thật vững chắc và tìm điểm cân bằng phù hợp khi kiểm soát cảnh báo dương tính giả.', date: '10 tháng 6, 2026' },
-        { title: 'SOC 2 và HIPAA: các trụ cột bảo mật của Identra', duration: '4 phút đọc', description: 'Tổng quan về cách chúng tôi duy trì tiêu chuẩn cao về bảo mật dữ liệu và cấu trúc bảo vệ khách hàng.', date: '29 tháng 6, 2026' }
+        { title: 'Thực hành tốt nhất về lệnh trừng phạt, danh sách theo dõi và truyền thông bất lợi', duration: '6 phút đọc', description: 'Giữ giám sát liên tục thật vững chắc và tìm điểm cân bằng phù hợp khi kiểm soát cảnh báo dương tính giả.', date: '10 tháng 6, 2026' }
       ],
       lifecycle: [
         { title: 'Luồng onboarding khách hàng ít ma sát', duration: '9 phút đọc', description: 'Chiến thuật giảm tỷ lệ rời bỏ trong xác minh danh tính mà vẫn giữ hàng rào bảo mật mạnh.', date: '14 tháng 2, 2026' },
@@ -592,21 +482,11 @@ export const resourceCenterPageTranslations = {
         { title: 'Sự trỗi dậy của deepfake bằng AI tạo sinh: điều chuyên gia xác minh cần biết', duration: '8 phút đọc', description: 'Phân tích kỹ thuật về cách kẻ xấu dùng GenAI, hoán đổi khuôn mặt và tấn công chèn video để vượt qua KYC cũ.', date: '8 tháng 7, 2026' },
         { title: 'Xác minh selfie và xác minh chip NFC: so sánh trực diện', duration: '14 phút đọc', description: 'So sánh mức độ ma sát, tốc độ xác minh và khả năng chống giả mạo tuyệt đối giữa kiểm tra camera hiện đại và chạm NFC trên ePassport.', date: '5 tháng 7, 2026' },
         { title: 'Vì sao nền tảng fintech toàn cầu chuyển sang điều phối danh tính dạng mô-đun', duration: '6 phút đọc', description: 'Các bộ xác minh tĩnh đang bộc lộ giới hạn. Tìm hiểu vì sao định tuyến động, phương án dự phòng tùy chỉnh và tích hợp nhiều nhà cung cấp đang thắng thế.', date: '1 tháng 7, 2026' },
-        { title: 'Chuẩn so sánh xác minh danh tính 2026: chuyển đổi và tỷ lệ gian lận', duration: '22 phút đọc', description: 'Chuẩn ngành cho fintech, marketplace, tiền mã hóa và kinh tế gig, tổng hợp từ hơn 50 triệu lượt xác minh.', date: '27 tháng 6, 2026' },
         { title: 'Đối phó gian lận danh tính giả: phân tích sâu và phòng thủ chiến lược', duration: '50 phút xem', description: 'Chuyên gia từ Identra và các nhà cung cấp dịch vụ tài chính hàng đầu mô tả cách hồ sơ giả được tạo ra và phát hiện.', date: '20 tháng 6, 2026' },
-        { title: 'Podcast điều phối danh tính tập 12: mở rộng niềm tin tại OpenAI', duration: '38 phút nghe', description: 'Buổi trò chuyện về truy cập API tốc độ cao, chống đăng ký bằng bot và giữ onboarding người dùng ít ma sát.', date: '15 tháng 6, 2026' },
         { title: 'Sàng lọc AML liên tục: chuyển khỏi kiểm toán định kỳ theo lô', duration: '11 phút đọc', description: 'Tìm hiểu cách cảnh báo tức thời, quét truyền thông bất lợi hằng ngày và sàng lọc trừng phạt theo thời gian thực bảo vệ nền tảng hiện đại.', date: '10 tháng 6, 2026' },
         { title: 'KYB cho onboarding khách thuê bất động sản thương mại', duration: '5 phút đọc', description: 'Hướng dẫn bản địa về cách dùng kiểm tra đăng ký cấp bang tự động để xác minh khách thuê doanh nghiệp nhanh và an toàn.', date: '3 tháng 6, 2026' },
         { title: 'Xây dựng cổng người dùng động với mức độ tin cậy cao', duration: '40 phút xem', description: 'Bản demo kỹ thuật về trình tạo luồng động của Identra, cho phép tạo cổng xác minh danh tính liền mạch mà không cần viết mã.', date: '28 tháng 5, 2026' }
       ]
-    },
-    customerStories: [
-      { company: 'Square', title: '"Square Capital tự động xác minh người nộp hồ sơ vay Paycheck Protection Program bằng Identra"', description: 'Trong giai đoạn xử lý hồ sơ SBA tốc độ cao, Square dùng Identra để xác thực doanh nghiệp tức thì và đối chiếu tài liệu chủ sở hữu nhằm loại bỏ gian lận onboarding.' },
-      { company: 'Brex', title: '"Brex mở khóa xác minh ID tự động tại hơn 100 quốc gia với Identra"', description: 'Bằng cách lồng workflow ID tùy chỉnh vào các luồng bản địa, Brex tăng tốc kiểm tra onboarding pháp nhân quốc tế trong khi vẫn tôn trọng giới hạn lưu giữ dữ liệu theo khu vực.' },
-      { company: 'Twilio', title: '"Twilio tăng tốc quyết định KYB trong khi tuân thủ yêu cầu viễn thông khu vực phức tạp"', description: 'Twilio tự động hóa kiểm toán tài liệu doanh nghiệp bằng các mô-đun workflow động, giảm hơn 45% khối lượng đánh giá thủ công trong ba tuần.' },
-      { company: 'Discogs', title: '"Discogs nhanh chóng xác minh người yêu nhạc để đáp ứng yêu cầu của INFORM Consumers Act bằng giải pháp Know Your Seller của Identra."', description: '' },
-      { company: 'OpenAI', title: '"OpenAI dùng Identra để sàng lọc hàng triệu người dùng mỗi tháng với gần như không ma sát, xác thực nhà phát triển API và giảm bot farming API tức thì."', description: '' },
-      { company: 'Coursera', title: '"Coursera mở rộng cơ sở người dùng toàn cầu và bảo đảm tính liêm chính học thuật nhờ ma trận xác minh sinh viên tự động, an toàn của Identra."', description: '' }
-    ]
+    }
   }
 } as const;

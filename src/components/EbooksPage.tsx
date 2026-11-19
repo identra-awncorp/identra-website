@@ -128,27 +128,6 @@ const EBOOKS_DATA: Ebook[] = [
     illustration: 'globe'
   },
   {
-    id: 'ebook-12',
-    topics: ['identity'],
-    industries: ['all'],
-    gradient: 'from-[#111827] to-[#374151]',
-    illustration: 'chart'
-  },
-  {
-    id: 'ebook-13',
-    topics: ['identity'],
-    industries: ['all'],
-    gradient: 'from-[#354CE1] to-[#1E3A8A]',
-    illustration: 'chart'
-  },
-  {
-    id: 'ebook-14',
-    topics: ['compliance'],
-    industries: ['all'],
-    gradient: 'from-[#1F2937] to-[#111827]',
-    illustration: 'link'
-  },
-  {
     id: 'ebook-15',
     topics: ['fraud'],
     industries: ['all'],
@@ -522,80 +501,9 @@ export default function EbooksPage({ onOpenSandbox, onBackToLanding }: EbooksPag
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            {/* Left featured large card: Gartner Quadrant */}
-            <button type="button"
-              onClick={() => openEbookModal(EBOOKS_DATA[12])} // Gartner Ebook is index 12
-              className="lg:col-span-7 bg-[#10193E] hover:bg-[#152153] border border-[#1E2E72] rounded-3xl p-6 md:p-8 flex flex-col md:flex-row gap-6 cursor-pointer group transition-all duration-300 shadow-2xl relative overflow-hidden"
-            >
-              {/* Outer light glow */}
-              <div className="absolute -inset-px bg-gradient-to-tr from-transparent via-[#354CE1]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
-              
-              {/* Mini Quadrant Mockup (Left portion of large card) */}
-              <div className="w-full md:w-[260px] shrink-0 bg-gradient-to-b from-[#182559] to-[#0C1333] border border-[#2B3D8A] rounded-2xl p-4 flex flex-col justify-between aspect-[4/3] md:aspect-auto">
-                <div>
-                  <div className="flex items-center justify-between mb-2 pb-2 border-b border-[#2B3D8A]/50">
-                    <span className="type-caption font-bold text-slate-400 uppercase">{t.copy.figure1MagicQuadrant}</span>
-                    <span className="type-caption font-bold text-[#4F6CFF] uppercase">2025</span>
-                  </div>
-                  
-                  {/* Scatter Plot Coordinates */}
-                  <div className="relative aspect-[4/3] w-full border-l border-b border-[#3E52A3] mt-4 flex items-center justify-center">
-                    {/* Quadrant dividing lines */}
-                    <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-[#2B3D8A]/30" />
-                    <div className="absolute inset-y-0 left-1/2 border-l border-dashed border-[#2B3D8A]/30" />
-                    
-                    {/* Quadrant Titles */}
-                    <span className="type-caption absolute top-1 left-1 text-slate-500 font-bold uppercase">{t.copy.challengers}</span>
-                    <span className="type-caption absolute top-1 right-1 text-[#4F6CFF] font-bold uppercase">{t.copy.leaders}</span>
-                    <span className="type-caption absolute bottom-1 left-1 text-slate-500 font-bold uppercase">{t.copy.nichePlayers}</span>
-                    <span className="type-caption absolute bottom-1 right-1 text-slate-500 font-bold uppercase">{t.copy.visionaries}</span>
-                    
-                    {/* Other players - Soft grey dots */}
-                    <div className="absolute top-[30%] left-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute top-[40%] left-[45%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute bottom-[25%] left-[30%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute bottom-[35%] right-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    
-                    {/* Identra Dot (High in Leader quadrant) */}
-                    <motion.div 
-                      animate={{ scale: [1, 1.15, 1] }}
-                      transition={{ repeat: Infinity, duration: 4 }}
-                      className="absolute top-[18%] right-[15%] flex flex-col items-center"
-                    >
-                      <div className="w-3 h-3 rounded-full bg-[#354CE1] border-2 border-white shadow-lg shadow-[#354CE1]/50 relative">
-                        <span className="type-caption absolute -top-3 left-1/2 -translate-x-1/2 font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs">Identra</span>
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
-
-                <div className="type-caption flex items-center justify-between text-slate-400 mt-2">
-                  <span>{t.copy.completenessOfVision}</span>
-                  <span className="rotate-90 origin-bottom-right translate-y-[-10px] -translate-x-[4px]">{t.copy.abilityToExecute}</span>
-                </div>
-              </div>
-
-              {/* Text content of large card */}
-              <div className="flex flex-col justify-between flex-1 py-1">
-                <div>
-                  <div className="flex items-center gap-1.5 mb-3">
-                  <span className="type-label bg-[#1E2E72] text-[#4F6CFF] px-2.5 py-0.5 rounded-full uppercase">{t.copy.report}</span>
-                  <span className="type-caption text-slate-400">• {t.copy.text45MinRead}</span>
-                  </div>
-                <h3 className="type-featured-title text-white mb-3 group-hover:text-[#4F6CFF] transition">{t.copy.identraIsNamedALeaderInThe2025}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal mb-6">{t.copy.inTheNewlyReleasedReportGartnerEvaluatesIdentity}</p>
-                </div>
-                
-                <div className="flex items-center gap-2 text-xs font-bold text-[#4F6CFF] group-hover:text-white transition mt-auto">
-                  <span>{t.copy.downloadTheReport}</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            </button>
-
-            {/* Right featured sidebar: 3 small items */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-              {[EBOOKS_DATA[1], EBOOKS_DATA[0], EBOOKS_DATA[21]].map((item, index) => (
+            {/* Featured row: 3 items */}
+            <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[EBOOKS_DATA[1], EBOOKS_DATA[0], EBOOKS_DATA[18]].map((item, index) => (
                 <button type="button"
                   key={index}
                   onClick={() => openEbookModal(item)}

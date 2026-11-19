@@ -273,20 +273,6 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
         </div>
       </section>
 
-      {/* Brand Trust Bar */}
-      <div className="border-y border-slate-800/50 bg-slate-950 py-8" id="bf-brand-bar">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-semibold text-slate-500 uppercase tracking-widest mb-6">
-            {t.trustedByCompanies}
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 opacity-45 grayscale hover:opacity-75 transition-opacity">
-            <span className="text-lg font-bold tracking-tight text-white font-serif">branch</span>
-            <span className="text-sm font-black tracking-widest text-white">GET YOUR GUIDE</span>
-            <span className="text-lg font-semibold tracking-tighter text-white">twilio</span>
-          </div>
-        </div>
-      </div>
-
       {/* Feature Section 1: Smarter Signals Approach */}
       <section className="py-20 md:py-28 relative" id="bf-smarter-approach">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -830,34 +816,6 @@ export default function BusinessFraudPage({ onOpenSandbox, onBackToLanding, onVi
               className="inline-flex items-center justify-center gap-2 px-4.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white rounded-lg border border-slate-700 transition-colors shrink-0"
             >
               <span>{t.readDocumentation}</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Customer Case Study Quote Banner */}
-      <section className="py-24 bg-slate-950 relative overflow-hidden border-t border-slate-800/50" id="bf-quote-banner">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
-          <p className="text-lg md:text-xl text-slate-200 font-medium leading-relaxed italic mb-8">
-            {t.quoteText}
-          </p>
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-bold text-white">{t.quoteAuthor}</span>
-            <span className="text-xs text-slate-500 mt-1">{t.quoteAuthorTitle}</span>
-          </div>
-
-          <div className="mt-12 inline-flex flex-col items-center p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl text-left max-w-md mx-auto" id="6lock-cta-card">
-            <span className="text-[10px] font-mono font-bold text-rose-400 tracking-wider mb-2 uppercase">{t.securedBrand}</span>
-            <p className="text-xs text-slate-400 leading-relaxed mb-4">
-              {t.securedBrandDesc}
-            </p>
-            <button 
-              onClick={onOpenSandbox}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300 transition-colors group"
-            >
-              <span>{t.readCaseStudy}</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </div>
         </div>

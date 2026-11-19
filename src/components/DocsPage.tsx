@@ -275,10 +275,7 @@ export default function DocsPage({ onBackToLanding }: { onBackToLanding: () => v
           </div>
 
           <div className="flex items-center gap-2 md:gap-4">
-            <a href="https://support.withidentra.com" target="_blank" rel="noreferrer" className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.helpCenter}</a>
             <a href="#openapi" onClick={(event) => { event.preventDefault(); handleTabChange('api-ref'); }} className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.openApi}</a>
-            <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" title={ui.serviceOperational} />
-            <a href="https://status.withidentra.com" target="_blank" rel="noreferrer" className="type-control hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">{ui.status}</a>
             <button onClick={() => setTheme(prev => prev === 'light' ? 'dark' : 'light')} aria-label={ui.toggleTheme} className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
               {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
             </button>

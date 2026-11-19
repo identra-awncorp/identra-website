@@ -290,31 +290,6 @@ export default function EventsPage({ onOpenSandbox, onBackToLanding }: EventsPag
                 <h2 className="text-3xl md:text-4xl font-display font-medium text-[#0F1E36] tracking-tight leading-tight">{t.copy.interestedInMeetingWithUs}</h2>
                 <p className="text-slate-700 text-sm md:text-base leading-relaxed">{t.copy.fillOutThisFormWeLookForwardTo}</p>
               </div>
-
-              {/* Trusted by Logos */}
-              <div className="mt-12 space-y-4">
-                <p className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">{t.copy.trustedByStartupsAndTheWorldsLargestCompanies}</p>
-                
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 opacity-80">
-                  {/* LinkedIn Logo Representation */}
-                  <div className="flex items-center gap-1 text-[#0077B5] font-extrabold font-sans text-sm tracking-tight select-none">
-                    <Linkedin className="w-4 h-4 fill-current" />
-                    <span>Linked<span className="bg-[#0077B5] text-white px-0.5 rounded-xs">in</span></span>
-                  </div>
-
-                  {/* OpenAI Logo Representation */}
-                  <div className="flex items-center gap-1.5 text-slate-900 font-extrabold text-xs tracking-wide select-none">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>OpenAI</span>
-                  </div>
-
-                  {/* Square Logo Representation */}
-                  <div className="flex items-center gap-1 text-slate-900 font-bold text-sm tracking-tight select-none">
-                    <div className="w-3 h-3 border-2 border-current rounded-xs" />
-                    <span>Square</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Right side: Form (7 cols) */}

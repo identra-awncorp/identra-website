@@ -51,7 +51,7 @@ const PATIENT_SCENARIOS: Record<PatientScenarioKey, PatientScenario> = {
       'Selfie matches government ID photo with 98.6% confidence.',
       'Active health insurance policy confirmed via real-time carrier lookup.',
       'Name and DOB perfectly match both ID and insurance record.',
-      'HIPAA consent signed and logged in secure, redacted storage.'
+      'Patient consent signed and logged in secure, redacted storage.'
     ]
   },
   review: {
@@ -65,7 +65,7 @@ const PATIENT_SCENARIOS: Record<PatientScenarioKey, PatientScenario> = {
       'ID photo verified, but insurance card image is partially blurry.',
       'Carrier check returned "Plan Inactive" or "Incorrect Policy ID".',
       'Requires quick manual validation of card OCR text.',
-      'HIPAA consent is fully signed.'
+      'Patient consent is fully signed.'
     ]
   },
   flagged: {
@@ -79,7 +79,7 @@ const PATIENT_SCENARIOS: Record<PatientScenarioKey, PatientScenario> = {
       'Presentation attack detected: Selfie matches a pre-recorded video stream.',
       'Insurance ID format does not match Cigna database standards.',
       'Social Security Number is linked to an active identity theft watchlist.',
-      'HIPAA authorization bypassed or refused.'
+      'Patient consent bypassed or refused.'
     ]
   }
 };
@@ -229,29 +229,6 @@ export default function DigitalHealthPage({ onOpenSandbox, onBackToLanding, onVi
         </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="bg-white border-y border-slate-100 py-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
-          <p className="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-6">{t.copy.trustedByStartupsTheWorldsLargestHealthcareCompanies}</p>
-          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-60">
-            <div className="flex items-center gap-2 font-bold text-slate-700 text-lg">
-              <span className="text-blue-600 font-extrabold">+</span> {t.brands.kHealth}
-            </div>
-            <div className="flex items-center gap-2 font-semibold text-slate-700 text-lg italic">
-              Monash IVF
-            </div>
-            <div className="flex items-center gap-1 font-extrabold text-slate-800 text-xl tracking-tight">
-              Ro<span className="text-red-500">.</span>
-            </div>
-            <div className="flex items-center gap-2 font-mono font-bold text-slate-700 text-lg">
-              oscar
-            </div>
-            <div className="flex items-center gap-1 font-sans font-bold text-slate-700 text-lg">
-              <span className="text-green-500">◆</span> GreenHealth
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Collect, Verify, and Decide - Interactive App Section */}
       <section className="py-24 md:py-32">

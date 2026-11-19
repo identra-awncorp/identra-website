@@ -138,51 +138,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/about" />
   </url>
   <url>
-    <loc>https://identra.awncorp.vn/en/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/pricing" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/pricing" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/pricing" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/pricing" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/pricing" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/pricing" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/es/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/pricing" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/pricing" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/pricing" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/pricing" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/pricing" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/pricing" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/ja/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/pricing" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/pricing" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/pricing" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/pricing" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/pricing" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/pricing" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/de/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/pricing" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/pricing" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/pricing" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/pricing" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/pricing" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/pricing" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/vi/pricing</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/pricing" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/pricing" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/pricing" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/pricing" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/pricing" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/pricing" />
-  </url>
-  <url>
     <loc>https://identra.awncorp.vn/en/blog</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/blog" />
     <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/blog" />
@@ -321,51 +276,6 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/events" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/events" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/events" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/en/careers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/careers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/careers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/careers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/careers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/careers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/careers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/es/careers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/careers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/careers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/careers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/careers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/careers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/careers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/ja/careers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/careers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/careers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/careers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/careers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/careers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/careers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/de/careers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/careers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/careers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/careers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/careers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/careers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/careers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/vi/careers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/careers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/careers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/careers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/careers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/careers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/careers" />
   </url>
   <url>
     <loc>https://identra.awncorp.vn/en/research</loc>
@@ -638,51 +548,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/nfc" />
   </url>
   <url>
-    <loc>https://identra.awncorp.vn/en/customers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/customers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/customers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/customers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/customers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/customers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/customers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/es/customers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/customers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/customers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/customers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/customers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/customers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/customers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/ja/customers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/customers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/customers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/customers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/customers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/customers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/customers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/de/customers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/customers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/customers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/customers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/customers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/customers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/customers" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/vi/customers</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/customers" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/customers" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/customers" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/customers" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/customers" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/customers" />
-  </url>
-  <url>
     <loc>https://identra.awncorp.vn/en/dynamic-flow</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/dynamic-flow" />
     <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/dynamic-flow" />
@@ -906,51 +771,6 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/contact" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/contact" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/contact" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/en/partners</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/partners" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/partners" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/partners" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/partners" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/partners" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/partners" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/es/partners</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/partners" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/partners" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/partners" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/partners" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/partners" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/partners" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/ja/partners</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/partners" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/partners" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/partners" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/partners" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/partners" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/partners" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/de/partners</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/partners" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/partners" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/partners" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/partners" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/partners" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/partners" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/vi/partners</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/partners" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/partners" />
-    <xhtml:link rel="alternate" hreflang="ja" href="https://identra.awncorp.vn/ja/partners" />
-    <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/partners" />
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/partners" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/partners" />
   </url>
   <url>
     <loc>https://identra.awncorp.vn/en/security</loc>
@@ -2886,11 +2706,6 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://identra.awncorp.vn/de/demo" />
     <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/demo" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/demo" />
-  </url>
-  <url>
-    <loc>https://identra.awncorp.vn/vi/white-paper</loc>
-    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/white-paper" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/vi/white-paper" />
   </url>
   <url>
     <loc>https://identra.awncorp.vn/en/demo/diploma</loc>

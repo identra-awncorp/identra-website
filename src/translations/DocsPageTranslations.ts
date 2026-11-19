@@ -20,7 +20,7 @@ export default function IdentityVerify() {
   );
 }`;
 
-const inquiryCode = `const response = await fetch('https://api.withidentra.com/v1/inquiries', {
+const inquiryCode = `const response = await fetch('https://api-identra.awncorp.vn/v1/inquiries', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer prsk_test_SECRET_TOKEN',
@@ -55,10 +55,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       searchResults: 'Search Results',
       found: 'found',
       noResults: 'No matching pages found for "{query}"',
-      helpCenter: 'Help Center',
       openApi: 'OpenAPI Spec',
-      status: 'Status',
-      serviceOperational: 'Service operational',
       toggleTheme: 'Toggle theme',
       documentationNavigation: 'Documentation Navigation',
       backToMain: 'Back to main site',
@@ -165,11 +162,9 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
             id: 'commitments',
             title: 'World-Class Security',
             blocks: [
-              { type: 'p', text: 'Identra is trusted by leading institutions to handle sensitive identity data safely. The platform is designed around strong security, privacy, and compliance controls.' },
+              { type: 'p', text: 'The platform is designed around strong security and privacy controls.' },
               { type: 'list', items: [
                 { title: 'Encryption', text: 'Data is encrypted with AES-256 at rest and TLS 1.3 in transit.' },
-                { title: 'Compliance Standards', text: 'SOC 2 Type II certified, GDPR-ready, and CCPA-ready controls.' },
-                { title: 'Redundant Backup', text: 'Multi-region cloud infrastructure with continuous replication.' }
               ] }
             ]
           }
@@ -308,10 +303,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       searchResults: 'Resultados de búsqueda',
       found: 'encontrados',
       noResults: 'No se encontraron páginas para "{query}"',
-      helpCenter: 'Centro de ayuda',
       openApi: 'Especificación OpenAPI',
-      status: 'Estado',
-      serviceOperational: 'Servicio operativo',
       toggleTheme: 'Cambiar tema',
       documentationNavigation: 'Navegación de documentación',
       backToMain: 'Volver al sitio principal',
@@ -351,10 +343,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       searchResults: '検索結果',
       found: '件',
       noResults: '「{query}」に一致するページはありません',
-      helpCenter: 'ヘルプセンター',
       openApi: 'OpenAPI仕様',
-      status: 'ステータス',
-      serviceOperational: 'サービス稼働中',
       toggleTheme: 'テーマを切り替え',
       documentationNavigation: 'ドキュメントナビゲーション',
       backToMain: 'メインサイトに戻る',
@@ -394,10 +383,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       searchResults: 'Suchergebnisse',
       found: 'gefunden',
       noResults: 'Keine passenden Seiten für "{query}" gefunden',
-      helpCenter: 'Hilfecenter',
       openApi: 'OpenAPI-Spezifikation',
-      status: 'Status',
-      serviceOperational: 'Dienst betriebsbereit',
       toggleTheme: 'Darstellung wechseln',
       documentationNavigation: 'Dokumentationsnavigation',
       backToMain: 'Zur Hauptseite',
@@ -437,10 +423,7 @@ export const DOCS_PAGE_TRANSLATIONS: any = {
       searchResults: 'Kết quả tìm kiếm',
       found: 'kết quả',
       noResults: 'Không tìm thấy trang phù hợp cho "{query}"',
-      helpCenter: 'Trung tâm trợ giúp',
       openApi: 'Đặc tả OpenAPI',
-      status: 'Trạng thái',
-      serviceOperational: 'Dịch vụ đang hoạt động',
       toggleTheme: 'Chuyển giao diện',
       documentationNavigation: 'Điều hướng tài liệu',
       backToMain: 'Quay lại trang chính',
@@ -514,7 +497,7 @@ translatePages('es', {
     { type: 'p', text: 'Identra es una plataforma de infraestructura de identidad para crear experiencias de verificación personalizadas.' },
     { type: 'cards', cards: [{ title: 'Inquiries', text: 'Un Inquiry representa una instancia de verificación de identidad de un usuario.' }, { title: 'Workflows', text: 'Workflows automatiza decisiones, enruta casos de riesgo y sincroniza registros.' }] }
   ] }, lifecycle: { title: 'Ciclo de vida de verificación', blocks: [{ type: 'p', text: 'Cada verificación avanza por un ciclo estructurado: creada, en curso, enviada, procesando y aprobada, rechazada o enviada a revisión manual.' }, { type: 'callout', text: '[Inquiry creado] -> [En curso] -> [Enviado] -> [Procesando verificaciones] -> [Aprobado/Rechazado]' }] } } },
-  security: { title: 'Seguridad y cumplimiento', sections: { commitments: { title: 'Seguridad de primer nivel', blocks: [{ type: 'p', text: 'Identra está diseñada para proteger datos de identidad sensibles con controles sólidos de seguridad, privacidad y cumplimiento.' }, { type: 'list', items: [{ title: 'Cifrado', text: 'AES-256 en reposo y TLS 1.3 en tránsito.' }, { title: 'Estándares', text: 'Controles SOC 2 Type II, GDPR y CCPA.' }, { title: 'Respaldo redundante', text: 'Infraestructura multi-región con replicación continua.' }] }] } } },
+  security: { title: 'Seguridad y cumplimiento', sections: { commitments: { title: 'Seguridad de primer nivel', blocks: [{ type: 'p', text: 'Identra está diseñada para proteger datos de identidad sensibles con controles sólidos de seguridad, privacidad y cumplimiento.' }, { type: 'list', items: [{ title: 'Cifrado', text: 'AES-256 en reposo y TLS 1.3 en tránsito.' }] }] } } },
   environments: { title: 'Entornos', sections: { 'sandbox-prod': { title: 'Sandbox vs Producción', blocks: [{ type: 'p', text: 'Sandbox permite diseñar, construir y probar flujos antes de pasar a Producción.' }, { type: 'table', headers: ['Función', 'Sandbox', 'Producción'], rows: [['Verificaciones reales', 'No (pruebas simuladas)', 'Sí'], ['Endpoint API', '/v1/sandbox/*', '/v1/*'], ['Precio / facturación', 'Gratis', 'Por uso']] }] } } },
   'choose-integration': { title: 'Elegir un método de integración', sections: { 'integration-options': { title: 'Opciones de integración', blocks: [{ type: 'p', text: 'Identra ofrece rutas desde SDKs personalizados hasta enlaces alojados sin desarrollo.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Renderiza Identra dentro de tu aplicación con marca personalizada.' }, { title: 'Hosted Flow', text: 'Envía usuarios a una URL segura alojada por Identra.' }] }, { type: 'subheading', text: 'Ejemplo: integración con React' }, { type: 'p', text: 'Renderiza Identra de forma segura y gestiona eventos de finalización.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Solicitudes de verificación', sections: { 'inquiries-intro': { title: 'Resumen de solicitudes', blocks: [{ type: 'p', text: 'Un Inquiry es el punto central del SDK de Identra. Tu backend lo crea mediante REST API y entrega el token al flujo cliente.' }, { type: 'subheading', text: 'Crear un Inquiry con REST API' }, { type: 'p', text: 'Crea la sesión en tu backend seguro para proteger reglas y referencias internas.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
@@ -532,7 +515,7 @@ translatePages('es', {
 translatePages('ja', {
   introduction: { title: 'はじめに', sections: { welcome: { title: 'Identraへようこそ', blocks: [{ type: 'p', text: 'IdentraとAPI endpointsを統合するための実用的な情報と例をまとめています。' }, { type: 'p', text: 'ProductionでAPIを使う前に、APIリファレンスとプライバシーポリシーを確認してください。' }, { type: 'p', text: '最も包括的な方法はWeb向けEmbedded FlowまたはMobile SDKsです。最速のノーコード方法はHosted Flowです。' }] }, questions: { title: '質問がありますか？', blocks: [{ type: 'p', text: 'コードや製品の質問は、ドキュメント検索、ヘルプセンター、営業窓口、Identraコミュニティで確認できます。' }] } } },
   'how-identra-works': { title: 'Identraの仕組み', sections: { 'core-concepts': { title: '主要概念', blocks: [{ type: 'p', text: 'Identraは、カスタム本人確認体験を構築するためのIDインフラです。' }, { type: 'cards', cards: [{ title: 'Inquiries', text: 'Inquiryは、ユーザーが本人確認を完了する1回分のインスタンスです。' }, { title: 'Workflows', text: 'Workflowsは判定に基づく処理、リスクケースのルーティング、記録同期を自動化します。' }] }] }, lifecycle: { title: '検証ライフサイクル', blocks: [{ type: 'p', text: '各検証は、作成、進行中、送信、処理、承認または却下という構造化された流れで進みます。' }, { type: 'callout', text: '[Inquiry作成] -> [進行中] -> [送信済み] -> [検証処理] -> [承認/却下]' }] } } },
-  security: { title: 'セキュリティとコンプライアンス', sections: { commitments: { title: '高度なセキュリティ', blocks: [{ type: 'p', text: 'Identraは、機微な本人確認データを安全に扱うため、セキュリティ、プライバシー、コンプライアンスを重視して設計されています。' }, { type: 'list', items: [{ title: '暗号化', text: '保存時AES-256、転送時TLS 1.3。' }, { title: '基準', text: 'SOC 2 Type II、GDPR、CCPA対応の管理策。' }, { title: '冗長バックアップ', text: 'マルチリージョン基盤と継続的なレプリケーション。' }] }] } } },
+  security: { title: 'セキュリティとコンプライアンス', sections: { commitments: { title: '高度なセキュリティ', blocks: [{ type: 'p', text: 'Identraは、機微な本人確認データを安全に扱うため、セキュリティ、プライバシー、コンプライアンスを重視して設計されています。' }, { type: 'list', items: [{ title: '暗号化', text: '保存時AES-256、転送時TLS 1.3。' }] }] } } },
   environments: { title: '環境', sections: { 'sandbox-prod': { title: 'SandboxとProduction', blocks: [{ type: 'p', text: 'Sandboxでは、Productionへ移行する前にフローを設計、構築、テストできます。' }, { type: 'table', headers: ['機能', 'Sandbox', 'Production'], rows: [['実検証', 'いいえ（模擬チェック）', 'はい'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['料金 / 請求', '無料', '使用量ベース']] }] } } },
   'choose-integration': { title: '統合方法の選択', sections: { 'integration-options': { title: '統合オプション', blocks: [{ type: 'p', text: 'Identraは、カスタムSDKから開発不要のホスト型リンクまで複数の統合方法を提供します。' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Identraをアプリ内に表示し、ブランドに合わせた体験を提供します。' }, { title: 'Hosted Flow', text: '安全なIdentraホストURLへユーザーを送ります。' }] }, { type: 'subheading', text: '例: Reactで埋め込み' }, { type: 'p', text: 'Identraを安全に表示し、完了イベントを処理します。' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: '照会', sections: { 'inquiries-intro': { title: '照会の概要', blocks: [{ type: 'p', text: 'InquiryはIdentra SDKの中心です。バックエンドがREST APIで作成し、生成されたトークンをクライアントへ渡します。' }, { type: 'subheading', text: 'REST APIでInquiryを作成' }, { type: 'p', text: 'セキュアなバックエンドでセッションを作成し、ルールや参照IDを保護します。' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
@@ -550,7 +533,7 @@ translatePages('ja', {
 translatePages('de', {
   introduction: { title: 'Einführung', sections: { welcome: { title: 'Willkommen bei Identra!', blocks: [{ type: 'p', text: 'Hier finden Sie praktische Informationen zur Integration mit Identra und unseren API endpoints.' }, { type: 'p', text: 'Wenn Sie die API in Production nutzen, lesen Sie API-Referenz und Datenschutzrichtlinie, bevor Sie echte Identitätsdaten verarbeiten.' }, { type: 'p', text: 'Der umfassendste Weg ist Embedded Flow für Web oder Mobile SDKs. Die schnellste No-Code-Option ist Hosted Flow.' }] }, questions: { title: 'Fragen?', blocks: [{ type: 'p', text: 'Wir helfen gern bei Code- oder Produktfragen. Durchsuchen Sie die Dokumentation, besuchen Sie das Hilfecenter oder kontaktieren Sie unser Team.' }] } } },
   'how-identra-works': { title: 'So funktioniert Identra', sections: { 'core-concepts': { title: 'Kernkonzepte', blocks: [{ type: 'p', text: 'Identra ist eine Identitätsinfrastruktur zum Aufbau eigener Verifizierungserlebnisse.' }, { type: 'cards', cards: [{ title: 'Inquiries', text: 'Ein Inquiry ist eine einzelne Identitätsverifizierung eines Nutzers.' }, { title: 'Workflows', text: 'Workflows automatisieren Entscheidungen, Routing und Datensynchronisierung.' }] }] }, lifecycle: { title: 'Verifizierungslebenszyklus', blocks: [{ type: 'p', text: 'Jede Verifizierung durchläuft Erstellung, Bearbeitung, Übermittlung, Verarbeitung und Entscheidung.' }, { type: 'callout', text: '[Inquiry erstellt] -> [In Bearbeitung] -> [Übermittelt] -> [Verarbeitung] -> [Genehmigt/Abgelehnt]' }] } } },
-  security: { title: 'Sicherheit und Compliance', sections: { commitments: { title: 'Erstklassige Sicherheit', blocks: [{ type: 'p', text: 'Identra schützt sensible Identitätsdaten mit starken Sicherheits-, Datenschutz- und Compliance-Kontrollen.' }, { type: 'list', items: [{ title: 'Verschlüsselung', text: 'AES-256 im Ruhezustand und TLS 1.3 bei Übertragung.' }, { title: 'Standards', text: 'SOC 2 Type II, GDPR- und CCPA-Kontrollen.' }, { title: 'Redundanz', text: 'Multi-Region-Infrastruktur mit fortlaufender Replikation.' }] }] } } },
+  security: { title: 'Sicherheit und Compliance', sections: { commitments: { title: 'Erstklassige Sicherheit', blocks: [{ type: 'p', text: 'Identra schützt sensible Identitätsdaten mit starken Sicherheits-, Datenschutz- und Compliance-Kontrollen.' }, { type: 'list', items: [{ title: 'Verschlüsselung', text: 'AES-256 im Ruhezustand und TLS 1.3 bei Übertragung.' }] }] } } },
   environments: { title: 'Umgebungen', sections: { 'sandbox-prod': { title: 'Sandbox vs Production', blocks: [{ type: 'p', text: 'Sandbox ermöglicht Design, Aufbau und Tests vor dem Wechsel zu Production.' }, { type: 'table', headers: ['Funktion', 'Sandbox', 'Production'], rows: [['Echte Verifizierungen', 'Nein (Mock-Prüfungen)', 'Ja'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['Preise / Abrechnung', 'Kostenlos', 'Nutzungsbasiert']] }] } } },
   'choose-integration': { title: 'Integrationsmethode wählen', sections: { 'integration-options': { title: 'Integrationsoptionen', blocks: [{ type: 'p', text: 'Identra bietet Wege von eigenen SDK-Integrationen bis zu gehosteten Links ohne Entwicklung.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Zeigen Sie Identra direkt in Ihrer App mit eigenem Branding an.' }, { title: 'Hosted Flow', text: 'Leiten Sie Nutzer zu einer sicheren Identra-gehosteten URL weiter.' }] }, { type: 'subheading', text: 'Beispiel: Einbettung mit React' }, { type: 'p', text: 'Rendern Sie Identra sicher und verarbeiten Sie Abschlussereignisse.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Prüfvorgänge', sections: { 'inquiries-intro': { title: 'Überblick über Prüfvorgänge', blocks: [{ type: 'p', text: 'Ein Inquiry ist der Mittelpunkt des Identra SDK. Ihr Backend erstellt ihn per REST API und gibt das Token an den Client weiter.' }, { type: 'subheading', text: 'Inquiry per REST API erstellen' }, { type: 'p', text: 'Erstellen Sie die Sitzung auf Ihrem sicheren Backend, um Regeln und Referenzen zu schützen.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },
@@ -568,7 +551,7 @@ translatePages('de', {
 translatePages('vi', {
   introduction: { title: 'Giới thiệu', sections: { welcome: { title: 'Chào mừng đến với Identra!', blocks: [{ type: 'p', text: 'Tại đây bạn sẽ tìm thấy thông tin thực tế để tích hợp với Identra và các API endpoint của chúng tôi.' }, { type: 'p', text: 'Nếu dùng API trong Production, hãy xem Tham chiếu API và Chính sách quyền riêng tư trước khi xử lý dữ liệu danh tính thật.' }, { type: 'p', text: 'Cách tích hợp đầy đủ nhất là Embedded Flow cho web hoặc Mobile SDKs. Cách không cần code nhanh nhất là Hosted Flow.' }] }, questions: { title: 'Bạn có câu hỏi?', blocks: [{ type: 'p', text: 'Chúng tôi luôn sẵn sàng hỗ trợ về code hoặc sản phẩm. Hãy tìm trong tài liệu, truy cập Trung tâm trợ giúp, liên hệ đội ngũ bán hàng hoặc tham gia cộng đồng Identra.' }] } } },
   'how-identra-works': { title: 'Cách Identra hoạt động', sections: { 'core-concepts': { title: 'Khái niệm cốt lõi', blocks: [{ type: 'p', text: 'Identra là nền tảng hạ tầng danh tính giúp xây dựng trải nghiệm xác minh tùy chỉnh.' }, { type: 'cards', cards: [{ title: 'Inquiries', text: 'Inquiry là một phiên người dùng thực hiện xác minh danh tính.' }, { title: 'Workflows', text: 'Workflows tự động hóa quyết định, định tuyến trường hợp rủi ro và đồng bộ dữ liệu.' }] }] }, lifecycle: { title: 'Vòng đời xác minh', blocks: [{ type: 'p', text: 'Mỗi xác minh đi qua vòng đời có cấu trúc: tạo, đang thực hiện, gửi, xử lý và được phê duyệt, từ chối hoặc chuyển đánh giá thủ công.' }, { type: 'callout', text: '[Inquiry được tạo] -> [Đang thực hiện] -> [Đã gửi] -> [Đang xử lý] -> [Phê duyệt/Từ chối]' }] } } },
-  security: { title: 'Bảo mật và tuân thủ', sections: { commitments: { title: 'Bảo mật hàng đầu', blocks: [{ type: 'p', text: 'Identra được thiết kế để bảo vệ dữ liệu danh tính nhạy cảm bằng các kiểm soát bảo mật, quyền riêng tư và tuân thủ mạnh mẽ.' }, { type: 'list', items: [{ title: 'Mã hóa', text: 'AES-256 khi lưu trữ và TLS 1.3 khi truyền.' }, { title: 'Tiêu chuẩn', text: 'Kiểm soát SOC 2 Type II, GDPR và CCPA.' }, { title: 'Sao lưu dự phòng', text: 'Hạ tầng đa vùng với sao chép liên tục.' }] }] } } },
+  security: { title: 'Bảo mật và tuân thủ', sections: { commitments: { title: 'Bảo mật hàng đầu', blocks: [{ type: 'p', text: 'Identra được thiết kế để bảo vệ dữ liệu danh tính nhạy cảm bằng các kiểm soát bảo mật, quyền riêng tư và tuân thủ mạnh mẽ.' }, { type: 'list', items: [{ title: 'Mã hóa', text: 'AES-256 khi lưu trữ và TLS 1.3 khi truyền.' }] }] } } },
   environments: { title: 'Môi trường', sections: { 'sandbox-prod': { title: 'Sandbox và Production', blocks: [{ type: 'p', text: 'Sandbox cho phép thiết kế, xây dựng và kiểm thử luồng trước khi chuyển sang Production.' }, { type: 'table', headers: ['Tính năng', 'Sandbox', 'Production'], rows: [['Xác minh thật', 'Không (kiểm tra mô phỏng)', 'Có'], ['API endpoint', '/v1/sandbox/*', '/v1/*'], ['Giá / thanh toán', 'Miễn phí', 'Theo mức sử dụng']] }] } } },
   'choose-integration': { title: 'Chọn phương thức tích hợp', sections: { 'integration-options': { title: 'Tùy chọn tích hợp', blocks: [{ type: 'p', text: 'Identra cung cấp nhiều cách tích hợp, từ SDK tùy chỉnh đến liên kết được lưu trữ không cần phát triển.' }, { type: 'cards', cards: [{ title: 'Embedded Flow', text: 'Hiển thị Identra trực tiếp trong ứng dụng với thương hiệu tùy chỉnh.' }, { title: 'Hosted Flow', text: 'Chuyển người dùng đến URL an toàn do Identra lưu trữ.' }] }, { type: 'subheading', text: 'Ví dụ: nhúng với React' }, { type: 'p', text: 'Hiển thị Identra an toàn và xử lý sự kiện hoàn tất trong ứng dụng.' }, { type: 'code', language: 'tsx', fileName: 'IdentityVerify.tsx', code: embeddingCode }] } } },
   inquiries: { title: 'Hồ sơ xác minh', sections: { 'inquiries-intro': { title: 'Tổng quan về hồ sơ xác minh', blocks: [{ type: 'p', text: 'Inquiry là điểm trung tâm của Identra SDK. Backend tạo Inquiry qua REST API và chuyển token sang luồng phía client.' }, { type: 'subheading', text: 'Tạo Inquiry qua REST API' }, { type: 'p', text: 'Tạo phiên trên backend an toàn để bảo vệ quy tắc và mã tham chiếu nội bộ.' }, { type: 'code', language: 'javascript', fileName: 'create_inquiry.js', code: inquiryCode }] } } },

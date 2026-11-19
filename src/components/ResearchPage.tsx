@@ -97,7 +97,7 @@ export default function ResearchPage({ onOpenSandbox, onBackToLanding }: Researc
     })
   ), [language]);
   const regulations = useMemo(() => getLocalizedRegulations(language), [language]);
-  const readingList = useMemo(() => getLocalizedReadingList(language), [language]);
+  const readingList = useMemo<ReadingItem[]>(() => getLocalizedReadingList(language), [language]);
 
   const [activeCategory, setActiveCategory] = useState<'All' | 'Fraud intelligence' | 'Data privacy' | 'Online safety' | 'Accessible identity'>('All');
   const [searchQuery, setSearchQuery] = useState('');

@@ -18,8 +18,6 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
     decisionBreakdown: 'Decision Engine Breakdown:',
     riskScore: 'Risk Score:',
     runAnother: 'Run another simulation',
-    trustedBy: "Trusted by startups & the world's largest cryptocurrency companies",
-    bridgeStripe: '(a Stripe company)',
     rows: [
       {
         title: 'Collect identity information',
@@ -61,7 +59,7 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
       { title: 'Cases', desc: 'Efficiently review information, make decisions, and take action on riskier users with all the information you need in one place.' },
       { title: 'Dynamic Flow', desc: 'Meet local regulations by choosing what information to collect and data to enrich, along with how users and businesses are verified for every region you serve.' },
       { title: 'No-code platform', desc: "Configure and update onboarding flows easily using Identra's self-serve editor with drag-and-drop modules and prebuilt templates." },
-      { title: 'Data security and privacy', desc: 'Manage PII securely with granular data access controls and compliant features certified to the highest industry standards.' }
+      { title: 'Data security and privacy', desc: 'Manage PII securely with granular data access controls.' }
     ],
     amlFlow: 'Dynamic AML Flow',
     walletPolicy: 'Crypto Wallet policy',
@@ -182,8 +180,6 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
     decisionBreakdown: 'Desglose del motor de decisión:',
     riskScore: 'Puntuación de riesgo:',
     runAnother: 'Ejecutar otra simulación',
-    trustedBy: 'Usado por startups y las mayores empresas de criptomonedas del mundo',
-    bridgeStripe: '(una empresa de Stripe)',
     rows: [
       {
         title: 'Recopila información de identidad',
@@ -225,7 +221,7 @@ export const CRYPTOCURRENCY_TRANSLATIONS: any = {
       { title: 'Casos', desc: 'Revisa información, toma decisiones y actúa sobre usuarios de mayor riesgo con todo lo necesario en un solo lugar.' },
       { title: 'Flujo dinámico', desc: 'Cumple regulaciones locales eligiendo qué información recopilar y enriquecer, y cómo verificar usuarios y empresas en cada región.' },
       { title: 'Plataforma sin código', desc: 'Configura y actualiza flujos de onboarding con el editor autoservicio de Identra, módulos de arrastrar y soltar y plantillas listas.' },
-      { title: 'Seguridad y privacidad de datos', desc: 'Gestiona PII de forma segura con controles granulares de acceso y funciones certificadas bajo estándares líderes.' }
+      { title: 'Seguridad y privacidad de datos', desc: 'Gestiona PII de forma segura con controles granulares de acceso.' }
     ],
     amlFlow: 'Flujo AML dinámico',
     walletPolicy: 'Política de billetera cripto',
@@ -408,8 +404,6 @@ CRYPTOCURRENCY_TRANSLATIONS.ja = {
   decisionBreakdown: '意思決定エンジンの内訳:',
   riskScore: 'リスクスコア:',
   runAnother: '別のシミュレーションを実行',
-  trustedBy: 'スタートアップから世界最大級の暗号資産企業まで利用されています',
-  bridgeStripe: '（Stripe の関連会社）',
   statuses: { approve: '承認', review: 'レビュー', block: 'ブロック' },
   walletChecks: { low: '低リスク', medium: '中リスク', sanctioned: '制裁対象ミキサー' },
   kycStatuses: { verified: '確認済み', requiresSelfie: 'セルフィーが必要', blocked: 'ブロック済み' },
@@ -455,7 +449,7 @@ CRYPTOCURRENCY_TRANSLATIONS.ja = {
     { title: 'ケース', desc: '必要な情報を一か所に集約し、リスクの高いユーザーを効率的にレビュー、判断、対応できます。' },
     { title: 'ダイナミックフロー', desc: '地域ごとに収集・補強する情報と、ユーザーや企業の確認方法を選び、現地規制に対応します。' },
     { title: 'ノーコードプラットフォーム', desc: 'Identra のセルフサービスエディター、ドラッグ&ドロップモジュール、テンプレートでオンボーディングフローを簡単に設定・更新できます。' },
-    { title: 'データセキュリティとプライバシー', desc: '細かなデータアクセス制御と業界最高水準の認証機能で PII を安全に管理します。' }
+    { title: 'データセキュリティとプライバシー', desc: '細かなデータアクセス制御で PII を安全に管理します。' }
   ],
   amlFlow: '動的 AML フロー',
   walletPolicy: '暗号資産ウォレットポリシー',
@@ -517,8 +511,6 @@ CRYPTOCURRENCY_TRANSLATIONS.de = {
   decisionBreakdown: 'Aufschlüsselung der Entscheidungslogik:',
   riskScore: 'Risikowert:',
   runAnother: 'Weitere Simulation starten',
-  trustedBy: 'Vertraut von Startups und den größten Kryptowährungsunternehmen der Welt',
-  bridgeStripe: '(ein Stripe-Unternehmen)',
   statuses: { approve: 'Genehmigen', review: 'Prüfen', block: 'Blockieren' },
   walletChecks: { low: 'Niedriges Risiko', medium: 'Mittleres Risiko', sanctioned: 'Sanktionierter Mixer' },
   kycStatuses: { verified: 'Verifiziert', requiresSelfie: 'Selfie erforderlich', blocked: 'Blockiert' },
@@ -561,8 +553,6 @@ CRYPTOCURRENCY_TRANSLATIONS.vi = {
   decisionBreakdown: 'Phân tích của bộ máy quyết định:',
   riskScore: 'Điểm rủi ro:',
   runAnother: 'Chạy mô phỏng khác',
-  trustedBy: 'Được các startup và những công ty tiền mã hóa lớn nhất thế giới tin dùng',
-  bridgeStripe: '(một công ty của Stripe)',
   statuses: { approve: 'Duyệt', review: 'Xem xét', block: 'Chặn' },
   walletChecks: { low: 'Rủi ro thấp', medium: 'Rủi ro trung bình', sanctioned: 'Mixer bị trừng phạt' },
   kycStatuses: { verified: 'Đã xác minh', requiresSelfie: 'Cần selfie', blocked: 'Đã chặn' },
@@ -694,7 +684,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.de, {
     { title: 'Cases', desc: 'Prüfen Sie Informationen, treffen Sie Entscheidungen und handeln Sie bei riskanteren Nutzern effizient mit allen Daten an einem Ort.' },
     { title: 'Dynamic Flow', desc: 'Erfüllen Sie lokale Vorschriften, indem Sie pro Region festlegen, welche Informationen erhoben, angereichert und wie Nutzer und Unternehmen verifiziert werden.' },
     { title: 'No-Code-Plattform', desc: 'Konfigurieren und aktualisieren Sie Onboarding-Flows einfach mit Identras Self-Service-Editor, Drag-and-drop-Modulen und Vorlagen.' },
-    { title: 'Datensicherheit und Datenschutz', desc: 'Verwalten Sie PII sicher mit granularen Zugriffskontrollen und zertifizierten Funktionen nach höchsten Branchenstandards.' }
+    { title: 'Datensicherheit und Datenschutz', desc: 'Verwalten Sie PII sicher mit granularen Zugriffskontrollen.' }
   ],
   amlFlow: 'Dynamischer AML-Flow',
   walletPolicy: 'Krypto-Wallet-Richtlinie',
@@ -819,7 +809,7 @@ Object.assign(CRYPTOCURRENCY_TRANSLATIONS.vi, {
     { title: 'Hồ sơ', desc: 'Xem xét thông tin, ra quyết định và hành động với người dùng rủi ro cao hơn bằng mọi dữ liệu cần thiết ở một nơi.' },
     { title: 'Luồng động', desc: 'Đáp ứng quy định địa phương bằng cách chọn thông tin cần thu thập, làm giàu và cách xác minh người dùng/doanh nghiệp cho từng khu vực.' },
     { title: 'Nền tảng không cần mã', desc: 'Dễ dàng cấu hình và cập nhật luồng onboarding bằng trình chỉnh sửa tự phục vụ, mô-đun kéo thả và mẫu dựng sẵn của Identra.' },
-    { title: 'Bảo mật và quyền riêng tư dữ liệu', desc: 'Quản lý PII an toàn với kiểm soát truy cập chi tiết và tính năng tuân thủ được chứng nhận theo tiêu chuẩn cao nhất.' }
+    { title: 'Bảo mật và quyền riêng tư dữ liệu', desc: 'Quản lý PII an toàn với kiểm soát truy cập chi tiết.' }
   ],
   amlFlow: 'Luồng AML động',
   walletPolicy: 'Chính sách ví tiền mã hóa',

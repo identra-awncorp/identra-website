@@ -430,20 +430,6 @@ export default function BackgroundChecksPage({ onOpenSandbox, onBackToLanding, o
         </div>
       </section>
 
-      {/* Client Stripe Ribbon */}
-      <section className="bg-[#0A1D37] py-8 text-white">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 font-mono text-center md:text-left">
-            {t.ribbonText}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            <span className="font-display font-bold text-lg md:text-xl tracking-tight text-slate-300">Outdoorsy</span>
-            <span className="font-display font-bold text-lg md:text-xl tracking-tight text-slate-300">taskrabbit</span>
-            <span className="font-display font-bold text-lg md:text-xl tracking-tight text-slate-300">GET YOUR GUIDE</span>
-          </div>
-        </div>
-      </section>
-
       {/* Interactive Background Check Simulator Section */}
       <section id="simulator" className="py-16 md:py-24 border-y border-slate-100 bg-[#FAFBFD]">
         <div className="max-w-7xl mx-auto px-6 space-y-12">

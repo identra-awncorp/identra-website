@@ -308,128 +308,6 @@ export default function AgeAssurancePage({ onOpenSandbox, onBackToLanding, onVie
             </div>
           </div>
 
-          {/* Startups logos footer band */}
-          <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <span className="text-xs font-mono uppercase tracking-widest text-white/45">{t.trustedByStartups}</span>
-            <div className="flex flex-wrap items-center gap-8 md:gap-12 opacity-70">
-              {/* Substack logo replacement */}
-              <div className="flex items-center gap-2 font-display font-bold text-white tracking-tight">
-                <span className="w-5 h-5 bg-[#FF6719] rounded flex items-center justify-center text-white text-xs">S</span>
-                <span>substack</span>
-              </div>
-              {/* Reddit logo */}
-              <div className="flex items-center gap-1.5 font-bold text-white text-sm">
-                <span className="w-5 h-5 bg-[#FF4500] rounded-full flex items-center justify-center text-white text-xs">r</span>
-                <span>reddit</span>
-              </div>
-              {/* Lime logo */}
-              <div className="flex items-center gap-1 text-emerald-400 font-bold tracking-wide text-sm">
-                <span className="inline-block bg-emerald-500 w-2.5 h-2.5 rounded-full"></span>
-                <span className="text-white">Lime</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 2. Extensively Tested & Certified section */}
-      <section className="bg-white border-y border-slate-100 py-20 px-6">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-4">
-            <h2 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight text-slate-900">
-              {t.certSectionTitle}
-            </h2>
-            <p className="text-slate-500 text-sm md:text-base">
-              {t.certSectionDesc}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Certification Card 1 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="bg-emerald-100 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs">✓</div>
-                  <span className="font-bold text-sm text-slate-800">{t.cert1Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert1Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert1Tag}</div>
-            </div>
-
-            {/* Certification Card 2 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Globe className="w-6 h-6 text-indigo-600" />
-                  <span className="font-bold text-sm text-slate-800">{t.cert2Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert2Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert2Tag}</div>
-            </div>
-
-            {/* Certification Card 3 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <FileBadge className="w-6 h-6 text-amber-500" />
-                  <span className="font-bold text-sm text-slate-800">{t.cert3Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert3Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert3Tag}</div>
-            </div>
-
-            {/* Certification Card 4 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Cpu className="w-6 h-6 text-rose-500" />
-                  <span className="font-bold text-sm text-slate-800">{t.cert4Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert4Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert4Tag}</div>
-            </div>
-
-            {/* Certification Card 5 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-6 h-6 text-[#354CE1]" />
-                  <span className="font-bold text-sm text-slate-800">{t.cert5Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert5Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert5Tag}</div>
-            </div>
-
-            {/* Certification Card 6 */}
-            <div className="bg-[#FAFBFD] p-8 rounded-2xl border border-slate-100 flex flex-col justify-between h-56 hover:shadow-md transition">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Search className="w-6 h-6 text-emerald-600" />
-                  <span className="font-bold text-sm text-slate-800">{t.cert6Title}</span>
-                </div>
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {t.cert6Desc}
-                </p>
-              </div>
-              <div className="text-[10px] font-mono tracking-wider text-slate-400 uppercase font-bold">{t.cert6Tag}</div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -699,10 +577,10 @@ export default function AgeAssurancePage({ onOpenSandbox, onBackToLanding, onVie
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-3xl md:text-4xl font-display font-extrabold tracking-tight text-slate-900">
-              {t.certSectionTitle}
+              {t.regGuidesTitle}
             </h2>
             <p className="text-slate-500 text-sm md:text-base">
-              {t.certSectionDesc}
+              {t.regGuidesDesc}
             </p>
           </div>
 
@@ -1122,33 +1000,6 @@ export default function AgeAssurancePage({ onOpenSandbox, onBackToLanding, onVie
           {/* Right Column: Interactive security table or illustration of PII Masking */}
           <div className="lg:col-span-6">
             <div className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl space-y-6">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-emerald-500" />
-                  <span className="font-display font-bold text-slate-800 text-sm">{t.identraSecurityRegistry}</span>
-                </div>
-                <span className="text-[10px] font-mono text-slate-400">{t.activeStandard}</span>
-              </div>
-
-              <div className="space-y-3 text-xs">
-                <div className="flex justify-between items-center py-2.5 border-b border-slate-50">
-                  <span className="font-bold text-slate-800">ISO/IEC 27001</span>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded font-mono font-bold uppercase">{t.certifiedStandard}</span>
-                </div>
-                <div className="flex justify-between items-center py-2.5 border-b border-slate-50">
-                  <span className="font-bold text-slate-800">{t.soc2Type2Audit}</span>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded font-mono font-bold uppercase">{t.evaluatedAnnually}</span>
-                </div>
-                <div className="flex justify-between items-center py-2.5 border-b border-slate-50">
-                  <span className="font-bold text-slate-800">ISO 27566-1 ({t.badgeLabel})</span>
-                  <span className="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-100 px-2 py-0.5 rounded font-mono font-bold uppercase">{t.fullyReady}</span>
-                </div>
-                <div className="flex justify-between items-center py-2.5">
-                  <span className="font-bold text-slate-800">{t.fedRampAuthorization}</span>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-2 py-0.5 rounded font-mono font-bold uppercase">{t.authorizedStatus}</span>
-                </div>
-              </div>
-
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center space-y-2">
                 <span className="text-[10px] font-mono text-slate-400 block uppercase font-bold tracking-wider">{t.storageMinimizer}</span>
                 <div className="flex items-center justify-center gap-4 text-xs">

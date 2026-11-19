@@ -780,7 +780,6 @@ export default function DatabaseChecksPage({ onOpenSandbox, onBackToLanding, onV
 
               <div className="border-t border-slate-800 pt-4 flex items-center justify-between gap-4 text-[10px] text-slate-500 font-mono">
                 <span>{t.sandbox.protocol}</span>
-                <span>{t.sandbox.certification}</span>
               </div>
             </div>
           </div>

@@ -18,7 +18,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     queryRegisters: 'Querying financial registers & running watchlists...',
     decisionBreakdown: 'Decision Engine Breakdown:',
     selectAnotherScenario: 'Select another scenario',
-    trustedBy: "Trusted by lead startups & the world's largest financial institutions",
     lifecycleTitle: 'Comprehensive client lifecycle management',
     lifecycleDesc: 'From low-friction digital onboarding to recurring monitoring and audits, manage all KYC, AML, and corporate check compliance parameters in one single pane.',
     featuresTitle: 'A comprehensive toolset for strict compliance',
@@ -53,9 +52,8 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     successTitle: 'Your personalized demo is ready!',
     successDesc: "Thank you, {firstName}. We've customized a local mock database environment for {companyName}. Open the Identity Sandbox at any time to run tests.",
     openSandbox: 'Open identity sandbox',
-    complianceAssured: 'COMPLIANCE ASSURED',
     securityTitle: 'Security and privacy first',
-    securityDesc: 'Identra is certified to meet SOC 2 Type II, ISO 27001, and HIPAA compliance regulations. We manage PII securely with strict data retention controls, granular permission frameworks, and modern encryption.',
+    securityDesc: 'We manage PII securely with strict data retention controls, granular permission frameworks, and modern encryption.',
     learnSecurity: 'Learn more about security at Identra',
     exploreTitle: "Explore more of Identra's identity platform",
     statusLabels: {
@@ -129,7 +127,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       '[Risk Engine] Merging state results, assessing fraud indicators, and passing to Decision Engine...',
       '[Result] Risk Score: {riskScore}/100. Resolution: {status}.'
     ],
-    logos: ['Lead Bank', 'OceanFirst Bank', 'Brex Financial', 'Ramp Capital', 'Apex Clearing'],
     tabs: {
       kyc: {
         label: 'Verify Customers Seamlessly',
@@ -137,8 +134,7 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
         desc: 'Automatically collect and verify customer information, such as government IDs or supplementary documents, to meet strict KYC/AML regulations with minimal friction.',
         bullets: [
           'Real-time OCR extraction with sub-second processing',
-          'Cross-match ID picture against selfie liveness portrait',
-          'Global coverage supporting 200+ countries and territories'
+          'Cross-match ID picture against selfie liveness portrait'
         ],
         cards: [
           { badge: 'ID', title: 'Government ID Check', desc: 'Driver License • US-TX', status: 'AUTHENTIC' },
@@ -179,12 +175,12 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       }
     },
     featureCards: [
-      { id: 'feat-idv', title: 'Government ID and selfie liveness verifications', desc: 'Collect and verify your choice of government-issued IDs across 200+ countries and territories, then ensure the ID photo matches the selfie for added assurance.' },
-      { id: 'feat-dbs', title: 'Authoritative and issuing databases', desc: 'Verify collected and extracted PII against authoritative databases and issuing sources across 70+ countries for secure verification.' },
+      { id: 'feat-idv', title: 'Government ID and selfie liveness verifications', desc: 'Collect and verify your choice of government-issued IDs, then ensure the ID photo matches the selfie for added assurance.' },
+      { id: 'feat-dbs', title: 'Authoritative and issuing databases', desc: 'Verify collected and extracted PII against authoritative databases and issuing sources for secure verification.' },
       { id: 'feat-aml', title: 'Watchlist, sanctions, and adverse media screenings', desc: 'Screen individuals or entities across 100+ global sanction and warning lists, 5,000+ PEP lists, and 400+ million adverse media news articles.' },
       { id: 'feat-signals', title: 'Passive signals', desc: 'Silently collect behavioral signals and risk signals like spoofing attempts, VPN detection, and device details and use them as inputs to assess risk.' },
       { id: 'feat-workflows', title: 'Automated workflows', desc: 'Automate common workflows like filing SARs, making decisions on high-risk accounts, consolidating risk signals, and escalating to review teams.' },
-      { id: 'feat-security', title: 'Data security and privacy', desc: 'Manage PII securely with granular data access controls and compliance features certified to the highest industry standards (SOC 2, ISO 27001).' }
+      { id: 'feat-security', title: 'Data security and privacy', desc: 'Manage PII securely with granular data access controls.' }
     ],
     exploreCards: [
       { title: 'Future-proof your compliance strategy.', desc: 'Adapt instantly to changes in local and global laws. Keep automated rules fresh without needing engineering sprints or custom code.', button: 'Explore Compliance solutions' },
@@ -205,7 +201,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     queryRegisters: 'Consultando registros financieros y ejecutando watchlists...',
     decisionBreakdown: 'Desglose del motor de decisión:',
     selectAnotherScenario: 'Seleccionar otro escenario',
-    trustedBy: 'Con la confianza de startups líderes y de las mayores instituciones financieras del mundo',
     lifecycleTitle: 'Gestión integral del ciclo de vida del cliente',
     lifecycleDesc: 'Desde el onboarding digital con baja fricción hasta el monitoreo recurrente y las auditorías, gestione todos los parámetros de cumplimiento KYC, AML y corporativos en un solo panel.',
     featuresTitle: 'Un conjunto completo de herramientas para cumplimiento estricto',
@@ -240,9 +235,8 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     successTitle: 'Su demo personalizada está lista.',
     successDesc: 'Gracias, {firstName}. Personalizamos un entorno local de base de datos simulada para {companyName}. Abra Identity Sandbox en cualquier momento para ejecutar pruebas.',
     openSandbox: 'Abrir sandbox de identidad',
-    complianceAssured: 'CUMPLIMIENTO ASEGURADO',
     securityTitle: 'Seguridad y privacidad primero',
-    securityDesc: 'Identra cuenta con certificaciones SOC 2 Tipo II, ISO 27001 y cumplimiento HIPAA. Gestionamos PII de forma segura con controles estrictos de retención, permisos granulares y cifrado moderno.',
+    securityDesc: 'Gestionamos PII de forma segura con controles estrictos de retención, permisos granulares y cifrado moderno.',
     learnSecurity: 'Más información sobre seguridad en Identra',
     exploreTitle: 'Explore más de la plataforma de identidad de Identra',
     statusLabels: { Approve: 'APROBAR', Review: 'REVISIÓN', Block: 'BLOQUEAR' },
@@ -288,19 +282,18 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       }
     },
     simulatorLogs: ['[1/4] Escaneando credenciales y ejecutando OCR en documentos físicos / digitales...', '[Verificación IDV] Tipo de documento: {type}. Resultado: {idCheck}.', '[2/4] Consultando redes de crédito financiero, registros DMV estatales y registros corporativos...', '[3/4] Revisando listas: PEP, base de sanciones OFAC y watchlists activas...', '[Verificación AML] Resultado: {amlCheck}. Atributos de riesgo registrados.', '[4/4] Recopilando diagnósticos de señales pasivas, geolocalización y huellas de dispositivo...', '[Motor de riesgo] Combinando resultados, evaluando indicadores de fraude y enviando al motor de decisión...', '[Resultado] Puntuación de riesgo: {riskScore}/100. Resolución: {status}.'],
-    logos: ['Lead Bank', 'OceanFirst Bank', 'Brex Financial', 'Ramp Capital', 'Apex Clearing'],
     tabs: {
-      kyc: { label: 'Verificar clientes sin fricción', title: 'eKYC automatizado con altas tasas de coincidencia', desc: 'Recopile y verifique automáticamente información del cliente, como IDs gubernamentales o documentos complementarios, para cumplir regulaciones KYC/AML estrictas con mínima fricción.', bullets: ['Extracción OCR en tiempo real con procesamiento subsegundo', 'Comparación de foto de ID con retrato selfie con prueba de vida', 'Cobertura global en más de 200 países y territorios'], cards: [{ badge: 'ID', title: 'Verificación de ID gubernamental', desc: 'Licencia de conducir • US-TX', status: 'AUTÉNTICO' }, { badge: 'user', title: 'Coincidencia selfie con prueba de vida', desc: 'Confianza de coincidencia de similitud', status: '99,2% COINCIDE' }] },
+      kyc: { label: 'Verificar clientes sin fricción', title: 'eKYC automatizado con altas tasas de coincidencia', desc: 'Recopile y verifique automáticamente información del cliente, como IDs gubernamentales o documentos complementarios, para cumplir regulaciones KYC/AML estrictas con mínima fricción.', bullets: ['Extracción OCR en tiempo real con procesamiento subsegundo', 'Comparación de foto de ID con retrato selfie con prueba de vida'], cards: [{ badge: 'ID', title: 'Verificación de ID gubernamental', desc: 'Licencia de conducir • US-TX', status: 'AUTÉNTICO' }, { badge: 'user', title: 'Coincidencia selfie con prueba de vida', desc: 'Confianza de coincidencia de similitud', status: '99,2% COINCIDE' }] },
       aml: { label: 'Evaluar riesgo integral (AML)', title: 'Obtenga una visión completa del riesgo del cliente', desc: 'Construya una visión más integral de los clientes evaluando señales activas, pasivas y de comportamiento, además de ejecutar comprobaciones AML.', bullets: ['Escaneos continuos contra datasets PEP y OFAC', 'Disuada identidades sintéticas y duplicación de dispositivos silenciosamente', 'Use reportes automatizados para cumplir presentaciones BSA'], panelTitle: 'Revisión de watchlist AML', panelStatus: 'ACTUALIZADO A DIARIO', cards: [{ title: 'Listas de sanciones', status: '0 coincidencias (limpio)' }, { title: 'Exposición política (PEP)', status: '0 coincidencias (limpio)' }] },
       kyb: { label: 'KYB corporativo eficiente', title: 'Impulse resultados empresariales eficientes', desc: 'Optimice decisiones o reglas de revisión manual según sus requisitos internos para incorporar clientes comerciales rápidamente con mínima carga para sus equipos de suscripción.', bullets: ['Verifique al instante registros legales y presentaciones activas', 'Descubra árboles complejos de propiedad corporativa y UBOs', 'Terminal centralizado de Case Management con SAR automatizados'], panelTitle: 'Desglose de propiedad UBO', panelStatus: 'KYB COINCIDE', cards: [{ title: 'Apex Ventures LLC', status: 'Matriz (60%)' }, { title: 'S. Henderson (Beneficiario final)', status: 'UBO (40%)' }] }
     },
     featureCards: [
-      { id: 'feat-idv', title: 'Verificaciones de ID gubernamental y selfie con prueba de vida', desc: 'Recopile y verifique IDs emitidos por gobiernos en más de 200 países y territorios, y confirme que la foto del ID coincide con la selfie.' },
-      { id: 'feat-dbs', title: 'Bases de datos autorizadas y emisoras', desc: 'Verifique PII recopilada y extraída contra bases autorizadas y fuentes emisoras en más de 70 países.' },
+      { id: 'feat-idv', title: 'Verificaciones de ID gubernamental y selfie con prueba de vida', desc: 'Recopile y verifique IDs emitidos por gobiernos, y confirme que la foto del ID coincide con la selfie.' },
+      { id: 'feat-dbs', title: 'Bases de datos autorizadas y emisoras', desc: 'Verifique PII recopilada y extraída contra bases autorizadas y fuentes emisoras.' },
       { id: 'feat-aml', title: 'Watchlists, sanciones y medios adversos', desc: 'Revise personas o entidades contra más de 100 listas globales de sanciones, 5.000+ listas PEP y 400+ millones de artículos de medios adversos.' },
       { id: 'feat-signals', title: 'Señales pasivas', desc: 'Recopile silenciosamente señales de comportamiento y riesgo como suplantación, VPN y detalles de dispositivo para evaluar riesgo.' },
       { id: 'feat-workflows', title: 'Flujos automatizados', desc: 'Automatice flujos comunes como presentar SARs, decidir sobre cuentas de alto riesgo, consolidar señales y escalar a equipos de revisión.' },
-      { id: 'feat-security', title: 'Seguridad y privacidad de datos', desc: 'Gestione PII de forma segura con controles granulares de acceso y funciones certificadas según estándares líderes (SOC 2, ISO 27001).' }
+      { id: 'feat-security', title: 'Seguridad y privacidad de datos', desc: 'Gestione PII de forma segura con controles granulares de acceso.' }
     ],
     exploreCards: [
       { title: 'Prepare su estrategia de cumplimiento para el futuro.', desc: 'Adáptese al instante a cambios en leyes locales y globales. Mantenga reglas automatizadas actualizadas sin sprints de ingeniería ni código personalizado.', button: 'Explorar soluciones de Compliance' },
@@ -321,7 +314,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     queryRegisters: '金融登録簿とwatchlistを照会しています...',
     decisionBreakdown: 'Decision Engineの内訳:',
     selectAnotherScenario: '別のシナリオを選択',
-    trustedBy: '有力スタートアップから世界最大級の金融機関までが信頼',
     lifecycleTitle: '顧客ライフサイクル全体の管理',
     lifecycleDesc: '低負担のデジタルオンボーディングから継続監視と監査まで、KYC、AML、法人チェックのコンプライアンス条件を1つの画面で管理できます。',
     featuresTitle: '厳格なコンプライアンスのための包括的なツールセット',
@@ -356,9 +348,8 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     successTitle: 'パーソナライズされたデモの準備ができました。',
     successDesc: 'ありがとうございます、{firstName}さん。{companyName}向けにローカルのモックデータベース環境をカスタマイズしました。いつでもIdentity Sandboxを開いてテストできます。',
     openSandbox: '本人確認Sandboxを開く',
-    complianceAssured: 'コンプライアンス対応',
     securityTitle: 'セキュリティとプライバシーを最優先',
-    securityDesc: 'IdentraはSOC 2 Type II、ISO 27001、HIPAAに対応する認証を取得しています。厳格なデータ保持管理、きめ細かな権限、最新の暗号化によりPIIを安全に管理します。',
+    securityDesc: '厳格なデータ保持管理、きめ細かな権限、最新の暗号化によりPIIを安全に管理します。',
     learnSecurity: 'Identraのセキュリティを見る',
     exploreTitle: 'Identraの本人確認プラットフォームをさらに見る',
     statusLabels: { Approve: '承認', Review: 'レビュー', Block: 'ブロック' },
@@ -368,19 +359,18 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       treasury: { name: 'Apex Solutions LLC（実質的所有者）', type: '法人財務KYBオンボーディング', checkType: '自動登録簿と実質的所有者チェック', amount: '財務資金管理プール', idCheck: '法人確認済み', amlCheck: '制裁ヒット検出', riskScore: 92, status: 'Block', buttonTitle: 'Apex Solutions LLC（財務KYB）', buttonDesc: '法人登録チェック • OFAC watchlistブロック', details: ['法人登録検索ではDelawareの有効登録を確認しましたが、登録住所が既知のUPS私書箱と関連しています。', '主要な実質的所有者（UBO）の氏名が現在のOFAC制裁リストと高信頼で一致しました。', 'Adverse mediaチェックで事業パートナーに関する有効な連邦調査と一致しました。', '自動ブロックが発動しました。不正レポートをcase managementに記録しました。'] }
     },
     simulatorLogs: ['[1/4] 物理 / デジタル本人確認書類をスキャンしOCRを実行しています...', '[IDVチェック] 書類タイプ: {type}。結果: {idCheck}。', '[2/4] 金融信用ネットワーク、州DMV記録、法人登録簿を照会しています...', '[3/4] PEP、OFAC制裁データベース、有効なwatchlistをスクリーニングしています...', '[AMLチェック] スクリーニング結果: {amlCheck}。リスク属性を記録しました。', '[4/4] パッシブシグナル診断、位置情報フラグ、デバイスfingerprintを収集しています...', '[Risk Engine] 状態結果を統合し、不正指標を評価してDecision Engineへ渡しています...', '[結果] リスクスコア: {riskScore}/100。解決: {status}。'],
-    logos: ['Lead Bank', 'OceanFirst Bank', 'Brex Financial', 'Ramp Capital', 'Apex Clearing'],
     tabs: {
-      kyc: { label: '顧客をスムーズに確認', title: '高精度な一致率の自動eKYC', desc: '政府発行IDや補足書類などの顧客情報を自動収集・確認し、厳格なKYC/AML規制に低負担で対応します。', bullets: ['サブ秒処理のリアルタイムOCR抽出', 'ID写真とselfieライブネス画像を照合', '200以上の国と地域に対応するグローバルカバレッジ'], cards: [{ badge: 'ID', title: '政府発行IDチェック', desc: '運転免許証 • US-TX', status: '真正' }, { badge: 'user', title: 'selfieライブネス照合', desc: '類似度一致信頼度', status: '99.2% 一致' }] },
+      kyc: { label: '顧客をスムーズに確認', title: '高精度な一致率の自動eKYC', desc: '政府発行IDや補足書類などの顧客情報を自動収集・確認し、厳格なKYC/AML規制に低負担で対応します。', bullets: ['サブ秒処理のリアルタイムOCR抽出', 'ID写真とselfieライブネス画像を照合'], cards: [{ badge: 'ID', title: '政府発行IDチェック', desc: '運転免許証 • US-TX', status: '真正' }, { badge: 'user', title: 'selfieライブネス照合', desc: '類似度一致信頼度', status: '99.2% 一致' }] },
       aml: { label: '包括的リスクを評価（AML）', title: '顧客リスクの全体像を把握', desc: 'AMLチェックに加えて、アクティブ、パッシブ、行動シグナルを評価し、顧客理解を高めます。', bullets: ['PEPとOFACデータセットに対する継続watchlistスキャン', '合成ID脅威とデバイス重複を静かに抑止', '自動レポートでBSA申告に対応'], panelTitle: 'AML watchlistスクリーニング', panelStatus: '毎日更新', cards: [{ title: '制裁リスト', status: '0件一致（クリア）' }, { title: '政治的に重要な人物（PEP）', status: '0件一致（クリア）' }] },
       kyb: { label: '効率的な法人KYB', title: '効率的なビジネス成果を実現', desc: '社内要件に基づく判定や手動レビュー規則を効率化し、審査チームの負担を抑えながら法人顧客を素早くオンボーディングします。', bullets: ['法的な州法人登録簿と有効申請を即時確認', '複雑な法人所有構造を明らかにしUBOを追跡', '自動SAR申告を備えた一元的なCase Management端末'], panelTitle: 'UBO所有構造の内訳', panelStatus: 'KYB一致', cards: [{ title: 'Apex Ventures LLC', status: '親会社（60%）' }, { title: 'S. Henderson（実質的所有者）', status: 'UBO（40%）' }] }
     },
     featureCards: [
-      { id: 'feat-idv', title: '政府発行IDとselfieライブネス確認', desc: '200以上の国と地域の政府発行IDを収集・確認し、ID写真とselfieの一致を確認して保証を高めます。' },
-      { id: 'feat-dbs', title: '信頼できる発行元データベース', desc: '収集・抽出したPIIを70か国以上の信頼できるデータベースと発行元で確認します。' },
+      { id: 'feat-idv', title: '政府発行IDとselfieライブネス確認', desc: '政府発行IDを収集・確認し、ID写真とselfieの一致を確認して保証を高めます。' },
+      { id: 'feat-dbs', title: '信頼できる発行元データベース', desc: '収集・抽出したPIIを信頼できるデータベースと発行元で確認します。' },
       { id: 'feat-aml', title: 'watchlist、制裁、Adverse mediaスクリーニング', desc: '100以上の制裁・警告リスト、5,000以上のPEPリスト、4億以上のAdverse media記事で個人や法人を確認します。' },
       { id: 'feat-signals', title: 'パッシブシグナル', desc: 'なりすまし、VPN検出、デバイス詳細などの行動・リスクシグナルを静かに収集し、リスク評価に利用します。' },
       { id: 'feat-workflows', title: '自動ワークフロー', desc: 'SAR申告、高リスク口座の判定、リスクシグナル統合、レビュー担当へのエスカレーションを自動化します。' },
-      { id: 'feat-security', title: 'データセキュリティとプライバシー', desc: 'きめ細かなデータアクセス制御と業界最高水準（SOC 2、ISO 27001）認証のコンプライアンス機能でPIIを安全に管理します。' }
+      { id: 'feat-security', title: 'データセキュリティとプライバシー', desc: 'きめ細かなデータアクセス制御でPIIを安全に管理します。' }
     ],
     exploreCards: [
       { title: 'コンプライアンス戦略を将来に備える。', desc: '地域およびグローバル法規制の変更に即座に適応します。エンジニアリングスプリントやカスタムコードなしで自動ルールを最新に保てます。', button: 'Complianceソリューションを見る' },
@@ -401,7 +391,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     queryRegisters: 'Finanzregister werden abgefragt und Watchlists geprüft...',
     decisionBreakdown: 'Aufschlüsselung der Decision Engine:',
     selectAnotherScenario: 'Anderes Szenario auswählen',
-    trustedBy: 'Vertraut von führenden Startups und den größten Finanzinstituten der Welt',
     lifecycleTitle: 'Umfassendes Management des Kundenlebenszyklus',
     lifecycleDesc: 'Von reibungsarmem digitalem Onboarding bis zu wiederkehrender Überwachung und Audits verwalten Sie alle KYC-, AML- und Unternehmensprüfungen in einer zentralen Ansicht.',
     featuresTitle: 'Ein umfassendes Toolset für strenge Compliance',
@@ -436,9 +425,8 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     successTitle: 'Ihre personalisierte Demo ist bereit.',
     successDesc: 'Vielen Dank, {firstName}. Wir haben eine lokale Mock-Datenbankumgebung für {companyName} angepasst. Öffnen Sie jederzeit die Identity Sandbox, um Tests auszuführen.',
     openSandbox: 'Identitäts-Sandbox öffnen',
-    complianceAssured: 'COMPLIANCE GESICHERT',
     securityTitle: 'Sicherheit und Datenschutz zuerst',
-    securityDesc: 'Identra ist für SOC 2 Type II, ISO 27001 und HIPAA-Compliance zertifiziert. Wir verwalten PII sicher mit strengen Aufbewahrungskontrollen, granularen Berechtigungen und moderner Verschlüsselung.',
+    securityDesc: 'Wir verwalten PII sicher mit strengen Aufbewahrungskontrollen, granularen Berechtigungen und moderner Verschlüsselung.',
     learnSecurity: 'Mehr über Sicherheit bei Identra erfahren',
     exploreTitle: 'Mehr von Identras Identitätsplattform entdecken',
     statusLabels: { Approve: 'GENEHMIGEN', Review: 'PRÜFUNG', Block: 'BLOCKIEREN' },
@@ -448,19 +436,18 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       treasury: { name: 'Apex Solutions LLC (wirtschaftlich Berechtigte)', type: 'Corporate-Treasury-KYB-Onboarding', checkType: 'Automatisiertes Register und UBO-Prüfung', amount: 'Treasury-Cash-Management-Pool', idCheck: 'Unternehmen verifiziert', amlCheck: 'Sanktionstreffer erkannt', riskScore: 92, status: 'Block', buttonTitle: 'Apex Solutions LLC (Treasury-KYB)', buttonDesc: 'Unternehmensregister • OFAC-Watchlist-Block', details: ['Unternehmensregister bestätigt aktive Delaware-Registrierung, aber Adresse ist mit bekanntem UPS-Briefkasten verbunden.', 'Name des primären wirtschaftlich Berechtigten (UBO) stimmt mit hoher Sicherheit mit aktueller OFAC-Sanktionsliste überein.', 'Adverse-Media-Prüfung stimmt mit aktiven Bundesermittlungen gegen Geschäftspartner überein.', 'Automatischer Block ausgelöst. Betrugsbericht im Case Management protokolliert.'] }
     },
     simulatorLogs: ['[1/4] Anmeldedaten werden gescannt und OCR auf physischen / digitalen Ausweisdokumenten ausgeführt...', '[IDV-Prüfung] Dokumenttyp: {type}. Ergebnis: {idCheck}.', '[2/4] Finanzkreditnetzwerke, DMV-Daten und Unternehmensregister werden abgefragt...', '[3/4] Listenprüfung: PEP, OFAC-Sanktionsdatenbank und aktive Watchlists...', '[AML-Prüfung] Ergebnis: {amlCheck}. Risikomerkmale protokolliert.', '[4/4] Passive Signale, Geolokalisierungsflags und Geräte-Fingerprints werden gesammelt...', '[Risk Engine] Ergebnisse werden zusammengeführt, Betrugsindikatoren bewertet und an Decision Engine übergeben...', '[Ergebnis] Risikowert: {riskScore}/100. Entscheidung: {status}.'],
-    logos: ['Lead Bank', 'OceanFirst Bank', 'Brex Financial', 'Ramp Capital', 'Apex Clearing'],
     tabs: {
-      kyc: { label: 'Kunden nahtlos verifizieren', title: 'Automatisiertes eKYC mit hoher Abgleichqualität', desc: 'Erfassen und verifizieren Sie Kundeninformationen wie Regierungs-IDs oder Zusatzdokumente automatisch, um strenge KYC/AML-Regeln mit minimaler Reibung zu erfüllen.', bullets: ['Echtzeit-OCR mit Verarbeitung unter einer Sekunde', 'ID-Bild mit Selfie-Liveness-Porträt abgleichen', 'Globale Abdeckung für 200+ Länder und Regionen'], cards: [{ badge: 'ID', title: 'Regierungsausweisprüfung', desc: 'Führerschein • US-TX', status: 'AUTHENTISCH' }, { badge: 'user', title: 'Selfie-Liveness-Abgleich', desc: 'Ähnlichkeitsvertrauen', status: '99,2% ÜBEREINSTIMMUNG' }] },
+      kyc: { label: 'Kunden nahtlos verifizieren', title: 'Automatisiertes eKYC mit hoher Abgleichqualität', desc: 'Erfassen und verifizieren Sie Kundeninformationen wie Regierungs-IDs oder Zusatzdokumente automatisch, um strenge KYC/AML-Regeln mit minimaler Reibung zu erfüllen.', bullets: ['Echtzeit-OCR mit Verarbeitung unter einer Sekunde', 'ID-Bild mit Selfie-Liveness-Porträt abgleichen'], cards: [{ badge: 'ID', title: 'Regierungsausweisprüfung', desc: 'Führerschein • US-TX', status: 'AUTHENTISCH' }, { badge: 'user', title: 'Selfie-Liveness-Abgleich', desc: 'Ähnlichkeitsvertrauen', status: '99,2% ÜBEREINSTIMMUNG' }] },
       aml: { label: 'Ganzheitliches Risiko bewerten (AML)', title: 'Vollständiges Bild des Kundenrisikos erhalten', desc: 'Bewerten Sie aktive, passive und Verhaltenssignale zusätzlich zu AML-Prüfungen, um Kunden besser zu verstehen.', bullets: ['Kontinuierliche Watchlist-Scans gegen PEP- und OFAC-Daten', 'Synthetische Identitäten und Geräteverdopplung leise abschrecken', 'Automatisierte Berichte für BSA-Compliance nutzen'], panelTitle: 'AML-Watchlist-Screening', panelStatus: 'TÄGLICH AKTUALISIERT', cards: [{ title: 'Sanktionslisten', status: '0 Treffer (unauffällig)' }, { title: 'Politisch exponiert (PEP)', status: '0 Treffer (unauffällig)' }] },
       kyb: { label: 'Effizientes Corporate KYB', title: 'Effiziente Geschäftsergebnisse fördern', desc: 'Optimieren Sie Entscheidungs- und manuelle Prüfregeln auf Basis interner Anforderungen, um Geschäftskunden schnell mit geringer Belastung für Underwriting-Teams aufzunehmen.', bullets: ['Rechtliche Unternehmensregister und aktive Einreichungen sofort prüfen', 'Komplexe Eigentümerstrukturen offenlegen und UBOs verfolgen', 'Zentralisiertes Case Management mit automatisierten SAR-Einreichungen'], panelTitle: 'UBO-Eigentümerstruktur', panelStatus: 'KYB ÜBEREINSTIMMUNG', cards: [{ title: 'Apex Ventures LLC', status: 'Muttergesellschaft (60%)' }, { title: 'S. Henderson (wirtschaftlich Berechtigter)', status: 'UBO (40%)' }] }
     },
     featureCards: [
-      { id: 'feat-idv', title: 'Regierungsausweis- und Selfie-Liveness-Prüfungen', desc: 'Erfassen und verifizieren Sie Regierungs-IDs in 200+ Ländern und Regionen und stellen Sie sicher, dass das Ausweisfoto mit dem Selfie übereinstimmt.' },
-      { id: 'feat-dbs', title: 'Autoritative und ausstellende Datenbanken', desc: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und ausstellende Quellen in 70+ Ländern.' },
+      { id: 'feat-idv', title: 'Regierungsausweis- und Selfie-Liveness-Prüfungen', desc: 'Erfassen und verifizieren Sie Regierungs-IDs und stellen Sie sicher, dass das Ausweisfoto mit dem Selfie übereinstimmt.' },
+      { id: 'feat-dbs', title: 'Autoritative und ausstellende Datenbanken', desc: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und ausstellende Quellen.' },
       { id: 'feat-aml', title: 'Watchlist-, Sanktions- und Adverse-Media-Prüfungen', desc: 'Prüfen Sie Personen oder Organisationen gegen 100+ globale Sanktions- und Warnlisten, 5.000+ PEP-Listen und 400+ Millionen Adverse-Media-Artikel.' },
       { id: 'feat-signals', title: 'Passive Signale', desc: 'Sammeln Sie still Verhaltens- und Risikosignale wie Spoofing-Versuche, VPN-Erkennung und Gerätedetails als Eingaben für die Risikobewertung.' },
       { id: 'feat-workflows', title: 'Automatisierte Workflows', desc: 'Automatisieren Sie häufige Abläufe wie SAR-Einreichungen, Entscheidungen zu Hochrisikokonten, Signalsammlung und Eskalation an Review-Teams.' },
-      { id: 'feat-security', title: 'Datensicherheit und Datenschutz', desc: 'Verwalten Sie PII sicher mit granularen Datenzugriffskontrollen und Compliance-Funktionen nach höchsten Standards (SOC 2, ISO 27001).' }
+      { id: 'feat-security', title: 'Datensicherheit und Datenschutz', desc: 'Verwalten Sie PII sicher mit granularen Datenzugriffskontrollen.' }
     ],
     exploreCards: [
       { title: 'Machen Sie Ihre Compliance-Strategie zukunftssicher.', desc: 'Passen Sie sich sofort an Änderungen lokaler und globaler Gesetze an. Halten Sie automatische Regeln ohne Engineering-Sprints oder Custom Code aktuell.', button: 'Compliance-Lösungen erkunden' },
@@ -481,7 +468,6 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     queryRegisters: 'Đang truy vấn sổ đăng ký tài chính và danh sách cảnh báo...',
     decisionBreakdown: 'Phân tích Decision Engine:',
     selectAnotherScenario: 'Chọn kịch bản khác',
-    trustedBy: 'Được các startup dẫn đầu và những tổ chức tài chính lớn nhất thế giới tin dùng',
     lifecycleTitle: 'Quản lý toàn diện vòng đời khách hàng',
     lifecycleDesc: 'Từ onboarding số ít ma sát đến giám sát định kỳ và kiểm toán, quản lý tất cả tham số tuân thủ KYC, AML và kiểm tra doanh nghiệp trong một bảng điều khiển duy nhất.',
     featuresTitle: 'Bộ công cụ toàn diện cho tuân thủ nghiêm ngặt',
@@ -516,9 +502,8 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
     successTitle: 'Demo cá nhân hóa của bạn đã sẵn sàng.',
     successDesc: 'Cảm ơn {firstName}. Chúng tôi đã tùy chỉnh môi trường cơ sở dữ liệu mô phỏng cục bộ cho {companyName}. Bạn có thể mở Identity Sandbox bất cứ lúc nào để chạy thử nghiệm.',
     openSandbox: 'Mở sandbox danh tính',
-    complianceAssured: 'ĐẢM BẢO TUÂN THỦ',
     securityTitle: 'Ưu tiên bảo mật và quyền riêng tư',
-    securityDesc: 'Identra được chứng nhận đáp ứng SOC 2 Type II, ISO 27001 và HIPAA. Chúng tôi quản lý PII an toàn với kiểm soát lưu giữ dữ liệu nghiêm ngặt, quyền truy cập chi tiết và mã hóa hiện đại.',
+    securityDesc: 'Chúng tôi quản lý PII an toàn với kiểm soát lưu giữ dữ liệu nghiêm ngặt, quyền truy cập chi tiết và mã hóa hiện đại.',
     learnSecurity: 'Tìm hiểu thêm về bảo mật tại Identra',
     exploreTitle: 'Khám phá thêm nền tảng danh tính của Identra',
     statusLabels: { Approve: 'DUYỆT', Review: 'XEM XÉT', Block: 'CHẶN' },
@@ -528,19 +513,18 @@ export const FINANCIAL_INSTITUTIONS_TRANSLATIONS = {
       treasury: { name: 'Apex Solutions LLC (Chủ sở hữu hưởng lợi)', type: 'Tiếp nhận KYB cho ngân quỹ doanh nghiệp', checkType: 'Kiểm tra sổ đăng ký và chủ sở hữu hưởng lợi tự động', amount: 'Nhóm quản lý tiền mặt ngân quỹ', idCheck: 'Doanh nghiệp đã xác minh', amlCheck: 'Phát hiện trùng khớp trừng phạt', riskScore: 92, status: 'Block', buttonTitle: 'Apex Solutions LLC (KYB ngân quỹ)', buttonDesc: 'Kiểm tra đăng ký doanh nghiệp • Chặn theo danh sách OFAC', details: ['Tìm kiếm đăng ký doanh nghiệp xác nhận đăng ký Delaware còn hiệu lực, nhưng địa chỉ đăng ký liên quan đến hộp thư UPS đã biết.', 'Tên chủ sở hữu hưởng lợi chính (UBO) trùng khớp độ tin cậy cao với danh sách trừng phạt OFAC hiện tại.', 'Nguồn tin bất lợi trùng khớp với một cuộc điều tra liên bang đang diễn ra về đối tác kinh doanh.', 'Đã tự động chặn hồ sơ. Báo cáo gian lận được ghi vào hệ thống quản lý hồ sơ.'] }
     },
     simulatorLogs: ['[1/4] Đang quét thông tin và thực hiện OCR trên giấy tờ định danh vật lý hoặc số...', '[KIỂM TRA IDV] Loại giấy tờ: {type}. Kết quả: {idCheck}.', '[2/4] Đang truy vấn mạng tín dụng tài chính, hồ sơ DMV tiểu bang và sổ đăng ký doanh nghiệp...', '[3/4] Đang sàng lọc dữ liệu PEP, danh sách trừng phạt OFAC và các danh sách cảnh báo đang hoạt động...', '[KIỂM TRA AML] Kết quả sàng lọc: {amlCheck}. Thuộc tính rủi ro đã được ghi nhận.', '[4/4] Đang thu thập tín hiệu thụ động, cảnh báo vị trí và dấu vân tay thiết bị...', '[CÔNG CỤ RỦI RO] Đang tổng hợp kết quả, đánh giá chỉ báo gian lận và chuyển đến công cụ ra quyết định...', '[KẾT QUẢ] Điểm rủi ro: {riskScore}/100. Kết luận: {status}.'],
-    logos: ['Lead Bank', 'OceanFirst Bank', 'Brex Financial', 'Ramp Capital', 'Apex Clearing'],
     tabs: {
-      kyc: { label: 'Xác minh khách hàng liền mạch', title: 'eKYC tự động với tỷ lệ khớp chính xác cao', desc: 'Tự động thu thập và xác minh thông tin khách hàng, như ID do chính phủ cấp hoặc tài liệu bổ sung, để đáp ứng quy định KYC/AML nghiêm ngặt với ít ma sát.', bullets: ['Trích xuất OCR theo thời gian thực với xử lý dưới một giây', 'Đối chiếu ảnh ID với chân dung selfie có kiểm tra tính sống động', 'Phạm vi toàn cầu hỗ trợ hơn 200 quốc gia và vùng lãnh thổ'], cards: [{ badge: 'ID', title: 'Kiểm tra ID do chính phủ cấp', desc: 'Bằng lái xe • US-TX', status: 'XÁC THỰC' }, { badge: 'user', title: 'Khớp selfie có tính sống động', desc: 'Độ tin cậy khớp tương đồng', status: '99,2% KHỚP' }] },
+      kyc: { label: 'Xác minh khách hàng liền mạch', title: 'eKYC tự động với tỷ lệ khớp chính xác cao', desc: 'Tự động thu thập và xác minh thông tin khách hàng, như ID do chính phủ cấp hoặc tài liệu bổ sung, để đáp ứng quy định KYC/AML nghiêm ngặt với ít ma sát.', bullets: ['Trích xuất OCR theo thời gian thực với xử lý dưới một giây', 'Đối chiếu ảnh ID với chân dung selfie có kiểm tra tính sống động'], cards: [{ badge: 'ID', title: 'Kiểm tra ID do chính phủ cấp', desc: 'Bằng lái xe • US-TX', status: 'XÁC THỰC' }, { badge: 'user', title: 'Khớp selfie có tính sống động', desc: 'Độ tin cậy khớp tương đồng', status: '99,2% KHỚP' }] },
       aml: { label: 'Đánh giá rủi ro toàn diện (AML)', title: 'Có bức tranh đầy đủ về rủi ro khách hàng', desc: 'Xây dựng bức tranh toàn diện hơn về khách hàng bằng cách đánh giá tín hiệu chủ động, thụ động và hành vi, ngoài các kiểm tra AML.', bullets: ['Liên tục đối chiếu với dữ liệu PEP và OFAC', 'Âm thầm ngăn chặn danh tính tổng hợp và thiết bị trùng lặp', 'Tận dụng báo cáo tự động để đáp ứng hồ sơ BSA'], panelTitle: 'Sàng lọc danh sách cảnh báo AML', panelStatus: 'CẬP NHẬT HẰNG NGÀY', cards: [{ title: 'Danh sách trừng phạt', status: '0 kết quả (sạch)' }, { title: 'Người có chức vụ, quyền hạn chính trị (PEP)', status: '0 kết quả (sạch)' }] },
       kyb: { label: 'KYB doanh nghiệp hiệu quả', title: 'Thúc đẩy kết quả kinh doanh hiệu quả', desc: 'Tinh gọn quyết định hoặc quy tắc xem xét thủ công theo yêu cầu nội bộ để onboarding khách hàng doanh nghiệp nhanh chóng với ít gánh nặng cho đội thẩm định.', bullets: ['Xác minh tức thì sổ đăng ký pháp nhân và hồ sơ đang hiệu lực', 'Làm rõ cấu trúc sở hữu doanh nghiệp phức tạp và truy vết UBO', 'Thiết bị đầu cuối Case Management tập trung với hồ sơ SAR tự động'], panelTitle: 'Phân tích sở hữu UBO', panelStatus: 'KYB ĐÃ KHỚP', cards: [{ title: 'Apex Ventures LLC', status: 'Công ty mẹ (60%)' }, { title: 'S. Henderson (Chủ sở hữu hưởng lợi)', status: 'UBO (40%)' }] }
     },
     featureCards: [
-      { id: 'feat-idv', title: 'Xác minh ID chính phủ và tính sống động selfie', desc: 'Thu thập và xác minh ID do chính phủ cấp tại hơn 200 quốc gia và vùng lãnh thổ, sau đó đảm bảo ảnh ID khớp với selfie để tăng độ tin cậy.' },
-      { id: 'feat-dbs', title: 'Cơ sở dữ liệu có thẩm quyền và nguồn phát hành', desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành tại hơn 70 quốc gia.' },
+      { id: 'feat-idv', title: 'Xác minh ID chính phủ và tính sống động selfie', desc: 'Thu thập và xác minh ID do chính phủ cấp, sau đó đảm bảo ảnh ID khớp với selfie để tăng độ tin cậy.' },
+      { id: 'feat-dbs', title: 'Cơ sở dữ liệu có thẩm quyền và nguồn phát hành', desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành.' },
       { id: 'feat-aml', title: 'Sàng lọc danh sách cảnh báo, trừng phạt và tin bất lợi', desc: 'Sàng lọc cá nhân hoặc tổ chức trên hơn 100 danh sách trừng phạt và cảnh báo toàn cầu, hơn 5.000 danh sách PEP và hơn 400 triệu bài viết bất lợi.' },
       { id: 'feat-signals', title: 'Tín hiệu thụ động', desc: 'Âm thầm thu thập tín hiệu hành vi và tín hiệu rủi ro như giả mạo, phát hiện VPN và chi tiết thiết bị để đánh giá rủi ro.' },
       { id: 'feat-workflows', title: 'Luồng tự động', desc: 'Tự động hóa các luồng phổ biến như nộp SAR, quyết định tài khoản rủi ro cao, hợp nhất tín hiệu rủi ro và chuyển lên đội xem xét.' },
-      { id: 'feat-security', title: 'Bảo mật dữ liệu và quyền riêng tư', desc: 'Quản lý PII an toàn với kiểm soát truy cập dữ liệu chi tiết và tính năng tuân thủ được chứng nhận theo tiêu chuẩn cao nhất (SOC 2, ISO 27001).' }
+      { id: 'feat-security', title: 'Bảo mật dữ liệu và quyền riêng tư', desc: 'Quản lý PII an toàn với kiểm soát truy cập dữ liệu chi tiết.' }
     ],
     exploreCards: [
       { title: 'Chuẩn bị chiến lược tuân thủ cho tương lai.', desc: 'Thích ứng tức thì với thay đổi luật địa phương và toàn cầu. Giữ quy tắc tự động luôn mới mà không cần sprint kỹ thuật hoặc mã tùy chỉnh.', button: 'Khám phá giải pháp Compliance' },

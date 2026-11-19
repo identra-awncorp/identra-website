@@ -9,8 +9,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceLabel: "Performance Standards",
     performanceTitle: "Industry-leading performance without compromise",
     performanceDesc: "Verify real people in seconds. Maintain perfect regulatory adherence while providing a friction-free user verification flow.",
-    thirdPartyTitle: "Extensively tested and certified by third-party laboratories",
-    thirdPartyDesc: "Identra selfie recognition has achieved superior results for face matching, liveness, and age assurance.",
     interactiveLabel: "Interactive Experience",
     simulatorTitle: "Selfie Matcher & Liveness Sandbox",
     simulatorDesc: "Test how Identra's system handles matches, identity mismatches, printed photos, and screen replays in real time. Toggle parameters to see the impact.",
@@ -84,7 +82,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceCards: [
       {
         title: "Ethically leverage AI",
-        desc: "Leverage models that were developed with ethically sourced data from properly consenting individuals and that demonstrated no material bias across age, sex, or skin tone according to internal and third-party evaluations."
+        desc: "Leverage models that were developed with ethically sourced data from properly consenting individuals."
       },
       {
         title: "Comply with global regulations",
@@ -105,38 +103,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         title: "Verify in seconds",
         desc: "Average face recognition verification time is under 1.9 seconds. Provide users with instant verification feedback so they can proceed with their customer journey immediately."
-      }
-    ],
-    certifications: [
-      {
-        label: "NIST Evaluated",
-        title: "Industry-leading core matching",
-        desc: "Our core face matching models achieved a false non-match rate (FNMR) of 0.0018 at a false match rate (FMR) threshold of 0.000001, as reported in comprehensive National Institute of Standards and Technology (NIST) evaluations."
-      },
-      {
-        label: "Demographic Bias",
-        title: "No material demographic bias",
-        desc: "Extensively evaluated for equality across age, sex, and skin tones. Separately audited by NIST and the Age Check Certification Scheme (ACCS) to demonstrate uniform biometric consistency."
-      },
-      {
-        label: "iBeta compliant",
-        title: "ISO/IEC 30107-3 Standards",
-        desc: "iBeta found Identra to be compliant with Level 1 and Level 2 of the Presentation Attack Detection Standard, measuring an Attack Presentation Classification Error Rate (APCER) of 0%."
-      },
-      {
-        label: "ACCS Certified",
-        title: "Age Estimation certified by ACCS",
-        desc: "Certified under the United Kingdom's ACCS scheme. Models attained an outstanding Mean Absolute Error (MAE) of 1.4 years for minors under 18 during blind testing."
-      },
-      {
-        label: "KJM APPROVED",
-        title: "Germany KJM Youth Protection",
-        desc: "Identra's age assurance framework is positively evaluated by the Kommission für Jugendmedienschutz (KJM), verifying compatibility with youth media guidelines."
-      },
-      {
-        label: "Gartner® Leader",
-        title: "Magic Quadrant™ Leader 2025",
-        desc: "Identra is recognized as a Leader in the 2025 Gartner® Magic Quadrant™ for Identity Verification, ranking 1st in five evaluated Use Cases in the Critical Capabilities report."
       }
     ],
     scenarios: {
@@ -199,10 +165,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
         a: "Selfie Recognition matches two face biometric vectors to determine if they belong to the same individual, such as comparing a live selfie with a passport photo. Selfie Liveness checks whether the selfie source is a real person in front of the camera rather than a printed photo, mask, or display replay attack."
       },
       {
-        q: "What certifications have Identra's face matching systems achieved?",
-        a: "Identra's algorithms are extensively tested by accredited third-party laboratories. We conform to ISO/IEC 30107-3 Standards through iBeta Level 1 and Level 2 certifications with an APCER rate of 0%, and achieved leading low false-non-match results in NIST audits."
-      },
-      {
         q: "How does Identra handle biometric data privacy and compliance?",
         a: "Identra is designed with strict data minimization principles. We support automated redaction rules that delete biometric landmarks, images, and user data immediately after matching is completed, keeping your storage pipeline compliant with GDPR, CCPA, and BIPA laws."
       }
@@ -218,8 +180,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceLabel: "Estándares de rendimiento",
     performanceTitle: "Rendimiento líder del sector sin concesiones",
     performanceDesc: "Verifica personas reales en segundos. Mantén una adhesión regulatoria sólida mientras ofreces un flujo de verificación sin fricción.",
-    thirdPartyTitle: "Probado y certificado ampliamente por laboratorios externos",
-    thirdPartyDesc: "El reconocimiento por selfie de Identra ha logrado resultados superiores en comparación facial, liveness y garantía de edad.",
     interactiveLabel: "Experiencia interactiva",
     simulatorTitle: "Entorno de pruebas de comparación de selfies y liveness",
     simulatorDesc: "Prueba cómo el sistema de Identra gestiona coincidencias, discrepancias de identidad, fotos impresas y repeticiones de pantalla en tiempo real. Ajusta parámetros para ver el impacto.",
@@ -293,7 +253,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceCards: [
       {
         title: "Aprovecha la IA de forma ética",
-        desc: "Usa modelos desarrollados con datos éticos de personas que dieron consentimiento adecuado y que no mostraron sesgos materiales por edad, sexo o tono de piel en evaluaciones internas y externas."
+        desc: "Usa modelos desarrollados con datos éticos de personas que dieron consentimiento adecuado."
       },
       {
         title: "Cumple regulaciones globales",
@@ -314,38 +274,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         title: "Verifica en segundos",
         desc: "El tiempo medio de verificación por reconocimiento facial es inferior a 1,9 segundos. Da a los usuarios respuesta inmediata para que continúen su recorrido al instante."
-      }
-    ],
-    certifications: [
-      {
-        label: "Evaluado por NIST",
-        title: "Comparación principal líder del sector",
-        desc: "Nuestros modelos principales de comparación facial lograron una tasa de falso no coincidente (FNMR) de 0,0018 con un umbral de tasa de falsa coincidencia (FMR) de 0,000001, según evaluaciones completas del National Institute of Standards and Technology (NIST)."
-      },
-      {
-        label: "Sesgo demográfico",
-        title: "Sin sesgo demográfico material",
-        desc: "Evaluado ampliamente para comprobar igualdad entre edad, sexo y tonos de piel. Auditado por separado por NIST y Age Check Certification Scheme (ACCS) para demostrar consistencia biométrica uniforme."
-      },
-      {
-        label: "Cumple iBeta",
-        title: "Estándares ISO/IEC 30107-3",
-        desc: "iBeta determinó que Identra cumple los niveles 1 y 2 del estándar de detección de ataques de presentación, con una tasa APCER del 0%."
-      },
-      {
-        label: "Certificado por ACCS",
-        title: "Estimación de edad certificada por ACCS",
-        desc: "Certificado bajo el esquema ACCS del Reino Unido. Los modelos alcanzaron un error absoluto medio (MAE) destacado de 1,4 años para menores de 18 en pruebas ciegas."
-      },
-      {
-        label: "Aprobado por KJM",
-        title: "Protección juvenil KJM de Alemania",
-        desc: "El marco de garantía de edad de Identra recibió una evaluación positiva de la Kommission für Jugendmedienschutz (KJM), confirmando compatibilidad con directrices de medios juveniles."
-      },
-      {
-        label: "Líder Gartner®",
-        title: "Líder Magic Quadrant™ 2025",
-        desc: "Identra fue reconocido como Líder en el Gartner® Magic Quadrant™ 2025 de verificación de identidad, con el primer puesto en cinco casos de uso evaluados en el informe Critical Capabilities."
       }
     ],
     scenarios: {
@@ -408,10 +336,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
         a: "Selfie Recognition compara dos vectores biométricos faciales para determinar si pertenecen a la misma identra, por ejemplo al comparar una selfie en vivo con la foto de un pasaporte. Selfie Liveness comprueba si la fuente de la selfie es una identra real frente a la cámara y no una foto impresa, máscara o repetición en pantalla."
       },
       {
-        q: "¿Qué certificaciones han obtenido los sistemas de comparación facial de Identra?",
-        a: "Los algoritmos de Identra son probados ampliamente por laboratorios externos acreditados. Cumplimos ISO/IEC 30107-3 mediante certificaciones iBeta Nivel 1 y Nivel 2 con una tasa APCER del 0%, y obtuvimos resultados líderes de baja falsa no coincidencia en auditorías NIST."
-      },
-      {
         q: "¿Cómo gestiona Identra la privacidad y el cumplimiento de datos biométricos?",
         a: "Identra está diseñado con principios estrictos de minimización de datos. Admitimos reglas automáticas de redacción que eliminan puntos biométricos, imágenes y datos de usuario justo después de finalizar la comparación, manteniendo tu almacenamiento alineado con GDPR, CCPA y BIPA."
       }
@@ -427,8 +351,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceLabel: "性能基準",
     performanceTitle: "妥協のない業界トップクラスの性能",
     performanceDesc: "実在する人物を数秒で確認します。規制要件を守りながら、摩擦の少ない本人確認フローを提供します。",
-    thirdPartyTitle: "第三者機関による広範な試験と認証",
-    thirdPartyDesc: "Identraのセルフィー認識は、顔照合、liveness、年齢保証で優れた結果を達成しています。",
     interactiveLabel: "インタラクティブ体験",
     simulatorTitle: "セルフィー照合とlivenessサンドボックス",
     simulatorDesc: "Identraのシステムが一致、本人不一致、印刷写真、画面リプレイをリアルタイムでどう処理するかを試せます。パラメーターを切り替えて影響を確認してください。",
@@ -502,7 +424,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceCards: [
       {
         title: "AIを倫理的に活用",
-        desc: "適切な同意を得た個人由来の倫理的データで開発され、内部評価と第三者評価で年齢、性別、肌色に関する重大な偏りが示されなかったモデルを利用できます。"
+        desc: "適切な同意を得た個人由来の倫理的データで開発されたモデルを利用できます。"
       },
       {
         title: "グローバル規制に対応",
@@ -523,38 +445,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         title: "数秒で確認",
         desc: "顔認識による平均確認時間は1.9秒未満です。ユーザーに即時フィードバックを返し、次の手続きへすぐ進めるようにします。"
-      }
-    ],
-    certifications: [
-      {
-        label: "NIST評価済み",
-        title: "業界トップクラスのコア照合",
-        desc: "当社の主要な顔照合モデルは、National Institute of Standards and Technology（NIST）の包括的評価で、FMRしきい値0.000001においてFNMR 0.0018を達成しました。"
-      },
-      {
-        label: "人口統計バイアス",
-        title: "重大な人口統計バイアスなし",
-        desc: "年齢、性別、肌色にわたる公平性を広範に評価。NISTとAge Check Certification Scheme（ACCS）による個別監査で、一貫した生体認識性能を示しました。"
-      },
-      {
-        label: "iBeta準拠",
-        title: "ISO/IEC 30107-3標準",
-        desc: "iBetaは、Identraが提示攻撃検出標準のレベル1およびレベル2に準拠し、APCER 0%を達成したことを確認しました。"
-      },
-      {
-        label: "ACCS認証済み",
-        title: "ACCS認証の年齢推定",
-        desc: "英国のACCSスキームで認証済みです。モデルは18歳未満を対象としたブラインドテストで、平均絶対誤差（MAE）1.4年という優れた結果を達成しました。"
-      },
-      {
-        label: "KJM承認",
-        title: "ドイツKJM青少年保護",
-        desc: "Identraの年齢保証フレームワークはKommission für Jugendmedienschutz（KJM）から肯定的評価を受け、青少年メディア指針との互換性が確認されています。"
-      },
-      {
-        label: "Gartner®リーダー",
-        title: "Magic Quadrant™ 2025リーダー",
-        desc: "Identraは2025年Gartner® Magic Quadrant™ for Identity Verificationでリーダーに選出され、Critical Capabilitiesレポートの5つのユースケースで1位に評価されました。"
       }
     ],
     scenarios: {
@@ -617,10 +507,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
         a: "Selfie Recognitionは2つの顔生体ベクトルを照合し、同一人物かどうかを判断します。たとえばライブセルフィーとパスポート写真の比較です。Selfie Livenessは、セルフィーの入力元が印刷写真、マスク、画面リプレイではなく、カメラの前にいる実在の人物かを確認します。"
       },
       {
-        q: "Identraの顔照合システムはどの認証を取得していますか？",
-        a: "Identraのアルゴリズムは認定された第三者機関で広範に試験されています。iBetaレベル1およびレベル2認証によりISO/IEC 30107-3に準拠し、APCER 0%を達成しました。またNIST監査で低い偽非一致率において優れた結果を得ています。"
-      },
-      {
         q: "Identraは生体データのプライバシーとコンプライアンスをどう扱いますか？",
         a: "Identraは厳格なデータ最小化原則に基づいて設計されています。照合完了直後に生体ランドマーク、画像、ユーザーデータを削除する自動リダクションルールをサポートし、GDPR、CCPA、BIPAに対応した保存パイプラインを維持できます。"
       }
@@ -636,8 +522,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceLabel: "Leistungsstandards",
     performanceTitle: "Branchenführende Leistung ohne Kompromisse",
     performanceDesc: "Verifizieren Sie echte Personen in Sekunden. Halten Sie regulatorische Anforderungen ein und bieten Sie gleichzeitig einen reibungsarmen Verifizierungsablauf.",
-    thirdPartyTitle: "Umfassend von Drittlaboren getestet und zertifiziert",
-    thirdPartyDesc: "Identra Selfie-Erkennung erzielt hervorragende Ergebnisse bei Face Matching, Liveness und Alterssicherung.",
     interactiveLabel: "Interaktive Erfahrung",
     simulatorTitle: "Selfie-Matcher und Liveness-Sandbox",
     simulatorDesc: "Testen Sie in Echtzeit, wie Identra Übereinstimmungen, Identitätsabweichungen, gedruckte Fotos und Bildschirm-Replays verarbeitet. Ändern Sie Parameter und sehen Sie die Auswirkungen.",
@@ -711,7 +595,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceCards: [
       {
         title: "KI ethisch nutzen",
-        desc: "Nutzen Sie Modelle, die mit ethisch beschafften Daten von ordnungsgemäß einwilligenden Personen entwickelt wurden und in internen sowie externen Bewertungen keine wesentliche Verzerrung nach Alter, Geschlecht oder Hautfarbe zeigten."
+        desc: "Nutzen Sie Modelle, die mit ethisch beschafften Daten von ordnungsgemäß einwilligenden Personen entwickelt wurden."
       },
       {
         title: "Globale Vorschriften einhalten",
@@ -732,38 +616,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         title: "In Sekunden verifizieren",
         desc: "Die durchschnittliche Verifizierungszeit per Gesichtserkennung liegt unter 1,9 Sekunden. Geben Sie Nutzern sofortiges Feedback, damit sie ihre Customer Journey unmittelbar fortsetzen können."
-      }
-    ],
-    certifications: [
-      {
-        label: "NIST-bewertet",
-        title: "Branchenführendes Kern-Matching",
-        desc: "Unsere Kernmodelle für Face Matching erreichten eine False-Non-Match-Rate (FNMR) von 0,0018 bei einem False-Match-Rate-Schwellenwert (FMR) von 0,000001, wie umfassende Bewertungen des National Institute of Standards and Technology (NIST) berichten."
-      },
-      {
-        label: "Demografische Verzerrung",
-        title: "Keine wesentliche demografische Verzerrung",
-        desc: "Umfassend auf Gleichheit über Alter, Geschlecht und Hauttöne hinweg geprüft. Separat von NIST und Age Check Certification Scheme (ACCS) auditiert, um gleichmäßige biometrische Konsistenz nachzuweisen."
-      },
-      {
-        label: "iBeta-konform",
-        title: "ISO/IEC 30107-3 Standards",
-        desc: "iBeta stellte fest, dass Identra Level 1 und Level 2 des Standards zur Erkennung von Präsentationsangriffen erfüllt und eine APCER-Rate von 0% erreicht."
-      },
-      {
-        label: "ACCS-zertifiziert",
-        title: "Altersschätzung durch ACCS zertifiziert",
-        desc: "Zertifiziert nach dem ACCS-Schema des Vereinigten Königreichs. Die Modelle erreichten in Blindtests für Minderjährige unter 18 eine herausragende mittlere absolute Abweichung (MAE) von 1,4 Jahren."
-      },
-      {
-        label: "KJM-geprüft",
-        title: "KJM-Jugendschutz in Deutschland",
-        desc: "Identras Framework zur Alterssicherung wurde von der Kommission für Jugendmedienschutz (KJM) positiv bewertet und ist mit Jugendschutzrichtlinien für Medien kompatibel."
-      },
-      {
-        label: "Gartner® Leader",
-        title: "Magic Quadrant™ Leader 2025",
-        desc: "Identra wurde im Gartner® Magic Quadrant™ 2025 für Identitätsverifizierung als Leader anerkannt und belegte im Critical-Capabilities-Bericht in fünf bewerteten Use Cases Platz 1."
       }
     ],
     scenarios: {
@@ -826,10 +678,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
         a: "Selfie Recognition vergleicht zwei biometrische Gesichtsvektoren, um festzustellen, ob sie zur selben Person gehören, zum Beispiel ein Live-Selfie mit einem Reisepassfoto. Selfie Liveness prüft, ob die Quelle des Selfies eine echte Person vor der Kamera ist und kein gedrucktes Foto, keine Maske oder kein Bildschirm-Replay."
       },
       {
-        q: "Welche Zertifizierungen haben Identras Face-Matching-Systeme erreicht?",
-        a: "Identras Algorithmen werden umfassend von akkreditierten Drittlaboren getestet. Wir erfüllen ISO/IEC 30107-3 über iBeta-Level-1- und Level-2-Zertifizierungen mit einer APCER-Rate von 0% und erzielten in NIST-Audits führende Ergebnisse bei niedrigen False-Non-Match-Raten."
-      },
-      {
         q: "Wie behandelt Identra Datenschutz und Compliance bei biometrischen Daten?",
         a: "Identra ist nach strengen Grundsätzen der Datenminimierung entwickelt. Automatisierte Redaktionsregeln können biometrische Landmarken, Bilder und Nutzerdaten unmittelbar nach Abschluss des Matchings löschen, damit Ihre Speicherpipeline GDPR, CCPA und BIPA unterstützt."
       }
@@ -845,8 +693,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceLabel: "Tiêu chuẩn hiệu năng",
     performanceTitle: "Hiệu năng hàng đầu ngành mà không phải đánh đổi",
     performanceDesc: "Xác minh người thật chỉ trong vài giây. Duy trì tuân thủ quy định đồng thời cung cấp luồng xác minh ít ma sát.",
-    thirdPartyTitle: "Được kiểm thử và chứng nhận rộng rãi bởi phòng thí nghiệm độc lập",
-    thirdPartyDesc: "Nhận diện selfie của Identra đạt kết quả vượt trội trong đối chiếu khuôn mặt, xác minh hiện diện và bảo đảm độ tuổi.",
     interactiveLabel: "Trải nghiệm tương tác",
     simulatorTitle: "Môi trường thử nghiệm đối chiếu selfie và xác minh hiện diện",
     simulatorDesc: "Kiểm thử cách hệ thống Identra xử lý khớp danh tính, sai lệch danh tính, ảnh in và phát lại màn hình theo thời gian thực. Bật tắt tham số để thấy tác động.",
@@ -920,7 +766,7 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
     performanceCards: [
       {
         title: "Khai thác AI có đạo đức",
-        desc: "Sử dụng các mô hình được phát triển từ dữ liệu có nguồn gốc đạo đức của những cá nhân đã đồng ý phù hợp, đồng thời không cho thấy thiên lệch đáng kể theo tuổi, giới tính hay màu da trong đánh giá nội bộ và độc lập."
+        desc: "Sử dụng các mô hình được phát triển từ dữ liệu có nguồn gốc đạo đức của những cá nhân đã đồng ý phù hợp."
       },
       {
         title: "Tuân thủ quy định toàn cầu",
@@ -941,38 +787,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         title: "Xác minh trong vài giây",
         desc: "Thời gian xác minh nhận diện khuôn mặt trung bình dưới 1,9 giây. Cung cấp phản hồi xác minh tức thì để người dùng tiếp tục hành trình ngay lập tức."
-      }
-    ],
-    certifications: [
-      {
-        label: "Được NIST đánh giá",
-        title: "Đối chiếu cốt lõi hàng đầu ngành",
-        desc: "Các mô hình đối chiếu khuôn mặt cốt lõi đạt tỷ lệ không khớp giả (FNMR) 0,0018 tại ngưỡng tỷ lệ khớp giả (FMR) 0,000001, theo đánh giá toàn diện của National Institute of Standards and Technology (NIST)."
-      },
-      {
-        label: "Thiên lệch nhân khẩu học",
-        title: "Không có thiên lệch nhân khẩu học đáng kể",
-        desc: "Được đánh giá rộng rãi về tính công bằng theo tuổi, giới tính và màu da. Được NIST và Age Check Certification Scheme (ACCS) kiểm định riêng để chứng minh độ nhất quán sinh trắc học đồng đều."
-      },
-      {
-        label: "Tuân thủ iBeta",
-        title: "Tiêu chuẩn ISO/IEC 30107-3",
-        desc: "iBeta xác nhận Identra tuân thủ Cấp 1 và Cấp 2 của tiêu chuẩn phát hiện tấn công trình diện, với tỷ lệ APCER là 0%."
-      },
-      {
-        label: "Chứng nhận ACCS",
-        title: "Ước tính tuổi được ACCS chứng nhận",
-        desc: "Được chứng nhận theo chương trình ACCS của Vương quốc Anh. Các mô hình đạt sai số tuyệt đối trung bình (MAE) nổi bật 1,4 năm cho nhóm dưới 18 tuổi trong thử nghiệm mù."
-      },
-      {
-        label: "KJM phê duyệt",
-        title: "Bảo vệ thanh thiếu niên KJM tại Đức",
-        desc: "Khung bảo đảm độ tuổi của Identra được Kommission für Jugendmedienschutz (KJM) đánh giá tích cực, xác minh khả năng tương thích với hướng dẫn truyền thông cho thanh thiếu niên."
-      },
-      {
-        label: "Gartner® Leader",
-        title: "Magic Quadrant™ Leader 2025",
-        desc: "Identra được công nhận là Leader trong Gartner® Magic Quadrant™ 2025 về xác minh danh tính, xếp hạng nhất ở năm Use Case được đánh giá trong báo cáo Critical Capabilities."
       }
     ],
     scenarios: {
@@ -1033,10 +847,6 @@ export const SELFIE_RECOGNITION_TRANSLATIONS: any = {
       {
         q: "Nhận diện selfie khác gì với xác minh hiện diện qua selfie?",
         a: "Nhận diện selfie đối chiếu hai vectơ sinh trắc học khuôn mặt để xác định chúng có thuộc cùng một người hay không, chẳng hạn so sánh selfie trực tiếp với ảnh trên hộ chiếu. Xác minh hiện diện kiểm tra xem người thật có đang ở trước camera hay không, thay vì ảnh in, mặt nạ hoặc nội dung phát lại trên màn hình."
-      },
-      {
-        q: "Các hệ thống đối chiếu khuôn mặt của Identra đã đạt chứng nhận nào?",
-        a: "Thuật toán của Identra được kiểm thử rộng rãi bởi các phòng thí nghiệm độc lập được công nhận. Chúng tôi tuân thủ ISO/IEC 30107-3 thông qua chứng nhận iBeta Cấp 1 và Cấp 2 với tỷ lệ APCER 0%, đồng thời đạt kết quả hàng đầu về tỷ lệ không khớp giả thấp trong kiểm định NIST."
       },
       {
         q: "Identra xử lý quyền riêng tư và tuân thủ dữ liệu sinh trắc học như thế nào?",

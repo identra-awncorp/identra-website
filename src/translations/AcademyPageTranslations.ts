@@ -110,7 +110,6 @@ export const ACADEMY_UI_TRANSLATIONS = {
     applyKnowledgeHeading: 'Apply your knowledge inside our live Demo Sandbox',
     applyKnowledgeDesc: 'Take what you have learned and test a dynamic identity flow featuring government ID optical character extraction, biometric active verification loops, and fraud check telemetry reports.',
     launchSandbox: 'Launch Sandbox Simulation',
-    freePricePlaceholder: '$199.00 USD',
   },
   es: {
     backToPlatform: 'Volver a la plataforma',
@@ -218,7 +217,6 @@ export const ACADEMY_UI_TRANSLATIONS = {
     applyKnowledgeHeading: 'Aplica tus conocimientos dentro de nuestro Sandbox de demostración en vivo',
     applyKnowledgeDesc: 'Toma lo que has aprendido y prueba un flujo de identidad dinámico con extracción de caracteres ópticos de ID gubernamentales, bucles de verificación activa biométrica e informes de telemetría de verificación de fraude.',
     launchSandbox: 'Iniciar simulación de sandbox',
-    freePricePlaceholder: '$199.00 USD',
   },
   ja: {
     backToPlatform: 'プラットフォームに戻る',
@@ -326,7 +324,6 @@ export const ACADEMY_UI_TRANSLATIONS = {
     applyKnowledgeHeading: 'ライブデモサンドボックス内で知識を応用する',
     applyKnowledgeDesc: '学んだ内容をもとに、政府発行IDの光学文字抽出、バイオメトリックアクティブ検証ループ、および不正防止チェックのテレメトリレポートを備えた動的なアイデンティティフローをテストします。',
     launchSandbox: 'サンドボックスシミュレーションを起動',
-    freePricePlaceholder: '$199.00 USD',
   },
   de: {
     backToPlatform: 'Zurück zur Plattform',
@@ -434,7 +431,6 @@ export const ACADEMY_UI_TRANSLATIONS = {
     applyKnowledgeHeading: 'Wenden Sie Ihr Wissen in unserer Live-Demo-Sandbox an',
     applyKnowledgeDesc: 'Nutzen Sie das Gelernte und testen Sie einen dynamischen Identitätsfluss mit optischer Zeichenerkennung von Regierungs-IDs, biometrischen aktiven Verifizierungsschleifen und Berichten über Betrugsprüfungs-Telemetriedaten.',
     launchSandbox: 'Sandbox-Simulation starten',
-    freePricePlaceholder: '$199.00 USD',
   },
   vi: {
     backToPlatform: 'Quay lại Nền tảng',
@@ -542,7 +538,6 @@ export const ACADEMY_UI_TRANSLATIONS = {
     applyKnowledgeHeading: 'Áp dụng kiến thức của bạn trong Hộp cát Thử nghiệm trực tiếp',
     applyKnowledgeDesc: 'Sử dụng những gì bạn đã học và thử nghiệm một quy trình nhận dạng động bao gồm trích xuất ký tự quang học giấy tờ tùy thân của chính phủ, các vòng xác minh sinh trắc học chủ động và các báo cáo dữ liệu kiểm tra gian lận.',
     launchSandbox: 'Khởi chạy Hộp cát Thử nghiệm',
-    freePricePlaceholder: '$199.00 USD',
   }
 };
 
@@ -749,7 +744,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
     'course-global-id-architecture': {
       title: 'Global ID Document Design & Layouts',
       shortDesc: 'Understand the design blueprints, security overlay features, and MRZ standards of global IDs.',
-      longDesc: 'Build an exhaustive vocabulary of physical and digital identity materials across 150+ countries. Study the micro-level security overlays, specialized typography, and design conventions used to guarantee government-issued authenticity.',
+      longDesc: 'Build an exhaustive vocabulary of physical and digital identity materials from many countries. Study the micro-level security overlays, specialized typography, and design conventions used to guarantee government-issued authenticity.',
       instructorRole: 'VP of Global Compliance Standards',
       whatYouWillLearn: [
         'Identify regional physical security details: laser perforations, watermarks, and optical variable device patterns.',
@@ -975,7 +970,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
     'course-global-id-architecture': {
       title: 'Diseño y maquetación de documentos de identidad globales',
       shortDesc: 'Comprende planos de diseño, superposiciones de seguridad y estándares de MRZ de identificaciones globales.',
-      longDesc: 'Construye un vocabulario exhaustivo de materiales de identidad físicos y digitales de más de 150 países. Estudia las superposiciones de seguridad a nivel micro, la tipografía especializada y las convenciones de diseño para garantizar la autenticidad emitida por gobiernos.',
+      longDesc: 'Construye un vocabulario exhaustivo de materiales de identidad físicos y digitales de muchos países. Estudia las superposiciones de seguridad a nivel micro, la tipografía especializada y las convenciones de diseño para garantizar la autenticidad emitida por gobiernos.',
       instructorRole: 'Vicepresidente de Estándares de Cumplimiento Global',
       whatYouWillLearn: [
         'Identificar detalles regionales de seguridad física: perforaciones láser, marcas de agua y patrones OVD.',
@@ -1201,7 +1196,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
     'course-global-id-architecture': {
       title: 'グローバルID書類のデザイン＆レイアウト',
       shortDesc: 'グローバルIDの設計図、セキュリティオーバーレイ機能、およびMRZ標準を理解します。',
-      longDesc: '150カ国以上の物理的およびデジタルアイデンティティ書類に関する包括的な語彙を構築します。政府が発行した本物であることを保証するために使用される、ミクロレベルのセキュリティオーバーレイ、特殊なタイポグラフィ、およびデザイン規約を学習します。',
+      longDesc: '多くの国の物理的およびデジタルアイデンティティ書類に関する包括的な語彙を構築します。政府が発行した本物であることを保証するために使用される、ミクロレベルのセキュリティオーバーレイ、特殊なタイポグラフィ、およびデザイン規約を学習します。',
       instructorRole: 'グローバルコンプライアンス基準担当副社長',
       whatYouWillLearn: [
         'レーザー穿孔、透かし、光可変デバイス（OVD）のパターンなど、地域の物理的セキュリティ詳細を識別する。',
@@ -1427,7 +1422,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
     'course-global-id-architecture': {
       title: 'Globales ID-Dokumentendesign & -Layouts',
       shortDesc: 'Verstehen Sie die Design-Blaupausen, Sicherheitsmerkmale und MRZ-Standards globaler IDs.',
-      longDesc: 'Bauen Sie ein umfassendes Vokabular physischer und digitaler Identitätsmaterialien aus über 150 Ländern auf. Studieren Sie die mikroskaligen Sicherheitsmerkmale, die spezialisierte Typografie und die Designkonventionen, die verwendet werden, um die staatlich ausgestellte Echtheit zu garantieren.',
+      longDesc: 'Bauen Sie ein umfassendes Vokabular physischer und digitaler Identitätsmaterialien aus vielen Ländern auf. Studieren Sie die mikroskaligen Sicherheitsmerkmale, die spezialisierte Typografie und die Designkonventionen, die verwendet werden, um die staatlich ausgestellte Echtheit zu garantieren.',
       instructorRole: 'VP of Global Compliance Standards',
       whatYouWillLearn: [
         'Identifizierung regionaler physischer Sicherheitsmerkmale: Laserperforationen, Wasserzeichen und optisch variable Gerätemuster.',
@@ -1653,7 +1648,7 @@ export const ACADEMY_COURSES_TRANSLATIONS = {
     'course-global-id-architecture': {
       title: 'Thiết kế & Bố cục tài liệu ID toàn cầu',
       shortDesc: 'Hiểu các bản thiết kế, tính năng bảo mật phủ và tiêu chuẩn MRZ của các ID toàn cầu.',
-      longDesc: 'Xây dựng kho từ vựng phong phú về các tài liệu nhận dạng vật lý và kỹ thuật số trên hơn 150 quốc gia. Nghiên cứu các lớp phủ bảo mật ở cấp độ vi mô, kiểu chữ chuyên dụng và các quy ước thiết kế được sử dụng để đảm bảo tính xác thực do chính phủ cấp.',
+      longDesc: 'Xây dựng kho từ vựng phong phú về các tài liệu nhận dạng vật lý và kỹ thuật số của nhiều quốc gia. Nghiên cứu các lớp phủ bảo mật ở cấp độ vi mô, kiểu chữ chuyên dụng và các quy ước thiết kế được sử dụng để đảm bảo tính xác thực do chính phủ cấp.',
       instructorRole: 'Phó chủ tịch Tiêu chuẩn Tuân thủ Toàn cầu',
       whatYouWillLearn: [
         'Xác định các chi tiết bảo mật vật lý khu vực: đục lỗ bằng laser, hình chìm và các mẫu thiết bị biến đổi quang học.',

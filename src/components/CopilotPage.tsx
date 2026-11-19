@@ -520,9 +520,6 @@ export default function CopilotPage({ onOpenSandbox, onBackToLanding, onViewChan
                         </div>
                       </div>
 
-                      <p className="text-[11px] text-slate-500 italic text-center font-mono">
-                        {simT.poweredByHistoric}
-                      </p>
                     </div>
                   )}
                 </motion.div>

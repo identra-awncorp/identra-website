@@ -7,18 +7,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
   "en": {
     "copy": {
       "featuredEbooks": "Featured ebooks",
-      "figure1MagicQuadrant": "Figure 1: Magic Quadrant",
-      "challengers": "Challengers",
-      "leaders": "Leaders",
-      "nichePlayers": "Niche Players",
-      "visionaries": "Visionaries",
-      "completenessOfVision": "Completeness of Vision",
-      "abilityToExecute": "Ability to Execute",
-      "report": "Report",
-      "text45MinRead": "45 min read",
-      "identraIsNamedALeaderInThe2025": "Identra is named a Leader in the 2025 Gartner® Magic Quadrant™ for Identity Verification",
-      "inTheNewlyReleasedReportGartnerEvaluatesIdentity": "In the newly released report, Gartner evaluates identity verification providers on their Completeness of Vision and Ability to Execute. Download the report to see why we believe Identra is uniquely positioned to secure your customer onboarding.",
-      "downloadTheReport": "Download the report",
       "resourceCenter": "Resource center",
       "ebooks": "Ebooks",
       "allEbooks": "All ebooks",
@@ -156,24 +144,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
         "type": "Ebook",
         "description": "Navigate cross-border regulatory differences across Europe, LATAM, and APAC. Implement compliant KYC procedures globally.",
       },
-      "ebook-12": {
-        "title": "The Forrester Wave™: Identity Verification Solutions, Q3 2025",
-        "type": "Guide",
-        "description": "Compare the top identity verification providers. Learn why Identra's platform approach stands out as a leading industry choice.",
-        "duration": "20 min",
-      },
-      "ebook-13": {
-        "title": "2025 Gartner® Magic Quadrant™ for Identity Verification",
-        "type": "Guide",
-        "description": "Get the full industry report. Explore modern capabilities like multi-layered signaling, automated review queues, and modular verifications.",
-        "duration": "45 min",
-      },
-      "ebook-14": {
-        "title": "Liminal 2025 Business Entity Verification Link Index",
-        "type": "Guide",
-        "description": "An analytical benchmark of KYB and business verifications. Learn how to optimize ultimate beneficial owner (UBO) discovery.",
-        "duration": "10 min",
-      },
       "ebook-15": {
         "title": "The leader's guide to a signals-based fraud strategy",
         "type": "Guide",
@@ -257,7 +227,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-31": {
         "title": "Optimizing patient verification: How to deliver headache-free virtual care",
         "type": "Guide",
-        "description": "Learn how healthcare providers verify patient identities and credentials while maintaining strict HIPAA compliance and patient ease.",
+        "description": "Learn how healthcare providers verify patient identities and credentials while keeping the experience easy for patients.",
       },
       "ebook-32": {
         "title": "Solving age verification's biggest challenges: Practical strategies for a digital world",
@@ -361,18 +331,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
   "es": {
     "copy": {
       "featuredEbooks": "Ebooks destacados",
-      "figure1MagicQuadrant": "Figura 1: Magic Quadrant",
-      "challengers": "Retadores",
-      "leaders": "Líderes",
-      "nichePlayers": "Jugadores de nicho",
-      "visionaries": "Visionarios",
-      "completenessOfVision": "Integridad de visión",
-      "abilityToExecute": "Capacidad de ejecución",
-      "report": "Informe",
-      "text45MinRead": "45 min de lectura",
-      "identraIsNamedALeaderInThe2025": "Identra fue nombrada líder en el Gartner® Magic Quadrant™ 2025 para verificación de identidad",
-      "inTheNewlyReleasedReportGartnerEvaluatesIdentity": "En el nuevo informe, Gartner evalúa proveedores de verificación por visión y ejecución. Descargue el informe para ver por qué Identra está bien posicionada para proteger el alta de clientes.",
-      "downloadTheReport": "Descargar el informe",
       "resourceCenter": "Centro de recursos",
       "ebooks": "Ebooks",
       "allEbooks": "Todos los ebooks",
@@ -510,24 +468,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
         "type": "Ebook",
         "description": "Gestiona diferencias regulatorias transfronterizas en Europa, LATAM y APAC. Implementa KYC conforme a nivel global.",
       },
-      "ebook-12": {
-        "title": "The Forrester Wave™: soluciones de verificación de identidad, Q3 2025",
-        "type": "Guía",
-        "description": "Compara los principales proveedores de verificación de identidad y descubre por qué el enfoque de plataforma de Identra destaca.",
-        "duration": "20 min",
-      },
-      "ebook-13": {
-        "title": "Gartner® Magic Quadrant™ 2025 para verificación de identidad",
-        "type": "Guía",
-        "description": "Obtén el informe completo del sector. Explora capacidades modernas como señales multicapa, colas de revisión automatizadas y verificaciones modulares.",
-        "duration": "45 min",
-      },
-      "ebook-14": {
-        "title": "Liminal 2025 Business Entity Verification Link Index",
-        "type": "Guía",
-        "description": "Benchmark analítico de KYB y verificaciones empresariales. Aprende a optimizar el descubrimiento de beneficiarios finales (UBO).",
-        "duration": "10 min",
-      },
       "ebook-15": {
         "title": "Guía para líderes sobre estrategia antifraude basada en señales",
         "type": "Guía",
@@ -611,7 +551,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-31": {
         "title": "Optimizar verificación de pacientes: cómo ofrecer atención virtual sin fricción",
         "type": "Guía",
-        "description": "Aprende cómo proveedores de salud verifican identidad y credenciales manteniendo cumplimiento HIPAA estricto y facilidad para pacientes.",
+        "description": "Aprende cómo proveedores de salud verifican identidad y credenciales manteniendo una experiencia sencilla para los pacientes.",
       },
       "ebook-32": {
         "title": "Resolver los mayores retos de verificación de edad: estrategias prácticas para el mundo digital",
@@ -715,18 +655,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
   "ja": {
     "copy": {
       "featuredEbooks": "注目のEbook",
-      "figure1MagicQuadrant": "図1: Magic Quadrant",
-      "challengers": "チャレンジャー",
-      "leaders": "リーダー",
-      "nichePlayers": "ニッチプレーヤー",
-      "visionaries": "ビジョナリー",
-      "completenessOfVision": "ビジョンの完全性",
-      "abilityToExecute": "実行能力",
-      "report": "レポート",
-      "text45MinRead": "45分で読めます",
-      "identraIsNamedALeaderInThe2025": "Identraは2025年 Gartner® Magic Quadrant™ for Identity Verificationでリーダーに選出",
-      "inTheNewlyReleasedReportGartnerEvaluatesIdentity": "新しいレポートでGartnerは本人確認プロバイダーをビジョンと実行能力で評価しています。Identraが顧客オンボーディングを保護する理由をご確認ください。",
-      "downloadTheReport": "レポートをダウンロード",
       "resourceCenter": "リソースセンター",
       "ebooks": "Ebook",
       "allEbooks": "すべてのEbook",
@@ -864,24 +792,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
         "type": "Ebook",
         "description": "欧州、LATAM、APACの国境を越えた規制差異を整理し、世界規模で準拠したKYCを実装します。",
       },
-      "ebook-12": {
-        "title": "The Forrester Wave™: 本人確認ソリューション Q3 2025",
-        "type": "ガイド",
-        "description": "主要な本人確認プロバイダーを比較し、Identraのプラットフォームアプローチが業界で際立つ理由を学びます。",
-        "duration": "20分",
-      },
-      "ebook-13": {
-        "title": "2025 Gartner® Magic Quadrant™ 本人確認",
-        "type": "ガイド",
-        "description": "業界レポート全文を入手し、多層シグナル、自動レビューキュー、モジュール式検証などの最新機能を確認できます。",
-        "duration": "45分",
-      },
-      "ebook-14": {
-        "title": "Liminal 2025 事業体確認リンクインデックス",
-        "type": "ガイド",
-        "description": "KYBと事業確認の分析ベンチマークです。最終受益者（UBO）発見を最適化する方法を学びます。",
-        "duration": "10分",
-      },
       "ebook-15": {
         "title": "シグナルベース不正対策戦略のリーダー向けガイド",
         "type": "ガイド",
@@ -965,7 +875,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-31": {
         "title": "患者確認の最適化: ストレスのないバーチャルケアを提供する方法",
         "type": "ガイド",
-        "description": "医療提供者が厳格なHIPAA準拠と患者の使いやすさを保ちながら、患者IDと資格情報を検証する方法を学びます。",
+        "description": "医療提供者が患者の使いやすさを保ちながら、患者IDと資格情報を検証する方法を学びます。",
       },
       "ebook-32": {
         "title": "年齢確認の最大課題を解く: デジタル世界の実践戦略",
@@ -1069,18 +979,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
   "de": {
     "copy": {
       "featuredEbooks": "Empfohlene E-Books",
-      "figure1MagicQuadrant": "Abbildung 1: Magic Quadrant",
-      "challengers": "Herausforderer",
-      "leaders": "Leader",
-      "nichePlayers": "Nischenanbieter",
-      "visionaries": "Visionäre",
-      "completenessOfVision": "Vollständigkeit der Vision",
-      "abilityToExecute": "Umsetzungsfähigkeit",
-      "report": "Bericht",
-      "text45MinRead": "45 Min. Lesezeit",
-      "identraIsNamedALeaderInThe2025": "Identra wurde im Gartner® Magic Quadrant™ 2025 für Identitätsprüfung als Leader benannt",
-      "inTheNewlyReleasedReportGartnerEvaluatesIdentity": "Im neuen Bericht bewertet Gartner Anbieter nach Vision und Umsetzung. Laden Sie den Bericht herunter, um zu sehen, warum Identra für eine sichere Kundenregistrierung stark positioniert ist.",
-      "downloadTheReport": "Bericht herunterladen",
       "resourceCenter": "Ressourcencenter",
       "ebooks": "E-Books",
       "allEbooks": "Alle E-Books",
@@ -1218,24 +1116,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
         "type": "E-Book",
         "description": "Navigieren Sie grenzüberschreitende regulatorische Unterschiede in Europa, LATAM und APAC und implementieren Sie global konforme KYC-Prozesse.",
       },
-      "ebook-12": {
-        "title": "The Forrester Wave™: Lösungen zur Identitätsprüfung, Q3 2025",
-        "type": "Leitfaden",
-        "description": "Vergleichen Sie führende Anbieter für Identitätsprüfung und erfahren Sie, warum Identras Plattformansatz hervorsticht.",
-        "duration": "20 Min.",
-      },
-      "ebook-13": {
-        "title": "2025 Gartner® Magic Quadrant™ für Identitätsprüfung",
-        "type": "Leitfaden",
-        "description": "Holen Sie sich den vollständigen Branchenbericht und entdecken Sie moderne Funktionen wie mehrschichtige Signale, automatisierte Review-Queues und modulare Verifizierungen.",
-        "duration": "45 Min.",
-      },
-      "ebook-14": {
-        "title": "Liminal 2025 Business Entity Verification Link Index",
-        "type": "Leitfaden",
-        "description": "Ein analytischer Benchmark für KYB und Unternehmensverifizierung. Lernen Sie, UBO-Ermittlung zu optimieren.",
-        "duration": "10 Min.",
-      },
       "ebook-15": {
         "title": "Leitfaden für Führungskräfte zu signalbasierter Betrugsprävention",
         "type": "Leitfaden",
@@ -1319,7 +1199,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-31": {
         "title": "Patient Verification optimieren: reibungsarme virtuelle Versorgung liefern",
         "type": "Leitfaden",
-        "description": "Erfahren Sie, wie Gesundheitsanbieter Patientenidentitäten und Credentials verifizieren und dabei HIPAA-Compliance und einfache Nutzung wahren.",
+        "description": "Erfahren Sie, wie Gesundheitsanbieter Patientenidentitäten und Credentials verifizieren und die Nutzung für Patienten einfach halten.",
       },
       "ebook-32": {
         "title": "Die größten Herausforderungen der Altersprüfung lösen: praktische Strategien für die digitale Welt",
@@ -1423,18 +1303,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
   "vi": {
     "copy": {
       "featuredEbooks": "Tài liệu nổi bật",
-      "figure1MagicQuadrant": "Hình 1: Magic Quadrant",
-      "challengers": "Thách thức",
-      "leaders": "Dẫn đầu",
-      "nichePlayers": "Ngách",
-      "visionaries": "Định hướng tương lai",
-      "completenessOfVision": "Mức độ hoàn chỉnh của tầm nhìn",
-      "abilityToExecute": "Khả năng thực thi",
-      "report": "Báo cáo",
-      "text45MinRead": "Đọc trong 45 phút",
-      "identraIsNamedALeaderInThe2025": "Identra được Gartner® Magic Quadrant™ 2025 về Xác minh danh tính xếp vào nhóm Leader",
-      "inTheNewlyReleasedReportGartnerEvaluatesIdentity": "Trong báo cáo mới phát hành, Gartner đánh giá các nhà cung cấp xác minh danh tính theo mức độ hoàn chỉnh của tầm nhìn và khả năng thực thi. Tải báo cáo để xem vì sao chúng tôi tin Identra có vị thế nổi bật trong việc bảo vệ quy trình xác minh khách hàng.",
-      "downloadTheReport": "Tải báo cáo",
       "resourceCenter": "Trung tâm tài nguyên",
       "ebooks": "Tài liệu",
       "allEbooks": "Tất cả tài liệu",
@@ -1572,24 +1440,6 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
         "type": "Ebook",
         "description": "Điều hướng khác biệt pháp lý xuyên biên giới tại châu Âu, Mỹ Latinh và châu Á - Thái Bình Dương. Triển khai quy trình KYC tuân thủ trên toàn cầu.",
       },
-      "ebook-12": {
-        "title": "The Forrester Wave™: Giải pháp xác minh danh tính, Q3 2025",
-        "type": "Hướng dẫn",
-        "description": "So sánh các nhà cung cấp xác minh danh tính hàng đầu và tìm hiểu vì sao cách tiếp cận nền tảng của Identra nổi bật trong ngành.",
-        "duration": "20 phút",
-      },
-      "ebook-13": {
-        "title": "Gartner® Magic Quadrant™ 2025 về xác minh danh tính",
-        "type": "Hướng dẫn",
-        "description": "Nhận báo cáo ngành đầy đủ. Khám phá các năng lực hiện đại như tín hiệu nhiều lớp, hàng đợi đánh giá tự động và xác minh mô-đun.",
-        "duration": "45 phút",
-      },
-      "ebook-14": {
-        "title": "Liminal 2025 Business Entity Verification Link Index",
-        "type": "Hướng dẫn",
-        "description": "Báo cáo đối sánh về KYB và xác minh doanh nghiệp. Tìm hiểu cách tối ưu phát hiện chủ sở hữu hưởng lợi cuối cùng (UBO).",
-        "duration": "10 phút",
-      },
       "ebook-15": {
         "title": "Hướng dẫn cho lãnh đạo về chiến lược chống gian lận dựa trên tín hiệu",
         "type": "Hướng dẫn",
@@ -1673,7 +1523,7 @@ export const EBOOKS_PAGE_TRANSLATIONS = {
       "ebook-31": {
         "title": "Tối ưu xác minh bệnh nhân để cung cấp chăm sóc từ xa dễ dàng hơn",
         "type": "Hướng dẫn",
-        "description": "Tìm hiểu cách nhà cung cấp y tế xác minh danh tính và thông tin bệnh nhân, đồng thời duy trì tuân thủ HIPAA và trải nghiệm thuận tiện.",
+        "description": "Tìm hiểu cách nhà cung cấp y tế xác minh danh tính và thông tin bệnh nhân, đồng thời giữ trải nghiệm thuận tiện cho người bệnh.",
       },
       "ebook-32": {
         "title": "Giải quyết các thách thức lớn nhất của xác minh tuổi: chiến lược thực tế cho thế giới số",

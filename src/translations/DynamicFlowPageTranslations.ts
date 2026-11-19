@@ -126,11 +126,6 @@ export type DynamicFlowPageCopy = {
     readonly primaryCta: string;
     readonly secondaryCta: string;
   };
-  readonly security: {
-    readonly title: string;
-    readonly description: string;
-    readonly cta: string;
-  };
   readonly simulator: {
     readonly presetLabel: string;
     readonly presetFintech: string;
@@ -328,11 +323,6 @@ const en: DynamicFlowPageCopy = {
     description: 'Open Dynamic Flow to explore the workspace, or speak with our team about the journey you want to build.',
     primaryCta: 'Open Dynamic Flow',
     secondaryCta: 'Talk to an expert',
-  },
-  security: {
-    title: 'Enterprise security and zero-trust architecture',
-    description: 'SOC 2 Type II • ISO 27001 • GDPR and CCPA compliant • End-to-end encrypted',
-    cta: 'View security standards',
   },
   simulator: {
     presetLabel: 'Interactive Preset Scenarios:',
@@ -540,11 +530,6 @@ const es: DynamicFlowPageCopy = {
     primaryCta: 'Abrir Dynamic Flow',
     secondaryCta: 'Hablar con un experto',
   },
-  security: {
-    title: 'Seguridad empresarial y arquitectura de confianza cero',
-    description: 'SOC 2 Tipo II • ISO 27001 • Conforme con RGPD y CCPA • Cifrado de extremo a extremo',
-    cta: 'Ver estándares de seguridad',
-  },
   simulator: {
     presetLabel: 'Escenarios Preconfigurados:',
     presetFintech: 'Alta Fintech (Rápida)',
@@ -750,11 +735,6 @@ const ja: DynamicFlowPageCopy = {
     description: 'Dynamic Flowでワークスペースを試すか、構築したいジャーニーについて担当チームにご相談ください。',
     primaryCta: 'Dynamic Flowを開く',
     secondaryCta: '専門家に相談',
-  },
-  security: {
-    title: 'エンタープライズセキュリティとゼロトラスト設計',
-    description: 'SOC 2 Type II • ISO 27001 • GDPR・CCPA準拠 • エンドツーエンド暗号化',
-    cta: 'セキュリティ基準を見る',
   },
   simulator: {
     presetLabel: 'プリセットシナリオ:',
@@ -962,11 +942,6 @@ const de: DynamicFlowPageCopy = {
     primaryCta: 'Dynamic Flow öffnen',
     secondaryCta: 'Mit Experten sprechen',
   },
-  security: {
-    title: 'Unternehmenssicherheit und Zero-Trust-Architektur',
-    description: 'SOC 2 Typ II • ISO 27001 • DSGVO- und CCPA-konform • Ende-zu-Ende verschlüsselt',
-    cta: 'Sicherheitsstandards ansehen',
-  },
   simulator: {
     presetLabel: 'Vordefinierte Szenarien:',
     presetFintech: 'Fintech Schnell-Onboarding',
@@ -1172,11 +1147,6 @@ const vi: DynamicFlowPageCopy = {
     description: 'Mở Dynamic Flow để khám phá không gian làm việc hoặc trao đổi với Identra về hành trình doanh nghiệp muốn xây dựng.',
     primaryCta: 'Mở Dynamic Flow',
     secondaryCta: 'Liên hệ tư vấn',
-  },
-  security: {
-    title: 'Bảo mật doanh nghiệp và kiến trúc Zero Trust',
-    description: 'SOC 2 Type II • ISO 27001 • Tuân thủ GDPR và CCPA • Mã hóa đầu cuối',
-    cta: 'Xem tiêu chuẩn bảo mật',
   },
   simulator: {
     presetLabel: 'Kịch bản mẫu tương tác:',

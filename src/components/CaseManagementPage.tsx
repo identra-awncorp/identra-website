@@ -493,29 +493,6 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
         </div>
       </section>
 
-      {/* 3. LOGO SHOWCASE */}
-      <section className="bg-[#0B122F] text-white py-8 border-b border-slate-900/30">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-[10px] font-bold text-[#8C9EFF] tracking-widest uppercase">
-            {t.trustedBy}
-          </span>
-          <div className="flex flex-wrap items-center gap-8 lg:gap-14 text-white font-display text-sm font-semibold opacity-80">
-            <div className="flex items-center gap-1.5 tracking-tight">
-              <span className="w-2.5 h-2.5 bg-teal-400 rounded-full" />
-              {t.logoDapper}
-            </div>
-            <div className="flex items-center gap-1.5 tracking-tight">
-              <span className="w-2.5 h-2.5 bg-yellow-400 rounded-full" />
-              {t.logoNewton}
-            </div>
-            <div className="flex items-center gap-1.5 tracking-tight text-indigo-200">
-              <span className="w-2.5 h-2.5 bg-blue-400 rounded-full" />
-              {t.logoRipple}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* 4. INTERACTIVE SIMULATOR: HOW IT WORKS */}
       <section className="py-20 max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-10">
@@ -1118,45 +1095,6 @@ export default function CaseManagementPage({ onOpenSandbox, onBackToLanding, onV
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. CUSTOMER TESTIMONIAL & LOGO STRIP (BitGo) */}
-      <section className="bg-indigo-50/50 py-20 border-t border-b border-slate-250/20">
-        <div className="max-w-5xl mx-auto px-6 text-center space-y-8">
-          
-          {/* Testimonial Quote */}
-          <blockquote className="space-y-4 max-w-4xl mx-auto">
-            <p className="text-base sm:text-lg md:text-xl font-mono text-[#0B122F] tracking-tight leading-relaxed">
-              {t.bitgoQuote}
-            </p>
-            <cite className="text-xs font-bold text-slate-400 not-italic uppercase tracking-wider block">
-              {t.bitgoCite}
-            </cite>
-          </blockquote>
-
-          {/* Customer Case Study strip element */}
-          <div className="max-w-3xl mx-auto bg-white p-5 rounded-2xl border border-slate-200/80 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3.5 text-left">
-              <div className="w-9 h-9 bg-black text-white font-bold rounded-lg flex items-center justify-center text-xs tracking-wider">
-                {t.bitgoLogoInitial}
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900">{t.bitgoResults}</h4>
-                <p className="text-[10px] text-slate-500 leading-normal font-medium max-w-md mt-0.5">
-                  {t.bitgoDesc}
-                </p>
-              </div>
-            </div>
-
-            <button 
-              onClick={onOpenSandbox}
-              className="w-full sm:w-auto bg-black hover:bg-slate-800 text-white font-bold text-[10px] py-2 px-4 rounded-lg flex items-center justify-center gap-1.5 transition shrink-0 uppercase tracking-wider"
-            >
-              {t.readCaseStudy}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
       </section>

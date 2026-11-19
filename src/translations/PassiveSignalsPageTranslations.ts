@@ -84,11 +84,6 @@ export const passiveSignalsTranslations = {
     detectDuplicateDesc: 'Proactively block users whose device signatures, visual metadata, or canvas-fingerprints link back directly to previously blacklisted accounts.',
     automateRoutingTitle: 'Automate routing to manual review',
     automateRoutingDesc: 'Investigate cases with high-threat risk scores instead of automatically accepting or declining them. Minimize review backlog while catching complex attacks.',
-    readCaseStudy: 'Read case study',
-    caseStudySummary: "Coffee Meets Bagel builds trust and safety and verifies users 99.9% faster with Identra's automated & user-friendly identity platform.",
-    integrateMarketplaceTitle: 'Integrate signals with Identra Marketplace',
-    integrateMarketplaceDesc: 'With Identra Marketplace, you can integrate signals from top data platforms into your risk analysis processes to make better decisions and streamline operations. Incorporate third-party credit scores, device reputations, or synthetic logs seamlessly.',
-    learnMoreBtn: 'Learn more',
     exploreMorePlatform: "Explore more of Identra's identity platform",
     buildBetterFlowsTitle: 'Build better identity flows.',
     buildBetterFlowsDesc: 'Leverage our visual, drag-and-drop Dynamic Flow Editor to construct custom, user-friendly collection blocks.',
@@ -180,11 +175,6 @@ export const passiveSignalsTranslations = {
     detectDuplicateDesc: 'Bloquee proactivamente a los usuarios cuyas firmas de dispositivos, metadatos visuales o huellas digitales de lienzo se vinculen directamente a cuentas previamente incluidas en la lista negra.',
     automateRoutingTitle: 'Automatizar el enrutamiento a revisión manual',
     automateRoutingDesc: 'Investigue casos con puntuaciones de riesgo de alta amenaza en lugar de aceptarlos o rechazarlos automáticamente. Minimice el trabajo pendiente de revisión mientras detecta ataques complejos.',
-    readCaseStudy: 'Leer estudio de caso',
-    caseStudySummary: "Coffee Meets Bagel genera confianza y seguridad y verifica a los usuarios un 99,9% más rápido con la plataforma de identidad automatizada y fácil de usar de Identra.",
-    integrateMarketplaceTitle: 'Integre señales con Identra Marketplace',
-    integrateMarketplaceDesc: 'Con Identra Marketplace, puede integrar señales de las principales plataformas de datos en sus procesos de análisis de riesgos para tomar mejores decisiones y agilizar las operaciones. Incorpore puntuaciones de crédito de terceros, reputaciones de dispositivos o registros sintéticos sin problemas.',
-    learnMoreBtn: 'Más información',
     exploreMorePlatform: "Explora más de la plataforma de identidad de Identra",
     buildBetterFlowsTitle: 'Construya mejores flujos de identidad.',
     buildBetterFlowsDesc: 'Aproveche nuestro editor de flujo dinámico visual de arrastrar y soltar para crear bloques de colección personalizados y fáciles de usar.',
@@ -238,11 +228,11 @@ export const passiveSignalsTranslations = {
     evaluatedScore: '評価スコアの出力',
     riskSuffix: '/ 100 リスク',
     improveFraudVectorTitle: 'マルチシグナルアンサンブルによる不正ベクトル捕捉の向上',
-    improveFraudVectorDesc: "ペルソナのアンサンブル モデルは、信号パターンを対応するグローバル分布と比較し、統計的に異常なアクティビティを潜在的な不正行為の指標としてフラグを立てます。",
+    improveFraudVectorDesc: "Identraのアンサンブル モデルは、信号パターンを対応するグローバル分布と比較し、統計的に異常なアクティビティを潜在的な不正行為の指標としてフラグを立てます。",
     probabilityModeling: '確率モデリングサンドボックス',
     ensembleCooccurrence: 'アンサンブル共起決定器',
     testCombinations: 'テストの組み合わせ',
-    toggleActiveRisk: '以下のアクティブなリスク要素を切り替えて、ペルソナが個別の入力ではなくリスク相関をどのように評価するかを確認します。',
+    toggleActiveRisk: '以下のアクティブなリスク要素を切り替えて、Identraが個別の入力ではなくリスク相関をどのように評価するかを確認します。',
     shortcutUsageLabel: 'ショートカットの使用法',
     roboticKeyEntry: 'ロボットによるキー入力パターン',
     emulatorCheckLabel: 'エミュレータチェック',
@@ -253,7 +243,7 @@ export const passiveSignalsTranslations = {
     viewActionBtn: 'アクションの表示',
     orchestratedDecisions: '組織的な意思決定',
     streamlineAccuracy: '不正行為の判断精度を合理化し、向上させる',
-    buildRichRules: '不正リスクをより完全に把握するために、検証チェックとパッシブシグナルの両方を使用する豊富な不正ルールを構築します。ペルソナでネイティブに意思決定を実行するか、独自のプラットフォームと統合します。',
+    buildRichRules: '不正リスクをより完全に把握するために、検証チェックとパッシブシグナルの両方を使用する豊富な不正ルールを構築します。Identraでネイティブに意思決定を実行するか、独自のプラットフォームと統合します。',
     seeRuleEngine: 'ルールエンジンの機能を参照',
     screenForFraudRisk: '不正リスクのスクリーニング',
     ruleEditor: 'ルールエディタ',
@@ -276,12 +266,7 @@ export const passiveSignalsTranslations = {
     detectDuplicateDesc: 'デバイス署名、ビジュアルメタデータ、またはキャンバスフィンガープリントが以前にブラックリストに登録されたアカウントに直接リンクしているユーザーを積極的にブロックします。',
     automateRoutingTitle: '手動レビューへのルーティングを自動化する',
     automateRoutingDesc: '脅威リスクスコアが高いケースを自動的に承認または拒否するのではなく、調査します。複雑な攻撃を捕捉しながら、レビューのバックログを最小限に抑えます。',
-    readCaseStudy: 'ケーススタディを読む',
-    caseStudySummary: "Coffee Meets Bagel は、ペルソナの自動化されたユーザーフレンドリーな ID プラットフォームを使用して、信頼と安全性を構築し、ユーザーの認証を 99.9% 高速化します。",
-    integrateMarketplaceTitle: 'シグナルをペルソナ マーケットプレイスと統合する',
-    integrateMarketplaceDesc: 'ペルソナ マーケットプレイスを使用すると、トップ データ プラットフォームからのシグナルをリスク分析プロセスに統合して、より適切な意思決定を行い、運用を合理化できます。サードパーティのクレジット スコア、デバイスの評判、合成ログをシームレスに組み込みます。',
-    learnMoreBtn: 'もっと詳しく知る',
-    exploreMorePlatform: "ペルソナのアイデンティティ プラットフォームをさらに詳しく見る",
+    exploreMorePlatform: "Identraのアイデンティティ プラットフォームをさらに詳しく見る",
     buildBetterFlowsTitle: 'より良いアイデンティティ フローを構築します。',
     buildBetterFlowsDesc: '視覚的なドラッグ アンド ドロップのダイナミック フロー エディターを活用して、カスタムで使いやすいコレクション ブロックを構築します。',
     viewDynamicFlowBtn: '動的フローの表示',
@@ -289,7 +274,7 @@ export const passiveSignalsTranslations = {
     catchMoreFraudDesc: '当社のプロアクティブな脅威評価アルゴリズムがバックグラウンド チェックをどのように連携させて、連携した詐欺グループを隔離するかを調べてください。',
     viewFraudPreventionBtn: '不正防止を見る',
     readyToGetStarted: '始める準備はできていますか?',
-    readyToGetStartedDesc: '今すぐお問い合わせいただくか、ペルソナの探索を始めてください。当社のエンジニアと製品スペシャリストは、最適化されたスムーズな検証環境の構築をお手伝いいたします。',
+    readyToGetStartedDesc: '今すぐお問い合わせいただくか、Identraの探索を始めてください。当社のエンジニアと製品スペシャリストは、最適化されたスムーズな検証環境の構築をお手伝いいたします。',
     tryItNowBtn: '今すぐ試してください',
   },
   de: {
@@ -372,11 +357,6 @@ export const passiveSignalsTranslations = {
     detectDuplicateDesc: 'Blockieren Sie proaktiv Benutzer, deren Gerätesignaturen, visuelle Metadaten oder Canvas-Fingerabdrücke direkt auf zuvor auf der schwarzen Liste stehende Konten verweisen.',
     automateRoutingTitle: 'Automatisieren Sie die Weiterleitung zur manuellen Überprüfung',
     automateRoutingDesc: 'Untersuchen Sie Fälle mit hohen Risikobewertungen, anstatt sie automatisch anzunehmen oder abzulehnen. Minimieren Sie den Überprüfungsrückstand und erkennen Sie gleichzeitig komplexe Angriffe.',
-    readCaseStudy: 'Fallstudie lesen',
-    caseStudySummary: "Coffee Meets Bagel schafft Vertrauen und Sicherheit und verifiziert Benutzer 99,9 % schneller mit der automatisierten und benutzerfreundlichen Identitätsplattform von Identra.",
-    integrateMarketplaceTitle: 'Integrieren Sie Signale mit Identra Marketplace',
-    integrateMarketplaceDesc: 'Mit Identra Marketplace können Sie Signale von Top-Datenplattformen in Ihre Risikoanalyseprozesse integrieren, um bessere Entscheidungen zu treffen und Abläufe zu optimieren. Integrieren Sie nahtlos Kredit-Scores, Gerätereputationen oder synthetische Protokolle von Drittanbietern.',
-    learnMoreBtn: 'Erfahren Sie mehr',
     exploreMorePlatform: "Entdecken Sie mehr über die Identitätsplattform von Identra",
     buildBetterFlowsTitle: 'Bauen Sie bessere Identitätsflüsse auf.',
     buildBetterFlowsDesc: 'Nutzen Sie unseren visuellen Dynamic Flow Editor per Drag-and-Drop, um benutzerdefinierte, benutzerfreundliche Sammlungsblöcke zu erstellen.',
@@ -467,11 +447,6 @@ export const passiveSignalsTranslations = {
     detectDuplicateDesc: 'Chủ động chặn người dùng có chữ ký thiết bị, siêu dữ liệu hình ảnh hoặc dấu vân tay canvas liên kết trực tiếp trở lại các tài khoản đã bị đưa vào danh sách đen trước đó.',
     automateRoutingTitle: 'Tự động hóa định tuyến đến khâu đánh giá thủ công',
     automateRoutingDesc: 'Điều tra các trường hợp có điểm số rủi ro đe dọa cao thay vì tự động chấp nhận hoặc từ chối chúng. Giảm thiểu tồn đọng đánh giá trong khi ngăn chặn các cuộc tấn công phức tạp.',
-    readCaseStudy: 'Đọc câu chuyện thực tế',
-    caseStudySummary: 'Coffee Meets Bagel xây dựng sự tin cậy và an toàn đồng thời xác minh người dùng nhanh hơn 99,9% với nền tảng định danh tự động và thân thiện với người dùng của Identra.',
-    integrateMarketplaceTitle: 'Tích hợp các tín hiệu với Identra Marketplace',
-    integrateMarketplaceDesc: 'Với Identra Marketplace, bạn có thể tích hợp các tín hiệu từ các nền tảng dữ liệu hàng đầu vào các quy trình phân tích rủi ro của mình để đưa ra quyết định tốt hơn và hợp lý hóa các hoạt động. Kết hợp liền mạch điểm tín dụng của bên thứ ba, danh tiếng thiết bị hoặc nhật ký tổng hợp.',
-    learnMoreBtn: 'Tìm hiểu thêm',
     exploreMorePlatform: 'Khám phá thêm về nền tảng định danh của Identra',
     buildBetterFlowsTitle: 'Xây dựng các luồng danh tính tốt hơn.',
     buildBetterFlowsDesc: 'Tận dụng Trình chỉnh sửa luồng động trực quan theo kiểu kéo thả của chúng tôi để xây dựng các khối thu thập thông tin tùy chỉnh và thân thiện với người dùng.',
@@ -720,16 +695,10 @@ export const inlineTranslations: Record<string, Record<string, string>> = {
     ja: "レビュー",
     de: "Rezension"
   },
-  "Trust and safety manager at Coffee Meets Bagel": {
-    vi: "Quản lý bộ phận an toàn và tin cậy tại Coffee Meets Bagel",
-    es: "Gerente de confianza y seguridad en Coffee Meets Bagel",
-    ja: "Coffee Meets Bagel の信頼と安全のマネージャー",
-    de: "Vertrauens- und Sicherheitsmanager bei Coffee Meets Bagel"
-  },
   "Identra Marketplace": {
     vi: "Thị trường Identra",
-    es: "Mercado de personas",
-    ja: "ペルソナマーケットプレイス",
+    es: "Marketplace de Identra",
+    ja: "Identraマーケットプレイス",
     de: "Identra-Marktplatz"
   },
   "Core": {
@@ -929,12 +898,6 @@ export const inlineTranslations: Record<string, Record<string, string>> = {
     es: "La imagen del documento afirma ser una nueva toma de la cámara de un teléfono, pero carece de distancias focales reales de la lente, lo que apunta a una creación sintética.",
     ja: "文書画像は電話カメラで撮影したものであると主張していますが、実際のレンズの焦点距離が記載されておらず、合成で作成されたものであることがわかります。",
     de: "Das Dokumentbild behauptet, eine frische Aufnahme einer Telefonkamera zu sein, es fehlen jedoch echte Objektivbrennweiten, was auf eine synthetische Schöpfung hindeutet."
-  },
-  "\"With Identra, we can check government IDs and selfie liveness in real time to make sure users are the right age and cross-reference multiple risk signals to help us figure out whether to approve or decline users.\"": {
-    vi: "\"Với Identra, chúng tôi có thể kiểm tra ID chính phủ và tính xác thực của ảnh selfie trực tiếp theo thời gian thực để đảm bảo người dùng đúng độ tuổi, đồng thời đối chiếu chéo nhiều tín hiệu rủi ro để đưa ra quyết định chấp nhận hoặc từ chối người dùng.\"",
-    es: "\"Con Identra, podemos verificar las identificaciones gubernamentales y la vida de los selfies en tiempo real para asegurarnos de que los usuarios tengan la edad correcta y hacer referencias cruzadas de múltiples señales de riesgo para ayudarnos a determinar si aprobar o rechazar a los usuarios\".",
-    ja: "「ペルソナを使用すると、政府の ID とセルフィーのライブ状況をリアルタイムでチェックして、ユーザーが適切な年齢であることを確認し、複数のリスク信号を相互参照して、ユーザーを承認するか拒否するかを判断することができます。」",
-    de: "„Mit Identra können wir Regierungsausweise und Selfie-Liveness in Echtzeit überprüfen, um sicherzustellen, dass Benutzer das richtige Alter haben, und mehrere Risikosignale vergleichen, um herauszufinden, ob Benutzer genehmigt oder abgelehnt werden sollen.“"
   },
 };
 
@@ -1423,41 +1386,6 @@ export const passiveSignalsInlineCopy = {
     de: 'Rezension',
     vi: 'đánh giá',
   },
-  with_identra_we_can_check_government_ids: {
-    en: '"With Identra, we can check government IDs and selfie liveness in real time to make sure users are the right age and cross-reference multiple risk signals to help us figure out whether to approve or decline users."',
-    es: '"Con Identra, podemos verificar IDs gubernamentales y selfie liveness en tiempo real para confirmar que los usuarios tengan la edad correcta y cruzar m?ltiples se?ales de riesgo para decidir si aprobarlos o rechazarlos."',
-    ja: '?Identra ????????? ID ???????????????????????????????????????????????????????????????????????????',
-    de: '"Mit Identra k?nnen wir staatliche Ausweise und Selfie-Liveness in Echtzeit pr?fen, um sicherzustellen, dass Nutzer das richtige Alter haben, und mehrere Risikosignale abgleichen, um ?ber Genehmigung oder Ablehnung zu entscheiden."',
-    vi: '"Với Identra, chúng tôi có thể xác minh giấy tờ tùy thân và sự hiện diện của người dùng qua selfie theo thời gian thực để bảo đảm họ đủ tuổi, đồng thời đối chiếu nhiều tín hiệu rủi ro trước khi phê duyệt hoặc từ chối."',
-  },
-  trust_and_safety_manager_at_coffee_meets: {
-    en: 'Trust and safety manager at Coffee Meets Bagel',
-    es: 'Gerente de confianza y seguridad en Coffee Meets Bagel',
-    ja: 'Coffee Meets Bagel の信頼と安全のマネージャー',
-    de: 'Vertrauens- und Sicherheitsmanager bei Coffee Meets Bagel',
-    vi: 'Quản lý bộ phận an toàn và tin cậy tại Coffee Meets Bagel',
-  },
-  identra_marketplace: {
-    en: 'Identra Marketplace',
-    es: 'Mercado de personas',
-    ja: 'ペルソナマーケットプレイス',
-    de: 'Identra-Marktplatz',
-    vi: 'Thị trường Identra',
-  },
-  core: {
-    en: 'Core',
-    es: 'Centro',
-    ja: 'コア',
-    de: 'Kern',
-    vi: 'Cốt lõi',
-  },
-  partner: {
-    en: 'Partner',
-    es: 'Pareja',
-    ja: 'パートナー',
-    de: 'Partner',
-    vi: 'Đối tác',
-  },
   try_the_demo: {
     en: 'Try the demo',
     es: 'Probar la demo',
@@ -1471,7 +1399,6 @@ export const PASSIVE_SIGNALS_LOG_TRANSLATIONS = {
   en: {
     version: 'v1.2.0',
     ensembleVersion: 'Sentinel Ensembles v2',
-    caseStudyBrand: 'CoffeeMeetsBagel',
     resetLog: 'Reset log',
     labels: {
       deviceOs: 'Device OS',
@@ -1493,7 +1420,6 @@ export const PASSIVE_SIGNALS_LOG_TRANSLATIONS = {
   es: {
     version: 'v1.2.0',
     ensembleVersion: 'Sentinel Ensembles v2',
-    caseStudyBrand: 'CoffeeMeetsBagel',
     resetLog: 'Restablecer registro',
     labels: {
       deviceOs: 'SO del dispositivo',
@@ -1515,7 +1441,6 @@ export const PASSIVE_SIGNALS_LOG_TRANSLATIONS = {
   ja: {
     version: 'v1.2.0',
     ensembleVersion: 'Sentinel Ensembles v2',
-    caseStudyBrand: 'CoffeeMeetsBagel',
     resetLog: 'ログをリセット',
     labels: {
       deviceOs: 'デバイス OS',
@@ -1537,7 +1462,6 @@ export const PASSIVE_SIGNALS_LOG_TRANSLATIONS = {
   de: {
     version: 'v1.2.0',
     ensembleVersion: 'Sentinel Ensembles v2',
-    caseStudyBrand: 'CoffeeMeetsBagel',
     resetLog: 'Protokoll zurücksetzen',
     labels: {
       deviceOs: 'Geräte-OS',
@@ -1559,7 +1483,6 @@ export const PASSIVE_SIGNALS_LOG_TRANSLATIONS = {
   vi: {
     version: 'v1.2.0',
     ensembleVersion: 'Sentinel Ensembles v2',
-    caseStudyBrand: 'CoffeeMeetsBagel',
     resetLog: 'Đặt lại nhật ký',
     labels: {
       deviceOs: 'Hệ điều hành thiết bị',

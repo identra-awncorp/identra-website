@@ -10,7 +10,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Healthcare",
       "title": "Register for healthcare access",
       "desc": "Verify patient identity, insurance coverage, and consent before clinical intake.",
-      "security": "HIPAA-ready identity controls",
+      "security": "Patient identity and consent controls",
       "successResult": "The patient identity, insurance, and consent checks passed. Clinical intake can continue with protected data handling.",
       "steps": [
         {
@@ -77,7 +77,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
             "Real-time Insurance OCR Read"
           ],
           [
-            "HIPAA RSA-2048 Key Encryption",
+            "RSA-2048 Key Encryption",
             "Interactive Signature Capture",
             "Consent Attestation Hash"
           ]
@@ -86,7 +86,6 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "scenario": {
       "headerTitle": "CareFlow Onboarding Desk",
-      "hipaaCompliant": "HIPAA Compliant",
       "step1Description": "Step 1: Patient matching check. Identra verifies legal identity to prevent duplicate clinical registration records.",
       "patientLegalName": "Patient Legal Name",
       "medicalSecurityNumber": "Medical Security Number",
@@ -97,15 +96,15 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "policyLabel": "Policy:",
       "groupLabel": "Group:",
       "analyzeInsuranceCardOcr": "Analyze Insurance Card OCR",
-      "step3Description": "Step 3: HIPAA privacy consent agreement. Confirm secure medical release parameters legally.",
-      "consentDescription": "I hereby grant authorization to CareFlow to parse and hold my healthcare record details under full clinical privacy protection guidelines mandated by federal HIPAA laws.",
+      "step3Description": "Step 3: Privacy consent agreement. Confirm secure medical release parameters legally.",
+      "consentDescription": "I hereby grant authorization to CareFlow to parse and hold my healthcare record details under full clinical privacy protection guidelines.",
       "consentCheckbox": "I consent to privacy terms",
-      "sealHipaaConsentForm": "Seal HIPAA Consent Form",
+      "sealHipaaConsentForm": "Seal Consent Form",
       "patientPortalVerified": "Patient Portal Verified!",
       "successDescription": "Patient insurance matched, digital medical files secured, and digital clinic check-in pass issued.",
       "digitalPass": "CareFlow Digital Pass",
       "insuranceVerifiedActive": "Insurance: Verified Active",
-      "hipaaSecureFooter": "HIPAA compliant encryption and secure card OCR"
+      "hipaaSecureFooter": "Encrypted transfer and secure card OCR"
     },
     "logs": {
       "vettingClinicalRecords": "Vetting clinical database records for patient: \"{name}\"",
@@ -113,8 +112,8 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "runningInsuranceOcr": "Running Optical Character Recognition (OCR) over insurance layout...",
       "insuranceScanVerified": "Insurance scan verified: PolicyID=\"{policyId}\", GroupID=\"{groupId}\", carrier=\"Blue Shield Premium\", active=TRUE",
       "consentRequired": "Please check the consent checkbox to continue.",
-      "submittingHipaaAgreement": "Submitting legal HIPAA privacy agreement...",
-      "hipaaAgreementVerified": "HIPAA agreement verified. Cryptographic timestamp signed and bound to patient profile."
+      "submittingHipaaAgreement": "Submitting privacy agreement...",
+      "hipaaAgreementVerified": "Privacy agreement verified. Cryptographic timestamp signed and bound to patient profile."
     }
   },
   "es": {
@@ -123,7 +122,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Salud",
       "title": "Registrarse para acceso sanitario",
       "desc": "Verifica identidad del paciente, cobertura de seguro y consentimiento antes de la admisión clínica.",
-      "security": "Controles de identidad preparados para HIPAA",
+      "security": "Controles de identidad y consentimiento del paciente",
       "successResult": "Identidad, seguro y consentimiento del paciente fueron aprobados. La admisión clínica puede continuar con datos protegidos.",
       "steps": [
         {
@@ -190,7 +189,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
             "Lectura OCR de seguro en tiempo real"
           ],
           [
-            "Cifrado de clave HIPAA RSA-2048",
+            "Cifrado de clave RSA-2048",
             "Captura interactiva de firma",
             "Hash de certificación de consentimiento"
           ]
@@ -199,7 +198,6 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "scenario": {
       "headerTitle": "Mesa de incorporación de CareFlow",
-      "hipaaCompliant": "Compatible con HIPAA",
       "step1Description": "Paso 1: Verificación de coincidencia del paciente. Identra valida la identidad legal para evitar registros clínicos duplicados.",
       "patientLegalName": "Nombre legal del paciente",
       "medicalSecurityNumber": "Número de seguridad médica",
@@ -210,15 +208,15 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "policyLabel": "Póliza:",
       "groupLabel": "Grupo:",
       "analyzeInsuranceCardOcr": "Analizar OCR de tarjeta de seguro",
-      "step3Description": "Paso 3: Consentimiento de privacidad HIPAA. Confirma legalmente los parámetros de divulgación médica segura.",
-      "consentDescription": "Autorizo a CareFlow a procesar y conservar los detalles de mi expediente médico bajo las normas completas de privacidad clínica exigidas por HIPAA.",
+      "step3Description": "Paso 3: Consentimiento de privacidad. Confirma legalmente los parámetros de divulgación médica segura.",
+      "consentDescription": "Autorizo a CareFlow a procesar y conservar los detalles de mi expediente médico bajo las normas completas de privacidad clínica.",
       "consentCheckbox": "Acepto los términos de privacidad",
-      "sealHipaaConsentForm": "Sellar consentimiento HIPAA",
+      "sealHipaaConsentForm": "Sellar consentimiento",
       "patientPortalVerified": "Portal del paciente verificado.",
       "successDescription": "El seguro del paciente fue validado, los archivos médicos digitales quedaron protegidos y se emitió el pase de registro clínico digital.",
       "digitalPass": "Pase digital de CareFlow",
       "insuranceVerifiedActive": "Seguro: verificado activo",
-      "hipaaSecureFooter": "Cifrado compatible con HIPAA y OCR seguro de tarjetas"
+      "hipaaSecureFooter": "Transferencia cifrada y OCR seguro de tarjetas"
     },
     "logs": {
       "vettingClinicalRecords": "Revisando registros clínicos para el paciente: \"{name}\"",
@@ -226,8 +224,8 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "runningInsuranceOcr": "Ejecutando OCR sobre el diseño de la tarjeta de seguro...",
       "insuranceScanVerified": "Escaneo de seguro verificado: PolicyID=\"{policyId}\", GroupID=\"{groupId}\", aseguradora=\"Blue Shield Premium\", active=TRUE",
       "consentRequired": "Marca la casilla de consentimiento para continuar.",
-      "submittingHipaaAgreement": "Enviando acuerdo legal de privacidad HIPAA...",
-      "hipaaAgreementVerified": "Acuerdo HIPAA verificado. Marca temporal criptográfica firmada y vinculada al perfil del paciente."
+      "submittingHipaaAgreement": "Enviando acuerdo de privacidad...",
+      "hipaaAgreementVerified": "Acuerdo de privacidad verificado. Marca temporal criptográfica firmada y vinculada al perfil del paciente."
     }
   },
   "ja": {
@@ -236,7 +234,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "医療",
       "title": "医療アクセスに登録",
       "desc": "臨床受付前に、患者本人確認、保険適用、同意を確認します。",
-      "security": "HIPAA対応の本人確認制御",
+      "security": "患者の本人確認と同意の管理",
       "successResult": "患者ID、保険、同意チェックに合格しました。保護されたデータ処理で臨床受付を継続できます。",
       "steps": [
         {
@@ -303,7 +301,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
             "保険OCRリアルタイム読み取り"
           ],
           [
-            "HIPAA RSA-2048鍵暗号化",
+            "RSA-2048鍵暗号化",
             "インタラクティブ署名取得",
             "同意証明ハッシュ"
           ]
@@ -312,7 +310,6 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "scenario": {
       "headerTitle": "CareFlow オンボーディングデスク",
-      "hipaaCompliant": "HIPAA準拠",
       "step1Description": "ステップ1: 患者照合確認。Identraが法的IDを確認し、臨床登録の重複を防ぎます。",
       "patientLegalName": "患者の法的氏名",
       "medicalSecurityNumber": "医療セキュリティ番号",
@@ -323,15 +320,15 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "policyLabel": "保険証番号:",
       "groupLabel": "グループ:",
       "analyzeInsuranceCardOcr": "保険カードOCRを分析",
-      "step3Description": "ステップ3: HIPAAプライバシー同意。安全な医療情報開示条件を法的に確認します。",
-      "consentDescription": "私は、HIPAAで義務付けられた臨床プライバシー保護ガイドラインに従い、CareFlowが私の医療記録情報を処理・保持することを許可します。",
+      "step3Description": "ステップ3: プライバシー同意。安全な医療情報開示条件を法的に確認します。",
+      "consentDescription": "私は、臨床プライバシー保護ガイドラインに従い、CareFlowが私の医療記録情報を処理・保持することを許可します。",
       "consentCheckbox": "プライバシー条件に同意します",
-      "sealHipaaConsentForm": "HIPAA同意書を確定",
+      "sealHipaaConsentForm": "同意書を確定",
       "patientPortalVerified": "患者ポータルが確認されました。",
       "successDescription": "患者保険が照合され、デジタル医療ファイルが保護され、デジタル診療チェックインパスが発行されました。",
       "digitalPass": "CareFlow デジタルパス",
       "insuranceVerifiedActive": "保険: 有効確認済み",
-      "hipaaSecureFooter": "HIPAA準拠の暗号化と安全なカードOCR"
+      "hipaaSecureFooter": "暗号化された送信と安全なカードOCR"
     },
     "logs": {
       "vettingClinicalRecords": "患者 \"{name}\" の臨床データベース記録を審査中",
@@ -339,8 +336,8 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "runningInsuranceOcr": "保険カードレイアウトにOCRを実行中...",
       "insuranceScanVerified": "保険スキャンを検証しました: PolicyID=\"{policyId}\", GroupID=\"{groupId}\", carrier=\"Blue Shield Premium\", active=TRUE",
       "consentRequired": "続行するには同意チェックボックスを選択してください。",
-      "submittingHipaaAgreement": "HIPAAプライバシー同意書を提出中...",
-      "hipaaAgreementVerified": "HIPAA同意書を検証しました。暗号タイムスタンプを署名し、患者プロフィールに紐付けました。"
+      "submittingHipaaAgreement": "プライバシー同意書を提出中...",
+      "hipaaAgreementVerified": "プライバシー同意書を検証しました。暗号タイムスタンプを署名し、患者プロフィールに紐付けました。"
     }
   },
   "de": {
@@ -349,7 +346,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Gesundheit",
       "title": "Für Gesundheitszugang registrieren",
       "desc": "Verifizieren Sie Patientenidentität, Versicherungsschutz und Einwilligung vor der klinischen Aufnahme.",
-      "security": "HIPAA-fähige Identitätskontrollen",
+      "security": "Identitäts- und Einwilligungskontrollen für Patienten",
       "successResult": "Patientenidentität, Versicherung und Einwilligung wurden bestätigt. Die klinische Aufnahme kann mit geschützter Datenverarbeitung fortgesetzt werden.",
       "steps": [
         {
@@ -416,7 +413,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
             "Echtzeit-OCR der Versicherung"
           ],
           [
-            "HIPAA RSA-2048-Schlüsselverschlüsselung",
+            "RSA-2048-Schlüsselverschlüsselung",
             "Interaktive Signaturerfassung",
             "Hash des Einwilligungsnachweises"
           ]
@@ -425,7 +422,6 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "scenario": {
       "headerTitle": "CareFlow Onboarding-Desk",
-      "hipaaCompliant": "HIPAA-konform",
       "step1Description": "Schritt 1: Patientenabgleich. Identra verifiziert die rechtliche Identität, um doppelte klinische Registrierungen zu vermeiden.",
       "patientLegalName": "Rechtlicher Name des Patienten",
       "medicalSecurityNumber": "Medizinische Sicherheitsnummer",
@@ -436,15 +432,15 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "policyLabel": "Police:",
       "groupLabel": "Gruppe:",
       "analyzeInsuranceCardOcr": "Versicherungskarten-OCR analysieren",
-      "step3Description": "Schritt 3: HIPAA-Datenschutzeinwilligung. Bestätigen Sie die sicheren medizinischen Freigabeparameter rechtsverbindlich.",
-      "consentDescription": "Ich ermächtige CareFlow, meine Gesundheitsdaten gemäß den von HIPAA vorgeschriebenen klinischen Datenschutzrichtlinien zu verarbeiten und aufzubewahren.",
+      "step3Description": "Schritt 3: Datenschutzeinwilligung. Bestätigen Sie die sicheren medizinischen Freigabeparameter rechtsverbindlich.",
+      "consentDescription": "Ich ermächtige CareFlow, meine Gesundheitsdaten gemäß klinischen Datenschutzrichtlinien zu verarbeiten und aufzubewahren.",
       "consentCheckbox": "Ich stimme den Datenschutzbedingungen zu",
-      "sealHipaaConsentForm": "HIPAA-Einwilligung versiegeln",
+      "sealHipaaConsentForm": "Einwilligung versiegeln",
       "patientPortalVerified": "Patientenportal verifiziert!",
       "successDescription": "Die Patientenversicherung wurde abgeglichen, digitale medizinische Dateien wurden gesichert und der digitale Klinik-Check-in-Pass wurde ausgestellt.",
       "digitalPass": "CareFlow Digitalpass",
       "insuranceVerifiedActive": "Versicherung: aktiv verifiziert",
-      "hipaaSecureFooter": "HIPAA-konforme Verschlüsselung und sichere Karten-OCR"
+      "hipaaSecureFooter": "Verschlüsselte Übertragung und sichere Karten-OCR"
     },
     "logs": {
       "vettingClinicalRecords": "Klinische Datenbankeinträge für Patient \"{name}\" werden geprüft",
@@ -452,8 +448,8 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "runningInsuranceOcr": "Optische Zeichenerkennung (OCR) für Versicherungslayout wird ausgeführt...",
       "insuranceScanVerified": "Versicherungsscan verifiziert: PolicyID=\"{policyId}\", GroupID=\"{groupId}\", Anbieter=\"Blue Shield Premium\", active=TRUE",
       "consentRequired": "Bitte aktivieren Sie die Einwilligungscheckbox, um fortzufahren.",
-      "submittingHipaaAgreement": "Rechtliche HIPAA-Datenschutzerklärung wird übermittelt...",
-      "hipaaAgreementVerified": "HIPAA-Vereinbarung verifiziert. Kryptografischer Zeitstempel signiert und mit Patientenprofil verknüpft."
+      "submittingHipaaAgreement": "Datenschutzerklärung wird übermittelt...",
+      "hipaaAgreementVerified": "Datenschutzvereinbarung verifiziert. Kryptografischer Zeitstempel signiert und mit Patientenprofil verknüpft."
     }
   },
   "vi": {
@@ -462,7 +458,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Y tế",
       "title": "Đăng ký truy cập dịch vụ y tế",
       "desc": "Xác minh danh tính bệnh nhân, bảo hiểm và sự đồng thuận trước khi tiếp nhận lâm sàng.",
-      "security": "Kiểm soát danh tính sẵn sàng cho HIPAA",
+      "security": "Kiểm soát danh tính và sự đồng ý của bệnh nhân",
       "successResult": "Danh tính bệnh nhân, bảo hiểm và sự đồng thuận đã đạt kiểm tra. Quy trình tiếp nhận lâm sàng có thể tiếp tục với xử lý dữ liệu được bảo vệ.",
       "steps": [
         {
@@ -529,7 +525,7 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
             "Đọc OCR bảo hiểm theo thời gian thực"
           ],
           [
-            "Mã hóa khóa HIPAA RSA-2048",
+            "Mã hóa khóa RSA-2048",
             "Thu thập chữ ký tương tác",
             "Băm chứng nhận đồng ý"
           ]
@@ -538,7 +534,6 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "scenario": {
       "headerTitle": "Bàn tiếp nhận CareFlow",
-      "hipaaCompliant": "Tuân thủ HIPAA",
       "step1Description": "Bước 1: Kiểm tra đối chiếu bệnh nhân. Identra xác minh định danh pháp lý để ngăn hồ sơ lâm sàng bị đăng ký trùng.",
       "patientLegalName": "Tên pháp lý của bệnh nhân",
       "medicalSecurityNumber": "Mã bảo mật y tế",
@@ -549,15 +544,15 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "policyLabel": "Hợp đồng:",
       "groupLabel": "Nhóm:",
       "analyzeInsuranceCardOcr": "Phân tích OCR thẻ bảo hiểm",
-      "step3Description": "Bước 3: Thỏa thuận quyền riêng tư HIPAA. Xác nhận hợp pháp các tham số chia sẻ hồ sơ y tế an toàn.",
-      "consentDescription": "Tôi cho phép CareFlow xử lý và lưu giữ thông tin hồ sơ y tế của tôi theo đầy đủ các hướng dẫn bảo vệ quyền riêng tư lâm sàng do HIPAA quy định.",
+      "step3Description": "Bước 3: Thỏa thuận quyền riêng tư. Xác nhận hợp pháp các tham số chia sẻ hồ sơ y tế an toàn.",
+      "consentDescription": "Tôi cho phép CareFlow xử lý và lưu giữ thông tin hồ sơ y tế của tôi theo đầy đủ các hướng dẫn bảo vệ quyền riêng tư lâm sàng.",
       "consentCheckbox": "Tôi đồng ý với điều khoản quyền riêng tư",
-      "sealHipaaConsentForm": "Niêm phong cam kết HIPAA",
+      "sealHipaaConsentForm": "Niêm phong cam kết",
       "patientPortalVerified": "Cổng bệnh nhân đã được xác minh!",
       "successDescription": "Bảo hiểm của bệnh nhân đã được đối chiếu, hồ sơ y tế số đã được bảo mật và thẻ check-in phòng khám số đã được phát hành.",
       "digitalPass": "Thẻ số CareFlow",
       "insuranceVerifiedActive": "Bảo hiểm: đã xác minh còn hiệu lực",
-      "hipaaSecureFooter": "Mã hóa tuân thủ HIPAA và OCR thẻ bảo mật"
+      "hipaaSecureFooter": "Truyền dữ liệu mã hóa và OCR thẻ bảo mật"
     },
     "logs": {
       "vettingClinicalRecords": "Đang rà soát hồ sơ cơ sở dữ liệu y khoa cho bệnh nhân: \"{name}\"",
@@ -565,8 +560,8 @@ export const HEALTHCARE_DEMO_PAGE_TRANSLATIONS: any = {
       "runningInsuranceOcr": "Đang chạy OCR trên bố cục thẻ bảo hiểm...",
       "insuranceScanVerified": "Quét bảo hiểm đã xác minh: PolicyID=\"{policyId}\", GroupID=\"{groupId}\", nhà cung cấp=\"Blue Shield Premium\", active=TRUE",
       "consentRequired": "Vui lòng chọn ô đồng ý để tiếp tục.",
-      "submittingHipaaAgreement": "Đang gửi thỏa thuận quyền riêng tư HIPAA hợp lệ...",
-      "hipaaAgreementVerified": "Thỏa thuận HIPAA đã xác minh. Mốc thời gian mật mã đã ký và liên kết với hồ sơ bệnh nhân."
+      "submittingHipaaAgreement": "Đang gửi thỏa thuận quyền riêng tư...",
+      "hipaaAgreementVerified": "Thỏa thuận quyền riêng tư đã xác minh. Mốc thời gian mật mã đã ký và liên kết với hồ sơ bệnh nhân."
     }
   }
 } as const;

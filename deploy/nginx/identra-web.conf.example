@@ -31,11 +31,9 @@ map $uri $identra_cache_control {
     /vi/self-sovereign-identity-book       "no-store";
 }
 
-# from vercel.json: the white-paper PDF points search engines at its HTML page.
-# It keeps the canonical origin of the current build (VITE_SITE_URL); change both together.
+# HTTP Link headers per file (none at the moment; the white paper and its PDF were withdrawn).
 map $uri $identra_link_header {
     default                                    "";
-    /white-paper/Identra-White-Paper-v1.0.pdf  '<https://identra.awncorp.vn/vi/white-paper>; rel="canonical"';
 }
 
 # Target of the trailing-slash redirect, built from the raw request line ($request_uri: percent-encoded

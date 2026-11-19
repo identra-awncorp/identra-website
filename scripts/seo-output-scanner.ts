@@ -31,12 +31,6 @@ import {
 } from '../src/content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../src/content/blog/structuredBlogSeoProfiles';
 import { getDemoSeoProfile } from '../src/content/demoSeoProfiles';
-import {
-  getWhitePaperSearchTerms,
-  WHITE_PAPER_PDF_PATH,
-  WHITE_PAPER_SEO_PROFILE,
-} from '../src/content/whitePaperSeoProfile';
-import { WHITE_PAPER_TRANSLATIONS } from '../src/translations/WhitePaperPageTranslations';
 import { DYNAMIC_FLOW_TRANSLATIONS } from '../src/translations/DynamicFlowPageTranslations';
 import { INTERFACE_STUDIO_TRANSLATIONS } from '../src/translations/InterfaceStudioPageTranslations';
 import { OVERVIEW_DOCS_TRANSLATIONS } from '../src/translations/docs/OverviewDocsTranslations';
@@ -235,7 +229,6 @@ const vercelConfig = JSON.parse(
   }>;
 };
 const configuredRedirects = vercelConfig.redirects ?? [];
-const configuredHeaders = vercelConfig.headers ?? [];
 const redirectBySource = new Map(
   configuredRedirects.flatMap((redirect) =>
     redirect.source && redirect.destination
@@ -320,16 +313,6 @@ expect(
 expect(
   rootHtml.includes('<meta name="robots" content="index, follow, max-image-preview:large" />'),
   'The static root entry must remain crawlable while canonicalizing to the default locale.',
-);
-
-const whitePaperPdfHeaders = configuredHeaders.find(
-  ({ source }) => source === WHITE_PAPER_PDF_PATH,
-)?.headers ?? [];
-expect(
-  whitePaperPdfHeaders.some(({ key, value }) =>
-    key?.toLowerCase() === 'link'
-    && value === `<${siteUrl}${viewToPath('white-paper', 'vi')}>; rel="canonical"`),
-  'The White Paper PDF must expose an HTTP canonical link to the Vietnamese HTML page.',
 );
 
 const blogIndexHtml = readDistFile('vi/blog/index.html');
@@ -441,12 +424,10 @@ for (const page of indexablePages) {
     staticHeadingCount >= 2 && staticParagraphCount >= 3,
     `${page.path} exposes too little structured static content before React loads.`,
   );
-  if (page.path !== viewToPath('white-paper', 'vi')) {
-    expect(
-      staticInternalLinkCount >= 3,
-      `${page.path} exposes too few crawlable internal links before React loads.`,
-    );
-  }
+  expect(
+    staticInternalLinkCount >= 3,
+    `${page.path} exposes too few crawlable internal links before React loads.`,
+  );
   expect(
     !withoutRootLocaleScript(html).includes('http-equiv="refresh"')
       && !withoutRootLocaleScript(html).includes('window.location.replace('),
@@ -454,10 +435,10 @@ for (const page of indexablePages) {
   );
 }
 
-// Real route content must replace the old generic marketing fallback. Blog and
-// White Paper deliberately retain their existing editorial static generators.
+// Real route content must replace the old generic marketing fallback. Blog
+// deliberately retains its existing editorial static generator.
 for (const view of APP_VIEWS) {
-  if (SEO_ROUTE_GROUPS[view] === 'account' || ['blog', 'blog-detail', 'white-paper'].includes(view)) continue;
+  if (SEO_ROUTE_GROUPS[view] === 'account' || ['blog', 'blog-detail'].includes(view)) continue;
   for (const locale of getViewLocales(view)) {
     const path = viewToPath(view, locale);
     const html = readDistFile(routeFile(path));
@@ -679,83 +660,6 @@ expect(
 for (const relativeFile of actualHtmlFiles.filter((file) => file !== PRODUCT_SHELL_FILE)) {
   verifyInitialLoadingShell(readDistFile(relativeFile), relativeFile);
 }
-
-const whitePaperRoutePath = viewToPath('white-paper', 'vi');
-const whitePaperHtml = readDistFile(routeFile(whitePaperRoutePath));
-const whitePaperSchemaObjects = getSchemaObjects(whitePaperHtml, 'white-paper');
-const whitePaperArticle = whitePaperSchemaObjects.find(
-  (schema) => schema['@type'] === 'TechArticle',
-);
-const whitePaperAuthor = isRecord(whitePaperArticle?.author)
-  ? whitePaperArticle.author
-  : null;
-const whitePaperEncoding = isRecord(whitePaperArticle?.encoding)
-  ? whitePaperArticle.encoding
-  : null;
-const whitePaperAbout = Array.isArray(whitePaperArticle?.about)
-  ? whitePaperArticle.about.filter(isRecord)
-  : [];
-const whitePaperParagraphCount = whitePaperHtml.match(/<p(?:\s|>)/g)?.length ?? 0;
-const whitePaperH2Count = whitePaperHtml.match(/<h2(?:\s|>)/g)?.length ?? 0;
-const whitePaperSearchTerms = getWhitePaperSearchTerms();
-
-expect(
-  whitePaperHtml.includes(`<title>${WHITE_PAPER_SEO_PROFILE.title}</title>`)
-    && metaContent(whitePaperHtml, 'name', 'description') === WHITE_PAPER_SEO_PROFILE.description
-    && metaContent(whitePaperHtml, 'property', 'og:type') === 'article'
-    && metaContent(whitePaperHtml, 'property', 'og:title') === WHITE_PAPER_SEO_PROFILE.title
-    && metaContent(whitePaperHtml, 'property', 'og:description') === WHITE_PAPER_SEO_PROFILE.description,
-  'White Paper search and sharing metadata is incomplete or inconsistent.',
-);
-expect(
-  metaContent(whitePaperHtml, 'name', 'keywords') === null,
-  'White Paper must not emit the meta keywords tag ignored by Google Search.',
-);
-expect(
-  whitePaperHtml.includes('<main data-seo-fallback')
-    && whitePaperHtml.includes('<article>')
-    && whitePaperHtml.includes(`<h1>${WHITE_PAPER_TRANSLATIONS.vi.heroTitle}</h1>`)
-    && whitePaperHtml.includes(`href="${WHITE_PAPER_PDF_PATH}"`),
-  'White Paper is missing its crawlable article shell, visible heading, or PDF link.',
-);
-expect(
-  whitePaperParagraphCount >= 40,
-  `White Paper contains too little static content (${whitePaperParagraphCount} paragraphs).`,
-);
-expect(
-  whitePaperH2Count >= WHITE_PAPER_TRANSLATIONS.vi.sections.length
-    && WHITE_PAPER_TRANSLATIONS.vi.sections.every((section) =>
-      whitePaperHtml.includes(`<h2>${section.title}</h2>`)),
-  `White Paper does not expose all ${WHITE_PAPER_TRANSLATIONS.vi.sections.length} sections in static HTML.`,
-);
-expect(
-  whitePaperSearchTerms.every((term) =>
-    whitePaperHtml.includes(`<meta property="article:tag" content="${term}" />`)),
-  'White Paper is missing an Open Graph article topic.',
-);
-expect(
-  Boolean(
-    whitePaperArticle
-    && whitePaperArticle.name === WHITE_PAPER_SEO_PROFILE.title
-    && whitePaperArticle.headline === WHITE_PAPER_SEO_PROFILE.headline
-    && whitePaperArticle.description === WHITE_PAPER_SEO_PROFILE.description
-    && whitePaperArticle.version === WHITE_PAPER_SEO_PROFILE.version
-    && whitePaperArticle.datePublished === WHITE_PAPER_SEO_PROFILE.publishedAt
-    && whitePaperArticle.dateModified === WHITE_PAPER_SEO_PROFILE.modifiedAt
-    && whitePaperArticle.articleSection === WHITE_PAPER_SEO_PROFILE.articleSection
-    && whitePaperArticle.keywords === whitePaperSearchTerms.join(', ')
-    && whitePaperArticle.isAccessibleForFree === true
-    && whitePaperAuthor?.['@type'] === WHITE_PAPER_SEO_PROFILE.author.type
-    && whitePaperAuthor?.name === WHITE_PAPER_SEO_PROFILE.author.name
-    && whitePaperEncoding?.['@type'] === 'MediaObject'
-    && whitePaperEncoding?.contentUrl === `${siteUrl}${WHITE_PAPER_PDF_PATH}`
-    && whitePaperEncoding?.encodingFormat === 'application/pdf'
-    && whitePaperAbout.length === WHITE_PAPER_SEO_PROFILE.about.length
-    && WHITE_PAPER_SEO_PROFILE.about.every((topic) =>
-      whitePaperAbout.some((item) => item['@type'] === 'Thing' && item.name === topic))
-  ),
-  'White Paper TechArticle schema is incomplete or inconsistent with its SEO profile.',
-);
 
 for (const articleId of PUBLIC_BLOG_DETAIL_IDS) {
   const article = getStructuredBlogArticle(articleId);

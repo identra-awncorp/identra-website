@@ -16,7 +16,6 @@ import {
   GitBranch,
   LayoutDashboard,
   ListChecks,
-  Lock,
   Network,
   PencilRuler,
   Play,
@@ -809,30 +808,6 @@ export default function DynamicFlowPage({ onViewChange }: DynamicFlowPageProps) 
                 <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </article>
-          </div>
-        </div>
-      </section>
-
-      {/* SECURITY & ENTERPRISE COMPLIANCE RIBBON */}
-      <section className="border-b border-slate-100 bg-white py-12">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex flex-wrap items-center justify-between gap-6 rounded-2xl bg-slate-50 p-6 border border-slate-200/80">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
-                <Lock className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="type-body-sm font-bold text-slate-900">{copy.security.title}</p>
-                <p className="type-caption text-slate-500">{copy.security.description}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => onViewChange('security')}
-              className="type-control inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-100"
-            >
-              {copy.security.cta} <ArrowRight className="h-3.5 w-3.5" />
-            </button>
           </div>
         </div>
       </section>

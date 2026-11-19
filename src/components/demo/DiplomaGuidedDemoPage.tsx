@@ -1056,6 +1056,9 @@ export default function DiplomaGuidedDemoPage() {
                 {copy.endProductDemo}
                 <ArrowRight aria-hidden="true" className="h-4 w-4" />
               </Link>
+              <Link to={viewToPath('security', language)} className="type-control inline-flex min-h-11 items-center gap-2 rounded-full border border-white/40 px-5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-security">
+                {copy.endSecurity}
+              </Link>
               <button type="button" onClick={restart} className="type-control inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-white/40 px-5 text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" data-testid="guided-end-restart">
                 <RotateCcw aria-hidden="true" className="h-4 w-4" />
                 {copy.restart}

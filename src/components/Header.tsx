@@ -102,17 +102,13 @@ const COMPANY_LEARNING_ITEMS = [
 
 const COMPANY_MENU_ITEMS = [
   { label: HEADER_COPY_KEYS.about, icon: 'Asterisk', href: '#about' },
-  { label: HEADER_COPY_KEYS.industryRecognitions, icon: 'Shapes', href: '#research' },
   { label: HEADER_COPY_KEYS.events, icon: 'Calendar', href: '#events' },
-  { label: HEADER_COPY_KEYS.careers, icon: 'Briefcase', href: '#careers' },
   { label: HEADER_COPY_KEYS.contact, icon: 'MessageSquare', href: '#contact' },
-  { label: HEADER_COPY_KEYS.partners, icon: 'HeartHandshake', href: '#partners' },
   { label: HEADER_COPY_KEYS.privacyOverview, icon: 'Lock', href: '#privacy-overview' },
   { label: HEADER_COPY_KEYS.security, icon: 'Shield', href: '#security' },
 ];
 
 const COMPANY_DEVELOPERS_ITEMS = [
-  { label: HEADER_COPY_KEYS.whitePaper, icon: 'FileText', href: '#white-paper' },
   { label: HEADER_COPY_KEYS.documentation, icon: 'FileCode', href: '#docs' },
   { label: HEADER_COPY_KEYS.apiReference, icon: 'Code', href: '#docs' },
 ];
@@ -208,16 +204,12 @@ const NAVIGATION_ITEMS: NavItem[] = [
       { label: HEADER_COPY_KEYS.byUseCase, description: HEADER_COPY_KEYS.descByUseCase, href: '#compliance', view: 'compliance' },
     ]
   },
-  { label: HEADER_COPY_KEYS.customers, href: '#customers', view: 'customers' },
-  { label: HEADER_COPY_KEYS.pricing, href: '#pricing', view: 'pricing' },
   { label: HEADER_COPY_KEYS.research, href: '#research' },
   {
     label: HEADER_COPY_KEYS.company,
     children: [
       { label: HEADER_COPY_KEYS.about, description: HEADER_COPY_KEYS.descAbout, href: '#about' },
-      { label: HEADER_COPY_KEYS.careers, description: HEADER_COPY_KEYS.descCareers, href: '#careers' },
       { label: HEADER_COPY_KEYS.contact, description: HEADER_COPY_KEYS.descContact, href: '#contact' },
-      { label: HEADER_COPY_KEYS.partners, description: HEADER_COPY_KEYS.descPartners, href: '#partners' },
       { label: HEADER_COPY_KEYS.security, description: HEADER_COPY_KEYS.descSecurity, href: '#security' },
       { label: HEADER_COPY_KEYS.privacyOverview, description: HEADER_COPY_KEYS.descPrivacyOverview, href: '#privacy-overview' },
       { label: HEADER_COPY_KEYS.demo, description: HEADER_COPY_KEYS.descDemo, href: '#demo' },
@@ -384,16 +376,10 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     }
 
     const lowercaseLabel = label.toLowerCase();
-    if (lowercaseLabel.includes('white paper') || lowercaseLabel.includes('whitepaper') || lowercaseLabel.includes('sách trắng') || href === '#white-paper') {
-      onViewChange('white-paper');
-    } else if (lowercaseLabel.includes('about') || href === '#about') {
+    if (lowercaseLabel.includes('about') || href === '#about') {
       onViewChange('about');
-    } else if (lowercaseLabel.includes('career') || href === '#careers') {
-      onViewChange('careers');
     } else if (lowercaseLabel.includes('contact') || href === '#contact') {
       onViewChange('contact');
-    } else if (lowercaseLabel.includes('partner') || href === '#partners') {
-      onViewChange('partners');
     } else if (lowercaseLabel.includes('security') || href === '#security') {
       onViewChange('security');
     } else if (lowercaseLabel.includes('event') || href === '#events') {
@@ -490,11 +476,6 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       } else {
         handleUnavailableNavigation();
       }
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.whitePaper || label.toLowerCase().includes('white paper') || label.toLowerCase().includes('sách trắng') || href === '#white-paper')) {
-      e.preventDefault();
-      onViewChange('white-paper');
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
     } else if (onViewChange && (label === 'About us' || label === HEADER_COPY_KEYS.about || href === '#about')) {
       e.preventDefault();
       onViewChange('about');
@@ -595,11 +576,6 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('connect');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.pricing || href === '#pricing')) {
-      e.preventDefault();
-      onViewChange('pricing');
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
     } else if (onViewChange && (label === HEADER_COPY_KEYS.blog || label === 'Blog' || href === '#blog')) {
       e.preventDefault();
       onViewChange('blog');
@@ -615,19 +591,9 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
       onViewChange('events');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.careers || href === '#careers')) {
-      e.preventDefault();
-      onViewChange('careers');
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
     } else if (onViewChange && (label === 'Contact us' || label === HEADER_COPY_KEYS.contact || href === '#contact')) {
       e.preventDefault();
       onViewChange('contact');
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.partners || href === '#partners')) {
-      e.preventDefault();
-      onViewChange('partners');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
     } else if (onViewChange && (label === HEADER_COPY_KEYS.security || href === '#security')) {
@@ -663,11 +629,6 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     } else if (onViewChange && (label === HEADER_COPY_KEYS.platform || label === 'Platform Overview' || href === '#platform')) {
       e.preventDefault();
       onViewChange('platform');
-      setActiveDropdown(null);
-      setMobileMenuOpen(false);
-    } else if (onViewChange && (label === HEADER_COPY_KEYS.customers || href === '#customers')) {
-      e.preventDefault();
-      onViewChange('customers');
       setActiveDropdown(null);
       setMobileMenuOpen(false);
     } else if (onViewChange && (label === HEADER_COPY_KEYS.knowYourBusinessKyb || label === 'KYB' || href === '#kyb')) {
@@ -815,7 +776,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
     <header className="w-full z-40 bg-white">
       {/* Top Banner Bar */}
       <a 
-        href={viewToPath('blog', language)}
+        href={viewToPath('demo', language)}
         onClick={(event) => {
           if (
             event.button !== 0
@@ -830,7 +791,7 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
           event.preventDefault();
 
           if (onViewChange) {
-            onViewChange('blog');
+            onViewChange('demo');
             return;
           }
 
@@ -1631,13 +1592,10 @@ export default function Header({ onViewChange, currentView }: HeaderProps) {
                     className="w-full h-full object-cover rounded-lg"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-xs py-1 px-2.5 rounded-md text-[9px] font-bold text-slate-800 shadow-sm text-center">
-                    {tm(HEADER_COPY_KEYS.meetTheTeam)}
-                  </div>
                 </div>
                 
-                <button type="button" className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('careers'); }}>
-                  <span>{tm(HEADER_COPY_KEYS.careersCulture)}</span>
+                <button type="button" className="text-[11px] text-[#354CE1] font-semibold flex items-center gap-1" onClick={() => { setActiveDropdown(null); if (onViewChange) onViewChange('about'); }}>
+                  <span>{tm(HEADER_COPY_KEYS.about)}</span>
                   <ArrowRight className="w-3 h-3" />
                 </button>
               </div>

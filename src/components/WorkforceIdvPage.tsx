@@ -207,32 +207,9 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                   <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#354CE1_1px,transparent_1px)] [background-size:16px_16px]" />
                   <div className="text-center space-y-1 z-10 px-4">
                     <p className="text-[11px] font-bold text-white tracking-wide">{t.protectionShield}</p>
-                    <p className="text-[9px] text-slate-400">{t.protectionShieldDesc}</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. TRUST BAR - Redesigned to fit design.md */}
-      <section className="bg-[#0F1E36] py-6 border-y border-white/10">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-400">
-          <span className="text-xs font-semibold tracking-wider uppercase text-slate-300 font-mono">
-            {t.trustedBy}
-          </span>
-          <div className="flex flex-wrap items-center gap-8 md:gap-16">
-            <div className="flex items-center gap-2 text-white font-bold tracking-tight text-lg">
-              <span className="w-5 h-5 rounded-full border-2 border-[#354CE1] flex items-center justify-center text-[10px]">{t.trustLogos.oktaMark}</span>
-              <span>{t.trustLogos.okta}</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-white font-bold text-base tracking-wide">
-              <span className="w-4 h-4 bg-[#354CE1] rounded-sm flex items-center justify-center text-[9px] text-white">{t.trustLogos.intercomMark}</span>
-              <span>{t.trustLogos.intercom}</span>
-            </div>
-            <div className="flex items-center gap-1 text-white font-black text-xl italic tracking-wider">
-              <span>{t.trustLogos.ro}</span>
             </div>
           </div>
         </div>
@@ -251,31 +228,8 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
             <p className="text-slate-600 text-base leading-relaxed">
               {t.scaleDesc}
             </p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-6">
-              <div className="border-l-3 border-[#354CE1] pl-4 space-y-1">
-                <span className="text-3xl md:text-4xl font-sans font-bold text-[#0F1E36] block tracking-tight">{t.stats[0].value}</span>
-                <span className="text-xs text-slate-500 block leading-normal">
-                  {t.stats[0].label}
-                </span>
-              </div>
-              
-              <div className="border-l-3 border-[#FFBF43] pl-4 space-y-1">
-                <span className="text-3xl md:text-4xl font-sans font-bold text-[#0F1E36] block tracking-tight">{t.stats[1].value}</span>
-                <span className="text-xs text-slate-500 block leading-normal">
-                  {t.stats[1].label}
-                </span>
-              </div>
-              
-              <div className="border-l-3 border-[#10B981] pl-4 space-y-1">
-                <span className="text-3xl md:text-4xl font-sans font-bold text-[#0F1E36] block tracking-tight">{t.stats[2].value}</span>
-                <span className="text-xs text-slate-500 block leading-normal">
-                  {t.stats[2].label}
-                </span>
-              </div>
-            </div>
           </div>
-          
+
           {/* Blueprint Globe Visual representation */}
           <div className="lg:col-span-6 flex justify-center">
             <div className="relative w-72 h-72 md:w-96 md:h-96">
@@ -302,7 +256,6 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
                 <div className="text-center p-8 z-10 max-w-xs space-y-2">
                   <Globe className="w-10 h-10 text-[#354CE1] mx-auto animate-spin [animation-duration:30s]" />
                   <p className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">{t.globalGrid}</p>
-                  <p className="text-[11px] text-slate-500 leading-relaxed">{t.globalGridDesc}</p>
                 </div>
               </div>
             </div>
@@ -1011,40 +964,6 @@ export default function WorkforceIdvPage({ onOpenSandbox, onBackToLanding, onVie
               )}
             </AnimatePresence>
           </div>
-        </div>
-      </section>
-
-      {/* 9. SECURITY & PRIVACY TRUST BADGES SECTION */}
-      <section className="bg-[#FAFBFD] border-t border-slate-200 py-24 px-6">
-        <div className="max-w-5xl mx-auto text-center space-y-12">
-          
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            {t.badges.map((badge: string) => (
-              <span key={badge} className="px-3 py-2 bg-white border border-slate-200 text-slate-700 text-[10px] font-bold rounded-lg shadow-xs uppercase tracking-wider font-mono flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                {badge}
-              </span>
-            ))}
-          </div>
-
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-sans font-semibold tracking-tight text-[#0F1E36] leading-tight">
-              {t.trustTitle}
-            </h2>
-            <p className="text-slate-600 text-base leading-relaxed font-sans font-normal">
-              {t.trustDesc}
-            </p>
-            <div className="pt-4">
-              <button 
-                onClick={onOpenSandbox}
-                className="inline-flex items-center gap-1.5 px-6 py-3.5 bg-[#0F1E36] hover:bg-[#1E293B] text-white font-bold text-xs rounded-full transition shadow-md shadow-slate-900/10 uppercase tracking-wider font-mono"
-              >
-                <span>{t.securityCertsCta}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
         </div>
       </section>
 

@@ -80,6 +80,7 @@ export interface ProductPageCopy {
   labelQrAlt: string;
   print: string;
   footerHome: string;
+  footerSecurity: string;
 }
 
 const vi: ProductPageCopy = {
@@ -209,6 +210,7 @@ const vi: ProductPageCopy = {
   labelQrAlt: 'Mã QR dẫn tới trang kiểm tra sản phẩm này',
   print: 'In nhãn',
   footerHome: 'Về Identra',
+  footerSecurity: 'Bảo mật',
 };
 
 const en: ProductPageCopy = {
@@ -338,6 +340,7 @@ const en: ProductPageCopy = {
   labelQrAlt: 'QR code leading to this product\'s check page',
   print: 'Print label',
   footerHome: 'About Identra',
+  footerSecurity: 'Security',
 };
 
 export const PRODUCT_PAGE_TRANSLATIONS = {

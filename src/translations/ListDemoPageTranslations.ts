@@ -102,7 +102,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Healthcare',
         title: 'Register for healthcare access',
         desc: 'Verify patient identity, insurance coverage, and consent before clinical intake.',
-        security: 'HIPAA-ready identity controls',
+        security: 'Patient identity and consent controls',
         successResult: 'The patient identity, insurance, and consent checks passed. Clinical intake can continue with protected data handling.',
         steps: [
           { label: 'Verify patient identity', action: 'Check patient ID', logText: 'Government ID and demographic duplicate checks aligned with the patient profile.' },
@@ -115,11 +115,11 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Credential Issuance',
         title: 'Transfer a verified ticket',
         desc: 'Prove original ownership, lock escrow, and transfer a ticket credential safely.',
-        security: 'Credential Issuance + smart escrow',
-        successResult: 'Ticket ownership transferred atomically. The buyer received a verified credential and escrow was released.',
+        security: 'Credential Issuance + escrow',
+        successResult: 'Ticket ownership was transferred in one step. The buyer received a verified credential and escrow was released.',
         steps: [
           { label: 'Verify original ownership', action: 'Audit ticket owner', logText: 'Original purchase key and issuer signature confirmed valid ownership.' },
-          { label: 'Lock escrow terms', action: 'Initialize escrow', logText: 'The escrow smart contract locked funds and protected against double spending.' },
+          { label: 'Lock escrow terms', action: 'Initialize escrow', logText: 'The escrow locked the funds and stopped the ticket from being sold twice.' },
           { label: 'Execute transfer', action: 'Complete ticket transfer', logText: 'Ticket ownership moved to the buyer wallet and escrow settlement was released.' }
         ]
       }
@@ -223,7 +223,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Salud',
         title: 'Registrarse para acceso sanitario',
         desc: 'Verifica identidad del paciente, cobertura de seguro y consentimiento antes de la admisión clínica.',
-        security: 'Controles de identidad preparados para HIPAA',
+        security: 'Controles de identidad y consentimiento del paciente',
         successResult: 'Identidad, seguro y consentimiento del paciente fueron aprobados. La admisión clínica puede continuar con datos protegidos.',
         steps: [
           { label: 'Verificar identidad del paciente', action: 'Comprobar ID del paciente', logText: 'El ID gubernamental y la revisión de duplicados demográficos coincidieron con el perfil.' },
@@ -236,11 +236,11 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Credential Issuance',
         title: 'Transferir una entrada verificada',
         desc: 'Prueba propiedad original, bloquea el depósito en garantía y transfiere la credencial de entrada de forma segura.',
-        security: 'Credential Issuance + depósito inteligente',
-        successResult: 'La propiedad de la entrada se transfirió de forma atómica. El comprador recibió una credencial verificada y se liberó el depósito.',
+        security: 'Credential Issuance + depósito en garantía',
+        successResult: 'La propiedad de la entrada se transfirió en un solo paso. El comprador recibió una credencial verificada y se liberó el depósito.',
         steps: [
           { label: 'Verificar propiedad original', action: 'Auditar propietario de la entrada', logText: 'La clave de compra original y la firma del emisor confirmaron propiedad válida.' },
-          { label: 'Bloquear términos del depósito', action: 'Inicializar depósito en garantía', logText: 'El contrato de depósito bloqueó fondos y protegió contra doble gasto.' },
+          { label: 'Bloquear términos del depósito', action: 'Inicializar depósito en garantía', logText: 'El depósito en garantía bloqueó los fondos e impidió vender la entrada dos veces.' },
           { label: 'Ejecutar transferencia', action: 'Completar transferencia de entrada', logText: 'La propiedad pasó a la billetera del comprador y se liberó el depósito.' }
         ]
       }
@@ -344,7 +344,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: '医療',
         title: '医療アクセスに登録',
         desc: '臨床受付前に、患者本人確認、保険適用、同意を確認します。',
-        security: 'HIPAA対応の本人確認制御',
+        security: '患者の本人確認と同意の管理',
         successResult: '患者ID、保険、同意チェックに合格しました。保護されたデータ処理で臨床受付を継続できます。',
         steps: [
           { label: '患者本人確認', action: '患者IDを確認', logText: '政府発行IDと人口統計上の重複確認が患者プロフィールと一致しました。' },
@@ -357,11 +357,11 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Credential Issuance',
         title: '検証済みチケットを譲渡',
         desc: '元の所有権を証明し、エスクローをロックして、チケット資格情報を安全に譲渡します。',
-        security: 'Credential Issuance + スマートエスクロー',
-        successResult: 'チケット所有権はアトミックに譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。',
+        security: 'Credential Issuance + エスクロー',
+        successResult: 'チケット所有権は一度の手続きで譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。',
         steps: [
           { label: '元の所有権を検証', action: 'チケット所有者を監査', logText: '元の購入キーと発行者署名により、有効な所有権を確認しました。' },
-          { label: 'エスクロー条件をロック', action: 'エスクローを初期化', logText: 'エスクローのスマートコントラクトが資金をロックし、二重使用を防止しました。' },
+          { label: 'エスクロー条件をロック', action: 'エスクローを初期化', logText: 'エスクローが資金をロックし、チケットの二重販売を防止しました。' },
           { label: '譲渡を実行', action: 'チケット譲渡を完了', logText: 'チケット所有権は購入者ウォレットへ移り、エスクロー決済が解放されました。' }
         ]
       }
@@ -465,7 +465,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Gesundheit',
         title: 'Für Gesundheitszugang registrieren',
         desc: 'Verifizieren Sie Patientenidentität, Versicherungsschutz und Einwilligung vor der klinischen Aufnahme.',
-        security: 'HIPAA-fähige Identitätskontrollen',
+        security: 'Identitäts- und Einwilligungskontrollen für Patienten',
         successResult: 'Patientenidentität, Versicherung und Einwilligung wurden bestätigt. Die klinische Aufnahme kann mit geschützter Datenverarbeitung fortgesetzt werden.',
         steps: [
           { label: 'Patientenidentität verifizieren', action: 'Patienten-ID prüfen', logText: 'Staatliche ID und demografische Dublettenprüfung passten zum Patientenprofil.' },
@@ -478,11 +478,11 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Credential Issuance',
         title: 'Verifiziertes Ticket übertragen',
         desc: 'Weisen Sie ursprüngliches Eigentum nach, sperren Sie Treuhandbedingungen und übertragen Sie den Ticketnachweis sicher.',
-        security: 'Credential Issuance + Smart Escrow',
-        successResult: 'Das Ticketeigentum wurde atomar übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.',
+        security: 'Credential Issuance + Treuhand',
+        successResult: 'Das Ticketeigentum wurde in einem Schritt übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.',
         steps: [
           { label: 'Ursprüngliches Eigentum prüfen', action: 'Ticketinhaber auditieren', logText: 'Ursprünglicher Kaufschlüssel und Ausstellersignatur bestätigten gültiges Eigentum.' },
-          { label: 'Treuhandbedingungen sperren', action: 'Treuhandkonto initialisieren', logText: 'Der Escrow-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe.' },
+          { label: 'Treuhandbedingungen sperren', action: 'Treuhandkonto initialisieren', logText: 'Das Treuhandkonto sperrte die Mittel und verhinderte, dass das Ticket zweimal verkauft wird.' },
           { label: 'Übertragung ausführen', action: 'Ticketübertragung abschließen', logText: 'Das Ticketeigentum wechselte zur Käufer-Wallet und die Treuhandzahlung wurde freigegeben.' }
         ]
       }
@@ -586,7 +586,7 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Y tế',
         title: 'Đăng ký khám chữa bệnh',
         desc: 'Xác minh danh tính, quyền lợi bảo hiểm và sự đồng thuận của bệnh nhân trước khi tiếp nhận.',
-        security: 'Kiểm soát danh tính đáp ứng HIPAA',
+        security: 'Kiểm soát danh tính và sự đồng ý của bệnh nhân',
         successResult: 'Danh tính, bảo hiểm và sự đồng thuận của bệnh nhân đều đã được xác minh. Cơ sở y tế có thể tiếp nhận bệnh nhân mà vẫn bảo vệ dữ liệu.',
         steps: [
           { label: 'Xác minh danh tính bệnh nhân', action: 'Kiểm tra giấy tờ', logText: 'Thông tin trên giấy tờ tùy thân trùng khớp với hồ sơ bệnh nhân và không phát hiện hồ sơ nhân khẩu học trùng lặp.' },
@@ -599,11 +599,11 @@ export const LIST_DEMO_PAGE_TRANSLATIONS: any = {
         tag: 'Credential Issuance',
         title: 'Chuyển nhượng vé đã xác thực',
         desc: 'Xác minh chủ sở hữu hiện tại, khóa tiền trong ký quỹ và chuyển vé an toàn cho người mua.',
-        security: 'Tiết lộ có chọn lọc và hợp đồng thông minh',
+        security: 'Tiết lộ có chọn lọc và ký quỹ',
         successResult: 'Vé và tiền ký quỹ được chuyển giao trong cùng một giao dịch: người mua nhận vé đã xác thực, còn tiền chỉ được giải ngân khi hoàn tất.',
         steps: [
           { label: 'Xác minh quyền sở hữu', action: 'Kiểm tra chủ vé', logText: 'Mã giao dịch mua ban đầu và chữ ký của đơn vị phát hành xác nhận người bán là chủ sở hữu hợp lệ.' },
-          { label: 'Khóa tiền ký quỹ', action: 'Tạo giao dịch ký quỹ', logText: 'Hợp đồng thông minh ký quỹ khóa tiền cho đến khi chuyển vé hoàn tất, đồng thời ngăn một vé bị bán hai lần.' },
+          { label: 'Khóa tiền ký quỹ', action: 'Tạo giao dịch ký quỹ', logText: 'Ký quỹ khóa tiền cho đến khi chuyển vé hoàn tất, đồng thời ngăn một vé bị bán hai lần.' },
           { label: 'Hoàn tất chuyển nhượng', action: 'Chuyển vé', logText: 'Quyền sở hữu vé được cập nhật sang ví của người mua và tiền ký quỹ được giải ngân cho người bán.' }
         ]
       }

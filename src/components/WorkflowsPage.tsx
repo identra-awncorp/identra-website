@@ -217,31 +217,6 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
         </div>
       </section>
 
-      {/* Trusted Logos Strip */}
-      <div className="bg-[#121A36] py-8 text-white/60">
-        <div className="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-between gap-8">
-          <span className="text-xs font-semibold tracking-wider uppercase">{t.trustedBy}</span>
-          <div className="flex flex-wrap items-center gap-8 md:gap-12">
-            <div className="flex items-center gap-2 text-white font-bold tracking-tight">
-              <span className="w-2.5 h-2.5 bg-sky-400 rounded-full" />
-              <span>{t.staticLabels.rently}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white font-bold tracking-tight">
-              <span className="w-2.5 h-2.5 bg-indigo-400 rounded-full" />
-              <span>{t.staticLabels.branchLogo}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white font-bold tracking-tight text-opacity-80">
-              <span className="w-2.5 h-2.5 bg-[#FE5F55] rounded-full" />
-              <span>{t.staticLabels.angelList}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white font-bold tracking-tight text-opacity-80">
-              <span className="w-2.5 h-2.5 bg-teal-400 rounded-full" />
-              <span>{t.staticLabels.sonder}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* "How it works" Interactive Section */}
       <section className="py-24 max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
@@ -713,34 +688,6 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
         </div>
       </section>
 
-      {/* Case Study Section (Branch Quote) */}
-      <section className="py-24 max-w-5xl mx-auto px-6 text-center">
-        <blockquote className="text-2xl md:text-3xl font-display font-medium text-slate-800 leading-relaxed mb-8">
-          &ldquo;{t.quote}&rdquo;
-        </blockquote>
-        <div className="flex flex-col items-center justify-center space-y-2">
-          <div className="font-bold text-slate-900">{t.quoteAuthor}</div>
-          <div className="text-sm text-slate-400">{t.quoteTitle}</div>
-        </div>
-
-        {/* Clean Case Study Banner Block */}
-        <div className="mt-16 bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-md max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-3.5 h-3.5 bg-indigo-500 rounded-full" />
-            <span className="font-bold text-xl text-indigo-950">{t.staticLabels.branchLogo}</span>
-          </div>
-          <p className="text-slate-600 font-medium text-sm md:text-left text-center">
-            {t.caseStudyTitle}
-          </p>
-          <button 
-            onClick={onOpenSandbox}
-            className="py-2.5 px-6 bg-slate-950 hover:bg-slate-800 text-white rounded-full text-xs font-semibold tracking-wide transition whitespace-nowrap"
-          >
-            {t.readCaseStudy} →
-          </button>
-        </div>
-      </section>
-
       {/* Identra Marketplace Banner */}
       <section className="py-12 bg-indigo-50/50">
         <div className="max-w-6xl mx-auto px-6">
@@ -786,17 +733,17 @@ export default function WorkflowsPage({ onOpenSandbox, onBackToLanding, onViewCh
                 {/* Integration Node 1 */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center text-center space-y-1">
                   <span className="text-lg">💳</span>
-                  <span className="text-[10px] text-white font-semibold">{t.staticLabels.stripe}</span>
+                  <span className="text-[10px] text-white font-semibold">{t.integrationPayments}</span>
                 </div>
                 {/* Integration Node 2 */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center text-center space-y-1">
                   <span className="text-lg">☁️</span>
-                  <span className="text-[10px] text-white font-semibold">{t.staticLabels.salesforce}</span>
+                  <span className="text-[10px] text-white font-semibold">{t.integrationCrm}</span>
                 </div>
                 {/* Integration Node 3 */}
                 <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col items-center justify-center text-center space-y-1">
                   <span className="text-lg">💬</span>
-                  <span className="text-[10px] text-white font-semibold">{t.staticLabels.slack}</span>
+                  <span className="text-[10px] text-white font-semibold">{t.integrationMessaging}</span>
                 </div>
               </div>
             </div>

@@ -294,14 +294,6 @@ export default function TrustAndSafetyPage({ onOpenSandbox, onBackToLanding, onV
                 </div>
               </div>
             </div>
-            <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest text-center md:text-left">{t.trustedBy}</span>
-              <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-85">
-                <div className="flex items-center gap-1.5 text-white font-bold text-sm tracking-tight"><span className="bg-white text-[#142FA0] px-1 rounded-sm font-sans font-black text-xs">{t.trustedLogoLinkedInMark}</span><span>{t.trustedLogoLinkedIn}</span></div>
-                <div className="flex items-center gap-1.5 text-white font-bold text-xs tracking-tight"><span>{t.trustedLogoCoffee}</span></div>
-                <div className="flex items-center gap-1 text-white font-bold text-xs tracking-wider uppercase"><span className="bg-[#FFBF43] p-1 rounded-full text-slate-900 text-[8px] flex items-center justify-center font-bold">{t.trustedLogoNeighborMark}</span><span>{t.trustedLogoNeighbor}</span></div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

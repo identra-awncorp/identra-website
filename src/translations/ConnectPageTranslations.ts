@@ -124,11 +124,9 @@ export const CONNECT_TRANSLATIONS: any = {
     required: 'REQUIRED',
     disabled: 'DISABLED',
     faqTitle: 'Frequently Asked Questions',
-    faqDesc: 'Find immediate answers regarding compliance, cryptography, and integration of Identra Connect.',
+    faqDesc: 'Find immediate answers regarding cryptography, cost, and integration of Identra Connect.',
     faqs: [
       { id: 'how-secure', q: 'How secure is the reusable identity credential in Identra Connect?', a: 'All identity data stored within Identra Connect is protected with bank-grade AES-256 encryption both in-transit and at-rest. Decryption credentials are hardcoded dynamically to multi-factor authentication (such as SMS OTP or secure biometrics), meaning that nobody, not even partner businesses or Identra employees, can access or decrypt your documents without your explicit and real-time biometric authorization.' },
-      { id: 'ccpa-gdpr', q: 'Is Identra Connect compliant with GDPR, CCPA, and global privacy standards?', a: 'Absolutely. Identra Connect is built strictly on privacy-by-design standards. It empowers users with complete digital sovereignty. Users can view every active data-sharing authorization, examine the audit trails of who has accessed their credentials, and revoke access instantly. Our infrastructure complies fully with GDPR, CCPA, SOC 2 Type II, and ISO 27001.' },
-      { id: 'kyc-regulatory', q: 'Does Identra Connect satisfy legal AML/KYC requirements for regulated financial industries?', a: 'Yes. Identra Connect is fully compliant with FinCEN, FCA, and BaFin regulations. It generates the exact same verified audit outputs as standard full-document IDV checks, supplemented with instant cryptographic hashes confirming that the original KYC documents were legally validated and are still active.' },
       { id: 'merchant-cost', q: 'How does Identra Connect change the verification cost structure for businesses?', a: 'Because the identity has already been fully processed, verified, and cross-referenced on the Identra network, businesses verify returning customers at a fraction of the cost of a standard complete IDV check. It significantly cuts down on third-party database API fees, database check overhead, and manual review employee costs.' }
     ],
     ctaTitle: 'Ready to upgrade your onboarding conversions?',
@@ -256,11 +254,9 @@ export const CONNECT_TRANSLATIONS: any = {
     required: 'REQUERIDA',
     disabled: 'DESACTIVADA',
     faqTitle: 'Preguntas frecuentes',
-    faqDesc: 'Encuentra respuestas inmediatas sobre cumplimiento, criptografía e integración de Identra Connect.',
+    faqDesc: 'Encuentra respuestas inmediatas sobre criptografía, costes e integración de Identra Connect.',
     faqs: [
       { id: 'how-secure', q: '¿Qué tan segura es la credencial reutilizable de Identra Connect?', a: 'Todos los datos de identidad en Identra Connect están protegidos con cifrado AES-256 de nivel bancario en tránsito y en reposo. Las credenciales de descifrado se vinculan dinámicamente a autenticación multifactor, como SMS OTP o biometría segura, por lo que nadie puede acceder o descifrar documentos sin autorización biométrica explícita y en tiempo real.' },
-      { id: 'ccpa-gdpr', q: '¿Identra Connect cumple GDPR, CCPA y estándares globales de privacidad?', a: 'Sí. Identra Connect se basa estrictamente en privacidad desde el diseño. Los usuarios pueden ver cada autorización activa, revisar auditorías de acceso y revocar permisos al instante. La infraestructura cumple GDPR, CCPA, SOC 2 Tipo II e ISO 27001.' },
-      { id: 'kyc-regulatory', q: '¿Identra Connect cubre requisitos legales AML/KYC para industrias financieras reguladas?', a: 'Sí. Identra Connect cumple regulaciones FinCEN, FCA y BaFin. Genera las mismas salidas de auditoría verificadas que las verificaciones IDV completas, con hashes criptográficos instantáneos que confirman que los documentos KYC originales fueron validados legalmente y siguen activos.' },
       { id: 'merchant-cost', q: '¿Cómo cambia Identra Connect la estructura de costos de verificación?', a: 'Como la identidad ya fue procesada, verificada y cruzada en la red Identra, las empresas verifican clientes recurrentes por una fracción del costo de un IDV completo. Reduce tarifas de API de bases de datos, carga operativa y costos de revisión manual.' }
     ],
     ctaTitle: '¿Listo para mejorar tus conversiones de onboarding?',
@@ -393,11 +389,9 @@ CONNECT_TRANSLATIONS.ja = {
   required: '必須',
   disabled: '無効',
   faqTitle: 'よくある質問',
-  faqDesc: 'Identra Connect のコンプライアンス、暗号技術、統合についてすぐに確認できます。',
+  faqDesc: 'Identra Connect の暗号技術、コスト、統合についてすぐに確認できます。',
   faqs: [
     { id: 'how-secure', q: 'Identra Connect の再利用可能な本人確認資格情報はどれほど安全ですか？', a: 'Identra Connect に保存される本人確認データは、転送中も保存中も銀行レベルの AES-256 暗号化で保護されます。復号は SMS OTP や安全な生体認証などの多要素認証に動的に結びつくため、明示的かつリアルタイムの生体認証なしに第三者が書類へアクセスすることはできません。' },
-    { id: 'ccpa-gdpr', q: 'Identra Connect は GDPR、CCPA、国際的なプライバシー基準に準拠していますか？', a: 'はい。Identra Connect はプライバシーバイデザインに基づいて構築されています。ユーザーは有効な共有承認、アクセス監査、即時取り消しを確認できます。インフラは GDPR、CCPA、SOC 2 Type II、ISO 27001 に準拠しています。' },
-    { id: 'kyc-regulatory', q: '規制金融業界の AML/KYC 要件を満たしますか？', a: 'はい。Identra Connect は FinCEN、FCA、BaFin の規制に対応しています。通常の完全な IDV チェックと同じ監査出力に加え、元の KYC 書類が法的に確認済みで有効であることを示す暗号ハッシュを生成します。' },
     { id: 'merchant-cost', q: '企業の確認コスト構造はどう変わりますか？', a: 'ID は Identra ネットワーク上で処理、確認、照合済みのため、再訪顧客の確認を標準的な完全 IDV より低コストで行えます。外部データベース API 費用、チェック負荷、手動レビューコストを大きく削減します。' }
   ],
   ctaTitle: 'オンボーディング転換率を改善しませんか？',
@@ -526,11 +520,9 @@ CONNECT_TRANSLATIONS.de = {
   required: 'ERFORDERLICH',
   disabled: 'DEAKTIVIERT',
   faqTitle: 'Häufig gestellte Fragen',
-  faqDesc: 'Sofortige Antworten zu Compliance, Kryptografie und Integration von Identra Connect.',
+  faqDesc: 'Sofortige Antworten zu Kryptografie, Kosten und Integration von Identra Connect.',
   faqs: [
     { id: 'how-secure', q: 'Wie sicher ist die wiederverwendbare Identitäts-Credential in Identra Connect?', a: 'Alle Identitätsdaten in Identra Connect sind mit AES-256-Verschlüsselung auf Bankniveau während Übertragung und Speicherung geschützt. Entschlüsselung ist dynamisch an Multifaktor-Authentifizierung wie SMS-OTP oder sichere Biometrie gebunden.' },
-    { id: 'ccpa-gdpr', q: 'Ist Identra Connect mit GDPR, CCPA und globalen Datenschutzstandards konform?', a: 'Ja. Identra Connect basiert auf Privacy by Design. Nutzer sehen aktive Freigaben, prüfen Audit-Trails und widerrufen Zugriff sofort. Die Infrastruktur erfüllt GDPR, CCPA, SOC 2 Type II und ISO 27001.' },
-    { id: 'kyc-regulatory', q: 'Erfüllt Identra Connect AML/KYC-Anforderungen regulierter Finanzbranchen?', a: 'Ja. Identra Connect unterstützt FinCEN-, FCA- und BaFin-Anforderungen und erzeugt dieselben Audit-Ausgaben wie vollständige IDV-Prüfungen, ergänzt durch kryptografische Hashes.' },
     { id: 'merchant-cost', q: 'Wie verändert Identra Connect die Verifizierungskosten für Unternehmen?', a: 'Da die Identität bereits verarbeitet, verifiziert und im Identra-Netzwerk abgeglichen wurde, können Unternehmen wiederkehrende Kunden zu einem Bruchteil der Kosten einer vollständigen IDV-Prüfung verifizieren.' }
   ],
   ctaTitle: 'Bereit, Ihre Onboarding-Conversions zu verbessern?',
@@ -659,11 +651,9 @@ CONNECT_TRANSLATIONS.vi = {
   required: 'BẮT BUỘC',
   disabled: 'ĐÃ TẮT',
   faqTitle: 'Câu hỏi thường gặp',
-  faqDesc: 'Tìm câu trả lời nhanh về tuân thủ, mật mã và tích hợp Identra Connect.',
+  faqDesc: 'Tìm câu trả lời nhanh về mật mã, chi phí và tích hợp Identra Connect.',
   faqs: [
     { id: 'how-secure', q: 'Thực chứng danh tính tái sử dụng trong Identra Connect an toàn như thế nào?', a: 'Mọi dữ liệu danh tính trong Identra Connect được bảo vệ bằng mã hóa AES-256 cấp ngân hàng khi truyền và khi lưu trữ. Quyền giải mã được gắn động với xác thực đa yếu tố như SMS OTP hoặc sinh trắc học an toàn, nên không ai có thể truy cập tài liệu nếu không có ủy quyền sinh trắc học rõ ràng theo thời gian thực.' },
-    { id: 'ccpa-gdpr', q: 'Identra Connect có tuân thủ GDPR, CCPA và tiêu chuẩn quyền riêng tư toàn cầu không?', a: 'Có. Identra Connect được xây dựng theo nguyên tắc quyền riêng tư ngay từ thiết kế. Người dùng xem được mọi quyền chia sẻ đang hoạt động, kiểm tra nhật ký truy cập và thu hồi quyền ngay lập tức. Hạ tầng tuân thủ GDPR, CCPA, SOC 2 Type II và ISO 27001.' },
-    { id: 'kyc-regulatory', q: 'Identra Connect có đáp ứng yêu cầu AML/KYC cho ngành tài chính được quản lý không?', a: 'Có. Identra Connect hỗ trợ yêu cầu FinCEN, FCA và BaFin. Hệ thống tạo đầu ra kiểm toán đã xác minh như kiểm tra IDV đầy đủ, kèm băm mật mã xác nhận tài liệu KYC ban đầu đã được xác thực hợp pháp và vẫn còn hiệu lực.' },
     { id: 'merchant-cost', q: 'Identra Connect thay đổi cấu trúc chi phí xác minh cho doanh nghiệp như thế nào?', a: 'Vì danh tính đã được xử lý, xác minh và đối chiếu trên mạng Identra, doanh nghiệp có thể xác minh khách hàng quay lại với chi phí thấp hơn nhiều so với kiểm tra IDV đầy đủ. Điều này giảm phí API cơ sở dữ liệu, chi phí kiểm tra và chi phí đánh giá thủ công.' }
   ],
   ctaTitle: 'Sẵn sàng nâng cấp tỷ lệ chuyển đổi onboarding?',

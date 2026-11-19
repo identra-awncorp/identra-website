@@ -75,7 +75,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
       },
       {
         label: 'Suspicious VoIP Signup (Medium Risk)',
-        phoneCarrier: 'Twilio / Bandwidth.com',
+        phoneCarrier: 'VoIP provider',
         phoneLineType: 'VoIP',
         phoneCountry: 'US',
         phoneSignals: ['VoIP / Virtual line detected', 'No name match in carrier registry', 'Recently registered number'],
@@ -183,7 +183,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     lineTypes: { Mobile: 'Móvil', Landline: 'Fijo', VoIP: 'VoIP', Premium: 'Premium', Disposable: 'Desechable' },
     presets: [
       { label: 'Usuario estándar (riesgo bajo)', phoneCarrier: 'Verizon Wireless', phoneLineType: 'Mobile', phoneCountry: 'EE. UU.', phoneSignals: ['El registro del operador coincide con el nombre', 'Contrato activo por más de 12 meses', 'Sin cambios recientes de SIM'], emailDomainAge: '15 años', emailSignals: ['Dominio de alta reputación', 'Buzón activo verificado', 'Sin asociaciones con spam'] },
-      { label: 'Registro VoIP sospechoso (riesgo medio)', phoneCarrier: 'Twilio / Bandwidth.com', phoneLineType: 'VoIP', phoneCountry: 'EE. UU.', phoneSignals: ['Línea VoIP / virtual detectada', 'Sin coincidencia de nombre en el registro del operador', 'Número registrado recientemente'], emailDomainAge: '3 años', emailSignals: ['Dominio confiable', 'Buzón verificado', 'Encontrado en 1 filtración histórica'] },
+      { label: 'Registro VoIP sospechoso (riesgo medio)', phoneCarrier: 'VoIP provider', phoneLineType: 'VoIP', phoneCountry: 'EE. UU.', phoneSignals: ['Línea VoIP / virtual detectada', 'Sin coincidencia de nombre en el registro del operador', 'Número registrado recientemente'], emailDomainAge: '3 años', emailSignals: ['Dominio confiable', 'Buzón verificado', 'Encontrado en 1 filtración histórica'] },
       { label: 'Desechable de alto riesgo', phoneCarrier: 'Desconocido / línea virtual temporal', phoneLineType: 'VoIP', phoneCountry: 'EE. UU.', phoneSignals: ['Proveedor temporal detectado', 'Alta velocidad: usado en 8 cuentas hoy', 'Código postal de facturación no coincide'], emailDomainAge: '2 días', emailSignals: ['Dominio de email desechable', 'Dominio creado hace menos de 48 horas', 'Alta asociación con spam'] }
     ],
     custom: {
@@ -272,7 +272,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     lineTypes: { Mobile: '携帯', Landline: '固定電話', VoIP: 'VoIP', Premium: 'プレミアム', Disposable: '使い捨て' },
     presets: [
       { label: '標準ユーザー（低リスク）', phoneCarrier: 'Verizon Wireless', phoneLineType: 'Mobile', phoneCountry: '米国', phoneSignals: ['通信事業者の記録が名前と一致', '契約期間が 12 か月超', '最近の SIM 交換なし'], emailDomainAge: '15 年', emailSignals: ['非常に信頼性の高いドメイン', '有効な受信箱を確認済み', 'スパム関連なし'] },
-      { label: '疑わしい VoIP 登録（中リスク）', phoneCarrier: 'Twilio / Bandwidth.com', phoneLineType: 'VoIP', phoneCountry: '米国', phoneSignals: ['VoIP / 仮想回線を検出', '通信事業者レジストリで名前一致なし', '最近登録された番号'], emailDomainAge: '3 年', emailSignals: ['信頼できるドメイン', '受信箱を確認済み', '過去のデータ漏えい 1 件で検出'] },
+      { label: '疑わしい VoIP 登録（中リスク）', phoneCarrier: 'VoIP provider', phoneLineType: 'VoIP', phoneCountry: '米国', phoneSignals: ['VoIP / 仮想回線を検出', '通信事業者レジストリで名前一致なし', '最近登録された番号'], emailDomainAge: '3 年', emailSignals: ['信頼できるドメイン', '受信箱を確認済み', '過去のデータ漏えい 1 件で検出'] },
       { label: '高リスクの使い捨て情報', phoneCarrier: '不明 / 仮想バーナー', phoneLineType: 'VoIP', phoneCountry: '米国', phoneSignals: ['バーナープロバイダーを検出', '高頻度: 本日 8 アカウントで使用', '請求先 ZIP が不一致'], emailDomainAge: '2 日', emailSignals: ['使い捨てメールドメイン', 'ドメイン作成から 48 時間未満', '大量スパム関連あり'] }
     ],
     custom: {
@@ -361,7 +361,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     lineTypes: { Mobile: 'Mobil', Landline: 'Festnetz', VoIP: 'VoIP', Premium: 'Premium', Disposable: 'Wegwerfnummer' },
     presets: [
       { label: 'Standardnutzer (niedriges Risiko)', phoneCarrier: 'Verizon Wireless', phoneLineType: 'Mobile', phoneCountry: 'USA', phoneSignals: ['Anbieterdatensatz stimmt mit Namen überein', 'Aktiver Vertrag länger als 12 Monate', 'Keine aktuellen SIM-Wechsel'], emailDomainAge: '15 Jahre', emailSignals: ['Sehr vertrauenswürdige Domain', 'Aktives Postfach verifiziert', 'Keine Spam-Zuordnungen'] },
-      { label: 'Verdächtige VoIP-Registrierung (mittleres Risiko)', phoneCarrier: 'Twilio / Bandwidth.com', phoneLineType: 'VoIP', phoneCountry: 'USA', phoneSignals: ['VoIP- / virtuelle Leitung erkannt', 'Keine Namensübereinstimmung im Anbieterregister', 'Kürzlich registrierte Nummer'], emailDomainAge: '3 Jahre', emailSignals: ['Vertrauenswürdige Domain', 'Postfach verifiziert', 'In 1 historischer Datenpanne gefunden'] },
+      { label: 'Verdächtige VoIP-Registrierung (mittleres Risiko)', phoneCarrier: 'VoIP provider', phoneLineType: 'VoIP', phoneCountry: 'USA', phoneSignals: ['VoIP- / virtuelle Leitung erkannt', 'Keine Namensübereinstimmung im Anbieterregister', 'Kürzlich registrierte Nummer'], emailDomainAge: '3 Jahre', emailSignals: ['Vertrauenswürdige Domain', 'Postfach verifiziert', 'In 1 historischer Datenpanne gefunden'] },
       { label: 'Hochriskante Wegwerfdaten', phoneCarrier: 'Unbekannt / virtueller Burner', phoneLineType: 'VoIP', phoneCountry: 'USA', phoneSignals: ['Burner-Anbieter erkannt', 'Hohe Geschwindigkeit: heute in 8 Konten genutzt', 'Abweichende Rechnungs-PLZ'], emailDomainAge: '2 Tage', emailSignals: ['Wegwerf-E-Mail-Domain', 'Domain vor weniger als 48 Stunden erstellt', 'Hohe Spam-Zuordnung'] }
     ],
     custom: {
@@ -450,7 +450,7 @@ export const PHONE_EMAIL_RISK_TRANSLATIONS: any = {
     lineTypes: { Mobile: 'Di động', Landline: 'Cố định', VoIP: 'VoIP', Premium: 'Premium', Disposable: 'Dùng một lần' },
     presets: [
       { label: 'Người dùng tiêu chuẩn (rủi ro thấp)', phoneCarrier: 'Verizon Wireless', phoneLineType: 'Mobile', phoneCountry: 'Hoa Kỳ', phoneSignals: ['Hồ sơ nhà mạng khớp với tên', 'Hợp đồng hoạt động trên 12 tháng', 'Không có lần đổi SIM gần đây'], emailDomainAge: '15 năm', emailSignals: ['Tên miền có uy tín cao', 'Hộp thư đang hoạt động đã được xác minh', 'Không liên quan đến spam'] },
-      { label: 'Đăng ký VoIP đáng ngờ (rủi ro trung bình)', phoneCarrier: 'Twilio / Bandwidth.com', phoneLineType: 'VoIP', phoneCountry: 'Hoa Kỳ', phoneSignals: ['Phát hiện đường dây VoIP / ảo', 'Không khớp tên trong sổ đăng ký nhà mạng', 'Số mới được đăng ký gần đây'], emailDomainAge: '3 năm', emailSignals: ['Tên miền uy tín', 'Hộp thư đã xác minh', 'Xuất hiện trong 1 vụ rò rỉ dữ liệu lịch sử'] },
+      { label: 'Đăng ký VoIP đáng ngờ (rủi ro trung bình)', phoneCarrier: 'VoIP provider', phoneLineType: 'VoIP', phoneCountry: 'Hoa Kỳ', phoneSignals: ['Phát hiện đường dây VoIP / ảo', 'Không khớp tên trong sổ đăng ký nhà mạng', 'Số mới được đăng ký gần đây'], emailDomainAge: '3 năm', emailSignals: ['Tên miền uy tín', 'Hộp thư đã xác minh', 'Xuất hiện trong 1 vụ rò rỉ dữ liệu lịch sử'] },
       { label: 'Thông tin dùng một lần rủi ro cao', phoneCarrier: 'Không xác định / số ảo tạm thời', phoneLineType: 'VoIP', phoneCountry: 'Hoa Kỳ', phoneSignals: ['Phát hiện nhà cung cấp số tạm thời', 'Tần suất cao: dùng trong 8 tài khoản hôm nay', 'Mã ZIP thanh toán không khớp'], emailDomainAge: '2 ngày', emailSignals: ['Tên miền email dùng một lần', 'Tên miền được tạo dưới 48 giờ trước', 'Liên quan nhiều đến spam'] }
     ],
     custom: {

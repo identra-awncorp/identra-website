@@ -244,16 +244,6 @@ export default function GlobalExpansionPage({ onOpenSandbox, onBackToLanding, on
         </div>
       </section>
 
-      <section className="bg-[#0A1128] py-8 border-y border-slate-900 overflow-hidden px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <span className="text-[11px] uppercase tracking-widest font-bold text-slate-500 text-center md:text-left">{t('trustedBy')}</span>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            {translations.trustedLogos.map((logo) => (
-              <span key={logo} className="text-sm font-sans font-extrabold text-slate-400 tracking-wider">{logo}</span>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="max-w-7xl mx-auto py-24 px-6 md:px-12 grid grid-cols-1 gap-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

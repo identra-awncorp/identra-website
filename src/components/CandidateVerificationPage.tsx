@@ -317,39 +317,7 @@ export default function CandidateVerificationPage({ onOpenSandbox, onBackToLandi
                     </div>
                   </div>
                 </div>
-
-                {/* Footnotes badge */}
-                <div className="mt-4 pt-3 border-t border-white/5 flex justify-between items-center text-[10px] text-slate-500">
-                  <div className="flex items-center gap-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-                    {t.certifiedCompliance}
-                  </div>
-                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. LOGO BAR */}
-      <section className="bg-white border-y border-slate-100 py-6 mb-16">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider text-center md:text-left">
-            {t.trustedBy}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-300">
-            {/* twilio */}
-            <div className="flex items-center gap-1.5 font-bold text-slate-800 text-lg">
-              <span className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white text-xs">t</span>
-              twilio
-            </div>
-            {/* vehô */}
-            <div className="font-extrabold text-slate-800 text-xl tracking-tight">
-              vehô
-            </div>
-            {/* Linktree */}
-            <div className="flex items-center gap-1.5 font-black text-slate-800 text-lg">
-              🌲 Linktree
             </div>
           </div>
         </div>

@@ -49,8 +49,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
         desc: 'Streamline manual reviews, audit trails, and SAR/STR filings by centralizing identity records and compliance logs in one platform.'
       }
     ],
-    trustedBy: 'Trusted by fast-growing startups & international enterprises',
-    brands: ['BRANCH', 'Z.RO', '6LOCK', 'SQUARE'],
     processTitle: 'Build AML/KYC compliance processes that are delightful to your team, users, and auditors',
     processDesc: 'Maintain compliance without friction. Deliver a fast, modular user experience while ensuring strict risk controls and explainable automated decisions.',
     features: [
@@ -177,7 +175,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
         title: 'Know Your Customers / Know Your Business',
         cards: [
           { title: 'Individual & Business Entity Verification', desc: 'Verify individuals and corporate entities, including complex Ultimate Beneficial Owners (UBOs) and stakeholders, inside a single automated workflow.' },
-          { title: 'Documentary Verification', desc: "Inspect and authenticate driver's licenses, national ID cards, and passports from over 200 countries and territories with OCR." },
+          { title: 'Documentary Verification', desc: "Inspect and authenticate driver's licenses, national ID cards, and passports with OCR." },
           { title: 'Seamless Verification Flow', desc: "Design KYC and KYB verification interfaces customized to match your company's visual identity, improving conversion and trust." },
           { title: 'Non-Documentary Verification', desc: 'Check names, addresses, SSNs, and details against issuer databases, credit records, and business registrar files.' }
         ]
@@ -203,15 +201,14 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       badge: 'Global Verticals',
       title: 'Industries served',
       desc: 'Identra provides compliance orchestration infrastructure across diverse international financial sectors. Select an industry to see how compliance shifts.',
-      benchmark: 'Sector Benchmark Performance'
     },
     industries: [
-      { id: 'banking', title: 'Digital banking', desc: 'Verify customers in seconds while meeting stringent global banking regulations and FinCEN standards.', stat: '99.2% onboarding success rate' },
-      { id: 'institutions', title: 'Financial institutions', desc: 'Centralize multi-jurisdiction compliance across branches, entities, and asset management systems.', stat: '-40% decrease in manual review overhead' },
-      { id: 'crypto', title: 'Cryptocurrency', desc: 'Prevent financial crime, meet Travel Rule regulations, and continuously screen wallets on global exchanges.', stat: 'Real-time blockchain risk mapping' },
-      { id: 'payments', title: 'Online payments and wallets', desc: 'Mitigate fraud, automate chargeback checks, and perform continuous AML screening for payment gateways and wallets.', stat: '<300ms verification response time' },
-      { id: 'movement', title: 'Money movement', desc: 'Confirm identities and watchlists for peer-to-peer transfers, cross-border remittances, and disbursements.', stat: 'Zero false positives on sanctions checks' },
-      { id: 'lending', title: 'Lending and BNPL', desc: 'Verify credit eligibility, run database checks, and ensure compliance before instant consumer or business loans.', stat: '98% automated decisioning accuracy' }
+      { id: 'banking', title: 'Digital banking', desc: 'Verify customers in seconds while meeting stringent global banking regulations and FinCEN standards.' },
+      { id: 'institutions', title: 'Financial institutions', desc: 'Centralize multi-jurisdiction compliance across branches, entities, and asset management systems.' },
+      { id: 'crypto', title: 'Cryptocurrency', desc: 'Prevent financial crime, meet Travel Rule regulations, and continuously screen wallets on global exchanges.' },
+      { id: 'payments', title: 'Online payments and wallets', desc: 'Mitigate fraud, automate chargeback checks, and perform continuous AML screening for payment gateways and wallets.' },
+      { id: 'movement', title: 'Money movement', desc: 'Confirm identities and watchlists for peer-to-peer transfers, cross-border remittances, and disbursements.' },
+      { id: 'lending', title: 'Lending and BNPL', desc: 'Verify credit eligibility, run database checks, and ensure compliance before instant consumer or business loans.' }
     ],
     testimonial: {
       quote: '[Identra] saves us a lot of time and is a much more seamless process for users compared to the old system.',
@@ -234,7 +231,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     ],
     exploreTitle: "Explore more of Identra's identity platform",
     exploreCards: [
-      { label: 'PRODUCT VIEW', title: 'Verify government IDs globally.', desc: 'Deploy secure documentary verification for 200+ countries with advanced facial biometrics.', cta: 'Explore Government ID' },
+      { label: 'PRODUCT VIEW', title: 'Verify government IDs globally.', desc: 'Deploy secure documentary verification with advanced facial biometrics.', cta: 'Explore Government ID' },
       { label: 'REPORTING VIEW', title: 'Screen against global sanctions and PEP lists.', desc: 'Execute watchlist matches, politically exposed persons (PEPs) checks, and adverse news alerts instantly.', cta: 'Explore Watchlist Reports' }
     ],
     cta: {
@@ -277,8 +274,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       { label: '02 // RIESGO DINÁMICO DEL USUARIO', title: 'Enfoque basado en riesgo a tu medida', desc: 'Usa una plataforma altamente configurable para optimizar onboarding y monitoreo según tus parámetros exactos de riesgo.' },
       { label: '03 // MENOS CARGA OPERATIVA', title: 'Sistema de auditoría consolidado', desc: 'Simplifica revisiones manuales, auditorías y reportes SAR/STR centralizando identidad y registros de cumplimiento.' }
     ],
-    trustedBy: 'Con la confianza de startups de rápido crecimiento y empresas internacionales',
-    brands: ['BRANCH', 'Z.RO', '6LOCK', 'SQUARE'],
     processTitle: 'Crea procesos AML/KYC agradables para tu equipo, usuarios y auditores',
     processDesc: 'Mantén el cumplimiento sin fricción. Ofrece una experiencia rápida y modular con controles de riesgo estrictos y decisiones automatizadas explicables.',
     features: [
@@ -337,18 +332,18 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     },
     accordionIntro: { title: 'Todo lo necesario para crear tu proceso AML/KYC ideal', desc: 'Explora herramientas de Identra que ayudan a responsables de cumplimiento a ajustar cada paso de verificación.' },
     accordions: [
-      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: 'Verificación de personas y entidades', desc: 'Verifica individuos y empresas, incluidos UBO y stakeholders complejos, en un único flujo automatizado.' }, { title: 'Verificación documental', desc: 'Autentica licencias, documentos nacionales y pasaportes de más de 200 países y territorios con OCR.' }, { title: 'Flujo de verificación fluido', desc: 'Diseña interfaces KYC y KYB alineadas con la identidad visual de tu empresa para mejorar conversión y confianza.' }, { title: 'Verificación no documental', desc: 'Comprueba nombres, direcciones, SSN y datos contra emisores, crédito y registros empresariales.' }] },
+      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: 'Verificación de personas y entidades', desc: 'Verifica individuos y empresas, incluidos UBO y stakeholders complejos, en un único flujo automatizado.' }, { title: 'Verificación documental', desc: 'Autentica licencias, documentos nacionales y pasaportes con OCR.' }, { title: 'Flujo de verificación fluido', desc: 'Diseña interfaces KYC y KYB alineadas con la identidad visual de tu empresa para mejorar conversión y confianza.' }, { title: 'Verificación no documental', desc: 'Comprueba nombres, direcciones, SSN y datos contra emisores, crédito y registros empresariales.' }] },
       { id: 'monitoring', title: 'Revisión y monitoreo continuos', cards: [{ title: 'Listas de sanciones globales', desc: 'Consulta bases activas como OFAC, HM Treasury y objetivos de la UE con umbrales fuzzy configurables.' }, { title: 'Revisión dinámica programada', desc: 'Activa revisiones diarias automáticas para clientes verificados y captura cambios en listas de vigilancia.' }] },
       { id: 'due-diligence', title: 'Automatización de due diligence', cards: [{ title: 'Disparadores AML avanzados', desc: 'Activa cuestionarios, prueba de dirección o declaraciones fiscales para usuarios con riesgo elevado.' }, { title: 'Registros de auditoría automáticos', desc: 'Cada regla, intervención de analista y resultado queda registrado para reportes de cumplimiento.' }] }
     ],
-    industriesIntro: { badge: 'Verticales globales', title: 'Industrias atendidas', desc: 'Identra ofrece infraestructura de orquestación de cumplimiento para sectores financieros internacionales diversos.', benchmark: 'Rendimiento de referencia del sector' },
+    industriesIntro: { badge: 'Verticales globales', title: 'Industrias atendidas', desc: 'Identra ofrece infraestructura de orquestación de cumplimiento para sectores financieros internacionales diversos.' },
     industries: [
-      { id: 'banking', title: 'Banca digital', desc: 'Verifica clientes en segundos cumpliendo regulaciones bancarias globales y estándares FinCEN.', stat: '99,2% de éxito en onboarding' },
-      { id: 'institutions', title: 'Instituciones financieras', desc: 'Centraliza cumplimiento multi-jurisdicción en sucursales, entidades y gestión de activos.', stat: '-40% de carga de revisión manual' },
-      { id: 'crypto', title: 'Criptomonedas', desc: 'Prevén delitos financieros, cumple Travel Rule y revisa wallets en exchanges globales.', stat: 'Mapeo de riesgo blockchain en tiempo real' },
-      { id: 'payments', title: 'Pagos en línea y billeteras', desc: 'Mitiga fraude, automatiza contracargos y realiza revisión AML continua.', stat: '<300 ms de respuesta de verificación' },
-      { id: 'movement', title: 'Movimiento de dinero', desc: 'Confirma identidades y listas para transferencias P2P, remesas y desembolsos.', stat: 'Cero falsos positivos en sanciones' },
-      { id: 'lending', title: 'Préstamos y BNPL', desc: 'Verifica elegibilidad crediticia, bases de datos y cumplimiento antes de préstamos instantáneos.', stat: '98% de precisión en decisiones automáticas' }
+      { id: 'banking', title: 'Banca digital', desc: 'Verifica clientes en segundos cumpliendo regulaciones bancarias globales y estándares FinCEN.' },
+      { id: 'institutions', title: 'Instituciones financieras', desc: 'Centraliza cumplimiento multi-jurisdicción en sucursales, entidades y gestión de activos.' },
+      { id: 'crypto', title: 'Criptomonedas', desc: 'Prevén delitos financieros, cumple Travel Rule y revisa wallets en exchanges globales.' },
+      { id: 'payments', title: 'Pagos en línea y billeteras', desc: 'Mitiga fraude, automatiza contracargos y realiza revisión AML continua.' },
+      { id: 'movement', title: 'Movimiento de dinero', desc: 'Confirma identidades y listas para transferencias P2P, remesas y desembolsos.' },
+      { id: 'lending', title: 'Préstamos y BNPL', desc: 'Verifica elegibilidad crediticia, bases de datos y cumplimiento antes de préstamos instantáneos.' }
     ],
     testimonial: { quote: '[Identra] nos ahorra mucho tiempo y ofrece un proceso mucho más fluido para los usuarios que el sistema anterior.', author: 'Doug Verduzco', role: 'Director de transformación digital, banco regional', badge: 'RESUMEN DEL CASO', title: 'Un banco regional cumplió requisitos críticos AML y KYC mientras avanzaba hacia un futuro digital con Identra', desc: 'Al reemplazar proveedores heredados por Identra, el banco redujo demoras de 48 horas a menos de 12 segundos manteniendo cumplimiento federal auditable.', cta: 'Leer caso completo' },
     resourcesIntro: { badge: 'Biblioteca de recursos', title: 'Sigue aprendiendo', cta: 'Ver ebooks e informes' },
@@ -359,7 +354,7 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     ],
     exploreTitle: 'Explora más de la plataforma de identidad de Identra',
     exploreCards: [
-      { label: 'VISTA DE PRODUCTO', title: 'Verifica documentos oficiales globalmente.', desc: 'Implementa verificación documental segura para más de 200 países con biometría facial avanzada.', cta: 'Explorar Government ID' },
+      { label: 'VISTA DE PRODUCTO', title: 'Verifica documentos oficiales globalmente.', desc: 'Implementa verificación documental segura con biometría facial avanzada.', cta: 'Explorar Government ID' },
       { label: 'VISTA DE REPORTES', title: 'Revisa sanciones globales y listas PEP.', desc: 'Ejecuta coincidencias de listas, revisiones PEP y alertas de medios adversos al instante.', cta: 'Explorar reportes de listas' }
     ],
     cta: { title: '¿Listo para empezar?', desc: 'Descubre cómo la plataforma AML/KYC configurable de Identra mantiene tu negocio conforme, seguro y en crecimiento.', primary: 'Probar la demo', secondary: 'Probar ahora' }
@@ -393,8 +388,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       { label: '02 // 動的なユーザーリスク', title: 'リスクベースの柔軟な運用', desc: '高度に設定可能なプラットフォームで、リスク条件に合わせたオンボーディングとスクリーニングを最適化します。' },
       { label: '03 // 運用負荷の削減', title: '統合された監査システム', desc: '本人確認記録とコンプライアンスログを集約し、手動レビュー、監査証跡、SAR/STR 提出を効率化します。' }
     ],
-    trustedBy: '急成長スタートアップと国際企業が信頼',
-    brands: ['BRANCH', 'Z.RO', '6LOCK', 'SQUARE'],
     processTitle: 'チーム、ユーザー、監査担当者にとって扱いやすい AML/KYC プロセスを構築',
     processDesc: '摩擦を増やさずにコンプライアンスを維持。厳格なリスク制御と説明可能な自動判定を備えた高速でモジュール型の体験を提供します。',
     features: [
@@ -421,24 +414,24 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     },
     accordionIntro: { title: '理想的な AML/KYC プロセス構築に必要なすべて', desc: 'コンプライアンス担当者が検証を段階的に調整できる Identra の包括的なツールセットを確認できます。' },
     accordions: [
-      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: '個人・法人エンティティ検証', desc: '複雑な UBO や関係者を含む個人と法人を単一の自動ワークフローで検証します。' }, { title: '書類検証', desc: '200以上の国と地域の免許証、国民 ID、パスポートを OCR で認証します。' }, { title: 'スムーズな検証フロー', desc: '企業のブランドに合わせた KYC/KYB UI を設計し、コンバージョンと信頼を高めます。' }, { title: '非書類検証', desc: '氏名、住所、SSN、詳細情報を発行元データベース、信用情報、企業登録で確認します。' }] },
+      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: '個人・法人エンティティ検証', desc: '複雑な UBO や関係者を含む個人と法人を単一の自動ワークフローで検証します。' }, { title: '書類検証', desc: '免許証、国民 ID、パスポートを OCR で認証します。' }, { title: 'スムーズな検証フロー', desc: '企業のブランドに合わせた KYC/KYB UI を設計し、コンバージョンと信頼を高めます。' }, { title: '非書類検証', desc: '氏名、住所、SSN、詳細情報を発行元データベース、信用情報、企業登録で確認します。' }] },
       { id: 'monitoring', title: '継続スクリーニングと監視', cards: [{ title: 'グローバル制裁リスト', desc: 'OFAC、HM Treasury、EU 対象などのアクティブなデータベースを、設定可能なしきい値で照合します。' }, { title: '動的な再スクリーニング Cron', desc: '確認済み顧客に対して日次の自動再スクリーニングを有効化し、変更を即時に捉えます。' }] },
       { id: 'due-diligence', title: 'デューデリジェンス自動化', cards: [{ title: '高度な AML ワークフロートリガー', desc: 'リスクの高いユーザーに質問票、住所証明、税務書類を要求します。' }, { title: '自動監査証跡ログ', desc: '自動ロジック、アナリスト入力、検証結果をすべて記録し、報告に備えます。' }] }
     ],
-    industriesIntro: { badge: 'グローバル業種', title: '対応業界', desc: 'Identra は多様な国際金融セクターにコンプライアンス統制基盤を提供します。', benchmark: 'セクター基準パフォーマンス' },
+    industriesIntro: { badge: 'グローバル業種', title: '対応業界', desc: 'Identra は多様な国際金融セクターにコンプライアンス統制基盤を提供します。' },
     industries: [
-      { id: 'banking', title: 'デジタル銀行', desc: '厳格な銀行規制と FinCEN 標準を満たしながら数秒で顧客を検証します。', stat: 'オンボーディング成功率 99.2%' },
-      { id: 'institutions', title: '金融機関', desc: '支店、法人、資産管理システムをまたぐ複雑なコンプライアンスを一元化します。', stat: '手動レビュー負荷を40%削減' },
-      { id: 'crypto', title: '暗号資産', desc: '金融犯罪を防ぎ、Travel Rule に対応し、グローバル取引所のウォレットを継続監視します。', stat: 'リアルタイムのブロックチェーンリスクマッピング' },
-      { id: 'payments', title: 'オンライン決済とウォレット', desc: '不正を抑え、チャージバック確認を自動化し、決済基盤の AML 監視を継続します。', stat: '検証応答時間 <300ms' },
-      { id: 'movement', title: '資金移動', desc: 'P2P 送金、国際送金、企業支払いで本人性とウォッチリストを確認します。', stat: '制裁照合の誤検知ゼロ' },
-      { id: 'lending', title: '融資と BNPL', desc: '即時融資の前に信用適格性、データベース、コンプライアンスを確認します。', stat: '自動判定精度 98%' }
+      { id: 'banking', title: 'デジタル銀行', desc: '厳格な銀行規制と FinCEN 標準を満たしながら数秒で顧客を検証します。' },
+      { id: 'institutions', title: '金融機関', desc: '支店、法人、資産管理システムをまたぐ複雑なコンプライアンスを一元化します。' },
+      { id: 'crypto', title: '暗号資産', desc: '金融犯罪を防ぎ、Travel Rule に対応し、グローバル取引所のウォレットを継続監視します。' },
+      { id: 'payments', title: 'オンライン決済とウォレット', desc: '不正を抑え、チャージバック確認を自動化し、決済基盤の AML 監視を継続します。' },
+      { id: 'movement', title: '資金移動', desc: 'P2P 送金、国際送金、企業支払いで本人性とウォッチリストを確認します。' },
+      { id: 'lending', title: '融資と BNPL', desc: '即時融資の前に信用適格性、データベース、コンプライアンスを確認します。' }
     ],
     testimonial: { quote: '[Identra] により大幅に時間を節約でき、以前のシステムよりユーザーにとってはるかにスムーズなプロセスになりました。', author: 'Doug Verduzco', role: '地域銀行 デジタルトランスフォーメーション責任者', badge: 'ケーススタディ概要', title: '地域銀行が Identra とともにデジタル化を進めながら重要な AML/KYC 要件を満たしました', desc: '従来の本人確認ベンダーを Identra に置き換え、検証遅延を48時間から12秒未満に短縮し、監査可能な連邦コンプライアンスを維持しました。', cta: 'ケーススタディを読む' },
     resourcesIntro: { badge: 'リソースライブラリ', title: 'さらに学ぶ', cta: 'すべての ebook とレポートを見る' },
     resources: [{ meta: '動画 - 56分', title: 'グローバル成長を実現: 国際市場でのコンプライアンスと信頼', desc: 'コンプライアンス専門家から、国際展開、規制差異、不正防止の実践を学びます。', cta: '動画を見る' }, { meta: 'ガイド - 25分', title: '本人確認担当者のための規制遵守ガイド', desc: 'AML 要件、KYC、KYB、UBO、SAR タイムラインを整理した包括的なプレイブックです。', cta: 'ガイドを読む' }, { meta: 'ブログ - 7分', title: '自動 KYC 検証: コンプライアンス責任者向けガイド', desc: '本人確認における自動判定が精度を高め、手動レビューを減らす仕組みを解説します。', cta: 'ブログを読む' }],
     exploreTitle: 'Identra の本人確認プラットフォームをさらに見る',
-    exploreCards: [{ label: '製品ビュー', title: '世界中の公的身分証を検証。', desc: '200以上の国に対応する安全な書類検証と高度な顔生体認証を導入できます。', cta: 'Government ID を見る' }, { label: 'レポートビュー', title: 'グローバル制裁と PEP リストを照合。', desc: 'ウォッチリスト一致、PEP 確認、ネガティブニュースアラートを即時実行します。', cta: 'ウォッチリストレポートを見る' }],
+    exploreCards: [{ label: '製品ビュー', title: '世界中の公的身分証を検証。', desc: '安全な書類検証と高度な顔生体認証を導入できます。', cta: 'Government ID を見る' }, { label: 'レポートビュー', title: 'グローバル制裁と PEP リストを照合。', desc: 'ウォッチリスト一致、PEP 確認、ネガティブニュースアラートを即時実行します。', cta: 'ウォッチリストレポートを見る' }],
     cta: { title: '始める準備はできていますか？', desc: 'Identra のカスタマイズ可能な AML/KYC 統制基盤が、事業のコンプライアンス、安全性、成長を支えます。', primary: 'デモを試す', secondary: '今すぐ試す' }
   },
   de: {
@@ -470,8 +463,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       { label: '02 // DYNAMISCHES NUTZERRISIKO', title: 'Risikobasierter Ansatz nach Maß', desc: 'Optimieren Sie Onboarding und Screening mit einer Plattform, die sich exakt an Ihre Risikoparameter anpasst.' },
       { label: '03 // WENIGER AUFWAND', title: 'Konsolidiertes Auditsystem', desc: 'Vereinfachen Sie manuelle Prüfungen, Audit-Trails und SAR/STR-Meldungen durch zentrale Identitäts- und Compliance-Logs.' }
     ],
-    trustedBy: 'Vertraut von schnell wachsenden Startups und internationalen Unternehmen',
-    brands: ['BRANCH', 'Z.RO', '6LOCK', 'SQUARE'],
     processTitle: 'AML/KYC-Prozesse, die Teams, Nutzer und Prüfer gern verwenden',
     processDesc: 'Erfüllen Sie Compliance ohne Reibung. Liefern Sie schnelle, modulare Erlebnisse mit strenger Risikokontrolle und erklärbaren automatisierten Entscheidungen.',
     features: [
@@ -498,24 +489,24 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     },
     accordionIntro: { title: 'Alles für Ihren idealen AML/KYC-Prozess', desc: 'Prüfen Sie umfassende Identra-Tools, mit denen Compliance-Manager Verifizierung Schritt für Schritt anpassen.' },
     accordions: [
-      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: 'Verifizierung von Personen und Unternehmen', desc: 'Personen und Unternehmen inklusive komplexer UBOs und Stakeholder in einem automatisierten Workflow prüfen.' }, { title: 'Dokumentarische Verifizierung', desc: 'Führerscheine, nationale IDs und Reisepässe aus über 200 Ländern und Gebieten per OCR authentifizieren.' }, { title: 'Nahtloser Verifizierungsflow', desc: 'KYC- und KYB-Oberflächen passend zur Markenidentität gestalten und Vertrauen erhöhen.' }, { title: 'Nicht-dokumentarische Verifizierung', desc: 'Namen, Adressen, SSNs und Details gegen Aussteller-, Kredit- und Unternehmensregister prüfen.' }] },
+      { id: 'kyc-kyb', title: 'Know Your Customers / Know Your Business', cards: [{ title: 'Verifizierung von Personen und Unternehmen', desc: 'Personen und Unternehmen inklusive komplexer UBOs und Stakeholder in einem automatisierten Workflow prüfen.' }, { title: 'Dokumentarische Verifizierung', desc: 'Führerscheine, nationale IDs und Reisepässe per OCR authentifizieren.' }, { title: 'Nahtloser Verifizierungsflow', desc: 'KYC- und KYB-Oberflächen passend zur Markenidentität gestalten und Vertrauen erhöhen.' }, { title: 'Nicht-dokumentarische Verifizierung', desc: 'Namen, Adressen, SSNs und Details gegen Aussteller-, Kredit- und Unternehmensregister prüfen.' }] },
       { id: 'monitoring', title: 'Kontinuierliches Screening und Monitoring', cards: [{ title: 'Globale Sanktionslisten', desc: 'Aktive Watchlist-Datenbanken wie OFAC, HM Treasury und EU-Ziele mit konfigurierbaren Fuzzy-Schwellen prüfen.' }, { title: 'Dynamisches Re-Screening Cron', desc: 'Tägliches automatisches Re-Screening für aktive verifizierte Kunden aktivieren.' }] },
       { id: 'due-diligence', title: 'Automatisierte Due Diligence', cards: [{ title: 'Erweiterte AML-Workflow-Trigger', desc: 'Fragebögen, Adressnachweise oder Steuerunterlagen für Nutzer mit erhöhtem Risiko auslösen.' }, { title: 'Automatische Audit-Trail-Logs', desc: 'Jeder Trigger, Analysteneingriff und jedes Ergebnis wird für Compliance-Berichte protokolliert.' }] }
     ],
-    industriesIntro: { badge: 'Globale Branchen', title: 'Bediente Branchen', desc: 'Identra bietet Compliance-Orchestrierung für vielfältige internationale Finanzsektoren.', benchmark: 'Benchmark-Leistung der Branche' },
+    industriesIntro: { badge: 'Globale Branchen', title: 'Bediente Branchen', desc: 'Identra bietet Compliance-Orchestrierung für vielfältige internationale Finanzsektoren.' },
     industries: [
-      { id: 'banking', title: 'Digital Banking', desc: 'Kunden in Sekunden prüfen und globale Bankvorschriften sowie FinCEN-Standards erfüllen.', stat: '99,2% Onboarding-Erfolgsrate' },
-      { id: 'institutions', title: 'Finanzinstitute', desc: 'Komplexe Multi-Jurisdiktions-Compliance über Filialen, Einheiten und Asset-Management zentralisieren.', stat: '-40% manueller Prüfaufwand' },
-      { id: 'crypto', title: 'Kryptowährung', desc: 'Finanzkriminalität verhindern, Travel Rule erfüllen und Wallets auf globalen Börsen laufend screenen.', stat: 'Blockchain-Risikomapping in Echtzeit' },
-      { id: 'payments', title: 'Online-Zahlungen und Wallets', desc: 'Betrug reduzieren, Chargeback-Prüfungen automatisieren und AML-Screening fortlaufend ausführen.', stat: '<300 ms Antwortzeit der Verifizierung' },
-      { id: 'movement', title: 'Geldbewegung', desc: 'Identität und Watchlists für P2P-Transfers, Auslandsüberweisungen und Auszahlungen bestätigen.', stat: 'Keine False Positives bei Sanktionsprüfungen' },
-      { id: 'lending', title: 'Kreditvergabe und BNPL', desc: 'Bonität, Datenbanken und Compliance vor Sofortkrediten prüfen.', stat: '98% Genauigkeit bei automatischen Entscheidungen' }
+      { id: 'banking', title: 'Digital Banking', desc: 'Kunden in Sekunden prüfen und globale Bankvorschriften sowie FinCEN-Standards erfüllen.' },
+      { id: 'institutions', title: 'Finanzinstitute', desc: 'Komplexe Multi-Jurisdiktions-Compliance über Filialen, Einheiten und Asset-Management zentralisieren.' },
+      { id: 'crypto', title: 'Kryptowährung', desc: 'Finanzkriminalität verhindern, Travel Rule erfüllen und Wallets auf globalen Börsen laufend screenen.' },
+      { id: 'payments', title: 'Online-Zahlungen und Wallets', desc: 'Betrug reduzieren, Chargeback-Prüfungen automatisieren und AML-Screening fortlaufend ausführen.' },
+      { id: 'movement', title: 'Geldbewegung', desc: 'Identität und Watchlists für P2P-Transfers, Auslandsüberweisungen und Auszahlungen bestätigen.' },
+      { id: 'lending', title: 'Kreditvergabe und BNPL', desc: 'Bonität, Datenbanken und Compliance vor Sofortkrediten prüfen.' }
     ],
     testimonial: { quote: '[Identra] spart uns viel Zeit und ist für Nutzer deutlich nahtloser als das alte System.', author: 'Doug Verduzco', role: 'Leiter digitale Transformation, Regionalbank', badge: 'CASE-STUDY-ZUSAMMENFASSUNG', title: 'Eine Regionalbank erfüllte kritische AML- und KYC-Anforderungen auf dem Weg in eine digitale Zukunft mit Identra', desc: 'Durch den Wechsel von Legacy-Anbietern zu Identra reduzierte die Bank Verzögerungen von 48 Stunden auf unter 12 Sekunden und behielt auditierbare Compliance.', cta: 'Case Study lesen' },
     resourcesIntro: { badge: 'Ressourcenbibliothek', title: 'Weiter lernen', cta: 'Alle E-Books & Berichte ansehen' },
     resources: [{ meta: 'Video - 56 Min.', title: 'Globales Wachstum: Compliance und Vertrauen in internationalen Märkten', desc: 'Compliance-Fachleute teilen Ansätze für Expansion, regulatorische Nuancen und Betrugsprävention.', cta: 'Video ansehen' }, { meta: 'Leitfaden - 25 Min.', title: 'Der Leitfaden für Identitätsprofis zur regulatorischen Compliance', desc: 'Ein Playbook zu AML-Anforderungen, KYC, KYB, UBO-Abfragen und SAR-Fristen.', cta: 'Leitfaden lesen' }, { meta: 'Blog - 7 Min.', title: 'Automatisierte KYC-Verifizierung für Compliance-Verantwortliche', desc: 'Wie automatische Entscheidungen die Präzision erhöhen und manuelle Prüfqueues reduzieren.', cta: 'Blog lesen' }],
     exploreTitle: 'Mehr von Identras Identitätsplattform entdecken',
-    exploreCards: [{ label: 'PRODUKTANSICHT', title: 'Ausweisdokumente weltweit verifizieren.', desc: 'Sichere Dokumentenprüfung für 200+ Länder mit fortschrittlicher Gesichtsbiometrie bereitstellen.', cta: 'Government ID entdecken' }, { label: 'REPORTING-ANSICHT', title: 'Globale Sanktionen und PEP-Listen prüfen.', desc: 'Watchlist-Treffer, PEP-Prüfungen und negative News Alerts sofort ausführen.', cta: 'Watchlist Reports entdecken' }],
+    exploreCards: [{ label: 'PRODUKTANSICHT', title: 'Ausweisdokumente weltweit verifizieren.', desc: 'Sichere Dokumentenprüfung mit fortschrittlicher Gesichtsbiometrie bereitstellen.', cta: 'Government ID entdecken' }, { label: 'REPORTING-ANSICHT', title: 'Globale Sanktionen und PEP-Listen prüfen.', desc: 'Watchlist-Treffer, PEP-Prüfungen und negative News Alerts sofort ausführen.', cta: 'Watchlist Reports entdecken' }],
     cta: { title: 'Bereit loszulegen?', desc: 'Erfahren Sie, wie Identras anpassbare AML/KYC-Orchestrierungsplattform Ihr Unternehmen compliant, sicher und wachstumsfähig hält.', primary: 'Demo testen', secondary: 'Jetzt testen' }
   },
   vi: {
@@ -547,8 +538,6 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
       { label: '02 // RỦI RO NGƯỜI DÙNG ĐỘNG', title: 'Cách tiếp cận dựa trên rủi ro theo nhu cầu', desc: 'Dùng nền tảng có khả năng cấu hình cao để tối ưu quy trình tiếp nhận khách hàng và sàng lọc theo chính xác tham số rủi ro của bạn.' },
       { label: '03 // GIẢM GÁNH NẶNG VẬN HÀNH', title: 'Hệ thống kiểm toán hợp nhất', desc: 'Tinh gọn rà soát thủ công, vết kiểm toán và hồ sơ SAR/STR bằng cách tập trung hóa dữ liệu danh tính và nhật ký tuân thủ.' }
     ],
-    trustedBy: 'Được các startup tăng trưởng nhanh và doanh nghiệp quốc tế tin dùng',
-    brands: ['BRANCH', 'Z.RO', '6LOCK', 'SQUARE'],
     processTitle: 'Xây dựng quy trình AML/KYC thuận tiện cho đội ngũ, người dùng và kiểm toán viên',
     processDesc: 'Duy trì tuân thủ mà không tạo ma sát. Cung cấp trải nghiệm nhanh, dạng mô-đun, đồng thời đảm bảo kiểm soát rủi ro chặt chẽ và quyết định tự động có thể giải thích.',
     features: [
@@ -575,24 +564,24 @@ export const KYC_AML_PAGE_TRANSLATIONS = {
     },
     accordionIntro: { title: 'Mọi thứ bạn cần để xây dựng quy trình AML/KYC lý tưởng', desc: 'Khám phá bộ công cụ toàn diện của Identra giúp nhà quản lý tuân thủ tinh chỉnh từng bước xác minh.' },
     accordions: [
-      { id: 'kyc-kyb', title: 'Xác minh khách hàng / Xác minh doanh nghiệp', cards: [{ title: 'Xác minh cá nhân và pháp nhân doanh nghiệp', desc: 'Xác minh cá nhân và doanh nghiệp, bao gồm UBO và các bên liên quan phức tạp, trong một quy trình tự động duy nhất.' }, { title: 'Xác minh bằng giấy tờ', desc: 'Kiểm tra và xác minh giấy phép lái xe, căn cước quốc gia và hộ chiếu từ hơn 200 quốc gia và vùng lãnh thổ bằng OCR.' }, { title: 'Luồng xác minh liền mạch', desc: 'Thiết kế giao diện KYC và KYB phù hợp nhận diện thương hiệu để cải thiện tỷ lệ hoàn tất và niềm tin.' }, { title: 'Xác minh không dùng giấy tờ', desc: 'Kiểm tra tên, địa chỉ, SSN và thông tin với cơ sở dữ liệu phát hành, hồ sơ tín dụng và đăng ký doanh nghiệp.' }] },
+      { id: 'kyc-kyb', title: 'Xác minh khách hàng / Xác minh doanh nghiệp', cards: [{ title: 'Xác minh cá nhân và pháp nhân doanh nghiệp', desc: 'Xác minh cá nhân và doanh nghiệp, bao gồm UBO và các bên liên quan phức tạp, trong một quy trình tự động duy nhất.' }, { title: 'Xác minh bằng giấy tờ', desc: 'Kiểm tra và xác minh giấy phép lái xe, căn cước quốc gia và hộ chiếu bằng OCR.' }, { title: 'Luồng xác minh liền mạch', desc: 'Thiết kế giao diện KYC và KYB phù hợp nhận diện thương hiệu để cải thiện tỷ lệ hoàn tất và niềm tin.' }, { title: 'Xác minh không dùng giấy tờ', desc: 'Kiểm tra tên, địa chỉ, SSN và thông tin với cơ sở dữ liệu phát hành, hồ sơ tín dụng và đăng ký doanh nghiệp.' }] },
       { id: 'monitoring', title: 'Sàng lọc và giám sát liên tục', cards: [{ title: 'Danh sách cấm vận toàn cầu', desc: 'Kiểm tra các cơ sở dữ liệu danh sách theo dõi đang hoạt động như OFAC, HM Treasury và mục tiêu EU với ngưỡng khớp gần đúng tùy chỉnh.' }, { title: 'Tái sàng lọc động theo lịch', desc: 'Bật tái sàng lọc tự động hằng ngày cho khách hàng đã xác minh để phát hiện thay đổi trong danh sách theo dõi.' }] },
       { id: 'due-diligence', title: 'Tự động hóa thẩm định', cards: [{ title: 'Kích hoạt quy trình AML nâng cao', desc: 'Kích hoạt bảng câu hỏi thẩm định, chứng minh địa chỉ hoặc hồ sơ thuế cho người dùng có nhãn rủi ro cao.' }, { title: 'Nhật ký vết kiểm toán tự động', desc: 'Mọi kích hoạt logic, thao tác của chuyên viên và kết quả xác minh đều được ghi lại cho báo cáo tuân thủ.' }] }
     ],
-    industriesIntro: { badge: 'Ngành dọc toàn cầu', title: 'Ngành được phục vụ', desc: 'Identra cung cấp hạ tầng điều phối tuân thủ cho nhiều lĩnh vực tài chính quốc tế khác nhau.', benchmark: 'Hiệu suất chuẩn theo ngành' },
+    industriesIntro: { badge: 'Ngành dọc toàn cầu', title: 'Ngành được phục vụ', desc: 'Identra cung cấp hạ tầng điều phối tuân thủ cho nhiều lĩnh vực tài chính quốc tế khác nhau.' },
     industries: [
-      { id: 'banking', title: 'Ngân hàng số', desc: 'Xác minh khách hàng trong vài giây đồng thời đáp ứng quy định ngân hàng toàn cầu và tiêu chuẩn FinCEN.', stat: '99,2% tỷ lệ tiếp nhận thành công' },
-      { id: 'institutions', title: 'Tổ chức tài chính', desc: 'Tập trung hóa tuân thủ đa khu vực pháp lý trên nhiều chi nhánh, pháp nhân và hệ thống quản lý tài sản.', stat: 'Giảm 40% chi phí rà soát thủ công' },
-      { id: 'crypto', title: 'Tiền mã hóa', desc: 'Ngăn tội phạm tài chính, đáp ứng Travel Rule và liên tục sàng lọc ví trên các sàn giao dịch toàn cầu.', stat: 'Lập bản đồ rủi ro blockchain theo thời gian thực' },
-      { id: 'payments', title: 'Thanh toán trực tuyến và ví điện tử', desc: 'Giảm gian lận, tự động hóa kiểm tra hoàn trả giao dịch và sàng lọc AML liên tục cho cổng thanh toán và ví.', stat: 'Thời gian phản hồi xác minh <300ms' },
-      { id: 'movement', title: 'Luân chuyển tiền', desc: 'Xác nhận danh tính và danh sách theo dõi cho chuyển tiền ngang hàng, kiều hối xuyên biên giới và giải ngân.', stat: 'Không có dương tính giả trong kiểm tra cấm vận' },
-      { id: 'lending', title: 'Cho vay và BNPL', desc: 'Xác minh điều kiện tín dụng, kiểm tra cơ sở dữ liệu và đảm bảo tuân thủ trước khi cấp khoản vay tức thì.', stat: '98% độ chính xác quyết định tự động' }
+      { id: 'banking', title: 'Ngân hàng số', desc: 'Xác minh khách hàng trong vài giây đồng thời đáp ứng quy định ngân hàng toàn cầu và tiêu chuẩn FinCEN.' },
+      { id: 'institutions', title: 'Tổ chức tài chính', desc: 'Tập trung hóa tuân thủ đa khu vực pháp lý trên nhiều chi nhánh, pháp nhân và hệ thống quản lý tài sản.' },
+      { id: 'crypto', title: 'Tiền mã hóa', desc: 'Ngăn tội phạm tài chính, đáp ứng Travel Rule và liên tục sàng lọc ví trên các sàn giao dịch toàn cầu.' },
+      { id: 'payments', title: 'Thanh toán trực tuyến và ví điện tử', desc: 'Giảm gian lận, tự động hóa kiểm tra hoàn trả giao dịch và sàng lọc AML liên tục cho cổng thanh toán và ví.' },
+      { id: 'movement', title: 'Luân chuyển tiền', desc: 'Xác nhận danh tính và danh sách theo dõi cho chuyển tiền ngang hàng, kiều hối xuyên biên giới và giải ngân.' },
+      { id: 'lending', title: 'Cho vay và BNPL', desc: 'Xác minh điều kiện tín dụng, kiểm tra cơ sở dữ liệu và đảm bảo tuân thủ trước khi cấp khoản vay tức thì.' }
     ],
     testimonial: { quote: '[Identra] giúp chúng tôi tiết kiệm rất nhiều thời gian và mang lại quy trình liền mạch hơn nhiều cho người dùng so với hệ thống cũ.', author: 'Doug Verduzco', role: 'Giám đốc chuyển đổi số, ngân hàng khu vực', badge: 'TÓM TẮT NGHIÊN CỨU TÌNH HUỐNG', title: 'Một ngân hàng khu vực đáp ứng yêu cầu AML và KYC trọng yếu khi chuyển sang tương lai số với Identra', desc: 'Bằng cách thay thế nhà cung cấp danh tính cũ bằng Identra, ngân hàng giảm độ trễ xác minh từ 48 giờ xuống dưới 12 giây mà vẫn duy trì tuân thủ liên bang có thể kiểm toán.', cta: 'Đọc nghiên cứu tình huống đầy đủ' },
     resourcesIntro: { badge: 'Thư viện tài nguyên', title: 'Tiếp tục tìm hiểu', cta: 'Xem tất cả sách điện tử và báo cáo' },
     resources: [{ meta: 'Video - 56 phút', title: 'Mở khóa tăng trưởng toàn cầu: đảm bảo tuân thủ và niềm tin trên thị trường quốc tế', desc: 'Học từ các chuyên gia tuân thủ về mở rộng quốc gia, sắc thái quy định và phương pháp chống gian lận.', cta: 'Xem video' }, { meta: 'Hướng dẫn - 25 phút', title: 'Hướng dẫn cho chuyên gia danh tính để đạt và duy trì tuân thủ quy định', desc: 'Tài liệu thực hành toàn diện về yêu cầu AML, xác minh KYC, tra cứu chủ sở hữu KYB và mốc thời gian SAR.', cta: 'Đọc hướng dẫn' }, { meta: 'Blog - 7 phút', title: 'Xác minh KYC tự động: hướng dẫn cho quản lý tuân thủ và lãnh đạo', desc: 'Cách quyết định tự động hoạt động trong xác minh danh tính để nâng độ chính xác và giảm hàng đợi rà soát thủ công.', cta: 'Đọc bài viết' }],
     exploreTitle: 'Khám phá thêm nền tảng danh tính của Identra',
-    exploreCards: [{ label: 'GÓC NHÌN SẢN PHẨM', title: 'Xác minh giấy tờ tùy thân toàn cầu.', desc: 'Triển khai xác minh tài liệu an toàn cho hơn 200 quốc gia với sinh trắc học khuôn mặt nâng cao.', cta: 'Khám phá Government ID' }, { label: 'GÓC NHÌN BÁO CÁO', title: 'Sàng lọc cấm vận toàn cầu và danh sách PEP.', desc: 'Thực thi khớp danh sách theo dõi, kiểm tra PEP và cảnh báo tin tức bất lợi ngay lập tức.', cta: 'Khám phá báo cáo danh sách theo dõi' }],
+    exploreCards: [{ label: 'GÓC NHÌN SẢN PHẨM', title: 'Xác minh giấy tờ tùy thân toàn cầu.', desc: 'Triển khai xác minh tài liệu an toàn với sinh trắc học khuôn mặt nâng cao.', cta: 'Khám phá Government ID' }, { label: 'GÓC NHÌN BÁO CÁO', title: 'Sàng lọc cấm vận toàn cầu và danh sách PEP.', desc: 'Thực thi khớp danh sách theo dõi, kiểm tra PEP và cảnh báo tin tức bất lợi ngay lập tức.', cta: 'Khám phá báo cáo danh sách theo dõi' }],
     cta: { title: 'Sẵn sàng bắt đầu?', desc: 'Khám phá cách nền tảng điều phối AML/KYC tùy chỉnh của Identra giúp doanh nghiệp luôn tuân thủ, an toàn và tăng trưởng.', primary: 'Trải nghiệm demo', secondary: 'Thử ngay' }
   }
 } as const;

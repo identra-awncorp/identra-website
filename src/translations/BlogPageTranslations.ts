@@ -8,13 +8,6 @@ import type { Language } from '../context/LanguageContext';
 const en = {
   copy: {
     featuredBlogPosts: 'Featured blog posts',
-    figure1IdentityMap: 'Figure 1: Identity Trust Map',
-    challengers: 'Reactive',
-    leaders: 'Adaptive',
-    nichePlayers: 'Manual',
-    visionaries: 'Predictive',
-    depthOfSignals: 'Depth of Signals',
-    operationalReadiness: 'Operational Readiness',
     blog: 'Blog',
     text8MinRead: '8 min read',
     featuredTitle: 'Adaptive identity verification: how trust teams reduce fraud without adding friction',
@@ -243,13 +236,6 @@ type BlogPageTranslation = LocalizedShape<typeof en>;
 const es = {
   copy: {
     featuredBlogPosts: 'Artículos destacados',
-    figure1IdentityMap: 'Figura 1: mapa de confianza de identidad',
-    challengers: 'Reactivo',
-    leaders: 'Adaptativo',
-    nichePlayers: 'Manual',
-    visionaries: 'Predictivo',
-    depthOfSignals: 'Profundidad de señales',
-    operationalReadiness: 'Preparación operativa',
     blog: 'Blog',
     text8MinRead: 'Lectura de 8 min',
     featuredTitle: 'Verificación de identidad adaptativa: cómo reducir el fraude sin añadir fricción',
@@ -471,13 +457,6 @@ const es = {
 const ja = {
   copy: {
     featuredBlogPosts: '注目のブログ記事',
-    figure1IdentityMap: '図1: アイデンティティ信頼マップ',
-    challengers: 'リアクティブ',
-    leaders: 'アダプティブ',
-    nichePlayers: '手動',
-    visionaries: '予測型',
-    depthOfSignals: 'シグナルの深さ',
-    operationalReadiness: '運用の準備度',
     blog: 'ブログ',
     text8MinRead: '8分で読めます',
     featuredTitle: '適応型本人確認: 不正を減らしながら摩擦を増やさない方法',
@@ -699,13 +678,6 @@ const ja = {
 const de = {
   copy: {
     featuredBlogPosts: 'Ausgewählte Blogbeiträge',
-    figure1IdentityMap: 'Abbildung 1: Vertrauenskarte für Identitäten',
-    challengers: 'Reaktiv',
-    leaders: 'Adaptiv',
-    nichePlayers: 'Manuell',
-    visionaries: 'Prädiktiv',
-    depthOfSignals: 'Tiefe der Signale',
-    operationalReadiness: 'Operative Bereitschaft',
     blog: 'Blog',
     text8MinRead: '8 Min. Lesezeit',
     featuredTitle: 'Adaptive Identitätsprüfung: Betrug reduzieren, ohne mehr Reibung zu erzeugen',
@@ -927,13 +899,6 @@ const de = {
 const vi = {
   copy: {
     featuredBlogPosts: 'Bài viết nổi bật',
-    figure1IdentityMap: 'Hình 1: bản đồ niềm tin danh tính',
-    challengers: 'Phản ứng chậm',
-    leaders: 'Thích ứng',
-    nichePlayers: 'Thủ công',
-    visionaries: 'Định hướng tương lai',
-    depthOfSignals: 'Độ sâu của tín hiệu',
-    operationalReadiness: 'Mức sẵn sàng vận hành',
     blog: 'Blog',
     text8MinRead: 'Đọc trong 8 phút',
     featuredTitle: 'Xác minh danh tính linh hoạt: giảm gian lận mà không làm khó người dùng',

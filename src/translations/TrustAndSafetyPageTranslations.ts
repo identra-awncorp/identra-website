@@ -12,11 +12,11 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     ecosystemDesc: "Every user is uniquely cross-matched against live biometric data and telecom signaling networks in real time. Experience a frictionless verification process that shuts down bots while greeting humans.",
     passed: "PASSED",
     review: "REVIEW",
-    linkedInOnboard: "LinkedIn Onboard",
+    linkedInOnboard: 'Profile onboarding',
     biometricsValidated: "Biometrics validated",
-    neighborHost: "Neighbor Host",
+    neighborHost: 'Host onboarding',
     mdlCrosscheck: "mDL crosscheck",
-    coffeeMeetsBagel: "CoffeeMeetsBagel",
+    coffeeMeetsBagel: 'New account sign-up',
     suspiciousIp: "Suspicious IP",
     signalsLive: "SIGNALS: LIVE",
     kycEngine: "KYC ENGINE",
@@ -26,12 +26,6 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     selfieIdMatch: "99.7% Matching Selfie/ID",
     platformAutopilot: "Platform Autopilot Decided:",
     autoApproved: "AUTO-APPROVED ✓",
-    trustedBy: "Trusted by startups & the world's largest companies",
-    trustedLogoLinkedInMark: "in",
-    trustedLogoLinkedIn: "LinkedIn",
-    trustedLogoCoffee: "CoffeeMeetsBagel",
-    trustedLogoNeighborMark: "N",
-    trustedLogoNeighbor: "Neighbor",
     section1Label: "1. Brand Personalization",
     section1Title: "Build verification flows that feel native to your platform",
     section1Desc: "Customize every aspect of the flow, from UI design, custom fonts, and button styling to the specific verifications different users experience, all without needing engineering resources.",
@@ -131,7 +125,7 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     featureDesc: "Scale and coordinate every verification method, automatic screening variable, and manual investigation pipeline with a modular ecosystem.",
     exploreIntegration: "EXPLORE INTEGRATION",
     features: {
-      "gov-id": { title: "Government ID verification", description: "Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories." },
+      "gov-id": { title: "Government ID verification", description: "Collect and verify your choice of government-issued IDs to identify users." },
       mdl: { title: "Mobile driver's license (mDL) verification", description: "Verify mobile driver's licenses with a low-friction, high-assurance verification method." },
       "interface-studio": { title: "Interface Studio", description: "Build branded user flows to collect customer information, no code needed." },
       passive: { title: "Passive signals", description: "Silently assess risk with device fingerprints and other behavioral signals." },
@@ -172,11 +166,11 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     ecosystemDesc: "Cada usuario se cruza con datos biométricos vivos y señales de telecomunicaciones en tiempo real. Ofrece una verificación sin fricción que bloquea bots y da la bienvenida a personas reales.",
     passed: "APROBADO",
     review: "REVISAR",
-    linkedInOnboard: "Onboarding LinkedIn",
+    linkedInOnboard: 'Alta de perfil',
     biometricsValidated: "Biometría validada",
-    neighborHost: "Anfitrión Neighbor",
+    neighborHost: 'Alta de anfitrión',
     mdlCrosscheck: "Cruce mDL",
-    coffeeMeetsBagel: "CoffeeMeetsBagel",
+    coffeeMeetsBagel: 'Registro de cuenta nueva',
     suspiciousIp: "IP sospechosa",
     signalsLive: "SEÑALES: EN VIVO",
     kycEngine: "MOTOR KYC",
@@ -186,7 +180,6 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
     selfieIdMatch: "99,7% de coincidencia selfie/ID",
     platformAutopilot: "Piloto automático decidió:",
     autoApproved: "AUTOAPROBADO ✓",
-    trustedBy: "Confiado por startups y las mayores empresas del mundo",
     section1Label: "1. Personalización de marca",
     section1Title: "Crea flujos de verificación que se sientan nativos en tu plataforma",
     section1Desc: "Personaliza cada parte del flujo, desde UI, fuentes y botones hasta las verificaciones que experimenta cada usuario, sin recursos de ingeniería.",
@@ -298,11 +291,11 @@ export const TRUST_AND_SAFETY_TRANSLATIONS: any = {
 };
 
 TRUST_AND_SAFETY_TRANSLATIONS.ja = {
-  linkedInOnboard: "LinkedIn Onboard",
+  linkedInOnboard: 'プロフィール登録',
   biometricsValidated: "Biometrics validated",
-  neighborHost: "Neighbor Host",
+  neighborHost: 'ホスト登録',
   mdlCrosscheck: "mDL crosscheck",
-  coffeeMeetsBagel: "CoffeeMeetsBagel",
+  coffeeMeetsBagel: '新規アカウント登録',
   suspiciousIp: "Suspicious IP",
   signalsLive: "SIGNALS: LIVE",
   kycEngine: "KYC ENGINE",
@@ -312,11 +305,6 @@ TRUST_AND_SAFETY_TRANSLATIONS.ja = {
   selfieIdMatch: "99.7% Matching Selfie/ID",
   platformAutopilot: "Platform Autopilot Decided:",
   autoApproved: "AUTO-APPROVED ✓",
-  trustedLogoLinkedInMark: "in",
-  trustedLogoLinkedIn: "LinkedIn",
-  trustedLogoCoffee: "CoffeeMeetsBagel",
-  trustedLogoNeighborMark: "N",
-  trustedLogoNeighbor: "Neighbor",
   fonts: {
       "sans": "Sans",
       "serif": "Serif",
@@ -398,7 +386,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.ja = {
   features: {
       "gov-id": {
         "title": "Government ID verification",
-        "description": "Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories."
+        "description": "Collect and verify your choice of government-issued IDs to identify users."
       },
       "mdl": {
         "title": "Mobile driver's license (mDL) verification",
@@ -455,7 +443,6 @@ TRUST_AND_SAFETY_TRANSLATIONS.ja = {
   ecosystemDesc: "各ユーザーをライブ生体データと通信シグナルにリアルタイムで照合します。人には摩擦の少ない体験を提供し、ボットを遮断します。",
   passed: "合格",
   review: "レビュー",
-  trustedBy: "スタートアップから世界最大級の企業までが信頼",
   section1Label: "1. ブランド最適化",
   section1Title: "自社サービスに自然になじむ認証フローを構築",
   section1Desc: "UI、フォント、ボタン、ユーザーごとの認証内容まで、エンジニアリングなしで調整できます。",
@@ -526,11 +513,11 @@ TRUST_AND_SAFETY_TRANSLATIONS.ja = {
 };
 
 TRUST_AND_SAFETY_TRANSLATIONS.de = {
-  linkedInOnboard: "LinkedIn Onboard",
+  linkedInOnboard: 'Profil-Onboarding',
   biometricsValidated: "Biometrics validated",
-  neighborHost: "Neighbor Host",
+  neighborHost: 'Gastgeber-Onboarding',
   mdlCrosscheck: "mDL crosscheck",
-  coffeeMeetsBagel: "CoffeeMeetsBagel",
+  coffeeMeetsBagel: 'Neue Kontoregistrierung',
   suspiciousIp: "Suspicious IP",
   signalsLive: "SIGNALS: LIVE",
   kycEngine: "KYC ENGINE",
@@ -540,11 +527,6 @@ TRUST_AND_SAFETY_TRANSLATIONS.de = {
   selfieIdMatch: "99.7% Matching Selfie/ID",
   platformAutopilot: "Platform Autopilot Decided:",
   autoApproved: "AUTO-APPROVED ✓",
-  trustedLogoLinkedInMark: "in",
-  trustedLogoLinkedIn: "LinkedIn",
-  trustedLogoCoffee: "CoffeeMeetsBagel",
-  trustedLogoNeighborMark: "N",
-  trustedLogoNeighbor: "Neighbor",
   fonts: {
       "sans": "Sans",
       "serif": "Serif",
@@ -633,7 +615,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.de = {
   features: {
       "gov-id": {
         "title": "Government ID verification",
-        "description": "Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories."
+        "description": "Collect and verify your choice of government-issued IDs to identify users."
       },
       "mdl": {
         "title": "Mobile driver's license (mDL) verification",
@@ -705,7 +687,6 @@ TRUST_AND_SAFETY_TRANSLATIONS.de = {
   ecosystemDesc: "Jeder Nutzer wird in Echtzeit mit Live-Biometrie und Telekommunikationssignalen abgeglichen. Reibungsarme Verifizierung blockiert Bots und begrüßt echte Menschen.",
   passed: "BESTANDEN",
   review: "PRÜFEN",
-  trustedBy: "Vertraut von Startups und den größten Unternehmen der Welt",
   section1Label: "1. Markenpersonalisierung",
   section1Title: "Erstellen Sie Verifizierungsflows, die sich nativ anfühlen",
   section1Desc: "Passen Sie UI, Schriften, Buttons und nutzerspezifische Prüfungen ohne Engineering-Aufwand an.",
@@ -766,12 +747,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.de = {
 };
 
 TRUST_AND_SAFETY_TRANSLATIONS.vi = {
-  coffeeMeetsBagel: "CoffeeMeetsBagel",
-  trustedLogoLinkedInMark: "in",
-  trustedLogoLinkedIn: "LinkedIn",
-  trustedLogoCoffee: "CoffeeMeetsBagel",
-  trustedLogoNeighborMark: "N",
-  trustedLogoNeighbor: "Neighbor",
+  coffeeMeetsBagel: 'Đăng ký tài khoản mới',
   fonts: {
       "sans": "Sans",
       "serif": "Serif",
@@ -838,7 +814,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
   features: {
       "gov-id": {
         "title": "Government ID verification",
-        "description": "Collect and verify your choice of government-issued IDs to identify users across 200+ countries and territories."
+        "description": "Collect and verify your choice of government-issued IDs to identify users."
       },
       "mdl": {
         "title": "Mobile driver's license (mDL) verification",
@@ -885,9 +861,9 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
   ecosystemDesc: "Mỗi người dùng được đối chiếu với dữ liệu sinh trắc học trực tiếp và tín hiệu viễn thông theo thời gian thực. Quy trình ít ma sát giúp chặn bot và chào đón người thật.",
   passed: "ĐẠT",
   review: "XEM XÉT",
-  linkedInOnboard: "Onboard LinkedIn",
+  linkedInOnboard: 'Tạo hồ sơ',
   biometricsValidated: "Sinh trắc học đã xác thực",
-  neighborHost: "Chủ nhà Neighbor",
+  neighborHost: 'Đăng ký chủ nhà',
   mdlCrosscheck: "Đối chiếu mDL",
   suspiciousIp: "IP đáng ngờ",
   signalsLive: "TÍN HIỆU: TRỰC TIẾP",
@@ -898,7 +874,6 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
   selfieIdMatch: "99,7% khớp selfie/ID",
   platformAutopilot: "Tự động nền tảng quyết định:",
   autoApproved: "TỰ ĐỘNG DUYỆT ✓",
-  trustedBy: "Được các startup và doanh nghiệp lớn nhất thế giới tin dùng",
   section1Label: "1. Cá nhân hóa thương hiệu",
   section1Title: "Xây dựng luồng xác minh có cảm giác tự nhiên trong nền tảng của bạn",
   section1Desc: "Tùy chỉnh mọi phần của luồng, từ giao diện, phông chữ, kiểu nút đến các bước xác minh cho từng nhóm người dùng mà không cần nguồn lực kỹ thuật.",
@@ -988,7 +963,7 @@ TRUST_AND_SAFETY_TRANSLATIONS.vi = {
 };
 
 TRUST_AND_SAFETY_TRANSLATIONS.es.features = {
-  "gov-id": { title: "Verificación de documento oficial", description: "Recopila y verifica documentos oficiales para identificar usuarios en más de 200 países y territorios." },
+  "gov-id": { title: "Verificación de documento oficial", description: "Recopila y verifica documentos oficiales para identificar usuarios." },
   mdl: { title: "Verificación de licencia móvil (mDL)", description: "Verifica licencias de conducir móviles con un método de baja fricción y alta garantía." },
   "interface-studio": { title: "Interface Studio", description: "Crea flujos de usuario con tu marca para recopilar información sin escribir código." },
   passive: { title: "Señales pasivas", description: "Evalúa riesgo de forma silenciosa con huellas de dispositivo y otras señales de comportamiento." },
@@ -1000,9 +975,9 @@ TRUST_AND_SAFETY_TRANSLATIONS.es.features = {
 };
 
 Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.ja, {
-  linkedInOnboard: "LinkedIn登録",
+  linkedInOnboard: "プロフィール登録",
   biometricsValidated: "生体認証を確認済み",
-  neighborHost: "Neighborホスト",
+  neighborHost: "ホスト登録",
   mdlCrosscheck: "mDL照合",
   suspiciousIp: "不審なIP",
   signalsLive: "シグナル: ライブ",
@@ -1057,7 +1032,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.ja, {
   rejectProfile: "プロフィールを拒否",
   approveRelease: "承認して解除",
   features: {
-    "gov-id": { title: "公的ID確認", description: "200以上の国と地域で、公的身分証を収集してユーザーを確認します。" },
+    "gov-id": { title: "公的ID確認", description: "公的身分証を収集してユーザーを確認します。" },
     mdl: { title: "モバイル運転免許証 (mDL) 確認", description: "低摩擦で高保証の方法により、モバイル運転免許証を確認します。" },
     "interface-studio": { title: "Interface Studio", description: "コードなしで、ブランドに合うユーザーフローを構築して顧客情報を収集します。" },
     passive: { title: "受動的シグナル", description: "デバイス指紋や行動シグナルを使い、ユーザーに負担をかけずリスクを評価します。" },
@@ -1074,9 +1049,9 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.ja, {
 });
 
 Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.de, {
-  linkedInOnboard: "LinkedIn-Onboarding",
+  linkedInOnboard: "Profil-Onboarding",
   biometricsValidated: "Biometrie bestätigt",
-  neighborHost: "Neighbor-Gastgeber",
+  neighborHost: "Gastgeber-Onboarding",
   mdlCrosscheck: "mDL-Abgleich",
   suspiciousIp: "Verdächtige IP",
   signalsLive: "SIGNALE: LIVE",
@@ -1137,7 +1112,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.de, {
   rejectProfile: "Profil ablehnen",
   approveRelease: "Freigeben",
   features: {
-    "gov-id": { title: "Prüfung amtlicher Ausweise", description: "Erfassen und prüfen Sie amtliche Ausweise zur Identifizierung von Nutzern in über 200 Ländern und Regionen." },
+    "gov-id": { title: "Prüfung amtlicher Ausweise", description: "Erfassen und prüfen Sie amtliche Ausweise zur Identifizierung von Nutzern." },
     mdl: { title: "Prüfung mobiler Führerscheine (mDL)", description: "Prüfen Sie mobile Führerscheine mit geringer Reibung und hoher Sicherheit." },
     "interface-studio": { title: "Interface Studio", description: "Erstellen Sie markenkonforme Nutzerflows zur Datenerfassung ohne Code." },
     passive: { title: "Passive Signale", description: "Bewerten Sie Risiken unauffällig mit Geräte-Fingerprints und weiteren Verhaltenssignalen." },
@@ -1185,7 +1160,7 @@ Object.assign(TRUST_AND_SAFETY_TRANSLATIONS.vi, {
     { title: "Chỉ số nâng cao để phá đường dây gian lận", desc: "Xác định mạng dùng chung và biến phần cứng để bóc tách nhóm gian lận." }
   ],
   features: {
-    "gov-id": { title: "Xác minh giấy tờ chính phủ", description: "Thu thập và xác minh giấy tờ do chính phủ cấp để định danh người dùng tại hơn 200 quốc gia và vùng lãnh thổ." },
+    "gov-id": { title: "Xác minh giấy tờ chính phủ", description: "Thu thập và xác minh giấy tờ do chính phủ cấp để định danh người dùng." },
     mdl: { title: "Xác minh bằng lái xe di động (mDL)", description: "Xác minh bằng lái xe di động bằng phương thức ít ma sát và có độ bảo đảm cao." },
     "interface-studio": { title: "Interface Studio", description: "Xây dựng luồng người dùng mang nhận diện thương hiệu để thu thập thông tin khách hàng mà không cần viết mã." },
     passive: { title: "Tín hiệu thụ động", description: "Đánh giá rủi ro âm thầm bằng dấu vân tay thiết bị và các tín hiệu hành vi khác." },

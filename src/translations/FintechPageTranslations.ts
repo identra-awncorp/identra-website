@@ -61,7 +61,6 @@ type FintechTranslations = {
   riskScore: string;
   scoreMax: string;
   runAnother: string;
-  trustedBy: string;
   buildingBlocksEyebrow: string;
   buildingBlocksTitle: string;
   demoVisualFlow: string;
@@ -102,7 +101,6 @@ type FintechTranslations = {
   status: Record<FintechStatusKey, string>;
   scenarios: Record<FintechScenarioKey, Scenario>;
   logs: string[];
-  logos: string[];
   rows: Row[];
   platformCards: TextCard[];
   subpoints: TextCard[];
@@ -125,7 +123,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     riskScore: 'Risk Score:',
     scoreMax: '/100',
     runAnother: 'Run another simulation',
-    trustedBy: "Trusted by startups & the world's largest companies",
     buildingBlocksEyebrow: 'Identity Platform Building Blocks',
     buildingBlocksTitle: 'End-to-end verifications, signals, and orchestration',
     demoVisualFlow: 'Dynamic IDV Flow',
@@ -236,7 +233,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       '[4/4] Aggregating signals into automated Decision Engine...',
       '[Decision] Risk Score: {riskScore}/100. Resolution: {status}.'
     ],
-    logos: ['affirm', 'Brex', 'Payoneer'],
     rows: [
       {
         title: 'Delight users with safe and seamless onboarding',
@@ -267,8 +263,8 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       }
     ],
     platformCards: [
-      { title: 'Government ID and selfie liveness verifications', desc: 'Collect and verify your choice of government-issued IDs across 200+ countries and territories, then ensure the ID photo matches the selfie for added assurance.' },
-      { title: 'Authoritative and issuing databases', desc: 'Verify collected and extracted PII against authoritative databases and issuing sources across 40+ countries.' },
+      { title: 'Government ID and selfie liveness verifications', desc: 'Collect and verify your choice of government-issued IDs, then ensure the ID photo matches the selfie for added assurance.' },
+      { title: 'Authoritative and issuing databases', desc: 'Verify collected and extracted PII against authoritative databases and issuing sources.' },
       { title: 'Watchlist, sanctions, and adverse media screenings', desc: 'Screen users across 100+ global sanction and warning lists, 5,000+ PEP lists, and 400+ million news articles.' },
       { title: 'Passive signals', desc: 'Silently collect risk signals like VPN usage and device fingerprint automatically and use them as inputs for dynamic friction.' },
       { title: 'Graph', desc: 'Uncover and block fraud by leveraging link analysis to connect and flag risky accounts.' },
@@ -299,7 +295,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     riskScore: 'Puntuación de riesgo:',
     scoreMax: '/100',
     runAnother: 'Ejecutar otra simulación',
-    trustedBy: 'Con la confianza de startups y de las empresas más grandes del mundo',
     buildingBlocksEyebrow: 'Bloques de la plataforma de identidad',
     buildingBlocksTitle: 'Verificaciones, señales y orquestación de extremo a extremo',
     demoVisualFlow: 'Flujo IDV dinámico',
@@ -410,7 +405,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       '[4/4] Agregando señales en el motor de decisión automatizado...',
       '[Decisión] Puntuación de riesgo: {riskScore}/100. Resolución: {status}.'
     ],
-    logos: ['affirm', 'Brex', 'Payoneer'],
     rows: [
       {
         title: 'Ofrezca una incorporación segura y fluida',
@@ -441,8 +435,8 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       }
     ],
     platformCards: [
-      { title: 'Verificaciones de identificación oficial y prueba de vida con selfie', desc: 'Recopile y verifique identificaciones oficiales de más de 200 países y territorios, y confirme que la foto del documento coincide con la selfie.' },
-      { title: 'Bases autorizadas y emisoras', desc: 'Verifique la PII recopilada y extraída contra bases autorizadas y fuentes emisoras en más de 40 países.' },
+      { title: 'Verificaciones de identificación oficial y prueba de vida con selfie', desc: 'Recopile y verifique identificaciones oficiales, y confirme que la foto del documento coincide con la selfie.' },
+      { title: 'Bases autorizadas y emisoras', desc: 'Verifique la PII recopilada y extraída contra bases autorizadas y fuentes emisoras.' },
       { title: 'Listas de vigilancia, sanciones y medios adversos', desc: 'Evalúe usuarios contra más de 100 listas globales de sanciones y advertencias, 5.000 listas PEP y más de 400 millones de artículos de noticias.' },
       { title: 'Señales pasivas', desc: 'Recoja automáticamente señales de riesgo como uso de VPN y huella del dispositivo, y úselas para aplicar fricción dinámica.' },
       { title: 'Graph', desc: 'Descubra y bloquee fraude mediante análisis de vínculos para conectar y marcar cuentas riesgosas.' },
@@ -473,7 +467,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     riskScore: 'リスクスコア:',
     scoreMax: '/100',
     runAnother: '別のシミュレーションを実行',
-    trustedBy: 'スタートアップから世界最大級の企業までが信頼',
     buildingBlocksEyebrow: '本人確認プラットフォームの構成要素',
     buildingBlocksTitle: '検証、シグナル、オーケストレーションをエンドツーエンドで',
     demoVisualFlow: '動的IDVフロー',
@@ -584,7 +577,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       '[4/4] 自動意思決定エンジンにシグナルを集約中...',
       '[判定] リスクスコア: {riskScore}/100。結果: {status}。'
     ],
-    logos: ['affirm', 'Brex', 'Payoneer'],
     rows: [
       {
         title: '安全でスムーズなオンボーディングを提供',
@@ -615,8 +607,8 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       }
     ],
     platformCards: [
-      { title: '公的身分証と自撮りのライブネス検証', desc: '200以上の国と地域の公的身分証を収集・検証し、身分証写真と自撮りが一致することを確認します。' },
-      { title: '権威あるデータベースと発行元データベース', desc: '収集・抽出したPIIを、40以上の国の権威あるデータベースや発行元情報と照合します。' },
+      { title: '公的身分証と自撮りのライブネス検証', desc: '公的身分証を収集・検証し、身分証写真と自撮りが一致することを確認します。' },
+      { title: '権威あるデータベースと発行元データベース', desc: '収集・抽出したPIIを、権威あるデータベースや発行元情報と照合します。' },
       { title: 'ウォッチリスト、制裁、ネガティブメディア審査', desc: '100以上の世界的な制裁・警告リスト、5,000以上のPEPリスト、4億件以上のニュース記事でユーザーを審査します。' },
       { title: 'パッシブシグナル', desc: 'VPN利用やデバイスフィンガープリントなどのリスクシグナルを自動収集し、動的な摩擦の入力として使用します。' },
       { title: 'Graph', desc: 'リンク分析でリスクのあるアカウントを関連付け、検出してブロックします。' },
@@ -647,7 +639,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     riskScore: 'Risikowert:',
     scoreMax: '/100',
     runAnother: 'Weitere Simulation ausführen',
-    trustedBy: 'Vertraut von Startups und den größten Unternehmen der Welt',
     buildingBlocksEyebrow: 'Bausteine der Identitätsplattform',
     buildingBlocksTitle: 'End-to-End-Verifizierungen, Signale und Orchestrierung',
     demoVisualFlow: 'Dynamischer IDV-Flow',
@@ -758,7 +749,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       '[4/4] Signale werden in der automatisierten Decision Engine aggregiert...',
       '[Entscheidung] Risikowert: {riskScore}/100. Ergebnis: {status}.'
     ],
-    logos: ['affirm', 'Brex', 'Payoneer'],
     rows: [
       {
         title: 'Nutzer mit sicherem und nahtlosem Onboarding begeistern',
@@ -789,8 +779,8 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       }
     ],
     platformCards: [
-      { title: 'Amtliche Ausweise und Selfie-Liveness-Verifizierungen', desc: 'Erfassen und prüfen Sie amtliche Ausweise aus über 200 Ländern und Regionen und stellen Sie sicher, dass das Ausweisfoto mit dem Selfie übereinstimmt.' },
-      { title: 'Autoritative und ausstellende Datenbanken', desc: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und Ausstellerquellen in über 40 Ländern.' },
+      { title: 'Amtliche Ausweise und Selfie-Liveness-Verifizierungen', desc: 'Erfassen und prüfen Sie amtliche Ausweise und stellen Sie sicher, dass das Ausweisfoto mit dem Selfie übereinstimmt.' },
+      { title: 'Autoritative und ausstellende Datenbanken', desc: 'Prüfen Sie erfasste und extrahierte PII gegen autoritative Datenbanken und Ausstellerquellen.' },
       { title: 'Watchlists, Sanktionen und negative Medien', desc: 'Prüfen Sie Nutzer gegen über 100 globale Sanktions- und Warnlisten, 5.000+ PEP-Listen und mehr als 400 Millionen Nachrichtenartikel.' },
       { title: 'Passive Signale', desc: 'Erfassen Sie Risikosignale wie VPN-Nutzung und Gerätefingerabdruck automatisch und nutzen Sie sie für dynamische Reibung.' },
       { title: 'Graph', desc: 'Entdecken und blockieren Sie Betrug mithilfe von Linkanalyse, um riskante Konten zu verbinden und zu markieren.' },
@@ -821,7 +811,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
     riskScore: 'Điểm rủi ro:',
     scoreMax: '/100',
     runAnother: 'Chạy mô phỏng khác',
-    trustedBy: 'Được các startup và những công ty lớn nhất thế giới tin dùng',
     buildingBlocksEyebrow: 'Các khối của nền tảng danh tính',
     buildingBlocksTitle: 'Xác minh, tín hiệu và điều phối từ đầu đến cuối',
     demoVisualFlow: 'Luồng IDV động',
@@ -932,7 +921,6 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       '[4/4] Đang tổng hợp tín hiệu vào công cụ quyết định tự động...',
       '[Quyết định] Điểm rủi ro: {riskScore}/100. Kết quả: {status}.'
     ],
-    logos: ['affirm', 'Brex', 'Payoneer'],
     rows: [
       {
         title: 'Mang đến quy trình đăng ký an toàn và liền mạch',
@@ -963,8 +951,8 @@ export const FINTECH_TRANSLATIONS: Record<FintechLanguage, FintechTranslations> 
       }
     ],
     platformCards: [
-      { title: 'Xác minh giấy tờ tùy thân và tính sống của selfie', desc: 'Thu thập và xác minh giấy tờ do chính phủ cấp từ hơn 200 quốc gia và vùng lãnh thổ, rồi đảm bảo ảnh trên giấy tờ khớp với selfie.' },
-      { title: 'Cơ sở dữ liệu có thẩm quyền và nguồn phát hành', desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành tại hơn 40 quốc gia.' },
+      { title: 'Xác minh giấy tờ tùy thân và tính sống của selfie', desc: 'Thu thập và xác minh giấy tờ do chính phủ cấp, rồi đảm bảo ảnh trên giấy tờ khớp với selfie.' },
+      { title: 'Cơ sở dữ liệu có thẩm quyền và nguồn phát hành', desc: 'Xác minh PII đã thu thập và trích xuất với cơ sở dữ liệu có thẩm quyền và nguồn phát hành.' },
       { title: 'Danh sách theo dõi, trừng phạt và truyền thông bất lợi', desc: 'Sàng lọc người dùng trên hơn 100 danh sách trừng phạt và cảnh báo toàn cầu, hơn 5.000 danh sách PEP và hơn 400 triệu bài báo.' },
       { title: 'Tín hiệu thụ động', desc: 'Tự động thu thập tín hiệu rủi ro như việc dùng VPN và dấu vân tay thiết bị, rồi dùng chúng làm đầu vào cho mức ma sát động.' },
       { title: 'Graph', desc: 'Phát hiện và chặn gian lận bằng phân tích liên kết để kết nối và gắn cờ các tài khoản rủi ro.' },

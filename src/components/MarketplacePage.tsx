@@ -4,21 +4,14 @@
  */
 
 import type { AppView } from '../types/routes';
-import React, { useState, useMemo } from 'react';
-import { 
-  ArrowRight, Search, MessageSquare, ChevronLeft, ChevronRight,
-  Puzzle, Filter, Sparkles
+import {
+  ArrowRight, Puzzle, Database, CreditCard, Users, MessageSquare, Briefcase, Ticket, KeyRound, Bot,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 import { useLanguage } from '../context/LanguageContext';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
-import { 
-  CATEGORIES, 
-  INTEGRATIONS, 
-  IntegrationItem 
-} from './MarketplacePageData';
-import { INTEGRATION_TRANSLATIONS, MARKETPLACE_PAGE_TRANSLATIONS } from '../translations/MarketplacePageTranslations';
+import { MARKETPLACE_PAGE_TRANSLATIONS } from '../translations/MarketplacePageTranslations';
 
 interface MarketplacePageProps {
   onOpenSandbox: () => void;
@@ -26,59 +19,27 @@ interface MarketplacePageProps {
   onViewChange?: (view: AppView) => void;
 }
 
+// Generic kinds of tools, not partner brands: Identra has no integration partners yet.
+const HERO_TILES = [
+  { Icon: Database, className: 'bg-orange-500 shadow-orange-500/20' },
+  { Icon: CreditCard, className: 'bg-blue-500 shadow-blue-500/20' },
+  { Icon: Users, className: 'bg-purple-700 shadow-purple-700/20' },
+  { Icon: MessageSquare, className: 'bg-emerald-600 shadow-emerald-600/20' },
+  { Icon: Briefcase, className: 'bg-rose-500 shadow-rose-500/20' },
+  { Icon: Ticket, className: 'bg-blue-600 shadow-blue-600/20' },
+  { Icon: KeyRound, className: 'bg-slate-900 shadow-slate-900/20' },
+  { Icon: Bot, className: 'bg-amber-500 shadow-amber-500/20' },
+];
+
 export default function MarketplacePage({ onOpenSandbox, onViewChange }: MarketplacePageProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(MARKETPLACE_PAGE_TRANSLATIONS, language as keyof typeof MARKETPLACE_PAGE_TRANSLATIONS, 'MARKETPLACE_PAGE_TRANSLATIONS');
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-  const [testimonialDirection, setTestimonialDirection] = useState<'left' | 'right'>('right');
-
-  const testimonials = t.testimonials;
-  const heroLogoClasses = [
-    'bg-orange-500 shadow-orange-500/20',
-    'bg-blue-500 shadow-blue-500/20',
-    'bg-purple-700 shadow-purple-700/20 font-mono',
-    'bg-emerald-600 shadow-emerald-600/20',
-    'bg-rose-500 shadow-rose-500/20',
-    'bg-blue-600 shadow-blue-600/20',
-    'bg-slate-900 shadow-slate-900/20',
-    'bg-amber-500 shadow-amber-500/20'
-  ];
-
-  const filteredIntegrations = useMemo(() => {
-    return INTEGRATIONS.map(item => {
-      const extraLocalized = INTEGRATION_TRANSLATIONS[language]?.[item.name];
-      return {
-        ...item,
-        displayName: extraLocalized?.name || item.name,
-        displayDesc: extraLocalized?.description || ''
-      };
-    }).filter(item => {
-      const matchesSearch = 
-        item.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.displayDesc.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCategory = selectedCategory === 'All' || item.tags.includes(selectedCategory);
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, selectedCategory, t, language]);
-
-  const handlePrevTestimonial = () => {
-    setTestimonialDirection('left');
-    setCurrentTestimonialIndex(prev => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
-
-  const handleNextTestimonial = () => {
-    setTestimonialDirection('right');
-    setCurrentTestimonialIndex(prev => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
-
-  const titleText = selectedCategory === 'All'
-    ? t.allIntegrations
-    : t.categoryIntegrationsTitle.replace('{category}', t.categories[selectedCategory as keyof typeof t.categories] || selectedCategory);
+  const renderTile = ({ Icon, className }: typeof HERO_TILES[number]) => (
+    <div key={className} className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg ${className}`}>
+      <Icon className="w-5 h-5" aria-hidden="true" />
+    </div>
+  );
 
   return (
     <div className="w-full bg-[#FAFBFD] min-h-screen font-sans antialiased">
@@ -124,15 +85,6 @@ export default function MarketplacePage({ onOpenSandbox, onViewChange }: Marketp
                 <span>{t.tryDemo}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
-              
-              <button 
-                id="marketplace-partner-cta"
-                onClick={() => onViewChange?.('contact')}
-                className="text-white hover:bg-white/10 active:scale-95 font-semibold px-5 py-3.5 rounded-xl transition-all flex items-center space-x-2 text-sm border border-white/20 bg-white/5"
-              >
-                <span>{t.partnerWithUs}</span>
-                <ArrowRight className="w-4 h-4 text-blue-200" />
-              </button>
             </div>
           </motion.div>
 
@@ -148,11 +100,7 @@ export default function MarketplacePage({ onOpenSandbox, onViewChange }: Marketp
               
               <div className="grid grid-cols-4 gap-4 relative z-10">
                 {/* Visual items simulating marketplace connections */}
-                {t.visualLogos.slice(0, 4).map((logo, index) => (
-                  <motion.div key={logo} whileHover={{ scale: 1.1 }} className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xs font-bold text-white shadow-lg cursor-pointer ${heroLogoClasses[index]}`}>
-                    {logo}
-                  </motion.div>
-                ))}
+                {HERO_TILES.slice(0, 4).map(renderTile)}
                 
                 <div className="col-span-4 py-5 flex justify-center items-center relative">
                   {/* Decorative dashed arcs */}
@@ -169,175 +117,22 @@ export default function MarketplacePage({ onOpenSandbox, onViewChange }: Marketp
                   </motion.div>
                 </div>
 
-                {t.visualLogos.slice(4).map((logo, offset) => {
-                  const index = offset + 4;
-                  return (
-                    <motion.div key={logo} whileHover={{ scale: 1.1 }} className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xs font-bold text-white shadow-lg cursor-pointer ${heroLogoClasses[index]}`}>
-                      {logo}
-                    </motion.div>
-                  );
-                })}
+                {HERO_TILES.slice(4).map(renderTile)}
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* 2. Sticky Sub-header with Category Pills & Search */}
-      <section className="py-5 px-4 md:px-8 border-b border-slate-200/80 bg-white/95 backdrop-blur sticky top-0 z-30 shadow-sm transition-all duration-300">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          
-          {/* Custom animated pill tabs container */}
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none max-w-full">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest pr-2 flex items-center space-x-1.5 shrink-0">
-              <Filter className="w-3.5 h-3.5" />
-              <span>{t.filters}</span>
-            </span>
-            <div className="flex space-x-1 p-1 bg-slate-100/80 rounded-xl">
-              {CATEGORIES.map((category) => {
-                const isSelected = selectedCategory === category;
-                return (
-                  <button
-                    key={category}
-                    id={`filter-tab-${category.toLowerCase().replace(/\s+/g, '-')}`}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`relative px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                      isSelected ? 'text-white' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
-                    }`}
-                  >
-                    {isSelected && (
-                      <motion.div 
-                        layoutId="activeCategoryHighlight"
-                        className="absolute inset-0 bg-[#2F44D4] rounded-lg -z-10"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                    {t.categories[category as keyof typeof t.categories] || category}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Elegant search box */}
-          <div className="relative w-full lg:w-80 shrink-0">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 transition-colors" />
-            <input
-              id="marketplace-search-input"
-              type="text"
-              placeholder={t.searchPlaceholder}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200/80 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#2F44D4]/10 focus:border-[#2F44D4] transition-all font-medium text-slate-800"
-            />
-          </div>
-
-        </div>
-      </section>
-
-      {/* 3. Integrations Grid Section */}
-      <section className="py-12 px-4 md:px-8 max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-xl font-bold text-slate-950 tracking-tight flex items-center space-x-2">
-            <span>{titleText}</span>
-            <span className="text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200 px-2 py-0.5 rounded-md font-mono">{filteredIntegrations.length}</span>
-          </h2>
-        </div>
-
-        {/* Staggered card grid animations */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredIntegrations.length === 0 ? (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="col-span-full text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200 p-8 shadow-sm"
-              >
-                <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100">
-                  <Puzzle className="w-6 h-6 text-slate-400" />
-                </div>
-                <h3 className="text-base font-bold text-slate-800">{t.noIntegrationsFound}</h3>
-                <p className="text-sm text-slate-500 mt-1.5 max-w-md mx-auto leading-relaxed">
-                  {t.noIntegrationsDesc.replace('{search}', searchQuery).replace('{category}', t.categories[selectedCategory as keyof typeof t.categories] || selectedCategory)}
-                </p>
-                <button
-                  onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-                  className="mt-4 px-4 py-2 bg-slate-100 text-xs font-semibold text-[#2F44D4] hover:bg-slate-200/70 rounded-lg transition-colors border border-slate-200/50"
-                >
-                  {t.resetFilters}
-                </button>
-              </motion.div>
-            ) : (
-              filteredIntegrations.map((item, index) => (
-                <motion.div 
-                  layout
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.3) }}
-                  key={item.name} 
-                  id={`integration-card-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="bg-white rounded-2xl border border-slate-200/80 p-6 flex flex-col justify-between hover:border-[#2F44D4]/30 group relative transition-colors duration-200 shadow-sm"
-                  whileHover={{ 
-                    y: -4, 
-                    boxShadow: "0 12px 25px -4px rgba(47, 68, 212, 0.06), 0 8px 10px -6px rgba(47, 68, 212, 0.04)" 
-                  }}
-                >
-                  {item.isNew && (
-                    <span className="absolute top-4 right-4 bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-lg border border-emerald-200/50 uppercase tracking-widest font-mono">
-                      {t.new}
-                    </span>
-                  )}
-                  <div>
-                    {/* Header: Logo and Title */}
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className={`w-12 h-12 rounded-xl ${item.logoBg} flex items-center justify-center font-bold text-sm text-white shadow-inner`}>
-                        {item.logoText}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-slate-900 group-hover:text-[#2F44D4] transition-colors text-base tracking-tight">
-                          {item.displayName}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 font-normal">
-                      {item.displayDesc}
-                    </p>
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-100">
-                    {item.tags.map(tag => (
-                      <span 
-                        key={tag}
-                        className="bg-slate-50 text-slate-500 text-[11px] px-2.5 py-1 rounded-lg font-semibold border border-slate-100"
-                      >
-                        {t.categories[tag as keyof typeof t.categories] || tag}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))
-            )}
-          </AnimatePresence>
-        </motion.div>
-      </section>
-
-      {/* 4. Request Integration CTA Banner */}
+      {/* 2. Request Integration CTA Banner */}
       <section className="bg-slate-950 text-white py-16 px-4 md:px-8 text-center border-t border-slate-900 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="max-w-2xl mx-auto space-y-6 relative z-10">
-          <p className="text-xs font-bold text-[#6D7FFF] uppercase tracking-widest font-mono">
-            {t.dontSeeLookingFor}
-          </p>
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
             {t.requestIntegration}
           </h2>
           <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-lg mx-auto">
-            {t.notAllPartnersListed}
+            {t.requestIntegrationDesc}
           </p>
           <div className="pt-2">
             <button 
@@ -352,76 +147,6 @@ export default function MarketplacePage({ onOpenSandbox, onViewChange }: Marketp
         </div>
       </section>
 
-      {/* 5. Custom Testimonial Carousel Section */}
-      <section className="py-20 px-4 md:px-8 bg-blue-50/30 border-t border-slate-100">
-        <div className="max-w-4xl mx-auto relative">
-          <div className="text-center space-y-8">
-            <div className="text-[#2F44D4] flex justify-center">
-              <MessageSquare className="w-12 h-12 opacity-20" />
-            </div>
-
-            <div className="overflow-hidden min-h-[140px] md:min-h-[100px] flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonialIndex}
-                  initial={{ opacity: 0, x: testimonialDirection === 'right' ? 20 : -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: testimonialDirection === 'right' ? -20 : 20 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="space-y-6"
-                >
-                  <blockquote className="text-lg md:text-xl lg:text-2xl font-normal text-slate-800 leading-relaxed italic max-w-3xl mx-auto">
-                    &quot;{testimonials[currentTestimonialIndex].quote}&quot;
-                  </blockquote>
-
-                  <div className="space-y-1">
-                    <p className="font-bold text-slate-950 text-base">
-                      {testimonials[currentTestimonialIndex].author}
-                    </p>
-                    <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      {testimonials[currentTestimonialIndex].role}
-                    </p>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Pagination Controls */}
-            <div className="flex items-center justify-center space-x-4 pt-4">
-              <button
-                id="testimonial-prev-btn"
-                onClick={handlePrevTestimonial}
-                className="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors shadow-sm cursor-pointer"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              
-              <div className="flex space-x-1.5">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setTestimonialDirection(index > currentTestimonialIndex ? 'right' : 'left');
-                      setCurrentTestimonialIndex(index);
-                    }}
-                    className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      currentTestimonialIndex === index ? 'bg-[#2F44D4] w-6' : 'bg-slate-300 hover:bg-slate-400'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <button
-                id="testimonial-next-btn"
-                onClick={handleNextTestimonial}
-                className="p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors shadow-sm cursor-pointer"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

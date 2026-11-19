@@ -84,9 +84,6 @@ function HealthcarePatientIntakeFlow({
           <HeartPulse className="w-5 h-5 text-[#354CE1]" />
           <span className="font-bold tracking-tight text-slate-800">{t.headerTitle}</span>
         </div>
-        <span className="text-xs bg-emerald-50 text-emerald-600 border border-emerald-100/60 px-2.5 py-0.5 rounded-full font-bold">
-          {t.hipaaCompliant}
-        </span>
       </div>
 
       <AnimatePresence mode="wait">

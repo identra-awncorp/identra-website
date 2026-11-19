@@ -10,8 +10,8 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Credential Issuance",
       "title": "Transfer a verified ticket",
       "desc": "Prove original ownership, lock escrow, and transfer a ticket credential safely.",
-      "security": "Credential Issuance + smart escrow",
-      "successResult": "Ticket ownership transferred atomically. The buyer received a verified credential and escrow was released.",
+      "security": "Credential Issuance + escrow",
+      "successResult": "Ticket ownership was transferred in one step. The buyer received a verified credential and escrow was released.",
       "steps": [
         {
           "label": "Verify original ownership",
@@ -21,7 +21,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Lock escrow terms",
           "action": "Initialize escrow",
-          "logText": "The escrow smart contract locked funds and protected against double spending."
+          "logText": "The escrow locked the funds and stopped the ticket from being sold twice."
         },
         {
           "label": "Execute transfer",
@@ -69,15 +69,15 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
           [
             "Original Purchase Key Audit",
             "CA Issuer Signature Decryption",
-            "Ticket Ledger Ownership Match"
+            "Ticket Ownership Match"
           ],
           [
-            "Escrow Smart Contract Init",
-            "Atomic Escrow Fund Lock",
-            "Double-Spend Integrity Guard"
+            "Escrow Initialisation",
+            "Escrow Fund Lock",
+            "Duplicate-Sale Guard"
           ],
           [
-            "Atomic Swap Execution",
+            "Transfer Execution",
             "Buyer Wallet Address Update",
             "Escrow Settlement Release"
           ]
@@ -93,7 +93,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "ownershipConfirmed": "Ownership signature confirmed",
       "waitingForDecrypt": "Waiting for security decryption",
       "verifyTicketOwnership": "Verify Ticket Ownership",
-      "step2Description": "Step 2: Secure escrow. Hold ticketing token and transaction assets in a temporary secure escrow block.",
+      "step2Description": "Step 2: Secure escrow. Hold the ticket and the payment in a temporary escrow.",
       "trustEscrowContainer": "Trust escrow container",
       "lockedSealed": "Locked and sealed",
       "awaitingLock": "Awaiting lock",
@@ -122,10 +122,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "decryptingTicket": "Decrypting ticket ownership certificate for holder: Alice Vance",
-      "ownerVerified": "Ticket owner verified: \"Alice Vance\". Crypto signature matched original ticketing ledger perfectly.",
-      "lockingEscrow": "Locking VibePass ticket asset in Trust Escrow ledger...",
+      "ownerVerified": "Ticket owner verified: \"Alice Vance\". The issuer's signature on the original ticket is valid.",
+      "lockingEscrow": "Locking the VibePass ticket in Trust Escrow...",
       "escrowSealed": "Assets escrow sealed. Funds matched. Multisig locking mechanism finalized safely.",
-      "executingSwap": "Executing instant cryptographic swap vector...",
+      "executingSwap": "Transferring the ticket to the buyer...",
       "transferComplete": "Revocation key signed. Re-issuing secure QR under legal holder John Doe. Transfer complete."
     }
   },
@@ -135,8 +135,8 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Credential Issuance",
       "title": "Transferir una entrada verificada",
       "desc": "Prueba propiedad original, bloquea el depósito en garantía y transfiere la credencial de entrada de forma segura.",
-      "security": "Credential Issuance + depósito inteligente",
-      "successResult": "La propiedad de la entrada se transfirió de forma atómica. El comprador recibió una credencial verificada y se liberó el depósito.",
+      "security": "Credential Issuance + depósito en garantía",
+      "successResult": "La propiedad de la entrada se transfirió en un solo paso. El comprador recibió una credencial verificada y se liberó el depósito.",
       "steps": [
         {
           "label": "Verificar propiedad original",
@@ -146,7 +146,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Bloquear términos del depósito",
           "action": "Inicializar depósito en garantía",
-          "logText": "El contrato de depósito bloqueó fondos y protegió contra doble gasto."
+          "logText": "El depósito en garantía bloqueó los fondos e impidió vender la entrada dos veces."
         },
         {
           "label": "Ejecutar transferencia",
@@ -194,15 +194,15 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
           [
             "Auditoría de clave de compra original",
             "Descifrado de firma del emisor CA",
-            "Coincidencia de propiedad en libro de entradas"
+            "Coincidencia de propiedad de la entrada"
           ],
           [
-            "Inicio de contrato inteligente de depósito",
-            "Bloqueo de fondos en depósito atómico",
-            "Protección de integridad contra doble gasto"
+            "Inicio del depósito en garantía",
+            "Bloqueo de fondos en depósito",
+            "Protección contra doble venta"
           ],
           [
-            "Ejecución de intercambio atómico",
+            "Ejecución de la transferencia",
             "Actualización de billetera del comprador",
             "Liberación de liquidación en depósito"
           ]
@@ -218,7 +218,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "ownershipConfirmed": "Firma de propiedad confirmada",
       "waitingForDecrypt": "Esperando descifrado de seguridad",
       "verifyTicketOwnership": "Verificar propiedad de la entrada",
-      "step2Description": "Paso 2: Depósito seguro. Retiene el token de la entrada y los activos de la transacción en un bloque temporal de depósito seguro.",
+      "step2Description": "Paso 2: Depósito seguro. Retiene la entrada y el pago en un depósito temporal.",
       "trustEscrowContainer": "Contenedor de depósito de confianza",
       "lockedSealed": "Bloqueado y sellado",
       "awaitingLock": "Esperando bloqueo",
@@ -247,10 +247,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "decryptingTicket": "Descifrando certificado de propiedad del boleto para titular: Alice Vance",
-      "ownerVerified": "Propietaria del boleto verificada: \"Alice Vance\". La firma criptográfica coincide con el registro original.",
-      "lockingEscrow": "Bloqueando el activo del boleto VibePass en el registro Trust Escrow...",
+      "ownerVerified": "Propietaria del boleto verificada: \"Alice Vance\". La firma del emisor en la entrada original es válida.",
+      "lockingEscrow": "Bloqueando el boleto VibePass en Trust Escrow...",
       "escrowSealed": "Depósito sellado. Fondos coincidentes. Mecanismo multisig finalizado de forma segura.",
-      "executingSwap": "Ejecutando vector de intercambio criptográfico instantáneo...",
+      "executingSwap": "Transfiriendo la entrada al comprador...",
       "transferComplete": "Clave de revocación firmada. Reemitiendo QR seguro al titular legal John Doe. Transferencia completada."
     }
   },
@@ -260,8 +260,8 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Credential Issuance",
       "title": "検証済みチケットを譲渡",
       "desc": "元の所有権を証明し、エスクローをロックして、チケット資格情報を安全に譲渡します。",
-      "security": "Credential Issuance + スマートエスクロー",
-      "successResult": "チケット所有権はアトミックに譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。",
+      "security": "Credential Issuance + エスクロー",
+      "successResult": "チケット所有権は一度の手続きで譲渡されました。購入者は検証済み資格情報を受け取り、エスクローは解放されました。",
       "steps": [
         {
           "label": "元の所有権を検証",
@@ -271,7 +271,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "エスクロー条件をロック",
           "action": "エスクローを初期化",
-          "logText": "エスクローのスマートコントラクトが資金をロックし、二重使用を防止しました。"
+          "logText": "エスクローが資金をロックし、チケットの二重販売を防止しました。"
         },
         {
           "label": "譲渡を実行",
@@ -319,15 +319,15 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
           [
             "元購入キー監査",
             "CA発行者署名復号",
-            "チケット台帳所有権照合"
+            "チケット所有権照合"
           ],
           [
-            "エスクローのスマートコントラクト初期化",
-            "アトミックエスクロー資金ロック",
-            "二重使用整合性ガード"
+            "エスクロー初期化",
+            "エスクロー資金ロック",
+            "二重販売ガード"
           ],
           [
-            "アトミックスワップ実行",
+            "譲渡の実行",
             "購入者ウォレットアドレス更新",
             "エスクロー決済解除"
           ]
@@ -343,7 +343,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "ownershipConfirmed": "所有署名を確認済み",
       "waitingForDecrypt": "セキュリティ復号を待機中",
       "verifyTicketOwnership": "チケット所有権を確認",
-      "step2Description": "ステップ2: 安全なエスクロー。チケットトークンと取引資産を一時的な安全エスクローブロックに保持します。",
+      "step2Description": "ステップ2: 安全なエスクロー。チケットと支払いを一時的なエスクローに保持します。",
       "trustEscrowContainer": "信頼エスクローコンテナ",
       "lockedSealed": "ロック済み・封印済み",
       "awaitingLock": "ロック待機中",
@@ -372,10 +372,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "decryptingTicket": "保有者 Alice Vance のチケット所有証明書を復号中",
-      "ownerVerified": "チケット所有者を検証しました: \"Alice Vance\"。暗号署名は元のチケット台帳と完全に一致しました。",
-      "lockingEscrow": "VibePassチケット資産をTrust Escrow台帳にロック中...",
+      "ownerVerified": "チケット所有者を検証しました: \"Alice Vance\"。元のチケットの発行者署名は有効です。",
+      "lockingEscrow": "VibePassチケットをTrust Escrowにロック中...",
       "escrowSealed": "エスクロー資産を封印しました。資金は一致し、マルチシグロック機構を安全に完了しました。",
-      "executingSwap": "即時暗号スワップベクトルを実行中...",
+      "executingSwap": "チケットを購入者に譲渡中...",
       "transferComplete": "失効キーに署名しました。法的保有者John Doeへ安全なQRを再発行しています。譲渡完了。"
     }
   },
@@ -385,8 +385,8 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Credential Issuance",
       "title": "Verifiziertes Ticket übertragen",
       "desc": "Weisen Sie ursprüngliches Eigentum nach, sperren Sie Treuhandbedingungen und übertragen Sie den Ticketnachweis sicher.",
-      "security": "Credential Issuance + Smart Escrow",
-      "successResult": "Das Ticketeigentum wurde atomar übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.",
+      "security": "Credential Issuance + Treuhand",
+      "successResult": "Das Ticketeigentum wurde in einem Schritt übertragen. Der Käufer erhielt einen verifizierten Nachweis und die Treuhandzahlung wurde freigegeben.",
       "steps": [
         {
           "label": "Ursprüngliches Eigentum prüfen",
@@ -396,7 +396,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Treuhandbedingungen sperren",
           "action": "Treuhandkonto initialisieren",
-          "logText": "Der Escrow-Smart-Contract sperrte Mittel und schützte vor doppelter Ausgabe."
+          "logText": "Das Treuhandkonto sperrte die Mittel und verhinderte, dass das Ticket zweimal verkauft wird."
         },
         {
           "label": "Übertragung ausführen",
@@ -444,15 +444,15 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
           [
             "Audit des ursprünglichen Kaufschlüssels",
             "Entschlüsselung der CA-Ausstellersignatur",
-            "Abgleich des Ticketeigentums im Ledger"
+            "Abgleich des Ticketeigentums"
           ],
           [
-            "Escrow-Smart-Contract-Initialisierung",
-            "Atomare Escrow-Fondssperre",
-            "Integritätsschutz gegen Double-Spend"
+            "Treuhand-Initialisierung",
+            "Treuhand-Mittelsperre",
+            "Schutz vor Doppelverkauf"
           ],
           [
-            "Ausführung des atomaren Tauschs",
+            "Ausführung der Übertragung",
             "Aktualisierung der Käufer-Wallet-Adresse",
             "Freigabe der Escrow-Abwicklung"
           ]
@@ -468,7 +468,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "ownershipConfirmed": "Eigentumssignatur bestätigt",
       "waitingForDecrypt": "Warten auf Sicherheitsentschlüsselung",
       "verifyTicketOwnership": "Ticket-Eigentum verifizieren",
-      "step2Description": "Schritt 2: Sicheres Escrow. Ticket-Token und Transaktionswerte werden in einem temporären sicheren Escrow-Block gehalten.",
+      "step2Description": "Schritt 2: Sicheres Escrow. Ticket und Zahlung werden vorübergehend treuhänderisch gehalten.",
       "trustEscrowContainer": "Vertrauens-Escrow-Container",
       "lockedSealed": "Gesperrt und versiegelt",
       "awaitingLock": "Wartet auf Sperre",
@@ -497,10 +497,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "decryptingTicket": "Ticket-Eigentumszertifikat für Inhaberin Alice Vance wird entschlüsselt",
-      "ownerVerified": "Ticketinhaberin verifiziert: \"Alice Vance\". Kryptografische Signatur stimmt exakt mit dem ursprünglichen Ticketregister überein.",
-      "lockingEscrow": "VibePass-Ticketasset wird im Trust-Escrow-Register gesperrt...",
+      "ownerVerified": "Ticketinhaberin verifiziert: \"Alice Vance\". Die Signatur des Ausstellers auf dem ursprünglichen Ticket ist gültig.",
+      "lockingEscrow": "VibePass-Ticket wird im Trust Escrow gesperrt...",
       "escrowSealed": "Escrow-Assets versiegelt. Mittel abgeglichen. Multisig-Sperrmechanismus sicher finalisiert.",
-      "executingSwap": "Sofortiger kryptografischer Swap-Vektor wird ausgeführt...",
+      "executingSwap": "Ticket wird an den Käufer übertragen...",
       "transferComplete": "Widerrufsschlüssel signiert. Sicherer QR wird für rechtmäßigen Inhaber John Doe neu ausgegeben. Übertragung abgeschlossen."
     }
   },
@@ -510,7 +510,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "tag": "Credential Issuance",
       "title": "Chuyển vé đã xác minh",
       "desc": "Chứng minh quyền sở hữu ban đầu, khóa ký quỹ và chuyển thực chứng vé một cách an toàn.",
-      "security": "Tiết lộ có chọn lọc và hợp đồng thông minh",
+      "security": "Tiết lộ có chọn lọc và ký quỹ",
       "successResult": "Quyền sở hữu vé đã được chuyển đồng thời. Người mua nhận thực chứng đã xác minh và ký quỹ được giải phóng.",
       "steps": [
         {
@@ -521,7 +521,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
         {
           "label": "Khóa điều khoản ký quỹ",
           "action": "Khởi tạo ký quỹ",
-          "logText": "Hợp đồng thông minh ký quỹ đã khóa tiền và chống chi tiêu hai lần."
+          "logText": "Ký quỹ đã khóa tiền và ngăn một vé bị bán hai lần."
         },
         {
           "label": "Thực hiện chuyển nhượng",
@@ -569,15 +569,15 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
           [
             "Kiểm tra khóa mua ban đầu",
             "Giải mã chữ ký bên phát hành CA",
-            "Khớp quyền sở hữu trong sổ cái vé"
+            "Khớp quyền sở hữu vé"
           ],
           [
-            "Khởi tạo hợp đồng thông minh ký quỹ",
-            "Khóa quỹ ký quỹ nguyên tử",
-            "Bảo vệ toàn vẹn chống chi tiêu hai lần"
+            "Khởi tạo ký quỹ",
+            "Khóa tiền ký quỹ",
+            "Chống bán một vé hai lần"
           ],
           [
-            "Thực thi hoán đổi nguyên tử",
+            "Thực hiện chuyển nhượng",
             "Cập nhật địa chỉ ví người mua",
             "Giải phóng thanh toán ký quỹ"
           ]
@@ -593,7 +593,7 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
       "ownershipConfirmed": "Đã xác nhận chữ ký sở hữu",
       "waitingForDecrypt": "Đang chờ giải mã bảo mật",
       "verifyTicketOwnership": "Xác minh quyền sở hữu vé",
-      "step2Description": "Bước 2: Ký quỹ bảo mật. Giữ token vé và tài sản giao dịch trong khối ký quỹ tạm thời an toàn.",
+      "step2Description": "Bước 2: Ký quỹ bảo mật. Giữ vé và khoản thanh toán trong ký quỹ tạm thời.",
       "trustEscrowContainer": "Kho ký quỹ tin cậy",
       "lockedSealed": "Đã khóa và niêm phong",
       "awaitingLock": "Đang chờ khóa",
@@ -622,10 +622,10 @@ export const TICKET_TRANSFER_DEMO_PAGE_TRANSLATIONS: any = {
     },
     "logs": {
       "decryptingTicket": "Đang giải mã thực chứng xác nhận quyền sở hữu vé cho chủ sở hữu: Alice Vance",
-      "ownerVerified": "Chủ sở hữu vé đã xác minh: \"Alice Vance\". Chữ ký mật mã khớp hoàn toàn với sổ cái vé gốc.",
-      "lockingEscrow": "Đang khóa tài sản vé VibePass trong sổ cái Trust Escrow...",
+      "ownerVerified": "Chủ sở hữu vé đã xác minh: \"Alice Vance\". Chữ ký của đơn vị phát hành trên vé gốc hợp lệ.",
+      "lockingEscrow": "Đang khóa vé VibePass trong Trust Escrow...",
       "escrowSealed": "Tài sản ký quỹ đã niêm phong. Quỹ đã khớp. Cơ chế khóa đa chữ ký hoàn tất an toàn.",
-      "executingSwap": "Đang thực thi vector hoán đổi mật mã tức thời...",
+      "executingSwap": "Đang chuyển vé cho người mua...",
       "transferComplete": "Khóa thu hồi đã ký. Đang phát hành lại QR bảo mật cho chủ sở hữu hợp pháp John Doe. Chuyển nhượng hoàn tất."
     }
   }

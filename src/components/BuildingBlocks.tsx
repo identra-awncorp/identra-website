@@ -104,10 +104,6 @@ export default function BuildingBlocks({ onOpenSandbox }: BuildingBlocksProps) {
                 <div className="space-y-2 pt-2">
                   <div className="flex items-center gap-2 text-xs text-slate-700">
                     <CheckCircle2 className="w-4 h-4 text-[#354CE1]" />
-                    <span>{buildingBlocksT.verifyCheck1}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-[#354CE1]" />
                     <span>{buildingBlocksT.verifyCheck2}</span>
                   </div>
                 </div>

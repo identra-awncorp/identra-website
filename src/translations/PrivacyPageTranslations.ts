@@ -31,7 +31,7 @@ export const PRIVACY_PAGE_TRANSLATIONS: any = {
     encrypted: 'Encrypted',
     scanGovId: 'Scan Government ID',
     scanGovIdHint: 'Place front of ID card within the camera boundary guidelines',
-    securePipeline: 'Identra keeps transmission pipelines secure with ISO 27001-rated TLS encryptions.',
+    securePipeline: 'Identra keeps transmission pipelines secure with TLS encryption.',
     processingTitle: 'Processing',
     processingDesc: "Identra uses secure, automated systems and predefined rules to verify your information. Depending on the organization's requirements, this may include checking it against fraud signals and trusted sources, such as public records.",
     processingPipeline: 'ID PROCESSING PIPELINE',
@@ -85,10 +85,6 @@ export const PRIVACY_PAGE_TRANSLATIONS: any = {
       { title: 'Ongoing security review', desc: 'We conduct regular internal reviews and external assessments to evaluate and improve our security controls over time.' },
       { title: 'Passkeys for Identra Wallet', desc: 'Information saved to a Identra Wallet is encrypted and protected by passkeys, a passwordless authentication method secured on your device by Face ID, ensuring only you can unlock it.' }
     ],
-    industryStandards: 'INDUSTRY STANDARDS',
-    securityCoreTitle: 'Security and privacy at our core',
-    securityCoreDesc: "Security and privacy are paramount to a trusted relationship. That's why Identra is compliant and certified to the highest industry standards and committed to protecting your privacy.",
-    certs: ['CCPA', 'GDPR', 'AICPA SOC 2 Type II', 'ISO 27001', 'HIPAA compliant', 'PCI DSS', 'FERPA', 'Kantara (NIST SP 800-63)', 'Age Check Certification Scheme', 'KJM approved'],
     userControlsBadge: 'User Controls',
     dataRightsTitle: 'Your data rights and control',
     dataRightsDesc: "How we process your data depends on whether we're acting as a processor or controller, the organization's configuration, and applicable laws.",
@@ -103,7 +99,7 @@ export const PRIVACY_PAGE_TRANSLATIONS: any = {
     deleteQuestion: 'How do I delete my data?',
     deleteAnswer: "Submit a request through the Privacy Portal. We'll review your request, verify your identity, and check for matches. Then we'll either delete your data or route your request to the appropriate organization, depending on how your data was processed.",
     contactQuestion: 'Who can I contact with privacy questions?',
-    contactAnswerPrefix: "For questions about Identra's privacy practices, or to submit custom CCPA inquiries directly to our security officer, use the Privacy Portal link below or email",
+    contactAnswerPrefix: 'For questions about Identra\'s privacy practices, use the button below or the contact page.',
     closeDocument: 'Close Document',
     portalTitle: 'Consumer Privacy Portal',
     portalIntro: 'Use this secure portal to request a structural copy of your verification records or request deletion under GDPR/CCPA.',
@@ -128,7 +124,7 @@ export const PRIVACY_PAGE_TRANSLATIONS: any = {
 
 **Last Updated:** July 2026
 
-This Privacy Policy describes how Identra Identities, Inc. ("Identra", "we", "us", or "our") collects, uses, and discloses personal information when you visit our website, attend our events, or interact with us as a business customer.
+This Privacy Policy describes how AwnCorp ("Identra", "we", "us", or "our") collects, uses, and discloses personal information when you visit our website, attend our events, or interact with us as a business customer.
 
 #### 1. Information We Collect
 - **Contact Information**: Name, email address, phone number, company name.
@@ -215,7 +211,7 @@ We enforce multi-layered administrative, technical, and physical safeguards desi
     encrypted: 'Đã mã hóa',
     scanGovId: 'Quét giấy tờ định danh',
     scanGovIdHint: 'Đặt mặt trước giấy tờ trong khung hướng dẫn của camera',
-    securePipeline: 'Identra bảo mật các kênh truyền dữ liệu bằng mã hóa TLS đạt chuẩn ISO 27001.',
+    securePipeline: 'Identra bảo mật các kênh truyền dữ liệu bằng mã hóa TLS.',
     processingTitle: 'Xử lý',
     processingDesc: 'Identra dùng hệ thống tự động bảo mật và các quy tắc định sẵn để xác minh thông tin của bạn. Tùy yêu cầu của tổ chức, việc này có thể bao gồm đối chiếu với tín hiệu gian lận và nguồn tin cậy như hồ sơ công khai.',
     processingPipeline: 'QUY TRÌNH XỬ LÝ ID',
@@ -269,10 +265,6 @@ We enforce multi-layered administrative, technical, and physical safeguards desi
       { title: 'Rà soát bảo mật liên tục', desc: 'Chúng tôi thực hiện đánh giá nội bộ và đánh giá bên ngoài định kỳ để xem xét và cải thiện kiểm soát bảo mật theo thời gian.' },
       { title: 'Passkey cho Identra Wallet', desc: 'Thông tin lưu trong Identra Wallet được mã hóa và bảo vệ bằng passkey, phương thức xác thực không mật khẩu được bảo mật trên thiết bị của bạn bằng Face ID, bảo đảm chỉ bạn có thể mở khóa.' }
     ],
-    industryStandards: 'TIÊU CHUẨN NGÀNH',
-    securityCoreTitle: 'Bảo mật và quyền riêng tư là cốt lõi',
-    securityCoreDesc: 'Bảo mật và quyền riêng tư là nền tảng của mối quan hệ đáng tin cậy. Vì vậy Identra tuân thủ, được chứng nhận theo các tiêu chuẩn ngành cao nhất và cam kết bảo vệ quyền riêng tư của bạn.',
-    certs: ['CCPA', 'GDPR', 'AICPA SOC 2 Loại II', 'ISO 27001', 'Tuân thủ HIPAA', 'PCI DSS', 'FERPA', 'Kantara (NIST SP 800-63)', 'Chương trình chứng nhận kiểm tra độ tuổi', 'Được KJM phê duyệt'],
     userControlsBadge: 'Kiểm soát của người dùng',
     dataRightsTitle: 'Quyền và quyền kiểm soát dữ liệu của bạn',
     dataRightsDesc: 'Cách chúng tôi xử lý dữ liệu phụ thuộc vào việc chúng tôi đóng vai trò bên xử lý hay bên kiểm soát, cấu hình của tổ chức và luật áp dụng.',
@@ -287,7 +279,7 @@ We enforce multi-layered administrative, technical, and physical safeguards desi
     deleteQuestion: 'Tôi xóa dữ liệu của mình như thế nào?',
     deleteAnswer: 'Gửi yêu cầu qua Cổng quyền riêng tư. Chúng tôi sẽ xem xét yêu cầu, xác minh danh tính của bạn và kiểm tra kết quả khớp. Sau đó chúng tôi sẽ xóa dữ liệu của bạn hoặc chuyển yêu cầu đến tổ chức phù hợp, tùy cách dữ liệu của bạn đã được xử lý.',
     contactQuestion: 'Tôi có thể liên hệ ai nếu có câu hỏi về quyền riêng tư?',
-    contactAnswerPrefix: 'Nếu có câu hỏi về thực hành quyền riêng tư của Identra, hoặc muốn gửi yêu cầu CCPA trực tiếp đến cán bộ bảo mật của chúng tôi, hãy dùng liên kết Cổng quyền riêng tư bên dưới hoặc email',
+    contactAnswerPrefix: 'Nếu có câu hỏi về thực hành quyền riêng tư của Identra, hãy dùng nút bên dưới hoặc trang liên hệ.',
     closeDocument: 'Đóng tài liệu',
     portalTitle: 'Cổng quyền riêng tư người tiêu dùng',
     portalIntro: 'Dùng cổng bảo mật này để yêu cầu bản sao có cấu trúc của hồ sơ xác minh hoặc yêu cầu xóa theo GDPR/CCPA.',
@@ -317,7 +309,7 @@ const sharedLocalizedNotices = {
 
 **Última actualización:** julio de 2026
 
-Esta Política de privacidad describe cómo Identra Identities, Inc. ("Identra", "nosotros") recopila, usa y divulga información personal cuando visitas nuestro sitio web, asistes a nuestros eventos o interactúas con nosotros como cliente empresarial.
+Esta Política de privacidad describe cómo AwnCorp ("Identra", "nosotros") recopila, usa y divulga información personal cuando visitas nuestro sitio web, asistes a nuestros eventos o interactúas con nosotros como cliente empresarial.
 
 #### 1. Información que recopilamos
 - **Información de contacto**: nombre, correo electrónico, teléfono y nombre de la empresa.
@@ -385,7 +377,7 @@ Aplicamos salvaguardas administrativas, técnicas y físicas de varias capas dis
 
 **最終更新:** 2026年7月
 
-このプライバシーポリシーは、Identra Identities, Inc.（「Identra」、「当社」）が、Webサイト訪問、イベント参加、法人のお客様としてのやり取りにおいて個人情報を収集、利用、開示する方法を説明します。
+このプライバシーポリシーは、AwnCorp（「Identra」、「当社」）が、Webサイト訪問、イベント参加、法人のお客様としてのやり取りにおいて個人情報を収集、利用、開示する方法を説明します。
 
 #### 1. 収集する情報
 - **連絡先情報**: 氏名、メールアドレス、電話番号、会社名。
@@ -453,7 +445,7 @@ Identraは、法人のお客様が設定した保持期間、または地域の�
 
 **Zuletzt aktualisiert:** Juli 2026
 
-Diese Datenschutzrichtlinie beschreibt, wie Identra Identities, Inc. ("Identra", "wir") personenbezogene Informationen erhebt, verwendet und offenlegt, wenn Sie unsere Website besuchen, an Veranstaltungen teilnehmen oder als Geschäftskunde mit uns interagieren.
+Diese Datenschutzrichtlinie beschreibt, wie AwnCorp ("Identra", "wir") personenbezogene Informationen erhebt, verwendet und offenlegt, wenn Sie unsere Website besuchen, an Veranstaltungen teilnehmen oder als Geschäftskunde mit uns interagieren.
 
 #### 1. Informationen, die wir erheben
 - **Kontaktinformationen**: Name, E-Mail-Adresse, Telefonnummer und Unternehmensname.
@@ -521,7 +513,7 @@ Wir setzen mehrschichtige administrative, technische und physische Schutzmaßnah
 
 **Cập nhật lần cuối:** Tháng 7 năm 2026
 
-Chính sách này mô tả cách Identra Identities, Inc. ("Identra", "chúng tôi") thu thập, sử dụng và tiết lộ thông tin cá nhân khi bạn truy cập website, tham dự sự kiện hoặc tương tác với chúng tôi với tư cách khách hàng doanh nghiệp.
+Chính sách này mô tả cách AwnCorp ("Identra", "chúng tôi") thu thập, sử dụng và tiết lộ thông tin cá nhân khi bạn truy cập website, tham dự sự kiện hoặc tương tác với chúng tôi với tư cách khách hàng doanh nghiệp.
 
 #### 1. Thông tin chúng tôi thu thập
 - **Thông tin liên hệ**: Họ tên, địa chỉ email, số điện thoại, tên công ty.
@@ -609,7 +601,7 @@ PRIVACY_PAGE_TRANSLATIONS.es = {
   encrypted: 'Cifrado',
   scanGovId: 'Escanear documento oficial',
   scanGovIdHint: 'Coloca el frente del documento dentro de las guías de la cámara',
-  securePipeline: 'Identra mantiene canales de transmisión seguros con cifrado TLS alineado con ISO 27001.',
+  securePipeline: 'Identra mantiene canales de transmisión seguros con cifrado TLS.',
   processingTitle: 'Procesamiento',
   processingDesc: 'Identra usa sistemas automatizados seguros y reglas predefinidas para verificar tu información. Según los requisitos de la organización, esto puede incluir contrastarla con señales de fraude y fuentes confiables, como registros públicos.',
   processingPipeline: 'FLUJO DE PROCESAMIENTO DE ID',
@@ -663,10 +655,6 @@ PRIVACY_PAGE_TRANSLATIONS.es = {
     { title: 'Revisión continua de seguridad', desc: 'Realizamos revisiones internas y evaluaciones externas periódicas para evaluar y mejorar nuestros controles de seguridad con el tiempo.' },
     { title: 'Passkeys para Identra Wallet', desc: 'La información guardada en Identra Wallet está cifrada y protegida mediante passkeys, un método de autenticación sin contraseña protegido en tu dispositivo por Face ID, para que solo tú puedas desbloquearla.' }
   ],
-  industryStandards: 'ESTÁNDARES DEL SECTOR',
-  securityCoreTitle: 'Seguridad y privacidad en nuestro núcleo',
-  securityCoreDesc: 'La seguridad y la privacidad son esenciales para una relación de confianza. Por eso Identra cumple y está certificada con los estándares más altos del sector, y se compromete a proteger tu privacidad.',
-  certs: ['CCPA', 'GDPR', 'AICPA SOC 2 Type II', 'ISO 27001', 'Cumplimiento HIPAA', 'PCI DSS', 'FERPA', 'Kantara (NIST SP 800-63)', 'Age Check Certification Scheme', 'Aprobado por KJM'],
   userControlsBadge: 'Controles de usuario',
   dataRightsTitle: 'Tus derechos y control de datos',
   dataRightsDesc: 'La forma en que procesamos tus datos depende de si actuamos como encargado o responsable del tratamiento, de la configuración de la organización y de las leyes aplicables.',
@@ -681,7 +669,7 @@ PRIVACY_PAGE_TRANSLATIONS.es = {
   deleteQuestion: '¿Cómo elimino mis datos?',
   deleteAnswer: 'Envía una solicitud a través del Portal de privacidad. Revisaremos tu solicitud, verificaremos tu identidad y comprobaremos coincidencias. Después eliminaremos tus datos o dirigiremos la solicitud a la organización correspondiente, según cómo se procesaron tus datos.',
   contactQuestion: '¿Con quién puedo contactar si tengo preguntas de privacidad?',
-  contactAnswerPrefix: 'Para preguntas sobre las prácticas de privacidad de Identra o para enviar consultas CCPA personalizadas directamente a nuestro responsable de seguridad, usa el enlace del Portal de privacidad a continuación o escribe a',
+  contactAnswerPrefix: 'Para preguntas sobre las prácticas de privacidad de Identra, usa el botón de abajo o la página de contacto.',
   closeDocument: 'Cerrar documento',
   portalTitle: 'Portal de privacidad del consumidor',
   portalIntro: 'Usa este portal seguro para solicitar una copia estructurada de tus registros de verificación o pedir la eliminación bajo GDPR/CCPA.',
@@ -727,7 +715,7 @@ PRIVACY_PAGE_TRANSLATIONS.ja = {
   encrypted: '暗号化済み',
   scanGovId: '政府発行IDをスキャン',
   scanGovIdHint: 'IDカードの表面をカメラ枠のガイド内に配置してください',
-  securePipeline: 'Identraは、ISO 27001に沿ったTLS暗号化で送信経路を安全に保ちます。',
+  securePipeline: 'Identraは、TLS暗号化で送信経路を安全に保ちます。',
   processingTitle: '処理',
   processingDesc: 'Identraは、安全な自動システムと事前定義されたルールを使って情報を確認します。組織の要件に応じて、不正シグナルや公的記録などの信頼できるソースとの照合が含まれる場合があります。',
   processingPipeline: 'ID処理パイプライン',
@@ -781,10 +769,6 @@ PRIVACY_PAGE_TRANSLATIONS.ja = {
     { title: '継続的なセキュリティレビュー', desc: '社内レビューと外部評価を定期的に実施し、セキュリティ管理を評価し改善します。' },
     { title: 'Identra Walletのpasskeys', desc: 'Identra Walletに保存された情報は暗号化され、Face IDで保護された端末上のパスワードレス認証方式であるpasskeysによって保護されます。解除できるのはあなただけです。' }
   ],
-  industryStandards: '業界基準',
-  securityCoreTitle: 'セキュリティとプライバシーを中核に',
-  securityCoreDesc: 'セキュリティとプライバシーは、信頼関係に不可欠です。そのためIdentraは業界最高水準に準拠し認証を取得し、あなたのプライバシー保護に取り組んでいます。',
-  certs: ['CCPA', 'GDPR', 'AICPA SOC 2 Type II', 'ISO 27001', 'HIPAA準拠', 'PCI DSS', 'FERPA', 'Kantara (NIST SP 800-63)', 'Age Check Certification Scheme', 'KJM承認'],
   userControlsBadge: 'ユーザー管理',
   dataRightsTitle: 'データに関する権利と管理',
   dataRightsDesc: 'データの処理方法は、当社が処理者として機能するか管理者として機能するか、組織の設定、適用法によって異なります。',
@@ -799,7 +783,7 @@ PRIVACY_PAGE_TRANSLATIONS.ja = {
   deleteQuestion: 'データを削除するにはどうすればよいですか？',
   deleteAnswer: 'プライバシーポータルからリクエストを送信してください。当社はリクエストを確認し、本人性を確認し、一致結果を調べます。その後、データを削除するか、データの処理方法に応じて適切な組織へリクエストを転送します。',
   contactQuestion: 'プライバシーに関する質問は誰に連絡できますか？',
-  contactAnswerPrefix: 'Identraのプライバシー実務についての質問、またはカスタムCCPA問い合わせをセキュリティ責任者へ直接送る場合は、以下のプライバシーポータルリンクを使うか、次のメールアドレスへ連絡してください',
+  contactAnswerPrefix: 'Identraのプライバシー実務に関するご質問は、下のボタンまたはお問い合わせページからご連絡ください。',
   closeDocument: '文書を閉じる',
   portalTitle: '消費者プライバシーポータル',
   portalIntro: 'この安全なポータルを使って、確認記録の構造化コピーを請求したり、GDPR/CCPAに基づく削除を依頼したりできます。',
@@ -845,7 +829,7 @@ PRIVACY_PAGE_TRANSLATIONS.de = {
   encrypted: 'Verschlüsselt',
   scanGovId: 'Amtlichen Ausweis scannen',
   scanGovIdHint: 'Platzieren Sie die Vorderseite des Ausweises innerhalb der Kamerahilfslinien',
-  securePipeline: 'Identra schützt Übertragungskanäle mit TLS-Verschlüsselung nach ISO 27001.',
+  securePipeline: 'Identra schützt Übertragungskanäle mit TLS-Verschlüsselung.',
   processingTitle: 'Verarbeitung',
   processingDesc: 'Identra verwendet sichere automatisierte Systeme und vordefinierte Regeln, um Ihre Informationen zu verifizieren. Je nach Anforderungen der Organisation kann dies den Abgleich mit Betrugssignalen und vertrauenswürdigen Quellen wie öffentlichen Registern umfassen.',
   processingPipeline: 'ID-VERARBEITUNGSPIPELINE',
@@ -899,10 +883,6 @@ PRIVACY_PAGE_TRANSLATIONS.de = {
     { title: 'Laufende Sicherheitsprüfung', desc: 'Wir führen regelmäßige interne Reviews und externe Bewertungen durch, um unsere Sicherheitskontrollen im Laufe der Zeit zu bewerten und zu verbessern.' },
     { title: 'Passkeys für Identra Wallet', desc: 'Informationen in Identra Wallet werden verschlüsselt und durch passkeys geschützt, eine passwortlose Authentifizierungsmethode, die auf Ihrem Gerät durch Face ID abgesichert ist, sodass nur Sie sie entsperren können.' }
   ],
-  industryStandards: 'BRANCHENSTANDARDS',
-  securityCoreTitle: 'Sicherheit und Datenschutz im Kern',
-  securityCoreDesc: 'Sicherheit und Datenschutz sind entscheidend für eine vertrauensvolle Beziehung. Deshalb erfüllt Identra höchste Branchenstandards, ist entsprechend zertifiziert und verpflichtet sich zum Schutz Ihrer Privatsphäre.',
-  certs: ['CCPA', 'GDPR', 'AICPA SOC 2 Type II', 'ISO 27001', 'HIPAA-konform', 'PCI DSS', 'FERPA', 'Kantara (NIST SP 800-63)', 'Age Check Certification Scheme', 'KJM-genehmigt'],
   userControlsBadge: 'Nutzerkontrollen',
   dataRightsTitle: 'Ihre Datenrechte und Kontrolle',
   dataRightsDesc: 'Wie wir Ihre Daten verarbeiten, hängt davon ab, ob wir als Auftragsverarbeiter oder Verantwortlicher handeln, von der Konfiguration der Organisation und vom geltenden Recht.',
@@ -917,7 +897,7 @@ PRIVACY_PAGE_TRANSLATIONS.de = {
   deleteQuestion: 'Wie lösche ich meine Daten?',
   deleteAnswer: 'Senden Sie eine Anfrage über das Datenschutzportal. Wir prüfen Ihre Anfrage, verifizieren Ihre Identität und suchen nach Treffern. Anschließend löschen wir Ihre Daten oder leiten die Anfrage an die passende Organisation weiter, abhängig davon, wie Ihre Daten verarbeitet wurden.',
   contactQuestion: 'An wen kann ich mich bei Datenschutzfragen wenden?',
-  contactAnswerPrefix: 'Für Fragen zu Identras Datenschutzpraktiken oder zum direkten Einreichen individueller CCPA-Anfragen an unseren Sicherheitsbeauftragten nutzen Sie den Link zum Datenschutzportal unten oder schreiben Sie an',
+  contactAnswerPrefix: 'Bei Fragen zu Identras Datenschutzpraktiken nutzen Sie die Schaltfläche unten oder die Kontaktseite.',
   closeDocument: 'Dokument schließen',
   portalTitle: 'Verbraucher-Datenschutzportal',
   portalIntro: 'Nutzen Sie dieses sichere Portal, um eine strukturierte Kopie Ihrer Verifizierungsdatensätze anzufordern oder eine Löschung nach GDPR/CCPA zu beantragen.',

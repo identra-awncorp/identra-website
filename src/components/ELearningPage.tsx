@@ -223,17 +223,6 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
                     </div>
                   </div>
                 </div>
-
-                {/* Info pill floating */}
-                <div className="absolute -bottom-4 -right-4 bg-slate-900 border border-slate-800 p-3 rounded-xl shadow-lg flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
-                    <Globe className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">{t('onboarding')}</p>
-                    <p className="text-xs font-bold text-white">{t('countriesSupported')}</p>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -268,29 +257,6 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
 
         </div>
       </section>
-
-      {/* Trusted Logos Band */}
-      <section className="bg-slate-950 py-8 border-b border-slate-900 text-center">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6 text-slate-400 text-xs">
-          <p className="font-semibold uppercase tracking-wider text-slate-500">
-            {t('trustedBy')}
-          </p>
-          <div className="flex gap-12 items-center justify-center opacity-80">
-            {/* Udemy */}
-            <div className="flex items-center gap-1.5 font-sans text-xl font-bold text-white">
-              <span className="bg-indigo-600 px-1.5 py-0.5 rounded text-sm text-white font-serif italic font-extrabold mr-1">{t('logoUdemyMark')}</span>
-              <span>{t('logoUdemy')}</span>
-            </div>
-            
-            {/* Coursera */}
-            <div className="flex items-center gap-1.5 font-sans text-xl font-bold tracking-tight text-white">
-              <span className="text-cyan-400 font-extrabold text-2xl">{t('logoCourseraMark')}</span>
-              <span>{t('logoCoursera')}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
 
       {/* 2. Interactive Academic Integrity & Verification Hub Section */}
       <section className="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -576,110 +542,6 @@ export default function ELearningPage({ onOpenSandbox, onBackToLanding, onViewCh
               </div>
             </div>
           ))}
-
-        </div>
-      </section>
-
-
-      {/* 5. Coursera Testimonial Banner Section */}
-      <section className="bg-blue-50/70 border-y border-slate-100 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Testimonial Left */}
-          <div className="lg:col-span-7 space-y-6">
-            <p className="text-2xl sm:text-3xl font-light text-slate-800 leading-relaxed italic">
-              {t('quoteOpen')}{t('testimonialQuote')}{t('quoteClose')}
-            </p>
-            <div>
-              <p className="font-bold text-slate-900 text-base">{t('testimonialName')}</p>
-              <p className="text-xs text-slate-500 tracking-wider uppercase font-semibold">{t('testimonialRole')}</p>
-            </div>
-          </div>
-
-          {/* Testimonial Right Card */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-6">
-              <div className="flex items-center gap-2 font-sans text-2xl font-black tracking-tight text-slate-900">
-                <span className="text-blue-600 font-extrabold text-3xl">{t('logoCourseraMark')}</span>
-                <span>{t('logoCoursera')}</span>
-              </div>
-              <h4 className="font-bold text-slate-900 text-lg">
-                {t('testimonialTitle')}
-              </h4>
-              <p className="text-sm text-slate-500 leading-relaxed font-light">
-                {t('testimonialDesc')}
-              </p>
-              <button 
-                onClick={onOpenSandbox}
-                className="w-full py-3.5 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-sm tracking-wide transition flex items-center justify-center gap-2 group"
-              >
-                <span>{t('readCaseStudy')}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-
-      {/* 6. "Wherever your learning communities are, we're there, too" */}
-      <section className="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Stats & global paragraph column */}
-          <div className="lg:col-span-5 space-y-8">
-            <div className="space-y-4">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">{t('globalEyebrow')}</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                {t('globalTitle')}
-              </h2>
-              <p className="text-slate-500 leading-relaxed max-w-md font-light">
-                {t('globalDesc')}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6 border-t border-slate-100 pt-8">
-              <div>
-                <p className="text-4xl sm:text-5xl font-black text-[#2563EB]">{t('countryCount')}</p>
-                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mt-2">{t('countriesTerritories')}</p>
-              </div>
-              <div>
-                <p className="text-4xl sm:text-5xl font-black text-[#2563EB]">{t('languageCount')}</p>
-                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mt-2">{t('languagesSupported')}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Waterfall cloud of multilingual identity greetings */}
-          <div className="lg:col-span-7 bg-slate-50 rounded-3xl p-8 border border-slate-100 relative overflow-hidden h-96 flex flex-col justify-center">
-            
-            {/* Ambient gradients */}
-            <div className="absolute top-0 right-0 w-44 h-44 bg-blue-300/10 rounded-full blur-2xl"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-300/10 rounded-full blur-2xl"></div>
-
-            <div className="space-y-4 font-sans text-center relative z-10 flex flex-col justify-center h-full">
-              
-              <div className="flex flex-wrap gap-2 justify-center">
-                {translations.identityGreetings.map((greeting, index) => {
-                  const highlightClass = index === 1
-                    ? 'bg-blue-600 shadow-sm text-xs font-bold text-white'
-                    : index === 4
-                      ? 'bg-emerald-500 shadow-sm text-sm font-bold text-white'
-                      : index === 8
-                        ? 'bg-indigo-600 shadow-sm text-xs font-bold text-white'
-                        : 'bg-white border border-slate-150 shadow-sm text-xs font-bold text-slate-600';
-                  const paddingClass = index === 4 ? 'px-5 py-2.5' : 'px-4 py-2';
-                  return (
-                    <span key={greeting} className={`${paddingClass} rounded-full ${highlightClass}`}>
-                      {greeting}
-                    </span>
-                  );
-                })}
-              </div>
-
-            </div>
-          </div>
 
         </div>
       </section>

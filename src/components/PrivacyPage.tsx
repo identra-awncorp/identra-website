@@ -91,19 +91,6 @@ export default function PrivacyPage({ onBackToLanding, onOpenSandbox, onViewChan
     'data-rights': dataRightsRef
   };
   const safeguardIcons = [ShieldCheck, Lock, Activity, Database, Clock, Key];
-  const certBadgeClasses = [
-    'bg-[#0F1E36] text-white',
-    'bg-emerald-600 text-white',
-    'bg-[#354CE1] text-white',
-    'bg-indigo-600 text-white',
-    'bg-blue-600 text-white font-medium',
-    'bg-rose-600 text-white',
-    'bg-slate-700 text-white',
-    'bg-amber-600 text-white',
-    'bg-teal-600 text-white',
-    'bg-purple-600 text-white'
-  ];
-
   return (
     <div className="bg-[#FAFBFD] min-h-screen text-slate-800 antialiased selection:bg-[#354CE1]/10 selection:text-[#354CE1]">
       
@@ -505,30 +492,6 @@ export default function PrivacyPage({ onBackToLanding, onOpenSandbox, onViewChan
             })}
           </div>
 
-          {/* Compliance Logos / Security & Privacy Banner */}
-          <div className="bg-[#E2E6FF]/50 border border-[#354CE1]/10 rounded-[2.5rem] p-8 md:p-12 text-center space-y-8 shadow-sm">
-            <div className="space-y-2 max-w-2xl mx-auto">
-              <p className="text-[10px] font-bold font-mono tracking-wider text-[#354CE1] uppercase">{t.industryStandards}</p>
-              <h3 className="text-xl md:text-2xl font-display font-bold text-[#0F1E36]">{t.securityCoreTitle}</h3>
-              <p className="text-slate-600 text-xs leading-relaxed">
-                {t.securityCoreDesc}
-              </p>
-            </div>
-
-            {/* Visual Logo Pill Grid */}
-            <div className="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
-              {t.certs.map((label: string, i: number) => (
-                <span 
-                  key={i} 
-                  className={`text-[10px] font-bold font-mono px-3.5 py-1.5 rounded-full select-none shadow-sm flex items-center gap-1 hover:scale-105 transition duration-200 cursor-default ${certBadgeClasses[i]}`}
-                >
-                  <ShieldCheck className="w-3 h-3 shrink-0" />
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -593,7 +556,7 @@ export default function PrivacyPage({ onBackToLanding, onOpenSandbox, onViewChan
           <div className="border border-slate-200 bg-white rounded-[2rem] p-6 md:p-8 space-y-4 shadow-sm text-center">
             <h4 className="font-display font-bold text-slate-900 text-base">{t.contactQuestion}</h4>
             <p className="text-slate-600 text-xs max-w-2xl mx-auto leading-relaxed">
-              {t.contactAnswerPrefix} <span className="font-semibold text-[#354CE1]">privacy@withidentra.com</span>.
+              {t.contactAnswerPrefix}
             </p>
 
             <div className="flex justify-center pt-4">

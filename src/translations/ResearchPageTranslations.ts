@@ -1439,21 +1439,6 @@ export const getLocalizedReadingList = (lang: string) => {
   const tList = {
     en: [
       {
-        id: "read-1",
-        title: "The Age Verification Revolution: Balancing Child Safety and Data Privacy",
-        category: "Industry Report" as const,
-        source: "World Economic Forum & Identra Labs",
-        readTime: "15 min",
-        publicationYear: "2026",
-        description: "An in-depth exploration of state-of-the-art cryptographic age assurance techniques, exploring zero-knowledge proof protocols and double-blind validator models.",
-        summary: "From the UK Age-Appropriate Design Code to California's AADC, regulatory bodies are mandating robust age verification. This joint paper proposes decentralized cryptographic architectures that let users assert age-appropriate status without leaking raw biometric or document attributes to the relying party. We evaluate how zero-knowledge proofs (ZKPs) and decentralized credentials can serve as a gold standard for global compliance.",
-        keyInsights: [
-          "Zero-knowledge proofs allow users to verify age ranges without transmitting exact birthdates.",
-          "Double-blind token models prevent the age validator from mapping or tracking the user's browsing history.",
-          "Facial age estimation has improved its demographic parity across diverse cohorts to over 98.7% accuracy."
-        ]
-      },
-      {
         id: "read-2",
         title: "Understanding Biometric Injection Attacks in Modern Face Verification",
         category: "Technical Briefing" as const,
@@ -1482,39 +1467,9 @@ export const getLocalizedReadingList = (lang: string) => {
           "Standard automated identity verification (KYC/KYB) is permitted but requires documented bias-mitigation workflows.",
           "Proactive, continuous testing on multi-ethnic datasets is legally mandated for compliance with Article 9."
         ]
-      },
-      {
-        id: "read-4",
-        title: "Biometrics in the Wild: Evaluating Real-World Facial Recognition Bias",
-        category: "Academic Paper" as const,
-        source: "NIST & Identra Diversity Audit",
-        readTime: "22 min",
-        publicationYear: "2025",
-        description: "A collaborative demographic audit assessing False Match Rates (FMR) and False Non-Match Rates (FNMR) across global cohorts to refine algorithmic fairness.",
-        summary: "Algorithmic bias is a primary challenge in automated facial matching. This peer-reviewed paper presents findings from a global audit of 1M+ verification attempts. We isolate demographic factors and demonstrate how lighting compensation and synthetic dataset balancing can eradicate structural variance to build truly fair systems.",
-        keyInsights: [
-          "Poor ambient lighting remains the single largest driver of verification discrepancy among darker skin tones.",
-          "Balancing neural network training sets with synthetic, high-fidelity diverse faces reduces False Non-Matches by 42%.",
-          "Dynamic thresholds calibrated for device-specific camera resolutions maintain demographic parity automatically."
-        ]
       }
     ],
     es: [
-      {
-        id: "read-1",
-        title: "La Revolución de la Verificación de Edad: Equilibrando la Seguridad Infantil y la Privacidad de Datos",
-        category: "Industry Report" as const,
-        source: "Foro Económico Mundial y Identra Labs",
-        readTime: "15 min",
-        publicationYear: "2026",
-        description: "Una exploración profunda de las técnicas criptográficas de vanguardia para la verificación de edad, analizando pruebas de conocimiento cero y modelos de validadores de doble ciego.",
-        summary: "Desde el Código del Reino Unido hasta la ley AADC de California, los reguladores exigen la verificación de edad. Este documento propone arquitecturas criptográficas descentralizadas que permiten a los usuarios confirmar su edad sin transmitir fechas exactas o datos biométricos. Evaluamos cómo las pruebas de conocimiento cero (ZKPs) y las credenciales descentralizadas sirven como estándar de oro para el cumplimiento global.",
-        keyInsights: [
-          "Las pruebas de conocimiento cero permiten verificar rangos de edad sin transmitir fechas de nacimiento exactas.",
-          "Los modelos de token de doble ciego evitan que el validador de edad rastree el historial de navegación del usuario.",
-          "La estimación de edad facial ha mejorado su paridad demográfica en diversas cohortes a más del 98.7% de precisión."
-        ]
-      },
       {
         id: "read-2",
         title: "Comprensión de los Ataques de Inyección Biométrica en la Verificación Facial Moderna",
@@ -1544,39 +1499,9 @@ export const getLocalizedReadingList = (lang: string) => {
           "La verificación automatizada estándar (KYC/KYB) está permitida pero requiere flujos documentados de mitigación de sesgo.",
           "Las pruebas proactivas y continuas en conjuntos de datos multiétnicos son un mandato legal para el cumplimiento del Artículo 9."
         ]
-      },
-      {
-        id: "read-4",
-        title: "Biometría en la Práctica: Evaluando el Sesgo en el Reconocimiento Facial del Mundo Real",
-        category: "Academic Paper" as const,
-        source: "Auditoría de Diversidad de NIST y Identra",
-        readTime: "22 min",
-        publicationYear: "2025",
-        description: "Una auditoría demográfica colaborativa que evalúa las Tasas de Falsas Coincidencias (FMR) y Falsos Rechazos (FNMR) en cohortes globales para perfeccionar la equidad algorítmica.",
-        summary: "El sesgo algorítmico es el principal desafío en el emparejamiento facial automatizado. Este artículo revisado por pares presenta resultados de una auditoría global de más de 1 millón de intentos de verificación, mostrando cómo la compensación de iluminación y el equilibrio con datos sintéticos erradican la variación estructural.",
-        keyInsights: [
-          "La mala iluminación ambiental sigue siendo la causa principal de discrepancia en la verificación de tonos de piel más oscuros.",
-          "Equilibrar los conjuntos de entrenamiento con rostros diversos sintéticos de alta fidelidad reduce los falsos rechazos en un 42%.",
-          "Los umbrales dinámicos calibrados para resoluciones de cámara específicas mantienen la paridad demográfica de forma automática."
-        ]
       }
     ],
     ja: [
-      {
-        id: "read-1",
-        title: "年齢確認革命：子どもの安全とデータプライバシーのバランス",
-        category: "Industry Report" as const,
-        source: "世界経済フォーラム ＆ Identra Labs",
-        readTime: "15 min",
-        publicationYear: "2026",
-        description: "ゼロ知識証明プロトコルやダブルブラインド検証モデルなど、最先端の暗号年齢保証技術を詳細に探求します。",
-        summary: "英国の年齢適正デザインコードからカリフォルニア州のAADCまで、規制機関は堅牢な年齢確認を義務付けています。本共同白書は、ユーザーが元の生体情報やドキュメント属性を相手側に提供することなく、年齢基準を満たしていることを表明できる、分散型暗号アーキテクチャを提案します。ゼロ知識証明（ZKP）と分散型資格が、いかにして世界的なコンプライアンスのゴールドスタンダードになり得るかを評価します。",
-        keyInsights: [
-          "ゼロ知識証明により、ユーザーは正確な生年月日を送信することなく、年齢範囲を確認できます。",
-          "ダブルブラインドトークンモデルにより、年齢検証者がユーザーの閲覧履歴をマッピングまたは追跡することを防ぎます。",
-          "顔画像による年齢推定は、多様なコホートにおいてデモグラフィックパリティ（人口統計学的公平性）を98.7%以上の精度に向上させました。"
-        ]
-      },
       {
         id: "read-2",
         title: "現代の顔認証システムにおける生体情報インジェクション攻撃の解明",
@@ -1606,39 +1531,9 @@ export const getLocalizedReadingList = (lang: string) => {
           "標準的な自動本人確認（KYC/KYB）は許可されていますが、文書化されたバイアス緩和ワークフローが必要です。",
           "多民族データセットでの継続的な事前テストが、第9条への準拠のために法的義務として課されています。"
         ]
-      },
-      {
-        id: "read-4",
-        title: "実環境におけるバイオメトリクス：顔認識アルゴリズムのバイアス評価",
-        category: "Academic Paper" as const,
-        source: "NIST ＆ Identra 共同多様性監査",
-        readTime: "22 min",
-        publicationYear: "2025",
-        description: "アルゴリズムの公平性を洗練させるため、グローバルなコホートにおける他人受入率（FMR）と本人拒否率（FNMR）を評価した共同統計監査報告。",
-        summary: "アルゴリズムのバイアスは、自動顔照合における主要な課題です。この査読付き論文は、100万件以上の検証試行のグローバルな監査結果を示しています。私たちは統計的な要因を分離し、照明補正と合成データによるバランス調整が、構造的な差異を取り除き、真に公平なシステムをいかに構築できるかを実証します。",
-        keyInsights: [
-          "照明環境の悪さは、依然として肌の色が濃い層における検証エラーの最大の要因となっています。",
-          "高精度で多様な合成顔データを使用してニューラルネットワークのトレーニングセットを調整することで、本人の誤拒否が42%減少します。",
-          "デバイス固有のカメラ解像度に合わせて調整された動的しきい値により、デモグラフィックパリティを自動的に維持します。"
-        ]
       }
     ],
     de: [
-      {
-        id: "read-1",
-        title: "The Age Verification Revolution: Balancing Child Safety and Data Privacy",
-        category: "Industry Report" as const,
-        source: "World Economic Forum & Identra Labs",
-        readTime: "15 min",
-        publicationYear: "2026",
-        description: "Eine eingehende Untersuchung modernster kryptografischer Methoden zur Altersabsicherung, Zero-Knowledge-Beweise und doppelblinder Prüfmodelle.",
-        summary: "Vom britischen Age-Appropriate Design Code bis hin zu Kaliforniens AADC verpflichten Regulierungsbehörden digitale Dienste zu einer robusten Altersüberprüfung. Dieses gemeinsame Papier schlägt dezentrale kryptografische Architekturen vor, die es Nutzern ermöglichen, ihr Alter nachzuweisen, ohne dem Empfänger rohe biometrische oder Dokumentenattribute offenzulegen. Wir bewerten, wie Zero-Knowledge-Beweise (ZKPs) und dezentrale Identifikationsmerkmale als Goldstandard für weltweite Compliance dienen können.",
-        keyInsights: [
-          "Zero-Knowledge-Beweise ermöglichen es Nutzern, Altersbereiche zu verifizieren, ohne ihr exaktes Geburtsdatum preiszugeben.",
-          "Doppelblinde Token-Modelle verhindern, dass der Altersprüfer den Browserverlauf des Benutzers analysieren oder nachverfolgen kann.",
-          "Die Gesichtsaltersschätzung hat ihre demografische Parität über verschiedene Kohorten hinweg auf eine Genauigkeit von über 98,7 % verbessert."
-        ]
-      },
       {
         id: "read-2",
         title: "Understanding Biometric Injection Attacks in Modern Face Verification",
@@ -1668,39 +1563,9 @@ export const getLocalizedReadingList = (lang: string) => {
           "Die standardmäßige automatisierte Identitätsverifizierung (KYC/KYB) ist zulässig, erfordert jedoch dokumentierte Workflows zur Bias-Mitigierung.",
           "Proaktive, kontinuierliche Tests auf ethnisch gemischten Datensätzen sind für die Einhaltung von Artikel 9 gesetzlich vorgeschrieben."
         ]
-      },
-      {
-        id: "read-4",
-        title: "Biometrics in the Wild: Evaluating Real-World Facial Recognition Bias",
-        category: "Academic Paper" as const,
-        source: "NIST & Identra Diversity Audit",
-        readTime: "22 min",
-        publicationYear: "2025",
-        description: "Ein gemeinsames demografisches Audit zur Bewertung von False Match Rates (FMR) und False Non-Match Rates (FNMR) über globale Kohorten hinweg zur Optimierung der algorithmischen Fairness.",
-        summary: "Algorithmische Verzerrungen sind eine zentrale Herausforderung bei der automatisierten Gesichtserkennung. Diese von Fachkollegen geprüfte Arbeit stellt Ergebnisse aus einem globalen Audit von über 1 Million Verifizierungsversuchen vor. Wir isolieren demografische Faktoren und zeigen auf, wie Lichtkompensation und synthetische Datensätze strukturelle Abweichungen beseitigen können.",
-        keyInsights: [
-          "Schlechte Umgebungsbeleuchtung bleibt der größte Treiber für Verifizierungsdiskrepanzen bei dunkleren Hauttönen.",
-          "Das Ausbalancieren von neuronalen Netzen mit synthetischen, hochpräzisen Gesichtsdaten reduziert False Non-Matches um 42 %.",
-          "Dynamische Schwellenwerte, die für gerätespezifische Kameraauflösungen kalibriert sind, erhalten die demografische Parität automatisch aufrecht."
-        ]
       }
     ],
     vi: [
-      {
-        id: "read-1",
-        title: "Cuộc cách mạng xác minh độ tuổi: Cân bằng giữa an toàn cho trẻ em và quyền riêng tư dữ liệu",
-        category: "Industry Report" as const,
-        source: "World Economic Forum & Identra Labs",
-        readTime: "15 phút",
-        publicationYear: "2026",
-        description: "Khám phá chuyên sâu các kỹ thuật bảo đảm độ tuổi bằng mã hóa tiên tiến nhất, tìm hiểu giao thức tạo bằng chứng không tiết lộ (ZKP) và mô hình xác thực ẩn danh.",
-        summary: "Từ Bộ quy tắc thiết kế phù hợp với lứa tuổi của Vương quốc Anh đến luật AADC của California, các cơ quan quản lý đang bắt buộc xác minh độ tuổi mạnh mẽ. Tài liệu này đề xuất các kiến trúc mã hóa phi tập trung cho phép người dùng khẳng định độ tuổi mà không làm rò rỉ dữ liệu sinh trắc học hoặc tài liệu thô cho bên tin cậy. Chúng tôi đánh giá cách bằng chứng không tiết lộ (ZKP) và thực chứng phi tập trung có thể trở thành tiêu chuẩn vàng cho sự tuân thủ toàn cầu.",
-        keyInsights: [
-          "Bằng chứng không tiết lộ (ZKP) cho phép người dùng xác minh khoảng tuổi mà không cần truyền ngày sinh chính xác.",
-          "Mô hình mã xác thực ẩn danh ngăn bên xác minh độ tuổi lập bản đồ hoặc theo dõi lịch sử duyệt web của người dùng.",
-          "Ước tính tuổi qua khuôn mặt đã cải thiện tính công bằng nhân khẩu học trên các nhóm đối tượng đa dạng lên độ chính xác hơn 98.7%."
-        ]
-      },
       {
         id: "read-2",
         title: "Hiểu về các cuộc tấn công tiêm sinh trắc học trong xác minh khuôn mặt hiện đại",
@@ -1729,21 +1594,6 @@ export const getLocalizedReadingList = (lang: string) => {
           "Các hệ thống AI phân loại cá nhân dựa trên các đặc điểm sinh trắc học nhạy cảm phải trải qua các đánh giá sự phù hợp nghiêm ngặt.",
           "Xác minh danh tính tự động tiêu chuẩn (KYC/KYB) được cho phép nhưng yêu cầu quy trình giảm thiểu thiên vị được lập tài liệu rõ ràng.",
           "Kiểm thử chủ động, liên tục trên các tập dữ liệu đa chủng tộc được bắt buộc về mặt pháp lý để tuân thủ Điều 9."
-        ]
-      },
-      {
-        id: "read-4",
-        title: "Sinh trắc học trong thực tế: Đánh giá thiên vị nhận dạng khuôn mặt ngoài đời thực",
-        category: "Academic Paper" as const,
-        source: "NIST & Kiểm toán đa dạng Identra",
-        readTime: "22 phút",
-        publicationYear: "2025",
-        description: "Cuộc kiểm toán nhân khẩu học cộng tác đánh giá Tỷ lệ khớp sai (FMR) và Tỷ lệ từ chối sai (FNMR) trên các nhóm đối tượng toàn cầu để cải thiện tính công bằng của thuật toán.",
-        summary: "Thiên vị thuật toán là một thách thức chính trong đối sánh khuôn mặt tự động. Bài báo khoa học được bình duyệt này trình bày các phát hiện từ cuộc kiểm toán toàn cầu đối với hơn 1 triệu nỗ lực xác minh, chứng minh cách bù đắp ánh sáng và cân bằng dữ liệu tổng hợp loại bỏ biến động cấu trúc.",
-        keyInsights: [
-          "Ánh sáng môi trường kém vẫn là động lực lớn nhất gây ra sự khác biệt về xác minh đối với các tông màu da tối hơn.",
-          "Cân bằng tập dữ liệu đào tạo mạng thần kinh với khuôn mặt đa dạng tổng hợp có độ trung thực cao giúp giảm 42% tỷ lệ từ chối sai.",
-          "Ngưỡng động được hiệu chuẩn cho độ phân giải camera cụ thể của thiết bị giúp duy trì tính công bằng nhân khẩu học một cách tự động."
         ]
       }
     ]

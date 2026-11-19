@@ -248,7 +248,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-            {/* Left featured large card: Gartner Quadrant */}
+            {/* Left featured large card */}
             <a
               href={blogDetailPath(featuredPost.id, language)}
               onClick={(event) => handleBlogDetailLinkClick(event, featuredPost)}
@@ -257,7 +257,7 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
               {/* Outer light glow */}
               <div className="absolute -inset-px bg-gradient-to-tr from-transparent via-[#354CE1]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl" />
               
-              {featuredPost.coverImage ? (
+              {featuredPost.coverImage && (
                 <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-slate-900 md:w-[280px] md:aspect-[4/3]">
                   <img
                     src={featuredPost.coverImage.src}
@@ -271,50 +271,6 @@ export default function BlogPage({ onBackToLanding, onOpenBlogDetail }: BlogPage
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 </div>
-              ) : (
-              <div className="w-full md:w-[260px] shrink-0 bg-gradient-to-b from-[#182559] to-[#0C1333] border border-[#2B3D8A] rounded-2xl p-4 flex flex-col justify-between aspect-[4/3] md:aspect-auto">
-                <div>
-                  <div className="flex items-center justify-between mb-2 pb-2 border-b border-[#2B3D8A]/50">
-                    <span className="type-caption font-bold text-slate-400 uppercase">{t.copy.figure1IdentityMap}</span>
-                    <span className="type-caption font-bold text-[#4F6CFF] uppercase">2025</span>
-                  </div>
-                  
-                  {/* Scatter Plot Coordinates */}
-                  <div className="relative aspect-[4/3] w-full border-l border-b border-[#3E52A3] mt-4 flex items-center justify-center">
-                    {/* Quadrant dividing lines */}
-                    <div className="absolute inset-x-0 top-1/2 border-t border-dashed border-[#2B3D8A]/30" />
-                    <div className="absolute inset-y-0 left-1/2 border-l border-dashed border-[#2B3D8A]/30" />
-                    
-                    {/* Quadrant Titles */}
-                    <span className="type-caption absolute top-1 left-1 text-slate-500 font-bold uppercase">{t.copy.challengers}</span>
-                    <span className="type-caption absolute top-1 right-1 text-[#4F6CFF] font-bold uppercase">{t.copy.leaders}</span>
-                    <span className="type-caption absolute bottom-1 left-1 text-slate-500 font-bold uppercase">{t.copy.nichePlayers}</span>
-                    <span className="type-caption absolute bottom-1 right-1 text-slate-500 font-bold uppercase">{t.copy.visionaries}</span>
-                    
-                    {/* Other players - Soft grey dots */}
-                    <div className="absolute top-[30%] left-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute top-[40%] left-[45%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute bottom-[25%] left-[30%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    <div className="absolute bottom-[35%] right-[25%] w-1.5 h-1.5 rounded-full bg-slate-600" />
-                    
-                    {/* Identra Dot (High in Leader quadrant) */}
-                    <motion.div 
-                      animate={{ scale: [1, 1.15, 1] }}
-                      transition={{ repeat: Infinity, duration: 4 }}
-                      className="absolute top-[18%] right-[15%] flex flex-col items-center"
-                    >
-                      <div className="w-3 h-3 rounded-full bg-[#354CE1] border-2 border-white shadow-lg shadow-[#354CE1]/50 relative">
-                        <span className="type-caption absolute -top-3 left-1/2 -translate-x-1/2 font-bold text-white bg-slate-900 px-1 py-0.5 rounded-xs">Identra</span>
-                      </div>
-                    </motion.div>
-                  </div>
-                </div>
-
-                <div className="type-caption flex items-center justify-between text-slate-400 mt-2">
-                  <span>{t.copy.depthOfSignals}</span>
-                  <span className="rotate-90 origin-bottom-right translate-y-[-10px] -translate-x-[4px]">{t.copy.operationalReadiness}</span>
-                </div>
-              </div>
               )}
 
               {/* Text content of large card */}

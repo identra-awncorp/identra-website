@@ -375,6 +375,7 @@ export function ProductPageView({ locale, onLocaleChange, product, phase, model,
           <span className="type-body-sm text-slate-600">{copy.brandName}</span>
           <nav aria-label={copy.brandName} className="flex gap-4">
             <a href={`/${locale}`} className={`type-body-sm inline-flex min-h-11 items-center rounded text-slate-700 underline-offset-2 hover:underline ${focusRing}`}>{copy.footerHome}</a>
+            <a href={`/${locale}/security`} className={`type-body-sm inline-flex min-h-11 items-center rounded text-slate-700 underline-offset-2 hover:underline ${focusRing}`}>{copy.footerSecurity}</a>
           </nav>
         </div>
       </footer>

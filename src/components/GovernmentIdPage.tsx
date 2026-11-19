@@ -780,46 +780,6 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
         </div>
       </section>
 
-      {/* 5. TESTIMONIAL QUOTE PANEL */}
-      <section className="bg-slate-900 text-white py-24 px-6 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-10 w-80 h-80 bg-emerald-500/5 rounded-full blur-2xl" />
-
-        <div className="max-w-5xl mx-auto relative z-10 space-y-10 text-center">
-          {/* Quote mark icon */}
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
-            <span className="text-4xl font-serif">{t.quoteMark}</span>
-          </div>
-
-          <p className="text-xl sm:text-2xl md:text-3xl font-display font-medium leading-relaxed max-w-4xl mx-auto text-slate-100">
-            {t.testimonialQuote}
-          </p>
-
-          <div className="space-y-1.5 border-t border-slate-800 pt-8 max-w-sm mx-auto">
-            <p className="font-bold text-white text-sm">{t.testimonialAuthor}</p>
-            <p className="text-xs text-slate-400">{t.testimonialRole}</p>
-          </div>
-
-          {/* Company highlight card */}
-          <div className="bg-slate-850 border border-slate-800 rounded-2xl p-6 max-w-xl mx-auto text-left flex flex-col sm:flex-row items-center gap-4">
-            <div className="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center font-bold text-indigo-400 text-xl shrink-0">{t.sixLockLogo}</div>
-            <div className="space-y-1.5 text-center sm:text-left">
-              <p className="text-xs text-slate-200 font-semibold leading-normal">
-                {t.testimonialCompanyDesc}
-              </p>
-              <button 
-                onClick={onOpenSandbox}
-                className="text-indigo-400 hover:text-indigo-300 font-bold text-xs inline-flex items-center gap-1 cursor-pointer"
-              >
-                <span>{t.readCaseStudy}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* 6. INTERACTIVE CUSTOM DEMO FORM & Personalized Sandbox */}
       <section className="py-20 bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -844,7 +804,7 @@ export default function GovernmentIdPage({ onOpenSandbox, onBackToLanding }: Gov
                 <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
               </div>
 
-              {/* Geometric architectural layout mirroring withidentra illustration styles */}
+              {/* Geometric architectural layout in the illustration style of the site */}
               <div className="flex gap-2 items-end justify-center h-28 relative">
                 <div className="w-14 h-24 bg-amber-100 border-t-4 border-amber-400 rounded-t-full flex items-center justify-center">
                   <div className="w-6 h-12 bg-white rounded-t-full" />

@@ -129,20 +129,6 @@ export default function ManualReviewPage({ onOpenSandbox, onBackToLanding, onVie
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 mb-16">
-        <div id="trusted-logos-container" className="bg-slate-900 text-white py-6 px-8 rounded-2xl flex flex-col lg:flex-row items-center justify-between gap-6">
-          <span className="text-xs font-semibold tracking-wider uppercase text-slate-400">{t.trusted.label}</span>
-          <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
-            {t.trusted.brands.map((brand, index) => (
-              <div key={brand} className="flex items-center gap-2">
-                <div className={`w-2.5 h-2.5 rounded-full ${index === 0 ? 'bg-emerald-500' : index === 1 ? 'bg-amber-500' : 'bg-blue-500'}`} />
-                <span className="font-display font-bold text-lg tracking-wider text-slate-200">{brand}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="py-16 md:py-24 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5 space-y-6">

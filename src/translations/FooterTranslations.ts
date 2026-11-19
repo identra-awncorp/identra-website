@@ -74,21 +74,13 @@ export type FooterTextKey =
   | 'webinarsVideos'
   | 'identityGlossary'
   | 'helpCenter'
-  | 'caseStudies'
   | 'identraAcademy'
   | 'aboutUs'
-  | 'pricing'
   | 'login'
   | 'contactUs'
-  | 'industryRecognition'
   | 'events'
-  | 'earlyCareers'
-  | 'careers'
-  | 'partnerWithUs'
   | 'security'
-  | 'awards'
   | 'documentation'
-  | 'whitePaper'
   | 'apiReference'
   | 'serviceStatus'
   | 'websiteTerms'
@@ -98,8 +90,6 @@ export type FooterTextKey =
   | 'dataSubjectRequest'
   | 'consumerHealthPrivacy'
   | 'accessibilityStatement'
-  | 'gartnerRating'
-  | 'g2Reviews'
   | 'slogan'
   | 'pageUnavailableNotice'
   | 'copyright';
@@ -172,21 +162,13 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     webinarsVideos: 'Webinars & videos',
     identityGlossary: 'Identity glossary',
     helpCenter: 'Help center',
-    caseStudies: 'Case studies',
     identraAcademy: 'Identra Academy',
     aboutUs: 'About us',
-    pricing: 'Pricing',
     login: 'Login',
     contactUs: 'Contact us',
-    industryRecognition: 'Industry recognition',
     events: 'Events',
-    earlyCareers: 'Early careers',
-    careers: 'Careers',
-    partnerWithUs: 'Partner with us',
     security: 'Security',
-    awards: 'Awards',
     documentation: 'Documentation',
-    whitePaper: 'White Paper',
     apiReference: 'API reference',
     serviceStatus: 'Service status',
     websiteTerms: 'Website terms of service',
@@ -196,12 +178,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     dataSubjectRequest: 'Data subject request',
     consumerHealthPrivacy: 'Consumer health privacy',
     accessibilityStatement: 'Identra website accessibility statement',
-    gartnerRating: '4.7 via Gartner Peer Insights™',
-    g2Reviews: 'Read our reviews on G2 • Recommended Industry Standard Leader 2026',
     slogan: 'Humanizing online identity',
     pageUnavailableNotice: 'This page is not available yet. Please check back later.',
 
-    copyright: '© 2026 Identra Identities, Inc. All rights reserved.'
+    copyright: '© 2026 AwnCorp. All rights reserved.'
   },
   es: {
     readyToStart: "¿Quiere conocer mejor Identra?",
@@ -270,21 +250,13 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     webinarsVideos: 'Webinars y videos',
     identityGlossary: 'Glosario de identidad',
     helpCenter: 'Centro de ayuda',
-    caseStudies: 'Casos de estudio',
     identraAcademy: 'Academia Identra',
     aboutUs: 'Sobre nosotros',
-    pricing: 'Precios',
     login: 'Iniciar sesión',
     contactUs: 'Contacto',
-    industryRecognition: 'Reconocimiento del sector',
     events: 'Eventos',
-    earlyCareers: 'Primeros pasos profesionales',
-    careers: 'Empleo',
-    partnerWithUs: 'Asociarse con nosotros',
     security: 'Seguridad',
-    awards: 'Premios',
     documentation: 'Documentación',
-    whitePaper: 'Libro Blanco',
     apiReference: 'Referencia de API',
     serviceStatus: 'Estado del servicio',
     websiteTerms: 'Términos de servicio del sitio web',
@@ -294,12 +266,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     dataSubjectRequest: 'Solicitud del titular de datos',
     consumerHealthPrivacy: 'Privacidad de salud del consumidor',
     accessibilityStatement: 'Declaración de accesibilidad del sitio web de Identra',
-    gartnerRating: '4,7 en Gartner Peer Insights™',
-    g2Reviews: 'Lea nuestras reseñas en G2 • Líder recomendado como estándar del sector 2026',
     slogan: 'Humanizando la identidad en línea',
     pageUnavailableNotice: 'Esta página aún no está disponible. Vuelve a consultarla más tarde.',
 
-    copyright: '© 2026 Identra Identities, Inc. Todos los derechos reservados.'
+    copyright: '© 2026 AwnCorp. Todos los derechos reservados.'
   },
   ja: {
     readyToStart: "Identraについてもっと知りたい方へ",
@@ -368,21 +338,13 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     webinarsVideos: 'ウェビナーと動画',
     identityGlossary: '本人確認用語集',
     helpCenter: 'ヘルプセンター',
-    caseStudies: '事例',
     identraAcademy: 'Identra Academy',
     aboutUs: '会社概要',
-    pricing: '料金',
     login: 'ログイン',
     contactUs: 'お問い合わせ',
-    industryRecognition: '業界での評価',
     events: 'イベント',
-    earlyCareers: '新卒・若手採用',
-    careers: '採用情報',
-    partnerWithUs: 'パートナーになる',
     security: 'セキュリティ',
-    awards: '受賞歴',
     documentation: 'ドキュメント',
-    whitePaper: 'ホワイトペーパー',
     apiReference: 'APIリファレンス',
     serviceStatus: 'サービスステータス',
     websiteTerms: 'Webサイト利用規約',
@@ -392,12 +354,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     dataSubjectRequest: 'データ主体リクエスト',
     consumerHealthPrivacy: '消費者健康情報のプライバシー',
     accessibilityStatement: 'Identra Webサイトのアクセシビリティ声明',
-    gartnerRating: 'Gartner Peer Insights™で4.7',
-    g2Reviews: 'G2のレビューを見る • 2026年推奨業界標準リーダー',
     slogan: 'オンライン本人確認に人間らしさを',
     pageUnavailableNotice: 'このページはまだ利用できません。しばらくしてからもう一度ご確認ください。',
 
-    copyright: '© 2026 Identra Identities, Inc. 無断転載を禁じます。'
+    copyright: '© 2026 AwnCorp. 無断転載を禁じます。'
   },
   de: {
     readyToStart: "Möchten Sie Identra näher kennenlernen?",
@@ -466,21 +426,13 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     webinarsVideos: 'Webinare & Videos',
     identityGlossary: 'Glossar zur Identität',
     helpCenter: 'Hilfezentrum',
-    caseStudies: 'Fallstudien',
     identraAcademy: 'Identra Academy',
     aboutUs: 'Über uns',
-    pricing: 'Preise',
     login: 'Anmelden',
     contactUs: 'Kontakt',
-    industryRecognition: 'Branchenanerkennung',
     events: 'Events',
-    earlyCareers: 'Berufseinstieg',
-    careers: 'Karriere',
-    partnerWithUs: 'Partner werden',
     security: 'Sicherheit',
-    awards: 'Auszeichnungen',
     documentation: 'Dokumentation',
-    whitePaper: 'Whitepaper',
     apiReference: 'API-Referenz',
     serviceStatus: 'Dienststatus',
     websiteTerms: 'Nutzungsbedingungen der Website',
@@ -490,12 +442,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     dataSubjectRequest: 'Anfrage der betroffenen Person',
     consumerHealthPrivacy: 'Gesundheitsdatenschutz für Verbraucher',
     accessibilityStatement: 'Erklärung zur Barrierefreiheit der Identra-Website',
-    gartnerRating: '4,7 über Gartner Peer Insights™',
-    g2Reviews: 'Lesen Sie unsere Bewertungen auf G2 • Empfohlener Branchenstandard-Leader 2026',
     slogan: 'Online-Identität menschlicher machen',
     pageUnavailableNotice: 'Diese Seite ist noch nicht verfügbar. Bitte schauen Sie später wieder vorbei.',
 
-    copyright: '© 2026 Identra Identities, Inc. Alle Rechte vorbehalten.'
+    copyright: '© 2026 AwnCorp. Alle Rechte vorbehalten.'
   },
   vi: {
     readyToStart: "Bạn muốn tìm hiểu thêm về Identra?",
@@ -564,21 +514,13 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     webinarsVideos: 'Hội thảo trực tuyến & video',
     identityGlossary: 'Thuật ngữ danh tính',
     helpCenter: 'Trung tâm trợ giúp',
-    caseStudies: 'Nghiên cứu điển hình',
     identraAcademy: 'Identra Academy',
     aboutUs: 'Về chúng tôi',
-    pricing: 'Bảng giá',
     login: 'Đăng nhập',
     contactUs: 'Liên hệ',
-    industryRecognition: 'Công nhận trong ngành',
     events: 'Sự kiện',
-    earlyCareers: 'Khởi đầu sự nghiệp',
-    careers: 'Tuyển dụng',
-    partnerWithUs: 'Hợp tác với chúng tôi',
     security: 'Bảo mật',
-    awards: 'Giải thưởng',
     documentation: 'Tài liệu',
-    whitePaper: 'Sách trắng Identra',
     apiReference: 'Tài liệu tham chiếu API',
     serviceStatus: 'Trạng thái dịch vụ',
     websiteTerms: 'Điều khoản dịch vụ website',
@@ -588,12 +530,10 @@ export const FOOTER_TRANSLATIONS: Record<FooterLanguage, Record<FooterTextKey, s
     dataSubjectRequest: 'Yêu cầu của chủ thể dữ liệu',
     consumerHealthPrivacy: 'Quyền riêng tư sức khỏe người tiêu dùng',
     accessibilityStatement: 'Tuyên bố khả năng truy cập website Identra',
-    gartnerRating: '4,7 trên Gartner Peer Insights™',
-    g2Reviews: 'Đọc đánh giá của chúng tôi trên G2 • Công ty dẫn đầu ngành năm 2025',
     slogan: 'Trao lại quyền tự chủ dữ liệu cho người dùng',
     pageUnavailableNotice: 'Trang này chưa khả dụng. Vui lòng quay lại sau.',
 
-    copyright: '© 2026 Identra Identities, Inc. Bảo lưu mọi quyền.'
+    copyright: '© 2026 AwnCorp. Bảo lưu mọi quyền.'
   }
 };
 
@@ -682,13 +622,11 @@ export const FOOTER_SECTIONS = [
     titleKey: 'resources',
     links: [
       { key: 'blog', view: 'blog' },
-      { key: 'whitePaper', view: 'white-paper' },
       { key: 'ebooksReports', view: 'ebooks' },
       { key: 'research', view: 'research' },
       { key: 'webinarsVideos', view: 'events' },
       { key: 'identityGlossary', view: 'resource-center' },
       { key: 'helpCenter', view: 'docs' },
-      { key: 'caseStudies', view: 'customers' },
       { key: 'identraAcademy', view: 'academy' }
     ]
   },
@@ -696,13 +634,9 @@ export const FOOTER_SECTIONS = [
     titleKey: 'company',
     links: [
       { key: 'aboutUs', view: 'about' },
-      { key: 'pricing', view: 'pricing' },
       { key: 'login', view: 'login' },
       { key: 'contactUs', view: 'contact' },
       { key: 'events', view: 'events' },
-      { key: 'earlyCareers', view: 'careers' },
-      { key: 'careers', view: 'careers' },
-      { key: 'partnerWithUs', view: 'partners' },
       { key: 'security', view: 'security' },
     ]
   },
@@ -711,7 +645,6 @@ export const FOOTER_SECTIONS = [
     compact: true,
     links: [
       { key: 'documentation', view: 'docs' },
-      { key: 'whitePaper', view: 'white-paper' },
       { key: 'apiReference', view: 'docs' }
     ]
   }

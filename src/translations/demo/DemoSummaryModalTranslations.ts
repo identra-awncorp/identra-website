@@ -399,9 +399,8 @@ export const RISK_LABELS: any = {
   insuranceFraud: lt('Insurance card fraud', 'Fraude de tarjeta de seguro', '保険証不正', 'Versicherungskartenbetrug', 'Gian lận thẻ bảo hiểm'),
   consentCompliance: lt('Consent compliance', 'Cumplimiento de consentimiento', '同意コンプライアンス', 'Einwilligungs-Compliance', 'Tuân thủ đồng ý y tế'),
   ipGeoValidity: lt('IP geo validity', 'Validez geográfica de IP', 'IP地理情報の有効性', 'IP-Geo-Gültigkeit', 'Tính hợp lệ địa lý IP'),
-  doubleSpend: lt('Double-spend attempt', 'Intento de doble gasto', '二重使用の試行', 'Double-Spend-Versuch', 'Gian lận bán vé hai lần'),
+  doubleSpend: lt('Duplicate-sale attempt', 'Intento de doble venta', '二重販売の試行', 'Doppelverkaufsversuch', 'Gian lận bán vé hai lần'),
   escrowBypass: lt('Escrow bypass fraud', 'Fraude de omisión de escrow', 'エスクロー回避不正', 'Escrow-Umgehungsbetrug', 'Gian lận bỏ qua ký quỹ'),
-  smartContract: lt('Smart contract audit', 'Auditoría de smart contract', 'スマートコントラクト監査', 'Smart-Contract-Audit', 'An toàn hợp đồng thông minh'),
   transferManipulation: lt('Transfer manipulation', 'Manipulación de transferencia', '譲渡操作', 'Transfermanipulation', 'Can thiệp chuỗi chuyển nhượng'),
 };
 
@@ -616,7 +615,7 @@ export const GOVERNMENT_SERVICES_SUMMARY_DATA: ScenarioDecisionData = {
     'Yêu cầu dịch vụ công đã được xác minh. Chỉ mục công dân khớp đăng ký khai sinh và cư trú, địa chỉ vượt kiểm tra bưu chính và hóa đơn tiện ích, chữ ký điện tử được niêm phong bằng token công dân đã xác thực.'
   ),
   rules: [
-    { id: 'RULE-CITIZEN-LEDGER', name: lt('National citizen database audit', 'Auditoría de base ciudadana nacional', '国家市民データベース監査', 'Prüfung nationaler Bürgerdatenbank', 'Kiểm toán dữ liệu công dân quốc gia'), weight: 40, status: 'PASS' },
+    { id: 'RULE-CITIZEN-DB', name: lt('National citizen database audit', 'Auditoría de base ciudadana nacional', '国家市民データベース監査', 'Prüfung nationaler Bürgerdatenbank', 'Kiểm toán dữ liệu công dân quốc gia'), weight: 40, status: 'PASS' },
     { id: 'RULE-RESIDENCY-LOC', name: lt('Spatial address utility verification', 'Verificación espacial de domicilio', '空間住所・公共料金検証', 'Räumliche Adress- und Versorgungsprüfung', 'Xác minh địa chỉ cư trú theo dữ liệu tiện ích'), weight: 30, status: 'PASS' },
     { id: 'RULE-DIGI-SIGN', name: lt('Cryptographic citizen signature lock', 'Bloqueo criptográfico de firma ciudadana', '市民署名の暗号ロック', 'Kryptografische Bürgersignatursperre', 'Khóa chữ ký công dân bằng mật mã'), weight: 30, status: 'PASS' },
   ],
@@ -635,18 +634,18 @@ export const HEALTHCARE_SUMMARY_DATA: ScenarioDecisionData = {
   ],
   confidenceTrend: [45, 82, 98.0],
   decisionLogic: lt(
-    'HIPAA-compliant telemedicine access was cleared. Patient identity checks prevented duplicate medical records, OCR confirmed active insurance coverage, and the consent signature was cryptographically bound to the session.',
-    'Se aprobó el acceso de telemedicina conforme a HIPAA. Los controles de identidad evitaron expedientes duplicados, el OCR confirmó cobertura activa y la firma de consentimiento quedó vinculada criptográficamente a la sesión.',
-    'HIPAA準拠の遠隔医療アクセスが承認されました。患者ID確認で重複カルテを防ぎ、OCRで有効な保険適用を確認し、同意署名はセッションに暗号的に紐づけられました。',
-    'HIPAA-konformer Telemedizinzugang wurde freigegeben. Patientenidentitätsprüfungen verhinderten doppelte Akten, OCR bestätigte aktive Versicherung und die Einwilligungssignatur wurde kryptografisch an die Sitzung gebunden.',
-    'Quyền truy cập khám từ xa tuân thủ HIPAA đã được chấp thuận. Kiểm tra danh tính bệnh nhân ngăn hồ sơ trùng lặp, OCR xác nhận bảo hiểm còn hiệu lực và chữ ký đồng ý được ràng buộc mật mã với phiên.'
+    'Telemedicine access was cleared. Patient identity checks prevented duplicate medical records, OCR confirmed active insurance coverage, and the consent signature was cryptographically bound to the session.',
+    'Se aprobó el acceso de telemedicina. Los controles de identidad evitaron expedientes duplicados, el OCR confirmó cobertura activa y la firma de consentimiento quedó vinculada criptográficamente a la sesión.',
+    '遠隔医療アクセスが承認されました。患者ID確認で重複カルテを防ぎ、OCRで有効な保険適用を確認し、同意署名はセッションに暗号的に紐づけられました。',
+    'Telemedizinzugang wurde freigegeben. Patientenidentitätsprüfungen verhinderten doppelte Akten, OCR bestätigte aktive Versicherung und die Einwilligungssignatur wurde kryptografisch an die Sitzung gebunden.',
+    'Quyền truy cập khám từ xa đã được chấp thuận. Kiểm tra danh tính bệnh nhân ngăn hồ sơ trùng lặp, OCR xác nhận bảo hiểm còn hiệu lực và chữ ký đồng ý được ràng buộc mật mã với phiên.'
   ),
   rules: [
     { id: 'RULE-PATIENT-ID', name: lt('De-duplicate patient index audit', 'Auditoría de índice de paciente', '患者インデックス重複排除監査', 'Deduplizierung des Patientenindex', 'Kiểm toán khử trùng lặp hồ sơ bệnh nhân'), weight: 30, status: 'PASS' },
     { id: 'RULE-OCR-INSURANCE', name: lt('Insurance policy coverage verification', 'Verificación de cobertura de seguro', '保険適用範囲の検証', 'Prüfung des Versicherungsschutzes', 'Xác minh phạm vi bảo hiểm y tế'), weight: 40, status: 'PASS' },
-    { id: 'RULE-HIPAA-CONSENT', name: lt('HIPAA consent cryptographic wrap', 'Envoltura criptográfica de consentimiento HIPAA', 'HIPAA同意の暗号ラップ', 'Kryptografische HIPAA-Einwilligungskapselung', 'Niêm phong mật mã đồng ý HIPAA'), weight: 30, status: 'PASS' },
+    { id: 'RULE-PATIENT-CONSENT', name: lt('Patient consent cryptographic wrap', 'Envoltura criptográfica del consentimiento del paciente', '患者同意の暗号ラップ', 'Kryptografische Patienteneinwilligungskapselung', 'Niêm phong mật mã sự đồng ý của bệnh nhân'), weight: 30, status: 'PASS' },
   ],
-  processors: ['CLINICAL-EMR-MERGER', 'OCR-HEALTH-EXTRACT', 'HIPAA-VAULT-SENTRY'],
+  processors: ['CLINICAL-EMR-MERGER', 'OCR-HEALTH-EXTRACT', 'CONSENT-VAULT-SENTRY'],
 };
 
 export const TICKET_TRANSFER_SUMMARY_DATA: ScenarioDecisionData = {
@@ -656,23 +655,22 @@ export const TICKET_TRANSFER_SUMMARY_DATA: ScenarioDecisionData = {
   riskDimensions: [
     { label: RISK_LABELS.doubleSpend, score: 1 },
     { label: RISK_LABELS.escrowBypass, score: 2 },
-    { label: RISK_LABELS.smartContract, score: 1 },
     { label: RISK_LABELS.transferManipulation, score: 1 },
   ],
   confidenceTrend: [50, 88, 99.5],
   decisionLogic: lt(
-    'The peer-to-peer exchange was finalized safely. Original ticket signatures matched the ticketing authority, escrow funding and asset locks were validated, and ownership changed atomically to prevent double spending.',
-    'El intercambio entre pares finalizó de forma segura. Las firmas originales coincidieron con la autoridad emisora, se validaron el escrow y el bloqueo del activo, y la propiedad cambió de forma atómica para evitar doble gasto.',
-    'P2P交換は安全に完了しました。元のチケット署名は発行機関と一致し、エスクロー資金と資産ロックが検証され、二重使用を防ぐため所有権は原子的に移転しました。',
-    'Der Peer-to-Peer-Austausch wurde sicher abgeschlossen. Originale Ticketsignaturen stimmten mit der Ausgabestelle überein, Escrow-Finanzierung und Asset-Sperren wurden geprüft und der Besitz wechselte atomar gegen Double-Spending.',
-    'Giao dịch ngang hàng đã hoàn tất an toàn. Chữ ký vé gốc khớp cơ quan phát hành, ký quỹ và khóa tài sản được xác thực, quyền sở hữu chuyển đổi nguyên tử để ngăn bán vé hai lần.'
+    'The peer-to-peer exchange was finalized safely. Original ticket signatures matched the ticketing authority, escrow funding and asset locks were validated, and ownership changed in one step so the ticket cannot be sold twice.',
+    'El intercambio entre pares finalizó de forma segura. Las firmas originales coincidieron con la autoridad emisora, se validaron el escrow y el bloqueo del activo, y la propiedad cambió en un solo paso para que la entrada no pueda venderse dos veces.',
+    'P2P交換は安全に完了しました。元のチケット署名は発行機関と一致し、エスクロー資金と資産ロックが検証され、二重販売を防ぐため所有権は一度の手続きで移転しました。',
+    'Der Peer-to-Peer-Austausch wurde sicher abgeschlossen. Originale Ticketsignaturen stimmten mit der Ausgabestelle überein, Escrow-Finanzierung und Asset-Sperren wurden geprüft und der Besitz wechselte in einem Schritt, sodass das Ticket nicht zweimal verkauft werden kann.',
+    'Giao dịch ngang hàng đã hoàn tất an toàn. Chữ ký vé gốc khớp cơ quan phát hành, ký quỹ và khóa tài sản được xác thực, quyền sở hữu được chuyển trong một bước để ngăn bán vé hai lần.'
   ),
   rules: [
     { id: 'RULE-OWNER-AUTH', name: lt('Original purchase signature audit', 'Auditoría de firma de compra original', '元購入署名監査', 'Prüfung der Originalkaufsignatur', 'Kiểm toán chữ ký mua vé gốc'), weight: 45, status: 'PASS' },
-    { id: 'RULE-ESCROW-INIT', name: lt('Smart contract escrow funding lock', 'Bloqueo de fondos en smart contract', 'スマートコントラクトエスクロー資金ロック', 'Smart-Contract-Escrow-Finanzierungssperre', 'Khóa ký quỹ bằng hợp đồng thông minh'), weight: 35, status: 'PASS' },
-    { id: 'RULE-ATOMIC-SWAP', name: lt('Atomic swap consensus settlement', 'Liquidación por consenso de intercambio atómico', 'アトミックスワップ合意決済', 'Atomic-Swap-Konsensabrechnung', 'Tất toán hoán đổi nguyên tử'), weight: 20, status: 'PASS' },
+    { id: 'RULE-ESCROW-INIT', name: lt('Escrow funding lock', 'Bloqueo de fondos en depósito', 'エスクロー資金ロック', 'Treuhand-Mittelsperre', 'Khóa tiền ký quỹ'), weight: 35, status: 'PASS' },
+    { id: 'RULE-TRANSFER-SETTLE', name: lt('Transfer settlement', 'Liquidación de la transferencia', '譲渡の決済', 'Abrechnung der Übertragung', 'Tất toán chuyển nhượng'), weight: 20, status: 'PASS' },
   ],
-  processors: ['TICKET-LEDGER-AUDIT', 'ESCROW-SETTLEMENT-CONTRACT', 'ATOMIC-SETTLE-GRID'],
+  processors: ['TICKET-OWNER-AUDIT', 'ESCROW-SETTLEMENT', 'TRANSFER-SETTLE'],
 };
 
 export const SCENARIO_DATA_MAP: Record<string, ScenarioDecisionData> = {

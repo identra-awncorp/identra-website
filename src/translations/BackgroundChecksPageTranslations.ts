@@ -29,7 +29,6 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     reviewBtn: "Review",
 
     // Ribbon
-    ribbonText: "Trusted by startups & the world's largest companies",
 
     // Simulator Section
     simulatorBadge: "Interactive sandbox",
@@ -115,7 +114,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     // Accordions
     acc1Title: "Choose from a robust library of verifications and screenings",
     acc1Heading1: "Global verification coverage",
-    acc1Desc1: "Collect and verify government ID documents, such as passports and driver's licenses, from more than 200 countries and territories.",
+    acc1Desc1: 'Collect and verify government ID documents, such as passports and driver\'s licenses.',
     acc1Heading2: "National background checks",
     acc1Desc2: "Screen hundreds of state, national, and international sources to identify potential records for candidates.",
     acc1Heading3: "Configurable settings and checks",
@@ -174,7 +173,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     card1Btn: "EXPLORE MARKETPLACE",
     card2Badge: "Global Coverage",
     card2Title: "Verify government IDs globally.",
-    card2Desc: "Validate government credentials from 200+ countries with advanced anti-spoof checks.",
+    card2Desc: 'Validate government credentials with advanced anti-spoof checks.',
     card2Btn: "EXPLORE GOVERNMENT ID",
 
     // Bottom CTA
@@ -234,7 +233,6 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     decisionText: "Decisión: Reenvío al gerente",
     reviewBtn: "Revisar",
 
-    ribbonText: "Con la confianza de empresas emergentes y las compañías más grandes del mundo",
 
     simulatorBadge: "Entorno de pruebas interactivo",
     simulatorTitle: "Pruebe el flujo de verificación de antecedentes",
@@ -310,7 +308,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     acc1Title: "Elija entre una biblioteca robusta de verificaciones y cribados",
     acc1Heading1: "Cobertura de verificación global",
-    acc1Desc1: "Recopile y verifique documentos de identidad del gobierno, como pasaportes y licencias de conducir, de más de 200 países y territorios.",
+    acc1Desc1: 'Recopile y verifique documentos de identidad del gobierno, como pasaportes y licencias de conducir.',
     acc1Heading2: "Verificación de antecedentes nacionales",
     acc1Desc2: "Analice cientos de fuentes estatales, nacionales e internacionales para identificar posibles registros de candidatos.",
     acc1Heading3: "Ajustes y comprobaciones configurables",
@@ -366,7 +364,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     card1Btn: "EXPLORAR MERCADO",
     card2Badge: "Cobertura Global",
     card2Title: "Verifique identificaciones gubernamentales a nivel global.",
-    card2Desc: "Valide credenciales de más de 200 países con controles avanzados contra falsificaciones.",
+    card2Desc: 'Valide credenciales gubernamentales con controles avanzados contra falsificaciones.',
     card2Btn: "EXPLORAR ID GUBERNAMENTAL",
 
     ctaTitle: "¿Listo para comenzar?",
@@ -423,7 +421,6 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     decisionText: "判定: マネージャーへ転送",
     reviewBtn: "確認",
 
-    ribbonText: "スタートアップから世界最大手の企業まで信頼されています",
 
     simulatorBadge: "インタラクティブ・サンドボックス",
     simulatorTitle: "背景調査ワークフローをテスト",
@@ -499,7 +496,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     acc1Title: "検証とスクリーニングの強固なライブラリから選択",
     acc1Heading1: "グローバルな検証対応",
-    acc1Desc1: "200以上の国や地域からのパスポートや運転免許証などの政府発行IDドキュメントを収集・検証します。",
+    acc1Desc1: 'パスポートや運転免許証などの政府発行IDドキュメントを収集・検証します。',
     acc1Heading2: "国内背景調査",
     acc1Desc2: "数百の州、国、国際的な情報源を調査し、候補者の潜在的な記録を特定します。",
     acc1Heading3: "設定可能なチェック項目",
@@ -555,7 +552,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     card1Btn: "マーケットプレイスを探索する",
     card2Badge: "グローバルな対応力",
     card2Title: "政府発行IDをグローバルに検証。",
-    card2Desc: "高度ななりすまし防止チェックにより、200以上の国々の政府発行資格情報を検証します。",
+    card2Desc: '高度ななりすまし防止チェックにより、政府発行資格情報を検証します。',
     card2Btn: "政府IDを探索する",
 
     ctaTitle: "始める準備はできましたか？",
@@ -612,7 +609,6 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     decisionText: "Entscheidung: An Manager weiterleiten",
     reviewBtn: "Prüfen",
 
-    ribbonText: "Vertraut von Startups und den weltweit größten Unternehmen",
 
     simulatorBadge: "Interaktive Sandbox",
     simulatorTitle: "Testen Sie den Workflow zur Hintergrundprüfung",
@@ -688,7 +684,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     acc1Title: "Wählen Sie aus einer robusten Bibliothek für Screenings",
     acc1Heading1: "Globale Abdeckung von Ausweisen",
-    acc1Desc1: "Erfassen und verifizieren Sie Ausweisdokumente wie Pässe und Führerscheine aus mehr als 200 Ländern und Regionen.",
+    acc1Desc1: 'Erfassen und verifizieren Sie Ausweisdokumente wie Pässe und Führerscheine.',
     acc1Heading2: "Nationale Hintergrundprüfungen",
     acc1Desc2: "Durchsuchen Sie Hunderte von staatlichen, nationalen und internationalen Quellen nach Einträgen von Kandidaten.",
     acc1Heading3: "Konfigurierbare Einstellungen",
@@ -744,7 +740,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     card1Btn: "MARKTPLATZ ERKUNDEN",
     card2Badge: "Globale Abdeckung",
     card2Title: "Regierungsausweise weltweit verifizieren.",
-    card2Desc: "Prüfen Sie staatliche Dokumente aus über 200 Ländern mit hochentwickelter Fälschungserkennung.",
+    card2Desc: 'Prüfen Sie staatliche Dokumente mit hochentwickelter Fälschungserkennung.',
     card2Btn: "REGIERUNGSAUSWEISE ERKUNDEN",
 
     ctaTitle: "Bereit zum Starten?",
@@ -801,7 +797,6 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     decisionText: "Quyết định: Chuyển tiếp cho Quản lý",
     reviewBtn: "Xem xét",
 
-    ribbonText: "Được tin dùng bởi các startup và tập đoàn lớn nhất thế giới",
 
     simulatorBadge: "Hộp cát tương tác",
     simulatorTitle: "Thử nghiệm quy trình xác minh lý lịch",
@@ -877,7 +872,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
 
     acc1Title: "Chọn lựa từ kho tàng giải pháp xác minh & sàng lọc mạnh mẽ",
     acc1Heading1: "Phủ sóng xác minh toàn cầu",
-    acc1Desc1: "Thu thập và xác thực các tài liệu ID chính phủ như hộ chiếu và bằng lái xe từ hơn 200 quốc gia và vùng lãnh thổ.",
+    acc1Desc1: 'Thu thập và xác thực các tài liệu ID chính phủ như hộ chiếu và bằng lái xe.',
     acc1Heading2: "Kiểm tra tiền án quốc gia",
     acc1Desc2: "Sàng lọc hàng trăm nguồn cấp tiểu bang, quốc gia và quốc tế để nhanh chóng tìm ra các tiền án của ứng viên.",
     acc1Heading3: "Tùy biến các cấu hình và kiểm tra",
@@ -933,7 +928,7 @@ export const BACKGROUND_CHECKS_TRANSLATIONS = {
     card1Btn: "KHÁM PHÁ CHỢ TÍCH HỢP",
     card2Badge: "Phủ sóng Toàn cầu",
     card2Title: "Xác minh ID chính phủ trên toàn cầu.",
-    card2Desc: "Xác thực giấy tờ từ hơn 200 quốc gia với các kiểm tra chống giả mạo tiên tiến.",
+    card2Desc: 'Xác thực giấy tờ chính phủ với các kiểm tra chống giả mạo tiên tiến.',
     card2Btn: "KHÁM PHÁ ID CHÍNH PHỦ",
 
     ctaTitle: "Sẵn sàng bắt đầu chưa?",

@@ -24,30 +24,6 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         desc: 'Apply privacy-first identity checks at enrollment, account recovery, and workforce onboarding. Collect only what is needed. Protect everything you collect.'
       }
     ],
-    statesServed: 'Identra proudly serves public organizations in',
-    stateFlagCaliforniaRepublic: 'CALIFORNIA REPUBLIC',
-    stateFlagIdaho: 'STATE OF IDAHO',
-    stateFlagOklahoma: 'OKLAHOMA',
-    states: [
-      'State of Alabama',
-      'State of California',
-      'State of Connecticut',
-      'State of Georgia',
-      'State of Idaho',
-      'State of Michigan',
-      'State of New Hampshire',
-      'State of Ohio',
-      'State of Oklahoma',
-      'State of West Virginia',
-      'State of New York'
-    ],
-    fedrampBadge: 'FedRAMP Moderate Authorized',
-    fedrampTitle: 'FedRAMP® Moderate Authorized',
-    fedrampDesc: 'Identra for Government has achieved FedRAMP® Moderate Authorized status, which allows us to serve federal agencies with modern cybersecurity while protecting citizen data.',
-    achievementCta: 'Read about our achievement',
-    fedrampStampFr: 'FR',
-    fedrampStampTitle: 'FedRAMP',
-    fedrampStampLevel: 'MODERATE',
     missionEyebrow: 'Verify With Integrity',
     missionTitle: 'Digital identity for every mission',
     scenarios: {
@@ -85,51 +61,10 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         alertDesc: 'Cryptographic handshake with agency directory completed.'
       }
     },
-    procurementEyebrow: 'Flexible Procurement',
-    procurementTitle: 'Pre-negotiated contract vehicles',
-    procurementDesc: 'Easily procure Identra solutions through national contracts, agency-wide procurement programs, and pre-negotiated state agreements.',
-    procurementSections: [
-      {
-        key: 'federal',
-        title: 'Federal Procurement Agreements',
-        cards: [
-          { title: 'NASA SEWP V', meta: 'Contract Numbers: NNG15SD38B / NNG15SC27B', validity: 'Valid: May 01, 2015 - Jan 31, 2026 (Options Available)' },
-          { title: 'ITES-SW2', meta: 'Contract Number: W52P1J-20-D-0042', validity: 'Valid: Aug 31, 2020 - Aug 30, 2030' }
-        ]
-      },
-      {
-        key: 'state-local',
-        title: 'State and Local Co-op Contracting',
-        desc: 'State, county, and local municipality agencies can procure Identra identity services using preexisting cooperative agreements, avoiding the lengthy RFB/RFP procedures.',
-        cards: [
-          { title: 'GSA Schedule 70 (Cooperative Purchasing)', desc: 'Allows state, local, and tribal governments to purchase IT products and services directly at pre-negotiated volume discounts.' }
-        ]
-      },
-      {
-        key: 'education',
-        title: 'Education Consortiums',
-        desc: 'Identra provides customized licensing frameworks compliant with FERPA regulations for colleges, public universities, and public school networks.'
-      }
-    ],
     securityTitle: 'Security and privacy at our core',
-    securityDesc: 'Trust is built on security and privacy. That is why Identra adheres to the highest industry standards, maintaining compliance and certifications to safeguard you and your constituents.',
+    securityDesc: 'See what Identra protects today, and what is not in place yet.',
     learnMore: 'Learn more',
     formTitle: 'Our security experts are here to answer your questions. Please fill in the form and we will be in touch shortly.',
-    formDesc: 'See how other public sector organizations successfully integrated federal compliance guidelines using Identra.',
-    caseStudies: [
-      {
-        title: 'Okta strengthens workforce security',
-        desc: 'Seamlessly verifies employees at onboarding and self-service account recovery to prevent imidentration attacks.'
-      },
-      {
-        title: 'OpenAI screens millions of users each month',
-        desc: 'Automatically screens 99% of users across 225 countries and territories with zero friction.'
-      },
-      {
-        title: 'Coursera ensures academic integrity',
-        desc: 'Enables 6,000+ institutions to verify learners while meeting FERPA and accessibility requirements.'
-      }
-    ],
     successThankYou: 'Thank you,',
     successPunctuation: '!',
     successBodyStart: 'We have successfully received your inquiry for the',
@@ -179,18 +114,6 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
       { title: 'Menos trabajo manual, más impacto en la misión', desc: 'Automatice la verificación de identidad para que su equipo pueda enfocarse en servir a la ciudadanía y avanzar las prioridades de la agencia.' },
       { title: 'Verifique identidades y proteja a la ciudadanía', desc: 'Aplique verificaciones de identidad con privacidad desde la inscripción, la recuperación de cuentas y la incorporación del personal. Recopile solo lo necesario. Proteja todo lo que recopile.' }
     ],
-    statesServed: 'Identra atiende con orgullo a organizaciones públicas en',
-    stateFlagCaliforniaRepublic: 'REPÚBLICA DE CALIFORNIA',
-    stateFlagIdaho: 'ESTADO DE IDAHO',
-    stateFlagOklahoma: 'OKLAHOMA',
-    states: ['Estado de Alabama', 'Estado de California', 'Estado de Connecticut', 'Estado de Georgia', 'Estado de Idaho', 'Estado de Michigan', 'Estado de New Hampshire', 'Estado de Ohio', 'Estado de Oklahoma', 'Estado de West Virginia', 'Estado de New York'],
-    fedrampBadge: 'Autorización FedRAMP Moderate',
-    fedrampTitle: 'Autorización FedRAMP® Moderate',
-    fedrampDesc: 'Identra for Government obtuvo la autorización FedRAMP® Moderate, lo que nos permite atender a agencias federales con ciberseguridad moderna mientras protegemos los datos ciudadanos.',
-    achievementCta: 'Leer sobre el logro',
-    fedrampStampFr: 'FR',
-    fedrampStampTitle: 'FedRAMP',
-    fedrampStampLevel: 'MODERADO',
     missionEyebrow: 'Verifique con integridad',
     missionTitle: 'Identidad digital para cada misión',
     scenarios: {
@@ -228,24 +151,10 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         alertDesc: 'Se completó el intercambio criptográfico con el directorio de la agencia.'
       }
     },
-    procurementEyebrow: 'Contratación flexible',
-    procurementTitle: 'Vehículos contractuales pre-negociados',
-    procurementDesc: 'Adquiera soluciones Identra con facilidad mediante contratos nacionales, programas de compra de agencias y acuerdos estatales pre-negociados.',
-    procurementSections: [
-      { key: 'federal', title: 'Acuerdos federales de contratación', cards: [{ title: 'NASA SEWP V', meta: 'Números de contrato: NNG15SD38B / NNG15SC27B', validity: 'Vigencia: 01 may 2015 - 31 ene 2026 (opciones disponibles)' }, { title: 'ITES-SW2', meta: 'Número de contrato: W52P1J-20-D-0042', validity: 'Vigencia: 31 ago 2020 - 30 ago 2030' }] },
-      { key: 'state-local', title: 'Contratación cooperativa estatal y local', desc: 'Agencias estatales, de condado y municipales pueden adquirir servicios de identidad Identra mediante acuerdos cooperativos existentes, evitando procesos largos de RFB/RFP.', cards: [{ title: 'GSA Schedule 70 (compra cooperativa)', desc: 'Permite a gobiernos estatales, locales y tribales comprar productos y servicios de TI directamente con descuentos por volumen pre-negociados.' }] },
-      { key: 'education', title: 'Consorcios educativos', desc: 'Identra ofrece marcos de licenciamiento personalizados que cumplen FERPA para universidades, instituciones públicas y redes escolares públicas.' }
-    ],
     securityTitle: 'Seguridad y privacidad en el centro',
-    securityDesc: 'La confianza se construye con seguridad y privacidad. Por eso Identra cumple los estándares más altos del sector y mantiene certificaciones para protegerle a usted y a su ciudadanía.',
+    securityDesc: 'Vea qué protege Identra hoy y qué aún no está implementado.',
     learnMore: 'Más información',
     formTitle: 'Nuestros expertos en seguridad están aquí para responder sus preguntas. Complete el formulario y nos pondremos en contacto pronto.',
-    formDesc: 'Vea cómo otras organizaciones del sector público integraron correctamente directrices federales de cumplimiento con Identra.',
-    caseStudies: [
-      { title: 'Okta fortalece la seguridad del personal', desc: 'Verifica empleados durante la incorporación y la recuperación de cuentas de autoservicio para prevenir ataques de suplantación.' },
-      { title: 'OpenAI revisa millones de usuarios cada mes', desc: 'Revisa automáticamente al 99% de los usuarios en 225 países y territorios sin fricción.' },
-      { title: 'Coursera asegura la integridad académica', desc: 'Permite a más de 6.000 instituciones verificar estudiantes mientras cumplen FERPA y requisitos de accesibilidad.' }
-    ],
     successThankYou: 'Gracias,',
     successPunctuation: '!',
     successBodyStart: 'Hemos recibido correctamente su consulta para el sector de',
@@ -289,18 +198,6 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
       { title: '手作業を減らし、ミッションへの効果を高める', desc: '本人確認を自動化し、職員が住民サービスと機関の優先事項に集中できるようにします。' },
       { title: '本人確認で住民を保護', desc: '登録、アカウント復旧、職員オンボーディングでプライバシー重視の本人確認を適用します。必要な情報だけを収集し、収集した情報を保護します。' }
     ],
-    statesServed: 'Identra は以下の地域の公共機関を支援しています',
-    stateFlagCaliforniaRepublic: 'カリフォルニア共和国',
-    stateFlagIdaho: 'アイダホ州',
-    stateFlagOklahoma: 'オクラホマ',
-    states: ['アラバマ州', 'カリフォルニア州', 'コネチカット州', 'ジョージア州', 'アイダホ州', 'ミシガン州', 'ニューハンプシャー州', 'オハイオ州', 'オクラホマ州', 'ウェストバージニア州', 'ニューヨーク州'],
-    fedrampBadge: 'FedRAMP Moderate 認定',
-    fedrampTitle: 'FedRAMP® Moderate 認定',
-    fedrampDesc: 'Identra for Government は FedRAMP® Moderate 認定を取得しており、市民データを保護しながら、連邦機関に最新のサイバーセキュリティを提供できます。',
-    achievementCta: '認定について読む',
-    fedrampStampFr: 'FR',
-    fedrampStampTitle: 'FedRAMP',
-    fedrampStampLevel: 'MODERATE',
     missionEyebrow: '誠実な確認',
     missionTitle: 'あらゆるミッションのためのデジタルID',
     scenarios: {
@@ -334,20 +231,10 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         alertDesc: '機関ディレクトリとの暗号ハンドシェイクが完了しました。'
       }
     },
-    procurementEyebrow: '柔軟な調達',
-    procurementTitle: '事前交渉済みの契約手段',
-    procurementDesc: '全国契約、機関全体の調達プログラム、事前交渉済みの州契約を通じて Identra ソリューションを簡単に調達できます。',
-    procurementSections: [
-      { key: 'federal', title: '連邦調達契約', cards: [{ title: 'NASA SEWP V', meta: '契約番号: NNG15SD38B / NNG15SC27B', validity: '有効期間: 2015年5月1日 - 2026年1月31日（オプションあり）' }, { title: 'ITES-SW2', meta: '契約番号: W52P1J-20-D-0042', validity: '有効期間: 2020年8月31日 - 2030年8月30日' }] },
-      { key: 'state-local', title: '州・地方の共同調達', desc: '州、郡、地方自治体の機関は、既存の共同契約を利用して Identra の本人確認サービスを調達でき、長期化しがちな RFB/RFP 手続きを回避できます。', cards: [{ title: 'GSA Schedule 70（共同購入）', desc: '州、地方、部族政府が、事前交渉済みの数量割引で IT 製品とサービスを直接購入できます。' }] },
-      { key: 'education', title: '教育コンソーシアム', desc: 'Identra は、大学、公立大学、公立学校ネットワーク向けに FERPA に準拠したカスタムライセンス枠組みを提供します。' }
-    ],
     securityTitle: 'セキュリティとプライバシーを中核に',
-    securityDesc: '信頼はセキュリティとプライバシーの上に築かれます。そのため Identra は業界最高水準に準拠し、認証を維持して、お客様と住民を保護します。',
+    securityDesc: 'Identraが現在保護している内容と、まだ整っていない内容をご覧ください。',
     learnMore: '詳しく見る',
     formTitle: 'セキュリティ専門家がご質問にお答えします。フォームに入力いただければ、まもなくご連絡します。',
-    formDesc: '他の公共部門組織が Identra を使って連邦コンプライアンス指針をどのように統合したかをご覧ください。',
-    caseStudies: [{ title: 'Okta が職員セキュリティを強化', desc: 'オンボーディングとセルフサービスのアカウント復旧で従業員をシームレスに確認し、なりすまし攻撃を防ぎます。' }, { title: 'OpenAI は毎月数百万人のユーザーを審査', desc: '225 の国と地域で 99% のユーザーを摩擦なく自動審査します。' }, { title: 'Coursera が学術的公正性を確保', desc: '6,000 以上の機関が FERPA とアクセシビリティ要件を満たしながら学習者を確認できます。' }],
     successThankYou: 'ありがとうございます、',
     successPunctuation: '。',
     successBodyStart: '次の機関分野のお問い合わせを受け付けました:',
@@ -391,18 +278,6 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
       { title: 'Weniger manuelle Arbeit, mehr Wirkung für die Mission', desc: 'Automatisieren Sie die Identitätsprüfung, damit sich Ihr Team auf den Dienst an Bürgerinnen und Bürgern und die Prioritäten der Behörde konzentrieren kann.' },
       { title: 'Identitäten prüfen, Bürger schützen', desc: 'Setzen Sie datenschutzorientierte Identitätsprüfungen bei Anmeldung, Kontowiederherstellung und Onboarding von Mitarbeitenden ein. Erfassen Sie nur, was nötig ist. Schützen Sie alles, was Sie erfassen.' }
     ],
-    statesServed: 'Identra unterstützt öffentliche Organisationen in',
-    stateFlagCaliforniaRepublic: 'REPUBLIK KALIFORNIEN',
-    stateFlagIdaho: 'BUNDESSTAAT IDAHO',
-    stateFlagOklahoma: 'OKLAHOMA',
-    states: ['Bundesstaat Alabama', 'Bundesstaat Kalifornien', 'Bundesstaat Connecticut', 'Bundesstaat Georgia', 'Bundesstaat Idaho', 'Bundesstaat Michigan', 'Bundesstaat New Hampshire', 'Bundesstaat Ohio', 'Bundesstaat Oklahoma', 'Bundesstaat West Virginia', 'Bundesstaat New York'],
-    fedrampBadge: 'FedRAMP Moderate autorisiert',
-    fedrampTitle: 'FedRAMP® Moderate autorisiert',
-    fedrampDesc: 'Identra for Government hat den Status FedRAMP® Moderate Authorized erreicht und kann damit Bundesbehörden mit moderner Cybersicherheit unterstützen, während Bürgerdaten geschützt bleiben.',
-    achievementCta: 'Mehr über den Erfolg lesen',
-    fedrampStampFr: 'FR',
-    fedrampStampTitle: 'FedRAMP',
-    fedrampStampLevel: 'MODERATE',
     missionEyebrow: 'Mit Integrität verifizieren',
     missionTitle: 'Digitale Identität für jede Mission',
     scenarios: {
@@ -436,20 +311,10 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         alertDesc: 'Kryptografischer Handshake mit dem Behördenverzeichnis abgeschlossen.'
       }
     },
-    procurementEyebrow: 'Flexible Beschaffung',
-    procurementTitle: 'Vorverhandelte Vertragswege',
-    procurementDesc: 'Beschaffen Sie Identra-Lösungen einfach über nationale Verträge, behördenweite Beschaffungsprogramme und vorverhandelte Vereinbarungen der Bundesstaaten.',
-    procurementSections: [
-      { key: 'federal', title: 'Bundesweite Beschaffungsvereinbarungen', cards: [{ title: 'NASA SEWP V', meta: 'Vertragsnummern: NNG15SD38B / NNG15SC27B', validity: 'Gültig: 01. Mai 2015 - 31. Jan. 2026 (Optionen verfügbar)' }, { title: 'ITES-SW2', meta: 'Vertragsnummer: W52P1J-20-D-0042', validity: 'Gültig: 31. Aug. 2020 - 30. Aug. 2030' }] },
-      { key: 'state-local', title: 'Kooperative Beschaffung auf Landes- und Kommunalebene', desc: 'Behörden von Bundesstaaten, Landkreisen und Kommunen können Identra-Identitätsdienste über bestehende Kooperationsvereinbarungen beschaffen und lange RFB/RFP-Verfahren vermeiden.', cards: [{ title: 'GSA Schedule 70 (Cooperative Purchasing)', desc: 'Erlaubt staatlichen, lokalen und Stammesregierungen, IT-Produkte und -Dienste direkt zu vorverhandelten Mengenrabatten zu kaufen.' }] },
-      { key: 'education', title: 'Bildungskonsortien', desc: 'Identra bietet individuelle Lizenzierungsrahmen, die FERPA-konform für Hochschulen, öffentliche Universitäten und öffentliche Schulnetzwerke sind.' }
-    ],
     securityTitle: 'Sicherheit und Datenschutz im Kern',
-    securityDesc: 'Vertrauen entsteht durch Sicherheit und Datenschutz. Deshalb hält Identra höchste Branchenstandards ein und pflegt Compliance sowie Zertifizierungen, um Sie und Ihre Bürger zu schützen.',
+    securityDesc: 'Sehen Sie, was Identra heute schützt und was noch nicht umgesetzt ist.',
     learnMore: 'Mehr erfahren',
     formTitle: 'Unsere Sicherheitsexperten beantworten gern Ihre Fragen. Füllen Sie das Formular aus, und wir melden uns in Kürze.',
-    formDesc: 'Erfahren Sie, wie andere öffentliche Organisationen bundesweite Compliance-Vorgaben erfolgreich mit Identra integriert haben.',
-    caseStudies: [{ title: 'Okta stärkt die Sicherheit der Belegschaft', desc: 'Verifiziert Mitarbeitende nahtlos beim Onboarding und bei der Self-Service-Kontowiederherstellung, um Identitätsmissbrauch zu verhindern.' }, { title: 'OpenAI prüft jeden Monat Millionen von Nutzern', desc: 'Prüft automatisch 99% der Nutzer in 225 Ländern und Gebieten ohne Reibung.' }, { title: 'Coursera sichert akademische Integrität', desc: 'Ermöglicht mehr als 6.000 Einrichtungen, Lernende unter Einhaltung von FERPA und Barrierefreiheitsanforderungen zu verifizieren.' }],
     successThankYou: 'Vielen Dank,',
     successPunctuation: '!',
     successBodyStart: 'Wir haben Ihre Anfrage für den Bereich',
@@ -493,18 +358,6 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
       { title: 'Giảm việc thủ công, tăng tác động cho nhiệm vụ', desc: 'Tự động hóa xác minh danh tính để đội ngũ của bạn tập trung vào điều quan trọng: phục vụ người dân và thúc đẩy ưu tiên của cơ quan.' },
       { title: 'Xác minh danh tính, bảo vệ người dân', desc: 'Áp dụng kiểm tra danh tính ưu tiên quyền riêng tư khi ghi danh, khôi phục tài khoản và tiếp nhận nhân sự. Chỉ thu thập những gì cần thiết. Bảo vệ mọi dữ liệu đã thu thập.' }
     ],
-    statesServed: 'Identra tự hào phục vụ các tổ chức công tại',
-    stateFlagCaliforniaRepublic: 'CỘNG HÒA CALIFORNIA',
-    stateFlagIdaho: 'BANG IDAHO',
-    stateFlagOklahoma: 'OKLAHOMA',
-    states: ['Bang Alabama', 'Bang California', 'Bang Connecticut', 'Bang Georgia', 'Bang Idaho', 'Bang Michigan', 'Bang New Hampshire', 'Bang Ohio', 'Bang Oklahoma', 'Bang West Virginia', 'Bang New York'],
-    fedrampBadge: 'Được FedRAMP Moderate ủy quyền',
-    fedrampTitle: 'Được FedRAMP® Moderate ủy quyền',
-    fedrampDesc: 'Identra for Government đã đạt trạng thái FedRAMP® Moderate Authorized, cho phép chúng tôi phục vụ các cơ quan liên bang bằng an ninh mạng hiện đại trong khi bảo vệ dữ liệu công dân.',
-    achievementCta: 'Đọc về thành tựu này',
-    fedrampStampFr: 'FR',
-    fedrampStampTitle: 'FedRAMP',
-    fedrampStampLevel: 'MODERATE',
     missionEyebrow: 'Xác minh với sự chính trực',
     missionTitle: 'Danh tính số cho mọi nhiệm vụ',
     scenarios: {
@@ -538,20 +391,10 @@ export const GOVERNMENT_PAGE_TRANSLATIONS = {
         alertDesc: 'Đã hoàn tất bắt tay mật mã với danh bạ của cơ quan.'
       }
     },
-    procurementEyebrow: 'Mua sắm linh hoạt',
-    procurementTitle: 'Các kênh hợp đồng đã đàm phán trước',
-    procurementDesc: 'Dễ dàng mua sắm giải pháp Identra thông qua hợp đồng quốc gia, chương trình mua sắm toàn cơ quan và thỏa thuận cấp bang đã đàm phán trước.',
-    procurementSections: [
-      { key: 'federal', title: 'Thỏa thuận mua sắm liên bang', cards: [{ title: 'NASA SEWP V', meta: 'Số hợp đồng: NNG15SD38B / NNG15SC27B', validity: 'Hiệu lực: 01/05/2015 - 31/01/2026 (có tùy chọn gia hạn)' }, { title: 'ITES-SW2', meta: 'Số hợp đồng: W52P1J-20-D-0042', validity: 'Hiệu lực: 31/08/2020 - 30/08/2030' }] },
-      { key: 'state-local', title: 'Hợp đồng hợp tác cấp bang và địa phương', desc: 'Cơ quan cấp bang, quận và đô thị địa phương có thể mua dịch vụ danh tính Identra bằng các thỏa thuận hợp tác hiện có, tránh quy trình RFB/RFP kéo dài.', cards: [{ title: 'GSA Schedule 70 (mua sắm hợp tác)', desc: 'Cho phép chính quyền bang, địa phương và bộ lạc mua trực tiếp sản phẩm và dịch vụ CNTT với mức chiết khấu theo số lượng đã đàm phán trước.' }] },
-      { key: 'education', title: 'Liên minh giáo dục', desc: 'Identra cung cấp khung cấp phép tùy chỉnh tuân thủ FERPA cho cao đẳng, đại học công lập và mạng lưới trường công.' }
-    ],
     securityTitle: 'Bảo mật và quyền riêng tư là cốt lõi',
-    securityDesc: 'Niềm tin được xây dựng trên bảo mật và quyền riêng tư. Vì vậy Identra tuân thủ các tiêu chuẩn cao nhất của ngành, duy trì chứng nhận và tuân thủ để bảo vệ bạn cùng người dân của bạn.',
+    securityDesc: 'Xem Identra đang bảo vệ những gì và những gì chưa có.',
     learnMore: 'Tìm hiểu thêm',
     formTitle: 'Các chuyên gia bảo mật của chúng tôi sẵn sàng trả lời câu hỏi của bạn. Vui lòng điền biểu mẫu và chúng tôi sẽ sớm liên hệ.',
-    formDesc: 'Xem cách các tổ chức khu vực công khác tích hợp thành công hướng dẫn tuân thủ liên bang bằng Identra.',
-    caseStudies: [{ title: 'Okta tăng cường bảo mật lực lượng lao động', desc: 'Xác minh nhân viên liền mạch khi tiếp nhận và khôi phục tài khoản tự phục vụ để ngăn tấn công mạo danh.' }, { title: 'OpenAI sàng lọc hàng triệu người dùng mỗi tháng', desc: 'Tự động sàng lọc 99% người dùng tại 225 quốc gia và vùng lãnh thổ mà không gây cản trở.' }, { title: 'Coursera bảo đảm liêm chính học thuật', desc: 'Cho phép hơn 6.000 tổ chức xác minh người học đồng thời đáp ứng FERPA và yêu cầu về khả năng tiếp cận.' }],
     successThankYou: 'Cảm ơn,',
     successPunctuation: '!',
     successBodyStart: 'Chúng tôi đã nhận được yêu cầu của bạn cho nhóm cơ quan',

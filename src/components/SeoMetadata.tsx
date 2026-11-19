@@ -31,11 +31,6 @@ import {
 } from '../content/blog/structuredBlogArticles';
 import { getStructuredBlogSearchTerms } from '../content/blog/structuredBlogSeoProfiles';
 import { getDemoSeoProfile } from '../content/demoSeoProfiles';
-import {
-  getWhitePaperSearchTerms,
-  WHITE_PAPER_PDF_PATH,
-  WHITE_PAPER_SEO_PROFILE,
-} from '../content/whitePaperSeoProfile';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import {
   BLOG_MODIFIED_DATE,
@@ -207,7 +202,6 @@ export default function SeoMetadata({
     const imageUrl = absoluteUrl(imagePath, siteUrl);
     const logoUrl = absoluteUrl(PUBLIC_LOGO_PATH, siteUrl);
     const isBlogDetail = !isNotFound && currentView === 'blog-detail';
-    const isWhitePaper = !isNotFound && currentView === 'white-paper';
     const structuredSeoProfile = isBlogDetail && structuredArticle
       ? getStructuredBlogSeoMetadata(structuredArticle)
       : null;
@@ -217,8 +211,6 @@ export default function SeoMetadata({
       : null;
     const title = isNotFound
       ? formatSeoTitle(routeTitle, seo.siteName)
-      : isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.title
       : isBlogDetail && blogPost
         ? structuredArticle
           ? blogPost.title
@@ -228,8 +220,6 @@ export default function SeoMetadata({
           : formatSeoTitle(routeTitle, seo.siteName);
     const description = structuredArticle
       ? blogPost?.description ?? ''
-      : isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.description
       : demoSeoProfile
         ? formatSeoDescription(demoSeoProfile.description)
       : formatSeoDescription(
@@ -246,37 +236,23 @@ export default function SeoMetadata({
       description,
       headline: isNotFound
         ? routeTitle
-        : isWhitePaper
-          ? WHITE_PAPER_SEO_PROFILE.headline
-          : structuredArticle?.content.vi.title
-            ?? blogPost?.title
-            ?? demoSeoProfile?.headline
-            ?? routeTitle,
-      imageAlt: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.imageAlt
-        : structuredArticle?.content.vi.title ?? seo.imageAlt,
+        : structuredArticle?.content.vi.title
+          ?? blogPost?.title
+          ?? demoSeoProfile?.headline
+          ?? routeTitle,
+      imageAlt: structuredArticle?.content.vi.title ?? seo.imageAlt,
       imageHeight: String(structuredArticle?.socialImage?.height ?? SOCIAL_IMAGE_HEIGHT),
       imageType: structuredArticle?.socialImage?.type ?? 'image/jpeg',
       imageUrl,
       imageWidth: String(structuredArticle?.socialImage?.width ?? SOCIAL_IMAGE_WIDTH),
       isBlogDetail,
-      isArticle: isBlogDetail || isWhitePaper,
-      schemaType: isWhitePaper
-        ? 'TechArticle'
-        : isBlogDetail
-          ? 'BlogPosting'
-          : 'WebPage',
-      articleSection: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.articleSection
-        : structuredArticle?.content.vi.category ?? '',
-      keywords: isWhitePaper
-        ? getWhitePaperSearchTerms()
-        : structuredSeoProfile
-          ? getStructuredBlogSearchTerms(structuredSeoProfile)
-          : [],
-      about: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.about
-        : structuredSeoProfile?.entities ?? [],
+      isArticle: isBlogDetail,
+      schemaType: isBlogDetail ? 'BlogPosting' : 'WebPage',
+      articleSection: structuredArticle?.content.vi.category ?? '',
+      keywords: structuredSeoProfile
+        ? getStructuredBlogSearchTerms(structuredSeoProfile)
+        : [],
+      about: structuredSeoProfile?.entities ?? [],
       localeMeta,
       logoUrl,
       robotsContent: isNotFound || routeGroup === 'account'
@@ -285,20 +261,12 @@ export default function SeoMetadata({
       routeTitle,
       siteUrl,
       title,
-      author: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.author
-        : structuredArticle?.author ?? {
-            type: 'Person',
-            name: 'Brandon Chen',
-          },
-      publishedAt: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.publishedAt
-        : structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
-      modifiedAt: isWhitePaper
-        ? WHITE_PAPER_SEO_PROFILE.modifiedAt
-        : structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
-      version: isWhitePaper ? WHITE_PAPER_SEO_PROFILE.version : '',
-      pdfUrl: isWhitePaper ? absoluteUrl(WHITE_PAPER_PDF_PATH, siteUrl) : '',
+      author: structuredArticle?.author ?? {
+        type: 'Person',
+        name: 'Brandon Chen',
+      },
+      publishedAt: structuredArticle?.publishedAt ?? BLOG_PUBLISHED_DATE,
+      modifiedAt: structuredArticle?.modifiedAt ?? BLOG_MODIFIED_DATE,
     };
   }, [blogId, currentView, demoScenarioId, isNotFound, language, seo]);
 
@@ -420,16 +388,6 @@ export default function SeoMetadata({
               name,
             })),
             isAccessibleForFree: true,
-            ...(metadata.version
-              ? {
-                  version: metadata.version,
-                  encoding: {
-                    '@type': 'MediaObject',
-                    contentUrl: metadata.pdfUrl,
-                    encodingFormat: 'application/pdf',
-                  },
-                }
-              : {}),
           }
         : {}),
     };

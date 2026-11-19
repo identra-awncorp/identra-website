@@ -35,35 +35,27 @@ const Hero = lazy(() => import('./components/Hero'));
 const CredentialIssuanceSection = lazy(
   () => import('./components/CredentialIssuanceSection'),
 );
-const CredentialIssuanceTransactions = lazy(
-  () => import('./components/CredentialIssuanceTransactions'),
-);
 const BuildingBlocks = lazy(() => import('./components/BuildingBlocks'));
 const PrivacyPortal = lazy(() => import('./components/PrivacyPortal'));
-const SecurityCertifications = lazy(() => import('./components/SecurityCertifications'));
 const GovernmentIdPage = lazy(() => import('./components/GovernmentIdPage'));
 const AboutPage = lazy(() => import('./components/AboutPage'));
-const PricingPage = lazy(() => import('./components/PricingPage'));
 const LoginPage = lazy(() => import('./components/LoginPage'));
 const DashboardPage = lazy(() => import('./components/dashboard/DashboardPage'));
 const BlogPage = lazy(() => import('./components/BlogPage'));
 const EbooksPage = lazy(() => import('./components/EbooksPage'));
 const BlogDetailPage = lazy(() => import('./components/BlogDetailPage'));
 const EventsPage = lazy(() => import('./components/EventsPage'));
-const CareersPage = lazy(() => import('./components/CareersPage'));
 const ResearchPage = lazy(() => import('./components/ResearchPage'));
 const KycAmlPage = lazy(() => import('./components/KycAmlPage'));
 const ConnectPage = lazy(() => import('./components/ConnectPage'));
 const CredentialIssuancePage = lazy(() => import('./components/CredentialIssuancePage'));
 const PlatformPage = lazy(() => import('./components/PlatformPage'));
 const NfcPage = lazy(() => import('./components/NfcPage'));
-const CustomersPage = lazy(() => import('./components/CustomersPage'));
 const DynamicFlowPage = lazy(() => import('./components/DynamicFlowPage'));
 const InterfaceStudioPage = lazy(() => import('./components/InterfaceStudioPage'));
 const KybPage = lazy(() => import('./components/KybPage'));
 const BusinessFraudPage = lazy(() => import('./components/BusinessFraudPage'));
 const ContactPage = lazy(() => import('./components/ContactPage'));
-const PartnersPage = lazy(() => import('./components/PartnersPage'));
 const SecurityPage = lazy(() => import('./components/SecurityPage'));
 const DocsPage = lazy(() => import('./components/DocsPage'));
 const PassiveSignalsPage = lazy(() => import('./components/PassiveSignalsPage'));
@@ -116,7 +108,6 @@ const HealthcareDemoPage = lazy(() => import('./components/demo/HealthcareDemoPa
 const TicketTransferDemoPage = lazy(() => import('./components/demo/TicketTransferDemoPage'));
 const DiplomaGuidedDemoPage = lazy(() => import('./components/demo/DiplomaGuidedDemoPage'));
 const ProductJourneyDemoPage = lazy(() => import('./components/demo/ProductJourneyDemoPage'));
-const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
 const SchoolPortalPage = lazy(() => import('./components/SchoolPortalPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
@@ -339,17 +330,12 @@ export default function App() {
             {/* Credential Issuance (Trust & Reuse) */}
             <CredentialIssuanceSection onViewChange={handleViewChange} />
 
-            {/* Credential Issuance Transactions */}
-            <CredentialIssuanceTransactions />
 
             {/* Building Blocks (Modular Platform Grid) */}
             <BuildingBlocks onOpenSandbox={handleOpenSandbox} />
 
             {/* Privacy Portal (We protect people, not just data) */}
             <PrivacyPortal onOpenSandbox={handleOpenSandbox} />
-
-            {/* Security & Certifications Section */}
-            <SecurityCertifications onOpenSandbox={handleOpenSandbox} />
           </>
         ) : currentView === 'government-id' ? (
           <GovernmentIdPage 
@@ -357,15 +343,7 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')} 
           />
         ) : currentView === 'about' ? (
-          <AboutPage 
-            onOpenSandbox={handleOpenSandbox} 
-            onBackToLanding={() => handleBackNavigation('landing')} 
-          />
-        ) : currentView === 'pricing' ? (
-          <PricingPage 
-            onOpenSandbox={handleOpenSandbox} 
-            onBackToLanding={() => handleBackNavigation('landing')} 
-          />
+          <AboutPage />
         ) : currentView === 'blog' ? (
           <BlogPage
             onBackToLanding={() => handleBackNavigation('landing')}
@@ -382,11 +360,6 @@ export default function App() {
             onBack={() => handleViewChange('blog')}
             onOpenArticle={handleBlogDetailChange}
             onOpenSandbox={handleOpenSandbox}
-          />
-        ) : currentView === 'careers' ? (
-          <CareersPage 
-            onOpenSandbox={handleOpenSandbox} 
-            onBackToLanding={() => handleBackNavigation('landing')} 
           />
         ) : currentView === 'research' ? (
           <ResearchPage 
@@ -466,12 +439,6 @@ export default function App() {
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}
           />
-        ) : currentView === 'customers' ? (
-          <CustomersPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onViewChange={handleViewChange}
-          />
         ) : currentView === 'dynamic-flow' ? (
           <DynamicFlowPage
             onViewChange={handleViewChange}
@@ -491,21 +458,9 @@ export default function App() {
             onViewChange={handleViewChange}
           />
         ) : currentView === 'contact' ? (
-          <ContactPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-          />
-        ) : currentView === 'partners' ? (
-          <PartnersPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-          />
+          <ContactPage onBackToLanding={() => handleBackNavigation('landing')} />
         ) : currentView === 'security' ? (
-          <SecurityPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onViewChange={handleViewChange}
-          />
+          <SecurityPage />
         ) : currentView === 'passive-signals' ? (
           <PassiveSignalsPage
             onOpenSandbox={handleOpenSandbox}
@@ -700,12 +655,6 @@ export default function App() {
           />
         ) : currentView === 'higher-education' ? (
           <HigherEducationPage
-            onOpenSandbox={handleOpenSandbox}
-            onBackToLanding={() => handleBackNavigation('landing')}
-            onViewChange={handleViewChange}
-          />
-        ) : currentView === 'white-paper' ? (
-          <WhitePaperPage
             onOpenSandbox={handleOpenSandbox}
             onBackToLanding={() => handleBackNavigation('landing')}
             onViewChange={handleViewChange}

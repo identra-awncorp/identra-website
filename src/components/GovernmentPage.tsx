@@ -21,12 +21,6 @@ interface GovernmentPageProps {
   onViewChange?: (view: AppView) => void;
 }
 
-interface StateClient {
-  name: string;
-  flagUrl?: string; // fallback if needed
-  flagStyles: string;
-  flagElement?: React.ReactNode;
-}
 
 export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewChange }: GovernmentPageProps) {
   const { language } = useLanguage();
@@ -34,9 +28,6 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
 
   // Tabs state
   const [activeTab, setActiveTab] = useState<'citizen' | 'benefits' | 'employees'>('citizen');
-  
-  // Accordion state
-  const [openAccordion, setOpenAccordion] = useState<string | null>('federal');
 
   // Contact form state
   const [email, setEmail] = useState('');
@@ -53,9 +44,6 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
   const activeScenarioAlertDesc = 'alertDesc' in activeScenario ? activeScenario.alertDesc : '';
   const selectedAgencyLabel = t.agencyOptions.find((option) => option.value === agencyType)?.label || t.defaultAgencySector;
 
-  const toggleAccordion = (key: string) => {
-    setOpenAccordion(openAccordion === key ? null : key);
-  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,155 +54,6 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
     setFormSubmitted(true);
   };
 
-  // 11 US States with beautifully drawn vector flags in inline SVG/CSS
-  const STATES: StateClient[] = [
-    {
-      name: t.states[0],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="white" />
-          <line x1="0" y1="0" x2="100" y2="60" stroke="#C8102E" strokeWidth="8" />
-          <line x1="100" y1="0" x2="0" y2="60" stroke="#C8102E" strokeWidth="8" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[1],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="52" fill="white" />
-          <rect y="52" width="100" height="8" fill="#B22234" />
-          {/* Stylized California bear and star representation */}
-          <polygon points="12,12 14,18 20,18 15,22 17,28 12,24 7,28 9,22 4,18 10,18" fill="#B22234" />
-          <ellipse cx="50" cy="32" rx="14" ry="8" fill="#583101" />
-          <rect x="42" y="34" width="3" height="4" fill="#583101" />
-          <rect x="54" y="34" width="3" height="4" fill="#583101" />
-          <text x="50" y="47" fontSize="5" fontFamily="sans-serif" fontWeight="bold" fill="#000" textAnchor="middle">{t.stateFlagCaliforniaRepublic}</text>
-        </svg>
-      )
-    },
-    {
-      name: t.states[2],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#0F47A1" />
-          <ellipse cx="50" cy="30" rx="16" ry="14" fill="white" stroke="#D4AF37" strokeWidth="1" />
-          <ellipse cx="50" cy="30" rx="13" ry="11" fill="none" stroke="#0F47A1" strokeWidth="1" />
-          <path d="M 40 33 Q 50 38 60 33" fill="none" stroke="#D4AF37" strokeWidth="2" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[3],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="20" fill="#B22234" />
-          <rect y="20" width="100" height="20" fill="white" />
-          <rect y="40" width="100" height="20" fill="#B22234" />
-          <rect width="40" height="40" fill="#0F47A1" />
-          {/* Stylized Arch and Stars */}
-          <path d="M 12 30 L 12 18 L 28 18 L 28 30" fill="none" stroke="#D4AF37" strokeWidth="2" />
-          <circle cx="20" cy="18" r="3" fill="#D4AF37" />
-          <circle cx="20" cy="24" r="5" fill="none" stroke="white" strokeWidth="0.7" strokeDasharray="1,1" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[4],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#0D2C6C" />
-          <circle cx="50" cy="30" r="14" fill="#E8C343" />
-          <circle cx="50" cy="30" r="12" fill="#0D2C6C" />
-          <text x="50" y="52" fontSize="4.5" fontFamily="sans-serif" fontWeight="bold" fill="#D4AF37" textAnchor="middle">{t.stateFlagIdaho}</text>
-        </svg>
-      )
-    },
-    {
-      name: t.states[5],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#0A2C68" />
-          <ellipse cx="50" cy="30" rx="14" ry="12" fill="#4B8BF5" stroke="#E8C343" strokeWidth="1" />
-          <path d="M 42 24 L 38 34 L 62 34 L 58 24 Z" fill="#D4AF37" />
-          <circle cx="50" cy="28" r="5" fill="#FFFFFF" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[6],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#092B69" />
-          <circle cx="50" cy="30" r="16" fill="none" stroke="#D4AF37" strokeWidth="1.5" strokeDasharray="3,2" />
-          <circle cx="50" cy="30" r="12" fill="#2E7D32" />
-          <rect x="47" y="24" width="6" height="8" fill="#D4AF37" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[7],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#FAFBFD" /> {/* container padding background */}
-          <path d="M 5 10 L 95 10 L 75 30 L 95 50 L 5 50 Z" fill="#0F47A1" />
-          <path d="M 5 10 L 95 10 L 88 17 L 5 17 Z" fill="#C8102E" />
-          <path d="M 5 25 L 80 25 L 75 30 L 70 35 L 5 35 Z" fill="white" />
-          <path d="M 5 43 L 95 43 L 88 50 L 5 50 Z" fill="#C8102E" />
-          <circle cx="30" cy="30" r="14" fill="#0F47A1" />
-          <circle cx="30" cy="30" r="11" fill="white" />
-          <circle cx="30" cy="30" r="7" fill="#C8102E" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[8],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#4896DF" />
-          <circle cx="50" cy="28" r="11" fill="#EAD295" stroke="#FFFFFF" strokeWidth="1" />
-          <line x1="36" y1="28" x2="64" y2="28" stroke="#785312" strokeWidth="2" />
-          <text x="50" y="52" fontSize="6.5" fontFamily="sans-serif" fontWeight="bold" fill="#FFFFFF" textAnchor="middle">{t.stateFlagOklahoma}</text>
-        </svg>
-      )
-    },
-    {
-      name: t.states[9],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#091A44" />
-          <rect x="5" y="5" width="90" height="50" fill="white" />
-          <ellipse cx="50" cy="28" rx="14" ry="12" fill="none" stroke="#2E7D32" strokeWidth="1.5" />
-          <path d="M 45 23 L 55 23 L 52 35 L 48 35 Z" fill="#D4AF37" />
-        </svg>
-      )
-    },
-    {
-      name: t.states[10],
-      flagStyles: '',
-      flagElement: (
-        <svg viewBox="0 0 100 60" className="w-full h-full">
-          <rect width="100" height="60" fill="#122A5E" />
-          <ellipse cx="50" cy="30" rx="16" ry="14" fill="#01579B" stroke="#D4AF37" strokeWidth="1" />
-          <circle cx="50" cy="26" r="6" fill="#FBC02D" />
-          {/* Goddess Liberty and Justice representation outline */}
-          <path d="M 41 22 L 41 38" stroke="white" strokeWidth="1.5" />
-          <path d="M 59 22 L 59 38" stroke="white" strokeWidth="1.5" />
-          <path d="M 46 41 Q 50 44 54 41" fill="none" stroke="#D4AF37" strokeWidth="1" />
-        </svg>
-      )
-    }
-  ];
 
   return (
     <div className="bg-[#FAFBFD] min-h-screen text-slate-800 antialiased selection:bg-blue-600/10 selection:text-blue-700">
@@ -316,66 +155,6 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
                 <p className="text-xs text-blue-200/80 leading-relaxed">{highlight.desc}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 2. State Organizations Banner */}
-      <section className="bg-white border-b border-slate-100 py-16">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-10">
-          <p className="text-xs font-bold tracking-wider uppercase text-slate-400">
-            {t.statesServed}
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 justify-center">
-            {STATES.map((state, idx) => (
-              <div 
-                key={idx}
-                className="flex flex-col items-center gap-3 p-4 bg-[#FAFBFD] hover:bg-slate-50 border border-slate-100 rounded-xl transition shadow-sm"
-              >
-                <div className="w-16 h-10 border border-slate-200/60 rounded overflow-hidden shadow-sm flex items-center justify-center bg-slate-50">
-                  {state.flagElement}
-                </div>
-                <span className="text-[11px] font-bold text-slate-600 font-sans">{state.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. {t.fedrampBadge} Spotlight */}
-      <section className="py-16 bg-[#0B1530] text-white overflow-hidden relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(21,77,190,0.2),transparent_50%)]" />
-        <div className="max-w-5xl mx-auto px-6 relative z-10">
-          <div className="bg-[#11234E] border border-blue-900/40 rounded-3xl p-8 md:p-12 shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            <div className="md:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-[10px] uppercase font-bold rounded-md">
-                <Check className="w-3.5 h-3.5" />
-                {t.fedrampBadge}
-              </div>
-              <h3 className="text-2xl md:text-3xl font-sans font-semibold tracking-tight">
-                {t.fedrampTitle}
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
-                {t.fedrampDesc}
-              </p>
-              <button
-                onClick={onOpenSandbox}
-                className="inline-flex items-center gap-2 text-xs font-semibold text-blue-300 hover:text-white transition group pt-2"
-              >
-                {t.achievementCta}
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </div>
-            
-            {/* FedRAMP Stamp representation */}
-            <div className="md:col-span-4 flex justify-center">
-              <div className="bg-white text-slate-900 p-6 rounded-2xl shadow-xl w-36 h-36 flex flex-col items-center justify-center border-4 border-blue-800 text-center relative">
-                <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-800" />
-                <span className="text-3xl font-black tracking-tighter text-blue-900">{t.fedrampStampFr}</span>
-                <span className="text-[10px] font-mono font-black tracking-widest text-[#E05E1B] border-t border-slate-200 pt-1 mt-1 uppercase">{t.fedrampStampTitle}</span>
-                <span className="text-[8px] text-slate-400 mt-0.5">{t.fedrampStampLevel}</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -486,72 +265,6 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
         </div>
       </section>
 
-      {/* 5. Procurement and Contract Vehicles Accordion */}
-      <section className="py-20 bg-slate-50 border-t border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center space-y-3 mb-12">
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">{t.procurementEyebrow}</span>
-            <h2 className="text-2xl md:text-3xl font-sans font-semibold text-slate-950 tracking-tight">
-              {t.procurementTitle}
-            </h2>
-            <p className="text-slate-500 text-sm max-w-lg mx-auto">{t.procurementDesc}</p>
-          </div>
-
-          <div className="space-y-3 font-sans">
-            {t.procurementSections.map((section) => {
-              const Icon = section.key === 'federal' ? Building : section.key === 'state-local' ? Landmark : FileText;
-              const iconColor = section.key === 'federal' ? 'bg-blue-50 text-blue-600' : section.key === 'state-local' ? 'bg-teal-50 text-teal-600' : 'bg-indigo-50 text-indigo-600';
-              const contentGrid = section.key === 'federal' ? 'grid grid-cols-1 md:grid-cols-2 gap-6' : 'space-y-3';
-
-              return (
-                <div key={section.key} className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden shadow-sm">
-                  <button
-                    onClick={() => toggleAccordion(section.key)}
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50/50 transition"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconColor}`}>
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <span className="text-sm font-bold text-slate-900">{section.title}</span>
-                    </div>
-                    {openAccordion === section.key ? (
-                      <ChevronUp className="w-4 h-4 text-slate-500" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-500" />
-                    )}
-                  </button>
-
-                  <AnimatePresence>
-                    {openAccordion === section.key && (
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: 'auto' }}
-                        exit={{ height: 0 }}
-                        className="overflow-hidden border-t border-slate-100"
-                      >
-                        <div className={`p-6 bg-slate-50/30 text-xs ${contentGrid}`}>
-                          {'desc' in section && section.desc && (
-                            <p className="text-slate-600 leading-relaxed">{section.desc}</p>
-                          )}
-                          {'cards' in section && section.cards?.map((card) => (
-                            <div key={card.title} className="p-4 bg-white border border-slate-100 rounded-xl space-y-2">
-                              <h4 className="font-bold text-slate-900">{card.title}</h4>
-                              {'meta' in card && card.meta && <p className="text-slate-500 text-[11px]">{card.meta}</p>}
-                              {'validity' in card && card.validity && <p className="text-slate-400 text-[10px]">{card.validity}</p>}
-                              {'desc' in card && card.desc && <p className="text-slate-500 text-[11px] mt-1">{card.desc}</p>}
-                            </div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>        </div>
-      </section>
-
       {/* 6. Security and privacy at our core */}
       <section className="py-20 bg-gradient-to-tr from-[#11244E] to-[#1F3D7C] text-white text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_60%)]" />
@@ -566,7 +279,7 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
             {t.securityDesc}
           </p>
           <button
-            onClick={onOpenSandbox}
+            onClick={() => onViewChange?.('security')}
             className="inline-flex items-center gap-2 bg-white text-slate-900 hover:bg-blue-50 font-semibold text-xs px-6 py-3 rounded-full transition shadow-lg"
           >
             {t.learnMore}
@@ -581,23 +294,11 @@ export default function GovernmentPage({ onOpenSandbox, onBackToLanding, onViewC
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
             {/* Info and highlights column */}
-            <div className="lg:col-span-5 bg-gradient-to-br from-[#E6EDFF] to-[#D0DEFF] rounded-3xl p-8 border border-slate-100 shadow-sm space-y-8 min-h-[480px] flex flex-col justify-between">
+            <div className="lg:col-span-5 bg-gradient-to-br from-[#E6EDFF] to-[#D0DEFF] rounded-3xl p-8 border border-slate-100 shadow-sm">
               <div className="space-y-4">
                 <h3 className="text-2xl font-sans font-semibold text-[#0F2256] tracking-tight">
                   {t.formTitle}
                 </h3>
-                <p className="text-slate-600 text-xs">
-                  {t.formDesc}
-                </p>
-              </div>
-
-              <div className="space-y-5 border-t border-blue-900/10 pt-6">
-                {t.caseStudies.map((caseStudy) => (
-                  <div key={caseStudy.title} className="space-y-1 font-sans text-xs">
-                    <h4 className="font-bold text-[#0F2256]">{caseStudy.title}</h4>
-                    <p className="text-slate-600 leading-relaxed">{caseStudy.desc}</p>
-                  </div>
-                ))}
               </div>
             </div>
 

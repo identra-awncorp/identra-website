@@ -240,19 +240,6 @@ export default function MarketplacesPage({ onOpenSandbox, onBackToLanding, onVie
         </div>
       </section>
 
-      <section className="bg-[#0B1530] border-b border-blue-950/40 py-8 text-white/60">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-xs font-semibold tracking-wider uppercase text-center md:text-left">{t.trusted.label}</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-            {t.trusted.brands.map((brand, index) => (
-              <span key={brand} className={`${index === 0 ? 'text-lg md:text-xl font-bold font-serif' : index === 1 ? 'text-base md:text-lg font-black uppercase font-sans' : 'text-lg md:text-xl font-extrabold text-[#00D4B2] font-sans'} tracking-tight text-white/95`}>
-                {brand}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 space-y-24">
           <DifferentiatorOne item={t.differentiators[0]} />

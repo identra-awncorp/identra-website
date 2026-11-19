@@ -290,20 +290,6 @@ export default function CryptocurrencyPage({ onOpenSandbox, onBackToLanding, onV
         </div>
       </section>
 
-      {/* Trust Badge Bar */}
-      <section className="bg-[#0B1530] border-b border-blue-950/40 py-8 text-white/60">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-xs font-semibold tracking-wider uppercase text-center md:text-left">
-            {t.trustedBy}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            <span className="text-lg md:text-2xl font-bold tracking-tight text-white/90">BitGo</span>
-            <span className="text-lg md:text-2xl font-bold tracking-tight text-white/90">Bridge <span className="text-xs font-normal text-slate-400">{t.bridgeStripe}</span></span>
-            <span className="text-lg md:text-2xl font-bold tracking-tight text-white/90 uppercase">CELESTIA</span>
-          </div>
-        </div>
-      </section>
-
       {/* 2. Three Row Layout (Differentiators) */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6 space-y-24">

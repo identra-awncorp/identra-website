@@ -9,7 +9,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "interactiveSimulator": "Interactive Process",
     "howItWorks": "How it works",
     "howItWorksDesc": "See the step-by-step pipeline of capturing, analyzing, spoof screening, and automated decision making.",
-    "heroAccuracyDesc": "Identra age estimation was recognized as a top-performing solution in Australia's Age Assurance Technology Trial.",
     "heroComplianceDesc": "As global age assurance laws expand, selfie age estimation gives you a building block for your compliance strategy.",
     "heroPrivacyDesc": "Collect less information than a government ID check requires, and redact all data when the process is complete.",
     "step1Title": "Collect a live selfie",
@@ -92,7 +91,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "readyToStartDesc": "Get in touch or start exploring Identra today. Set up custom rulesets and prevent biometric age fraud seamlessly.",
     "tryItNow": "Try it now",
     "closeReader": "Close Reader",
-    "limeLogo": "lime",
     "skinTones": {
       "Fair": "Fair",
       "Medium": "Medium",
@@ -145,15 +143,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     ],
     "articles": [
       {
-        "id": 1,
-        "type": "Case study",
-        "logo": "lime",
-        "title": "Lime meets international compliance regulations and converts more riders with Identra's global onboarding solution",
-        "meta": "Lime • 5 min read",
-        "readTime": "5 min read",
-        "content": "Micro-mobility pioneer Lime partnered with Identra to streamline identity verification and age assurance globally.\n\nBy integrating Identra's Selfie Age Estimation, Lime improved verification speed, onboarding conversion, and backup routing for borderline cases."
-      },
-      {
         "id": 2,
         "type": "Blog",
         "logo": "iso",
@@ -183,7 +172,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "interactiveSimulator": "Proceso interactivo",
     "howItWorks": "Cómo funciona",
     "howItWorksDesc": "Consulta el flujo de captura, análisis, detección de suplantación y decisión automática.",
-    "heroAccuracyDesc": "Identra fue reconocida como solución de alto rendimiento en una prueba australiana de garantía de edad.",
     "heroComplianceDesc": "La estimación por selfie ayuda a construir tu estrategia de cumplimiento.",
     "heroPrivacyDesc": "Recopila menos datos que una verificación con ID y redacta todo al terminar.",
     "step1Title": "Recopila una selfie en vivo",
@@ -266,7 +254,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "readyToStartDesc": "Configura reglas y evita fraude biométrico de edad.",
     "tryItNow": "Probar ahora",
     "closeReader": "Cerrar lector",
-    "limeLogo": "lime",
     "skinTones": {
       "Fair": "Clara",
       "Medium": "Media",
@@ -319,15 +306,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     ],
     "articles": [
       {
-        "id": 1,
-        "type": "Caso de estudio",
-        "logo": "lime",
-        "title": "Lime cumple regulaciones internacionales y convierte más riders con la solución global de onboarding de Identra",
-        "meta": "Lime • lectura de 5 min",
-        "readTime": "lectura de 5 min",
-        "content": "Lime se asoció con Identra para agilizar la verificación de identidad y la garantía de edad global.\n\nCon Selfie Age Estimation, Lime mejoró velocidad de verificación, conversión de onboarding y enrutamiento de casos límite."
-      },
-      {
         "id": 2,
         "type": "Blog",
         "logo": "iso",
@@ -357,7 +335,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "interactiveSimulator": "インタラクティブプロセス",
     "howItWorks": "仕組み",
     "howItWorksDesc": "撮影、分析、なりすまし検査、自動判定の流れを確認できます。",
-    "heroAccuracyDesc": "Identra age estimation was recognized as a top-performing solution in Australia's Age Assurance Technology Trial.",
     "heroComplianceDesc": "As global age assurance laws expand, selfie age estimation gives you a building block for your compliance strategy.",
     "heroPrivacyDesc": "Collect less information than a government ID check requires, and redact all data when the process is complete.",
     "step1Title": "ライブセルフィーを収集",
@@ -440,7 +417,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "readyToStartDesc": "ルールを設定して生体年齢詐欺を防止します。",
     "tryItNow": "今すぐ試す",
     "closeReader": "閉じる",
-    "limeLogo": "lime",
     "skinTones": {
       "Fair": "明るい",
       "Medium": "中間",
@@ -493,15 +469,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     ],
     "articles": [
       {
-        "id": 1,
-        "type": "ケーススタディ",
-        "logo": "lime",
-        "title": "LimeはIdentraのグローバルオンボーディングで国際規制に対応し、利用者転換率を向上",
-        "meta": "Lime • 5分で読めます",
-        "readTime": "5分で読めます",
-        "content": "Limeは本人確認と年齢保証を世界規模で効率化するためIdentraと連携しました。\n\nSelfie Age Estimationにより、検証速度、オンボーディング転換率、境界ケースのルーティングを改善しました。"
-      },
-      {
         "id": 2,
         "type": "ブログ",
         "logo": "iso",
@@ -531,7 +498,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "interactiveSimulator": "Interaktiver Prozess",
     "howItWorks": "So funktioniert es",
     "howItWorksDesc": "Erfassung, Analyse, Spoof-Prüfung und Entscheidung Schritt für Schritt.",
-    "heroAccuracyDesc": "Identra age estimation was recognized as a top-performing solution in Australia's Age Assurance Technology Trial.",
     "heroComplianceDesc": "As global age assurance laws expand, selfie age estimation gives you a building block for your compliance strategy.",
     "heroPrivacyDesc": "Collect less information than a government ID check requires, and redact all data when the process is complete.",
     "step1Title": "Live-Selfie erfassen",
@@ -614,7 +580,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "readyToStartDesc": "Regeln konfigurieren und biometrischen Altersbetrug verhindern.",
     "tryItNow": "Jetzt testen",
     "closeReader": "Reader schließen",
-    "limeLogo": "lime",
     "skinTones": {
       "Fair": "Hell",
       "Medium": "Mittel",
@@ -667,15 +632,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     ],
     "articles": [
       {
-        "id": 1,
-        "type": "Fallstudie",
-        "logo": "lime",
-        "title": "Lime erfüllt internationale Compliance-Regeln und gewinnt mehr Fahrer mit Identras globaler Onboarding-Lösung",
-        "meta": "Lime • 5 Min. Lesezeit",
-        "readTime": "5 Min. Lesezeit",
-        "content": "Lime arbeitete mit Identra zusammen, um Identitätsprüfung und Age Assurance weltweit zu vereinfachen.\n\nSelfie Age Estimation verbesserte Verifizierungsgeschwindigkeit, Onboarding-Conversion und Routing von Grenzfällen."
-      },
-      {
         "id": 2,
         "type": "Blog",
         "logo": "iso",
@@ -705,7 +661,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "interactiveSimulator": "Quy trình tương tác",
     "howItWorks": "Cách hoạt động",
     "howItWorksDesc": "Xem quy trình chụp ảnh, phân tích, sàng lọc giả mạo và ra quyết định tự động.",
-    "heroAccuracyDesc": "Ước tính tuổi của Identra được công nhận là giải pháp hiệu suất cao trong thử nghiệm tại Úc.",
     "heroComplianceDesc": "Ước tính tuổi bằng selfie hỗ trợ chiến lược tuân thủ khi luật bảo đảm độ tuổi mở rộng.",
     "heroPrivacyDesc": "Thu thập ít thông tin hơn kiểm tra giấy tờ và che/xóa dữ liệu khi hoàn tất.",
     "step1Title": "Thu thập selfie trực tiếp",
@@ -788,7 +743,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
     "readyToStartDesc": "Thiết lập quy tắc và ngăn chặn gian lận tuổi sinh trắc học.",
     "tryItNow": "Thử ngay",
     "closeReader": "Đóng trình đọc",
-    "limeLogo": "lime",
     "skinTones": {
       "Fair": "Sáng",
       "Medium": "Trung bình",
@@ -840,15 +794,6 @@ export const SELFIE_AGE_ESTIMATION_TRANSLATIONS: any = {
       }
     ],
     "articles": [
-      {
-        "id": 1,
-        "type": "Nghiên cứu điển hình",
-        "logo": "lime",
-        "title": "Lime đáp ứng quy định quốc tế và chuyển đổi thêm người đi xe với giải pháp onboarding toàn cầu của Identra",
-        "meta": "Lime • đọc trong 5 phút",
-        "readTime": "đọc trong 5 phút",
-        "content": "Lime hợp tác với Identra để đơn giản hóa xác minh danh tính và bảo đảm độ tuổi trên toàn cầu.\n\nSelfie Age Estimation giúp Lime cải thiện tốc độ xác minh, tỷ lệ chuyển đổi onboarding và định tuyến các trường hợp sát ngưỡng."
-      },
       {
         "id": 2,
         "type": "Bài viết",

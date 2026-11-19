@@ -73,7 +73,6 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
   const [amlMatchAction, setAmlMatchAction] = useState(false);
   const [activeIndustry, setActiveIndustry] = useState('banking');
 
-  const activeIndustryStat = t.industries.find((industry) => industry.id === activeIndustry)?.stat;
   const activeLifeCycleCards = activeCycleTab === 'onboarding' ? t.lifeCycle.onboardingCards : t.lifeCycle.lifecycleCards;
 
   return (
@@ -209,15 +208,6 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
                 <p className="text-xs text-indigo-100/80 leading-relaxed">{pillar.desc}</p>
               </div>
             ))}
-          </div>
-
-          <div className="mt-16 pt-8 border-t border-white/15 flex flex-wrap items-center justify-between gap-6 opacity-80">
-            <p className="text-xs font-semibold uppercase tracking-wider text-indigo-200">{t.trustedBy}</p>
-            <div className="flex items-center gap-8 text-sm font-bold tracking-widest text-indigo-200">
-              {t.brands.map((brand) => (
-                <span key={brand} className="hover:text-white transition cursor-default">{brand}</span>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -476,10 +466,6 @@ export default function KycAmlPage({ onOpenSandbox, onBackToLanding, onViewChang
             </div>
             <h2 className="text-2xl sm:text-3xl font-sans font-medium tracking-tight text-slate-900 leading-tight">{t.industriesIntro.title}</h2>
             <p className="text-sm text-slate-500 leading-relaxed">{t.industriesIntro.desc}</p>
-            <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200/60 mt-6">
-              <span className="text-[10px] font-bold text-slate-400 block uppercase tracking-wider mb-1">{t.industriesIntro.benchmark}</span>
-              <p className="text-lg font-bold text-[#354CE1]">{activeIndustryStat}</p>
-            </div>
           </div>
 
           <div className="lg:col-span-8 space-y-4">

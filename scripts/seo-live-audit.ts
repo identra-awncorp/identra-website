@@ -141,7 +141,7 @@ await mapConcurrent(sitemapUrls.filter((url) => expectedIndexableUrls.has(url)),
   );
   expect(html.includes(`<html lang="${locale}">`), `${url} has the wrong document language.`);
   expect(/<h1(?:\s|>)/.test(html), `${url} is missing its primary heading before JavaScript.`);
-  if (view && !['blog', 'blog-detail', 'white-paper'].includes(view)) {
+  if (view && !['blog', 'blog-detail'].includes(view)) {
     expect(
       html.includes('data-seo-prerendered')
         && html.includes('<noscript><style>@layer base {')

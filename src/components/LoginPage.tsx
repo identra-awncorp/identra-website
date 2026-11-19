@@ -545,10 +545,6 @@ export default function LoginPage({ onBackToLanding, onAuthenticated }: LoginPag
 
         </div>
 
-        {/* Bottom subtle compliance disclaimer */}
-        <div className="absolute bottom-6 left-6 sm:left-12 md:left-20 lg:left-16 xl:left-28 text-[10.5px] text-slate-400 font-medium">
-          {t.compliance}
-        </div>
 
       </div>
 
@@ -585,16 +581,6 @@ export default function LoginPage({ onBackToLanding, onAuthenticated }: LoginPag
             <p className="text-sm text-indigo-50 leading-relaxed font-normal">
               {t.sidePanel.desc}
             </p>
-          </div>
-
-          {/* Bullet metrics representing true high-quality outcomes */}
-          <div className="grid grid-cols-2 gap-6 max-w-md pt-4">
-            {t.sidePanel.metrics.map((metric) => (
-              <div key={metric.label} className="space-y-1">
-                <p className="text-2xl font-black font-display text-white">{metric.value}</p>
-                <p className="text-[10px] uppercase tracking-wider font-bold text-indigo-100">{metric.label}</p>
-              </div>
-            ))}
           </div>
 
         </div>

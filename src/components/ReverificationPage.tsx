@@ -355,20 +355,6 @@ export default function ReverificationPage({ onOpenSandbox, onViewChange }: Reve
         </div>
       </section>
 
-      {/* 2. Customer Trust Logos */}
-      <section className="bg-[#0F1E36] py-10 text-white">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-xs font-mono tracking-wider text-slate-400 uppercase">
-            {text('trustLogos')}
-          </p>
-          <div className="flex flex-wrap items-center gap-8 md:gap-12 opacity-85">
-            <span className="font-display font-black text-lg tracking-wider text-slate-200">branch</span>
-            <span className="font-display font-semibold text-lg tracking-wide text-slate-200">Travelex</span>
-            <span className="font-display font-bold text-lg tracking-wider text-slate-200">Rently</span>
-          </div>
-        </div>
-      </section>
-
       {/* 3. Build Strategy / Content Pillars Section */}
       <section className="py-24 px-6 max-w-7xl mx-auto space-y-28">
         

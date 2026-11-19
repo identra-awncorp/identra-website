@@ -514,7 +514,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
             </div>
           </div>
 
-          {/* RIGHT PANEL: Identity Flow Progress + Sandbox Transaction Console Ledger */}
+          {/* RIGHT PANEL: Identity Flow Progress + Sandbox Transaction Console */}
           <div className="lg:col-span-5 space-y-6">
             {/* 1. Identity Verification Flow Tracker */}
             <div className="bg-white rounded-3xl border border-slate-200 p-6 space-y-6 shadow-sm relative overflow-hidden">
@@ -712,7 +712,7 @@ export default function TicketTransferDemoPage({ onBackToList }: TicketTransferD
               </div>
             </div>
 
-            {/* 2. Real-Time Secure Sandbox Ledger Terminal Console */}
+            {/* 2. Real-Time Secure Sandbox Terminal Console */}
             <div className="bg-slate-900 rounded-[28px] border border-slate-800 p-5 shadow-xl">
               <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
                 <div className="flex items-center gap-2 text-slate-300">

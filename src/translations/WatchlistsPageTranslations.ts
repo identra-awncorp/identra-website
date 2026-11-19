@@ -377,7 +377,7 @@ export const WATCHLISTS_PAGE_TRANSLATIONS: any = {
     exploreTitle: "Explore more of Identra's identity platform",
     exploreDesc: "Combine report databases with our other state-of-the-art identity verification systems to create an unshakeable trust loop.",
     exploreCards: [
-      { title: "Verify government IDs globally.", desc: "Instantly extract information and verify government documents from over 150 countries using advanced OCR.", cta: "View Government ID Page" },
+      { title: "Verify government IDs globally.", desc: "Instantly extract information and verify government documents using advanced OCR.", cta: "View Government ID Page" },
       { title: "Screen phone numbers & emails for risk.", desc: "Check metadata, carrier registration records, and passive signal risk metrics to combat phone hijacking fraud.", cta: "View Phone & Email Ownership Page" }
     ],
     listSources: buildWatchlistSources("en")
@@ -553,7 +553,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.es = {
     { tag: "Guía • 5 min", title: "Más de 50 señales de riesgo de fraude", desc: "Explora señales conductuales, de red, dispositivo, documento y base de datos que protegen organizaciones digitales.", detailed: "Los defraudadores aprovechan datos aislados. Al combinar watchlists con señales pasivas en tiempo real como VPN, huella de navegador y riesgo telefónico, los equipos modernos crean defensas multicapa." }
   ],
   exploreCards: [
-    { title: "Verifica documentos oficiales globalmente.", desc: "Extrae información y verifica documentos gubernamentales de más de 150 países usando OCR avanzado.", cta: "Ver página de Government ID" },
+    { title: "Verifica documentos oficiales globalmente.", desc: "Extrae información y verifica documentos gubernamentales usando OCR avanzado.", cta: "Ver página de Government ID" },
     { title: "Evalúa teléfonos y correos por riesgo.", desc: "Revisa metadatos, registros de operador y señales pasivas para combatir fraude por secuestro telefónico.", cta: "Ver página de teléfono y correo" }
   ],
   listSources: buildWatchlistSources("es")
@@ -724,7 +724,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.vi = {
     { tag: "Hướng dẫn • 5 phút", title: "Hơn 50 tín hiệu rủi ro gian lận", desc: "Khám phá các tín hiệu hành vi, mạng, thiết bị, giấy tờ và cơ sở dữ liệu giúp bảo vệ tổ chức số đang tăng trưởng nhanh.", detailed: "Kẻ gian lợi dụng khoảng trống giữa các nguồn dữ liệu rời rạc. Bằng cách kết hợp danh sách cảnh báo với tín hiệu thụ động theo thời gian thực như VPN, dấu vân tay trình duyệt và điểm rủi ro điện thoại, đội ngũ có thể xây dựng lớp bảo vệ nhiều tầng." }
   ],
   exploreCards: [
-    { title: "Xác minh giấy tờ chính phủ toàn cầu.", desc: "Trích xuất thông tin tức thì và xác minh giấy tờ chính phủ từ hơn 150 quốc gia bằng OCR nâng cao.", cta: "Xem trang Government ID" },
+    { title: "Xác minh giấy tờ chính phủ toàn cầu.", desc: "Trích xuất thông tin tức thì và xác minh giấy tờ chính phủ bằng OCR nâng cao.", cta: "Xem trang Government ID" },
     { title: "Sàng lọc số điện thoại & email theo rủi ro.", desc: "Kiểm tra siêu dữ liệu, hồ sơ đăng ký nhà mạng và tín hiệu rủi ro thụ động để chống gian lận chiếm đoạt điện thoại.", cta: "Xem trang điện thoại & email" }
   ],
   listSources: buildWatchlistSources("vi")
@@ -895,7 +895,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.de = {
     { tag: "Leitfaden • 5 Min.", title: "Über 50 Risikosignale für Betrug", desc: "Entdecken Sie Verhaltens-, Netzwerk-, Geräte-, Dokument- und Datenbanksignale zum Schutz digitaler Organisationen.", detailed: "Betrüger nutzen Lücken in isolierten Daten. Durch Kombination von Watchlists mit passiven Echtzeitsignalen wie VPN-Erkennung, Browser-Fingerprinting und Telefonrisiko können moderne Teams mehrschichtige Schutzsysteme aufbauen." }
   ],
   exploreCards: [
-    { title: "Amtliche IDs weltweit verifizieren.", desc: "Extrahieren und prüfen Sie Regierungsdokumente aus über 150 Ländern sofort mit fortschrittlicher OCR.", cta: "Government ID-Seite ansehen" },
+    { title: "Amtliche IDs weltweit verifizieren.", desc: "Extrahieren und prüfen Sie Regierungsdokumente sofort mit fortschrittlicher OCR.", cta: "Government ID-Seite ansehen" },
     { title: "Telefonnummern und E-Mails auf Risiko prüfen.", desc: "Prüfen Sie Metadaten, Netzbetreiberregistrierungen und passive Risikosignale gegen Telefonübernahmebetrug.", cta: "Telefon- und E-Mail-Seite ansehen" }
   ],
   listSources: buildWatchlistSources("de")
@@ -1066,7 +1066,7 @@ WATCHLISTS_PAGE_TRANSLATIONS.ja = {
     { tag: "ガイド • 5分", title: "50以上の不正リスクシグナル", desc: "行動、ネットワーク、端末、書類、データベースの幅広いリスクシグナルを確認します。", detailed: "不正者は孤立したデータの隙を突きます。watchlistとVPN検出、ブラウザ指紋、電話リスクなどの受動シグナルを組み合わせることで、多層防御を構築できます。" }
   ],
   exploreCards: [
-    { title: "世界中の公的IDを確認。", desc: "高度なOCRで150か国以上の政府書類から情報を抽出し確認します。", cta: "Government IDページを見る" },
+    { title: "世界中の公的IDを確認。", desc: "高度なOCRで政府書類から情報を抽出し確認します。", cta: "Government IDページを見る" },
     { title: "電話番号とメールのリスクを確認。", desc: "メタデータ、通信事業者登録、受動的リスクシグナルで電話乗っ取り不正に対抗します。", cta: "電話・メールページを見る" }
   ],
   listSources: buildWatchlistSources("ja")

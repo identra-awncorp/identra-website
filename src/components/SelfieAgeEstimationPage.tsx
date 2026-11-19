@@ -210,13 +210,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
           </div>
 
           {/* Three pillars below (Hero Pillars) */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 mt-12 border-t border-white/10">
-            <div>
-              <h3 className="font-bold text-base mb-1.5 text-white">{t.apart3Title}</h3>
-              <p className="text-xs text-emerald-100/90 leading-relaxed">
-                {t.heroAccuracyDesc}
-              </p>
-            </div>
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 pt-12 mt-12 border-t border-white/10">
             <div>
               <h3 className="font-bold text-base mb-1.5 text-white">{t.feat3Title}</h3>
               <p className="text-xs text-emerald-100/90 leading-relaxed">
@@ -720,7 +714,7 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
           {t.keepLearning}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {articles.map((art: any) => (
             <button type="button"
               key={art.id} 
@@ -729,9 +723,6 @@ export default function SelfieAgeEstimationPage({ onOpenSandbox, onBackToLanding
             >
               <div className="p-8 space-y-4">
                 {/* Simulated Logo based on article */}
-                {art.logo === 'lime' && (
-                  <div className="w-16 h-8 flex items-center justify-center bg-lime-50 rounded-lg text-lime-600 font-bold font-sans tracking-tight text-sm">{t.limeLogo}</div>
-                )}
                 {art.logo === 'iso' && (
                   <div className="w-16 h-8 flex items-center justify-center bg-blue-50 rounded-lg text-blue-600">
                     <Globe className="w-5 h-5" />

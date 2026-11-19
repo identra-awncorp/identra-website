@@ -30,11 +30,11 @@ export default function SkeletonLoader({ view }: SkeletonLoaderProps) {
   } else if (viewLower === 'docs' || viewLower === 'dashboard') {
     layoutType = 'dashboard';
   } else if (
-    ['blog', 'ebooks', 'events', 'careers', 'research', 'resource-center', 'academy'].includes(viewLower)
+    ['blog', 'ebooks', 'events', 'research', 'resource-center', 'academy'].includes(viewLower)
   ) {
     layoutType = 'list';
   } else if (
-    ['about', 'pricing', 'contact', 'partners', 'security', 'privacy-overview', 'blog-detail'].includes(viewLower)
+    ['about', 'contact', 'security', 'privacy-overview', 'blog-detail'].includes(viewLower)
   ) {
     layoutType = 'text';
   } else if (

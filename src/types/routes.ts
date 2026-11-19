@@ -186,6 +186,8 @@ export const resolveBlogDetailLocale = (id: BlogDetailId, locale: Locale): Local
 };
 
 export const DEMO_SCENARIO_IDS = [
+  'diploma',
+  'product-journey',
   'bank-account',
   'apply-job',
   'ticket-booking',
@@ -196,6 +198,28 @@ export const DEMO_SCENARIO_IDS = [
 ] as const;
 
 export type DemoScenarioId = typeof DEMO_SCENARIO_IDS[number];
+
+/** The demos that run for real against the Identra API (the others are interface simulations). */
+export const REAL_DEMO_SCENARIO_IDS = ['diploma', 'product-journey'] as const satisfies readonly DemoScenarioId[];
+
+export type RealDemoScenarioId = typeof REAL_DEMO_SCENARIO_IDS[number];
+
+export const isRealDemoScenarioId = (id: DemoScenarioId): id is RealDemoScenarioId =>
+  (REAL_DEMO_SCENARIO_IDS as readonly string[]).includes(id);
+
+// The real demos are offered in Vietnamese and English, like the sample university portal.
+const DEMO_SCENARIO_LOCALE_OVERRIDES: Partial<Record<DemoScenarioId, readonly Locale[]>> = {
+  diploma: ['en', 'vi'],
+  'product-journey': ['en', 'vi'],
+};
+
+export const getDemoScenarioLocales = (id: DemoScenarioId): readonly Locale[] =>
+  DEMO_SCENARIO_LOCALE_OVERRIDES[id] ?? SUPPORTED_LOCALES;
+
+export const resolveDemoScenarioLocale = (id: DemoScenarioId, locale: Locale): Locale => {
+  const supportedLocales = getDemoScenarioLocales(id);
+  return supportedLocales.includes(locale) ? locale : supportedLocales[0] ?? DEFAULT_LOCALE;
+};
 
 export const DASHBOARD_TOOL_IDS = [
   'dynamic-flow',
@@ -357,7 +381,7 @@ export const pathToDemoScenarioId = (pathname: string): DemoScenarioId | null =>
 };
 
 export const demoScenarioPath = (id: DemoScenarioId, locale: Locale) =>
-  `/${locale}/demo/${encodeURIComponent(id)}`;
+  `/${resolveDemoScenarioLocale(id, locale)}/demo/${encodeURIComponent(id)}`;
 
 export const dashboardPath = (locale: Locale) =>
   `/${locale}/dashboard`;

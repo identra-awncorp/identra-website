@@ -16,6 +16,7 @@ import {
   SUPPORTED_LOCALES,
   blogDetailPath,
   demoScenarioPath,
+  getDemoScenarioLocales,
   getBlogDetailLocales,
   getViewLocales,
   legacyViewAliasPath,
@@ -151,7 +152,7 @@ const indexableRouteDefinitions: IndexableRouteDefinition[] = [
       pathForLocale: (locale: Locale) => viewToPath(view, locale),
     })),
   ...DEMO_SCENARIO_IDS.map((scenarioId) => ({
-    locales: SUPPORTED_LOCALES,
+    locales: getDemoScenarioLocales(scenarioId),
     pathForLocale: (locale: Locale) => demoScenarioPath(scenarioId, locale),
   })),
   ...PUBLIC_BLOG_DETAIL_IDS.map((articleId) => ({
@@ -538,7 +539,7 @@ for (const locale of SUPPORTED_LOCALES) {
   const seenTitles = new Set<string>();
   const seenDescriptions = new Set<string>();
 
-  for (const scenarioId of DEMO_SCENARIO_IDS) {
+  for (const scenarioId of DEMO_SCENARIO_IDS.filter((id) => getDemoScenarioLocales(id).includes(locale))) {
     const profile = getDemoSeoProfile(scenarioId, locale);
     const path = demoScenarioPath(scenarioId, locale);
     const html = readDistFile(routeFile(path));

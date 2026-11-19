@@ -11,7 +11,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useManagedTimeouts, type ManagedTimeoutScheduler } from '../../hooks/useManagedTimeouts';
 import { APPLY_JOB_DEMO_PAGE_TRANSLATIONS } from '../../translations/demo/ApplyJobDemoPageTranslations';
 import { truncateText } from '../../identra/verifierSession';
-import { viewToPath, type DemoScenarioId } from '../../types/routes';
+import { demoScenarioPath, viewToPath, type DemoScenarioId } from '../../types/routes';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import {
   getApplyJobFieldProvenance,
@@ -1124,6 +1124,7 @@ function ApplyJobApplicationFlow({
           onSettled={handleVerifierSettled}
           onFillManually={closeVerifier}
           portalHref={viewToPath('school-portal', language)}
+          trialWalletHref={demoScenarioPath('diploma', language)}
         />
       )}
     </div>

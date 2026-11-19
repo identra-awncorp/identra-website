@@ -114,11 +114,15 @@ const AirlinesHotelsDemoPage = lazy(() => import('./components/demo/AirlinesHote
 const GovernmentServicesDemoPage = lazy(() => import('./components/demo/GovernmentServicesDemoPage'));
 const HealthcareDemoPage = lazy(() => import('./components/demo/HealthcareDemoPage'));
 const TicketTransferDemoPage = lazy(() => import('./components/demo/TicketTransferDemoPage'));
+const DiplomaGuidedDemoPage = lazy(() => import('./components/demo/DiplomaGuidedDemoPage'));
+const ProductJourneyDemoPage = lazy(() => import('./components/demo/ProductJourneyDemoPage'));
 const WhitePaperPage = lazy(() => import('./components/WhitePaperPage'));
 const SchoolPortalPage = lazy(() => import('./components/SchoolPortalPage'));
 const NotFoundPage = lazy(() => import('./components/NotFoundPage'));
 
 const DEMO_SCENARIO_PAGE_COMPONENTS: Record<DemoScenarioId, LazyExoticComponent<ComponentType<DemoScenarioPageProps>>> = {
+  diploma: DiplomaGuidedDemoPage,
+  'product-journey': ProductJourneyDemoPage,
   'bank-account': BankAccountDemoPage,
   'apply-job': ApplyJobDemoPage,
   'ticket-booking': TicketBookingDemoPage,
@@ -434,10 +438,7 @@ export default function App() {
           DemoScenarioPage ? (
             <DemoScenarioPage onBackToList={() => handleViewChange('demo')} />
           ) : (
-            <ListDemoPage
-              onBackToLanding={() => handleBackNavigation('landing')}
-              onOpenSandbox={handleOpenSandbox}
-            />
+            <ListDemoPage onBackToLanding={() => handleBackNavigation('landing')} />
           )
         ) : currentView === 'academy' ? (
           <AcademyPage

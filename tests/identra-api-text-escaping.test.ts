@@ -35,6 +35,8 @@ const render = (result: SessionResult) => renderToStaticMarkup(createElement(App
   result,
   copy: APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS.vi,
   language: 'vi',
+  // The verifier's name comes from the session resource: hostile markup there must stay text too.
+  verifierName: IMG,
 }));
 
 test('claims, claim names and issuer names are escaped and isolated in <bdi>', () => {

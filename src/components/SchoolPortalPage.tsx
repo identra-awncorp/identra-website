@@ -10,22 +10,24 @@ import {
   useRef,
   useState,
   type FormEvent,
-  type KeyboardEvent as ReactKeyboardEvent,
-  type ReactNode,
 } from 'react';
-import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, CheckCircle2, Clock, Eye, EyeOff, Info, Loader2, LogOut, RefreshCw, Wallet } from 'lucide-react';
 import { serverClockOffset } from '@identra/sdk-client';
 import { useLanguage } from '../context/LanguageContext';
-import { useInertAppRoot, useIsTouchDevice } from '../hooks/useModalLayer';
+import { useIsTouchDevice } from '../hooks/useModalLayer';
 import { useNow } from '../hooks/useNow';
-import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_ISSUER } from '../identra/config';
 import {
-  createSchoolPortalClient,
+  focusById,
+  isDialogOpen,
+  schoolPortalClient,
+  useSecondsUntilLocal,
+  useStatusChange,
+  useStudentOffer,
+} from '../hooks/useSchoolPortal';
+import {
   PortalApiError,
   type CredentialStatus,
-  type CredentialStatusChange,
   type IssuedCredential,
   type PortalSession,
   type StudentProfile,
@@ -33,23 +35,14 @@ import {
 import {
   actionsFor,
   authReducer,
-  CONFIRM_IDLE,
-  confirmReducer,
   countByStatus,
   CREDENTIALS_LOADING,
   credentialsReducer,
   loadProblemFor,
-  OFFER_IDLE,
-  offerProblemFor,
-  offerReducer,
-  pendingOfferId,
-  replaceOffer,
   SIGNED_OUT,
   signInProblemFor,
   STATUS_FOR_ACTION,
-  statusChangeProblemFor,
   type AuthState,
-  type ConfirmState,
   type LoadProblem,
   type StatusAction,
 } from '../identra/schoolPortalState';
@@ -63,12 +56,13 @@ import {
 import { demoScenarioPath, resolveViewLocale } from '../types/routes';
 import { fillNodes } from '../utils/fillTemplate';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
+import ConfirmDialog from './SchoolPortalConfirmDialog';
+import UniversityCrest from './UniversityCrest';
 import IdentraErrorBoundary from './IdentraErrorBoundary';
 import IdentraQrCode from './IdentraQrCode';
 import IdentraWalletLink from './IdentraWalletLink';
 
-const portalClient = createSchoolPortalClient({ baseUrl: IDENTRA_API_URL, apiOrigin: IDENTRA_API_ORIGIN, issuer: SAMPLE_ISSUER });
-const OFFER_POLL_MS = 2000;
+const portalClient = schoolPortalClient;
 
 // Memory only (never Web Storage): survives a language switch inside the app, not a reload.
 let rememberedSession: { session: PortalSession; clockOffsetMs: number } | null = null;
@@ -88,16 +82,6 @@ const STATUS_PILL: Record<CredentialStatus, string> = {
   revoked: 'bg-rose-50 text-rose-800 border-rose-200',
 };
 
-const focusById = (id: string) => window.requestAnimationFrame(() => document.getElementById(id)?.focus());
-
-function UniversityCrest({ label }: { label: string }) {
-  return (
-    <svg role="img" aria-label={label} viewBox="0 0 40 44" className="h-11 w-10 shrink-0">
-      <path d="M20 1 38 7v15c0 10.5-7.6 18.4-18 21C9.6 40.4 2 32.5 2 22V7L20 1Z" fill="#0F1E36" />
-      <path d="M11 30V15l9 8 9-8v15" fill="none" stroke="#FFBF43" strokeWidth="3" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 function StatusPill({ status, copy }: { status: CredentialStatus; copy: SchoolPortalPageCopy }) {
   return (
@@ -118,21 +102,22 @@ const useDateFormat = (locale: 'en' | 'vi') => {
   };
 };
 
-/** Seconds until a local instant (a Retry-After deadline), refreshed every second. */
-function useSecondsUntilLocal(deadline: number | null): number {
-  const now = useNow();
-  return deadline === null ? 0 : Math.max(0, Math.floor((deadline - now) / 1000));
-}
-
-/** A local deadline from a 429's or 503's Retry-After, when the server sent one. */
-const retryAtFor = (error: unknown): number | undefined => {
-  const seconds = error instanceof PortalApiError ? error.retryAfterSeconds : undefined;
-  return seconds === undefined ? undefined : Date.now() + seconds * 1000;
-};
-
 function ServerCountdown({ expiresAt, offsetMs, template }: { expiresAt: string; offsetMs: number; template: string }) {
   const now = useNow();
   return <span className="tabular-nums">{fill(template, { time: formatCountdown(secondsUntil(expiresAt, now + offsetMs)) })}</span>;
+}
+
+/** The Identra app is not published yet: say so wherever the portal asks for it, and offer the web trial wallet. */
+function NoAppNote({ copy, trialWalletPath }: { copy: SchoolPortalPageCopy; trialWalletPath: string }) {
+  return (
+    <div className="rounded-2xl bg-white/70 px-4 py-3" data-testid="portal-no-app">
+      <p className="type-body font-semibold text-[#0F1E36]">{copy.noAppTitle}</p>
+      <p className="type-body-sm mt-0.5 text-slate-700">{copy.noAppBody}</p>
+      <Link to={trialWalletPath} data-testid="portal-trial-wallet" className={`type-control mt-1 inline-flex min-h-11 items-center text-[#2539BE] underline underline-offset-2 hover:no-underline ${focusRing}`}>
+        {copy.noAppAction}
+      </Link>
+    </div>
+  );
 }
 
 // ---- Sign-in ------------------------------------------------------------------------------------
@@ -142,11 +127,13 @@ export function SignInView({
   onSubmit,
   copy,
   employerDemoPath,
+  trialWalletPath,
 }: {
   state: Extract<AuthState, { status: 'signedOut' }>;
   onSubmit: (username: string, password: string) => void;
   copy: SchoolPortalPageCopy;
   employerDemoPath: string;
+  trialWalletPath: string;
 }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -300,6 +287,7 @@ export function SignInView({
           <Link to={employerDemoPath} className={`type-control mt-3 inline-flex min-h-11 items-center text-[#2539BE] underline-offset-2 hover:underline ${focusRing}`}>
             {copy.tryEmployerDemo}
           </Link>
+          <div className="mt-3"><NoAppNote copy={copy} trialWalletPath={trialWalletPath} /></div>
         </section>
       </div>
     </div>
@@ -394,203 +382,6 @@ function LoadMore({
   );
 }
 
-// ---- Confirming a status change ---------------------------------------------------------------------
-
-/**
- * Drives the confirmation dialog of a status change: no optimistic update, the row changes only with the
- * server's answer (or a 409, which is the server saying it is already revoked).
- */
-function useStatusChange<T>({
-  idOf,
-  perform,
-  onApplied,
-  onSessionExpired,
-  doneFocusId,
-}: {
-  idOf: (target: T) => string;
-  perform: (target: T, signal: AbortSignal) => Promise<CredentialStatusChange>;
-  onApplied: (id: string, status: CredentialStatus) => void;
-  onSessionExpired: () => void;
-  /** Where focus goes when the dialog closes and its trigger is gone (the row changed). */
-  doneFocusId: string;
-}) {
-  const [state, dispatch] = useReducer(confirmReducer<T>, CONFIRM_IDLE as ConfirmState<T>);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
-  const controllerRef = useRef<AbortController | null>(null);
-
-  useEffect(() => () => controllerRef.current?.abort(), []);
-
-  const open = (target: T, trigger: HTMLButtonElement) => {
-    triggerRef.current = trigger;
-    dispatch({ type: 'open', target });
-  };
-
-  const cancel = () => {
-    dispatch({ type: 'cancel' });
-    window.requestAnimationFrame(() => {
-      const trigger = triggerRef.current;
-      if (trigger?.isConnected) trigger.focus();
-      else document.getElementById(doneFocusId)?.focus();
-    });
-  };
-
-  const save = async () => {
-    if (state.phase !== 'confirm' && state.phase !== 'failed') return;
-    const { target } = state;
-    const controller = new AbortController();
-    controllerRef.current = controller;
-    dispatch({ type: 'save' });
-    try {
-      const result = await perform(target, controller.signal);
-      if (controller.signal.aborted) return;
-      onApplied(result.id, result.status);
-      dispatch({ type: 'saved', status: result.status });
-      focusById(doneFocusId);
-    } catch (error) {
-      if (controller.signal.aborted) return;
-      const problem = error instanceof PortalApiError ? statusChangeProblemFor(error) : 'no_answer';
-      if (problem === 'session_expired') {
-        onSessionExpired();
-        return;
-      }
-      if (problem === 'already_revoked') onApplied(idOf(target), 'revoked');
-      const retryAt = retryAtFor(error);
-      dispatch({ type: 'failed', problem, ...(retryAt !== undefined && { retryAt }) });
-    }
-  };
-
-  return { state, open, cancel, save };
-}
-
-function ConfirmDialog({
-  title,
-  subtitle,
-  body,
-  confirmLabel,
-  destructive,
-  state,
-  problemText,
-  onConfirm,
-  onCancel,
-  copy,
-}: {
-  title: ReactNode;
-  subtitle: ReactNode;
-  body: ReactNode;
-  confirmLabel: string;
-  destructive: boolean;
-  state: Extract<ConfirmState<unknown>, { phase: 'confirm' | 'saving' | 'failed' }>;
-  problemText: string | null;
-  onConfirm: () => void;
-  onCancel: () => void;
-  copy: SchoolPortalPageCopy;
-}) {
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  const saving = state.phase === 'saving';
-  const problem = state.phase === 'failed' ? state.problem : null;
-  const waitSeconds = useSecondsUntilLocal(state.phase === 'failed' ? state.retryAt : null);
-  const blocked = saving || waitSeconds > 0;
-  useInertAppRoot(true);
-
-  useEffect(() => {
-    cancelRef.current?.focus();
-  }, []);
-
-  // While saving, the buttons stay focusable (aria-disabled), so focus never falls out of the dialog.
-  const handleKeyDown = (event: ReactKeyboardEvent) => {
-    if (event.key === 'Escape') {
-      event.stopPropagation();
-      if (!saving) onCancel();
-      return;
-    }
-    if (event.key !== 'Tab') return;
-    const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('button') ?? []);
-    if (focusable.length === 0) {
-      event.preventDefault();
-      return;
-    }
-    const first = focusable[0]!;
-    const last = focusable[focusable.length - 1]!;
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
-
-  return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 sm:items-center sm:p-4">
-      <div
-        ref={dialogRef}
-        role="alertdialog"
-        aria-modal="true"
-        aria-labelledby="school-portal-confirm-title"
-        aria-describedby="school-portal-confirm-body"
-        aria-busy={saving}
-        onKeyDown={handleKeyDown}
-        data-testid="portal-confirm-dialog"
-        className="max-h-[100dvh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
-      >
-        <h2 id="school-portal-confirm-title" className={`type-featured-title text-[#0F1E36] ${apiText}`}>{title}</h2>
-        <div className="type-body-sm mt-1 text-slate-600">{subtitle}</div>
-        <div id="school-portal-confirm-body" className="mt-4 space-y-3">
-          {body}
-          <p className="type-body text-slate-600">{copy.timingNote}</p>
-        </div>
-        {problem && problemText && (
-          <div role="alert" data-testid="portal-confirm-problem" className="type-body mt-4 flex items-start gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-amber-900">
-            <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-            <div>
-              <p>{problemText}</p>
-              {waitSeconds > 0 && (
-                <p className="tabular-nums">{fill(copy.retryIn, { time: formatCountdown(waitSeconds) })}</p>
-              )}
-            </div>
-          </div>
-        )}
-        {saving && (
-          <p role="status" className="type-body mt-4 flex items-center gap-2 text-slate-700">
-            <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />
-            {copy.saving}
-          </p>
-        )}
-        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <button
-            ref={cancelRef}
-            type="button"
-            onClick={() => { if (!saving) onCancel(); }}
-            aria-disabled={saving}
-            data-testid="portal-confirm-cancel"
-            className={secondaryButton}
-          >
-            {copy.cancel}
-          </button>
-          {problem !== 'already_revoked' && problem !== 'not_found' && (
-            <button
-              type="button"
-              onClick={() => { if (!blocked) onConfirm(); }}
-              aria-disabled={blocked}
-              data-testid="portal-confirm-submit"
-              className={destructive
-                ? `type-control inline-flex min-h-11 cursor-pointer items-center justify-center rounded-full bg-rose-700 px-5 text-white transition-colors hover:bg-rose-800 aria-disabled:cursor-not-allowed aria-disabled:opacity-60 ${focusRing}`
-                : primaryButton}
-            >
-              {problem ? copy.retry : confirmLabel}
-            </button>
-          )}
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
-}
-
-const isDialogOpen = <T,>(state: ConfirmState<T>): state is Extract<ConfirmState<T>, { phase: 'confirm' | 'saving' | 'failed' }> =>
-  state.phase === 'confirm' || state.phase === 'saving' || state.phase === 'failed';
-
 // ---- Student --------------------------------------------------------------------------------------
 
 function StudentView({
@@ -599,19 +390,19 @@ function StudentView({
   locale,
   onSessionExpired,
   employerDemoPath,
+  trialWalletPath,
 }: {
   session: Extract<PortalSession, { role: 'student' }>;
   copy: SchoolPortalPageCopy;
   locale: 'en' | 'vi';
   onSessionExpired: () => void;
   employerDemoPath: string;
+  trialWalletPath: string;
 }) {
   const format = useDateFormat(locale);
-  const [offer, dispatchOffer] = useReducer(offerReducer, OFFER_IDLE);
+  const { offer, dispatchOffer, createOffer } = useStudentOffer(session.token, onSessionExpired);
   const credentials = useCredentialList(session.token, onSessionExpired);
   const { load: reloadCredentials, dispatch: dispatchCredentials } = credentials;
-  const createController = useRef<AbortController | null>(null);
-  const pendingRef = useRef<string | null>(null);
   const isTouch = useIsTouchDevice();
   const retrySeconds = useSecondsUntilLocal(offer.phase === 'error' ? offer.retryAt : null);
 
@@ -629,111 +420,6 @@ function StudentView({
   useEffect(() => {
     focusById('school-portal-title');
   }, []);
-
-  // The code still waiting for a wallet is cancelled when the visitor leaves (closing the tab, reloading,
-  // signing out, another page of the site), so it does not hold one of the five places of their network.
-  useEffect(() => {
-    pendingRef.current = pendingOfferId(offer);
-  }, [offer]);
-  useEffect(() => {
-    const cancelPending = () => {
-      const offerId = pendingRef.current;
-      if (!offerId) return;
-      pendingRef.current = null;
-      portalClient.cancelOffer(session.token, offerId, { keepalive: true }).catch(() => undefined);
-    };
-    window.addEventListener('pagehide', cancelPending);
-    return () => {
-      window.removeEventListener('pagehide', cancelPending);
-      cancelPending();
-    };
-  }, [session.token]);
-
-  // One code in focus: asking for another cancels the one still pending first (best effort).
-  const createOffer = async () => {
-    const previous = pendingOfferId(offer);
-    createController.current?.abort();
-    const controller = new AbortController();
-    createController.current = controller;
-    dispatchOffer({ type: 'create' });
-    try {
-      const created = await replaceOffer(portalClient, session.token, previous, controller.signal);
-      if (!controller.signal.aborted) {
-        dispatchOffer({ type: 'created', offer: created, clockOffsetMs: serverClockOffset(created.serverTime, Date.now()) });
-      }
-    } catch (error) {
-      if (controller.signal.aborted) return;
-      if (error instanceof PortalApiError && error.kind === 'session_expired') {
-        onSessionExpired();
-        return;
-      }
-      const retryAt = retryAtFor(error);
-      dispatchOffer({
-        type: 'failed',
-        problem: error instanceof PortalApiError ? offerProblemFor(error) : 'unavailable',
-        ...(retryAt !== undefined && { retryAt }),
-      });
-    }
-  };
-
-  useEffect(() => () => createController.current?.abort(), []);
-
-  const activeOffer = offer.phase === 'active' ? offer.offer : null;
-  const activeOfferId = activeOffer?.offerId ?? null;
-  const activeOfferExpiresAt = activeOffer?.expiresAt ?? null;
-  const activeOfferOffset = offer.phase === 'active' ? offer.clockOffsetMs : 0;
-
-  // Poll every 2 s until the wallet has collected the diploma. Expiry is decided on the server's clock,
-  // and nothing is requested after it. A 429 waits for its Retry-After.
-  useEffect(() => {
-    if (!activeOfferId || !activeOfferExpiresAt) return undefined;
-    const controller = new AbortController();
-    const expiresAt = Date.parse(activeOfferExpiresAt);
-    const serverNow = () => Date.now() + activeOfferOffset;
-    let timer: number | undefined;
-
-    const schedule = (waitMs: number) => {
-      const left = expiresAt - serverNow();
-      if (left <= 0) {
-        dispatchOffer({ type: 'expiredLocally', offerId: activeOfferId });
-        return;
-      }
-      timer = window.setTimeout(poll, Math.min(waitMs, left));
-    };
-
-    const poll = async () => {
-      if (serverNow() >= expiresAt) {
-        dispatchOffer({ type: 'expiredLocally', offerId: activeOfferId });
-        return;
-      }
-      try {
-        const status = await portalClient.getOfferStatus(session.token, activeOfferId, controller.signal);
-        if (controller.signal.aborted) return;
-        dispatchOffer({ type: 'status', offerId: activeOfferId, status });
-        if (status === 'pending') schedule(OFFER_POLL_MS);
-      } catch (error) {
-        if (controller.signal.aborted) return;
-        if (error instanceof PortalApiError && error.kind === 'session_expired') {
-          onSessionExpired();
-          return;
-        }
-        // The offer's state is gone (30 minutes after creation): from the student's side it has expired.
-        if (error instanceof PortalApiError && error.kind === 'not_found') {
-          dispatchOffer({ type: 'status', offerId: activeOfferId, status: 'expired' });
-          return;
-        }
-        dispatchOffer({ type: 'pollFailed', offerId: activeOfferId });
-        const retryAfter = error instanceof PortalApiError ? error.retryAfterSeconds : undefined;
-        schedule(Math.max(OFFER_POLL_MS, (retryAfter ?? 0) * 1000));
-      }
-    };
-
-    void poll();
-    return () => {
-      controller.abort();
-      window.clearTimeout(timer);
-    };
-  }, [activeOfferExpiresAt, activeOfferId, activeOfferOffset, onSessionExpired, session.token]);
 
   // The new diploma appears in the list by itself, with its revoke action.
   const isIssued = offer.phase === 'issued';
@@ -809,6 +495,7 @@ function StudentView({
                     {holdsDiploma ? copy.reissue : copy.receive}
                   </button>
                   {holdsDiploma && <p className="type-body max-w-prose text-slate-600">{copy.reissueHint}</p>}
+                  <div className="rounded-2xl bg-[#E2E6FF]"><NoAppNote copy={copy} trialWalletPath={trialWalletPath} /></div>
                 </div>
               )}
 
@@ -865,6 +552,7 @@ function StudentView({
                     <ol className="type-body mt-2 list-decimal space-y-1.5 pl-5 text-slate-700">
                       {copy.firstTimeSteps.map((step) => <li key={step}>{step}</li>)}
                     </ol>
+                    <div className="mt-3 rounded-2xl bg-[#E2E6FF]"><NoAppNote copy={copy} trialWalletPath={trialWalletPath} /></div>
                   </div>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-slate-100 pt-4">
                     <button type="button" onClick={() => void createOffer()} className={secondaryButton} data-testid="portal-offer-new">
@@ -1206,6 +894,7 @@ export default function SchoolPortalPage() {
   );
   const signInController = useRef<AbortController | null>(null);
   const employerDemoPath = demoScenarioPath('apply-job', language);
+  const trialWalletPath = demoScenarioPath('diploma', language);
 
   useEffect(() => {
     rememberedSession = auth.status === 'signedIn' ? { session: auth.session, clockOffsetMs: auth.clockOffsetMs } : null;
@@ -1255,7 +944,7 @@ export default function SchoolPortalPage() {
 
   return (
     <div className="bg-[#FAFBFD] pb-12 sm:pb-20">
-      <div className="mx-auto max-w-6xl space-y-6 px-4 pt-8 sm:px-6 sm:pt-10">
+      <div className="mx-auto max-w-7xl space-y-6 px-6 pt-8 sm:pt-10">
         <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex min-w-0 items-center gap-3">
             <UniversityCrest label={copy.crestLabel} />
@@ -1290,7 +979,7 @@ export default function SchoolPortalPage() {
 
         <IdentraErrorBoundary>
           {auth.status === 'signedOut' && (
-            <SignInView state={auth} onSubmit={(username, password) => void signIn(username, password)} copy={copy} employerDemoPath={employerDemoPath} />
+            <SignInView state={auth} onSubmit={(username, password) => void signIn(username, password)} copy={copy} employerDemoPath={employerDemoPath} trialWalletPath={trialWalletPath} />
           )}
           {auth.status === 'signedIn' && auth.session.role === 'student' && (
             <StudentView
@@ -1300,6 +989,7 @@ export default function SchoolPortalPage() {
               locale={locale}
               onSessionExpired={onSessionExpired}
               employerDemoPath={employerDemoPath}
+              trialWalletPath={trialWalletPath}
             />
           )}
           {auth.status === 'signedIn' && auth.session.role === 'registrar' && (

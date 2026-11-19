@@ -60,6 +60,8 @@ export interface ApplyJobVerifierDialogCopy {
   close: string;
   noDiplomaHint: string;
   portalLink: string;
+  noAppHint: string;
+  trialWalletLink: string;
   checks: Record<CheckLabelKey, string>;
   claims: Record<DiplomaClaimKey, string>;
   reasons: Record<FailureReasonKey, string>;
@@ -120,6 +122,8 @@ const vi: ApplyJobVerifierDialogCopy = {
   close: 'Đóng',
   noDiplomaHint: 'Chưa có bằng trong ví? Nhận một bằng mẫu ở',
   portalLink: 'Cổng trường mẫu',
+  noAppHint: 'Chưa có ứng dụng Identra? Ứng dụng đang được thử nghiệm nội bộ, chưa có trên App Store hay Google Play.',
+  trialWalletLink: 'Dùng ví thử trên web',
   checks: {
     structure: 'Bằng được gửi đúng định dạng',
     algorithm: 'Bằng được ký theo cách được chấp nhận',
@@ -250,6 +254,8 @@ const en: ApplyJobVerifierDialogCopy = {
   close: 'Close',
   noDiplomaHint: 'No diploma in your wallet yet? Get a sample one from the',
   portalLink: 'sample university portal',
+  noAppHint: 'No Identra app? The app is in internal testing and not yet on the App Store or Google Play.',
+  trialWalletLink: 'Use the web trial wallet',
   checks: {
     structure: 'Diploma arrived in the expected format',
     algorithm: 'Signed in an accepted way',
@@ -380,6 +386,8 @@ const es: ApplyJobVerifierDialogCopy = {
   close: 'Cerrar',
   noDiplomaHint: '¿Aún no tienes un título en la billetera? Consigue uno de ejemplo en el',
   portalLink: 'portal universitario de ejemplo',
+  noAppHint: '¿No tienes la app de Identra? Está en pruebas internas y aún no está en App Store ni Google Play.',
+  trialWalletLink: 'Usar la billetera de prueba en la web (en inglés)',
   checks: {
     structure: 'El título llegó en el formato esperado',
     algorithm: 'Firmado de una forma aceptada',
@@ -510,6 +518,8 @@ const ja: ApplyJobVerifierDialogCopy = {
   close: '閉じる',
   noDiplomaHint: 'ウォレットにまだ卒業証書がありませんか？サンプルを受け取れます：',
   portalLink: 'サンプル大学ポータル',
+  noAppHint: 'Identra アプリをお持ちでないですか？アプリは社内テスト中で、App Store や Google Play にはまだありません。',
+  trialWalletLink: 'ウェブのお試しウォレットを使う（英語）',
   checks: {
     structure: '卒業証書の形式',
     algorithm: '認められた方法による署名',
@@ -640,6 +650,8 @@ const de: ApplyJobVerifierDialogCopy = {
   close: 'Schließen',
   noDiplomaHint: 'Noch kein Zeugnis in der Wallet? Holen Sie sich ein Beispiel im',
   portalLink: 'Beispiel-Hochschulportal',
+  noAppHint: 'Keine Identra-App? Die App ist im internen Test und noch nicht im App Store oder bei Google Play.',
+  trialWalletLink: 'Test-Wallet im Web nutzen (auf Englisch)',
   checks: {
     structure: 'Zeugnis im erwarteten Format',
     algorithm: 'Auf zulässige Weise signiert',

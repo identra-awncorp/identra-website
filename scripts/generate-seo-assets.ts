@@ -14,6 +14,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getDemoScenarioLocales,
   getBlogDetailLocales,
   getViewLocales,
   SUPPORTED_LOCALES,
@@ -89,7 +90,7 @@ const blogDetailRoutes: SitemapRoute[] = PUBLIC_BLOG_DETAIL_IDS.map((id) => {
   };
 });
 const demoScenarioRoutes: SitemapRoute[] = DEMO_SCENARIO_IDS.map((id) => ({
-  locales: SUPPORTED_LOCALES,
+  locales: getDemoScenarioLocales(id),
   pathForLocale: (locale: Locale) => demoScenarioPath(id, locale),
   lastModified: undefined,
   imagePaths: [],

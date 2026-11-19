@@ -12,6 +12,7 @@ import {
   SUPPORTED_LOCALES,
   blogDetailPath,
   demoScenarioPath,
+  getDemoScenarioLocales,
   getBlogDetailLocales,
   getViewLocales,
   localizePath,
@@ -83,7 +84,7 @@ const indexablePaths = [
     .filter((view) => view !== 'blog-detail' && SEO_ROUTE_GROUPS[view] !== 'account')
     .flatMap((view) => getViewLocales(view).map((locale) => viewToPath(view, locale))),
   ...DEMO_SCENARIO_IDS.flatMap((scenarioId) =>
-    SUPPORTED_LOCALES.map((locale) => demoScenarioPath(scenarioId, locale))),
+    getDemoScenarioLocales(scenarioId).map((locale) => demoScenarioPath(scenarioId, locale))),
   ...PUBLIC_BLOG_DETAIL_IDS.flatMap((articleId) =>
     getBlogDetailLocales(articleId).map((locale) => blogDetailPath(articleId, locale))),
 ];

@@ -83,7 +83,11 @@ export const unknownEvalSites = (code: string): string[] => {
   return [...rest.matchAll(EVAL_REFERENCE)].map((match) => rest.slice(Math.max(0, match.index - 60), match.index + 60));
 };
 
-export const cborWithoutEval = ({ required = false }: { required?: boolean } = {}): Plugin => {
+export const cborWithoutEval = ({ required = false, scanChunk }: {
+  required?: boolean;
+  /** Without `required`: which emitted chunks to scan for unknown Function/eval references anyway. */
+  scanChunk?: (chunk: { moduleIds: readonly string[] }) => boolean;
+} = {}): Plugin => {
   let transformed = false;
   return {
     name: 'identra-cbor-x-no-eval',
@@ -96,10 +100,10 @@ export const cborWithoutEval = ({ required = false }: { required?: boolean } = {
       return { code: code.replace(CBOR_PROBE, 'inlineObjectReadThreshold = Infinity'), map: null };
     },
     generateBundle(_options, bundle) {
-      if (!required) return;
-      if (!transformed) this.error('the cbor-x no-eval transform did not run on any module (cbor-x moved or was renamed?): update vite.config.ts');
+      if (!required && !scanChunk) return;
+      if (required && !transformed) this.error('the cbor-x no-eval transform did not run on any module (cbor-x moved or was renamed?): update vite.config.ts');
       for (const chunk of Object.values(bundle)) {
-        if (chunk.type !== 'chunk') continue;
+        if (chunk.type !== 'chunk' || (!required && !scanChunk?.(chunk))) continue;
         const unknown = unknownEvalSites(chunk.code);
         if (unknown.length > 0) {
           this.error(`${chunk.fileName}: ${unknown.length} reference(s) to Function/eval that are not known to be unreachable under script-src 'self':\n${unknown.join('\n')}`);
@@ -197,12 +201,14 @@ const localizedPreviewEntries = (): Plugin => ({
   },
 });
 
-export default defineConfig(() => {
+export default defineConfig(({ isSsrBuild }) => {
   return {
     plugins: [
       externalShortcuts(),
       productShellEntries(),
-      cborWithoutEval(),
+      // The web trial wallet's chunks (@identra/sdk-app and its protocol libraries) run under the same CSP as
+      // the product page: scan them the same way (the minified browser build; the SEO renderer never runs them).
+      cborWithoutEval(isSsrBuild ? {} : { scanChunk: (chunk) => chunk.moduleIds.some((id) => id.replaceAll('\\', '/').includes('/identra-sdk/packages/app/')) }),
       localizedPreviewEntries(),
       identraRootCaPlugin({defaultDir: path.resolve(__dirname, 'src/identra/trust')}),
       react(),

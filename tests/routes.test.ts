@@ -14,7 +14,9 @@ import {
   dashboardCredentialIssuancePath,
   dashboardFlowPath,
   dashboardPath,
+  demoScenarioPath,
   getBlogDetailLocales,
+  getDemoScenarioLocales,
   getViewLocales,
   localizePath,
   pathToBlogDetailId,
@@ -132,10 +134,22 @@ test('Credential Issuance docs path opens the dedicated docs tab', () => {
   assert.equal(getDocsTabIdFromSearch('?tab=unknown'), null);
 });
 
+test('the real demos are offered in Vietnamese and English; other locales open the English page', () => {
+  for (const scenarioId of ['diploma', 'product-journey'] as const) {
+    assert.deepEqual(getDemoScenarioLocales(scenarioId), ['en', 'vi']);
+    assert.equal(demoScenarioPath(scenarioId, 'vi'), `/vi/demo/${scenarioId}`);
+    assert.equal(demoScenarioPath(scenarioId, 'de'), `/en/demo/${scenarioId}`);
+    assert.equal(localizePath(`/ja/demo/${scenarioId}`, 'ja'), `/en/demo/${scenarioId}`);
+    assert.equal(pathToView(`/vi/demo/${scenarioId}`), 'demo');
+  }
+  assert.deepEqual(getDemoScenarioLocales('apply-job'), SUPPORTED_LOCALES);
+});
+
 test('every demo scenario has unique localized search metadata', () => {
   for (const locale of SUPPORTED_LOCALES) {
-    const profiles = DEMO_SCENARIO_IDS.map((scenarioId) =>
-      getDemoSeoProfile(scenarioId, locale));
+    const profiles = DEMO_SCENARIO_IDS
+      .filter((scenarioId) => getDemoScenarioLocales(scenarioId).includes(locale))
+      .map((scenarioId) => getDemoSeoProfile(scenarioId, locale));
 
     assert.equal(new Set(profiles.map(({ title }) => title)).size, profiles.length);
     assert.equal(

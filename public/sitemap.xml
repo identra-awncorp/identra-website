@@ -2893,6 +2893,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/vi/white-paper" />
   </url>
   <url>
+    <loc>https://identra.awncorp.vn/en/demo/diploma</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/demo/diploma" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/demo/diploma" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/demo/diploma" />
+  </url>
+  <url>
+    <loc>https://identra.awncorp.vn/vi/demo/diploma</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/demo/diploma" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/demo/diploma" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/demo/diploma" />
+  </url>
+  <url>
+    <loc>https://identra.awncorp.vn/en/demo/product-journey</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/demo/product-journey" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/demo/product-journey" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/demo/product-journey" />
+  </url>
+  <url>
+    <loc>https://identra.awncorp.vn/vi/demo/product-journey</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/demo/product-journey" />
+    <xhtml:link rel="alternate" hreflang="vi" href="https://identra.awncorp.vn/vi/demo/product-journey" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://identra.awncorp.vn/en/demo/product-journey" />
+  </url>
+  <url>
     <loc>https://identra.awncorp.vn/en/demo/bank-account</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://identra.awncorp.vn/en/demo/bank-account" />
     <xhtml:link rel="alternate" hreflang="es" href="https://identra.awncorp.vn/es/demo/bank-account" />

@@ -16,6 +16,7 @@ import {
   DEFAULT_LOCALE,
   demoScenarioPath,
   getBlogDetailLocales,
+  getDemoScenarioLocales,
   getViewLocales,
   SUPPORTED_LOCALES,
   type AppView,
@@ -194,7 +195,9 @@ export default function SeoMetadata({
       : (
           currentView === 'blog-detail'
             ? getBlogDetailLocales(currentBlogId)
-            : getViewLocales(currentView)
+            : currentView === 'demo' && demoScenarioId
+              ? getDemoScenarioLocales(demoScenarioId)
+              : getViewLocales(currentView)
         ).map((locale) => ({
           href: absoluteUrl(routePathForLocale(locale), siteUrl),
           hrefLang: HREFLANG_CODES[locale],

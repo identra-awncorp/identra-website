@@ -78,6 +78,9 @@ export interface SchoolPortalPageCopy {
   reissue: string;
   reissueHint: string;
   firstTimeTitle: string;
+  noAppTitle: string;
+  noAppBody: string;
+  noAppAction: string;
   firstTimeSteps: readonly string[];
   myDiplomasTitle: string;
   myDiplomasNote: string;
@@ -208,6 +211,9 @@ const vi: SchoolPortalPageCopy = {
   reissue: 'Nhận lại bằng vào ví',
   reissueHint: 'Dùng khi bạn đổi hoặc mất điện thoại. Mỗi lần nhận là một bản bằng mới; bản cũ vẫn còn hiệu lực cho đến khi bạn thu hồi nó trong danh sách bên dưới.',
   firstTimeTitle: 'Lần đầu dùng ví Identra?',
+  noAppTitle: 'Chưa có ứng dụng?',
+  noAppBody: 'Ứng dụng Identra đang được thử nghiệm nội bộ, chưa có trên App Store hay Google Play. Bạn vẫn thử được trọn quy trình với ví thử trên web, có hướng dẫn từng bước.',
+  noAppAction: 'Dùng ví thử trên web',
   firstTimeSteps: [
     'Mở ứng dụng Identra trên điện thoại và chọn Quét mã.',
     'Hướng camera vào mã QR ở trên.',
@@ -379,6 +385,9 @@ const en: SchoolPortalPageCopy = {
   reissue: 'Receive the diploma again',
   reissueHint: 'For a new or lost phone. Each time is a new copy of the diploma; the old one stays valid until you revoke it in the list below.',
   firstTimeTitle: 'New to the Identra wallet?',
+  noAppTitle: 'No app yet?',
+  noAppBody: 'The Identra app is in internal testing and not yet on the App Store or Google Play. You can still try the whole flow with the web trial wallet, guided step by step.',
+  noAppAction: 'Use the web trial wallet',
   firstTimeSteps: [
     'Open the Identra app on your phone and tap Scan.',
     'Point the camera at the QR code above.',

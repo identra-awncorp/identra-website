@@ -13,7 +13,8 @@ const sdk = path.resolve(root, '../identra-sdk/packages');
 const required = [
   { name: '@identra/sdk-client', file: 'client/dist/index.js', exports: ['createVerifierClient', 'serverClockOffset', 'isValidVerifierQr', 'PRESENTATION_CHECK_IDS', 'VerifierClientError'] },
   { name: '@identra/sdk-client/product', file: 'client/dist/product.js', exports: ['createProductVerifier'] },
-  { name: '@identra/sdk-core', file: 'core/dist/index.js', exports: ['ErrorCodes', 'parseDigitalLinkPath', 'formatProductCode', 'formatDigitalLinkPath'] },
+  { name: '@identra/sdk-app', file: 'app/dist/index.js', exports: ['createWallet', 'createSoftwareKeyStore', 'createCredentialVault', 'createInMemoryCredentialRepository', 'createInMemorySecretStorage'] },
+  { name: '@identra/sdk-core', file: 'core/dist/index.js', exports: ['ErrorCodes', 'parseDigitalLinkPath', 'formatProductCode', 'formatDigitalLinkPath', 'createMappedFetch'] },
 ];
 
 const problems = [];

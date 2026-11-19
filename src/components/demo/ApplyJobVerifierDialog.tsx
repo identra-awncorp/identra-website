@@ -54,6 +54,8 @@ interface ApplyJobVerifierDialogProps {
   onSettled?: (ok: boolean) => void;
   onFillManually: () => void;
   portalHref: string;
+  /** The guided demo with the web trial wallet, for visitors without the app. */
+  trialWalletHref: string;
 }
 
 function CheckList({ rows, copy, headlineRow }: { rows: CheckRow[]; copy: ApplyJobVerifierDialogCopy; headlineRow: CheckRow | null }) {
@@ -95,10 +97,16 @@ export function ApplyJobVerifierResult({
   result,
   copy,
   language,
+  verifierName,
+  showFailureHint = true,
 }: {
   result: SessionResult;
   copy: ApplyJobVerifierDialogCopy;
   language: string;
+  /** The verifier's trust-list name from the session (`verifier.name`). */
+  verifierName: string;
+  /** The "fill in the form yourself / try later" line under a failure; a page with its own next step hides it. */
+  showFailureHint?: boolean;
 }) {
   const rows = toCheckRows(result);
   const failure = firstFailure(rows);
@@ -118,7 +126,7 @@ export function ApplyJobVerifierResult({
             {result.ok ? copy.verifiedTitle : copy.failedTitle}
           </h3>
           <p className="type-body">{result.ok ? copy.verifiedBody : copy.reasons[failure?.reasonKey ?? 'UNKNOWN']}</p>
-          {!result.ok && (
+          {!result.ok && showFailureHint && (
             <p className="type-body">{isFinalFailure(rows) ? copy.failedFinalHint : copy.failedRetryHint}</p>
           )}
         </div>
@@ -151,7 +159,7 @@ export function ApplyJobVerifierResult({
         <div className="min-w-0">
           <dt className="type-body-sm text-slate-600">{copy.verifiedBy}</dt>
           <dd className="type-body font-medium text-slate-900">
-            <IdentraOrganisationName maToChuc={SAMPLE_VERIFIER_ORGANISATION} serverName="" language={language} />
+            <IdentraOrganisationName maToChuc={SAMPLE_VERIFIER_ORGANISATION} serverName={verifierName} language={language} />
           </dd>
         </div>
         {checkedAt && <p className="type-body-sm text-slate-600 sm:col-span-2">{fill(copy.checkedAt, { time: checkedAt })}</p>}
@@ -184,7 +192,7 @@ function RetryButton({ retryAt, label, waitTemplate, onRetry }: { retryAt: numbe
   );
 }
 
-export default function ApplyJobVerifierDialog({ onClose, onUseResult, onSettled, onFillManually, portalHref }: ApplyJobVerifierDialogProps) {
+export default function ApplyJobVerifierDialog({ onClose, onUseResult, onSettled, onFillManually, portalHref, trialWalletHref }: ApplyJobVerifierDialogProps) {
   const { language } = useLanguage();
   const copy = getLocalizedRecord(
     APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS,
@@ -412,7 +420,7 @@ export default function ApplyJobVerifierDialog({ onClose, onUseResult, onSettled
 
             {(state.phase === 'verified' || state.phase === 'failed') && (
               <div className="space-y-6">
-                <ApplyJobVerifierResult result={state.result} copy={copy} language={language} />
+                <ApplyJobVerifierResult result={state.result} copy={copy} language={language} verifierName={state.verifierName} />
                 <div className="flex flex-wrap gap-3">
                   {state.phase === 'verified' ? (
                     <>
@@ -444,6 +452,14 @@ export default function ApplyJobVerifierDialog({ onClose, onUseResult, onSettled
             {copy.noDiplomaHint}{' '}
             <Link to={portalHref} className={`font-semibold text-[#2539BE] underline-offset-2 hover:underline ${focusRing}`}>
               {copy.portalLink}
+            </Link>
+          </p>
+        )}
+        {state.phase !== 'verified' && (
+          <p className="type-body mt-2 text-slate-600" data-testid="apply-job-no-app">
+            {copy.noAppHint}{' '}
+            <Link to={trialWalletHref} onClick={onClose} className={`font-semibold text-[#2539BE] underline-offset-2 hover:underline ${focusRing}`} data-testid="apply-job-trial-wallet">
+              {copy.trialWalletLink}
             </Link>
           </p>
         )}

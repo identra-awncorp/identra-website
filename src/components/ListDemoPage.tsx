@@ -1,14 +1,15 @@
-import { useMemo, useState, type ComponentType } from 'react';
+import { useMemo, type ComponentType } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowLeft,
   ArrowRight,
   Briefcase,
   Cpu,
+  GraduationCap,
   HeartPulse,
   HelpCircle,
   Landmark,
-  Layers,
+  Package,
   Plane,
   Play,
   ShieldCheck,
@@ -16,25 +17,12 @@ import {
   Ticket
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import { demoScenarioPath, viewToPath, type DemoScenarioId, type Locale } from '../types/routes';
-
-// The sample products the server provisions (GS1 sample GTIN, prefix 952): GS1 Digital Link paths.
-const SAMPLE_PRODUCT_PATHS = [
-  { path: '/01/09520123456788/21/SN-2026-000001', labelKey: 'sampleProductComplete' },
-  { path: '/01/09520123456788/21/SN-2026-000002', labelKey: 'sampleProductInProgress' },
-] as const;
+import { demoScenarioPath, isRealDemoScenarioId, viewToPath, type DemoScenarioId, type Locale } from '../types/routes';
 import { getLocalizedRecord } from '../utils/i18nRuntime';
 import { LIST_DEMO_PAGE_TRANSLATIONS } from '../translations/ListDemoPageTranslations';
 
 interface ListDemoPageProps {
-  onOpenSandbox: () => void;
   onBackToLanding: () => void;
-}
-
-interface DemoListScenarioStep {
-  label: string;
-  action: string;
-  logText: string;
 }
 
 interface DemoListScenario {
@@ -43,11 +31,11 @@ interface DemoListScenario {
   title: string;
   desc: string;
   security: string;
-  successResult: string;
-  steps: DemoListScenarioStep[];
 }
 
 const SCENARIO_ICONS: Record<DemoScenarioId, ComponentType<any>> = {
+  diploma: GraduationCap,
+  'product-journey': Package,
   'bank-account': Landmark,
   'apply-job': Briefcase,
   'ticket-booking': Ticket,
@@ -58,14 +46,14 @@ const SCENARIO_ICONS: Record<DemoScenarioId, ComponentType<any>> = {
 };
 
 
-export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDemoPageProps) {
+export default function ListDemoPage({ onBackToLanding }: ListDemoPageProps) {
   const { language } = useLanguage();
   const t = getLocalizedRecord(LIST_DEMO_PAGE_TRANSLATIONS, language as keyof typeof LIST_DEMO_PAGE_TRANSLATIONS, 'LIST_DEMO_PAGE_TRANSLATIONS');
-  const [activeTab, setActiveTab] = useState<'scenarios' | 'trends'>('scenarios');
   const routeLocale = language as Locale;
 
+  // The two demos that run for real come first, in the same list as the interface simulations.
   const demoScenarios = useMemo(
-    () => t.scenarios.map((scenario: DemoListScenario) => ({
+    () => [...t.realScenarios, ...t.scenarios].map((scenario: DemoListScenario) => ({
       ...scenario,
       icon: SCENARIO_ICONS[scenario.id] || ShieldCheck
     })),
@@ -112,13 +100,20 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 mb-10">
-              <button
-                onClick={onOpenSandbox}
-                className="type-control inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-teal-50 text-[#354CE1] rounded-full shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+              <Link
+                to={demoScenarioPath('diploma', routeLocale)}
+                data-testid="demo-hub-start-guided"
+                className="type-control inline-flex min-h-11 items-center gap-2 px-5 py-2.5 bg-white hover:bg-teal-50 text-[#354CE1] rounded-full shadow-md transition-all hover:shadow-lg hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               >
-                <span>{t.openSandbox}</span>
+                <span>{t.heroCta}</span>
                 <ArrowRight className="h-4 w-4 text-[#354CE1]" />
-              </button>
+              </Link>
+              <Link
+                to={demoScenarioPath('product-journey', routeLocale)}
+                className="type-control inline-flex min-h-11 items-center gap-2 px-5 py-2.5 border border-white/50 text-white hover:bg-white/15 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                <span>{t.heroSecondary}</span>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/20 pt-8 text-xs sm:text-sm">
@@ -135,32 +130,7 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
           </div>
         </div>
 
-        <div className="flex border-b border-slate-200/80 pb-0.5 gap-8 text-xs sm:text-sm md:text-base">
-          <button
-            onClick={() => setActiveTab('scenarios')}
-            className={`type-control pb-3 border-b-2 transition-all cursor-pointer ${
-              activeTab === 'scenarios'
-                ? 'border-[#354CE1] text-[#354CE1]'
-                : 'border-transparent text-slate-400 hover:text-slate-600'
-            }`}
-          >
-            {t.tabs.scenarios}
-          </button>
-          <button
-            onClick={() => setActiveTab('trends')}
-            className={`type-control pb-3 border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
-              activeTab === 'trends'
-                ? 'border-[#354CE1] text-[#354CE1]'
-                : 'border-transparent text-slate-400 hover:text-slate-600'
-            }`}
-          >
-            <Layers className="h-4 w-4" />
-            <span>{t.tabs.trends}</span>
-          </button>
-        </div>
-
-        {activeTab === 'scenarios' ? (
-          <>
+        <>
             <div className="space-y-6">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="type-section-title-compact text-slate-900">
@@ -177,6 +147,7 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
                   return (
                     <div
                       key={scenario.id}
+                      data-testid={`demo-card-${scenario.id}`}
                       className="bg-white rounded-2xl border border-slate-200/80 hover:border-slate-300 hover:shadow-md hover:-translate-y-1 p-5 sm:p-6 flex flex-col justify-between space-y-5 transition-all duration-300"
                     >
                       <div className="space-y-4">
@@ -184,15 +155,23 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
                           <div className="p-2.5 bg-indigo-50 text-[#354CE1] rounded-xl border border-indigo-100/40">
                             <Icon className="h-5 w-5" />
                           </div>
-                          <span className="type-label text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-full uppercase">
-                            {scenario.tag}
+                          <span
+                            data-testid={`demo-card-kind-${scenario.id}`}
+                            className={`type-label px-2.5 py-1 rounded-full ${
+                              isRealDemoScenarioId(scenario.id)
+                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                : 'bg-slate-50 text-slate-600 border border-slate-200'
+                            }`}
+                          >
+                            {isRealDemoScenarioId(scenario.id) ? t.realLabel : t.simulatedLabel}
                           </span>
                         </div>
 
                         <div className="space-y-2">
-                          <h4 className="type-card-title text-slate-900">
+                          <p className="type-body-sm text-slate-500">{scenario.tag}</p>
+                          <h3 className="type-card-title text-slate-900">
                             {scenario.title}
-                          </h4>
+                          </h3>
                           <p className="type-body text-slate-600 min-h-[48px]">
                             {scenario.desc}
                           </p>
@@ -207,6 +186,7 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
 
                         <Link
                           to={demoScenarioPath(scenario.id, routeLocale)}
+                          data-testid={`demo-card-start-${scenario.id}`}
                           className="type-control w-full inline-flex items-center justify-center gap-2 text-slate-800 hover:text-white bg-slate-50 hover:bg-[#354CE1] border border-slate-200/80 hover:border-[#354CE1] px-4 py-2.5 rounded-xl transition cursor-pointer select-none active:scale-[0.98]"
                         >
                           <Play className="h-3.5 w-3.5 fill-current" />
@@ -219,59 +199,35 @@ export default function ListDemoPage({ onOpenSandbox, onBackToLanding }: ListDem
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#E2E6FF] p-6 sm:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-              <div className="space-y-1 flex-1">
-                <h3 className="type-card-title text-[#0F1E36]">{t.samplePortalTitle}</h3>
-                <p className="type-body text-slate-700">{t.samplePortalDesc}</p>
-              </div>
+            <p className="type-body text-slate-700">
+              {t.appNote}{' '}
               <Link
                 to={viewToPath('school-portal', routeLocale)}
-                className="type-control inline-flex items-center justify-center gap-2 text-white bg-[#354CE1] hover:bg-[#2539BE] px-5 py-2.5 rounded-full transition shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
+                className="type-control inline-flex min-h-11 items-center text-[#2539BE] underline underline-offset-2 hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
               >
-                <span>{t.samplePortalAction}</span>
-                <ArrowRight className="h-4 w-4" />
+                {t.portalLink}
               </Link>
-            </div>
-
-            <div className="rounded-2xl border border-slate-200/80 bg-white p-6 sm:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-              <div className="space-y-1 flex-1">
-                <h3 className="type-card-title text-[#0F1E36]">{t.sampleProductTitle}</h3>
-                <p className="type-body text-slate-700">{t.sampleProductDesc}</p>
-              </div>
-              <div className="flex flex-wrap gap-3 shrink-0">
-                {SAMPLE_PRODUCT_PATHS.map(({ path, labelKey }) => (
-                  <a
-                    key={path}
-                    href={path}
-                    className="type-control inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-5 text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
-                  >
-                    <span>{t[labelKey]}</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                ))}
-              </div>
-            </div>
+            </p>
 
             <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6">
               <div className="h-12 w-12 rounded-xl bg-indigo-50 text-[#354CE1] border border-indigo-100 flex items-center justify-center shrink-0">
                 <HelpCircle className="h-6 w-6" />
               </div>
               <div className="space-y-1 flex-1 text-center md:text-left">
-                <h4 className="type-card-title text-slate-900">{t.customFlowTitle}</h4>
+                <h2 className="type-card-title text-slate-900">{t.customFlowTitle}</h2>
                 <p className="type-body text-slate-600">{t.customFlowDesc}</p>
               </div>
-              <button
-                onClick={onOpenSandbox}
-                className="type-control inline-flex items-center gap-2 text-white bg-[#354CE1] hover:bg-[#2539BE] px-5 py-2.5 rounded-xl transition shrink-0 shadow-md cursor-pointer active:scale-[0.98]"
+              <Link
+                to={viewToPath('contact', routeLocale)}
+                data-testid="demo-hub-contact"
+                className="type-control inline-flex min-h-11 items-center gap-2 text-white bg-[#354CE1] hover:bg-[#2539BE] px-5 py-2.5 rounded-xl transition shrink-0 shadow-md active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#354CE1] focus-visible:ring-offset-2"
               >
-                <span>{t.openComprehensiveSandbox}</span>
+                <span>{t.contactAction}</span>
                 <ArrowRight className="h-4 w-4" />
-              </button>
+              </Link>
             </div>
           </>
-        ) : (
-          <div className="type-body p-8 text-center text-slate-500">{t.comingSoon}</div>
-        )}
+
       </div>
     </div>
   );

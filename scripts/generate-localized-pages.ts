@@ -26,6 +26,7 @@ import {
   DEFAULT_LOCALE,
   DEMO_SCENARIO_IDS,
   demoScenarioPath,
+  getDemoScenarioLocales,
   getBlogDetailLocales,
   getViewLocales,
   LEGACY_VIEW_ALIASES,
@@ -143,7 +144,9 @@ const routePath = (route: LocalizedRoute, locale: Locale): string =>
 const localesForRoute = (route: LocalizedRoute): readonly Locale[] =>
   route.view === 'blog-detail'
     ? getBlogDetailLocales(route.blogId ?? DEFAULT_BLOG_DETAIL_ID)
-    : getViewLocales(route.view);
+    : route.view === 'demo' && route.demoScenarioId
+      ? getDemoScenarioLocales(route.demoScenarioId)
+      : getViewLocales(route.view);
 
 const renderSeoFallback = (headline: string, description: string): string =>
   `<main data-seo-fallback style="max-width:72rem;margin:0 auto;padding:5rem 1.5rem;font-family:Arial,sans-serif;color:#0f172a"><h1 style="max-width:48rem;margin:0;font-size:2.5rem;line-height:1.15">${escapeHtml(headline)}</h1><p style="max-width:42rem;margin:1.25rem 0 0;font-size:1rem;line-height:1.7;color:#475569">${escapeHtml(description)}</p></main>`;

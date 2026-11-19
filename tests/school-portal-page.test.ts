@@ -31,6 +31,7 @@ const render = (locale: 'vi' | 'en') => renderToStaticMarkup(createElement(
     onSubmit: () => undefined,
     copy: SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale],
     employerDemoPath: `/${locale}/demo/apply-job`,
+    trialWalletPath: `/${locale}/demo/diploma`,
   }),
 ));
 

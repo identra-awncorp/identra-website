@@ -5,8 +5,10 @@
 
 import {
   DEMO_SCENARIO_IDS,
+  resolveDemoScenarioLocale,
   type DemoScenarioId,
   type Locale,
+  type RealDemoScenarioId,
 } from '../types/routes';
 
 export type DemoSeoProfile = {
@@ -16,8 +18,34 @@ export type DemoSeoProfile = {
 };
 
 type LocalizedDemoSeoProfile = Record<Locale, DemoSeoProfile>;
+/** The real demos exist in Vietnamese and English only (routes: DEMO_SCENARIO_LOCALE_OVERRIDES). */
+type BilingualDemoSeoProfile = Record<'en' | 'vi', DemoSeoProfile>;
 
 export const DEMO_SEO_PROFILES = {
+  diploma: {
+    en: {
+      title: 'Guided demo: receive and use a diploma',
+      headline: 'Receive a diploma, apply with it, then see a revoked one refused',
+      description: 'A step-by-step demo that runs for real: a sample university issues a diploma to a trial wallet in your browser, an employer checks it, and a revoked diploma fails.',
+    },
+    vi: {
+      title: 'Demo có hướng dẫn: nhận và dùng bằng tốt nghiệp',
+      headline: 'Nhận bằng, dùng bằng để ứng tuyển, rồi xem bằng bị thu hồi bị từ chối',
+      description: 'Demo từng bước chạy thật: trường mẫu cấp bằng vào ví thử ngay trên trình duyệt, nhà tuyển dụng kiểm tra, và bằng đã bị thu hồi thì không qua được.',
+    },
+  },
+  'product-journey': {
+    en: {
+      title: 'Guided demo: check a product\'s journey',
+      headline: 'Open three sample products and see their signed journeys checked',
+      description: 'Three sample products, each with a QR you can scan with your own phone: a complete journey, one still on its way, and one whose inspection record was revoked.',
+    },
+    vi: {
+      title: 'Demo có hướng dẫn: kiểm tra hành trình sản phẩm',
+      headline: 'Mở ba sản phẩm mẫu và xem hành trình có chữ ký được kiểm tra',
+      description: 'Ba sản phẩm mẫu, mỗi sản phẩm có mã QR để quét bằng điện thoại của bạn: đủ hành trình, đang đi tiếp, và một sản phẩm có bản ghi kiểm định đã bị thu hồi.',
+    },
+  },
   'bank-account': {
     en: {
       title: 'Bank account opening and KYC demo',
@@ -207,12 +235,12 @@ export const DEMO_SEO_PROFILES = {
       description: 'Xem cách bằng chứng sở hữu, cơ chế ký quỹ và phát hành thực chứng hỗ trợ chuyển vé an toàn hơn từ người sở hữu ban đầu sang người mua.',
     },
   },
-} as const satisfies Record<DemoScenarioId, LocalizedDemoSeoProfile>;
+} as const satisfies Record<RealDemoScenarioId, BilingualDemoSeoProfile> & Record<Exclude<DemoScenarioId, RealDemoScenarioId>, LocalizedDemoSeoProfile>;
 
 export const getDemoSeoProfile = (
   scenarioId: DemoScenarioId,
   locale: Locale,
-): DemoSeoProfile => DEMO_SEO_PROFILES[scenarioId][locale];
+): DemoSeoProfile => (DEMO_SEO_PROFILES[scenarioId] as Partial<Record<Locale, DemoSeoProfile>>)[resolveDemoScenarioLocale(scenarioId, locale)]!;
 
 export const getLocalizedDemoSeoProfiles = (
   locale: Locale,

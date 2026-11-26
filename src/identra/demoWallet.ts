@@ -8,6 +8,9 @@
 // stand-ins for what a phone provides. Real protocol, real cryptography, real API; what differs from the
 // Identra app is where the secrets live: here keys and credentials are JavaScript values in this tab's
 // memory (gone on reload), on the phone they sit in the secure hardware. Nothing is written to storage.
+// The same goes for what it remembers of a request whose share reached the verifier (the SDK's pin, and the
+// trial wallet's own note of it, demoWalletModel.ts): while this wallet lives, opening that request again only
+// offers the same share again or stopping; a reload makes a new wallet that remembers nothing of it.
 // Loaded only through a dynamic import (demoWalletLoader.ts), never by the marketing bundle.
 import { createCertNetDidResolver, createCertNetTrustRegistry, createMappedFetch, type HttpFetch } from '@identra/sdk-core';
 import type { CertNetConfig } from './config';

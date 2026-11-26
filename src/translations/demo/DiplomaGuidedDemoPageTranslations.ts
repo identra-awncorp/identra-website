@@ -22,6 +22,8 @@ export interface DiplomaGuidedDemoPageCopy {
   stepStatus: { done: string; current: string; upcoming: string };
   steps: Record<GuidedStepId, { title: string; summary: string; instructions: readonly string[] }>;
   instructionsTitle: string;
+  /** Instead of a step's instructions while the employer holds a share it could not check yet (the wallet is locked to it). */
+  deliveredInstructions: readonly string[];
   organisationSide: string;
   walletSide: string;
   // Step 1: the school
@@ -75,6 +77,8 @@ export interface DiplomaGuidedDemoPageCopy {
   requestExpiredBody: string;
   newRequest: string;
   requestSentToWallet: string;
+  /** Under the request while the employer holds a share it could not check yet. */
+  requestDeliveredInWallet: string;
   appliedNext: string;
   verifierUnavailableHint: string;
   // Step 3: revoke and try again
@@ -158,6 +162,11 @@ const vi: DiplomaGuidedDemoPageCopy = {
     },
   },
   instructionsTitle: 'Bấm gì, sẽ thấy gì',
+  deliveredInstructions: [
+    'Nhà tuyển dụng đã nhận bằng nhưng lúc này chưa kiểm tra được, nên chưa có kết luận nào.',
+    'Đợi một lát rồi bấm “Gửi lại” trong ví thử. Ví chỉ gửi lại đúng tấm bằng và đúng những thông tin đã gửi; bấm “Mở yêu cầu trong ví thử” lần nữa thì ví cũng chỉ cho “Gửi lại” hoặc “Dừng”.',
+    'Khi kiểm tra được, bên nhà tuyển dụng hiện kết quả. Nếu ví báo không gửi lại được nữa, hãy đợi yêu cầu hết hạn rồi tạo yêu cầu mới.',
+  ],
   organisationSide: 'Phía tổ chức',
   walletSide: 'Ví của bạn',
   signInSample: 'Đăng nhập bằng tài khoản mẫu',
@@ -233,6 +242,7 @@ const vi: DiplomaGuidedDemoPageCopy = {
   requestExpiredBody: 'Mỗi yêu cầu chỉ dùng được trong 5 phút. Tạo yêu cầu mới để thử lại.',
   newRequest: 'Tạo yêu cầu mới',
   requestSentToWallet: 'Đã mở yêu cầu trong ví thử. Xem ví rồi bấm “Chia sẻ”.',
+  requestDeliveredInWallet: 'Nhà tuyển dụng đã nhận bằng nhưng chưa kiểm tra được. Đợi một lát rồi bấm “Gửi lại” trong ví thử.',
   appliedNext: 'Tiếp: thu hồi và thử lại',
   verifierUnavailableHint: 'Nếu lỗi kéo dài, hãy thử lại sau ít phút.',
   schoolRevokeTitle: 'Phía trường: thu hồi bản bằng trên điện thoại bị mất',
@@ -349,6 +359,11 @@ const en: DiplomaGuidedDemoPageCopy = {
     },
   },
   instructionsTitle: 'What to press, what you will see',
+  deliveredInstructions: [
+    'The employer received the diploma but could not check it right now, so nothing has been decided yet.',
+    'Wait a moment, then press “Send again” in the trial wallet. The wallet only sends the same diploma with the same details again; pressing “Open the request in the trial wallet” again also only offers “Send again” or “Stop”.',
+    'Once it can be checked, the employer\'s side shows the result. If the wallet says it cannot be sent again, wait for the request to expire, then create a new one.',
+  ],
   organisationSide: 'The organisation\'s side',
   walletSide: 'Your wallet',
   signInSample: 'Sign in with a sample account',
@@ -424,6 +439,7 @@ const en: DiplomaGuidedDemoPageCopy = {
   requestExpiredBody: 'Each request can be used for 5 minutes. Create a new one to try again.',
   newRequest: 'Create a new request',
   requestSentToWallet: 'The request is open in the trial wallet. Look at the wallet and press “Share”.',
+  requestDeliveredInWallet: 'The employer received the diploma but could not check it yet. Wait a moment, then press “Send again” in the trial wallet.',
   appliedNext: 'Next: revoke and try again',
   verifierUnavailableHint: 'If this keeps happening, try again in a few minutes.',
   schoolRevokeTitle: 'The university\'s side: revoke the copy on a lost phone',

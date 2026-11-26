@@ -19,10 +19,12 @@ import {
   guidedRunFor,
   guidedRunSearch,
   happenedReceiveLines,
+  instructionsFor,
   stepStatus,
   type GuidedEvent,
   type GuidedState,
 } from '../src/identra/guidedDiplomaDemo';
+import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../src/translations/demo/DemoWalletPanelTranslations';
 import { DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS } from '../src/translations/demo/DiplomaGuidedDemoPageTranslations';
 import { SCHOOL_PORTAL_PAGE_TRANSLATIONS } from '../src/translations/SchoolPortalPageTranslations';
 
@@ -196,5 +198,23 @@ test('the school side says only what the school knows: the diploma was sent to t
     const { issuedTitle, issuedBody } = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
     assert.equal(issuedTitle, locale === 'vi' ? 'Đã gửi bằng tới ví' : 'Sent to your wallet');
     assert.ok(!/cấp vào ví|đã nằm trong ví|is now in your/i.test(issuedTitle + issuedBody), `${locale}: no claim the wallet holds it`);
+  }
+});
+
+test('while the employer holds a share it could not check yet, the instructions say "Send again", as the wallet does', () => {
+  for (const locale of ['vi', 'en'] as const) {
+    for (const run of ['x509', 'certnet'] as const) {
+      const copy = guidedCopyFor(DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale], run);
+      const wallet = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+      for (const step of ['apply', 'revoke'] as const) {
+        const held = instructionsFor(copy, step, 'qr-1', 'qr-1').join(' ');
+        assert.ok(held.includes(`“${wallet.shareAgain}”`) && held.includes(`“${wallet.stop}”`), `${locale}/${step}: names the wallet's buttons`);
+        assert.ok(!held.includes(`“${wallet.share}”`), `${locale}/${step}: not "${wallet.share}"`);
+        assert.ok(held.includes(`“${copy.openRequestInWallet}”`), `${locale}/${step}: says what the page's own button does now`);
+        assert.equal(instructionsFor(copy, step, 'qr-2', 'qr-1'), copy.steps[step].instructions, 'a new request: the usual instructions');
+        assert.equal(instructionsFor(copy, step, null, 'qr-1'), copy.steps[step].instructions, 'not waiting: the usual instructions');
+      }
+      assert.ok(copy.requestDeliveredInWallet.includes(`“${wallet.shareAgain}”`) && !copy.requestDeliveredInWallet.includes(`“${wallet.share}”`), locale);
+    }
   }
 });

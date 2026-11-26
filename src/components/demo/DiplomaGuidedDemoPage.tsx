@@ -31,6 +31,7 @@ import {
   guidedRunFor,
   guidedRunSearch,
   happenedReceiveLines,
+  instructionsFor,
   stepStatus,
   type GuidedRun,
   type GuidedState,
@@ -61,6 +62,7 @@ import { demoScenarioPath, resolveDemoScenarioLocale, viewToPath } from '../../t
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
 import IdentraHowItWorks from '../IdentraHowItWorks';
 import IdentraQrCode from '../IdentraQrCode';
+import CertNetTestBuildMarker, { CERTNET_TEST_BUILD } from '../CertNetTestBuildMarker';
 import ConfirmDialog from '../SchoolPortalConfirmDialog';
 import UniversityCrest from '../UniversityCrest';
 import { ApplyJobVerifierResult } from './ApplyJobVerifierDialog';
@@ -299,8 +301,10 @@ function EmployerCheck({
   startLabel,
   walletBusy,
   declinedQr,
+  deliveredQr,
   onHandoff,
   onClockOffset,
+  onWaitingQr,
   onResult,
   renderResult,
 }: {
@@ -312,8 +316,12 @@ function EmployerCheck({
   walletBusy: boolean;
   /** The request the visitor declined in the wallet: the employer side says so at once. */
   declinedQr: string | null;
+  /** The request a share of which the employer received but could not check yet: the wallet only sends it again. */
+  deliveredQr: string | null;
   onHandoff: (qr: string) => void;
   onClockOffset: (offsetMs: number) => void;
+  /** The request on screen while it waits for the wallet (null otherwise), so the page's instructions can follow it. */
+  onWaitingQr: (qr: string | null) => void;
   onResult: (ok: boolean, reason: FailureReasonKey | null) => void;
   /** What the result means for this step, under the employer's result. */
   renderResult?: (result: SessionResult) => ReactNode;
@@ -324,9 +332,11 @@ function EmployerCheck({
   const [declined, setDeclined] = useState(false);
   const onResultRef = useRef(onResult);
   const onClockOffsetRef = useRef(onClockOffset);
+  const onWaitingQrRef = useRef(onWaitingQr);
   useEffect(() => {
     onResultRef.current = onResult;
     onClockOffsetRef.current = onClockOffset;
+    onWaitingQrRef.current = onWaitingQr;
   });
   const now = useNow();
   const retryWait = state.phase === 'error' && state.retryAt !== null ? Math.max(0, Math.floor((state.retryAt - now) / 1000)) : 0;
@@ -348,6 +358,11 @@ function EmployerCheck({
 
   // Declined in the wallet: nothing will come, so stop waiting and say so.
   const waitingQr = state.phase === 'waiting' ? state.qr : null;
+  const delivered = waitingQr !== null && deliveredQr === waitingQr;
+  useEffect(() => {
+    onWaitingQrRef.current(waitingQr);
+    return () => onWaitingQrRef.current(null);
+  }, [waitingQr]);
   useEffect(() => {
     if (waitingQr && declinedQr === waitingQr) {
       controllerRef.current?.abort();
@@ -404,7 +419,7 @@ function EmployerCheck({
       )}
 
       {state.phase === 'waiting' && !declined && (
-        <div className="space-y-4 rounded-2xl bg-slate-50 p-4 sm:p-5" data-testid={testId(variant, 'waiting')} data-status={state.status}>
+        <div className="space-y-4 rounded-2xl bg-slate-50 p-4 sm:p-5" data-testid={testId(variant, 'waiting')} data-status={state.status} data-delivered={delivered || undefined}>
           <p className="type-body flex items-center gap-2 text-slate-700">
             <Clock aria-hidden="true" className="h-4 w-4 text-slate-500" />
             <Countdown expiresAt={state.expiresAt} offsetMs={state.clockOffsetMs} template={copy.requestExpiresIn} />
@@ -426,7 +441,7 @@ function EmployerCheck({
             {walletBusy && <p className="type-body-sm text-slate-600" data-testid="guided-wallet-busy">{copy.walletBusy}</p>}
           </QrHandoff>
           <p className={`type-body font-medium ${state.reconnecting ? 'text-amber-800' : 'text-[#0F1E36]'}`}>
-            {state.reconnecting ? dialogCopy.reconnecting : state.status === 'request_retrieved' || handedOver === state.sessionId ? copy.requestSentToWallet : copy.requestReady}
+            {state.reconnecting ? dialogCopy.reconnecting : delivered ? copy.requestDeliveredInWallet : state.status === 'request_retrieved' || handedOver === state.sessionId ? copy.requestSentToWallet : copy.requestReady}
           </p>
           {variant === 'apply' && (
             <details className="group rounded-2xl bg-white p-4 ring-1 ring-slate-200" open data-testid="guided-qr-explained">
@@ -631,6 +646,8 @@ export default function DiplomaGuidedDemoPage() {
   const [walletBusy, setWalletBusy] = useState(false);
   const [clockOffsetMs, setClockOffsetMs] = useState(remembered?.session?.clockOffsetMs ?? 0);
   const [declinedQr, setDeclinedQr] = useState<string | null>(null);
+  const [deliveredQr, setDeliveredQr] = useState<string | null>(null);
+  const [waitingQr, setWaitingQr] = useState<string | null>(null);
   const [mobileTab, setMobileTab] = useState<Actor>(() => actorForStep(guided.viewing === 'done' ? 'revoke' : guided.viewing, guided));
   const [turn, setTurn] = useState<Actor>(mobileTab);
   const inboxSeq = useRef(0);
@@ -740,6 +757,8 @@ export default function DiplomaGuidedDemoPage() {
       turnToEmployerSoon();
     }
     if (event.type === 'presentationSent') turnToEmployerSoon();
+    // Received but not checked: the wallet is locked to that share, and the page says "Send again" too.
+    if (event.type === 'presentationDelivered') setDeliveredQr(inboxQrs.current.get(event.itemId) ?? null);
     if (event.type === 'presentationDeclined') {
       setDeclinedQr(inboxQrs.current.get(event.itemId) ?? null);
       turnToEmployerSoon();
@@ -757,6 +776,7 @@ export default function DiplomaGuidedDemoPage() {
     setInbox(null);
     setWalletBusy(false);
     setDeclinedQr(null);
+    setDeliveredQr(null);
     setGeneration((value) => value + 1);
     dispatch({ type: 'restart' });
     writeProgressFlag(false);
@@ -780,6 +800,8 @@ export default function DiplomaGuidedDemoPage() {
   };
 
   const stepCopy = copy.steps[viewing];
+  const instructions = instructionsFor(copy, viewing, waitingQr, deliveredQr);
+  const deliveredWaiting = instructions === copy.deliveredInstructions;
   const viewingIndex = GUIDED_STEPS.indexOf(viewing) + 1;
   const fieldLabel = (name: string) => (isDiplomaField(name) ? claimLabels[name] : name);
   const fieldsText = (names: readonly string[]) => names.map(fieldLabel).join(', ');
@@ -851,7 +873,8 @@ export default function DiplomaGuidedDemoPage() {
         <OrganisationHeader kind="school" name={portalCopy.universityName} detail={portalCopy.portalName} crestLabel={portalCopy.crestLabel} />
         <div className="mt-5">
           {guided.received ? (
-            <Notice tone="success" testId="guided-receive-done"><p>{portalCopy.issuedTitle}</p></Notice>
+            // As guided-offer-issued: the school only knows it sent the diploma.
+            <Notice tone="info" testId="guided-receive-done"><p>{portalCopy.issuedTitle}</p></Notice>
           ) : portal ? (
             <ReceiveSignedIn
               key={portal.session.token}
@@ -885,8 +908,10 @@ export default function DiplomaGuidedDemoPage() {
             startLabel={copy.apply}
             walletBusy={walletBusy}
             declinedQr={declinedQr}
+            deliveredQr={deliveredQr}
             onHandoff={(qr) => handoff('request', qr)}
             onClockOffset={setClockOffsetMs}
+            onWaitingQr={setWaitingQr}
             onResult={(ok, reason) => dispatch({ type: 'verified', ok, reason })}
             renderResult={(result) => resultExtras(result, guided.applied ? (
               <button type="button" onClick={() => { view('revoke'); focusById('guided-step-title'); }} className={primaryButton} data-testid="guided-next-step">
@@ -947,8 +972,10 @@ export default function DiplomaGuidedDemoPage() {
               startLabel={copy.verifyAgain}
               walletBusy={walletBusy}
               declinedQr={declinedQr}
+              deliveredQr={deliveredQr}
               onHandoff={(qr) => handoff('request', qr)}
               onClockOffset={setClockOffsetMs}
+              onWaitingQr={setWaitingQr}
               onResult={(ok, reason) => dispatch({ type: 'verified', ok, reason })}
               renderResult={(result) => resultExtras(result, refusedNote ?? (
                 guided.lastFailure
@@ -1059,12 +1086,18 @@ export default function DiplomaGuidedDemoPage() {
               </h2>
               <p className="type-body text-slate-700">{stepCopy.summary}</p>
             </div>
-            <section className="rounded-3xl bg-[#E2E6FF] p-5 sm:p-6" aria-labelledby="guided-instructions-title" data-testid="guided-instructions">
+            <section className="rounded-3xl bg-[#E2E6FF] p-5 sm:p-6" aria-labelledby="guided-instructions-title" data-testid="guided-instructions" data-delivered={deliveredWaiting || undefined}>
               <h3 id="guided-instructions-title" className="type-card-title-sm text-[#0F1E36]">{copy.instructionsTitle}</h3>
               <ol className="type-body mt-3 list-decimal space-y-2 pl-5 text-slate-800">
-                {stepCopy.instructions.map((line) => <li key={line}>{line}</li>)}
+                {instructions.map((line) => <li key={line}>{line}</li>)}
               </ol>
             </section>
+            {/* On a phone the wallet (and its own marker) is one tab of three: the other two tabs carry the marker here. */}
+            {CERTNET_TEST_BUILD && mobileTab !== 'wallet' && (
+              <div className="lg:hidden" data-testid="guided-test-build">
+                <CertNetTestBuildMarker text={DEMO_WALLET_PANEL_TRANSLATIONS[locale].testBuildMarker} />
+              </div>
+            )}
             <IdentraErrorBoundary>
               {common}
               {(['school', 'employer'] as const).map((actor) => {

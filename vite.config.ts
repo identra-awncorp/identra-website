@@ -216,13 +216,18 @@ const localizedPreviewEntries = (): Plugin => ({
   },
 });
 
+/**
+ * A build is a production bundle: an unsafe CertNet configuration (the `local` network, a plain-http gateway) fails
+ * it, with the same rule the page applies (config.ts), unless the test-only switch is set. Every build entry point of
+ * this repository calls it (this config: the site and the SEO renderer; vite.product.config.ts: the product page).
+ */
+export const certNetBuildGuard = (mode: string) => {
+  const env = loadEnv(mode, __dirname, 'VITE_');
+  resolveCertNetConfig(env.VITE_CERTNET_GATEWAY_URL, env.VITE_CERTNET_NETWORK, { production: true, testSwitch: env.VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS });
+};
+
 export default defineConfig(({ command, mode, isSsrBuild }) => {
-  // A build is a production bundle: an unsafe CertNet configuration (the `local` network, a plain-http gateway)
-  // fails it here, with the same rule the page applies (config.ts), unless the test-only switch is set.
-  if (command === 'build') {
-    const env = loadEnv(mode, __dirname, 'VITE_');
-    resolveCertNetConfig(env.VITE_CERTNET_GATEWAY_URL, env.VITE_CERTNET_NETWORK, { production: true, testSwitch: env.VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS });
-  }
+  if (command === 'build') certNetBuildGuard(mode);
   return {
     plugins: [
       externalShortcuts(),

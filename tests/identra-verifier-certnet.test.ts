@@ -292,3 +292,31 @@ test('a build made with the test-only CertNet switch marks every CertNet result 
   assert.ok(!panel().includes(marker));
   for (const locale of LOCALES) assert.match(T[locale].testBuildMarker, /CertNet/, locale);
 });
+
+test('a passing CertNet result with a very long identifier (250 characters) shows it complete, wrapped; never a nameless success', () => {
+  const did = `did:certnet:testnet:${'a1B2_c3-'.repeat(29)}x`.slice(0, 250);
+  assert.equal(did.length, 250);
+  assert.equal(certNetIssuerId(did), did, 'any identifier of the SDK\'s form, whatever its length');
+  for (const locale of LOCALES) {
+    const copy = T[locale];
+    const html = render({ ...didSuccess, issuerDid: did }, locale);
+    assert.equal(textOf(html.match(/<bdi [^>]*data-testid="issuer-did-full"[^>]*>[\s\S]*?<\/bdi>/)![0]).trim(), did, `${locale}: the complete identifier`);
+    assert.ok(textOf(html.match(/data-group="signer"[\s\S]*?<\/li>/)![0]).includes(did), `${locale}: the signer line names it`);
+    assert.ok(!textOf(html).includes(copy.groups.signerCertNet), `${locale}: not the generic line without an issuer`);
+    assert.match(html, /\[overflow-wrap:anywhere\][^>]*>did:<wbr\/>certnet:<wbr\/>testnet:<wbr\/>/, `${locale}: wraps`);
+  }
+});
+
+test('the CertNet note under an employer result says how the issuer is looked up, not that it was checked (amber outcome too)', () => {
+  const lookedUp = { vi: 'được tra cứu qua CertNet', en: 'looked up through CertNet', es: 'se consulta a través de CertNet', ja: 'CertNet で照会しています', de: 'über CertNet nachgeschlagen' } as const;
+  const checked = /kiểm tra qua CertNet|checked through CertNet|comprueba|で確認しています|geprüft/;
+  for (const locale of LOCALES) {
+    const copy = T[locale];
+    for (const note of [copy.certnetNote, copy.issuerIdNote]) {
+      assert.ok(note.includes(lookedUp[locale]) && !checked.test(note), `${locale}: "${note}"`);
+    }
+    const amber = render(didFailure('did_resolution', 'DID_RESOLUTION_UNAVAILABLE'), locale);
+    assert.match(amber, /data-outcome="unchecked"/);
+    assert.ok(textOf(amber).includes(copy.certnetNote), `${locale}: the note under "could not be checked right now"`);
+  }
+});

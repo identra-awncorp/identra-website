@@ -6,7 +6,7 @@ import {resolveIdentraApiUrl} from './src/identra/config';
 import {identraRootCaPlugin} from './src/identra/trust/rootCaPlugin';
 import {PRODUCT_PAGE_TRANSLATIONS} from './src/translations/ProductPageTranslations';
 import {DEFAULT_SITE_URL} from './src/utils/seo';
-import {cborWithoutEval} from './vite.config';
+import {cborWithoutEval, certNetBuildGuard} from './vite.config';
 
 // The product page (ADR-0012) as its own small build: product/index.html -> dist/product/index.html, the
 // shell nginx serves for every /01/<GTIN>/21/<serial> path. It runs after the main build (same dist/,
@@ -50,32 +50,35 @@ const productShell = (apiUrl: string): Plugin => ({
   },
 });
 
-export default defineConfig(({mode}) => ({
-  plugins: [
-    // Same source as the bundle's import.meta.env (process env first, then .env files).
-    productShell(resolveIdentraApiUrl(loadEnv(mode, __dirname, 'VITE_').VITE_IDENTRA_API_URL)),
-    cborWithoutEval({required: true}),
-    identraRootCaPlugin({defaultDir: path.resolve(__dirname, 'src/identra/trust')}),
-    react(),
-    tailwindcss(),
-  ],
-  publicDir: false,
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '.'),
-    },
-  },
-  build: {
-    outDir: 'dist',
-    emptyOutDir: false,
-    rollupOptions: {
-      input: path.resolve(__dirname, 'product/index.html'),
-      output: {
-        entryFileNames: 'assets/product-[hash].js',
-        chunkFileNames: 'assets/product-[name]-[hash].js',
-        assetFileNames: 'assets/product-[name]-[hash][extname]',
+export default defineConfig(({command, mode}) => {
+  if (command === 'build') certNetBuildGuard(mode);
+  return {
+    plugins: [
+      // Same source as the bundle's import.meta.env (process env first, then .env files).
+      productShell(resolveIdentraApiUrl(loadEnv(mode, __dirname, 'VITE_').VITE_IDENTRA_API_URL)),
+      cborWithoutEval({required: true}),
+      identraRootCaPlugin({defaultDir: path.resolve(__dirname, 'src/identra/trust')}),
+      react(),
+      tailwindcss(),
+    ],
+    publicDir: false,
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '.'),
       },
     },
-  },
-}));
+    build: {
+      outDir: 'dist',
+      emptyOutDir: false,
+      rollupOptions: {
+        input: path.resolve(__dirname, 'product/index.html'),
+        output: {
+          entryFileNames: 'assets/product-[hash].js',
+          chunkFileNames: 'assets/product-[name]-[hash].js',
+          assetFileNames: 'assets/product-[name]-[hash][extname]',
+        },
+      },
+    },
+  };
+});
 

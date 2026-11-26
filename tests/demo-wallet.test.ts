@@ -16,6 +16,7 @@ import {
   acceptProblemFor,
   checkNoteFor,
   chooseMatch,
+  consentView,
   displayName,
   issuerView,
   offerProblemFor,
@@ -30,7 +31,7 @@ import {
 } from '../src/identra/demoWalletModel';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { OfferSender } from '../src/components/demo/DemoWalletPanel';
+import { OfferSender, RequestConsent, RequestConsentActions } from '../src/components/demo/DemoWalletPanel';
 import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../src/translations/demo/DemoWalletPanelTranslations';
 import {
   createCredentialVault,
@@ -317,6 +318,38 @@ test('after "the verifier could not check right now": locked to what was sent; s
   }
   assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.verifierCouldNotCheck.includes('Bạn không cần chọn lại'), 'not "chưa phải" (reads as "not yet")');
   assert.ok(!DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.verifierCouldNotCheck.includes('chưa phải'));
+});
+
+test('the locked share screen as rendered: the pinned share only, "send again" or "stop", the document\'s status labelled as the wallet\'s own check', () => {
+  const held = [{ summary: { ...summary('c1', '2026-11-19T00:00:00Z', 'valid'), id: match.credentialId }, details: null }];
+  const render = (screen: Extract<WalletScreen, { name: 'requestConsent' }>, locale: 'vi' | 'en' = 'vi') => {
+    const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+    const view = consentView(screen.request, held, screen.optionIndex, locale, screen.delivered);
+    const fieldList = (fields: readonly string[]) => fields.join(', ');
+    const controller = { share: async () => undefined, decline: () => undefined, choose: () => undefined };
+    return renderToStaticMarkup(createElement(RequestConsent, { screen, view, held, copy, fieldList, documentName: () => 'Bằng', time: new Intl.DateTimeFormat('vi-VN'), clockOffsetMs: 0 }))
+      + renderToStaticMarkup(createElement(RequestConsentActions, { screen, view, copy, fieldList, controller }));
+  };
+  const open = { name: 'requestConsent', request, optionIndex: null, busy: false, problem: null, delivered: null } as const;
+  // Opened again for a pinned request: the screen the first "could not check right now" left.
+  const reopened = walletReducer({ name: 'requestChecking' }, { type: 'requestResolved', request, delivered: attempt });
+  assert.ok(reopened.name === 'requestConsent');
+  for (const locale of ['vi', 'en'] as const) {
+    const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+    const locked = render(reopened, locale);
+    assert.match(locked, /data-testid="wallet-request-consent" data-locked="true"/);
+    assert.ok(locked.includes('data-testid="wallet-delivered-note"') && locked.includes('data-problem="verifierCouldNotCheck"'), locale);
+    assert.ok(locked.includes(`>${copy.shareAgain}</button>`) && locked.includes(`>${copy.stop}</button>`), `${locale}: send again or stop`);
+    assert.ok(!locked.includes('wallet-option-') && !locked.includes(`>${copy.share}</button>`) && !locked.includes(`>${copy.decline}</button>`), `${locale}: no choice, no plain share or decline`);
+    assert.deepEqual([...locked.matchAll(/data-field="(\w+)"/g)].map((m) => m[1]), ['ho_ten', 'nganh'], `${locale}: what was sent`);
+    assert.ok(locked.includes('data-testid="wallet-own-check"') && locked.includes(copy.ownCheckLabel.replace(/'/g, '&#x27;')), `${locale}: whose check the green status is`);
+    const ordinary = render(open, locale);
+    assert.ok(ordinary.includes('wallet-option-0') && ordinary.includes(`>${copy.decline}</button>`) && !ordinary.includes('data-locked'), `${locale}: the ordinary screen is unchanged`);
+    assert.ok(!ordinary.includes('wallet-own-check'), `${locale}: no label where only the wallet's check is shown`);
+  }
+  // "Stopped" promises no more than the wallet enforces: opening the request again offers the same share again.
+  assert.ok(!/không gửi lại cho yêu cầu này nữa|will not send anything more/.test(DEMO_WALLET_PANEL_TRANSLATIONS.vi.stoppedBody + DEMO_WALLET_PANEL_TRANSLATIONS.en.stoppedBody));
+  assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS.vi.stoppedBody.includes('mở lại') && DEMO_WALLET_PANEL_TRANSLATIONS.en.stoppedBody.includes('open this request again'));
 });
 
 test('build check: every chunk the wallet chunk imports (shared ones too) is scanned for Function/eval', async () => {

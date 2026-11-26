@@ -341,7 +341,9 @@ export const toSharedFields = (claims: Record<string, ClaimValue> | undefined): 
 
 // ---- A CertNet issuer's identifier (ADR-0020: that path has no name, the identifier stands for it) ----
 
-const CERTNET_ID = /^did:certnet:(local|testnet|mainnet):[A-Za-z0-9_-]{1,200}$/;
+// The SDK's own form (sdk-core isCertNetDid, sdk-client's result check), with no length cap of its own: a passing
+// CertNet result always carries an identifier of this form, so it is always shown (wrapped), never a nameless success.
+const CERTNET_ID = /^did:certnet:(local|testnet|mainnet):[A-Za-z0-9_-]+$/;
 
 /** The identifier when it has the CertNet form (the SDK checked it), else null: nothing else is shown as one. */
 export const certNetIssuerId = (value: unknown): string | null => (typeof value === 'string' && CERTNET_ID.test(value) ? value : null);

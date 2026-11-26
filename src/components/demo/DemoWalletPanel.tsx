@@ -20,6 +20,7 @@ import {
   WALLET_HOME,
   type HeldCredential,
   type IssuerView,
+  type WalletController,
   type WalletControllerEvent,
   type WalletControllerState,
   type WalletInboxItem,
@@ -130,13 +131,21 @@ export function OfferSender({ offer, copy }: { offer: Pick<ResolvedOffer, 'issue
   );
 }
 
-function StatusLine({ status, copy }: { status: WalletCredentialStatus | null; copy: DemoWalletPanelCopy }) {
+/** `label`: whose check this is, where another party's verdict is on the same screen. */
+function StatusLine({ status, copy, label }: { status: WalletCredentialStatus | null; copy: DemoWalletPanelCopy; label?: string }) {
   const value = status ?? 'unknown';
   const { text, icon: Icon } = STATUS_STYLE[value];
-  return (
+  const line = (
     <span className={`type-body-sm inline-flex items-center gap-1.5 font-semibold ${text}`} data-testid="wallet-credential-status" data-status={value}>
       <Icon aria-hidden="true" className="h-4 w-4" />
       {copy.statuses[value]}
+    </span>
+  );
+  if (!label) return line;
+  return (
+    <span className="block" data-testid="wallet-own-check">
+      <span className="type-body-sm block text-slate-600">{label}</span>
+      {line}
     </span>
   );
 }
@@ -562,67 +571,9 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
       </div>
     );
   } else if (screen.name === 'requestConsent') {
-    const view = consentView(screen.request, held, screen.optionIndex, locale);
+    const view = consentView(screen.request, held, screen.optionIndex, locale, screen.delivered);
     body = <RequestConsent screen={screen} view={view} held={held} copy={copy} fieldList={fieldList} documentName={documentName} time={time} clockOffsetMs={clockOffsetMs} />;
-    const choosable = view.trusted && view.match !== null && view.blocked === null;
-    // Received but not checked yet: only that same share can go again, or the visitor stops.
-    const locked = screen.delivered !== null;
-    actions = locked ? (
-      <>
-        <p className="type-body-sm rounded-xl bg-white px-3 py-2 text-slate-700" data-testid="wallet-delivered-note">{copy.deliveredNote}</p>
-        <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
-          {screen.busy ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
-          {screen.busy ? copy.sending : copy.shareAgain}
-        </button>
-        <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={quietButton} data-testid="wallet-decline">{copy.stop}</button>
-      </>
-    ) : (
-      <>
-        {choosable && (
-          <>
-            {view.staying.length > 0 && (
-              <p className="type-body-sm rounded-xl bg-emerald-50 px-3 py-2 text-emerald-950" data-testid="wallet-staying">
-                {fill(copy.stayingLine, { fields: fieldList(view.staying) })}
-              </p>
-            )}
-            {view.options.length > 0 && (
-              <fieldset className="space-y-1.5 pt-1" data-testid="wallet-options">
-                <legend className="type-body-sm font-semibold text-[#0F1E36]">{copy.optionsTitle}</legend>
-                {view.options.map((option, index) => (
-                  <label
-                    key={option.index}
-                    className={`flex cursor-pointer items-start gap-2.5 rounded-xl bg-white px-3 py-2 ${index === screen.optionIndex ? 'ring-2 ring-[#354CE1]' : 'ring-1 ring-slate-200'}`}
-                  >
-                    <input
-                      type="radio"
-                      name="demo-wallet-option"
-                      checked={index === screen.optionIndex}
-                      onChange={() => controller.choose(index)}
-                      disabled={screen.busy}
-                      data-testid={`wallet-option-${index}`}
-                      className="mt-1 h-4 w-4 shrink-0 accent-[#354CE1]"
-                    />
-                    <span className="type-body-sm text-[#0F1E36]">
-                      {option.withheld.length === 0
-                        ? fill(copy.optionFull, { count: option.fields.length })
-                        : fill(copy.optionOnly, { fields: fieldList(option.fields) })}
-                    </span>
-                  </label>
-                ))}
-              </fieldset>
-            )}
-          </>
-        )}
-        {choosable && (
-          <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
-            {screen.busy && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
-            {screen.busy ? copy.sending : copy.share}
-          </button>
-        )}
-        {choosable && !view.canShare && !screen.busy && <p className="type-body-sm text-center text-slate-600" data-testid="wallet-choose-first">{copy.chooseFirst}</p>}
-        <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={choosable ? quietButton : primaryButton} data-testid="wallet-decline">{copy.decline}</button>
-      </>
-    );
+    actions = <RequestConsentActions screen={screen} view={view} copy={copy} fieldList={fieldList} controller={controller} />;
   } else if (screen.name === 'requestSent') {
     body = (
       <div className="space-y-4 pt-4" data-testid="wallet-request-sent">
@@ -672,7 +623,84 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
   );
 }
 
-function RequestConsent({
+/** The share screen's actions. Locked after a share reached the verifier: that same share again, or stop. */
+export function RequestConsentActions({
+  screen,
+  view,
+  copy,
+  fieldList,
+  controller,
+}: {
+  screen: Extract<WalletScreen, { name: 'requestConsent' }>;
+  view: ReturnType<typeof consentView>;
+  copy: DemoWalletPanelCopy;
+  fieldList: (fields: readonly string[]) => string;
+  controller: Pick<WalletController, 'share' | 'decline' | 'choose'>;
+}) {
+  const choosable = view.trusted && view.match !== null && view.blocked === null;
+  // Received but not checked yet: only that same share can go again, or the visitor stops.
+  if (screen.delivered) {
+    return (
+      <>
+        <p className="type-body-sm rounded-xl bg-white px-3 py-2 text-slate-700" data-testid="wallet-delivered-note">{copy.deliveredNote}</p>
+        <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
+          {screen.busy ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
+          {screen.busy ? copy.sending : copy.shareAgain}
+        </button>
+        <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={quietButton} data-testid="wallet-decline">{copy.stop}</button>
+      </>
+    );
+  }
+  return (
+    <>
+      {choosable && (
+        <>
+          {view.staying.length > 0 && (
+            <p className="type-body-sm rounded-xl bg-emerald-50 px-3 py-2 text-emerald-950" data-testid="wallet-staying">
+              {fill(copy.stayingLine, { fields: fieldList(view.staying) })}
+            </p>
+          )}
+          {view.options.length > 0 && (
+            <fieldset className="space-y-1.5 pt-1" data-testid="wallet-options">
+              <legend className="type-body-sm font-semibold text-[#0F1E36]">{copy.optionsTitle}</legend>
+              {view.options.map((option, index) => (
+                <label
+                  key={option.index}
+                  className={`flex cursor-pointer items-start gap-2.5 rounded-xl bg-white px-3 py-2 ${index === screen.optionIndex ? 'ring-2 ring-[#354CE1]' : 'ring-1 ring-slate-200'}`}
+                >
+                  <input
+                    type="radio"
+                    name="demo-wallet-option"
+                    checked={index === screen.optionIndex}
+                    onChange={() => controller.choose(index)}
+                    disabled={screen.busy}
+                    data-testid={`wallet-option-${index}`}
+                    className="mt-1 h-4 w-4 shrink-0 accent-[#354CE1]"
+                  />
+                  <span className="type-body-sm text-[#0F1E36]">
+                    {option.withheld.length === 0
+                      ? fill(copy.optionFull, { count: option.fields.length })
+                      : fill(copy.optionOnly, { fields: fieldList(option.fields) })}
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+          )}
+        </>
+      )}
+      {choosable && (
+        <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
+          {screen.busy && <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" />}
+          {screen.busy ? copy.sending : copy.share}
+        </button>
+      )}
+      {choosable && !view.canShare && !screen.busy && <p className="type-body-sm text-center text-slate-600" data-testid="wallet-choose-first">{copy.chooseFirst}</p>}
+      <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={choosable ? quietButton : primaryButton} data-testid="wallet-decline">{copy.decline}</button>
+    </>
+  );
+}
+
+export function RequestConsent({
   screen,
   view,
   held,
@@ -747,7 +775,8 @@ function RequestConsent({
                 <p className="type-card-title-sm text-[#0F1E36]">{documentName(view.match.vct)}</p>
                 <IssuerLine issuer={issuerView(view.match)} copy={copy} />
                 {view.summary && <p className="type-body-sm text-slate-600">{fill(copy.receivedOn, { time: time.format(new Date(view.summary.createdAt)) })}</p>}
-                <StatusLine status={view.summary?.status ?? null} copy={copy} />
+                {/* Locked: the amber line below is the verifier's answer; this one is the wallet's own last check. */}
+                <StatusLine status={view.summary?.status ?? null} copy={copy} label={screen.delivered ? copy.ownCheckLabel : undefined} />
               </div>
             </div>
           </section>

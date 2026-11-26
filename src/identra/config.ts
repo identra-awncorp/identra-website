@@ -38,9 +38,9 @@ export interface CertNetConfig {
   fetchOrigin: string;
   network: CertNetNetwork;
   /**
-   * Built with VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS=true (end-to-end tests only): a production build that may use
-   * the `local` network (whose register anyone can write) or a plain-http gateway. The site then marks every
-   * place CertNet results appear as a test build.
+   * A test build: made with VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS=true (end-to-end tests only), or using the `local`
+   * network (whose register anyone can write) or a plain-http gateway, as a dev server for local work does. The
+   * site then marks every place CertNet results appear as a test build.
    */
   testBuild: boolean;
 }
@@ -83,11 +83,12 @@ export const resolveCertNetConfig = (
   if (url.username || url.password || url.search || url.hash || gateway.includes('?') || gateway.includes('#') || !GATEWAY_PATH.test(url.pathname)) {
     throw new Error('VITE_CERTNET_GATEWAY_URL must be an origin with an optional path, without credentials, query or fragment.');
   }
-  if (production && !testBuild && (network === 'local' || url.protocol !== 'https:')) {
+  const unsafe = network === 'local' || url.protocol !== 'https:';
+  if (production && !testBuild && unsafe) {
     throw new Error(`A production build refuses VITE_CERTNET_NETWORK=local and a gateway that is not https (anyone can write the local network's register). For end-to-end tests only, set ${CERTNET_TEST_SWITCH}=true: the site then shows a "test build" marker.`);
   }
   const path = url.pathname.replace(/\/$/, '');
-  return { gatewayUrl: `https://${url.host}${path}`, fetchOrigin: url.origin, network: network as CertNetNetwork, testBuild };
+  return { gatewayUrl: `https://${url.host}${path}`, fetchOrigin: url.origin, network: network as CertNetNetwork, testBuild: testBuild || unsafe };
 };
 
 export const CERTNET_CONFIG = resolveCertNetConfig(env?.VITE_CERTNET_GATEWAY_URL, env?.VITE_CERTNET_NETWORK, {

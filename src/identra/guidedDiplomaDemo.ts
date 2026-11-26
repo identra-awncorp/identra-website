@@ -47,6 +47,13 @@ export const happenedReceiveLines = (copy: DiplomaGuidedDemoPageCopy, state: Pic
 
 export const GUIDED_STEPS = ['receive', 'apply', 'revoke'] as const;
 export type GuidedStepId = typeof GUIDED_STEPS[number];
+
+/**
+ * What to press: the step's instructions, or, while the employer's request on screen (`waitingQr`) holds a share
+ * it could not check yet (`deliveredQr`), the "Send again" ones: the wallet then offers nothing else for it.
+ */
+export const instructionsFor = (copy: DiplomaGuidedDemoPageCopy, step: GuidedStepId, waitingQr: string | null, deliveredQr: string | null): readonly string[] =>
+  waitingQr !== null && waitingQr === deliveredQr ? copy.deliveredInstructions : copy.steps[step].instructions;
 export type GuidedPosition = GuidedStepId | 'done';
 
 /** Why the run cannot go on as it is and has to start again. */

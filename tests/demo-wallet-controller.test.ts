@@ -175,7 +175,7 @@ test('a verifier that could not check now: the request stays open with the same 
   assert.equal(waiting.name, 'requestConsent');
   assert.equal(waiting.name === 'requestConsent' && waiting.problem, 'verifierCouldNotCheck');
   assert.equal(waiting.name === 'requestConsent' && waiting.optionIndex, 1, 'nothing to choose again');
-  assert.deepEqual(events, [], 'nothing was sent as far as the page is concerned');
+  assert.deepEqual(events, [{ type: 'presentationDelivered', itemId: 2 }], 'received, not concluded: the page is told only that');
   await controller.share();
   assert.deepEqual(calls.submit, [1, 1], 'the same choice goes again');
 });
@@ -211,7 +211,7 @@ test('after "could not check right now" the screen is locked: the same share goe
   assert.deepEqual(controller.getState().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] });
   await controller.share();
   assert.equal(sent.length, 3, 'nothing more is sent: no loop');
-  assert.deepEqual(events, [], 'nothing was concluded');
+  assert.deepEqual(events, [{ type: 'presentationDelivered', itemId: 2 }, { type: 'presentationDelivered', itemId: 2 }], 'nothing was concluded');
 
   // The SDK forgot the request (REQUEST_INVALID): used up as well.
   const invalid = script([delivered, { ok: false, code: 'REQUEST_INVALID' }]);
@@ -231,7 +231,7 @@ test('after "could not check right now" the screen is locked: the same share goe
   stop.controller.decline();
   assert.equal(stop.calls.decline, 1);
   assert.deepEqual(stop.controller.getState().screen, { name: 'requestDeclined', delivered: ['ho_ten', 'nganh'] });
-  assert.deepEqual(stop.events, []);
+  assert.deepEqual(stop.events, [{ type: 'presentationDelivered', itemId: 2 }], 'no "declined"');
 });
 
 test('consent: an untrusted verifier gets no name, no purpose, and no Share', async () => {
@@ -391,4 +391,161 @@ test('a diploma stored as "not checked yet" is announced as such, so the page do
   acceptAnswer.resolve({ ok: true, credentialId: 'c1', vct: VCT, issuerName: null, status: 'unknown' });
   await accepting;
   assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1', checked: false }]);
+});
+
+// ---- A request a share of which reached the verifier (security re-review N1) -------------------------------
+// The SDK pins such a request (verifier + request address) to what was sent, for 10 minutes, in the wallet
+// instance: a later resolve returns `pinned`, submit refuses any other choice, after 3 sends resolve is
+// REQUEST_INVALID, decline keeps the pin. This fake follows those rules; the controller must then never show a
+// fresh choice for that request again, whatever the page and the visitor do.
+
+const REQUEST_TEXT = 'openid4vp://?client_id=x509_hash%3Aabc&request_uri=https%3A%2F%2Fapi-identra.awncorp.vn%2Fr%2F1';
+type Pin = { credentialId: string; claimSetIndex: number; sends: number };
+
+const pinningWallet = () => {
+  const pins = new Map<string, Pin>();
+  const live = new Map<object, string>();
+  const sent: number[] = [];
+  const control = { answer: 'delivered' as 'delivered' | 'ok', pinLapsed: false };
+  const keyOf = (text: string) => { const q = new URL(text).searchParams; return `${q.get('client_id')} ${q.get('request_uri')}`; };
+  const fake = fakeWallet({ status: 'valid' });
+  fake.wallet.presentations.resolve = async (text: string) => {
+    const key = keyOf(text);
+    const pin = control.pinLapsed ? undefined : pins.get(key);
+    if (pin && pin.sends >= 3) return { ok: false as const, code: 'REQUEST_INVALID' as const };
+    const request = { ...trustedRequest(), pinned: pin ? { ...pin } : null } as ResolvedPresentation;
+    live.set(request, key);
+    return { ok: true as const, request };
+  };
+  fake.wallet.presentations.submit = async (request: ResolvedPresentation, choice: { credentialId: string; claimSetIndex: number }) => {
+    const key = live.get(request);
+    if (key === undefined) return { ok: false as const, code: 'REQUEST_INVALID' as const };
+    live.delete(request);
+    const pin = control.pinLapsed ? undefined : pins.get(key);
+    if (pin && (pin.sends >= 3 || pin.credentialId !== choice.credentialId || pin.claimSetIndex !== choice.claimSetIndex)) return { ok: false as const, code: 'REQUEST_INVALID' as const };
+    sent.push(choice.claimSetIndex);
+    if (pin) pin.sends += 1;
+    if (control.answer === 'ok') return { ok: true as const };
+    const held = pin ?? { credentialId: choice.credentialId, claimSetIndex: choice.claimSetIndex, sends: 1 };
+    pins.set(key, held);
+    if (held.sends >= 3) return { ok: false as const, code: 'VERIFIER_ERROR' as const };
+    live.set(request, key);
+    return { ok: false as const, code: 'DID_RESOLUTION_UNAVAILABLE' as const, delivered: true as const };
+  };
+  fake.wallet.presentations.decline = (request: ResolvedPresentation) =>
+    (live.delete(request) ? { ok: true as const } : { ok: false as const, code: 'REQUEST_INVALID' as const });
+  return { wallet: fake.wallet, pins, sent, control };
+};
+const flush = async () => { for (let i = 0; i < 4; i += 1) await new Promise((r) => setImmediate(r)); };
+
+/** The trial wallet as the guided page drives it: the page's "open request" button, the wallet's buttons, a remount. */
+const driver = () => {
+  const sdk = pinningWallet();
+  const events: WalletControllerEvent[] = [];
+  /** Events the page got once a share had reached the verifier. */
+  const afterDelivery: WalletControllerEvent[] = [];
+  const onEvent = (event: WalletControllerEvent) => {
+    events.push(event);
+    if (sdk.pins.size > 0) afterDelivery.push(event);
+  };
+  let controller = createWalletController(sdk.wallet, onEvent, () => 'vi');
+  let itemId = 10;
+  const actions = {
+    open: () => { controller.open({ id: (itemId += 1), kind: 'request', text: REQUEST_TEXT }); },
+    home: () => controller.home(),
+    detail: () => controller.openDetail('c1'),
+    choose0: () => controller.choose(0),
+    choose1: () => controller.choose(1),
+    share: () => controller.share(),
+    stop: () => controller.decline(),
+    refresh: () => controller.refresh(),
+    // The page mounting the wallet panel again (another page of the site and back, a language switch): a new controller, the same wallet.
+    remount: () => { controller = createWalletController(sdk.wallet, onEvent, () => 'vi'); },
+  };
+  return { sdk, events, afterDelivery, actions, state: () => controller.getState() };
+};
+type Action = keyof ReturnType<typeof driver>['actions'];
+
+/** After a share reached the verifier: never an ordinary choice for that request, never another claim set sent, never "declined". */
+const assertLocked = (d: ReturnType<typeof driver>, trail: readonly string[]) => {
+  const pin = d.sdk.pins.get(`x509_hash:abc https://api-identra.awncorp.vn/r/1`);
+  if (!pin) return;
+  const screen = d.state().screen;
+  if (screen.name === 'requestConsent') {
+    assert.ok(screen.delivered, `fresh choice after a delivered share: ${trail.join(' → ')}`);
+    assert.equal(screen.delivered.claimSetIndex, pin.claimSetIndex, trail.join(' → '));
+  }
+  assert.equal(new Set(d.sdk.sent).size, 1, `claim sets sent ${JSON.stringify(d.sdk.sent)}: ${trail.join(' → ')}`);
+  assert.ok(!d.afterDelivery.some((event) => event.type === 'presentationDeclined'), `"declined" after a delivered share: ${trail.join(' → ')}`);
+};
+
+const runTrail = async (trail: readonly Action[], d = driver()) => {
+  for (const [index, action] of trail.entries()) {
+    await d.actions[action]();
+    await flush();
+    assertLocked(d, trail.slice(0, index + 1));
+  }
+  return d;
+};
+
+const DELIVER: readonly Action[] = ['open', 'choose1', 'share'];
+
+test('N1: opening a delivered request again (from the page, after Stop, after Back, after a remount) shows the locked screen', async () => {
+  for (const after of [['open'], ['stop', 'open'], ['home', 'open'], ['remount', 'open'], ['stop', 'remount', 'open']] as Action[][]) {
+    const d = await runTrail([...DELIVER, ...after]);
+    const screen = d.state().screen;
+    assert.equal(screen.name, 'requestConsent', after.join(' → '));
+    assert.deepEqual(screen.name === 'requestConsent' && [screen.delivered, screen.problem], [{ credentialId: 'c1', claimSetIndex: 1, fields: ['ho_ten', 'nganh'] }, 'verifierCouldNotCheck'], after.join(' → '));
+    const view = consentView(trustedRequest(), d.state().held, null, 'vi', screen.name === 'requestConsent' ? screen.delivered : null);
+    assert.deepEqual([view.canShare, view.selected?.index], [true, 1], 'only the pinned option, ready to send again');
+    // The reviewer's sequence: choose the broad option and share. Exactly the narrow one goes.
+    await d.actions.choose0();
+    await d.actions.share();
+    assert.deepEqual(d.sdk.sent, [1, 1], 'claim sets sent: the pinned one only');
+    assert.ok(d.events.some((event) => event.type === 'presentationDelivered'), 'the page is told the request is held');
+  }
+});
+
+test('N1: a used-up request opened again says it cannot be sent again; so does one the SDK no longer pins', async () => {
+  const usedUp = await runTrail([...DELIVER, 'share', 'share', 'open']);
+  assert.deepEqual(usedUp.sdk.sent, [1, 1, 1]);
+  assert.deepEqual(usedUp.state().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] }, 'REQUEST_INVALID at re-open');
+
+  const lapsed = await runTrail([...DELIVER, 'stop']);
+  lapsed.sdk.control.pinLapsed = true;
+  await runTrail(['open'], lapsed);
+  assert.deepEqual(lapsed.state().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] }, 'never a fresh choice from the page\'s memory either');
+  await runTrail(['remount', 'open'], lapsed);
+  assert.equal(lapsed.state().screen.name, 'requestFailed', 'the memory is the wallet\'s, not the controller\'s');
+});
+
+test('N1: no sequence of page and wallet actions leads from a delivered share to an ordinary choice for that request', async () => {
+  const all: readonly Action[] = ['open', 'home', 'detail', 'choose0', 'choose1', 'share', 'stop', 'refresh', 'remount'];
+  // Every sequence of 4 actions after the share reached the verifier.
+  let sequences = 0;
+  const walk = async (prefix: Action[], depth: number): Promise<void> => {
+    if (depth === 0) {
+      await runTrail([...DELIVER, ...prefix]);
+      sequences += 1;
+      return;
+    }
+    for (const action of all) await walk([...prefix, action], depth - 1);
+  };
+  await walk([], 4);
+  assert.equal(sequences, all.length ** 4);
+  // Long random walks from an empty wallet, the verifier sometimes answering at last (seeded, reproducible).
+  let seed = 7;
+  const random = () => ((seed = (seed * 1103515245 + 12345) % 2 ** 31) / 2 ** 31);
+  for (let walkIndex = 0; walkIndex < 300; walkIndex += 1) {
+    const d = driver();
+    const trail: Action[] = [];
+    for (let step = 0; step < 18; step += 1) {
+      const action = all[Math.floor(random() * all.length)]!;
+      if (random() < 0.05) d.sdk.control.answer = 'ok';
+      trail.push(action);
+      await d.actions[action]();
+      await flush();
+      assertLocked(d, trail);
+    }
+  }
 });

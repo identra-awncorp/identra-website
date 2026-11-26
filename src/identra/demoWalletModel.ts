@@ -251,6 +251,24 @@ export interface DeliveredShare {
   fields: string[];
 }
 
+/** The SDK's pin of a resolved request as the share it fixes (null when the pinned option is not among the matches). */
+export const pinnedShare = (request: ResolvedPresentation): DeliveredShare | null => {
+  const pinned = request.pinned ?? null;
+  if (!pinned) return null;
+  const set = request.matches.find((match) => match.credentialId === pinned.credentialId)?.claimSets.find((claimSet) => claimSet.index === pinned.claimSetIndex);
+  return set ? { credentialId: pinned.credentialId, claimSetIndex: pinned.claimSetIndex, fields: orderFields(set.claims) } : null;
+};
+
+/** The request a QR names, as the SDK keys its pin (verifier and request address); the text itself when it does not parse. */
+export const requestKey = (text: string): string => {
+  try {
+    const params = new URL(text).searchParams;
+    return `${params.get('client_id') ?? ''} ${params.get('request_uri') ?? ''}`;
+  } catch {
+    return text;
+  }
+};
+
 export type WalletScreen =
   | { name: 'home' }
   | { name: 'detail'; credentialId: string }
@@ -282,8 +300,11 @@ export type WalletEvent =
   | { type: 'accept' }
   | { type: 'accepted'; result: AcceptResult }
   | { type: 'checkRequest' }
-  | { type: 'requestResolved'; request: ResolvedPresentation }
+  /** `delivered`: a share of this request already reached the verifier; the screen opens locked to it. */
+  | { type: 'requestResolved'; request: ResolvedPresentation; delivered?: DeliveredShare | null }
   | { type: 'requestRefused'; code: WalletErrorCode }
+  /** A request that already reached the verifier and cannot be sent again; `fields`: what it holds. */
+  | { type: 'requestUsedUp'; fields: string[] | null }
   | { type: 'chooseOption'; optionIndex: number }
   | { type: 'submit' }
   | { type: 'submitted'; verifierName: string | null; fields: string[] }
@@ -329,11 +350,14 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
     case 'checkRequest':
       return { name: 'requestChecking' };
     case 'requestResolved':
+      // Opened again after a share reached the verifier: the same locked screen as after its first answer.
       return state.name === 'requestChecking'
-        ? { name: 'requestConsent', request: event.request, optionIndex: null, busy: false, problem: null, delivered: null }
+        ? { name: 'requestConsent', request: event.request, optionIndex: null, busy: false, problem: event.delivered ? 'verifierCouldNotCheck' : null, delivered: event.delivered ?? null }
         : state;
     case 'requestRefused':
       return state.name === 'requestChecking' ? { name: 'requestFailed', problem: requestProblemFor(event.code, 'resolve'), delivered: null } : state;
+    case 'requestUsedUp':
+      return state.name === 'requestChecking' ? { name: 'requestFailed', problem: 'requestUsedUp', delivered: event.fields } : state;
     case 'chooseOption':
       // After a share reached the verifier the choice is fixed: only that same share can go again.
       return state.name === 'requestConsent' && !state.busy && !state.delivered ? { ...state, optionIndex: event.optionIndex } : state;
@@ -399,16 +423,23 @@ export interface ConsentView {
   canShare: boolean;
 }
 
+/** `delivered`: the share the request is locked to; it then decides the document and the option, not the visitor. */
 export const consentView = (
   request: ResolvedPresentation,
   held: readonly HeldCredential[],
   optionIndex: number | null,
   locale: WalletLocale,
+  delivered: DeliveredShare | null = null,
 ): ConsentView => {
   const trusted = request.verifier.trusted;
-  const chosen = chooseMatch(request.matches, held.map((item) => item.summary));
+  const pinnedMatch = delivered ? request.matches.find((match) => match.credentialId === delivered.credentialId) : undefined;
+  const chosen = !delivered
+    ? chooseMatch(request.matches, held.map((item) => item.summary))
+    : pinnedMatch ? { match: pinnedMatch, summary: held.find((item) => item.summary.id === pinnedMatch.credentialId)?.summary ?? null } : null;
   const options = chosen ? sharingOptions(chosen.match) : [];
-  const selected = optionIndex === null ? null : options[optionIndex] ?? null;
+  const selected = delivered
+    ? options.find((option) => option.index === delivered.claimSetIndex) ?? null
+    : optionIndex === null ? null : options[optionIndex] ?? null;
   const status = chosen?.summary?.status;
   const blocked: BlockedStatus | null = status === 'revoked' || status === 'suspended' || status === 'invalid' ? status : null;
   const requested = options[0]?.fields ?? [];
@@ -436,6 +467,8 @@ export type WalletControllerEvent =
   /** `checked`: the wallet confirmed it all at receipt (status valid); false: stored but "not checked yet". */
   | { type: 'credentialReceived'; credentialId: string; checked: boolean }
   | { type: 'presentationSent'; itemId: number }
+  /** A share of this request reached the verifier, which could not check it now: only "send again" or "stop" remain. */
+  | { type: 'presentationDelivered'; itemId: number }
   | { type: 'presentationDeclined'; itemId: number }
   | { type: 'presentationBlocked'; itemId: number; status: BlockedStatus };
 
@@ -450,6 +483,13 @@ export interface WalletControllerState {
 }
 
 export type WalletLike = Pick<Wallet, 'offers' | 'credentials' | 'presentations'>;
+
+/**
+ * Per wallet ("phone"), by request (requestKey): the share that reached the verifier. Kept with the wallet, not the
+ * controller, so a page that mounts the wallet again (another controller) still never offers a fresh choice; the
+ * SDK's own pin (`pinned`) says the same for 10 minutes. A reload makes a new wallet with an empty memory.
+ */
+const deliveries = new WeakMap<WalletLike, Map<string, DeliveredShare>>();
 
 /**
  * Drives one trial wallet. A new hand-off is refused while an accept or a share is in flight (it would
@@ -467,6 +507,8 @@ export const createWalletController = (
   let inFlight = false;
   let currentItem: WalletInboxItem | null = null;
   const blockedReported = new Set<number>();
+  const sentBefore = deliveries.get(wallet) ?? new Map<string, DeliveredShare>();
+  deliveries.set(wallet, sentBefore);
 
   const set = (patch: Partial<WalletControllerState>) => {
     const next = { ...state, ...patch };
@@ -500,7 +542,7 @@ export const createWalletController = (
 
   const reportBlocked = () => {
     if (state.screen.name !== 'requestConsent' || !currentItem || blockedReported.has(currentItem.id)) return;
-    const view = consentView(state.screen.request, state.held, state.screen.optionIndex, locale());
+    const view = consentView(state.screen.request, state.held, state.screen.optionIndex, locale(), state.screen.delivered);
     if (view.trusted && view.blocked) {
       blockedReported.add(currentItem.id);
       onEvent({ type: 'presentationBlocked', itemId: currentItem.id, status: view.blocked });
@@ -529,9 +571,30 @@ export const createWalletController = (
         });
       } else {
         dispatch({ type: 'checkRequest' });
+        const key = requestKey(item.text);
         void Promise.all([wallet.presentations.resolve(item.text), refreshHeld()]).then(([result]) => {
           if (op !== operation) return;
-          dispatch(result.ok ? { type: 'requestResolved', request: result.request } : { type: 'requestRefused', code: result.code });
+          // A request a share of which already reached the verifier never opens as a fresh choice again.
+          const before = sentBefore.get(key) ?? null;
+          if (result.ok) {
+            const pinned = pinnedShare(result.request);
+            if (pinned) {
+              sentBefore.set(key, pinned);
+              dispatch({ type: 'requestResolved', request: result.request, delivered: pinned });
+              onEvent({ type: 'presentationDelivered', itemId: item.id });
+            } else if (before || result.request.pinned) {
+              // The SDK no longer holds what was sent (its pin lapsed): nothing can be sent for it any more.
+              wallet.presentations.decline(result.request);
+              dispatch({ type: 'requestUsedUp', fields: before?.fields ?? null });
+            } else {
+              dispatch({ type: 'requestResolved', request: result.request, delivered: null });
+            }
+          } else if (before && (result.code === 'REQUEST_INVALID' || result.code === 'REQUEST_EXPIRED')) {
+            // Sent as often as allowed, or closed: say so, and what it already holds.
+            dispatch({ type: 'requestUsedUp', fields: before.fields });
+          } else {
+            dispatch({ type: 'requestRefused', code: result.code });
+          }
           reportBlocked();
         });
       }
@@ -570,7 +633,7 @@ export const createWalletController = (
     async share(): Promise<void> {
       const screen = state.screen;
       if (screen.name !== 'requestConsent' || screen.busy || inFlight || !currentItem) return;
-      const view = consentView(screen.request, state.held, screen.optionIndex, locale());
+      const view = consentView(screen.request, state.held, screen.optionIndex, locale(), screen.delivered);
       if (!view.canShare || !view.match || !view.selected) return;
       const item = currentItem;
       const op = operation;
@@ -588,6 +651,10 @@ export const createWalletController = (
         onEvent({ type: 'presentationSent', itemId: item.id });
         // The wallet learns the credential's current status afterwards, as the app refreshes it.
         void recheck(attempt.credentialId);
+      } else if (requestProblemFor(result.code, 'submit') === 'verifierCouldNotCheck') {
+        // Received, not checked: remembered whatever the screen shows now.
+        sentBefore.set(requestKey(item.text), attempt);
+        onEvent({ type: 'presentationDelivered', itemId: item.id });
       }
       if (op !== operation) {
         set({});

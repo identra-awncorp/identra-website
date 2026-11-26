@@ -101,7 +101,10 @@ export interface DemoWalletPanelCopy {
   /** What an earlier send left with the verifier, on the screen that ends the request. */
   deliveredBefore: string;
   stoppedTitle: string;
+  /** "Stopped" after a share reached the verifier: nothing more now; opening the request again only offers the same share. */
   stoppedBody: string;
+  /** Above the document's status on the locked share screen: that status is the wallet's own check, not the verifier's. */
+  ownCheckLabel: string;
   /** The title when a request that already reached the verifier can no longer be sent again. */
   usedUpTitle: string;
   noMatchTitle: string;
@@ -216,7 +219,8 @@ const vi: DemoWalletPanelCopy = {
   stop: 'Dừng',
   deliveredBefore: 'Đã gửi trước đó và vẫn ở phía bên yêu cầu: {fields}',
   stoppedTitle: 'Đã dừng',
-  stoppedBody: 'Ví sẽ không gửi lại cho yêu cầu này nữa.',
+  stoppedBody: 'Ví không gửi thêm gì lúc này. Nếu bạn mở lại yêu cầu này, ví chỉ cho gửi lại đúng những thông tin đã gửi, hoặc dừng.',
+  ownCheckLabel: 'Ví tự kiểm tra lần gần nhất:',
   usedUpTitle: 'Không gửi lại được nữa',
   noMatchTitle: 'Ví chưa có giấy tờ được yêu cầu',
   noMatchBody: 'Bên yêu cầu cần một bằng tốt nghiệp mà ví chưa có. Hãy nhận bằng từ trường trước.',
@@ -365,7 +369,8 @@ const en: DemoWalletPanelCopy = {
   stop: 'Stop',
   deliveredBefore: 'Sent earlier, and still with them: {fields}',
   stoppedTitle: 'Stopped',
-  stoppedBody: 'The wallet will not send anything more for this request.',
+  stoppedBody: 'The wallet sends nothing more now. If you open this request again, the wallet only lets you send the same details again, or stop.',
+  ownCheckLabel: 'The wallet\'s own last check:',
   usedUpTitle: 'It cannot be sent again',
   noMatchTitle: 'The wallet does not hold what they ask for',
   noMatchBody: 'They need a diploma the wallet does not hold yet. Receive one from the university first.',

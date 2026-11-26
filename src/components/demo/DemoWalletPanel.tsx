@@ -5,9 +5,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { AlertTriangle, ArrowLeft, Building2, Check, ChevronRight, GraduationCap, Info, Loader2, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react';
-import type { Wallet, WalletCredentialStatus } from '@identra/sdk-app';
+import type { ResolvedOffer, Wallet, WalletCredentialStatus } from '@identra/sdk-app';
 import { useNow } from '../../hooks/useNow';
-import { CERTNET_CONFIG } from '../../identra/config';
 import {
   consentView,
   createWalletController,
@@ -27,7 +26,7 @@ import {
   type WalletLocale,
   type WalletScreen,
 } from '../../identra/demoWalletModel';
-import { formatCountdown, secondsUntil, shortIssuerId } from '../../identra/verifierSession';
+import { certNetIssuerId, formatCountdown, secondsUntil, shortIssuerId } from '../../identra/verifierSession';
 import { DEMO_WALLET_PANEL_TRANSLATIONS, type DemoWalletPanelCopy } from '../../translations/demo/DemoWalletPanelTranslations';
 import IdentraIssuerId, { IssuerIdText } from '../IdentraIssuerId';
 
@@ -96,6 +95,38 @@ const hostOf = (origin: string) => {
   }
 };
 
+/**
+ * Who an offer comes from, before the wallet has checked the issuer: the address it came from, which is the only
+ * verified fact. The issuer's own display name is never shown as if it were verified. A CertNet issuer's offer
+ * says the issuer will be checked through CertNet on receipt (no name is promised) and shows the identifier the
+ * issuer declared, shortened.
+ */
+export function OfferSender({ offer, copy }: { offer: Pick<ResolvedOffer, 'issuerOrigin' | 'issuerDid'>; copy: DemoWalletPanelCopy }) {
+  const issuerId = certNetIssuerId(offer.issuerDid);
+  return (
+    <div className="flex items-start gap-3 py-3">
+      <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#0F1E36]"><Building2 className="h-6 w-6" /></span>
+      <div className="min-w-0 space-y-0.5">
+        <p className="type-body-sm text-slate-600">{copy.senderLabel}</p>
+        <p className={`type-card-title-sm text-[#0F1E36] ${apiText}`} data-testid="wallet-offer-issuer">{hostOf(offer.issuerOrigin)}</p>
+        {offer.issuerDid ? (
+          <>
+            <p className="type-body-sm text-slate-600">{copy.senderHintCertNet}</p>
+            {issuerId && (
+              <div className="type-body-sm pt-1 text-slate-600" data-testid="wallet-offer-issuer-certnet">
+                <p>{copy.senderIdLabel}</p>
+                <div className="text-slate-700"><IdentraIssuerId id={issuerId} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} /></div>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="type-body-sm text-slate-600">{copy.senderHint}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function StatusLine({ status, copy }: { status: WalletCredentialStatus | null; copy: DemoWalletPanelCopy }) {
   const value = status ?? 'unknown';
   const { text, icon: Icon } = STATUS_STYLE[value];
@@ -157,7 +188,6 @@ const focusPin = () => window.requestAnimationFrame(() => {
 const claimText = (value: unknown): string | null => safeText(typeof value === 'number' ? String(value) : value, 200);
 
 const IDLE_STATE: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null, notes: {} };
-const DPKI = CERTNET_CONFIG !== null;
 
 /**
  * A CertNet document's issuer: how it was checked, then its identifier (that path has no name, ADR-0020).
@@ -240,7 +270,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
 
   // One controller per wallet ("phone"): a new generation is a new phone with nothing in it.
   const controller = useMemo(
-    () => (wallet ? createWalletController(wallet, (event) => onEventRef.current(event), () => localeRef.current, { dpki: DPKI }) : null),
+    () => (wallet ? createWalletController(wallet, (event) => onEventRef.current(event), () => localeRef.current) : null),
     [wallet],
   );
   const state = useSyncExternalStore(controller?.subscribe ?? noop, controller?.getState ?? (() => IDLE_STATE), () => IDLE_STATE);
@@ -420,9 +450,6 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     );
   } else if (screen.name === 'offerConsent') {
     const { offer } = screen;
-    // Before the wallet has checked the issuer, the only fact it knows is where the offer came from: the
-    // issuer's own display name is not shown as if it were verified (the trust-list name comes after the check).
-    const host = hostOf(offer.issuerOrigin);
     const documentTitle = displayName(offer.configuration.display, locale) ?? documentName(offer.configuration.vct);
     const pinLength = offer.txCode?.length ?? 6;
     const needsPin = !offer.codeRedeemed && offer.txCode !== null;
@@ -442,14 +469,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
               <p className={`type-card-title-sm text-[#0F1E36] ${apiText}`}>{documentTitle}</p>
             </div>
           </div>
-          <div className="flex items-start gap-3 py-3">
-            <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#EEF1FF] text-[#0F1E36]"><Building2 className="h-6 w-6" /></span>
-            <div className="min-w-0 space-y-0.5">
-              <p className="type-body-sm text-slate-600">{copy.senderLabel}</p>
-              <p className={`type-card-title-sm text-[#0F1E36] ${apiText}`} data-testid="wallet-offer-issuer">{host}</p>
-              <p className="type-body-sm text-slate-600">{copy.senderHint}</p>
-            </div>
-          </div>
+          <OfferSender offer={offer} copy={copy} />
         </div>
         {needsPin && (
           <div className="space-y-2">

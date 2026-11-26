@@ -250,7 +250,7 @@ test('re-check of a CertNet document: CertNet silent, then the issuer no longer 
     answer('invalid', { id: 'issuer_trust', code: 'ISSUER_NOT_TRUSTED' }),
     answer('valid'),
   ]);
-  const controller = createWalletController(wallet, () => undefined, () => 'vi', { dpki: true });
+  const controller = createWalletController(wallet, () => undefined, () => 'vi');
   await controller.refresh();
 
   await controller.checkAgain('c1');
@@ -270,7 +270,7 @@ test('re-check of a CertNet document: CertNet silent, then the issuer no longer 
 test('an X.509 document gets no CertNet note, whatever its trust list says', async () => {
   const fake = fakeWallet({ status: 'valid' });
   (fake.wallet.credentials as { refreshStatus: unknown }).refreshStatus = async () => answer('unknown', { id: 'issuer_trust', code: 'TRUST_LIST_UNAVAILABLE' });
-  const controller = createWalletController(fake.wallet, () => undefined, () => 'vi', { dpki: true });
+  const controller = createWalletController(fake.wallet, () => undefined, () => 'vi');
   await controller.refresh();
   await controller.checkAgain('c1');
   assert.deepEqual(controller.getState().notes, {});
@@ -285,7 +285,7 @@ test('receipt while CertNet is silent: nothing stored, the same offer is accepte
   const saved: AcceptResult = { ok: true, credentialId: 'c1', vct: VCT, issuerName: null, issuerDid: DID, status: 'valid' };
   const { wallet, calls } = certnetWallet([], [silent, saved]);
   const events: WalletControllerEvent[] = [];
-  const controller = createWalletController(wallet, (event) => events.push(event), () => 'vi', { dpki: true });
+  const controller = createWalletController(wallet, (event) => events.push(event), () => 'vi');
   controller.open(offerItem);
   await tick();
 
@@ -302,13 +302,13 @@ test('receipt while CertNet is silent: nothing stored, the same offer is accepte
   assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1' }]);
 });
 
-test('an offer refused while the CertNet path is off says it cannot be received here; with it on, the usual sentence', async () => {
-  for (const dpki of [false, true]) {
+test('a refused offer: OFFER_INVALID is only "not a valid offer"; TRUST_PATH_UNSUPPORTED is "cannot be received here"', async () => {
+  for (const [code, problem] of [['OFFER_INVALID', 'offerInvalid'], ['TRUST_PATH_UNSUPPORTED', 'offerNeedsCertNet']] as const) {
     const fake = fakeWallet();
-    (fake.wallet.offers as { resolve: unknown }).resolve = async () => ({ ok: false, code: 'OFFER_INVALID' });
-    const controller = createWalletController(fake.wallet, () => undefined, () => 'vi', { dpki });
+    (fake.wallet.offers as { resolve: unknown }).resolve = async () => ({ ok: false, code });
+    const controller = createWalletController(fake.wallet, () => undefined, () => 'vi');
     controller.open(offerItem);
     await tick();
-    assert.deepEqual(controller.getState().screen, { name: 'offerFailed', problem: dpki ? 'offerInvalid' : 'offerNeedsCertNet' });
+    assert.deepEqual(controller.getState().screen, { name: 'offerFailed', problem }, code);
   }
 });

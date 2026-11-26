@@ -101,7 +101,7 @@ export const WALLET_PROBLEMS = [
   'pinRequired',
   'offerExpired',
   'offerInvalid',
-  /** An offer the wallet refuses while the CertNet path is off (the SDK says OFFER_INVALID for both). */
+  /** An offer whose issuer is checked through CertNet while the wallet has no CertNet configuration (TRUST_PATH_UNSUPPORTED). */
   'offerNeedsCertNet',
   'notAllowed',
   'network',
@@ -122,16 +122,13 @@ export const WALLET_PROBLEMS = [
 ] as const;
 export type WalletProblem = typeof WALLET_PROBLEMS[number];
 
-/**
- * `dpki`: whether the trial wallet has the CertNet path. Without it the SDK refuses a CertNet issuer's offer
- * with the same OFFER_INVALID as a malformed one, so the visitor is told it cannot be received here.
- */
-export const offerProblemFor = (code: WalletErrorCode, dpki = true): WalletProblem => {
+export const offerProblemFor = (code: WalletErrorCode): WalletProblem => {
   switch (code) {
     case 'TX_CODE_WRONG': return 'pinWrong';
     case 'TX_CODE_REQUIRED': return 'pinRequired';
     case 'OFFER_EXPIRED': return 'offerExpired';
-    case 'OFFER_INVALID': return dpki ? 'offerInvalid' : 'offerNeedsCertNet';
+    case 'OFFER_INVALID': return 'offerInvalid';
+    case 'TRUST_PATH_UNSUPPORTED': return 'offerNeedsCertNet';
     case 'URL_NOT_ALLOWED': return 'notAllowed';
     case 'NETWORK_ERROR': return 'network';
     case 'ISSUER_ERROR': return 'issuerError';
@@ -265,8 +262,7 @@ export type WalletEvent =
   | { type: 'openDetail'; credentialId: string }
   | { type: 'checkOffer' }
   | { type: 'offerResolved'; offer: ResolvedOffer }
-  /** `dpki`: whether the wallet has the CertNet path (decides what OFFER_INVALID means to the visitor). */
-  | { type: 'offerRefused'; code: WalletErrorCode; dpki?: boolean }
+  | { type: 'offerRefused'; code: WalletErrorCode }
   | { type: 'accept' }
   | { type: 'accepted'; result: AcceptResult }
   | { type: 'checkRequest' }
@@ -291,7 +287,7 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
     case 'offerResolved':
       return state.name === 'offerChecking' ? { name: 'offerConsent', offer: event.offer, busy: false, problem: null } : state;
     case 'offerRefused':
-      return state.name === 'offerChecking' ? { name: 'offerFailed', problem: offerProblemFor(event.code, event.dpki) } : state;
+      return state.name === 'offerChecking' ? { name: 'offerFailed', problem: offerProblemFor(event.code) } : state;
     case 'accept':
       return state.name === 'offerConsent' && !state.busy ? { ...state, busy: true, problem: null } : state;
     case 'accepted': {
@@ -440,9 +436,7 @@ export const createWalletController = (
   wallet: WalletLike,
   onEvent: (event: WalletControllerEvent) => void,
   locale: () => WalletLocale,
-  options: { dpki?: boolean } = {},
 ) => {
-  const dpki = options.dpki ?? false;
   let state: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null, notes: {} };
   const listeners = new Set<() => void>();
   let operation = 0;
@@ -507,7 +501,7 @@ export const createWalletController = (
         dispatch({ type: 'checkOffer' });
         void wallet.offers.resolve(item.text).then((result) => {
           if (op !== operation) return;
-          dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code, dpki });
+          dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code });
         });
       } else {
         dispatch({ type: 'checkRequest' });

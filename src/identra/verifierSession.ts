@@ -210,7 +210,7 @@ export const ALL_ERROR_CODES = [
   'NONCE_MISMATCH', 'AUD_MISMATCH', 'CHAIN_BROKEN', 'CLIENT_ID_MISMATCH', 'VERIFIER_NOT_TRUSTED',
   'DID_RESOLUTION_FAILED', 'DID_RESOLUTION_UNAVAILABLE', 'KEY_NOT_FOUND', 'SKIPPED',
   // Wallet operation codes (SDK architecture section 8): never in a verifier result, but every code has a sentence.
-  'OFFER_INVALID', 'URL_NOT_ALLOWED', 'TX_CODE_WRONG', 'TX_CODE_REQUIRED', 'OFFER_EXPIRED', 'NETWORK_ERROR', 'ISSUER_ERROR',
+  'OFFER_INVALID', 'TRUST_PATH_UNSUPPORTED', 'URL_NOT_ALLOWED', 'TX_CODE_WRONG', 'TX_CODE_REQUIRED', 'OFFER_EXPIRED', 'NETWORK_ERROR', 'ISSUER_ERROR',
   'CREDENTIAL_INVALID', 'CNF_MISMATCH', 'CLAIMS_INCOMPLETE', 'STORAGE_ERROR', 'CREDENTIAL_NOT_FOUND',
   'QUERY_NOT_SATISFIED', 'TOO_MANY_ATTEMPTS', 'REQUEST_INVALID', 'REQUEST_EXPIRED', 'VERIFIER_ERROR', 'KEY_INVALIDATED',
   'USER_CANCELLED', 'DEVICE_LOCKED',
@@ -224,12 +224,6 @@ export const RETRYABLE_REASONS: ReadonlySet<FailureReasonKey> = new Set([
   'CERTNET_REGISTRY_UNAVAILABLE',
 ]);
 
-/**
- * CertNet did not answer at one of its steps (ADR-0020): nothing was proven about the diploma, so the step
- * reads "not checked" (amber, as on the product page), never as a failure of the diploma.
- */
-export const CERTNET_UNCHECKED_REASONS: ReadonlySet<FailureReasonKey> = new Set(['DID_RESOLUTION_UNAVAILABLE', 'CERTNET_REGISTRY_UNAVAILABLE']);
-
 const isKnownCheckId = (id: string): id is KnownCheckId => (KNOWN_CHECK_IDS as readonly string[]).includes(id);
 const isKnownErrorCode = (code: string): code is ErrorCode => (ALL_ERROR_CODES as readonly string[]).includes(code);
 
@@ -240,9 +234,14 @@ export interface CheckRow {
   reasonKey: FailureReasonKey | null;
 }
 
-export const isUncheckedRow = (row: CheckRow): boolean => row.outcome === 'failed' && CERTNET_UNCHECKED_REASONS.has(row.reasonKey ?? 'UNKNOWN');
+/**
+ * A service did not answer (trust list, status list, CertNet's resolver or registry, on either path):
+ * nothing was proven about the diploma, so the step reads "not checked" (amber, as on the product page),
+ * never as a failure of the diploma. The same reasons are the ones a new try may settle.
+ */
+export const isUncheckedRow = (row: CheckRow): boolean => row.outcome === 'failed' && RETRYABLE_REASONS.has(row.reasonKey ?? 'UNKNOWN');
 
-/** Failed only because CertNet did not answer: no proven problem among the checks. */
+/** Failed only because a service did not answer: no proven problem among the checks. */
 export const isUncheckedResult = (rows: CheckRow[]): boolean => {
   const failed = rows.filter((row) => row.outcome === 'failed');
   return failed.length > 0 && failed.every(isUncheckedRow);

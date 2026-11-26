@@ -70,7 +70,7 @@ export function CheckList({ rows, copy, headlineRow }: { rows: CheckRow[]; copy:
   return (
     <ol className="divide-y divide-slate-100">
       {rows.map((row, index) => {
-        // CertNet did not answer: "not checked" in amber, never a cross (CERTNET_UNCHECKED_REASONS).
+        // A service did not answer (trust list, status list, CertNet): "not checked" in amber, never a cross.
         const unchecked = isUncheckedRow(row);
         return (
           <li key={`${row.labelKey}-${index}`} className="flex items-start gap-3 py-2.5" data-unchecked={unchecked || undefined}>
@@ -125,7 +125,7 @@ export function ApplyJobVerifierResult({
 }) {
   const rows = toCheckRows(result);
   const failure = firstFailure(rows);
-  // Failed only because CertNet did not answer: "could not be checked right now", in amber, not "invalid".
+  // Failed only because a service did not answer: "could not be checked right now", in amber, not "invalid".
   const unchecked = !result.ok && isUncheckedResult(rows);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const fields = result.ok ? toSharedFields(result.claims) : [];

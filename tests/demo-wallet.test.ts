@@ -28,6 +28,9 @@ import {
   walletReducer,
   type WalletScreen,
 } from '../src/identra/demoWalletModel';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { OfferSender } from '../src/components/demo/DemoWalletPanel';
 import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../src/translations/demo/DemoWalletPanelTranslations';
 import {
   createCredentialVault,
@@ -376,10 +379,8 @@ test('CertNet states map to their own text: saved, saved but not checked, CertNe
   assert.equal(acceptProblemFor({ ok: false, code: 'NETWORK_ERROR', retryable: true, codeRedeemed: false }), 'network', 'Identra unreachable stays that');
 
   const checking: WalletScreen = { name: 'offerChecking' };
-  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID', dpki: false }), { name: 'offerFailed', problem: 'offerNeedsCertNet' });
-  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID', dpki: true }), { name: 'offerFailed', problem: 'offerInvalid' });
   assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID' }), { name: 'offerFailed', problem: 'offerInvalid' });
-  assert.equal(offerProblemFor('OFFER_EXPIRED', false), 'offerExpired', 'only OFFER_INVALID changes meaning');
+  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'TRUST_PATH_UNSUPPORTED' }), { name: 'offerFailed', problem: 'offerNeedsCertNet' });
 
   for (const locale of ['vi', 'en'] as const) {
     for (const problem of WALLET_PROBLEMS) assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems[problem].trim(), `${locale}.${problem}`);
@@ -401,4 +402,49 @@ test('a re-check of a CertNet document: CertNet silent, issuer no longer recogni
     const notes = DEMO_WALLET_PANEL_TRANSLATIONS[locale].checkNotes;
     assert.ok(notes.certnetUnavailable.includes('CertNet') && notes.issuerNotRecognised.includes('CertNet'), locale);
   }
+});
+
+// ---- The offer screen before acceptance --------------------------------------------------------------
+
+const OFFER_DID = 'did:certnet:testnet:7Hk2XaQ9mLp3Rt8vWz4bNc6dEf';
+const sender = (issuerDid: string | null, locale: 'vi' | 'en') =>
+  renderToStaticMarkup(createElement(OfferSender, { offer: { issuerOrigin: 'https://api-identra.awncorp.vn', issuerDid }, copy: DEMO_WALLET_PANEL_TRANSLATIONS[locale] }));
+const textOf = (html: string) => html.replace(/<\/?(?:wbr|bdi|span)\b[^>]*>/g, '').replace(/<[^>]*>/g, ' ').replace(/&#x27;/g, '\'').replace(/\s+/g, ' ');
+
+test('a CertNet issuer\'s offer: the shortened identifier, "checked through CertNet on receipt", no promise of a name', () => {
+  for (const locale of ['vi', 'en'] as const) {
+    const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+    const html = sender(OFFER_DID, locale);
+    const text = textOf(html);
+    assert.ok(text.includes(copy.senderHintCertNet) && text.includes(copy.senderIdLabel), locale);
+    assert.ok(text.includes('did:certnet:testnet:7Hk2Xa…6dEf') && html.includes(`data-did="${OFFER_DID}"`), `${locale}: shortened, the full value one tap away`);
+    assert.ok(!text.includes(copy.senderHint), `${locale}: not the certificate issuer's hint`);
+    assert.ok(!/tên chính thức|official name/i.test(text), `${locale}: no name is promised`);
+    assert.ok(text.includes('api-identra.awncorp.vn'), `${locale}: where it came from stays`);
+  }
+  // An identifier that is not of the CertNet form is not shown, but the offer is still read as CertNet's.
+  const odd = sender('did:web:evil.example', 'vi');
+  assert.ok(!odd.includes('evil.example') && textOf(odd).includes(DEMO_WALLET_PANEL_TRANSLATIONS.vi.senderHintCertNet));
+});
+
+test('a certificate issuer\'s offer reads as it always did', () => {
+  for (const locale of ['vi', 'en'] as const) {
+    const html = sender(null, locale);
+    assert.equal(textOf(html).trim(), `${DEMO_WALLET_PANEL_TRANSLATIONS[locale].senderLabel} api-identra.awncorp.vn ${DEMO_WALLET_PANEL_TRANSLATIONS[locale].senderHint}`.trim());
+    assert.ok(!html.includes('certnet') && !html.includes('issuer-did'));
+  }
+});
+
+test('the new offer-screen and refusal sentences: plain, no protocol words, no claim that CertNet is live', () => {
+  const JARGON = /\bDID\b|\bTIR\b|resolver|x5c|did:certnet/;
+  const CLAIMS = /\b(?:live|audited|in production|production-ready)\b|đang vận hành|đã kiểm toán|chính thức hoạt động/i;
+  for (const locale of ['vi', 'en'] as const) {
+    const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+    for (const sentence of [copy.senderHintCertNet, copy.senderIdLabel, copy.problems.offerNeedsCertNet, copy.problems.offerInvalid]) {
+      assert.ok(sentence.trim().length > 3 && !JARGON.test(sentence) && !CLAIMS.test(sentence), `${locale}: "${sentence}"`);
+    }
+    assert.ok(copy.senderHintCertNet.includes('CertNet') && copy.problems.offerNeedsCertNet.includes('CertNet'), locale);
+  }
+  assert.equal(DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.offerInvalid, 'Đây không phải mã nhận giấy tờ mà ví dùng được.', 'the original wording');
+  assert.equal(DEMO_WALLET_PANEL_TRANSLATIONS.en.problems.offerInvalid, 'This is not a document code the wallet can use.');
 });

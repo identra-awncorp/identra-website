@@ -25,7 +25,7 @@ import {
 import { APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS as T } from '../src/translations/demo/ApplyJobVerifierDialogTranslations';
 import { DEMO_WALLET_PANEL_TRANSLATIONS as W } from '../src/translations/demo/DemoWalletPanelTranslations';
 import { PRODUCT_PAGE_TRANSLATIONS } from '../src/translations/ProductPageTranslations';
-import { X509_CASES } from './fixtures/verifier-results/x509-cases';
+import { X509_CASES, X509_OUTAGE_CASES } from './fixtures/verifier-results/x509-cases';
 
 const LOCALES = ['vi', 'en', 'es', 'ja', 'de'] as const;
 const DID = 'did:certnet:testnet:7Hk2XaQ9mLp3Rt8vWz4bNc6dEf';
@@ -124,7 +124,7 @@ const failures = [
   { id: 'issuer_trust', code: 'ISSUER_NOT_TRUSTED', reason: 'CERTNET_ISSUER_NOT_TRUSTED', final: true, unchecked: false },
   { id: 'issuer_trust', code: 'TRUST_LIST_UNAVAILABLE', reason: 'CERTNET_REGISTRY_UNAVAILABLE', final: false, unchecked: true },
   { id: 'status', code: 'REVOKED', reason: 'REVOKED', final: true, unchecked: false },
-  { id: 'status', code: 'STATUS_UNAVAILABLE', reason: 'STATUS_UNAVAILABLE', final: false, unchecked: false },
+  { id: 'status', code: 'STATUS_UNAVAILABLE', reason: 'STATUS_UNAVAILABLE', final: false, unchecked: true },
 ] as const;
 
 for (const { id, code, reason, final, unchecked } of failures) {
@@ -165,6 +165,40 @@ test('CertNet not answering: amber "not checked" with a retry, like the product 
   const both = didFailure('issuer_trust', 'TRUST_LIST_UNAVAILABLE');
   both.checks = both.checks.map((check) => (check.id === 'validity_time' ? { id: 'validity_time', ok: false, code: 'EXPIRED' } : check));
   assert.ok(headlineClass(render(both))!.includes('bg-rose-50'));
+});
+
+// "Could not be checked right now" is one colour on both paths: the step, its group and the headline.
+const OUTAGES = [
+  { name: 'trustListUnavailable', result: X509_OUTAGE_CASES.trustListUnavailable!, group: 'signer', reason: 'TRUST_LIST_UNAVAILABLE' },
+  { name: 'statusUnavailable', result: X509_OUTAGE_CASES.statusUnavailable!, group: 'valid', reason: 'STATUS_UNAVAILABLE' },
+] as const;
+
+for (const { name, result, group, reason } of OUTAGES) {
+  test(`X.509 ${name}: amber "could not be checked right now" (headline, group, step), a retry, no red`, () => {
+    assert.equal(isFinalFailure(toCheckRows(result)), false);
+    for (const locale of LOCALES) {
+      const copy = T[locale];
+      const html = render(result, locale);
+      const text = textOf(html);
+      assert.ok(text.includes(copy.uncheckedTitle), `${locale}: headline`);
+      assert.ok(text.includes(copy.reasons[reason]) && text.includes(copy.failedRetryHint), `${locale}: why, and retry`);
+      assert.ok(headlineClass(html)!.includes('bg-amber-50') && !html.includes('bg-rose-') && !html.includes('text-rose-'), `${locale}: no red`);
+      assert.match(html, /<div class="[^"]*bg-amber-50[^"]*" data-outcome="unchecked">/, `${locale}: headline marked`);
+      assert.match(html, new RegExp(`data-group="${group}" data-outcome="unchecked"`), `${locale}: group marked`);
+      assert.equal(html.match(/<li [^>]*data-unchecked="true"/g)?.length, 1, `${locale}: exactly the outage step is marked`);
+    }
+  });
+}
+
+test('X.509: a proven problem stays red, also beside an outage', () => {
+  for (const name of ['revoked', 'issuerNotTrusted', 'chainUntrusted']) {
+    const html = render(X509_CASES[name]!);
+    assert.ok(headlineClass(html)!.includes('bg-rose-50'), name);
+    assert.ok(!html.includes('data-unchecked') && !html.includes('data-outcome="unchecked"'), name);
+  }
+  const mixed = structuredClone(X509_OUTAGE_CASES.trustListUnavailable!);
+  mixed.checks = mixed.checks.map((check) => (check.id === 'status' ? { id: 'status', ok: false, code: 'REVOKED' } : check));
+  assert.ok(headlineClass(render(mixed))!.includes('bg-rose-50'));
 });
 
 // Ledger wording is the claims scanner's (npm run scan:claims), which covers these files too.

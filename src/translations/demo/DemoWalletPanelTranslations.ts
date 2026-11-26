@@ -50,6 +50,9 @@ export interface DemoWalletPanelCopy {
   documentLabel: string;
   senderLabel: string;
   senderHint: string;
+  /** An offer from an issuer checked through CertNet: nothing about the issuer is confirmed yet, and no name is promised. */
+  senderHintCertNet: string;
+  senderIdLabel: string;
   pinLabel: string;
   pinHint: string;
   pinIncomplete: string;
@@ -155,6 +158,8 @@ const vi: DemoWalletPanelCopy = {
   documentLabel: 'Giấy tờ',
   senderLabel: 'Nơi gửi',
   senderHint: 'Lúc này ví mới chỉ biết địa chỉ nơi gửi. Trước khi lưu, ví kiểm tra nơi cấp có được Identra công nhận, rồi cho bạn biết tên chính thức.',
+  senderHintCertNet: 'Lúc này ví mới chỉ biết địa chỉ nơi gửi và mã định danh mà nơi cấp tự khai. Khi bạn nhận giấy tờ, ví sẽ kiểm tra nơi cấp qua CertNet.',
+  senderIdLabel: 'Mã định danh nơi cấp tự khai',
   pinLabel: 'Mã PIN 6 chữ số nơi cấp đưa cho bạn',
   pinHint: 'Mã PIN hiện ngay cạnh mã nhận bằng trên trang của trường.',
   pinIncomplete: 'Nhập đủ mã PIN để tiếp tục.',
@@ -215,7 +220,7 @@ const vi: DemoWalletPanelCopy = {
     pinRequired: 'Nhập mã PIN 6 chữ số rồi bấm Nhận giấy tờ.',
     offerExpired: 'Mã nhận bằng đã hết hạn hoặc đã được dùng. Hãy xin trường một mã mới.',
     offerInvalid: 'Đây không phải mã nhận giấy tờ mà ví dùng được.',
-    offerNeedsCertNet: 'Ví thử ở trang này không nhận được giấy tờ này. Có thể nơi cấp được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ mà ví thử ở đây chưa dùng.',
+    offerNeedsCertNet: 'Ví thử ở trang này không nhận được giấy tờ này. Nơi cấp được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ mà ví thử ở đây chưa dùng.',
     notAllowed: 'Mã này dẫn tới một địa chỉ không phải máy chủ Identra nên ví không mở.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
     certnetUnavailable: 'CertNet chưa trả lời nên ví chưa kiểm được nơi cấp. Chưa có gì được lưu. Bấm Nhận giấy tờ để thử lại, không cần nhập lại mã PIN.',
@@ -293,6 +298,8 @@ const en: DemoWalletPanelCopy = {
   documentLabel: 'Document',
   senderLabel: 'Sent from',
   senderHint: 'For now the wallet only knows the sender\'s address. Before saving, it checks that Identra recognises the issuer, then tells you its official name.',
+  senderHintCertNet: 'For now the wallet only knows the sender\'s address and the identifier the issuer gives for itself. When you receive the document, the wallet will check the issuer through CertNet.',
+  senderIdLabel: 'Identifier the issuer gives for itself',
   pinLabel: 'The 6-digit PIN the issuer gave you',
   pinHint: 'The PIN is shown right next to the diploma code on the university\'s page.',
   pinIncomplete: 'Enter the whole PIN to continue.',
@@ -353,7 +360,7 @@ const en: DemoWalletPanelCopy = {
     pinRequired: 'Enter the 6-digit PIN, then press Accept document.',
     offerExpired: 'This diploma code has expired or was already used. Ask the university for a new one.',
     offerInvalid: 'This is not a document code the wallet can use.',
-    offerNeedsCertNet: 'This trial wallet cannot receive this document here. The issuer may be checked through CertNet, a register of document issuers that this trial wallet does not use here.',
+    offerNeedsCertNet: 'This trial wallet cannot receive this document here. Its issuer is checked through CertNet, a register of document issuers that this trial wallet does not use here.',
     notAllowed: 'This code points somewhere other than the Identra server, so the wallet does not open it.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
     certnetUnavailable: 'CertNet is not answering, so the wallet could not check the issuer. Nothing was saved. Press Accept document to try again; you do not need the PIN again.',

@@ -59,8 +59,10 @@ export function IdentraTrustDiagram({ copy }: { copy: IdentraHowItWorksCopy }) {
   );
 }
 
-export default function IdentraHowItWorks({ locale, variant }: { locale: Locale; variant: 'summary' | 'full' }) {
-  const copy = IDENTRA_HOW_IT_WORKS_TRANSLATIONS[locale];
+/** `registryNote`: replaces the caption about the list of recognised organisations (the guided demo's CertNet run). */
+export default function IdentraHowItWorks({ locale, variant, registryNote }: { locale: Locale; variant: 'summary' | 'full'; registryNote?: string }) {
+  const base = IDENTRA_HOW_IT_WORKS_TRANSLATIONS[locale];
+  const copy = registryNote ? { ...base, registry: registryNote } : base;
 
   if (variant === 'summary') {
     return (

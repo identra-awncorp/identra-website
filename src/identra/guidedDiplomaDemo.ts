@@ -3,11 +3,43 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type { DiplomaGuidedDemoPageCopy } from '../translations/demo/DiplomaGuidedDemoPageTranslations';
+import { SCHOOL_PORTAL_SAMPLE_ACCOUNTS } from '../translations/SchoolPortalPageTranslations';
+import { CERTNET_ACCOUNT_PREFIX, SAMPLE_CERTNET_ISSUER, SAMPLE_ISSUER } from './config';
 import type { FailureReasonKey } from './verifierSession';
 
 // Progress of the guided diploma demo (/{locale}/demo/diploma): receive the diploma into the web trial
 // wallet, apply with it, revoke it and try again. Facts only (what has really happened on the server and
 // in the wallet); the current step and every sentence are derived from them at render time.
+
+// ---- Which school runs the demo ------------------------------------------------------------------
+
+/**
+ * `x509`: the first sample school, recognised through Identra's list (the page as it always was). `certnet`:
+ * the sample school recognised through CertNet, chosen with `?truong=certnet`, only in a build with CertNet.
+ */
+export type GuidedRun = 'x509' | 'certnet';
+
+export const GUIDED_RUN_PARAM = 'truong';
+
+export const GUIDED_RUNS: Record<GuidedRun, { issuer: string; account: string }> = {
+  x509: { issuer: SAMPLE_ISSUER, account: SCHOOL_PORTAL_SAMPLE_ACCOUNTS[0] },
+  certnet: { issuer: SAMPLE_CERTNET_ISSUER, account: `${CERTNET_ACCOUNT_PREFIX}${SCHOOL_PORTAL_SAMPLE_ACCOUNTS[0]}` },
+};
+
+/** The run the address asks for; without CertNet in the build the parameter is ignored. */
+export const guidedRunFor = (search: URLSearchParams, certnet: boolean): GuidedRun =>
+  certnet && search.get(GUIDED_RUN_PARAM) === 'certnet' ? 'certnet' : 'x509';
+
+/** The query string that opens a run (empty for the default one). */
+export const guidedRunSearch = (run: GuidedRun): string => (run === 'certnet' ? `?${GUIDED_RUN_PARAM}=certnet` : '');
+
+/** The page's copy for a run: the CertNet run replaces the sentences about Identra's list and the certificate. */
+export const guidedCopyFor = (copy: DiplomaGuidedDemoPageCopy, run: GuidedRun): DiplomaGuidedDemoPageCopy => {
+  if (run === 'x509') return copy;
+  const { receiveInstructions, registry: _registry, ...sentences } = copy.certnetRun;
+  return { ...copy, ...sentences, steps: { ...copy.steps, receive: { ...copy.steps.receive, instructions: receiveInstructions } } };
+};
 
 export const GUIDED_STEPS = ['receive', 'apply', 'revoke'] as const;
 export type GuidedStepId = typeof GUIDED_STEPS[number];

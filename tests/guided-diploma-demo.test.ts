@@ -8,15 +8,21 @@
 // wallet refused), never on a click alone.
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { CERTNET_CONFIG } from '../src/identra/config';
 import {
   canView,
   currentPosition,
+  GUIDED_RUNS,
   GUIDED_START,
+  guidedCopyFor,
   guidedReducer,
+  guidedRunFor,
+  guidedRunSearch,
   stepStatus,
   type GuidedEvent,
   type GuidedState,
 } from '../src/identra/guidedDiplomaDemo';
+import { DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS } from '../src/translations/demo/DiplomaGuidedDemoPageTranslations';
 
 const run = (...events: GuidedEvent[]): GuidedState => events.reduce(guidedReducer, GUIDED_START);
 
@@ -108,3 +114,58 @@ test('a failed employer result is never a pass: not in step 2, not after the rev
   const afterRevoke = run(...applied, { type: 'revoked' }, { type: 'verified', ok: false, reason: 'SIGNATURE_INVALID' });
   assert.equal(afterRevoke.refusedBy, null, 'only a failure AT the revocation ends step 3');
 });
+
+// ---- The CertNet run (?truong=certnet), only in a build with CertNet ---------------------------------
+
+test('without CertNet in the build the run parameter is ignored: always the first school, as before', () => {
+  assert.equal(CERTNET_CONFIG, null, 'tests run as a build without CertNet');
+  for (const search of ['', '?truong=certnet', '?truong=CERTNET', '?truong=x509']) {
+    assert.equal(guidedRunFor(new URLSearchParams(search), CERTNET_CONFIG !== null), 'x509');
+  }
+  assert.deepEqual(GUIDED_RUNS.x509, { issuer: 'truong-mau', account: 'sv001' });
+});
+
+test('with CertNet in the build, ?truong=certnet runs the demo as the CertNet school\'s sample student', () => {
+  assert.equal(guidedRunFor(new URLSearchParams('?truong=certnet'), true), 'certnet');
+  assert.equal(guidedRunFor(new URLSearchParams(''), true), 'x509');
+  assert.equal(guidedRunFor(new URLSearchParams('?truong=other'), true), 'x509');
+  assert.deepEqual(GUIDED_RUNS.certnet, { issuer: 'truong-mau-certnet', account: 'cn-sv001' });
+  assert.equal(guidedRunSearch('certnet'), '?truong=certnet');
+  assert.equal(guidedRunSearch('x509'), '');
+});
+
+for (const locale of ['vi', 'en'] as const) {
+  const copy = DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale];
+
+  test(`${locale}: the default run's copy is exactly today's`, () => {
+    assert.equal(guidedCopyFor(copy, 'x509'), copy);
+  });
+
+  test(`${locale}: the CertNet run says the school is found through CertNet and shown by identifier, never the list or the certificate`, () => {
+    const certnet = guidedCopyFor(copy, 'certnet');
+    const listOrCertificate = locale === 'vi'
+      ? /trường có trong danh sách|danh sách tổ chức được công nhận|Mọi chữ ký/
+      : /university is on the recognised list|list of recognised organisations|Every signature/;
+    const school = [...certnet.happenedReceive, certnet.contactChecks, certnet.endRootTitle, certnet.endRootBody, ...certnet.steps.receive.instructions, copy.certnetRun.registry];
+    for (const line of school) assert.ok(!listOrCertificate.test(line), `${locale}: ${line}`);
+    assert.ok(certnet.happenedReceive.some((line) => line.includes('CertNet')));
+    assert.ok(certnet.happenedReceive.some((line) => (locale === 'vi' ? /mã định danh, không có tên/ : /identifier, without a name/).test(line)));
+    assert.ok(certnet.contactChecks.includes('CertNet') && certnet.endRootBody.includes('CertNet'));
+    assert.equal(certnet.steps.receive.instructions.length, copy.steps.receive.instructions.length);
+    // Everything else is the default run's copy.
+    assert.equal(certnet.steps.apply, copy.steps.apply);
+    assert.equal(certnet.happenedRevoke, copy.happenedRevoke);
+    assert.equal(certnet.title, copy.title);
+  });
+
+  test(`${locale}: the run switch and the CertNet run are filled, without protocol words or claims`, () => {
+    const texts = [...Object.values(copy.runSwitch), ...copy.certnetRun.receiveInstructions, copy.certnetRun.registry,
+      ...copy.certnetRun.happenedReceive, copy.certnetRun.contactChecks, copy.certnetRun.endRootTitle, copy.certnetRun.endRootBody,
+      copy.signInProblems.unusable, copy.signInProblems.school_not_here];
+    for (const text of texts) {
+      assert.ok(text.trim().length > 0);
+      assert.ok(!/\bDID\b/.test(text) && !/resolver|did:certnet|X\.509|trust list|production|mainnet|đã vận hành|chính thức/i.test(text), `${locale}: ${text}`);
+    }
+    if (locale === 'vi') for (const text of texts) assert.match(text, /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹà-ỹ]/i);
+  });
+}

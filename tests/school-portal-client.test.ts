@@ -259,3 +259,49 @@ test('authenticated calls send the bearer token and hit the contract paths', asy
   for (const call of calls) assert.equal((call.init.headers as Record<string, string>).Authorization, 'Bearer tok');
   assert.deepEqual(JSON.parse(String(calls[3]?.init.body)), { status: 'revoked' });
 });
+
+// ---- One client per school: a session's offers and status changes are its own school's only ----------
+
+const schoolClient = (issuer: string, respond: (call: Call) => Response | Promise<Response>, nameIssuerAtSignIn = false) => {
+  const fake = fakeFetch(respond);
+  return { ...fake, api: createSchoolPortalClient({ baseUrl: 'https://api.example.test', apiOrigin: API, issuer, nameIssuerAtSignIn, fetch: fake.fetchImpl }) };
+};
+const offerOf = (issuer: string, offerId: string) => ({
+  offerId,
+  offerUri: `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(`${API}/issuers/${issuer}/offers/${offerId}`)}`,
+  txCode: '123456',
+  expiresAt: '2026-11-19T02:00:00Z',
+  serverTime: '2026-11-19T01:50:00Z',
+});
+
+test('the first school signs in exactly as before, and its session says which school it belongs to', async () => {
+  const { api, calls } = schoolClient('truong-mau', () => json(studentLogin));
+  const session = await api.login('sv001', 'Identra@2026');
+  assert.deepEqual(JSON.parse(String(calls[0]?.init.body)), { username: 'sv001', password: 'Identra@2026' });
+  assert.equal(session.issuer, 'truong-mau');
+});
+
+test('the CertNet school names itself at sign-in; its session is that school\'s', async () => {
+  const { api, calls } = schoolClient('truong-mau-certnet', () => json(studentLogin), true);
+  const session = await api.login('cn-sv001', 'Identra@2026');
+  assert.deepEqual(JSON.parse(String(calls[0]?.init.body)), { username: 'cn-sv001', password: 'Identra@2026', issuer: 'truong-mau-certnet' });
+  assert.equal(session.issuer, 'truong-mau-certnet');
+});
+
+test('a school\'s client accepts its own school\'s offer and refuses any other school\'s', async () => {
+  const certnet = schoolClient('truong-mau-certnet', () => json(offerOf('truong-mau-certnet', 'o1'), 201), true);
+  assert.equal((await certnet.api.createOffer('t')).offerId, 'o1');
+
+  await rejectsWith(schoolClient('truong-mau-certnet', () => json(offerOf('truong-mau', 'o1'), 201), true).api.createOffer('t'), 'malformed');
+  await rejectsWith(schoolClient('truong-mau', () => json(offerOf('truong-mau-certnet', 'o1'), 201)).api.createOffer('t'), 'malformed');
+  // No looser match: a prefix, a suffix or another origin is still another school's link.
+  for (const other of ['truong-mau-certnet-2', 'truong', 'x/../truong-mau-certnet']) {
+    await rejectsWith(schoolClient('truong-mau-certnet', () => json(offerOf(other, 'o1'), 201), true).api.createOffer('t'), 'malformed');
+  }
+});
+
+test('the CertNet school\'s registrar changes statuses under that school\'s path', async () => {
+  const { api, calls } = schoolClient('truong-mau-certnet', () => json({ id: 'c1', status: 'suspended', updatedAt: '2026-11-19T02:00:00Z' }), true);
+  await api.changeCredentialStatus('tok', 'c1', 'suspended');
+  assert.equal(calls[0]?.url, 'https://api.example.test/v1/issuers/truong-mau-certnet/credentials/c1/status');
+});

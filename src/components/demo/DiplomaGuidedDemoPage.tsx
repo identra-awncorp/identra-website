@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect, useReducer, useRef, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AlertTriangle, ArrowLeft, ArrowRight, Briefcase, CheckCircle2, Clock, Download, GraduationCap, Info, Loader2, RefreshCw, RotateCcw, Wallet } from 'lucide-react';
 import { createVerifierClient, serverClockOffset, type SessionResult } from '@identra/sdk-client';
 import rootCa from 'virtual:identra-root-ca';
@@ -13,25 +13,30 @@ import { useNow } from '../../hooks/useNow';
 import {
   focusById,
   isDialogOpen,
-  schoolPortalClient,
+  portalClientFor,
   useSecondsUntilLocal,
   useStatusChange,
   useStudentOffer,
 } from '../../hooks/useSchoolPortal';
-import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
+import { CERTNET_CONFIG, IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
 import { DIPLOMA_FIELDS, isDiplomaField, type WalletInboxItem } from '../../identra/demoWalletModel';
 import {
   canView,
   currentPosition,
+  GUIDED_RUNS,
   GUIDED_START,
   GUIDED_STEPS,
+  guidedCopyFor,
   guidedReducer,
+  guidedRunFor,
+  guidedRunSearch,
   stepStatus,
+  type GuidedRun,
   type GuidedState,
   type GuidedStepId,
 } from '../../identra/guidedDiplomaDemo';
 import { PortalApiError, type IssuedCredential, type PortalSession } from '../../identra/schoolPortalClient';
-import { signInProblemFor, type SignInProblem } from '../../identra/schoolPortalState';
+import { schoolCopyFor, signInProblemFor, type SignInProblem } from '../../identra/schoolPortalState';
 import {
   firstFailure,
   formatCountdown,
@@ -48,7 +53,6 @@ import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../../translations/demo/DemoWall
 import { DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS, type DiplomaGuidedDemoPageCopy } from '../../translations/demo/DiplomaGuidedDemoPageTranslations';
 import {
   SCHOOL_PORTAL_PAGE_TRANSLATIONS,
-  SCHOOL_PORTAL_SAMPLE_ACCOUNTS,
   SCHOOL_PORTAL_SAMPLE_PASSWORD,
   type SchoolPortalPageCopy,
 } from '../../translations/SchoolPortalPageTranslations';
@@ -71,13 +75,12 @@ type Locale2 = 'vi' | 'en';
 type Actor = 'school' | 'employer' | 'wallet';
 
 const verifierClient = createVerifierClient({ baseUrl: IDENTRA_API_URL, apiOrigin: IDENTRA_API_ORIGIN });
-const SAMPLE_ACCOUNT = SCHOOL_PORTAL_SAMPLE_ACCOUNTS[0];
 /** Beyond this the device clock is called wrong (the wallet allows 60 s of skew on a request's issue time). */
 const CLOCK_SKEW_NOTICE_MS = 60_000;
 
 // Memory only: survives a language switch or a visit to another page of the site, not a reload. Tokens never
 // go to storage; the session flag below is a bare "a run was in progress", so a reload can be explained.
-let remembered: { guided: GuidedState; session: { session: StudentSession; clockOffsetMs: number } | null; generation: number } | null = null;
+let remembered: { run: GuidedRun; guided: GuidedState; session: { session: StudentSession; clockOffsetMs: number } | null; generation: number } | null = null;
 const PROGRESS_FLAG = 'identra-guided-diploma-run';
 
 const readProgressFlag = () => {
@@ -197,7 +200,7 @@ function ReceiveSignedIn({
   onSessionExpired: () => void;
   onHandoff: (offerUri: string) => void;
 }) {
-  const { offer, createOffer } = useStudentOffer(session.token, onSessionExpired);
+  const { offer, createOffer } = useStudentOffer(session, onSessionExpired);
   const [handedOver, setHandedOver] = useState<string | null>(null);
   const retrySeconds = useSecondsUntilLocal(offer.phase === 'error' ? offer.retryAt : null);
   const activeOfferId = offer.phase === 'active' ? offer.offer.offerId : null;
@@ -487,14 +490,14 @@ function RevokeOnSchoolSide({
   const load = useCallback(async (signal?: AbortSignal) => {
     setLoadProblem(false);
     try {
-      const page = await schoolPortalClient.listCredentials(session.token, { signal });
+      const page = await portalClientFor(session.issuer).listCredentials(session.token, { signal });
       if (!signal?.aborted) setItems(page.items);
     } catch (error) {
       if (signal?.aborted) return;
       if (error instanceof PortalApiError && error.kind === 'session_expired') onSessionExpired();
       else setLoadProblem(true);
     }
-  }, [onSessionExpired, session.token]);
+  }, [onSessionExpired, session.issuer, session.token]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -505,7 +508,7 @@ function RevokeOnSchoolSide({
   const latest = items?.[0] ?? null;
   const revoke = useStatusChange<IssuedCredential>({
     idOf: (item) => item.id,
-    perform: (item, signal) => schoolPortalClient.revokeCredential(session.token, item.id, signal),
+    perform: (item, signal) => portalClientFor(session.issuer).revokeCredential(session.token, item.id, signal),
     onApplied: (id, status) => setItems((current) => current?.map((item) => (item.id === id ? { ...item, status, canRevoke: false } : item)) ?? current),
     onSessionExpired,
     doneFocusId: 'guided-revoked-note',
@@ -572,6 +575,34 @@ function RevokeOnSchoolSide({
   );
 }
 
+// ---- Which school runs the demo (only in a build with CertNet) ------------------------------------
+
+function RunSwitch({ run, copy }: { run: GuidedRun; copy: DiplomaGuidedDemoPageCopy['runSwitch'] }) {
+  const option = (value: GuidedRun, label: string) => (
+    <Link
+      to={{ search: guidedRunSearch(value) }}
+      replace
+      aria-current={run === value ? 'true' : undefined}
+      className={`type-body-sm inline-flex min-h-11 items-center rounded-full px-4 font-semibold transition-colors ${
+        run === value ? 'bg-[#0F1E36] text-white' : 'text-slate-700 hover:bg-slate-100'
+      } ${focusRing}`}
+      data-testid={`guided-run-${value}`}
+    >
+      {label}
+    </Link>
+  );
+  return (
+    <nav aria-label={copy.label} className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3" data-testid="guided-run-switch">
+      <span className="type-body-sm text-slate-600">{copy.label}</span>
+      <span className="inline-flex flex-wrap gap-1 self-start rounded-full bg-white p-1 ring-1 ring-slate-200">
+        {option('x509', copy.x509)}
+        {option('certnet', copy.certnet)}
+      </span>
+      <span className="type-body-sm text-slate-500">{copy.hint}</span>
+    </nav>
+  );
+}
+
 // ---- Page -----------------------------------------------------------------------------------------
 
 /** The actor whose turn it is when a step opens (before anything happened in it). */
@@ -581,8 +612,12 @@ const actorForStep = (step: GuidedStepId, state: GuidedState): Actor =>
 export default function DiplomaGuidedDemoPage() {
   const { language } = useLanguage();
   const locale = resolveDemoScenarioLocale('diploma', language) as Locale2;
-  const copy = DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale];
-  const portalCopy = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
+  const [searchParams] = useSearchParams();
+  const certnet = CERTNET_CONFIG !== null;
+  const run = guidedRunFor(searchParams, certnet);
+  const school = GUIDED_RUNS[run];
+  const copy = guidedCopyFor(DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale], run);
+  const portalCopy = schoolCopyFor(SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale], school.issuer);
   const dialogCopy = APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS[locale];
   const claimLabels = DEMO_WALLET_PANEL_TRANSLATIONS[locale].claims;
 
@@ -605,9 +640,12 @@ export default function DiplomaGuidedDemoPage() {
   const viewing = guided.viewing === 'done' ? 'revoke' : guided.viewing;
   const root = rootCa.roots[0] ?? null;
 
+  // The run the state on screen belongs to: another school is another run, started from the beginning.
+  const [stateRun, setStateRun] = useState<GuidedRun>(remembered?.run ?? run);
+
   useEffect(() => {
-    remembered = { guided, session: portal, generation };
-  }, [generation, guided, portal]);
+    remembered = { run: stateRun, guided, session: portal, generation };
+  }, [generation, guided, portal, stateRun]);
 
   // A reload wipes the wallet and the sign-in (memory only): say so instead of silently starting over.
   useEffect(() => {
@@ -650,7 +688,7 @@ export default function DiplomaGuidedDemoPage() {
     signInController.current = controller;
     setSignIn({ submitting: true, problem: null, retryAt: null });
     try {
-      const session = await schoolPortalClient.login(SAMPLE_ACCOUNT, SCHOOL_PORTAL_SAMPLE_PASSWORD, controller.signal);
+      const session = await portalClientFor(school.issuer).login(school.account, SCHOOL_PORTAL_SAMPLE_PASSWORD, controller.signal);
       if (controller.signal.aborted) return;
       if (session.role !== 'student') throw new PortalApiError('malformed', 'not a student');
       const offset = serverClockOffset(session.serverTime, Date.now());
@@ -725,6 +763,13 @@ export default function DiplomaGuidedDemoPage() {
     window.scrollTo({ top: 0, behavior: 'auto' });
     focusById('guided-title');
   };
+
+  // Switching school (the switch, the address, coming back from another page) empties the wallet and starts again.
+  useEffect(() => {
+    if (stateRun === run) return;
+    setStateRun(run);
+    restart();
+  }, [run, stateRun]);
 
 
   const view = (step: GuidedStepId) => {
@@ -912,7 +957,7 @@ export default function DiplomaGuidedDemoPage() {
   const skewMinutes = Math.round(Math.abs(clockOffsetMs) / 60_000);
 
   return (
-    <div className="bg-[#FAFBFD] pb-28 lg:pb-20" data-testid="guided-page" data-position={position}>
+    <div className="bg-[#FAFBFD] pb-28 lg:pb-20" data-testid="guided-page" data-position={position} data-run={run === 'certnet' ? run : undefined}>
       <div className="mx-auto max-w-7xl space-y-8 px-6 pt-8 sm:pt-10">
         <Link to={viewToPath('demo', language)} className={`type-control inline-flex min-h-11 items-center gap-2 text-slate-700 hover:text-[#354CE1] ${focusRing}`} data-testid="guided-back">
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
@@ -934,7 +979,9 @@ export default function DiplomaGuidedDemoPage() {
           </div>
         </header>
 
-        <IdentraHowItWorks locale={locale} variant="summary" />
+        {certnet && <RunSwitch run={run} copy={copy.runSwitch} />}
+
+        <IdentraHowItWorks locale={locale} variant="summary" registryNote={run === 'certnet' ? copy.certnetRun.registry : undefined} />
 
         <nav aria-label={copy.stepperLabel}>
           <ol className="grid grid-cols-1 gap-3 md:grid-cols-3" data-testid="guided-stepper">

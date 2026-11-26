@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import { loadEnv } from 'vite';
 import { SUPPORTED_LOCALES, demoScenarioPath, DEMO_SCENARIO_IDS } from '../src/types/routes';
 import { DYNAMIC_FLOW_TRANSLATIONS } from '../src/translations/DynamicFlowPageTranslations';
 import { INTERFACE_STUDIO_TRANSLATIONS } from '../src/translations/InterfaceStudioPageTranslations';
@@ -59,5 +60,23 @@ for (const locale of SUPPORTED_LOCALES) {
     for (const scenario of DEMO_SCENARIO_IDS) {
       assert.ok(html.includes(`href="${demoScenarioPath(scenario, locale)}"`));
     }
+  });
+}
+
+// The guided diploma demo's CertNet run exists only in a build with CertNet (VITE_CERTNET_*, read like Vite does).
+const certnetBuild = Boolean(loadEnv('production', process.cwd(), 'VITE_CERTNET_').VITE_CERTNET_GATEWAY_URL?.trim());
+for (const locale of ['vi', 'en'] as const) {
+  test(`${locale}: the guided demo's CertNet run ${certnetBuild ? 'is reached by its switch' : 'leaves no trace without CertNet'}`, async () => {
+    const plain = await renderPage(`/${locale}/demo/diploma`);
+    const asked = await renderPage(`/${locale}/demo/diploma?truong=certnet`);
+    const hub = await renderPage(`/${locale}/demo`);
+    assert.ok(!/certnet/i.test(hub), 'nothing of it on the hub');
+    if (!certnetBuild) {
+      assert.equal(asked, plain, 'the parameter is ignored');
+      assert.ok(!/certnet|guided-run-switch|data-run=/i.test(plain));
+      return;
+    }
+    assert.ok(plain.includes('data-testid="guided-run-switch"') && !plain.includes('data-run='));
+    assert.ok(asked.includes('data-run="certnet"') && asked.includes('href="' + demoScenarioPath('diploma', locale) + '?truong=certnet"'));
   });
 }

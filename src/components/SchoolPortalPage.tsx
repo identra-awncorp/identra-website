@@ -20,7 +20,7 @@ import { useNow } from '../hooks/useNow';
 import {
   focusById,
   isDialogOpen,
-  schoolPortalClient,
+  portalClientFor,
   useSecondsUntilLocal,
   useStatusChange,
   useStudentOffer,
@@ -39,13 +39,17 @@ import {
   CREDENTIALS_LOADING,
   credentialsReducer,
   loadProblemFor,
+  schoolCopyFor,
   SIGNED_OUT,
+  signInAtSchool,
   signInProblemFor,
   STATUS_FOR_ACTION,
   type AuthState,
   type LoadProblem,
   type StatusAction,
 } from '../identra/schoolPortalState';
+import { CERTNET_CONFIG, SAMPLE_CERTNET_ISSUER, SAMPLE_ISSUER } from '../identra/config';
+import { guidedRunSearch } from '../identra/guidedDiplomaDemo';
 import { formatCountdown, secondsUntil } from '../identra/verifierSession';
 import {
   SCHOOL_PORTAL_PAGE_TRANSLATIONS,
@@ -61,8 +65,6 @@ import UniversityCrest from './UniversityCrest';
 import IdentraErrorBoundary from './IdentraErrorBoundary';
 import IdentraQrCode from './IdentraQrCode';
 import IdentraWalletLink from './IdentraWalletLink';
-
-const portalClient = schoolPortalClient;
 
 // Memory only (never Web Storage): survives a language switch inside the app, not a reload.
 let rememberedSession: { session: PortalSession; clockOffsetMs: number } | null = null;
@@ -164,7 +166,7 @@ export function SignInView({
   const problem = state.problem
     ? state.problem === 'rate_limited' && waitSeconds > 0
       ? `${copy.signInProblems.rate_limited} ${fill(copy.retryAfter, { seconds: waitSeconds })}`
-      : copy.signInProblems[state.problem]
+      : fill(copy.signInProblems[state.problem], { school: copy.certnetUniversityName })
     : null;
   const inputClass = 'type-lead h-11 w-full rounded-xl border border-slate-300 bg-white px-3.5 text-slate-900 focus:border-[#354CE1] focus:outline-none focus:ring-2 focus:ring-[#354CE1]/25';
 
@@ -296,7 +298,8 @@ export function SignInView({
 
 // ---- Lists ----------------------------------------------------------------------------------------
 
-const useCredentialList = (token: string, onSessionExpired: () => void) => {
+const useCredentialList = ({ token, issuer }: Pick<PortalSession, 'token' | 'issuer'>, onSessionExpired: () => void) => {
+  const portalClient = portalClientFor(issuer);
   const [state, dispatch] = useReducer(credentialsReducer, CREDENTIALS_LOADING);
   const controllerRef = useRef<AbortController | null>(null);
 
@@ -321,7 +324,7 @@ const useCredentialList = (token: string, onSessionExpired: () => void) => {
       const problem = error instanceof PortalApiError ? loadProblemFor(error) : 'unavailable';
       dispatch(cursor === null ? { type: 'loadFailed', problem } : { type: 'moreFailed', problem });
     }
-  }, [onSessionExpired, token]);
+  }, [onSessionExpired, portalClient, token]);
 
   const load = useCallback(() => loadPage(null), [loadPage]);
 
@@ -400,15 +403,15 @@ function StudentView({
   trialWalletPath: string;
 }) {
   const format = useDateFormat(locale);
-  const { offer, dispatchOffer, createOffer } = useStudentOffer(session.token, onSessionExpired);
-  const credentials = useCredentialList(session.token, onSessionExpired);
+  const { offer, dispatchOffer, createOffer } = useStudentOffer(session, onSessionExpired);
+  const credentials = useCredentialList(session, onSessionExpired);
   const { load: reloadCredentials, dispatch: dispatchCredentials } = credentials;
   const isTouch = useIsTouchDevice();
   const retrySeconds = useSecondsUntilLocal(offer.phase === 'error' ? offer.retryAt : null);
 
   const revoke = useStatusChange<IssuedCredential>({
     idOf: (item) => item.id,
-    perform: (item, signal) => portalClient.revokeCredential(session.token, item.id, signal),
+    perform: (item, signal) => portalClientFor(session.issuer).revokeCredential(session.token, item.id, signal),
     onApplied: (id, status) => {
       dispatchCredentials({ type: 'statusChanged', id, status });
       if (status === 'revoked') dispatchOffer({ type: 'dismissIssued' });
@@ -718,10 +721,10 @@ function RegistrarView({
   onSessionExpired: () => void;
 }) {
   const format = useDateFormat(locale);
-  const { state, dispatch, load, loadPage } = useCredentialList(session.token, onSessionExpired);
+  const { state, dispatch, load, loadPage } = useCredentialList(session, onSessionExpired);
   const change = useStatusChange<PendingChange>({
     idOf: ({ item }) => item.id,
-    perform: ({ item, action }, signal) => portalClient.changeCredentialStatus(session.token, item.id, STATUS_FOR_ACTION[action], signal),
+    perform: ({ item, action }, signal) => portalClientFor(session.issuer).changeCredentialStatus(session.token, item.id, STATUS_FOR_ACTION[action], signal),
     onApplied: (id, status) => dispatch({ type: 'statusChanged', id, status }),
     onSessionExpired,
     doneFocusId: 'school-portal-announcement',
@@ -886,15 +889,18 @@ function RegistrarView({
 export default function SchoolPortalPage() {
   const { language } = useLanguage();
   const locale = resolveViewLocale('school-portal', language) as 'en' | 'vi';
-  const copy = getLocalizedRecord(SCHOOL_PORTAL_PAGE_TRANSLATIONS, locale, 'SCHOOL_PORTAL_PAGE_TRANSLATIONS');
   const format = useDateFormat(locale);
   const [auth, dispatch] = useReducer(
     authReducer,
     rememberedSession ? { status: 'signedIn', ...rememberedSession } : SIGNED_OUT,
   );
   const signInController = useRef<AbortController | null>(null);
+  // The school of the signed-in account (its own portal, its own name); before sign-in, the first school.
+  const issuer = auth.status === 'signedIn' ? auth.session.issuer : SAMPLE_ISSUER;
+  const copy = schoolCopyFor(getLocalizedRecord(SCHOOL_PORTAL_PAGE_TRANSLATIONS, locale, 'SCHOOL_PORTAL_PAGE_TRANSLATIONS'), issuer);
   const employerDemoPath = demoScenarioPath('apply-job', language);
-  const trialWalletPath = demoScenarioPath('diploma', language);
+  // A student of the CertNet school tries the trial wallet with that school's run of the guided demo.
+  const trialWalletPath = `${demoScenarioPath('diploma', language)}${issuer === SAMPLE_CERTNET_ISSUER ? guidedRunSearch('certnet') : ''}`;
 
   useEffect(() => {
     rememberedSession = auth.status === 'signedIn' ? { session: auth.session, clockOffsetMs: auth.clockOffsetMs } : null;
@@ -920,10 +926,10 @@ export default function SchoolPortalPage() {
     signInController.current = controller;
     dispatch({ type: 'submit' });
     try {
-      const session = await portalClient.login(username, password, controller.signal);
-      if (!controller.signal.aborted) {
-        dispatch({ type: 'signedIn', session, clockOffsetMs: serverClockOffset(session.serverTime, Date.now()) });
-      }
+      const session = await signInAtSchool(portalClientFor, username, password, CERTNET_CONFIG !== null, controller.signal);
+      if (controller.signal.aborted) return;
+      if (session === null) dispatch({ type: 'signInFailed', problem: 'school_not_here' });
+      else dispatch({ type: 'signedIn', session, clockOffsetMs: serverClockOffset(session.serverTime, Date.now()) });
     } catch (error) {
       if (controller.signal.aborted) return;
       if (error instanceof PortalApiError) {

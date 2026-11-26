@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { CredentialOffer, IssuedCredential, SchoolPortalClient } from '../src/identra/schoolPortalClient';
 import { PortalApiError } from '../src/identra/schoolPortalClient';
+import { SCHOOL_PORTAL_PAGE_TRANSLATIONS } from '../src/translations/SchoolPortalPageTranslations';
 import {
   actionsFor,
   authReducer,
@@ -18,7 +19,10 @@ import {
   loadProblemFor,
   offerProblemFor,
   pendingOfferId,
+  portalIssuerFor,
   replaceOffer,
+  schoolCopyFor,
+  signInAtSchool,
   signInProblemFor,
   statusChangeProblemFor,
   credentialsReducer,
@@ -54,7 +58,7 @@ test('sign-in: submitting clears the last problem; failures keep the user signed
 
 test('sign-in: expiry and sign-out return to the form with the matching notice', () => {
   const session = {
-    role: 'registrar' as const, token: 't', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:30:00Z', profile: { hoTen: 'A', donVi: 'B' },
+    role: 'registrar' as const, token: 't', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:30:00Z', profile: { hoTen: 'A', donVi: 'B' }, issuer: 'truong-mau',
   };
   const signedIn = authReducer(SIGNED_OUT, { type: 'signedIn', session, clockOffsetMs: -660_000 });
   assert.deepEqual(signedIn, { status: 'signedIn', session, clockOffsetMs: -660_000 });
@@ -94,7 +98,7 @@ test('offer creation: a 429 is this network\'s share of codes, a 503 is everyone
   assert.deepEqual(
     (['rate_limited', 'unavailable', 'network', 'timeout', 'forbidden', 'validation_failed', 'internal_error', 'malformed'] as const)
       .map((kind) => offerProblemFor(error(kind))),
-    ['too_many_offers', 'busy', 'network', 'network', 'forbidden', 'rejected', 'unavailable', 'unavailable'],
+    ['too_many_offers', 'busy', 'network', 'network', 'forbidden', 'rejected', 'unavailable', 'unusable'],
   );
   const creating = offerReducer(OFFER_IDLE, { type: 'create' });
   assert.deepEqual(offerReducer(creating, { type: 'failed', problem: 'busy', retryAt: 90_000 }), { phase: 'error', problem: 'busy', retryAt: 90_000 });
@@ -260,4 +264,86 @@ test('every error code gets its own problem in each place it can happen', () => 
       .map((kind) => statusChangeProblemFor(error(kind))),
     ['already_revoked', 'session_expired', 'forbidden', 'not_found', 'rejected', 'rate_limited', 'no_answer', 'no_answer'],
   );
+});
+
+// ---- Which school: the signed-in account's own ---------------------------------------------------
+
+test('an account is signed in at its own school; a CertNet-school account only in a build with CertNet', () => {
+  assert.equal(portalIssuerFor('sv001', false), 'truong-mau');
+  assert.equal(portalIssuerFor('sv001', true), 'truong-mau');
+  assert.equal(portalIssuerFor('phongdaotao', true), 'truong-mau');
+  assert.equal(portalIssuerFor('cn-sv001', true), 'truong-mau-certnet');
+  assert.equal(portalIssuerFor('cn-phongdaotao', true), 'truong-mau-certnet');
+  assert.equal(portalIssuerFor('cn-sv001', false), null);
+});
+
+const loginRecorder = () => {
+  const calls: Array<{ issuer: string; username: string }> = [];
+  const clientFor = (issuer: string): Pick<SchoolPortalClient, 'login'> => ({
+    login: async (username) => {
+      calls.push({ issuer, username });
+      return { role: 'student', token: 't', expiresAt: '2026-11-19T02:00:00Z', serverTime: '2026-11-19T01:30:00Z', issuer, profile: {
+        hoTen: 'A', ngaySinh: '2004-01-01', maSinhVien: 'S', nganh: 'N', hangTotNghiep: 'G', namTotNghiep: '2026', soHieuBang: 'B',
+      } };
+    },
+  });
+  return { calls, clientFor };
+};
+
+test('without CertNet in the build, a CertNet-school account gets the truthful message and nothing is sent or created', async () => {
+  const { calls, clientFor } = loginRecorder();
+  assert.equal(await signInAtSchool(clientFor, 'cn-sv001', 'Identra@2026', false), null);
+  assert.deepEqual(calls, [], 'no sign-in request, so no session and no offer');
+  for (const locale of ['vi', 'en'] as const) {
+    const copy = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
+    const text = copy.signInProblems.school_not_here;
+    assert.ok(text.includes('{school}'), `${locale}: names the school`);
+    assert.ok(!text.includes(copy.signInProblems.unavailable), `${locale}: not "the server is not responding"`);
+  }
+  assert.match(SCHOOL_PORTAL_PAGE_TRANSLATIONS.vi.signInProblems.school_not_here, /chưa làm việc được với trường đó/);
+});
+
+test('sign-in goes through the client of the account\'s school', async () => {
+  const { calls, clientFor } = loginRecorder();
+  assert.equal((await signInAtSchool(clientFor, 'cn-sv001', 'p', true))?.issuer, 'truong-mau-certnet');
+  assert.equal((await signInAtSchool(clientFor, 'sv001', 'p', true))?.issuer, 'truong-mau');
+  assert.equal((await signInAtSchool(clientFor, 'sv001', 'p', false))?.issuer, 'truong-mau');
+  assert.deepEqual(calls.map((call) => call.issuer), ['truong-mau-certnet', 'truong-mau', 'truong-mau']);
+});
+
+for (const locale of ['vi', 'en'] as const) {
+  test(`${locale}: the page shows the signed-in school's own name, never the other's`, () => {
+    const copy = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
+    assert.equal(schoolCopyFor(copy, 'truong-mau'), copy, 'the first school\'s page is exactly as before');
+    const certnet = schoolCopyFor(copy, 'truong-mau-certnet');
+    assert.equal(certnet.universityName, copy.certnetUniversityName);
+    assert.equal(certnet.crestLabel, copy.certnetCrestLabel);
+    assert.notEqual(certnet.universityName, copy.universityName);
+    assert.ok(!Object.values(certnet).includes(copy.universityName), 'the other school\'s name is nowhere in that copy');
+  });
+
+  test(`${locale}: an answer the page cannot use says so, never "the server is not responding"`, () => {
+    const copy = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
+    const unusable = new PortalApiError('malformed', 'malformed portal response: offerUri');
+    assert.equal(offerProblemFor(unusable), 'unusable');
+    assert.equal(signInProblemFor(unusable), 'unusable');
+    assert.equal(loadProblemFor(unusable), 'unusable');
+    for (const text of [copy.offerProblems.unusable, copy.signInProblems.unusable, copy.loadProblems.unusable]) {
+      assert.ok(text.trim().length > 20);
+      assert.ok(!text.includes(copy.offerProblems.unavailable) && !text.includes(copy.loadProblems.unavailable));
+    }
+    assert.match(copy.offerProblems.unusable, locale === 'vi' ? /đã trả lời/ : /answered/);
+  });
+}
+
+test('the new portal texts are filled in both languages, Vietnamese with its diacritics', () => {
+  const pick = (copy: (typeof SCHOOL_PORTAL_PAGE_TRANSLATIONS)['vi']) => [
+    copy.certnetUniversityName, copy.certnetCrestLabel, copy.signInProblems.unusable, copy.signInProblems.school_not_here,
+    copy.offerProblems.unusable, copy.loadProblems.unusable,
+  ];
+  const vi = pick(SCHOOL_PORTAL_PAGE_TRANSLATIONS.vi);
+  const en = pick(SCHOOL_PORTAL_PAGE_TRANSLATIONS.en);
+  for (const text of [...vi, ...en]) assert.ok(text.trim().length > 0);
+  for (const text of vi.slice(2)) assert.match(text, /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i);
+  vi.forEach((text, index) => assert.notEqual(text, en[index], 'translated, not copied'));
 });

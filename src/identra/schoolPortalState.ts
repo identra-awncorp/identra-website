@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type { SchoolPortalPageCopy } from '../translations/SchoolPortalPageTranslations';
+import { CERTNET_ACCOUNT_PREFIX, SAMPLE_CERTNET_ISSUER, SAMPLE_ISSUER } from './config';
 import type {
   CredentialOffer,
   CredentialStatus,
@@ -19,7 +21,11 @@ import type {
 
 // ---- Sign-in ------------------------------------------------------------------------------------
 
-export type SignInProblem = 'invalid_credentials' | 'rate_limited' | 'network' | 'unavailable' | 'rejected';
+/**
+ * `unusable`: the server answered something the page cannot use. `school_not_here`: the account belongs to the
+ * CertNet sample school, which this build does not work with (nothing was sent).
+ */
+export type SignInProblem = 'invalid_credentials' | 'rate_limited' | 'network' | 'unavailable' | 'rejected' | 'unusable' | 'school_not_here';
 export type SignedOutNotice = 'session_expired' | 'signed_out' | null;
 
 export type AuthState =
@@ -60,18 +66,48 @@ export const signInProblemFor = (error: PortalApiError): SignInProblem => {
   if (error.kind === 'rate_limited') return 'rate_limited';
   if (error.kind === 'network' || error.kind === 'timeout') return 'network';
   if (error.kind === 'validation_failed' || error.kind === 'forbidden') return 'rejected';
+  if (error.kind === 'malformed') return 'unusable';
   return 'unavailable';
 };
 
+// ---- Which school: the account's own -----------------------------------------------------------
+
+/** The school of a sample account, or null when it is the CertNet school and this build works without CertNet. */
+export const portalIssuerFor = (username: string, certnet: boolean): string | null => {
+  if (!username.startsWith(CERTNET_ACCOUNT_PREFIX)) return SAMPLE_ISSUER;
+  return certnet ? SAMPLE_CERTNET_ISSUER : null;
+};
+
+/**
+ * Signs in with the portal client of the account's school, so the session, its offers and its status changes
+ * are that school's. Null: that school cannot be used in this build; nothing is sent.
+ */
+export const signInAtSchool = async (
+  clientFor: (issuer: string) => Pick<SchoolPortalClient, 'login'>,
+  username: string,
+  password: string,
+  certnet: boolean,
+  signal?: AbortSignal,
+): Promise<PortalSession | null> => {
+  const issuer = portalIssuerFor(username, certnet);
+  return issuer === null ? null : clientFor(issuer).login(username, password, signal);
+};
+
+/** The page's copy with the name and crest of the school the session belongs to (its own portal). */
+export const schoolCopyFor = (copy: SchoolPortalPageCopy, issuer: string): SchoolPortalPageCopy =>
+  issuer === SAMPLE_CERTNET_ISSUER
+    ? { ...copy, universityName: copy.certnetUniversityName, crestLabel: copy.certnetCrestLabel }
+    : copy;
+
 // ---- A student's credential offer ---------------------------------------------------------------
 
-export type LoadProblem = 'network' | 'rate_limited' | 'unavailable' | 'forbidden' | 'rejected';
+export type LoadProblem = 'network' | 'rate_limited' | 'unavailable' | 'forbidden' | 'rejected' | 'unusable';
 
 /**
  * Why a new code could not be made. `too_many_offers`: this network already holds 5 unused codes or made
  * 100 in 30 minutes (429); `busy`: all visitors together reached the server's cap (503). Both carry a wait.
  */
-export type OfferProblem = 'too_many_offers' | 'busy' | 'network' | 'forbidden' | 'rejected' | 'unavailable';
+export type OfferProblem = 'too_many_offers' | 'busy' | 'network' | 'forbidden' | 'rejected' | 'unusable' | 'unavailable';
 
 // The page keeps one offer in focus, the newest. Several may live on the server (section 5); the page
 // cancels the one in focus before asking for another, and when the visitor leaves.
@@ -137,6 +173,8 @@ export const offerProblemFor = (error: PortalApiError): OfferProblem => {
     case 'validation_failed':
     case 'conflict':
     case 'not_found': return 'rejected';
+    // The server answered, but not with an offer this page can use (for example a link to another school).
+    case 'malformed': return 'unusable';
     default: return 'unavailable';
   }
 };
@@ -177,6 +215,7 @@ export const loadProblemFor = (error: PortalApiError): LoadProblem => {
   if (error.kind === 'rate_limited') return 'rate_limited';
   if (error.kind === 'forbidden') return 'forbidden';
   if (error.kind === 'validation_failed' || error.kind === 'conflict' || error.kind === 'not_found') return 'rejected';
+  if (error.kind === 'malformed') return 'unusable';
   return 'unavailable';
 };
 

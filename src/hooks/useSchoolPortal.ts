@@ -11,6 +11,8 @@ import {
   PortalApiError,
   type CredentialStatus,
   type CredentialStatusChange,
+  type PortalSession,
+  type SchoolPortalClient,
 } from '../identra/schoolPortalClient';
 import {
   CONFIRM_IDLE,
@@ -25,10 +27,24 @@ import {
 } from '../identra/schoolPortalState';
 import { useNow } from './useNow';
 
-// What the sample university portal and the guided diploma demo share: the portal client, a student's
-// diploma code (create, poll, cancel on leaving) and the confirmed status change behind the revoke dialog.
+// What the sample university portal and the guided diploma demo share: the portal clients (one per school), a
+// student's diploma code (create, poll, cancel on leaving) and the confirmed status change behind the revoke dialog.
 
-export const schoolPortalClient = createSchoolPortalClient({ baseUrl: IDENTRA_API_URL, apiOrigin: IDENTRA_API_ORIGIN, issuer: SAMPLE_ISSUER });
+const portalClients = new Map<string, SchoolPortalClient>();
+
+/**
+ * The portal client of one school: a session it signs in belongs to that school, and only that school's offers
+ * and status changes are accepted. The first school signs in exactly as before (the production server does not
+ * know the `issuer` field); any other names itself.
+ */
+export const portalClientFor = (issuer: string): SchoolPortalClient => {
+  let client = portalClients.get(issuer);
+  if (!client) {
+    client = createSchoolPortalClient({ baseUrl: IDENTRA_API_URL, apiOrigin: IDENTRA_API_ORIGIN, issuer, nameIssuerAtSignIn: issuer !== SAMPLE_ISSUER });
+    portalClients.set(issuer, client);
+  }
+  return client;
+};
 
 const OFFER_POLL_MS = 2000;
 
@@ -52,7 +68,8 @@ export const retryAtFor = (error: unknown): number | undefined => {
  * pending code cancelled when the visitor leaves (closing the tab, reloading, another page) so it does not
  * hold one of the five places of their network.
  */
-export function useStudentOffer(token: string, onSessionExpired: () => void) {
+export function useStudentOffer({ token, issuer }: Pick<PortalSession, 'token' | 'issuer'>, onSessionExpired: () => void) {
+  const schoolPortalClient = portalClientFor(issuer);
   const [offer, dispatchOffer] = useReducer(offerReducer, OFFER_IDLE);
   const createController = useRef<AbortController | null>(null);
   const pendingRef = useRef<string | null>(null);
@@ -72,7 +89,7 @@ export function useStudentOffer(token: string, onSessionExpired: () => void) {
       window.removeEventListener('pagehide', cancelPending);
       cancelPending();
     };
-  }, [token]);
+  }, [schoolPortalClient, token]);
 
   const createOffer = async () => {
     const previous = pendingOfferId(offer);
@@ -156,7 +173,7 @@ export function useStudentOffer(token: string, onSessionExpired: () => void) {
       controller.abort();
       window.clearTimeout(timer);
     };
-  }, [activeOfferExpiresAt, activeOfferId, activeOfferOffset, onSessionExpired, token]);
+  }, [activeOfferExpiresAt, activeOfferId, activeOfferOffset, onSessionExpired, schoolPortalClient, token]);
 
   return { offer, dispatchOffer, createOffer };
 }

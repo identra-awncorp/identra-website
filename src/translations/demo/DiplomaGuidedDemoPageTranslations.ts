@@ -101,6 +101,17 @@ export interface DiplomaGuidedDemoPageCopy {
   endProductDemo: string;
   endSecurity: string;
   endAllDemos: string;
+  /** The choice between the two sample schools, shown only in a build with CertNet. */
+  runSwitch: { label: string; x509: string; certnet: string; hint: string };
+  /**
+   * The CertNet run (?truong=certnet): what replaces the sentences about Identra's list and the certificate.
+   * That school is recognised through CertNet and shown by its identifier, without a name.
+   */
+  certnetRun: Pick<DiplomaGuidedDemoPageCopy, 'happenedReceive' | 'contactChecks' | 'endRootTitle' | 'endRootBody'> & {
+    receiveInstructions: readonly string[];
+    /** The caption under the "30 seconds" diagram. */
+    registry: string;
+  };
 }
 
 const vi: DiplomaGuidedDemoPageCopy = {
@@ -155,6 +166,8 @@ const vi: DiplomaGuidedDemoPageCopy = {
     rate_limited: 'Mạng của bạn vừa đăng nhập quá nhiều lần.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
     unavailable: 'Máy chủ Identra đang bận. Thử lại sau ít phút.',
+    unusable: 'Máy chủ Identra đã trả lời, nhưng trang này không dùng được câu trả lời đó nên chưa đăng nhập được. Tải lại trang rồi thử lại.',
+    school_not_here: 'Trang này hiện chưa làm việc được với trường mẫu này. Hãy mở lại demo từ trang Tất cả demo.',
   },
   signedInAs: 'Đã đăng nhập: {name}, ngành {major}',
   receive: 'Nhận bằng tốt nghiệp',
@@ -255,6 +268,30 @@ const vi: DiplomaGuidedDemoPageCopy = {
   endProductDemo: 'Demo hành trình sản phẩm',
   endSecurity: 'Bảo mật: đã có gì, chưa có gì',
   endAllDemos: 'Tất cả demo',
+  runSwitch: {
+    label: 'Ví nhận ra trường bằng cách nào',
+    x509: 'Danh sách của Identra',
+    certnet: 'CertNet (thử nghiệm)',
+    hint: 'Mỗi cách dùng một trường mẫu riêng. Đổi cách thì demo làm lại từ đầu.',
+  },
+  certnetRun: {
+    receiveInstructions: [
+      'Bấm “Đăng nhập bằng tài khoản mẫu”. Bạn thấy hồ sơ tốt nghiệp của một sinh viên mẫu.',
+      'Bấm “Nhận bằng tốt nghiệp”. Trường hiện mã nhận bằng và mã PIN 6 số.',
+      'Bấm “Đưa mã này vào ví thử” (ngoài đời, bạn quét mã QR). Ví cho xem nơi gửi, loại giấy tờ và mã định danh trường tự khai. Không có tên trường: ví sẽ tìm trường qua CertNet.',
+      'Gõ mã PIN vào ví rồi bấm “Nhận giấy tờ”. Bằng hiện trong ví, nơi cấp hiện bằng mã định danh, và demo sang bước 2.',
+    ],
+    registry: 'Ở lượt này, để biết con dấu đúng là của trường, bên kiểm tìm trường qua CertNet, một sổ đăng ký nơi cấp giấy tờ đang thử nghiệm.',
+    happenedReceive: [
+      'Trường ký tấm bằng bằng khóa riêng của trường rồi gửi thẳng vào ví của bạn.',
+      'Bằng nằm trong ví này. Máy chủ chỉ ghi lại bằng đã cấp cho sinh viên nào và ô của nó trong danh sách thu hồi; nó không giữ nội dung bằng.',
+      'Ví tự kiểm trước khi lưu: tìm trường qua CertNet, chữ ký khớp với khóa của trường ở đó, CertNet công nhận trường được cấp loại bằng này, bằng còn hiệu lực.',
+      'CertNet chưa ghi tên trường nên ví hiện trường bằng mã định danh, không có tên.',
+    ],
+    contactChecks: 'Để kiểm, nhà tuyển dụng tìm và nhận ra trường qua CertNet, rồi đọc danh sách thu hồi có chữ ký của trường; không hỏi ai về bạn.',
+    endRootTitle: 'Chứng thư gốc mà ví dùng để nhận ra nhà tuyển dụng',
+    endRootBody: 'Ở lượt này, trường được tìm thấy và công nhận qua CertNet, không qua chứng thư gốc. Chữ ký trên yêu cầu của nhà tuyển dụng thì vẫn truy về chứng thư gốc DEMO này. Dấu vân tay SHA-256:',
+  },
 };
 
 const en: DiplomaGuidedDemoPageCopy = {
@@ -309,6 +346,8 @@ const en: DiplomaGuidedDemoPageCopy = {
     rate_limited: 'Your network has signed in too many times.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
     unavailable: 'The Identra server is busy. Try again in a few minutes.',
+    unusable: 'The Identra server answered, but this page cannot use its answer, so the sign-in did not happen. Reload the page and try again.',
+    school_not_here: 'This site cannot work with this sample university here yet. Open the demo again from All demos.',
   },
   signedInAs: 'Signed in: {name}, {major}',
   receive: 'Receive the diploma',
@@ -409,6 +448,30 @@ const en: DiplomaGuidedDemoPageCopy = {
   endProductDemo: 'Product journey demo',
   endSecurity: 'Security: what is built, what is not yet',
   endAllDemos: 'All demos',
+  runSwitch: {
+    label: 'How the wallet recognises the university',
+    x509: 'Identra\'s list',
+    certnet: 'CertNet (trial)',
+    hint: 'Each way uses its own sample university. Switching starts the demo again.',
+  },
+  certnetRun: {
+    receiveInstructions: [
+      'Press “Sign in with a sample account”. You see a sample student\'s graduation record.',
+      'Press “Receive the diploma”. The university shows a diploma code and a 6-digit PIN.',
+      'Press “Put this code into the trial wallet” (in real life, you scan the QR code). The wallet shows where it comes from, what it is and the identifier the university gives for itself. There is no name: the wallet will look the university up through CertNet.',
+      'Type the PIN into the wallet and press “Accept document”. The diploma appears in the wallet with its issuer shown by identifier, and the demo moves to step 2.',
+    ],
+    registry: 'In this run, to know the seal really is the university\'s, the verifier looks the university up through CertNet, a register of document issuers being trialled.',
+    happenedReceive: [
+      'The university signed the diploma with its own private key and sent it straight to your wallet.',
+      'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
+      'Before saving, the wallet checked by itself: it found the university through CertNet, the signature matches the university\'s key there, CertNet recognises it for this kind of diploma, and the diploma is valid.',
+      'CertNet records no name for the university yet, so the wallet shows it by its identifier, without a name.',
+    ],
+    contactChecks: 'To check, the employer found and recognised the university through CertNet, then read the university\'s signed revocation list; it asked nobody about you.',
+    endRootTitle: 'The root certificate the wallet uses to recognise the employer',
+    endRootBody: 'In this run the university was found and recognised through CertNet, not through a root certificate. The signature on the employer\'s request still traces back to this DEMO root certificate. SHA-256 fingerprint:',
+  },
 };
 
 export const DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS = {

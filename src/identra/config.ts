@@ -72,6 +72,13 @@ export const CERTNET_CONFIG = resolveCertNetConfig(env?.VITE_CERTNET_GATEWAY_URL
 
 /** The issuer and verifier this website demonstrates (vc-api.md sections 4-6). */
 export const SAMPLE_ISSUER = 'truong-mau';
+/**
+ * The second sample school, recognised through CertNet (vc-api.md section 5): hosted only by a server with
+ * CertNet configured, usable here only in a build with CERTNET_CONFIG. Its sample accounts are the first
+ * school's under this prefix (cn-sv001…cn-sv003, cn-phongdaotao).
+ */
+export const SAMPLE_CERTNET_ISSUER = 'truong-mau-certnet';
+export const CERTNET_ACCOUNT_PREFIX = 'cn-';
 export const SAMPLE_VERIFIER = 'nha-tuyen-dung-mau';
 /** The sample verifier's organisation identifier in the trust list (ADR-0015 section 9). */
 export const SAMPLE_VERIFIER_ORGANISATION = 'VATVN-0100000005';

@@ -27,10 +27,13 @@ export interface RegistrarProfile {
   donVi: string;
 }
 
-/** `serverTime` accompanies every `expiresAt` (vc-api.md section 2): count down against the server clock. */
+/**
+ * `serverTime` accompanies every `expiresAt` (vc-api.md section 2): count down against the server clock.
+ * `issuer`: the school the session belongs to, the one of the client that signed it in (not read from the body).
+ */
 export type PortalSession =
-  | { role: 'student'; token: string; expiresAt: string; serverTime: string; profile: StudentProfile }
-  | { role: 'registrar'; token: string; expiresAt: string; serverTime: string; profile: RegistrarProfile };
+  | { role: 'student'; token: string; expiresAt: string; serverTime: string; profile: StudentProfile; issuer: string }
+  | { role: 'registrar'; token: string; expiresAt: string; serverTime: string; profile: RegistrarProfile; issuer: string };
 
 export interface CredentialOffer {
   offerId: string;
@@ -145,7 +148,7 @@ const asEnum = <T extends string>(value: unknown, allowed: readonly T[], path: s
 
 const CREDENTIAL_STATUSES = ['valid', 'revoked', 'suspended'] as const;
 
-export const parsePortalSession = (raw: unknown): PortalSession => {
+export const parsePortalSession = (raw: unknown, issuer: string): PortalSession => {
   const body = asObject(raw, 'body');
   const token = asText(body.token, 'token', 1024);
   const expiresAt = asDate(body.expiresAt, 'expiresAt');
@@ -160,6 +163,7 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
       expiresAt,
       serverTime,
       profile: { hoTen: asText(profile.hoTen, 'profile.hoTen'), donVi: asText(profile.donVi, 'profile.donVi') },
+      issuer,
     };
   }
 
@@ -177,6 +181,7 @@ export const parsePortalSession = (raw: unknown): PortalSession => {
       namTotNghiep: asTextOrInteger(profile.namTotNghiep, 'profile.namTotNghiep'),
       soHieuBang: asText(profile.soHieuBang, 'profile.soHieuBang'),
     },
+    issuer,
   };
 };
 
@@ -318,7 +323,13 @@ export const createSchoolPortalClient = (options: {
   baseUrl: string;
   /** The canonical API origin that offer URIs point at (vc-api.md section 1). */
   apiOrigin: string;
+  /** The one school this client works for: its sessions, offers and status changes are that school's only. */
   issuer: string;
+  /**
+   * Name the school at sign-in (`issuer` in the body): the server then refuses an account of another school.
+   * Off, the body is `{ username, password }` as before and the server uses the account's own school.
+   */
+  nameIssuerAtSignIn?: boolean;
   fetch?: typeof fetch;
   timeoutMs?: number;
 }): SchoolPortalClient => {
@@ -382,8 +393,8 @@ export const createSchoolPortalClient = (options: {
   const offerPath = (offerId: string) => `/v1/demo/school/offers/${encodeURIComponent(offerId)}`;
 
   return {
-    login: (username, password, signal) => request('POST', '/v1/demo/school/login', parsePortalSession, {
-      body: { username, password },
+    login: (username, password, signal) => request('POST', '/v1/demo/school/login', (raw) => parsePortalSession(raw, options.issuer), {
+      body: { username, password, ...(options.nameIssuerAtSignIn && { issuer: options.issuer }) },
       signal,
     }),
     createOffer: (token, signal) => request(

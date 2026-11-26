@@ -11,6 +11,9 @@ export interface SchoolPortalPageCopy {
   universityName: string;
   portalName: string;
   crestLabel: string;
+  /** The CertNet sample school's own name and crest label, on its own portal (shown only in a build with CertNet). */
+  certnetUniversityName: string;
+  certnetCrestLabel: string;
   demoNotice: string;
   memoryNotice: string;
   signInTitle: string;
@@ -127,6 +130,8 @@ const vi: SchoolPortalPageCopy = {
   universityName: 'Trường Đại học Mẫu (DEMO)',
   portalName: 'Cổng thông tin sinh viên',
   crestLabel: 'Biểu trưng Trường Đại học Mẫu',
+  certnetUniversityName: 'Trường Mẫu CertNet (DEMO)',
+  certnetCrestLabel: 'Biểu trưng Trường Mẫu CertNet',
   demoNotice: 'Đây là cổng trường hư cấu để trải nghiệm Identra. Mọi tên, mã sinh viên và bằng cấp ở đây đều là dữ liệu mẫu, không phải người thật.',
   memoryNotice: 'Phiên đăng nhập chỉ được giữ trong tab này. Tải lại hoặc đóng trang sẽ đăng xuất.',
   signInTitle: 'Đăng nhập cổng trường mẫu',
@@ -143,6 +148,8 @@ const vi: SchoolPortalPageCopy = {
     rate_limited: 'Bạn đã thử đăng nhập quá nhiều lần.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
     unavailable: 'Máy chủ Identra đang không phản hồi. Thử lại sau ít phút.',
+    unusable: 'Máy chủ Identra đã trả lời, nhưng trang này không dùng được câu trả lời đó nên bạn chưa được đăng nhập. Tải lại trang rồi thử lại.',
+    school_not_here: 'Tài khoản này thuộc {school}. Trang này hiện chưa làm việc được với trường đó, nên bạn chưa được đăng nhập và chưa có gì được tạo. Hãy dùng một trong các tài khoản mẫu trên trang này.',
   },
   retryAfter: 'Đợi {seconds} giây rồi thử lại.',
   sessionExpiredNotice: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
@@ -200,6 +207,7 @@ const vi: SchoolPortalPageCopy = {
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
     forbidden: 'Tài khoản này không nhận bằng được.',
     rejected: 'Máy chủ không nhận yêu cầu này. Tải lại trang rồi thử lại.',
+    unusable: 'Máy chủ Identra đã trả lời, nhưng mã nhận bằng trong câu trả lời không dùng được ở trang này nên chưa hiện mã nào. Tải lại trang rồi thử lại.',
     unavailable: 'Máy chủ Identra đang không phản hồi. Thử lại sau ít phút.',
   },
   retryIn: 'Có thể thử lại sau {time}.',
@@ -252,6 +260,7 @@ const vi: SchoolPortalPageCopy = {
     unavailable: 'Máy chủ Identra đang không phản hồi.',
     forbidden: 'Tài khoản này không có quyền xem mục này.',
     rejected: 'Máy chủ không nhận yêu cầu này. Tải lại trang rồi thử lại.',
+    unusable: 'Máy chủ Identra đã trả lời, nhưng trang này không đọc được danh sách trong câu trả lời.',
   },
   retry: 'Thử lại',
   loading: 'Đang tải…',
@@ -301,6 +310,8 @@ const en: SchoolPortalPageCopy = {
   universityName: 'Sample University (DEMO)',
   portalName: 'Student portal',
   crestLabel: 'Sample University crest',
+  certnetUniversityName: 'Sample University on CertNet (DEMO)',
+  certnetCrestLabel: 'Sample University on CertNet crest',
   demoNotice: 'This is a fictional university portal for trying Identra. Every name, student number and diploma here is sample data, not a real person.',
   memoryNotice: 'Your sign-in is kept in this tab only. Reloading or closing the page signs you out.',
   signInTitle: 'Sign in to the sample university',
@@ -317,6 +328,8 @@ const en: SchoolPortalPageCopy = {
     rate_limited: 'Too many sign-in attempts.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
     unavailable: 'The Identra server is not responding. Try again in a few minutes.',
+    unusable: 'The Identra server answered, but this page cannot use its answer, so you are not signed in. Reload the page and try again.',
+    school_not_here: 'This account belongs to {school}. This site cannot work with that university here yet, so you are not signed in and nothing was created. Use one of the sample accounts on this page.',
   },
   retryAfter: 'Wait {seconds} seconds, then try again.',
   sessionExpiredNotice: 'Your session has expired. Please sign in again.',
@@ -374,6 +387,7 @@ const en: SchoolPortalPageCopy = {
     network: 'Cannot reach the Identra server. Check your connection and try again.',
     forbidden: 'This account cannot receive a diploma.',
     rejected: 'The server did not accept this request. Reload the page and try again.',
+    unusable: 'The Identra server answered, but the diploma code in its answer cannot be used on this page, so no code is shown. Reload the page and try again.',
     unavailable: 'The Identra server is not responding. Try again in a few minutes.',
   },
   retryIn: 'You can try again in {time}.',
@@ -426,6 +440,7 @@ const en: SchoolPortalPageCopy = {
     unavailable: 'The Identra server is not responding.',
     forbidden: 'This account may not see this.',
     rejected: 'The server did not accept this request. Reload the page and try again.',
+    unusable: 'The Identra server answered, but this page cannot read the list in its answer.',
   },
   retry: 'Try again',
   loading: 'Loading…',

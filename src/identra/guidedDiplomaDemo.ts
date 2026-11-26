@@ -41,6 +41,10 @@ export const guidedCopyFor = (copy: DiplomaGuidedDemoPageCopy, run: GuidedRun): 
   return { ...copy, ...sentences, steps: { ...copy.steps, receive: { ...copy.steps.receive, instructions: receiveInstructions } } };
 };
 
+/** "What just happened" after the receipt: only what the wallet established (valid, or saved but not checked yet). */
+export const happenedReceiveLines = (copy: DiplomaGuidedDemoPageCopy, state: Pick<GuidedState, 'receivedChecked'>): readonly string[] =>
+  state.receivedChecked ? copy.happenedReceive : copy.happenedReceiveUnchecked;
+
 export const GUIDED_STEPS = ['receive', 'apply', 'revoke'] as const;
 export type GuidedStepId = typeof GUIDED_STEPS[number];
 export type GuidedPosition = GuidedStepId | 'done';
@@ -51,6 +55,8 @@ export type GuidedNotice = 'reloaded' | 'sessionLost';
 export interface GuidedState {
   /** The trial wallet saved the diploma the school issued in this run. */
   received: boolean;
+  /** At that receipt the wallet confirmed it all (status valid); false: saved as "not checked yet". */
+  receivedChecked: boolean;
   /** The employer's check of that diploma passed. */
   applied: boolean;
   /** The school confirmed the revocation. */
@@ -70,7 +76,7 @@ export interface GuidedState {
 }
 
 export type GuidedEvent =
-  | { type: 'received' }
+  | { type: 'received'; checked: boolean }
   /** A verification session ended with a result. `reason`: the first failed check's code. */
   | { type: 'verified'; ok: boolean; reason: FailureReasonKey | null }
   | { type: 'revoked' }
@@ -81,6 +87,7 @@ export type GuidedEvent =
 
 export const GUIDED_START: GuidedState = {
   received: false,
+  receivedChecked: false,
   applied: false,
   revoked: false,
   refusedBy: null,
@@ -120,7 +127,7 @@ export const guidedReducer = (state: GuidedState, event: GuidedEvent): GuidedSta
       return canView(state, event.position) ? { ...state, viewing: event.position } : state;
     case 'received':
       // Step 1 is done the moment the diploma is in the wallet: move on to step 2 by itself.
-      return state.received ? state : { ...state, received: true, viewing: 'apply' };
+      return state.received ? state : { ...state, received: true, receivedChecked: event.checked, viewing: 'apply' };
     case 'verified': {
       if (!state.received) return state;
       if (!state.applied) {

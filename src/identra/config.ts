@@ -37,14 +37,33 @@ export interface CertNetConfig {
   /** Where its requests really go: the same origin, or plain http on the loopback interface for local work. */
   fetchOrigin: string;
   network: CertNetNetwork;
+  /**
+   * Built with VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS=true (end-to-end tests only): a production build that may use
+   * the `local` network (whose register anyone can write) or a plain-http gateway. The site then marks every
+   * place CertNet results appear as a test build.
+   */
+  testBuild: boolean;
 }
+
+/** The test-only switch that lets a production build use the `local` network or a plain-http gateway. Never set it for a real site. */
+export const CERTNET_TEST_SWITCH = 'VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS';
 
 const GATEWAY_PATH = /^(\/[A-Za-z0-9._~-]+)*\/?$/;
 
-/** Both values or neither (null: the CertNet path is off). Same address rule as VITE_IDENTRA_API_URL. */
-export const resolveCertNetConfig = (gatewayValue: string | undefined, networkValue: string | undefined): CertNetConfig | null => {
+/**
+ * Both values or neither (null: the CertNet path is off). Same address rule as VITE_IDENTRA_API_URL, and in a
+ * production build (`production`) only https and not the `local` network, unless the test-only switch is set.
+ */
+export const resolveCertNetConfig = (
+  gatewayValue: string | undefined,
+  networkValue: string | undefined,
+  { production = false, testSwitch }: { production?: boolean; testSwitch?: string } = {},
+): CertNetConfig | null => {
   const gateway = gatewayValue?.trim() ?? '';
   const network = networkValue?.trim() ?? '';
+  const switchValue = testSwitch?.trim() ?? '';
+  if (switchValue !== '' && switchValue !== 'true') throw new Error(`${CERTNET_TEST_SWITCH} must be "true" or unset.`);
+  const testBuild = switchValue === 'true';
   if (!gateway && !network) return null;
   if (!gateway || !network) {
     throw new Error('VITE_CERTNET_GATEWAY_URL and VITE_CERTNET_NETWORK must be set together, or both left empty to turn the CertNet path off.');
@@ -64,11 +83,17 @@ export const resolveCertNetConfig = (gatewayValue: string | undefined, networkVa
   if (url.username || url.password || url.search || url.hash || gateway.includes('?') || gateway.includes('#') || !GATEWAY_PATH.test(url.pathname)) {
     throw new Error('VITE_CERTNET_GATEWAY_URL must be an origin with an optional path, without credentials, query or fragment.');
   }
+  if (production && !testBuild && (network === 'local' || url.protocol !== 'https:')) {
+    throw new Error(`A production build refuses VITE_CERTNET_NETWORK=local and a gateway that is not https (anyone can write the local network's register). For end-to-end tests only, set ${CERTNET_TEST_SWITCH}=true: the site then shows a "test build" marker.`);
+  }
   const path = url.pathname.replace(/\/$/, '');
-  return { gatewayUrl: `https://${url.host}${path}`, fetchOrigin: url.origin, network: network as CertNetNetwork };
+  return { gatewayUrl: `https://${url.host}${path}`, fetchOrigin: url.origin, network: network as CertNetNetwork, testBuild };
 };
 
-export const CERTNET_CONFIG = resolveCertNetConfig(env?.VITE_CERTNET_GATEWAY_URL, env?.VITE_CERTNET_NETWORK);
+export const CERTNET_CONFIG = resolveCertNetConfig(env?.VITE_CERTNET_GATEWAY_URL, env?.VITE_CERTNET_NETWORK, {
+  production: (import.meta as { env?: { PROD?: boolean } }).env?.PROD === true,
+  testSwitch: env?.VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS,
+});
 
 /** The issuer and verifier this website demonstrates (vc-api.md sections 4-6). */
 export const SAMPLE_ISSUER = 'truong-mau';

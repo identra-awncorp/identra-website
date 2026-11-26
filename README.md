@@ -53,7 +53,8 @@ Important variables:
 | `VITE_SITE_URL` | Public canonical origin used by SEO metadata, sitemap, social previews, and localized static pages. |
 | `APP_URL` | Runtime host URL used by applet or hosting environments when needed. |
 | `VITE_IDENTRA_API_URL` | Origin of the Identra API (default `https://api-identra.awncorp.vn`); https, or plain http on 127.0.0.1 / localhost for local work. |
-| `VITE_CERTNET_GATEWAY_URL`, `VITE_CERTNET_NETWORK` | Optional, both or neither: the CertNet gateway (https, or http on loopback) and network (`local`, `testnet`, `mainnet`) the web trial wallet uses for issuers checked through CertNet (ADR-0020). Unset, that path is off and the site is unchanged. When set, add the gateway origin to `connect-src` (see `deploy/nginx/identra-web.conf.example`). |
+| `VITE_CERTNET_GATEWAY_URL`, `VITE_CERTNET_NETWORK` | Optional, both or neither: the CertNet gateway (https, or http on loopback) and network (`local`, `testnet`, `mainnet`) the web trial wallet uses for issuers checked through CertNet (ADR-0020). Unset, that path is off and the site is unchanged. When set, add the gateway origin to `connect-src` (see `deploy/nginx/identra-web.conf.example`). A build (`npm run build`) fails with the `local` network or a gateway that is not https. |
+| `VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS` | **Test-only.** `true` lets a build use the `local` network and a plain-http loopback gateway, for the end-to-end tests against a fake gateway; the site then shows a "test build" marker wherever CertNet results appear. Never set it for a real site. |
 
 For local development, `VITE_SITE_URL` can stay pointed at the intended public site. For production SEO output, set it to the real public origin.
 

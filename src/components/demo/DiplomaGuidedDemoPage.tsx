@@ -30,6 +30,7 @@ import {
   guidedReducer,
   guidedRunFor,
   guidedRunSearch,
+  happenedReceiveLines,
   stepStatus,
   type GuidedRun,
   type GuidedState,
@@ -266,7 +267,8 @@ function ReceiveSignedIn({
       )}
 
       {offer.phase === 'issued' && (
-        <Notice tone="success" testId="guided-offer-issued"><p>{portalCopy.issuedTitle}</p></Notice>
+        // The school only knows it sent the diploma; whether the wallet saved it is the wallet's to say.
+        <Notice tone="info" testId="guided-offer-issued"><p>{portalCopy.issuedTitle}</p></Notice>
       )}
 
       {(offer.phase === 'expired' || offer.phase === 'error') && (
@@ -734,7 +736,7 @@ export default function DiplomaGuidedDemoPage() {
 
   const onWalletEvent = useCallback((event: WalletPanelEvent) => {
     if (event.type === 'credentialReceived') {
-      dispatch({ type: 'received' });
+      dispatch({ type: 'received', checked: event.checked });
       turnToEmployerSoon();
     }
     if (event.type === 'presentationSent') turnToEmployerSoon();
@@ -830,7 +832,14 @@ export default function DiplomaGuidedDemoPage() {
     </div>
   );
 
-  const happenedReceive = <WhatHappened title={copy.happenedTitle} lines={copy.happenedReceive} testId="guided-happened-receive" />;
+  // What the wallet really established at receipt: "valid", or saved but not checked yet.
+  const happenedReceive = (
+    <WhatHappened
+      title={copy.happenedTitle}
+      lines={happenedReceiveLines(copy, guided)}
+      testId="guided-happened-receive"
+    />
+  );
 
   // The organisation's side of the step on screen, per actor (null: that actor has no part in this step).
   let common: ReactNode = null;

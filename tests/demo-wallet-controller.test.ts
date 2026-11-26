@@ -109,7 +109,7 @@ test('race: a hand-off while Accept runs is refused; the finished Accept is stil
 
   acceptAnswer.resolve({ ok: true, credentialId: 'c1', vct: VCT, issuerName: 'Trường Đại học Mẫu (DEMO)', status: 'valid' });
   await accepting;
-  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1' }]);
+  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1', checked: true }]);
   const state = controller.getState();
   assert.equal(state.screen.name, 'offerSaved');
   assert.equal(state.screen.name === 'offerSaved' && state.screen.issuerName, 'Trường Đại học Mẫu (DEMO)', 'the trust-list name, after the check');
@@ -178,6 +178,60 @@ test('a verifier that could not check now: the request stays open with the same 
   assert.deepEqual(events, [], 'nothing was sent as far as the page is concerned');
   await controller.share();
   assert.deepEqual(calls.submit, [1, 1], 'the same choice goes again');
+});
+
+test('after "could not check right now" the screen is locked: the same share goes again, another option cannot be picked, the SDK\'s ends are said truthfully, nothing loops', async () => {
+  type Answer = Awaited<ReturnType<WalletLike['presentations']['submit']>>;
+  const script = (answers: Answer[]) => {
+    const fake = fakeWallet({ status: 'valid' });
+    const sent: { credentialId: string; claimSetIndex: number }[] = [];
+    (fake.wallet.presentations as { submit: unknown }).submit = async (_request: ResolvedPresentation, choice: { credentialId: string; claimSetIndex: number }) => {
+      sent.push(choice);
+      return answers.shift()!;
+    };
+    const events: WalletControllerEvent[] = [];
+    return { controller: createWalletController(fake.wallet, (event) => events.push(event), () => 'vi'), sent, events, calls: fake.calls };
+  };
+  const delivered = { ok: false, code: 'DID_RESOLUTION_UNAVAILABLE', delivered: true } as Answer;
+
+  // Three sends at most: the third 503 is VERIFIER_ERROR, and the request is used up.
+  const { controller, sent, events } = script([delivered, delivered, { ok: false, code: 'VERIFIER_ERROR' }]);
+  controller.open(requestItem);
+  await tick();
+  controller.choose(1);
+  await controller.share();
+  const locked = controller.getState().screen;
+  assert.equal(locked.name === 'requestConsent' && locked.problem, 'verifierCouldNotCheck');
+  assert.deepEqual(locked.name === 'requestConsent' && locked.delivered, { credentialId: 'c1', claimSetIndex: 1, fields: ['ho_ten', 'nganh'] });
+  controller.choose(0);
+  assert.equal(controller.getState().screen, locked, 'no other option once a share reached the verifier');
+  await controller.share();
+  await controller.share();
+  assert.deepEqual(sent, [{ credentialId: 'c1', claimSetIndex: 1 }, { credentialId: 'c1', claimSetIndex: 1 }, { credentialId: 'c1', claimSetIndex: 1 }], 'exactly the share first sent');
+  assert.deepEqual(controller.getState().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] });
+  await controller.share();
+  assert.equal(sent.length, 3, 'nothing more is sent: no loop');
+  assert.deepEqual(events, [], 'nothing was concluded');
+
+  // The SDK forgot the request (REQUEST_INVALID): used up as well.
+  const invalid = script([delivered, { ok: false, code: 'REQUEST_INVALID' }]);
+  invalid.controller.open(requestItem);
+  await tick();
+  invalid.controller.choose(1);
+  await invalid.controller.share();
+  await invalid.controller.share();
+  assert.deepEqual(invalid.controller.getState().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] });
+
+  // Stop: the request is forgotten, and the page is not told "declined" (that would read "nothing was sent").
+  const stop = script([delivered]);
+  stop.controller.open(requestItem);
+  await tick();
+  stop.controller.choose(1);
+  await stop.controller.share();
+  stop.controller.decline();
+  assert.equal(stop.calls.decline, 1);
+  assert.deepEqual(stop.controller.getState().screen, { name: 'requestDeclined', delivered: ['ho_ten', 'nganh'] });
+  assert.deepEqual(stop.events, []);
 });
 
 test('consent: an untrusted verifier gets no name, no purpose, and no Share', async () => {
@@ -315,7 +369,7 @@ test('receipt while CertNet is silent: nothing stored, the same offer is accepte
   assert.deepEqual(calls.accept, [{ txCode: '123456' }, {}]);
   const done = controller.getState().screen;
   assert.deepEqual(done, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: null, issuerDid: DID });
-  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1' }]);
+  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1', checked: true }]);
 });
 
 test('a refused offer: OFFER_INVALID is only "not a valid offer"; TRUST_PATH_UNSUPPORTED is "cannot be received here"', async () => {
@@ -327,4 +381,14 @@ test('a refused offer: OFFER_INVALID is only "not a valid offer"; TRUST_PATH_UNS
     await tick();
     assert.deepEqual(controller.getState().screen, { name: 'offerFailed', problem }, code);
   }
+});
+
+test('a diploma stored as "not checked yet" is announced as such, so the page does not call it valid', async () => {
+  const { controller, events, acceptAnswer } = setup();
+  controller.open(offerItem);
+  await tick();
+  const accepting = controller.accept('123456');
+  acceptAnswer.resolve({ ok: true, credentialId: 'c1', vct: VCT, issuerName: null, status: 'unknown' });
+  await accepting;
+  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1', checked: false }]);
 });

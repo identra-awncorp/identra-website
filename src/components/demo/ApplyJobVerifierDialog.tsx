@@ -24,7 +24,6 @@ import {
   isUncheckedRow,
   runVerifierSession,
   secondsUntil,
-  shortIssuerId,
   toCheckRows,
   toSharedFields,
   truncateText,
@@ -38,6 +37,7 @@ import {
 } from '../../translations/demo/ApplyJobVerifierDialogTranslations';
 import { fillNodes } from '../../utils/fillTemplate';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
+import CertNetTestBuildMarker, { CERTNET_TEST_BUILD } from '../CertNetTestBuildMarker';
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
 import IdentraIssuerId, { IssuerIdText } from '../IdentraIssuerId';
 import IdentraOrganisationName from '../IdentraOrganisationName';
@@ -114,6 +114,7 @@ export function ApplyJobVerifierResult({
   language,
   verifierName,
   showFailureHint = true,
+  testBuild = CERTNET_TEST_BUILD,
 }: {
   result: SessionResult;
   copy: ApplyJobVerifierDialogCopy;
@@ -122,6 +123,8 @@ export function ApplyJobVerifierResult({
   verifierName: string;
   /** The "fill in the form yourself / try later" line under a failure; a page with its own next step hides it. */
   showFailureHint?: boolean;
+  /** A build made with the test-only CertNet switch: every CertNet result carries the test-build marker. */
+  testBuild?: boolean;
 }) {
   const rows = toCheckRows(result);
   const failure = firstFailure(rows);
@@ -135,7 +138,7 @@ export function ApplyJobVerifierResult({
   const signerLine = result.issuer
     ? fillNodes(copy.groups.signerNamed, { issuer: <IdentraOrganisationName maToChuc={result.issuer.maToChuc} serverName={result.issuer.ten} language={language} /> })
     : issuerDid
-      ? fillNodes(copy.groups.signerCertNetNamed, { issuer: <IssuerIdText value={shortIssuerId(issuerDid)} /> })
+      ? fillNodes(copy.groups.signerCertNetNamed, { issuer: <IssuerIdText value={issuerDid} /> })
       : certnet ? copy.groups.signerCertNet : copy.groups.signer;
   const checkedAt = Number.isNaN(Date.parse(result.verifiedAt))
     ? null
@@ -143,6 +146,7 @@ export function ApplyJobVerifierResult({
 
   return (
     <div className="space-y-5">
+      {certnet && testBuild && <CertNetTestBuildMarker text={copy.testBuildMarker} />}
       <div className={`flex items-start gap-3 rounded-2xl p-4 ${result.ok ? 'bg-emerald-50 text-emerald-950' : unchecked ? 'bg-amber-50 text-amber-950' : 'bg-rose-50 text-rose-950'}`} data-outcome={unchecked ? 'unchecked' : undefined}>
         {result.ok
           ? <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
@@ -188,7 +192,7 @@ export function ApplyJobVerifierResult({
           <div className="min-w-0" data-testid="verifier-issuer-certnet">
             <dt className="type-body-sm text-slate-600">{copy.issuedBy}</dt>
             <dd className="type-body font-medium text-slate-900">
-              <IdentraIssuerId id={issuerDid} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} />
+              <IdentraIssuerId id={issuerDid} />
               <p className="type-body-sm mt-1 font-normal text-slate-600" data-testid="verifier-certnet-note">{copy.issuerIdNote}</p>
             </dd>
           </div>

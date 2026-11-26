@@ -45,6 +45,8 @@ export interface DiplomaGuidedDemoPageCopy {
   qrDirection: string;
   happenedTitle: string;
   happenedReceive: readonly string[];
+  /** The same, when the wallet stored the diploma as "not checked yet" (a list could not be read at receipt). */
+  happenedReceiveUnchecked: readonly string[];
   happenedRevoke: readonly string[];
   contactsTitle: string;
   contactWallet: string;
@@ -107,7 +109,7 @@ export interface DiplomaGuidedDemoPageCopy {
    * The CertNet run (?truong=certnet): what replaces the sentences about Identra's list and the certificate.
    * That school is recognised through CertNet and shown by its identifier, without a name.
    */
-  certnetRun: Pick<DiplomaGuidedDemoPageCopy, 'happenedReceive' | 'contactChecks' | 'endRootTitle' | 'endRootBody'> & {
+  certnetRun: Pick<DiplomaGuidedDemoPageCopy, 'happenedReceive' | 'happenedReceiveUnchecked' | 'contactChecks' | 'endRootTitle' | 'endRootBody'> & {
     receiveInstructions: readonly string[];
     /** The caption under the "30 seconds" diagram. */
     registry: string;
@@ -194,6 +196,11 @@ const vi: DiplomaGuidedDemoPageCopy = {
     'Trường ký tấm bằng bằng khóa riêng của trường rồi gửi thẳng vào ví của bạn.',
     'Bằng nằm trong ví này. Máy chủ chỉ ghi lại bằng đã cấp cho sinh viên nào và ô của nó trong danh sách thu hồi; nó không giữ nội dung bằng.',
     'Ví tự kiểm trước khi lưu: đúng chữ ký của trường, trường có trong danh sách được công nhận, bằng còn hiệu lực.',
+  ],
+  happenedReceiveUnchecked: [
+    'Trường ký tấm bằng bằng khóa riêng của trường rồi gửi thẳng vào ví của bạn.',
+    'Bằng nằm trong ví này. Máy chủ chỉ ghi lại bằng đã cấp cho sinh viên nào và ô của nó trong danh sách thu hồi; nó không giữ nội dung bằng.',
+    'Ví đã kiểm chữ ký trên bằng trước khi lưu. Nhưng lúc nhận, ví chưa đọc được danh sách cần dùng, nên chưa xác nhận được trường có được công nhận và bằng có còn hiệu lực hay không. Bằng được lưu với ghi chú chưa kiểm xong: mở bằng trong ví và bấm “Kiểm tra lại” sau.',
   ],
   happenedRevoke: [
     'Trường đánh dấu bản bằng này trong danh sách thu hồi có chữ ký. Không ai phải báo riêng cho nhà tuyển dụng.',
@@ -288,6 +295,12 @@ const vi: DiplomaGuidedDemoPageCopy = {
       'Ví tự kiểm trước khi lưu: tìm trường qua CertNet, chữ ký khớp với khóa của trường ở đó, CertNet công nhận trường được cấp loại bằng này, bằng còn hiệu lực.',
       'CertNet chưa ghi tên trường nên ví hiện trường bằng mã định danh, không có tên.',
     ],
+    happenedReceiveUnchecked: [
+      'Trường ký tấm bằng bằng khóa riêng của trường rồi gửi thẳng vào ví của bạn.',
+      'Bằng nằm trong ví này. Máy chủ chỉ ghi lại bằng đã cấp cho sinh viên nào và ô của nó trong danh sách thu hồi; nó không giữ nội dung bằng.',
+      'Trước khi lưu, ví đã tìm thấy trường qua CertNet và thấy chữ ký khớp với khóa của trường ở đó. Nhưng lúc nhận, ví chưa có câu trả lời về việc CertNet có công nhận trường cho loại bằng này và bằng có còn hiệu lực hay không. Bằng được lưu với ghi chú chưa kiểm xong: mở bằng trong ví và bấm “Kiểm tra lại” sau.',
+      'CertNet chưa ghi tên trường nên ví hiện trường bằng mã định danh, không có tên.',
+    ],
     contactChecks: 'Để kiểm, nhà tuyển dụng tìm và nhận ra trường qua CertNet, rồi đọc danh sách thu hồi có chữ ký của trường; không hỏi ai về bạn.',
     endRootTitle: 'Chứng thư gốc mà ví dùng để nhận ra nhà tuyển dụng',
     endRootBody: 'Ở lượt này, trường được tìm thấy và công nhận qua CertNet, không qua chứng thư gốc. Chữ ký trên yêu cầu của nhà tuyển dụng thì vẫn truy về chứng thư gốc DEMO này. Dấu vân tay SHA-256:',
@@ -374,6 +387,11 @@ const en: DiplomaGuidedDemoPageCopy = {
     'The university signed the diploma with its own private key and sent it straight to your wallet.',
     'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
     'Before saving, the wallet checked by itself: the university\'s signature, the university is on the recognised list, the diploma is valid.',
+  ],
+  happenedReceiveUnchecked: [
+    'The university signed the diploma with its own private key and sent it straight to your wallet.',
+    'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
+    'Before saving, the wallet checked the signature on the diploma. But at receipt it could not read the lists it needs, so it has not confirmed yet that the university is recognised and that the diploma is still valid. The diploma is saved as not fully checked: open it in the wallet and press “Check again” later.',
   ],
   happenedRevoke: [
     'The university marked this copy in its signed revocation list. Nobody had to tell the employer.',
@@ -466,6 +484,12 @@ const en: DiplomaGuidedDemoPageCopy = {
       'The university signed the diploma with its own private key and sent it straight to your wallet.',
       'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
       'Before saving, the wallet checked by itself: it found the university through CertNet, the signature matches the university\'s key there, CertNet recognises it for this kind of diploma, and the diploma is valid.',
+      'CertNet records no name for the university yet, so the wallet shows it by its identifier, without a name.',
+    ],
+    happenedReceiveUnchecked: [
+      'The university signed the diploma with its own private key and sent it straight to your wallet.',
+      'The diploma is in this wallet. The server only records which student it was issued to and its slot in the revocation list; it does not keep the diploma\'s content.',
+      'Before saving, the wallet found the university through CertNet and saw that the signature matches the university\'s key there. But at receipt it got no answer on whether CertNet recognises the university for this kind of diploma and whether the diploma is still valid. The diploma is saved as not fully checked: open it in the wallet and press “Check again” later.',
       'CertNet records no name for the university yet, so the wallet shows it by its identifier, without a name.',
     ],
     contactChecks: 'To check, the employer found and recognised the university through CertNet, then read the university\'s signed revocation list; it asked nobody about you.',

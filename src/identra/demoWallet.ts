@@ -104,18 +104,27 @@ export interface DemoWalletOptions {
 }
 
 /**
- * The SDK's CertNet resolver and trust registry (ADR-0020), over the same browser fetch: no redirect, the
- * SDK's 5 s timeout and size cap, the gateway origin only (mapped to a loopback address in local work).
+ * The fetch the CertNet clients get: the gateway origin only (mapped to a loopback address in local work); any
+ * other URL is refused before the network (the SDK reads that as "no answer").
  */
-export const createCertNetPath = (certnet: CertNetConfig, browserFetch: HttpFetch, clock: { now(): Date }) => {
+export const createGatewayFetch = (certnet: CertNetConfig, browserFetch: HttpFetch): HttpFetch => {
   const origin = new URL(certnet.gatewayUrl).origin;
   const toGateway = certnet.fetchOrigin === origin ? browserFetch : createMappedFetch(browserFetch, { [origin]: certnet.fetchOrigin });
-  // Only the gateway: any other URL is refused before the network (the SDK reads that as "no answer").
-  const fetch: HttpFetch = (url, init) => (url.startsWith(`${origin}/`) ? toGateway(url, init) : Promise.reject(new TypeError('not the CertNet gateway')));
+  return (url, init) => (url.startsWith(`${origin}/`) ? toGateway(url, init) : Promise.reject(new TypeError('not the CertNet gateway')));
+};
+
+/**
+ * The SDK's CertNet resolver and trust registry (ADR-0020), over the same browser fetch: no redirect, the
+ * SDK's 5 s timeout and size cap, the gateway origin only. `network` also lets the wallet refuse an offer
+ * declaring an identifier of another network before the PIN is used.
+ */
+export const createCertNetPath = (certnet: CertNetConfig, browserFetch: HttpFetch, clock: { now(): Date }) => {
+  const fetch = createGatewayFetch(certnet, browserFetch);
   const { gatewayUrl, network } = certnet;
   return {
     resolver: createCertNetDidResolver({ gatewayUrl, network, fetch, clock }),
     trustRegistry: createCertNetTrustRegistry({ gatewayUrl, network, fetch }),
+    network,
   };
 };
 

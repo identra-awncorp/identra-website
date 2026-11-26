@@ -10,7 +10,7 @@ import assert from 'node:assert/strict';
 import { X509Certificate } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { createBrowserFetch, createCertNetPath, createDemoWallet } from '../src/identra/demoWallet';
+import { createBrowserFetch, createCertNetPath, createDemoWallet, createGatewayFetch } from '../src/identra/demoWallet';
 import { resolveCertNetConfig } from '../src/identra/config';
 import {
   acceptProblemFor,
@@ -252,12 +252,15 @@ test('wallet screens: an offer refused while checking, and late answers after le
   assert.deepEqual(walletReducer(WALLET_HOME, { type: 'requestResolved', request }), WALLET_HOME);
 });
 
+// What the first send carried (option 1 = claim set 1).
+const attempt = { credentialId: 'c1', claimSetIndex: 1, fields: ['ho_ten', 'nganh'] };
+
 test('wallet screens: share, decline, and a submit failure that needs a new request', () => {
   let screen: WalletScreen = walletReducer(walletReducer(WALLET_HOME, { type: 'checkRequest' }), { type: 'requestResolved', request });
   assert.equal(screen.name, 'requestConsent');
   screen = walletReducer(screen, { type: 'chooseOption', optionIndex: 1 });
   assert.equal(screen.name === 'requestConsent' && screen.optionIndex, 1);
-  assert.deepEqual(walletReducer(screen, { type: 'declined' }), { name: 'requestDeclined' });
+  assert.deepEqual(walletReducer(screen, { type: 'declined' }), { name: 'requestDeclined', delivered: null });
 
   const sending = walletReducer(screen, { type: 'submit' });
   assert.equal(walletReducer(sending, { type: 'chooseOption', optionIndex: 0 }), sending, 'the choice is frozen while sending');
@@ -265,13 +268,13 @@ test('wallet screens: share, decline, and a submit failure that needs a new requ
     walletReducer(sending, { type: 'submitted', verifierName: 'Nhà tuyển dụng Mẫu (DEMO)', fields: ['ho_ten', 'nganh'] }),
     { name: 'requestSent', verifierName: 'Nhà tuyển dụng Mẫu (DEMO)', fields: ['ho_ten', 'nganh'] },
   );
-  assert.deepEqual(walletReducer(sending, { type: 'submitFailed', code: 'REQUEST_INVALID' }), { name: 'requestFailed', problem: 'requestClosed' });
-  const storage = walletReducer(sending, { type: 'submitFailed', code: 'STORAGE_ERROR' });
+  assert.deepEqual(walletReducer(sending, { type: 'submitFailed', code: 'REQUEST_INVALID', attempt }), { name: 'requestFailed', problem: 'requestClosed', delivered: null });
+  const storage = walletReducer(sending, { type: 'submitFailed', code: 'STORAGE_ERROR', attempt });
   assert.equal(storage.name === 'requestConsent' && storage.problem, 'storage', 'a failure before sending leaves the request usable');
 
   // The verifier could not check now: the same request stays open with the same choice, and sending again is possible.
   const chosen = walletReducer(screen, { type: 'submit' });
-  const unchecked = walletReducer(chosen, { type: 'submitFailed', code: 'DID_RESOLUTION_UNAVAILABLE' });
+  const unchecked = walletReducer(chosen, { type: 'submitFailed', code: 'DID_RESOLUTION_UNAVAILABLE', attempt });
   assert.equal(unchecked.name, 'requestConsent');
   assert.equal(unchecked.name === 'requestConsent' && unchecked.problem, 'verifierCouldNotCheck');
   assert.equal(unchecked.name === 'requestConsent' && unchecked.busy, false);
@@ -279,6 +282,41 @@ test('wallet screens: share, decline, and a submit failure that needs a new requ
   const again = walletReducer(unchecked, { type: 'submit' });
   assert.equal(again.name === 'requestConsent' && again.busy, true);
   assert.equal(again.name === 'requestConsent' && again.problem, null, 'the old message goes while sending again');
+});
+
+test('after "the verifier could not check right now": locked to what was sent; send again or stop; an ended request says what stays sent', () => {
+  const chosen = walletReducer(walletReducer(walletReducer(WALLET_HOME, { type: 'checkRequest' }), { type: 'requestResolved', request }), { type: 'chooseOption', optionIndex: 1 });
+  const locked = walletReducer(walletReducer(chosen, { type: 'submit' }), { type: 'submitFailed', code: 'DID_RESOLUTION_UNAVAILABLE', attempt });
+  assert.deepEqual(locked.name === 'requestConsent' && locked.delivered, attempt, 'pinned to the share that reached the verifier');
+  assert.equal(walletReducer(locked, { type: 'chooseOption', optionIndex: 0 }), locked, 'no other option can be picked');
+
+  // A second "could not check" keeps the first share (the SDK pins the request to it).
+  const twice = walletReducer(walletReducer(locked, { type: 'submit' }), { type: 'submitFailed', code: 'DID_RESOLUTION_UNAVAILABLE', attempt: { ...attempt, claimSetIndex: 0 } });
+  assert.deepEqual(twice.name === 'requestConsent' && twice.delivered, attempt);
+
+  // The SDK's ends of a pinned request: another choice (REQUEST_INVALID), the third send's 503 (VERIFIER_ERROR), expiry, a lost answer.
+  for (const code of ['REQUEST_INVALID', 'VERIFIER_ERROR', 'REQUEST_EXPIRED', 'NETWORK_ERROR'] as const) {
+    assert.deepEqual(
+      walletReducer(walletReducer(locked, { type: 'submit' }), { type: 'submitFailed', code, attempt }),
+      { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] },
+      `${code}: the request cannot be used again and what was sent stays sent`,
+    );
+  }
+  // A failure before sending leaves the pinned request as it was.
+  const storage = walletReducer(walletReducer(locked, { type: 'submit' }), { type: 'submitFailed', code: 'STORAGE_ERROR', attempt });
+  assert.equal(storage.name === 'requestConsent' && storage.problem, 'storage');
+  assert.deepEqual(storage.name === 'requestConsent' && storage.delivered, attempt);
+  // Stopping is not "nothing was sent".
+  assert.deepEqual(walletReducer(locked, { type: 'declined' }), { name: 'requestDeclined', delivered: ['ho_ten', 'nganh'] });
+
+  for (const locale of ['vi', 'en'] as const) {
+    const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
+    assert.ok(!/chưa có gì được gửi|nothing (?:was|has been) sent/i.test(copy.problems.requestUsedUp + copy.stoppedBody + copy.deliveredNote), `${locale}: never "nothing was sent"`);
+    assert.ok(copy.deliveredBefore.includes('{fields}'), locale);
+    assert.ok(copy.problems.verifierCouldNotCheck.includes(copy.shareAgain), `${locale}: names the button it means`);
+  }
+  assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.verifierCouldNotCheck.includes('Bạn không cần chọn lại'), 'not "chưa phải" (reads as "not yet")');
+  assert.ok(!DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.verifierCouldNotCheck.includes('chưa phải'));
 });
 
 test('build check: every chunk the wallet chunk imports (shared ones too) is scanned for Function/eval', async () => {
@@ -323,6 +361,68 @@ test('CertNet path: the gateway is reached only at its origin (mapped to the loo
   await assert.rejects(path.trustRegistry.lookupIssuer(DID, 'https://identra.awncorp.vn/vct/bang-tot-nghiep/v1', new Date()), /CertNet trust registry/);
   assert.match(calls[1]!.url, /^http:\/\/127\.0\.0\.1:47460\/v1\/trust-registry\/issuers\//);
   assert.equal(calls.length, 2);
+});
+
+test('CertNet path: the fetch the CertNet clients get reaches the gateway origin only: other origins refused without a request, no redirect followed, no credentials', async () => {
+  for (const [gateway, network, sentTo] of [
+    ['https://gateway.certnet.example/api', 'testnet', 'https://gateway.certnet.example'],
+    ['http://127.0.0.1:47460', 'local', 'http://127.0.0.1:47460'],
+  ] as const) {
+    const { calls, doFetch } = recordingFetch(() => ({ type: 'opaqueredirect', status: 0, headers: new Headers(), body: null }) as unknown as Response);
+    const gatewayFetch = createGatewayFetch(resolveCertNetConfig(gateway, network)!, createBrowserFetch(doFetch));
+    const origin = new URL(resolveCertNetConfig(gateway, network)!.gatewayUrl).origin;
+    for (const url of [
+      'https://evil.example/v1/dids/x',
+      `${origin}.evil.example/v1/dids/x`,
+      `${origin}@evil.example/v1/dids/x`,
+      `${origin.replace('https:', 'http:')}/v1/dids/x`,
+      'https://api-identra.awncorp.vn/trust-list',
+      origin,
+    ]) {
+      await assert.rejects(gatewayFetch(url), /not the CertNet gateway/, url);
+    }
+    assert.equal(calls.length, 0, `${gateway}: nothing left the page for another origin`);
+    // The gateway itself: one request, a redirect handed back as a 3xx and not followed, no cookies or credentials.
+    const answer = await gatewayFetch(`${origin}/v1/dids/x`);
+    assert.equal(answer.status, 302);
+    assert.equal(calls.length, 1, 'the redirect is not followed');
+    assert.equal(calls[0]!.url, `${sentTo}/v1/dids/x`);
+    assert.equal(calls[0]!.init.redirect, 'manual');
+    assert.equal(calls[0]!.init.credentials, 'omit');
+  }
+});
+
+test('CertNet path: the wallet is told its network, so an offer declaring an identifier of another network is refused before the PIN', async () => {
+  assert.equal(createCertNetPath(resolveCertNetConfig('https://gateway.certnet.example', 'testnet')!, createBrowserFetch(async () => new Response('')), { now: () => new Date() }).network, 'testnet');
+  const issuer = `${CANONICAL}/issuers/truong-mau-certnet`;
+  const metadata = (issuerDid: string) => ({
+    credential_issuer: issuer,
+    credential_endpoint: `${issuer}/credential`,
+    nonce_endpoint: `${issuer}/nonce`,
+    authorization_servers: [issuer],
+    identra_issuer_did: issuerDid,
+    credential_request_encryption: { jwks: { keys: [{ kty: 'EC', crv: 'P-256', x: 'f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU', y: 'x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0', alg: 'ECDH-ES', use: 'enc', kid: 'e' }] }, enc_values_supported: ['A256GCM'], encryption_required: true },
+    credential_response_encryption: { alg_values_supported: ['ECDH-ES'], enc_values_supported: ['A256GCM'], encryption_required: true },
+    credential_configurations_supported: {
+      diploma: { format: 'dc+sd-jwt', vct: match.vct, cryptographic_binding_methods_supported: ['jwk'], proof_types_supported: { jwt: { proof_signing_alg_values_supported: ['ES256'] } } },
+    },
+  });
+  const authorization = { issuer, token_endpoint: `${issuer}/token`, 'pre-authorized_grant_anonymous_access_supported': true };
+  const offerUri = `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(`${issuer}/offers/abc`)}`;
+  for (const [declared, expected] of [['did:certnet:local:7Hk2XaQ9mLp3Rt8v', 'TRUST_PATH_UNSUPPORTED'], ['did:certnet:testnet:7Hk2XaQ9mLp3Rt8v', true]] as const) {
+    const { calls, doFetch } = recordingFetch(({ url }) => {
+      const json = (body: unknown) => new Response(JSON.stringify(body), { headers: { 'content-type': 'application/json' } });
+      if (url.endsWith('/offers/abc')) return json({ credential_issuer: issuer, credential_configuration_ids: ['diploma'], grants: { 'urn:ietf:params:oauth:grant-type:pre-authorized_code': { 'pre-authorized_code': 'code', tx_code: { length: 6, input_mode: 'numeric' } } } });
+      if (url.includes('openid-credential-issuer')) return json(metadata(declared));
+      if (url.includes('oauth-authorization-server') || url.includes('openid-configuration')) return json(authorization);
+      return new Response('{}', { status: 404 });
+    });
+    const wallet = createDemoWallet({ apiOrigin: CANONICAL, apiUrl: CANONICAL, trustedRoots, fetch: doFetch, certnet: resolveCertNetConfig('https://gateway.certnet.example', 'testnet') });
+    const resolved = await wallet.offers.resolve(offerUri);
+    if (expected === true) assert.equal(resolved.ok, true, `${declared}: ${JSON.stringify(resolved)}`);
+    else assert.deepEqual(resolved, { ok: false, code: expected }, declared);
+    assert.ok(calls.every((call) => !call.url.includes('/token') && !call.url.includes('gateway.certnet.example')), 'no PIN sent, no gateway asked');
+  }
 });
 
 test('CertNet path: a DID of another network is refused without a request; with an https gateway nothing is mapped', async () => {
@@ -426,13 +526,13 @@ const sender = (issuerDid: string | null, locale: 'vi' | 'en') =>
   renderToStaticMarkup(createElement(OfferSender, { offer: { issuerOrigin: 'https://api-identra.awncorp.vn', issuerDid }, copy: DEMO_WALLET_PANEL_TRANSLATIONS[locale] }));
 const textOf = (html: string) => html.replace(/<\/?(?:wbr|bdi|span)\b[^>]*>/g, '').replace(/<[^>]*>/g, ' ').replace(/&#x27;/g, '\'').replace(/\s+/g, ' ');
 
-test('a CertNet issuer\'s offer: the shortened identifier, "checked through CertNet on receipt", no promise of a name', () => {
+test('a CertNet issuer\'s offer: the complete identifier, "looked up through CertNet on receipt", no promise of a name', () => {
   for (const locale of ['vi', 'en'] as const) {
     const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
     const html = sender(OFFER_DID, locale);
     const text = textOf(html);
     assert.ok(text.includes(copy.senderHintCertNet) && text.includes(copy.senderIdLabel), locale);
-    assert.ok(text.includes('did:certnet:testnet:7Hk2Xa…6dEf') && html.includes(`data-did="${OFFER_DID}"`), `${locale}: shortened, the full value one tap away`);
+    assert.ok(text.includes(OFFER_DID) && html.includes(`data-did="${OFFER_DID}"`) && !text.includes('…'), `${locale}: the complete identifier`);
     assert.ok(!text.includes(copy.senderHint), `${locale}: not the certificate issuer's hint`);
     assert.ok(!/tên chính thức|official name/i.test(text), `${locale}: no name is promised`);
     assert.ok(text.includes('api-identra.awncorp.vn'), `${locale}: where it came from stays`);
@@ -462,4 +562,14 @@ test('the new offer-screen and refusal sentences: plain, no protocol words, no c
   }
   assert.equal(DEMO_WALLET_PANEL_TRANSLATIONS.vi.problems.offerInvalid, 'Đây không phải mã nhận giấy tờ mà ví dùng được.', 'the original wording');
   assert.equal(DEMO_WALLET_PANEL_TRANSLATIONS.en.problems.offerInvalid, 'This is not a document code the wallet can use.');
+});
+
+test('the wallet says how a CertNet issuer is looked up, never that it passed, and does not take the issuer\'s word that it is on CertNet', () => {
+  const { vi, en } = DEMO_WALLET_PANEL_TRANSLATIONS;
+  // The path line sits beside the status, which alone says the result (also while the check is pending).
+  for (const line of [vi.issuerCertNet, vi.savedIssuerCertNetUnchecked]) assert.ok(/tra cứu qua CertNet/.test(line) && !/kiểm tra|công nhận|xác minh/.test(line), line);
+  for (const line of [en.issuerCertNet, en.savedIssuerCertNetUnchecked]) assert.ok(/looked up through CertNet/.test(line) && !/checked|recogni[sz]ed|verified/i.test(line), line);
+  // Refused offer: only the issuer's own statement is known.
+  assert.ok(vi.problems.offerNeedsCertNet.includes('tự khai') && !/Nơi cấp được kiểm tra qua CertNet/.test(vi.problems.offerNeedsCertNet));
+  assert.ok(en.problems.offerNeedsCertNet.includes('The issuer says') && !/issuer is checked through CertNet/i.test(en.problems.offerNeedsCertNet));
 });

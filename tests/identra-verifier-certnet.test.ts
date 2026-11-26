@@ -19,11 +19,12 @@ import {
   certNetIssuerId,
   firstFailure,
   isFinalFailure,
-  shortIssuerId,
   toCheckRows,
 } from '../src/identra/verifierSession';
 import { APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS as T } from '../src/translations/demo/ApplyJobVerifierDialogTranslations';
 import { DEMO_WALLET_PANEL_TRANSLATIONS as W } from '../src/translations/demo/DemoWalletPanelTranslations';
+import IdentraIssuerId from '../src/components/IdentraIssuerId';
+import DemoWalletPanel, { IssuerLine, OfferSender } from '../src/components/demo/DemoWalletPanel';
 import { PRODUCT_PAGE_TRANSLATIONS } from '../src/translations/ProductPageTranslations';
 import { X509_CASES, X509_OUTAGE_CASES } from './fixtures/verifier-results/x509-cases';
 
@@ -74,18 +75,50 @@ test('X.509 results render exactly as before the CertNet path (markup of commit 
   }
 });
 
-test('the CertNet identifier: only the CertNet form is shown, a long one shortened with the network kept', () => {
+test('the CertNet identifier: only the CertNet form is shown', () => {
   assert.equal(certNetIssuerId(DID), DID);
   for (const bad of ['did:web:example.com', 'did:certnet:devnet:abc', 'did:certnet:testnet:a b', `did:certnet:testnet:x‮`, 'Trường Mẫu', 42, null, undefined]) {
     assert.equal(certNetIssuerId(bad), null, String(bad));
   }
-  assert.equal(shortIssuerId(DID), 'did:certnet:testnet:7Hk2Xa…6dEf');
-  assert.equal(shortIssuerId('did:certnet:local:abc123'), 'did:certnet:local:abc123', 'a short identifier is shown whole');
-  assert.equal(shortIssuerId('did:certnet:local:abcdefghijkl'), 'did:certnet:local:abcdefghijkl');
-  assert.equal(shortIssuerId('did:certnet:local:abcdefghijklm'), 'did:certnet:local:abcdef…jklm');
 });
 
-test('a CertNet success: the CertNet step, the identifier (short, full one tap away), no name, CertNet said in a few words', () => {
+// A registrant chooses its own identifier on CertNet: identifiers that share a head and a tail (the security
+// review's examples, which all used to read "did:certnet:testnet:a1b2c3…7890") must never look alike.
+const COLLIDING = ['a1b2c3d4e5f67890', 'a1b2c3ffffff7890', 'a1b2c3_attacker_7890'].map((id) => `did:certnet:testnet:${id}`);
+const LONG = `did:certnet:testnet:${'7Hk2XaQ9mLp3Rt8v'.repeat(4)}`;
+
+test('the issuer identifier is shown complete wherever a person relies on it: wallet offer, document card, list, employer issuer line and signer row', () => {
+  const surfaces = (did: string) => {
+    const wallet = W.vi;
+    const success = { ...didSuccess, issuerDid: did };
+    const employer = renderToStaticMarkup(createElement(ApplyJobVerifierResult, { result: success, copy: T.vi, language: 'vi', verifierName: 'X' }));
+    return {
+      identifier: renderToStaticMarkup(createElement(IdentraIssuerId, { id: did })),
+      offer: renderToStaticMarkup(createElement(OfferSender, { offer: { issuerOrigin: 'https://api-identra.awncorp.vn', issuerDid: did }, copy: wallet })),
+      card: renderToStaticMarkup(createElement(IssuerLine, { issuer: { trustPath: 'did', did }, copy: wallet })),
+      list: renderToStaticMarkup(createElement(IssuerLine, { issuer: { trustPath: 'did', did }, copy: wallet, compact: true })),
+      employerIssuer: employer.match(/data-testid="verifier-issuer-certnet"[\s\S]*?<\/dd>/)![0],
+      employerSigner: employer.match(/data-group="signer"[\s\S]*?<\/li>/)![0],
+    };
+  };
+  const shown = new Map<string, Record<string, string>>();
+  for (const did of [...COLLIDING, LONG]) {
+    const texts = Object.fromEntries(Object.entries(surfaces(did)).map(([where, html]) => [where, textOf(html)]));
+    for (const [where, text] of Object.entries(texts)) {
+      assert.ok(text.includes(did), `${where}: the complete ${did}`);
+      assert.ok(!text.includes('…'), `${where}: nothing cut`);
+    }
+    shown.set(did, texts);
+  }
+  for (const where of Object.keys(shown.get(LONG)!)) {
+    const seen = COLLIDING.map((did) => shown.get(did)![where]);
+    assert.equal(new Set(seen).size, COLLIDING.length, `${where}: the colliding identifiers read differently`);
+  }
+  // It wraps rather than overflowing a phone screen.
+  assert.match(renderToStaticMarkup(createElement(IdentraIssuerId, { id: LONG })), /\[overflow-wrap:anywhere\][^>]*>did:<wbr\/>certnet:<wbr\/>testnet:<wbr\/>/);
+});
+
+test('a CertNet success: the CertNet step, the complete identifier, no name, CertNet said in a few words', () => {
   for (const locale of LOCALES) {
     const copy = T[locale];
     const html = render(didSuccess, locale);
@@ -97,12 +130,11 @@ test('a CertNet success: the CertNet step, the identifier (short, full one tap a
     assert.ok(!text.includes(copy.checks.issuer_trust), `${locale}: not Identra's list`);
     assert.ok(html.includes('data-testid="verifier-issuer-certnet"'));
     assert.ok(html.includes(`data-did="${DID}"`));
-    assert.ok(text.includes(shortIssuerId(DID)), 'shortened');
-    assert.equal(textOf(html.match(/<bdi [^>]*data-testid="issuer-did-full"[^>]*>[\s\S]*?<\/bdi>/)![0]).trim(), DID, 'the full value is in the page');
+    assert.equal(textOf(html.match(/<bdi [^>]*data-testid="issuer-did-full"[^>]*>[\s\S]*?<\/bdi>/)![0]).trim(), DID, 'the full value is on screen');
     assert.ok(text.includes(copy.certnetNote) && text.includes(copy.issuerIdNote));
     const [before, after] = copy.groups.signerCertNetNamed.split('{issuer}').map((part) => part.trim());
     const signer = textOf(html.match(/data-group="signer"[\s\S]*?<\/li>/)![0]);
-    for (const part of [before!, shortIssuerId(DID), after!]) assert.ok(signer.includes(part), `${locale}: signer line has "${part}"`);
+    for (const part of [before!, DID, after!]) assert.ok(signer.includes(part), `${locale}: signer line has "${part}"`);
     assert.ok(!text.includes(copy.groups.signerNamed.split('{issuer}')[1]!.trim()), `${locale}: not "on the list of recognised organisations"`);
   }
 });
@@ -211,7 +243,7 @@ test('every new sentence exists in every language, plain (no protocol words, no 
     copy.reasons.DID_RESOLUTION_FAILED, copy.reasons.DID_RESOLUTION_UNAVAILABLE,
     copy.reasons.CERTNET_ISSUER_NOT_TRUSTED, copy.reasons.CERTNET_REGISTRY_UNAVAILABLE,
     copy.groups.signerCertNet, copy.groups.signerCertNetNamed,
-    copy.certnetNote, copy.issuerIdNote, copy.issuerIdShowFull, copy.issuerIdHideFull,
+    copy.certnetNote, copy.issuerIdNote, copy.testBuildMarker,
   ];
   const english = sentencesOf(T.en);
   for (const locale of LOCALES) {
@@ -229,7 +261,7 @@ test('every new sentence exists in every language, plain (no protocol words, no 
     assert.ok(product.did_resolution && product.issuer_trust_certnet, `${locale}: product page labels`);
     const wallet = W[locale];
     const sentences = [
-      wallet.issuerCertNet, wallet.issuerIdShowFull, wallet.issuerIdHideFull, wallet.certnetAbout,
+      wallet.issuerCertNet, wallet.testBuildMarker, wallet.certnetAbout,
       wallet.savedIssuerCertNet, wallet.savedIssuerCertNetUnchecked, wallet.savedLeadCertNet, wallet.savedLeadCertNetUnchecked,
       wallet.checkNotes.certnetUnavailable, wallet.checkNotes.issuerNotRecognised,
       wallet.problems.certnetUnavailable, wallet.problems.offerNeedsCertNet, wallet.problems.verifierCouldNotCheck,
@@ -241,4 +273,22 @@ test('every new sentence exists in every language, plain (no protocol words, no 
   for (const sentence of [T.vi.certnetNote, T.vi.reasons.DID_RESOLUTION_UNAVAILABLE, W.vi.problems.certnetUnavailable, W.vi.problems.offerNeedsCertNet, W.vi.problems.verifierCouldNotCheck]) {
     assert.match(sentence, /[ăâđêôơưàáạảãằắặẳẵầấậẩẫèéẹẻẽềếệểễìíịỉĩòóọỏõồốộổỗờớợởỡùúụủũừứựửữỳýỵỷỹ]/i);
   }
+});
+
+test('a build made with the test-only CertNet switch marks every CertNet result and the trial wallet; any other build shows no marker', () => {
+  const result = (r: SessionResult, testBuild?: boolean) =>
+    renderToStaticMarkup(createElement(ApplyJobVerifierResult, { result: r, copy: T.vi, language: 'vi', verifierName: 'X', ...(testBuild === undefined ? {} : { testBuild }) }));
+  const marker = 'data-testid="certnet-test-build"';
+  for (const r of [didSuccess, didFailure('did_resolution', 'DID_RESOLUTION_UNAVAILABLE'), didFailure('status', 'REVOKED')]) {
+    assert.ok(result(r, true).includes(marker), 'a CertNet result in a test build');
+    assert.ok(textOf(result(r, true)).includes(T.vi.testBuildMarker));
+    assert.ok(!result(r).includes(marker), 'this build (no switch): no marker');
+  }
+  assert.ok(!result(X509_CASES.verified!, true).includes(marker), 'a certificate result is not a CertNet result');
+  const panel = (testBuild?: boolean) => renderToStaticMarkup(createElement(DemoWalletPanel, {
+    locale: 'vi', inbox: null, generation: 0, clockOffsetMs: 0, onEvent: () => undefined, ...(testBuild === undefined ? {} : { testBuild }),
+  }));
+  assert.ok(panel(true).includes(marker) && textOf(panel(true)).includes(W.vi.testBuildMarker));
+  assert.ok(!panel().includes(marker));
+  for (const locale of LOCALES) assert.match(T[locale].testBuildMarker, /CertNet/, locale);
 });

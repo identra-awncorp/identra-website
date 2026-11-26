@@ -26,9 +26,10 @@ import {
   type WalletLocale,
   type WalletScreen,
 } from '../../identra/demoWalletModel';
-import { certNetIssuerId, formatCountdown, secondsUntil, shortIssuerId } from '../../identra/verifierSession';
+import { certNetIssuerId, formatCountdown, secondsUntil } from '../../identra/verifierSession';
 import { DEMO_WALLET_PANEL_TRANSLATIONS, type DemoWalletPanelCopy } from '../../translations/demo/DemoWalletPanelTranslations';
-import IdentraIssuerId, { IssuerIdText } from '../IdentraIssuerId';
+import CertNetTestBuildMarker, { CERTNET_TEST_BUILD } from '../CertNetTestBuildMarker';
+import IdentraIssuerId from '../IdentraIssuerId';
 
 // The web trial wallet as a phone-shaped panel, laid out after the Identra app's wallet screens
 // (identra-app .review/wallet). Its behaviour lives in createWalletController (demoWalletModel.ts, tested);
@@ -47,6 +48,8 @@ interface DemoWalletPanelProps {
   onEvent: (event: WalletPanelEvent) => void;
   /** True while an accept or a share runs (or a code is being read): the page must not hand over anything then. */
   onBusyChange?: (busy: boolean) => void;
+  /** A build made with the test-only CertNet switch: the wallet carries the test-build marker. */
+  testBuild?: boolean;
 }
 
 let walletModule: Promise<typeof import('../../identra/demoWalletLoader')> | null = null;
@@ -99,7 +102,7 @@ const hostOf = (origin: string) => {
  * Who an offer comes from, before the wallet has checked the issuer: the address it came from, which is the only
  * verified fact. The issuer's own display name is never shown as if it were verified. A CertNet issuer's offer
  * says the issuer will be checked through CertNet on receipt (no name is promised) and shows the identifier the
- * issuer declared, shortened.
+ * issuer declared, complete.
  */
 export function OfferSender({ offer, copy }: { offer: Pick<ResolvedOffer, 'issuerOrigin' | 'issuerDid'>; copy: DemoWalletPanelCopy }) {
   const issuerId = certNetIssuerId(offer.issuerDid);
@@ -115,7 +118,7 @@ export function OfferSender({ offer, copy }: { offer: Pick<ResolvedOffer, 'issue
             {issuerId && (
               <div className="type-body-sm pt-1 text-slate-600" data-testid="wallet-offer-issuer-certnet">
                 <p>{copy.senderIdLabel}</p>
-                <div className="text-slate-700"><IdentraIssuerId id={issuerId} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} /></div>
+                <IdentraIssuerId id={issuerId} className="block text-slate-700" />
               </div>
             )}
           </>
@@ -193,31 +196,31 @@ const claimText = (value: unknown): string | null => safeText(typeof value === '
 
 const IDLE_STATE: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null, notes: {} };
 
-/**
- * A CertNet document's issuer: how it was checked, then its identifier (that path has no name, ADR-0020).
- * `compact` inside a button (no control of its own: the short identifier only).
- */
-function CertNetIssuer({ id, copy, compact = false }: { id: string | null; copy: DemoWalletPanelCopy; compact?: boolean }) {
+/** A CertNet document's issuer: how it is looked up, then its complete identifier (that path has no name, ADR-0020). */
+function CertNetIssuer({ id, copy }: { id: string | null; copy: DemoWalletPanelCopy }) {
   return (
     <span className="type-body-sm block text-slate-600" data-testid="wallet-issuer-certnet">
       <span className="block">{copy.issuerCertNet}</span>
-      {id && (compact
-        ? <IssuerIdText value={shortIssuerId(id)} className="block text-slate-700" />
-        : <span className="block text-slate-700"><IdentraIssuerId id={id} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} /></span>)}
+      {id && <IdentraIssuerId id={id} className="block text-slate-700" />}
     </span>
   );
 }
 
 /** The issuer line of a document card: the trust-list name (X.509, as before) or the CertNet identifier. */
-function IssuerLine({ issuer, copy, compact = false }: { issuer: IssuerView; copy: DemoWalletPanelCopy; compact?: boolean }) {
-  if (issuer.trustPath === 'did') return <CertNetIssuer id={issuer.did} copy={copy} compact={compact} />;
+export function IssuerLine({ issuer, copy, compact = false }: { issuer: IssuerView; copy: DemoWalletPanelCopy; compact?: boolean }) {
+  if (issuer.trustPath === 'did') return <CertNetIssuer id={issuer.did} copy={copy} />;
   return compact
     ? <span className={`type-body-sm block text-slate-600 ${apiText}`}>{issuer.name ?? copy.issuerUnknown}</span>
     : <p className={`type-body-sm text-slate-600 ${apiText}`}>{issuer.name ?? copy.issuerUnknown}</p>;
 }
 const noop = () => () => undefined;
 
-export default function DemoWalletPanel({ locale, inbox, generation, clockOffsetMs, onEvent, onBusyChange }: DemoWalletPanelProps) {
+/** What an earlier send of the request left with the verifier: it stays there, the wallet cannot take it back. */
+function DeliveredBefore({ fields, copy }: { fields: string; copy: DemoWalletPanelCopy }) {
+  return <p className="type-body-sm rounded-2xl bg-white px-4 py-3 text-slate-700" data-testid="wallet-delivered-before">{fill(copy.deliveredBefore, { fields })}</p>;
+}
+
+export default function DemoWalletPanel({ locale, inbox, generation, clockOffsetMs, onEvent, onBusyChange, testBuild = CERTNET_TEST_BUILD }: DemoWalletPanelProps) {
   const copy = DEMO_WALLET_PANEL_TRANSLATIONS[locale];
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -524,7 +527,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
           <>
             <div className="type-body text-center font-semibold text-[#0F1E36]" data-testid="wallet-saved-issuer-certnet">
               <p>{screen.checked ? copy.savedIssuerCertNet : copy.savedIssuerCertNetUnchecked}</p>
-              <IdentraIssuerId id={screen.issuerDid} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} centered />
+              <IdentraIssuerId id={screen.issuerDid} />
             </div>
             <p className="type-body text-center text-slate-700">{screen.checked ? copy.savedLeadCertNet : copy.savedLeadCertNetUnchecked}</p>
           </>
@@ -544,9 +547,10 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     body = (
       <div className="space-y-4 pt-4" data-testid={isOffer ? 'wallet-offer-failed' : 'wallet-request-failed'} data-problem={screen.problem}>
         <span aria-hidden="true" className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-rose-100 text-rose-700"><AlertTriangle className="h-8 w-8" /></span>
-        <h3 id="demo-wallet-screen-title" tabIndex={-1} className="type-featured-title text-center text-[#0F1E36] focus:outline-none">{isOffer ? copy.offerFailedTitle : copy.requestFailedTitle}</h3>
+        <h3 id="demo-wallet-screen-title" tabIndex={-1} className="type-featured-title text-center text-[#0F1E36] focus:outline-none">{isOffer ? copy.offerFailedTitle : screen.delivered ? copy.usedUpTitle : copy.requestFailedTitle}</h3>
         <p className="type-body text-center text-slate-700">{copy.problems[screen.problem]}</p>
         {isOffer && <p className="type-body-sm text-center text-slate-600">{copy.nothingSaved}</p>}
+        {!isOffer && screen.delivered && <DeliveredBefore fields={fieldList(screen.delivered)} copy={copy} />}
       </div>
     );
     actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
@@ -561,7 +565,18 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     const view = consentView(screen.request, held, screen.optionIndex, locale);
     body = <RequestConsent screen={screen} view={view} held={held} copy={copy} fieldList={fieldList} documentName={documentName} time={time} clockOffsetMs={clockOffsetMs} />;
     const choosable = view.trusted && view.match !== null && view.blocked === null;
-    actions = (
+    // Received but not checked yet: only that same share can go again, or the visitor stops.
+    const locked = screen.delivered !== null;
+    actions = locked ? (
+      <>
+        <p className="type-body-sm rounded-xl bg-white px-3 py-2 text-slate-700" data-testid="wallet-delivered-note">{copy.deliveredNote}</p>
+        <button type="button" onClick={() => void controller.share()} disabled={screen.busy || !view.canShare} className={`${primaryButton} mt-1`} data-testid="wallet-share">
+          {screen.busy ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
+          {screen.busy ? copy.sending : copy.shareAgain}
+        </button>
+        <button type="button" onClick={() => controller.decline()} disabled={screen.busy} className={quietButton} data-testid="wallet-decline">{copy.stop}</button>
+      </>
+    ) : (
       <>
         {choosable && (
           <>
@@ -622,9 +637,10 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
   } else {
     body = (
-      <div className="space-y-4 pt-4" data-testid="wallet-request-declined">
-        <h3 id="demo-wallet-screen-title" tabIndex={-1} className="type-featured-title text-center text-[#0F1E36] focus:outline-none">{copy.declinedTitle}</h3>
-        <p className="type-body text-center text-slate-700">{copy.declinedBody}</p>
+      <div className="space-y-4 pt-4" data-testid="wallet-request-declined" data-stopped={screen.delivered ? true : undefined}>
+        <h3 id="demo-wallet-screen-title" tabIndex={-1} className="type-featured-title text-center text-[#0F1E36] focus:outline-none">{screen.delivered ? copy.stoppedTitle : copy.declinedTitle}</h3>
+        <p className="type-body text-center text-slate-700">{screen.delivered ? copy.stoppedBody : copy.declinedBody}</p>
+        {screen.delivered && <DeliveredBefore fields={fieldList(screen.delivered)} copy={copy} />}
       </div>
     );
     actions = <button type="button" onClick={() => controller.home()} className={primaryButton} data-testid="wallet-back-home">{copy.backHome}</button>;
@@ -632,6 +648,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
 
   return (
     <div className="space-y-4" data-testid="wallet-panel" data-screen={controller ? screen.name : 'loading'} data-busy={busy || undefined}>
+      {testBuild && <div className="mx-auto max-w-[400px] lg:mr-0"><CertNetTestBuildMarker text={copy.testBuildMarker} /></div>}
       <div
         role="group"
         aria-label={copy.phoneLabel}
@@ -680,7 +697,7 @@ function RequestConsent({
   const shownFields = view.selected?.fields ?? view.requested;
 
   return (
-    <div className="space-y-4" data-testid="wallet-request-consent">
+    <div className="space-y-4" data-testid="wallet-request-consent" data-locked={screen.delivered ? true : undefined}>
       <ScreenHeader title={copy.presentTitle} />
       <div className="flex flex-wrap items-center justify-between gap-2">
         {view.trusted ? (
@@ -736,7 +753,7 @@ function RequestConsent({
           </section>
           {!view.blocked && (
             <section aria-labelledby="demo-wallet-leaving" className="space-y-2">
-              <h4 id="demo-wallet-leaving" className="type-card-title-sm text-[#0F1E36]">{view.selected ? copy.fieldsTitle : copy.requestedTitle}</h4>
+              <h4 id="demo-wallet-leaving" className="type-card-title-sm text-[#0F1E36]">{screen.delivered ? copy.deliveredTitle : view.selected ? copy.fieldsTitle : copy.requestedTitle}</h4>
               <dl className={`${card} divide-y divide-slate-100 py-1`} data-testid="wallet-fields">
                 {shownFields.map((field: string) => {
                   const value = claimText(details?.claims[field]);
@@ -751,7 +768,7 @@ function RequestConsent({
                   );
                 })}
               </dl>
-              <p className="type-body-sm text-slate-600">{fill(copy.requiredHint, { fields: fieldList(view.required) })}</p>
+              {!screen.delivered && <p className="type-body-sm text-slate-600">{fill(copy.requiredHint, { fields: fieldList(view.required) })}</p>}
             </section>
           )}
         </>

@@ -62,8 +62,8 @@ export interface ApplyJobVerifierDialogCopy {
   certnetNote: string;
   /** Under a CertNet issuer's identifier: the CertNet note, then why there is no name. */
   issuerIdNote: string;
-  issuerIdShowFull: string;
-  issuerIdHideFull: string;
+  /** Only in a build made with the test-only CertNet switch (config.ts): shown with every CertNet result. */
+  testBuildMarker: string;
   verifiedBy: string;
   checkedAt: string;
   useData: string;
@@ -134,8 +134,7 @@ const vi: ApplyJobVerifierDialogCopy = {
   issuedBy: 'Nơi cấp',
   certnetNote: 'Nơi cấp này được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ đang thử nghiệm, thay cho danh sách của Identra.',
   issuerIdNote: 'Nơi cấp này được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ đang thử nghiệm, thay cho danh sách của Identra. CertNet chưa ghi tên nơi cấp nên chỉ hiện được mã định danh của họ.',
-  issuerIdShowFull: 'Xem mã đầy đủ',
-  issuerIdHideFull: 'Thu gọn',
+  testBuildMarker: 'Bản dựng kiểm thử: CertNet trên trang này là bản giả lập để chạy thử, nên mọi kết quả qua CertNet ở đây không có giá trị thật.',
   verifiedBy: 'Bên kiểm tra',
   checkedAt: 'Kiểm tra lúc {time}',
   useData: 'Dùng thông tin này cho hồ sơ',
@@ -282,8 +281,7 @@ const en: ApplyJobVerifierDialogCopy = {
   issuedBy: 'Issued by',
   certnetNote: 'This issuer is checked through CertNet, a register of document issuers being trialled, instead of Identra\'s list.',
   issuerIdNote: 'This issuer is checked through CertNet, a register of document issuers being trialled, instead of Identra\'s list. CertNet records no name for the issuer yet, so only its identifier is shown.',
-  issuerIdShowFull: 'Show full identifier',
-  issuerIdHideFull: 'Show less',
+  testBuildMarker: 'Test build: CertNet on this page is a stand-in for testing, so no CertNet result here counts for anything.',
   verifiedBy: 'Checked by',
   checkedAt: 'Checked at {time}',
   useData: 'Use these details in the application',
@@ -430,8 +428,7 @@ const es: ApplyJobVerifierDialogCopy = {
   issuedBy: 'Emitido por',
   certnetNote: 'Este emisor se comprueba a través de CertNet, un registro de emisores de documentos en fase de prueba, en lugar de la lista de Identra.',
   issuerIdNote: 'Este emisor se comprueba a través de CertNet, un registro de emisores de documentos en fase de prueba, en lugar de la lista de Identra. CertNet aún no registra el nombre del emisor, así que solo se muestra su identificador.',
-  issuerIdShowFull: 'Ver identificador completo',
-  issuerIdHideFull: 'Ver menos',
+  testBuildMarker: 'Versión de prueba: CertNet en esta página es un sustituto para pruebas, así que ningún resultado de CertNet aquí tiene validez real.',
   verifiedBy: 'Comprobado por',
   checkedAt: 'Comprobado a las {time}',
   useData: 'Usar estos datos en la solicitud',
@@ -578,8 +575,7 @@ const ja: ApplyJobVerifierDialogCopy = {
   issuedBy: '発行元',
   certnetNote: 'この発行元は、Identra の一覧ではなく、試験運用中の発行元登録簿 CertNet で確認しています。',
   issuerIdNote: 'この発行元は、Identra の一覧ではなく、試験運用中の発行元登録簿 CertNet で確認しています。CertNet にはまだ発行元の名前が登録されていないため、識別子のみを表示しています。',
-  issuerIdShowFull: '識別子をすべて表示',
-  issuerIdHideFull: '折りたたむ',
+  testBuildMarker: 'テスト用ビルド: このページの CertNet はテスト用の代替のため、ここでの CertNet の結果に実際の効力はありません。',
   verifiedBy: '確認者',
   checkedAt: '確認時刻 {time}',
   useData: 'この情報を応募書類に使う',
@@ -726,8 +722,7 @@ const de: ApplyJobVerifierDialogCopy = {
   issuedBy: 'Ausgestellt von',
   certnetNote: 'Dieser Aussteller wird über CertNet geprüft, ein Register von Dokumentausstellern in der Erprobung, statt über die Liste von Identra.',
   issuerIdNote: 'Dieser Aussteller wird über CertNet geprüft, ein Register von Dokumentausstellern in der Erprobung, statt über die Liste von Identra. CertNet führt noch keinen Namen für den Aussteller, daher wird nur seine Kennung angezeigt.',
-  issuerIdShowFull: 'Vollständige Kennung anzeigen',
-  issuerIdHideFull: 'Weniger anzeigen',
+  testBuildMarker: 'Testversion: CertNet ist auf dieser Seite nur ein Ersatz zum Testen, daher hat hier kein CertNet-Ergebnis echte Gültigkeit.',
   verifiedBy: 'Geprüft von',
   checkedAt: 'Geprüft um {time}',
   useData: 'Diese Angaben für die Bewerbung verwenden',

@@ -345,13 +345,7 @@ const CERTNET_ID = /^did:certnet:(local|testnet|mainnet):[A-Za-z0-9_-]{1,200}$/;
 
 /** The identifier when it has the CertNet form (the SDK checked it), else null: nothing else is shown as one. */
 export const certNetIssuerId = (value: unknown): string | null => (typeof value === 'string' && CERTNET_ID.test(value) ? value : null);
-
-/** Readable at a glance: the network prefix kept, a long id cut to its first 6 and last 4 characters. */
-export const shortIssuerId = (id: string): string => {
-  const cut = id.lastIndexOf(':') + 1;
-  const tail = id.slice(cut);
-  return tail.length <= 12 ? id : `${id.slice(0, cut)}${tail.slice(0, 6)}…${tail.slice(-4)}`;
-};
+// Shown complete wherever it appears (IdentraIssuerId): never shortened, since a registrant picks its own id.
 
 /** Whole seconds left until an ISO instant, never negative. */
 export const secondsUntil = (isoInstant: string, now: number): number => {

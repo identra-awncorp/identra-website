@@ -120,6 +120,8 @@ export const WALLET_PROBLEMS = [
   /** At sending: the verifier got the document but could not check it now (CertNet out of reach); nothing concluded, the same request can be sent again. */
   'verifierCouldNotCheck',
   'requestClosed',
+  /** After a 'verifierCouldNotCheck' send: the request cannot be sent again (used up, expired, closed or lost); what was sent stays sent. */
+  'requestUsedUp',
   'other',
 ] as const;
 export type WalletProblem = typeof WALLET_PROBLEMS[number];
@@ -242,6 +244,13 @@ export interface WalletInboxItem {
   text: string;
 }
 
+/** What a share that reached the verifier sent: the request is pinned to it (the SDK refuses any other choice). */
+export interface DeliveredShare {
+  credentialId: string;
+  claimSetIndex: number;
+  fields: string[];
+}
+
 export type WalletScreen =
   | { name: 'home' }
   | { name: 'detail'; credentialId: string }
@@ -254,11 +263,15 @@ export type WalletScreen =
   | { name: 'offerSaved'; credentialId: string; checked: boolean; issuerName: string | null; issuerDid: string | null }
   | { name: 'offerFailed'; problem: WalletProblem }
   | { name: 'requestChecking' }
-  /** `optionIndex` null until the visitor chooses how much to share: nothing is preselected. */
-  | { name: 'requestConsent'; request: ResolvedPresentation; optionIndex: number | null; busy: boolean; problem: WalletProblem | null }
+  /**
+   * `optionIndex` null until the visitor chooses how much to share: nothing is preselected. `delivered`: the
+   * verifier received a share but could not check it now; the screen is then locked to it (send again or stop).
+   */
+  | { name: 'requestConsent'; request: ResolvedPresentation; optionIndex: number | null; busy: boolean; problem: WalletProblem | null; delivered: DeliveredShare | null }
   | { name: 'requestSent'; verifierName: string | null; fields: string[] }
-  | { name: 'requestFailed'; problem: WalletProblem }
-  | { name: 'requestDeclined' };
+  /** `delivered`: what an earlier send of this request left with the verifier (it stays there). */
+  | { name: 'requestFailed'; problem: WalletProblem; delivered: string[] | null }
+  | { name: 'requestDeclined'; delivered: string[] | null };
 
 export type WalletEvent =
   | { type: 'home' }
@@ -274,7 +287,8 @@ export type WalletEvent =
   | { type: 'chooseOption'; optionIndex: number }
   | { type: 'submit' }
   | { type: 'submitted'; verifierName: string | null; fields: string[] }
-  | { type: 'submitFailed'; code: WalletErrorCode }
+  /** `attempt`: what this send carried. */
+  | { type: 'submitFailed'; code: WalletErrorCode; attempt: DeliveredShare }
   | { type: 'declined' };
 
 export const WALLET_HOME: WalletScreen = { name: 'home' };
@@ -316,12 +330,13 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
       return { name: 'requestChecking' };
     case 'requestResolved':
       return state.name === 'requestChecking'
-        ? { name: 'requestConsent', request: event.request, optionIndex: null, busy: false, problem: null }
+        ? { name: 'requestConsent', request: event.request, optionIndex: null, busy: false, problem: null, delivered: null }
         : state;
     case 'requestRefused':
-      return state.name === 'requestChecking' ? { name: 'requestFailed', problem: requestProblemFor(event.code, 'resolve') } : state;
+      return state.name === 'requestChecking' ? { name: 'requestFailed', problem: requestProblemFor(event.code, 'resolve'), delivered: null } : state;
     case 'chooseOption':
-      return state.name === 'requestConsent' && !state.busy ? { ...state, optionIndex: event.optionIndex } : state;
+      // After a share reached the verifier the choice is fixed: only that same share can go again.
+      return state.name === 'requestConsent' && !state.busy && !state.delivered ? { ...state, optionIndex: event.optionIndex } : state;
     case 'submit':
       return state.name === 'requestConsent' && !state.busy ? { ...state, busy: true, problem: null } : state;
     case 'submitted':
@@ -329,13 +344,18 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
     case 'submitFailed': {
       if (state.name !== 'requestConsent') return state;
       const problem = requestProblemFor(event.code, 'submit');
+      // Received but not checked now: the request stays open, locked to what was sent.
+      if (problem === 'verifierCouldNotCheck') return { ...state, busy: false, problem, delivered: state.delivered ?? event.attempt };
       // The request was answered or closed: it cannot be used again, a new one is needed.
-      return problem === 'requestClosed' || problem === 'requestExpired' || problem === 'submitNetwork' || problem === 'submitVerifierError'
-        ? { name: 'requestFailed', problem }
-        : { ...state, busy: false, problem };
+      const ended = problem === 'requestClosed' || problem === 'requestExpired' || problem === 'submitNetwork' || problem === 'submitVerifierError';
+      if (!ended) return { ...state, busy: false, problem };
+      // After a share that reached the verifier, say that the request is used up and what it already holds.
+      return state.delivered
+        ? { name: 'requestFailed', problem: 'requestUsedUp', delivered: state.delivered.fields }
+        : { name: 'requestFailed', problem, delivered: null };
     }
     case 'declined':
-      return state.name === 'requestConsent' ? { name: 'requestDeclined' } : state;
+      return state.name === 'requestConsent' ? { name: 'requestDeclined', delivered: state.delivered?.fields ?? null } : state;
     default:
       return state;
   }
@@ -413,7 +433,8 @@ export const consentView = (
 // ---- The wallet's behaviour, independent of React ------------------------------------------------------
 
 export type WalletControllerEvent =
-  | { type: 'credentialReceived'; credentialId: string }
+  /** `checked`: the wallet confirmed it all at receipt (status valid); false: stored but "not checked yet". */
+  | { type: 'credentialReceived'; credentialId: string; checked: boolean }
   | { type: 'presentationSent'; itemId: number }
   | { type: 'presentationDeclined'; itemId: number }
   | { type: 'presentationBlocked'; itemId: number; status: BlockedStatus };
@@ -535,7 +556,7 @@ export const createWalletController = (
       if (result.ok) {
         // Stored by the SDK: list it and say so, whatever the screen shows now.
         await refreshHeld();
-        onEvent({ type: 'credentialReceived', credentialId: result.credentialId });
+        onEvent({ type: 'credentialReceived', credentialId: result.credentialId, checked: result.status === 'valid' });
       }
       if (op === operation) dispatch({ type: 'accepted', result });
       else set({});
@@ -553,24 +574,26 @@ export const createWalletController = (
       if (!view.canShare || !view.match || !view.selected) return;
       const item = currentItem;
       const op = operation;
+      // Once a share reached the verifier, exactly that share goes again (the SDK refuses any other).
+      const attempt: DeliveredShare = screen.delivered ?? { credentialId: view.match.credentialId, claimSetIndex: view.selected.index, fields: view.selected.fields };
       inFlight = true;
       dispatch({ type: 'submit' });
       let result: Awaited<ReturnType<WalletLike['presentations']['submit']>>;
       try {
-        result = await wallet.presentations.submit(screen.request, { credentialId: view.match.credentialId, claimSetIndex: view.selected.index });
+        result = await wallet.presentations.submit(screen.request, { credentialId: attempt.credentialId, claimSetIndex: attempt.claimSetIndex });
       } finally {
         inFlight = false;
       }
       if (result.ok) {
         onEvent({ type: 'presentationSent', itemId: item.id });
         // The wallet learns the credential's current status afterwards, as the app refreshes it.
-        void recheck(view.match.credentialId);
+        void recheck(attempt.credentialId);
       }
       if (op !== operation) {
         set({});
         return;
       }
-      dispatch(result.ok ? { type: 'submitted', verifierName: view.verifierName, fields: view.selected.fields } : { type: 'submitFailed', code: result.code });
+      dispatch(result.ok ? { type: 'submitted', verifierName: view.verifierName, fields: attempt.fields } : { type: 'submitFailed', code: result.code, attempt });
     },
 
     decline() {
@@ -578,7 +601,8 @@ export const createWalletController = (
       if (screen.name !== 'requestConsent' || screen.busy || inFlight || !currentItem) return;
       wallet.presentations.decline(screen.request);
       dispatch({ type: 'declined' });
-      onEvent({ type: 'presentationDeclined', itemId: currentItem.id });
+      // Stopping after a share reached the verifier is not a refusal: they hold what was sent.
+      if (!screen.delivered) onEvent({ type: 'presentationDeclined', itemId: currentItem.id });
     },
 
     home() {

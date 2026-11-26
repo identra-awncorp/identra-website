@@ -18,11 +18,13 @@ import {
   guidedReducer,
   guidedRunFor,
   guidedRunSearch,
+  happenedReceiveLines,
   stepStatus,
   type GuidedEvent,
   type GuidedState,
 } from '../src/identra/guidedDiplomaDemo';
 import { DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS } from '../src/translations/demo/DiplomaGuidedDemoPageTranslations';
+import { SCHOOL_PORTAL_PAGE_TRANSLATIONS } from '../src/translations/SchoolPortalPageTranslations';
 
 const run = (...events: GuidedEvent[]): GuidedState => events.reduce(guidedReducer, GUIDED_START);
 
@@ -34,7 +36,7 @@ test('starts at step 1 with nothing done', () => {
 });
 
 test('a saved diploma completes step 1 and moves to step 2 by itself', () => {
-  const state = run({ type: 'received' });
+  const state = run({ type: 'received', checked: true });
   assert.equal(currentPosition(state), 'apply');
   assert.equal(state.viewing, 'apply');
   assert.equal(stepStatus(state, 'receive'), 'done');
@@ -46,7 +48,7 @@ test('nothing before the diploma is received counts as a check', () => {
 });
 
 test('a failed check in step 2 keeps the visitor at step 2; a passing one completes it without leaving the result', () => {
-  const failed = run({ type: 'received' }, { type: 'verified', ok: false, reason: 'STATUS_UNAVAILABLE' });
+  const failed = run({ type: 'received', checked: true }, { type: 'verified', ok: false, reason: 'STATUS_UNAVAILABLE' });
   assert.equal(currentPosition(failed), 'apply');
   const passed = guidedReducer(failed, { type: 'verified', ok: true, reason: null });
   assert.equal(currentPosition(passed), 'revoke');
@@ -55,11 +57,11 @@ test('a failed check in step 2 keeps the visitor at step 2; a passing one comple
 });
 
 test('revocation is accepted only after a successful application', () => {
-  assert.equal(run({ type: 'received' }, { type: 'revoked' }).revoked, false);
-  assert.equal(run({ type: 'received' }, { type: 'verified', ok: true, reason: null }, { type: 'revoked' }).revoked, true);
+  assert.equal(run({ type: 'received', checked: true }, { type: 'revoked' }).revoked, false);
+  assert.equal(run({ type: 'received', checked: true }, { type: 'verified', ok: true, reason: null }, { type: 'revoked' }).revoked, true);
 });
 
-const applied: GuidedEvent[] = [{ type: 'received' }, { type: 'verified', ok: true, reason: null }];
+const applied: GuidedEvent[] = [{ type: 'received', checked: true }, { type: 'verified', ok: true, reason: null }];
 
 test('after the revocation, a check failing at REVOKED ends the run (refused by the employer)', () => {
   const state = run(...applied, { type: 'revoked' }, { type: 'verified', ok: false, reason: 'REVOKED' });
@@ -93,7 +95,7 @@ test('the wallet refusing a revoked diploma also ends the run, only after the re
 });
 
 test('steps not reached yet cannot be opened; done steps can', () => {
-  const state = run({ type: 'received' });
+  const state = run({ type: 'received', checked: true });
   assert.equal(guidedReducer(state, { type: 'view', position: 'revoke' }).viewing, 'apply');
   assert.equal(guidedReducer(state, { type: 'view', position: 'receive' }).viewing, 'receive');
 });
@@ -107,7 +109,7 @@ test('a notice (reload, lost session) keeps the facts; restart clears everything
 
 test('a failed employer result is never a pass: not in step 2, not after the revocation', () => {
   for (const reason of ['REVOKED', 'SIGNATURE_INVALID', 'ISSUER_NOT_TRUSTED', 'QUERY_NOT_SATISFIED', 'UNKNOWN', null] as const) {
-    const step2 = run({ type: 'received' }, { type: 'verified', ok: false, reason });
+    const step2 = run({ type: 'received', checked: true }, { type: 'verified', ok: false, reason });
     assert.equal(step2.applied, false, `step 2 with ${reason}`);
     assert.equal(currentPosition(step2), 'apply');
   }
@@ -169,3 +171,30 @@ for (const locale of ['vi', 'en'] as const) {
     if (locale === 'vi') for (const text of texts) assert.match(text, /[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹà-ỹ]/i);
   });
 }
+
+// ---- Saying no more than was checked --------------------------------------------------------------
+
+test('"what just happened" after the receipt follows the wallet\'s result: "valid" only for a checked receipt, on both runs', () => {
+  for (const locale of ['vi', 'en'] as const) {
+    for (const runName of ['x509', 'certnet'] as const) {
+      const copy = guidedCopyFor(DIPLOMA_GUIDED_DEMO_PAGE_TRANSLATIONS[locale], runName);
+      const checked = happenedReceiveLines(copy, run({ type: 'received', checked: true }));
+      const unchecked = happenedReceiveLines(copy, run({ type: 'received', checked: false }));
+      assert.equal(checked, copy.happenedReceive, `${locale}/${runName}`);
+      assert.equal(unchecked, copy.happenedReceiveUnchecked, `${locale}/${runName}`);
+      // The checked lines claim recognition and validity; none of the "not checked yet" lines does.
+      const claim = locale === 'vi' ? /bằng còn hiệu lực\.|công nhận trường được cấp|trường có trong danh sách được công nhận/ : /the diploma is valid\.|recognises it for this kind|on the recognised list/;
+      assert.ok(checked.some((line) => claim.test(line)), `${locale}/${runName}: the checked lines say it`);
+      for (const line of unchecked) assert.ok(!claim.test(line), `${locale}/${runName}: "${line}"`);
+      assert.ok(unchecked.some((line) => (locale === 'vi' ? /chưa kiểm xong/ : /not fully checked/).test(line)), `${locale}/${runName}: says it is not checked yet`);
+    }
+  }
+});
+
+test('the school side says only what the school knows: the diploma was sent to the wallet, not that the wallet saved it', () => {
+  for (const locale of ['vi', 'en'] as const) {
+    const { issuedTitle, issuedBody } = SCHOOL_PORTAL_PAGE_TRANSLATIONS[locale];
+    assert.equal(issuedTitle, locale === 'vi' ? 'Đã gửi bằng tới ví' : 'Sent to your wallet');
+    assert.ok(!/cấp vào ví|đã nằm trong ví|is now in your/i.test(issuedTitle + issuedBody), `${locale}: no claim the wallet holds it`);
+  }
+});

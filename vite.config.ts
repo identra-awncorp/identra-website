@@ -2,7 +2,8 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import {existsSync, readFileSync} from 'node:fs';
 import path from 'path';
-import {defineConfig, type Connect, type Plugin} from 'vite';
+import {defineConfig, loadEnv, type Connect, type Plugin} from 'vite';
+import {resolveCertNetConfig} from './src/identra/config';
 import {identraRootCaPlugin} from './src/identra/trust/rootCaPlugin';
 import {
   DEFAULT_LOCALE,
@@ -215,7 +216,13 @@ const localizedPreviewEntries = (): Plugin => ({
   },
 });
 
-export default defineConfig(({ isSsrBuild }) => {
+export default defineConfig(({ command, mode, isSsrBuild }) => {
+  // A build is a production bundle: an unsafe CertNet configuration (the `local` network, a plain-http gateway)
+  // fails it here, with the same rule the page applies (config.ts), unless the test-only switch is set.
+  if (command === 'build') {
+    const env = loadEnv(mode, __dirname, 'VITE_');
+    resolveCertNetConfig(env.VITE_CERTNET_GATEWAY_URL, env.VITE_CERTNET_NETWORK, { production: true, testSwitch: env.VITE_CERTNET_ALLOW_LOCAL_FOR_TESTS });
+  }
   return {
     plugins: [
       externalShortcuts(),

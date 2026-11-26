@@ -169,7 +169,7 @@ function Working({ text, testId }: { text: string; testId: string }) {
 }
 
 /** "Could not be checked right now" is amber, as in the employer result; every other problem is a refusal. */
-const UNCHECKED_PROBLEMS: readonly string[] = ['verifierCouldNotCheck'];
+const UNCHECKED_PROBLEMS: readonly string[] = ['verifierCouldNotCheck', 'certnetUnavailable', 'trustListUnavailable'];
 
 function Problem({ text, testId, problem }: { text: string; testId: string; problem?: string }) {
   const unchecked = problem !== undefined && UNCHECKED_PROBLEMS.includes(problem);

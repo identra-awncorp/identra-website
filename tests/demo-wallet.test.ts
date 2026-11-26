@@ -174,6 +174,8 @@ test('every SDK error code maps to a problem with a sentence in both languages',
   assert.equal(requestProblemFor('VERIFIER_NOT_TRUSTED', 'resolve'), 'verifierUntrusted');
   assert.equal(requestProblemFor('TRUST_LIST_UNAVAILABLE', 'resolve'), 'trustListUnavailable');
   assert.equal(requestProblemFor('NETWORK_ERROR', 'submit'), 'submitNetwork', 'a lost answer may have been delivered');
+  assert.equal(requestProblemFor('DID_RESOLUTION_UNAVAILABLE', 'submit'), 'verifierCouldNotCheck');
+  assert.equal(requestProblemFor('VERIFIER_ERROR', 'submit'), 'submitVerifierError', 'a verifier error is still its own case');
 });
 
 test('text from an issuer or verifier: control and direction characters refused, long text cut', () => {
@@ -266,6 +268,17 @@ test('wallet screens: share, decline, and a submit failure that needs a new requ
   assert.deepEqual(walletReducer(sending, { type: 'submitFailed', code: 'REQUEST_INVALID' }), { name: 'requestFailed', problem: 'requestClosed' });
   const storage = walletReducer(sending, { type: 'submitFailed', code: 'STORAGE_ERROR' });
   assert.equal(storage.name === 'requestConsent' && storage.problem, 'storage', 'a failure before sending leaves the request usable');
+
+  // The verifier could not check now: the same request stays open with the same choice, and sending again is possible.
+  const chosen = walletReducer(screen, { type: 'submit' });
+  const unchecked = walletReducer(chosen, { type: 'submitFailed', code: 'DID_RESOLUTION_UNAVAILABLE' });
+  assert.equal(unchecked.name, 'requestConsent');
+  assert.equal(unchecked.name === 'requestConsent' && unchecked.problem, 'verifierCouldNotCheck');
+  assert.equal(unchecked.name === 'requestConsent' && unchecked.busy, false);
+  assert.equal(unchecked.name === 'requestConsent' && unchecked.optionIndex, 1, 'the choice is kept');
+  const again = walletReducer(unchecked, { type: 'submit' });
+  assert.equal(again.name === 'requestConsent' && again.busy, true);
+  assert.equal(again.name === 'requestConsent' && again.problem, null, 'the old message goes while sending again');
 });
 
 test('build check: every chunk the wallet chunk imports (shared ones too) is scanned for Function/eval', async () => {
@@ -385,6 +398,8 @@ test('CertNet states map to their own text: saved, saved but not checked, CertNe
   for (const locale of ['vi', 'en'] as const) {
     for (const problem of WALLET_PROBLEMS) assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems[problem].trim(), `${locale}.${problem}`);
     assert.notEqual(DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems.certnetUnavailable, DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems.network);
+    const { verifierCouldNotCheck, submitVerifierError, submitNetwork } = DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems;
+    assert.ok(verifierCouldNotCheck !== submitVerifierError && verifierCouldNotCheck !== submitNetwork, `${locale}: its own sentence`);
   }
 });
 

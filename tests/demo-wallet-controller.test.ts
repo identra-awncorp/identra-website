@@ -55,7 +55,7 @@ const fakeWallet = (options: { status?: CredentialSummary['status']; request?: R
   let stored = false;
   const calls = { accept: 0, submit: [] as number[], decline: 0, resolveOffer: 0 };
   const acceptAnswer = deferred<AcceptResult>();
-  const submitAnswer = deferred<{ ok: true } | { ok: false; code: 'NETWORK_ERROR' }>();
+  const submitAnswer = deferred<{ ok: true } | { ok: false; code: 'NETWORK_ERROR' | 'DID_RESOLUTION_UNAVAILABLE' }>();
   const wallet = {
     offers: {
       resolve: async () => { calls.resolveOffer += 1; return { ok: true as const, offer }; },
@@ -162,6 +162,22 @@ test('consent: nothing preselected; Share sends exactly the claim set of the opt
   assert.deepEqual(calls.submit, [1], '"share less" sends the smaller claim set (index 1)');
   const sent = controller.getState().screen;
   assert.deepEqual(sent.name === 'requestSent' && sent.fields, ['ho_ten', 'nganh']);
+});
+
+test('a verifier that could not check now: the request stays open with the same choice and can be sent again', async () => {
+  const { controller, calls, events, submitAnswer } = setup({ status: 'valid' });
+  controller.open(requestItem);
+  await tick();
+  controller.choose(1);
+  submitAnswer.resolve({ ok: false, code: 'DID_RESOLUTION_UNAVAILABLE' });
+  await controller.share();
+  const waiting = controller.getState().screen;
+  assert.equal(waiting.name, 'requestConsent');
+  assert.equal(waiting.name === 'requestConsent' && waiting.problem, 'verifierCouldNotCheck');
+  assert.equal(waiting.name === 'requestConsent' && waiting.optionIndex, 1, 'nothing to choose again');
+  assert.deepEqual(events, [], 'nothing was sent as far as the page is concerned');
+  await controller.share();
+  assert.deepEqual(calls.submit, [1, 1], 'the same choice goes again');
 });
 
 test('consent: an untrusted verifier gets no name, no purpose, and no Share', async () => {

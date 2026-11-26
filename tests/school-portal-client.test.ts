@@ -288,6 +288,25 @@ test('the CertNet school names itself at sign-in; its session is that school\'s'
   assert.equal(session.issuer, 'truong-mau-certnet');
 });
 
+test('a login response that names the school: the same school is used, another or a different known school makes the sign-in unusable, an unknown value is ignored', async () => {
+  const signIn = (issuer: string, reported?: unknown, account = 'sv001') => {
+    const { api } = schoolClient(issuer, () => json(reported === undefined ? studentLogin : { ...studentLogin, issuer: reported }), issuer !== 'truong-mau');
+    return { login: api.login(account, 'Identra@2026') };
+  };
+  // Present and agreeing, for both schools.
+  assert.equal((await signIn('truong-mau', 'truong-mau').login).issuer, 'truong-mau');
+  assert.equal((await signIn('truong-mau-certnet', 'truong-mau-certnet', 'cn-sv001').login).issuer, 'truong-mau-certnet');
+  // Absent: today's behaviour (the existing tests above and below).
+  assert.equal((await signIn('truong-mau-certnet', undefined, 'cn-sv001').login).issuer, 'truong-mau-certnet');
+  // Contradicting, either way round: no session.
+  await rejectsWith(signIn('truong-mau-certnet', 'truong-mau', 'cn-sv001').login, 'malformed');
+  await rejectsWith(signIn('truong-mau', 'truong-mau-certnet').login, 'malformed');
+  // A value the site does not know is not a school it can act on: the sign-in goes on as if it were absent.
+  for (const unknown of ['truong-khac', '', null, 7, ['truong-mau']]) {
+    assert.equal((await signIn('truong-mau', unknown).login).issuer, 'truong-mau');
+  }
+});
+
 test('a school\'s client accepts its own school\'s offer and refuses any other school\'s', async () => {
   const certnet = schoolClient('truong-mau-certnet', () => json(offerOf('truong-mau-certnet', 'o1'), 201), true);
   assert.equal((await certnet.api.createOffer('t')).offerId, 'o1');

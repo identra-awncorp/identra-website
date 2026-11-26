@@ -8,6 +8,8 @@
 // Every response is validated before use; nothing here logs or stores tokens, PINs or personal data.
 // Everything a student creates belongs to the portal session (one login), not to the shared account.
 
+import { SAMPLE_CERTNET_ISSUER, SAMPLE_ISSUER } from './config';
+
 export type PortalRole = 'student' | 'registrar';
 export type CredentialStatus = 'valid' | 'revoked' | 'suspended';
 export type OfferStatus = 'pending' | 'issued' | 'expired';
@@ -29,7 +31,8 @@ export interface RegistrarProfile {
 
 /**
  * `serverTime` accompanies every `expiresAt` (vc-api.md section 2): count down against the server clock.
- * `issuer`: the school the session belongs to, the one of the client that signed it in (not read from the body).
+ * `issuer`: the school the session belongs to, the one of the client that signed it in. A login response that names a
+ * school (`issuer`, additive) must agree with it; one that names none, or a school this site does not know, changes nothing.
  */
 export type PortalSession =
   | { role: 'student'; token: string; expiresAt: string; serverTime: string; profile: StudentProfile; issuer: string }
@@ -155,6 +158,9 @@ export const parsePortalSession = (raw: unknown, issuer: string): PortalSession 
   const serverTime = asDate(body.serverTime, 'serverTime');
   const role = asEnum(body.role, ['student', 'registrar'] as const, 'role');
   const profile = asObject(body.profile, 'profile');
+  // The server's own word on the school, when it gives one this site knows: a session of another school is not this sign-in's.
+  const reported = body.issuer;
+  if ((reported === SAMPLE_ISSUER || reported === SAMPLE_CERTNET_ISSUER) && reported !== issuer) malformed('issuer');
 
   if (role === 'registrar') {
     return {

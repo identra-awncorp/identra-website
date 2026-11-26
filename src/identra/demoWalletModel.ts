@@ -117,6 +117,8 @@ export const WALLET_PROBLEMS = [
   'certificateInvalid',
   'submitNetwork',
   'submitVerifierError',
+  /** At sending: the verifier got the document but could not check it now (CertNet out of reach); nothing concluded, the same request can be sent again. */
+  'verifierCouldNotCheck',
   'requestClosed',
   'other',
 ] as const;
@@ -151,6 +153,7 @@ export const requestProblemFor = (code: WalletErrorCode, stage: 'resolve' | 'sub
     switch (code) {
       case 'NETWORK_ERROR': return 'submitNetwork';
       case 'VERIFIER_ERROR': return 'submitVerifierError';
+      case 'DID_RESOLUTION_UNAVAILABLE': return 'verifierCouldNotCheck';
       case 'REQUEST_INVALID': return 'requestClosed';
       case 'REQUEST_EXPIRED': return 'requestExpired';
       case 'VERIFIER_NOT_TRUSTED': return 'verifierUntrusted';

@@ -168,10 +168,14 @@ function Working({ text, testId }: { text: string; testId: string }) {
   );
 }
 
+/** "Could not be checked right now" is amber, as in the employer result; every other problem is a refusal. */
+const UNCHECKED_PROBLEMS: readonly string[] = ['verifierCouldNotCheck'];
+
 function Problem({ text, testId, problem }: { text: string; testId: string; problem?: string }) {
+  const unchecked = problem !== undefined && UNCHECKED_PROBLEMS.includes(problem);
   return (
-    <p role="alert" className="type-body flex items-start gap-2 rounded-2xl bg-rose-50 px-4 py-3 text-rose-900" data-testid={testId} data-problem={problem}>
-      <AlertTriangle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+    <p role="alert" className={`type-body flex items-start gap-2 rounded-2xl px-4 py-3 ${unchecked ? 'bg-amber-50 text-amber-950' : 'bg-rose-50 text-rose-900'}`} data-testid={testId} data-problem={problem}>
+      <AlertTriangle aria-hidden="true" className={`mt-0.5 h-4 w-4 shrink-0 ${unchecked ? 'text-amber-700' : ''}`} />
       <span>{text}</span>
     </p>
   );

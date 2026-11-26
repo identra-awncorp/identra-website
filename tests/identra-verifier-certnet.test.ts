@@ -232,13 +232,13 @@ test('every new sentence exists in every language, plain (no protocol words, no 
       wallet.issuerCertNet, wallet.issuerIdShowFull, wallet.issuerIdHideFull, wallet.certnetAbout,
       wallet.savedIssuerCertNet, wallet.savedIssuerCertNetUnchecked, wallet.savedLeadCertNet, wallet.savedLeadCertNetUnchecked,
       wallet.checkNotes.certnetUnavailable, wallet.checkNotes.issuerNotRecognised,
-      wallet.problems.certnetUnavailable, wallet.problems.offerNeedsCertNet,
+      wallet.problems.certnetUnavailable, wallet.problems.offerNeedsCertNet, wallet.problems.verifierCouldNotCheck,
     ];
     for (const sentence of sentences) assert.ok(sentence.trim().length > 3 && !JARGON.test(sentence) && !CLAIMS.test(sentence), `${locale}: "${sentence}"`);
     assert.ok(wallet.certnetAbout.includes('CertNet'));
   }
   // Vietnamese is written with its diacritics.
-  for (const sentence of [T.vi.certnetNote, T.vi.reasons.DID_RESOLUTION_UNAVAILABLE, W.vi.problems.certnetUnavailable, W.vi.problems.offerNeedsCertNet]) {
+  for (const sentence of [T.vi.certnetNote, T.vi.reasons.DID_RESOLUTION_UNAVAILABLE, W.vi.problems.certnetUnavailable, W.vi.problems.offerNeedsCertNet, W.vi.problems.verifierCouldNotCheck]) {
     assert.match(sentence, /[ăâđêôơưàáạảãằắặẳẵầấậẩẫèéẹẻẽềếệểễìíịỉĩòóọỏõồốộổỗờớợởỡùúụủũừứựửữỳýỵỷỹ]/i);
   }
 });

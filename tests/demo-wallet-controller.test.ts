@@ -13,6 +13,7 @@ import type { AcceptResult, CredentialDetails, CredentialSummary, ResolvedOffer,
 import {
   consentView,
   createWalletController,
+  type HeldCredential,
   type WalletControllerEvent,
   type WalletLike,
 } from '../src/identra/demoWalletModel';
@@ -547,5 +548,68 @@ test('N1: no sequence of page and wallet actions leads from a delivered share to
       await flush();
       assertLocked(d, trail);
     }
+  }
+});
+
+test('N1: the SDK pins a share that is no longer among the matches: the request is used up (a fresh wallet, no memory), and the SDK is told to drop it', async () => {
+  // A pinned option that no current match offers (the document was removed): never a fresh choice, nothing can be sent.
+  for (const pinned of [{ credentialId: 'gone', claimSetIndex: 0 }, { credentialId: 'c1', claimSetIndex: 9 }]) {
+    const request = { ...trustedRequest(), pinned } as ResolvedPresentation;
+    const { controller, calls, events } = setup({ status: 'valid', request });
+    controller.open(requestItem);
+    await tick();
+    const screen = controller.getState().screen;
+    assert.deepEqual(screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: null }, JSON.stringify(pinned));
+    assert.equal(calls.decline, 1, 'the SDK is told to drop the request it still pins');
+    assert.deepEqual(events, [], 'nothing was delivered by this wallet: the page is told nothing');
+    await controller.share();
+    assert.equal(calls.submit.length, 0, 'nothing is sent for it');
+  }
+});
+
+test('N1: a locked request shows the document the share was sent with, not the newest one', () => {
+  const older = { ...match, credentialId: 'c1' };
+  const newer = { ...match, credentialId: 'c2' };
+  const held = (id: string, status: CredentialSummary['status'], createdAt: string): HeldCredential =>
+    ({ summary: { ...summary(status), id, createdAt }, details: { ...details(status), id, createdAt } });
+  const wallet = [held('c1', 'valid', '2026-11-01T00:00:00Z'), held('c2', 'valid', '2026-11-19T00:00:00Z')];
+  const request = trustedRequest([newer, older]);
+  const delivered = { credentialId: 'c1', claimSetIndex: 1, fields: ['ho_ten', 'nganh'] };
+
+  // Not locked: the newest document is offered.
+  assert.equal(consentView(request, wallet, 1, 'vi').match?.credentialId, 'c2');
+  // Locked: the document that was sent, with its own summary, and the pinned option only.
+  const view = consentView(request, wallet, null, 'vi', delivered);
+  assert.deepEqual([view.match?.credentialId, view.summary?.id, view.selected?.index, view.canShare], ['c1', 'c1', 1, true]);
+  assert.deepEqual(view.staying, ['ngay_sinh', 'ma_sinh_vien', 'hang_tot_nghiep', 'nam_tot_nghiep', 'so_hieu_bang'], 'what stays home: the sent document\'s other fields');
+
+  // The sent document has since been revoked while a newer one is fine: the locked screen says so, it does not show the newer one.
+  const revoked = [held('c1', 'revoked', '2026-11-01T00:00:00Z'), wallet[1]!];
+  const blocked = consentView(request, revoked, null, 'vi', delivered);
+  assert.deepEqual([blocked.summary?.id, blocked.blocked, blocked.canShare], ['c1', 'revoked', false]);
+});
+
+test('N1: two spellings of the same request (parameter order, percent-encoding, extra parameters) are one request for the wallet\'s memory', async () => {
+  const sdk = pinningWallet();
+  const first = createWalletController(sdk.wallet, () => undefined, () => 'vi');
+  first.open({ id: 1, kind: 'request', text: REQUEST_TEXT });
+  await flush();
+  first.choose(1);
+  await first.share();
+  await flush();
+  assert.deepEqual(sdk.sent, [1]);
+  sdk.control.pinLapsed = true; // the SDK no longer pins it: only the wallet's own memory remains
+
+  const spellings = [
+    'openid4vp://?request_uri=https%3A%2F%2Fapi-identra.awncorp.vn%2Fr%2F1&client_id=x509_hash%3Aabc',
+    'openid4vp://?client_id=x509_hash:abc&request_uri=https://api-identra.awncorp.vn/r/1',
+    `${REQUEST_TEXT}&state=another-session`,
+  ];
+  for (const text of spellings) {
+    // A new controller (a remount): the memory is the wallet's.
+    const again = createWalletController(sdk.wallet, () => undefined, () => 'vi');
+    again.open({ id: 2, kind: 'request', text });
+    await flush();
+    assert.deepEqual(again.getState().screen, { name: 'requestFailed', problem: 'requestUsedUp', delivered: ['ho_ten', 'nganh'] }, text);
   }
 });

@@ -25,7 +25,8 @@ test('the website knows exactly the codes the SDK exports', () => {
 for (const locale of LOCALES) {
   test(`${locale}: every code has its own sentence, never the code itself`, () => {
     const reasons = APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS[locale].reasons;
-    const keys: FailureReasonKey[] = [...ALL_ERROR_CODES, 'UNKNOWN'];
+    // The page's own keys: the CertNet path's issuer_trust codes, which mean CertNet there, not Identra's list.
+    const keys: FailureReasonKey[] = [...ALL_ERROR_CODES, 'CERTNET_ISSUER_NOT_TRUSTED', 'CERTNET_REGISTRY_UNAVAILABLE', 'UNKNOWN'];
     assert.deepEqual(Object.keys(reasons).sort(), [...keys].sort());
     for (const key of keys) {
       const sentence = reasons[key];

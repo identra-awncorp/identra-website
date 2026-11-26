@@ -5,7 +5,7 @@
 
 // The lazy chunk of the web trial wallet: the SDK wallet and its dependencies load only when a page that
 // shows the trial wallet asks for them (DemoWalletPanel), never with the marketing bundle.
-import { IDENTRA_API_ORIGIN, IDENTRA_API_URL } from './config';
+import { CERTNET_CONFIG, IDENTRA_API_ORIGIN, IDENTRA_API_URL } from './config';
 import { createDemoWallet, type Wallet } from './demoWallet';
 import { PINNED_ROOTS } from './pinnedRoots';
 
@@ -22,7 +22,7 @@ export const setDemoWalletClockOffset = (offsetMs: number) => {
 };
 
 export const getDemoWallet = (): Wallet => {
-  current ??= createDemoWallet({ apiOrigin: IDENTRA_API_ORIGIN, apiUrl: IDENTRA_API_URL, trustedRoots: PINNED_ROOTS, clock });
+  current ??= createDemoWallet({ apiOrigin: IDENTRA_API_ORIGIN, apiUrl: IDENTRA_API_URL, trustedRoots: PINNED_ROOTS, clock, certnet: CERTNET_CONFIG });
   return current;
 };
 

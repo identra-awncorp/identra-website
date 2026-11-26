@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import type { Check } from '@identra/sdk-core';
 import type {
+  AcceptFailure,
   AcceptResult,
   CredentialDetails,
   CredentialSummary,
@@ -14,7 +16,7 @@ import type {
   Wallet,
   WalletErrorCode,
 } from '@identra/sdk-app';
-import { truncateText } from './verifierSession';
+import { certNetIssuerId, truncateText } from './verifierSession';
 import { UNSAFE_TEXT } from './schoolPortalClient';
 
 // What the web trial wallet shows, as stable keys and plain data: the screens it moves through, the
@@ -63,6 +65,34 @@ export const purposeText = (purpose: ResolvedPresentation['purpose'], locale: Wa
   return safeText(purpose[locale] ?? purpose.vi ?? purpose.en, 300);
 };
 
+// ---- How the issuer was checked ------------------------------------------------------------------
+
+/**
+ * How a document's issuer was recognised, for display. `x509`: through its certificate and Identra's
+ * trust list, with the trust-list name when the wallet could confirm it. `did`: through CertNet, shown by
+ * its identifier only: that path has no name, and neither the issuer's own display name nor its web
+ * address is ever shown as one (ADR-0020).
+ */
+export type IssuerView =
+  | { trustPath: 'x509'; name: string | null }
+  | { trustPath: 'did'; did: string | null };
+
+export const issuerView = (source: { trustPath?: 'x509' | 'did'; issuerDid?: string | null; issuerName?: string | null }): IssuerView =>
+  source.trustPath === 'did' || source.issuerDid
+    ? { trustPath: 'did', did: certNetIssuerId(source.issuerDid) }
+    : { trustPath: 'x509', name: safeText(source.issuerName) };
+
+/** Why the last check of a CertNet document did not settle it, when the reason is CertNet's. X.509 documents get none. */
+export type WalletCheckNote = 'certnetUnavailable' | 'issuerNotRecognised';
+
+export const checkNoteFor = (trustPath: 'x509' | 'did', checks: readonly Check[]): WalletCheckNote | null => {
+  if (trustPath !== 'did') return null;
+  const failing = (id: string, code: string) => checks.some((check) => check.id === id && !check.ok && check.code === code);
+  if (failing('did_resolution', 'DID_RESOLUTION_UNAVAILABLE') || failing('issuer_trust', 'TRUST_LIST_UNAVAILABLE')) return 'certnetUnavailable';
+  if (failing('issuer_trust', 'ISSUER_NOT_TRUSTED')) return 'issuerNotRecognised';
+  return null;
+};
+
 // ---- Problems ---------------------------------------------------------------------------------------
 
 /** Every failure the trial wallet explains, one sentence each in the translations. */
@@ -71,8 +101,12 @@ export const WALLET_PROBLEMS = [
   'pinRequired',
   'offerExpired',
   'offerInvalid',
+  /** An offer the wallet refuses while the CertNet path is off (the SDK says OFFER_INVALID for both). */
+  'offerNeedsCertNet',
   'notAllowed',
   'network',
+  /** At receipt: CertNet did not answer, so the issuer is not checked yet; nothing stored, retry without the PIN. */
+  'certnetUnavailable',
   'issuerError',
   'credentialInvalid',
   'storage',
@@ -88,12 +122,16 @@ export const WALLET_PROBLEMS = [
 ] as const;
 export type WalletProblem = typeof WALLET_PROBLEMS[number];
 
-export const offerProblemFor = (code: WalletErrorCode): WalletProblem => {
+/**
+ * `dpki`: whether the trial wallet has the CertNet path. Without it the SDK refuses a CertNet issuer's offer
+ * with the same OFFER_INVALID as a malformed one, so the visitor is told it cannot be received here.
+ */
+export const offerProblemFor = (code: WalletErrorCode, dpki = true): WalletProblem => {
   switch (code) {
     case 'TX_CODE_WRONG': return 'pinWrong';
     case 'TX_CODE_REQUIRED': return 'pinRequired';
     case 'OFFER_EXPIRED': return 'offerExpired';
-    case 'OFFER_INVALID': return 'offerInvalid';
+    case 'OFFER_INVALID': return dpki ? 'offerInvalid' : 'offerNeedsCertNet';
     case 'URL_NOT_ALLOWED': return 'notAllowed';
     case 'NETWORK_ERROR': return 'network';
     case 'ISSUER_ERROR': return 'issuerError';
@@ -106,6 +144,10 @@ export const offerProblemFor = (code: WalletErrorCode): WalletProblem => {
     default: return 'other';
   }
 };
+
+/** A failed accept: an issuer CertNet could not resolve is "not checked yet", not a network failure of Identra. */
+export const acceptProblemFor = (result: AcceptFailure): WalletProblem =>
+  result.checks?.some((check) => check.code === 'DID_RESOLUTION_UNAVAILABLE') ? 'certnetUnavailable' : offerProblemFor(result.code);
 
 export const requestProblemFor = (code: WalletErrorCode, stage: 'resolve' | 'submit'): WalletProblem => {
   if (stage === 'submit') {
@@ -205,8 +247,11 @@ export type WalletScreen =
   | { name: 'detail'; credentialId: string }
   | { name: 'offerChecking' }
   | { name: 'offerConsent'; offer: ResolvedOffer; busy: boolean; problem: WalletProblem | null }
-  /** `issuerName`: the trust-list name, known only once the wallet checked the issuer (null when it could not). */
-  | { name: 'offerSaved'; credentialId: string; checked: boolean; issuerName: string | null }
+  /**
+   * `issuerName`: the trust-list name, known only once the wallet checked the issuer (null when it could not).
+   * `issuerDid`: a CertNet issuer's identifier, which then stands instead of a name (`issuerName` is null).
+   */
+  | { name: 'offerSaved'; credentialId: string; checked: boolean; issuerName: string | null; issuerDid: string | null }
   | { name: 'offerFailed'; problem: WalletProblem }
   | { name: 'requestChecking' }
   /** `optionIndex` null until the visitor chooses how much to share: nothing is preselected. */
@@ -220,7 +265,8 @@ export type WalletEvent =
   | { type: 'openDetail'; credentialId: string }
   | { type: 'checkOffer' }
   | { type: 'offerResolved'; offer: ResolvedOffer }
-  | { type: 'offerRefused'; code: WalletErrorCode }
+  /** `dpki`: whether the wallet has the CertNet path (decides what OFFER_INVALID means to the visitor). */
+  | { type: 'offerRefused'; code: WalletErrorCode; dpki?: boolean }
   | { type: 'accept' }
   | { type: 'accepted'; result: AcceptResult }
   | { type: 'checkRequest' }
@@ -245,19 +291,27 @@ export const walletReducer = (state: WalletScreen, event: WalletEvent): WalletSc
     case 'offerResolved':
       return state.name === 'offerChecking' ? { name: 'offerConsent', offer: event.offer, busy: false, problem: null } : state;
     case 'offerRefused':
-      return state.name === 'offerChecking' ? { name: 'offerFailed', problem: offerProblemFor(event.code) } : state;
+      return state.name === 'offerChecking' ? { name: 'offerFailed', problem: offerProblemFor(event.code, event.dpki) } : state;
     case 'accept':
       return state.name === 'offerConsent' && !state.busy ? { ...state, busy: true, problem: null } : state;
     case 'accepted': {
       if (state.name !== 'offerConsent') return state;
       const { result } = event;
       if (result.ok) {
-        return { name: 'offerSaved', credentialId: result.credentialId, checked: result.status === 'valid', issuerName: safeText(result.issuerName) };
+        const issuer = issuerView(result);
+        return {
+          name: 'offerSaved',
+          credentialId: result.credentialId,
+          checked: result.status === 'valid',
+          issuerName: issuer.trustPath === 'x509' ? issuer.name : null,
+          issuerDid: issuer.trustPath === 'did' ? issuer.did : null,
+        };
       }
-      // A wrong PIN, a lost answer or a held token: the same offer can still complete, so stay on it.
+      // A wrong PIN, a lost answer, a held token or an issuer CertNet did not resolve yet: the same offer
+      // can still complete, so stay on it.
       return result.retryable
-        ? { ...state, busy: false, problem: offerProblemFor(result.code) }
-        : { name: 'offerFailed', problem: offerProblemFor(result.code) };
+        ? { ...state, busy: false, problem: acceptProblemFor(result) }
+        : { name: 'offerFailed', problem: acceptProblemFor(result) };
     }
     case 'checkRequest':
       return { name: 'requestChecking' };
@@ -371,6 +425,8 @@ export interface WalletControllerState {
   /** True while the wallet works on something that must not be interrupted (an accept or a share in flight, a code being read). */
   busy: boolean;
   checking: { id: string; failed: boolean } | null;
+  /** Per document: why its last check through CertNet did not settle it (set by a check in this tab). */
+  notes: Readonly<Record<string, WalletCheckNote>>;
 }
 
 export type WalletLike = Pick<Wallet, 'offers' | 'credentials' | 'presentations'>;
@@ -380,8 +436,14 @@ export type WalletLike = Pick<Wallet, 'offers' | 'credentials' | 'presentations'
  * leave the outcome of that call unseen), and an outcome that arrives after the visitor moved on is still
  * reported: a credential the SDK stored is announced and listed, a sent answer is announced.
  */
-export const createWalletController = (wallet: WalletLike, onEvent: (event: WalletControllerEvent) => void, locale: () => WalletLocale) => {
-  let state: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null };
+export const createWalletController = (
+  wallet: WalletLike,
+  onEvent: (event: WalletControllerEvent) => void,
+  locale: () => WalletLocale,
+  options: { dpki?: boolean } = {},
+) => {
+  const dpki = options.dpki ?? false;
+  let state: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null, notes: {} };
   const listeners = new Set<() => void>();
   let operation = 0;
   let inFlight = false;
@@ -403,6 +465,19 @@ export const createWalletController = (wallet: WalletLike, onEvent: (event: Wall
     }));
     set({ held: held.sort((a, b) => Date.parse(b.summary.createdAt) - Date.parse(a.summary.createdAt)) });
     return held;
+  };
+
+  /** Re-checks a stored document and keeps CertNet's part of the answer for the detail screen. */
+  const recheck = async (credentialId: string) => {
+    const result = await wallet.credentials.refreshStatus(credentialId);
+    const held = await refreshHeld();
+    const trustPath = held.find((item) => item.summary.id === credentialId)?.summary.trustPath ?? 'x509';
+    const note = result.ok ? checkNoteFor(trustPath, result.checks) : null;
+    const notes: Record<string, WalletCheckNote> = { ...state.notes };
+    if (note) notes[credentialId] = note;
+    else delete notes[credentialId];
+    set({ notes });
+    return result;
   };
 
   const reportBlocked = () => {
@@ -432,7 +507,7 @@ export const createWalletController = (wallet: WalletLike, onEvent: (event: Wall
         dispatch({ type: 'checkOffer' });
         void wallet.offers.resolve(item.text).then((result) => {
           if (op !== operation) return;
-          dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code });
+          dispatch(result.ok ? { type: 'offerResolved', offer: result.offer } : { type: 'offerRefused', code: result.code, dpki });
         });
       } else {
         dispatch({ type: 'checkRequest' });
@@ -492,7 +567,7 @@ export const createWalletController = (wallet: WalletLike, onEvent: (event: Wall
       if (result.ok) {
         onEvent({ type: 'presentationSent', itemId: item.id });
         // The wallet learns the credential's current status afterwards, as the app refreshes it.
-        void wallet.credentials.refreshStatus(view.match.credentialId).then(() => refreshHeld());
+        void recheck(view.match.credentialId);
       }
       if (op !== operation) {
         set({});
@@ -523,8 +598,7 @@ export const createWalletController = (wallet: WalletLike, onEvent: (event: Wall
 
     async checkAgain(credentialId: string) {
       set({ checking: { id: credentialId, failed: false } });
-      const result = await wallet.credentials.refreshStatus(credentialId);
-      await refreshHeld();
+      const result = await recheck(credentialId);
       set({ checking: result.ok && result.status !== 'unknown' ? null : { id: credentialId, failed: true } });
     },
   };

@@ -7,25 +7,29 @@ import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore
 import { AlertTriangle, ArrowLeft, Building2, Check, ChevronRight, GraduationCap, Info, Loader2, RefreshCw, ShieldAlert, ShieldCheck } from 'lucide-react';
 import type { Wallet, WalletCredentialStatus } from '@identra/sdk-app';
 import { useNow } from '../../hooks/useNow';
+import { CERTNET_CONFIG } from '../../identra/config';
 import {
   consentView,
   createWalletController,
   DIPLOMA_VCT,
   displayName,
   isDiplomaField,
+  issuerView,
   normalizePin,
   orderFields,
   safeText,
   WALLET_HOME,
   type HeldCredential,
+  type IssuerView,
   type WalletControllerEvent,
   type WalletControllerState,
   type WalletInboxItem,
   type WalletLocale,
   type WalletScreen,
 } from '../../identra/demoWalletModel';
-import { formatCountdown, secondsUntil } from '../../identra/verifierSession';
+import { formatCountdown, secondsUntil, shortIssuerId } from '../../identra/verifierSession';
 import { DEMO_WALLET_PANEL_TRANSLATIONS, type DemoWalletPanelCopy } from '../../translations/demo/DemoWalletPanelTranslations';
+import IdentraIssuerId, { IssuerIdText } from '../IdentraIssuerId';
 
 // The web trial wallet as a phone-shaped panel, laid out after the Identra app's wallet screens
 // (identra-app .review/wallet). Its behaviour lives in createWalletController (demoWalletModel.ts, tested);
@@ -152,7 +156,31 @@ const focusPin = () => window.requestAnimationFrame(() => {
 
 const claimText = (value: unknown): string | null => safeText(typeof value === 'number' ? String(value) : value, 200);
 
-const IDLE_STATE: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null };
+const IDLE_STATE: WalletControllerState = { screen: WALLET_HOME, held: [], busy: false, checking: null, notes: {} };
+const DPKI = CERTNET_CONFIG !== null;
+
+/**
+ * A CertNet document's issuer: how it was checked, then its identifier (that path has no name, ADR-0020).
+ * `compact` inside a button (no control of its own: the short identifier only).
+ */
+function CertNetIssuer({ id, copy, compact = false }: { id: string | null; copy: DemoWalletPanelCopy; compact?: boolean }) {
+  return (
+    <span className="type-body-sm block text-slate-600" data-testid="wallet-issuer-certnet">
+      <span className="block">{copy.issuerCertNet}</span>
+      {id && (compact
+        ? <IssuerIdText value={shortIssuerId(id)} className="block text-slate-700" />
+        : <span className="block text-slate-700"><IdentraIssuerId id={id} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} /></span>)}
+    </span>
+  );
+}
+
+/** The issuer line of a document card: the trust-list name (X.509, as before) or the CertNet identifier. */
+function IssuerLine({ issuer, copy, compact = false }: { issuer: IssuerView; copy: DemoWalletPanelCopy; compact?: boolean }) {
+  if (issuer.trustPath === 'did') return <CertNetIssuer id={issuer.did} copy={copy} compact={compact} />;
+  return compact
+    ? <span className={`type-body-sm block text-slate-600 ${apiText}`}>{issuer.name ?? copy.issuerUnknown}</span>
+    : <p className={`type-body-sm text-slate-600 ${apiText}`}>{issuer.name ?? copy.issuerUnknown}</p>;
+}
 const noop = () => () => undefined;
 
 export default function DemoWalletPanel({ locale, inbox, generation, clockOffsetMs, onEvent, onBusyChange }: DemoWalletPanelProps) {
@@ -212,11 +240,11 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
 
   // One controller per wallet ("phone"): a new generation is a new phone with nothing in it.
   const controller = useMemo(
-    () => (wallet ? createWalletController(wallet, (event) => onEventRef.current(event), () => localeRef.current) : null),
+    () => (wallet ? createWalletController(wallet, (event) => onEventRef.current(event), () => localeRef.current, { dpki: DPKI }) : null),
     [wallet],
   );
   const state = useSyncExternalStore(controller?.subscribe ?? noop, controller?.getState ?? (() => IDLE_STATE), () => IDLE_STATE);
-  const { screen, held, busy, checking } = state;
+  const { screen, held, busy, checking, notes } = state;
 
   useEffect(() => {
     if (!controller) return;
@@ -262,6 +290,10 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     if (after.name === 'offerConsent' && after.problem === 'pinWrong') {
       setPin('');
       document.getElementById('demo-wallet-pin')?.focus();
+    }
+    // CertNet did not answer: the PIN field is gone, so bring the explanation (and the retry it offers) into view.
+    if (after.name === 'offerConsent' && after.problem === 'certnetUnavailable') {
+      window.requestAnimationFrame(() => document.querySelector('[data-testid="wallet-offer-problem"]')?.scrollIntoView({ block: 'nearest' }));
     }
   };
 
@@ -309,7 +341,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
                     <DocumentIcon />
                     <span className="min-w-0 flex-1 space-y-0.5">
                       <span className="type-card-title-sm block text-[#0F1E36]">{documentName(summary.vct)}</span>
-                      <span className={`type-body-sm block text-slate-600 ${apiText}`}>{safeText(details?.issuerName) ?? copy.issuerUnknown}</span>
+                      <IssuerLine issuer={issuerView({ ...summary, issuerName: details?.issuerName })} copy={copy} compact />
                       <span className="type-body-sm block text-slate-600">{fill(copy.receivedOn, { time: time.format(new Date(summary.createdAt)) })}</span>
                       <StatusLine status={summary.status} copy={copy} />
                     </span>
@@ -326,6 +358,8 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
     const item = held.find((candidate) => candidate.summary.id === screen.credentialId);
     const claims = item?.details?.claims ?? {};
     const checkingThis = checking?.id === screen.credentialId;
+    // What CertNet said at this document's last check, unless a new check is running.
+    const note = checkingThis && !checking.failed ? undefined : notes[screen.credentialId];
     body = (
       <div className="space-y-4" data-testid="wallet-detail">
         <ScreenHeader title={copy.detailTitle} onBack={() => controller.home()} backLabel={copy.backToList} />
@@ -335,7 +369,7 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
               <DocumentIcon />
               <div className="min-w-0">
                 <p className="type-card-title-sm text-[#0F1E36]">{documentName(item.summary.vct)}</p>
-                <p className={`type-body-sm text-slate-600 ${apiText}`}>{safeText(item.details?.issuerName) ?? copy.issuerUnknown}</p>
+                <IssuerLine issuer={issuerView({ ...item.summary, issuerName: item.details?.issuerName })} copy={copy} />
               </div>
             </div>
             <section className={card} aria-labelledby="demo-wallet-validity">
@@ -344,12 +378,20 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
               {item.summary.statusCheckedAt && (
                 <p className="type-body-sm mt-1 text-slate-600">{fill(copy.checkedAt, { time: time.format(new Date(item.summary.statusCheckedAt)) })}</p>
               )}
-              {checkingThis && checking.failed && <p className="type-body-sm mt-2 text-amber-800">{copy.checkFailed}</p>}
+              {note ? (
+                <p className={`type-body-sm mt-2 ${note === 'issuerNotRecognised' ? 'text-rose-800' : 'text-amber-800'}`} data-testid="wallet-check-note" data-note={note}>{copy.checkNotes[note]}</p>
+              ) : checkingThis && checking.failed && <p className="type-body-sm mt-2 text-amber-800">{copy.checkFailed}</p>}
               <button type="button" onClick={() => void controller.checkAgain(screen.credentialId)} disabled={checkingThis && !checking.failed} className={`${quietButton} mt-2`} data-testid="wallet-check-again">
                 {checkingThis && !checking.failed ? <Loader2 aria-hidden="true" className="h-4 w-4 motion-safe:animate-spin" /> : <RefreshCw aria-hidden="true" className="h-4 w-4" />}
                 {checkingThis && !checking.failed ? copy.checking : copy.checkAgain}
               </button>
             </section>
+            {item.summary.trustPath === 'did' && (
+              <p className="type-body-sm flex items-start gap-2 rounded-2xl bg-[#EEF1FF] px-4 py-3 text-slate-700" data-testid="wallet-certnet-about">
+                <Info aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#354CE1]" />
+                <span>{copy.certnetAbout}</span>
+              </p>
+            )}
             <section className={card} aria-labelledby="demo-wallet-fields">
               <h4 id="demo-wallet-fields" className="type-card-title-sm text-[#0F1E36]">{copy.fieldsSection}</h4>
               <dl className="mt-1 divide-y divide-slate-100">
@@ -454,7 +496,17 @@ export default function DemoWalletPanel({ locale, inbox, generation, clockOffset
         {screen.issuerName && (
           <p className={`type-body text-center font-semibold text-[#0F1E36] ${apiText}`} data-testid="wallet-saved-issuer">{fill(copy.savedIssuer, { name: screen.issuerName })}</p>
         )}
-        <p className="type-body text-center text-slate-700">{screen.checked ? copy.savedLead : copy.savedLeadUnchecked}</p>
+        {screen.issuerDid ? (
+          <>
+            <div className="type-body text-center font-semibold text-[#0F1E36]" data-testid="wallet-saved-issuer-certnet">
+              <p>{screen.checked ? copy.savedIssuerCertNet : copy.savedIssuerCertNetUnchecked}</p>
+              <IdentraIssuerId id={screen.issuerDid} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} centered />
+            </div>
+            <p className="type-body text-center text-slate-700">{screen.checked ? copy.savedLeadCertNet : copy.savedLeadCertNetUnchecked}</p>
+          </>
+        ) : (
+          <p className="type-body text-center text-slate-700">{screen.checked ? copy.savedLead : copy.savedLeadUnchecked}</p>
+        )}
       </div>
     );
     actions = (
@@ -652,7 +704,7 @@ function RequestConsent({
               <DocumentIcon />
               <div className="min-w-0 space-y-0.5">
                 <p className="type-card-title-sm text-[#0F1E36]">{documentName(view.match.vct)}</p>
-                <p className={`type-body-sm text-slate-600 ${apiText}`}>{safeText(view.match.issuerName) ?? copy.issuerUnknown}</p>
+                <IssuerLine issuer={issuerView(view.match)} copy={copy} />
                 {view.summary && <p className="type-body-sm text-slate-600">{fill(copy.receivedOn, { time: time.format(new Date(view.summary.createdAt)) })}</p>}
                 <StatusLine status={view.summary?.status ?? null} copy={copy} />
               </div>

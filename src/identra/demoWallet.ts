@@ -9,7 +9,8 @@
 // Identra app is where the secrets live: here keys and credentials are JavaScript values in this tab's
 // memory (gone on reload), on the phone they sit in the secure hardware. Nothing is written to storage.
 // Loaded only through a dynamic import (demoWalletLoader.ts), never by the marketing bundle.
-import { createMappedFetch, type HttpFetch } from '@identra/sdk-core';
+import { createCertNetDidResolver, createCertNetTrustRegistry, createMappedFetch, type HttpFetch } from '@identra/sdk-core';
+import type { CertNetConfig } from './config';
 import {
   createCredentialVault,
   createInMemoryCredentialRepository,
@@ -98,10 +99,28 @@ export interface DemoWalletOptions {
   fetch?: typeof fetch;
   /** The wallet's clock; the page passes one corrected by the server's clock (a wrong device clock breaks every time check). */
   clock?: { now(): Date };
+  /** The CertNet gateway (config.ts); null or absent: the CertNet path is off, as without this option. */
+  certnet?: CertNetConfig | null;
 }
 
+/**
+ * The SDK's CertNet resolver and trust registry (ADR-0020), over the same browser fetch: no redirect, the
+ * SDK's 5 s timeout and size cap, the gateway origin only (mapped to a loopback address in local work).
+ */
+export const createCertNetPath = (certnet: CertNetConfig, browserFetch: HttpFetch, clock: { now(): Date }) => {
+  const origin = new URL(certnet.gatewayUrl).origin;
+  const toGateway = certnet.fetchOrigin === origin ? browserFetch : createMappedFetch(browserFetch, { [origin]: certnet.fetchOrigin });
+  // Only the gateway: any other URL is refused before the network (the SDK reads that as "no answer").
+  const fetch: HttpFetch = (url, init) => (url.startsWith(`${origin}/`) ? toGateway(url, init) : Promise.reject(new TypeError('not the CertNet gateway')));
+  const { gatewayUrl, network } = certnet;
+  return {
+    resolver: createCertNetDidResolver({ gatewayUrl, network, fetch, clock }),
+    trustRegistry: createCertNetTrustRegistry({ gatewayUrl, network, fetch }),
+  };
+};
+
 /** A fresh wallet with nothing in it. Each call is a new "phone": new keys, empty vault. */
-export const createDemoWallet = ({ apiOrigin, apiUrl, trustedRoots, fetch: doFetch, clock = { now: () => new Date() } }: DemoWalletOptions): Wallet => {
+export const createDemoWallet = ({ apiOrigin, apiUrl, trustedRoots, fetch: doFetch, clock = { now: () => new Date() }, certnet = null }: DemoWalletOptions): Wallet => {
   const browserFetch = createBrowserFetch(doFetch);
   const fetchForWallet = apiUrl === apiOrigin ? browserFetch : createMappedFetch(browserFetch, { [apiOrigin]: apiUrl });
   const random = { bytes: (n: number) => globalThis.crypto.getRandomValues(new Uint8Array(n)) };
@@ -119,6 +138,7 @@ export const createDemoWallet = ({ apiOrigin, apiUrl, trustedRoots, fetch: doFet
     trustedRoots,
     trustListUrl: `${apiOrigin}/trust-list`,
     allowedOrigins: [apiOrigin],
+    ...(certnet && { dpki: createCertNetPath(certnet, browserFetch, clock) }),
   });
 };
 

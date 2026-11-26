@@ -33,6 +33,8 @@ const match = {
   credentialId: 'c1',
   vct: VCT,
   issuerName: 'Trường Đại học Mẫu (DEMO)',
+  trustPath: 'x509' as const,
+  issuerDid: null,
   claimSets: [{ index: 0, claims: ['ho_ten', 'nganh', 'hang_tot_nghiep', 'nam_tot_nghiep'] }, { index: 1, claims: ['ho_ten', 'nganh'] }],
 };
 const trustedRequest = (matches = [match]) => ({
@@ -45,7 +47,7 @@ const trustedRequest = (matches = [match]) => ({
 const untrustedRequest = { clientId: 'x509_hash:zzz', verifier: { trusted: false }, warning: 'VERIFIER_NOT_TRUSTED', purpose: 'Trust me', matches: [match], expiresAt: '2030-01-01T00:00:00Z' } as unknown as ResolvedPresentation;
 
 const summary = (status: CredentialSummary['status']): CredentialSummary =>
-  ({ id: 'c1', vct: VCT, issuerUri: offer.issuerUri, status, statusCheckedAt: null, createdAt: '2026-11-19T00:00:00Z' });
+  ({ id: 'c1', vct: VCT, issuerUri: offer.issuerUri, trustPath: 'x509', issuerDid: null, status, statusCheckedAt: null, createdAt: '2026-11-19T00:00:00Z' });
 const details = (status: CredentialSummary['status']): CredentialDetails => ({ ...summary(status), issuerName: 'Trường Đại học Mẫu (DEMO)', iat: 1, claims: CLAIMS });
 
 /** A scripted SDK wallet: `accept` and `submit` wait for the test to answer them. */
@@ -199,4 +201,114 @@ test('decline: nothing sent, the page is told which request was declined', async
   assert.deepEqual(calls.submit, []);
   assert.deepEqual(events, [{ type: 'presentationDeclined', itemId: 2 }]);
   assert.equal(controller.getState().screen.name, 'requestDeclined');
+});
+
+// ---- The CertNet path (ADR-0020) -------------------------------------------------------------------
+
+const DID = 'did:certnet:testnet:7Hk2XaQ9mLp3Rt8vWz4bNc6dEf';
+type RefreshAnswer = Awaited<ReturnType<WalletLike['credentials']['refreshStatus']>>;
+
+/** A wallet holding one CertNet document; each refreshStatus takes the next scripted answer. */
+const certnetWallet = (answers: RefreshAnswer[], acceptAnswers: AcceptResult[] = []) => {
+  const didSummary = (status: CredentialSummary['status']): CredentialSummary =>
+    ({ ...summary(status), trustPath: 'did', issuerDid: DID });
+  let status: CredentialSummary['status'] = 'valid';
+  const calls = { accept: [] as { txCode?: string }[] };
+  const redeemed = { ...offer, codeRedeemed: false };
+  const wallet = {
+    offers: {
+      resolve: async () => ({ ok: true as const, offer: redeemed }),
+      accept: async (_offer: ResolvedOffer, options: { txCode?: string }) => {
+        calls.accept.push(options);
+        const result = acceptAnswers.shift()!;
+        // After the PIN was accepted once the SDK reports the code as redeemed.
+        Object.defineProperty(redeemed, 'codeRedeemed', { value: true });
+        return result;
+      },
+      discard: async () => undefined,
+    },
+    credentials: {
+      list: async () => [didSummary(status)],
+      get: async () => ({ ok: true as const, credential: { ...didSummary(status), issuerName: null, iat: 1, claims: CLAIMS } }),
+      refreshStatus: async () => {
+        const answer = answers.shift()!;
+        if (answer.ok) status = answer.status;
+        return answer;
+      },
+      remove: async () => ({ ok: true as const }),
+    },
+    presentations: { resolve: async () => ({ ok: false as const, code: 'REQUEST_INVALID' as const }), submit: async () => ({ ok: true as const }), decline: () => ({ ok: true as const }) },
+  } as unknown as WalletLike;
+  return { wallet, calls };
+};
+const answer = (status: 'valid' | 'unknown' | 'invalid', failing?: { id: string; code: string }): RefreshAnswer =>
+  ({ ok: true, status, checks: failing ? [{ id: failing.id, ok: false, code: failing.code }] : [], checkedAt: '', lastValidAt: null }) as unknown as RefreshAnswer;
+
+test('re-check of a CertNet document: CertNet silent, then the issuer no longer recognised, then fine again', async () => {
+  const { wallet } = certnetWallet([
+    answer('unknown', { id: 'did_resolution', code: 'DID_RESOLUTION_UNAVAILABLE' }),
+    answer('invalid', { id: 'issuer_trust', code: 'ISSUER_NOT_TRUSTED' }),
+    answer('valid'),
+  ]);
+  const controller = createWalletController(wallet, () => undefined, () => 'vi', { dpki: true });
+  await controller.refresh();
+
+  await controller.checkAgain('c1');
+  assert.deepEqual(controller.getState().notes, { c1: 'certnetUnavailable' });
+  assert.deepEqual(controller.getState().checking, { id: 'c1', failed: true }, 'not settled: never shown as valid');
+  assert.equal(controller.getState().held[0]!.summary.status, 'unknown', 'the status shown is the SDK\'s: not checked, never valid');
+
+  await controller.checkAgain('c1');
+  assert.deepEqual(controller.getState().notes, { c1: 'issuerNotRecognised' });
+  assert.equal(controller.getState().held[0]!.summary.status, 'invalid');
+
+  await controller.checkAgain('c1');
+  assert.deepEqual(controller.getState().notes, {});
+  assert.equal(controller.getState().held[0]!.summary.status, 'valid');
+});
+
+test('an X.509 document gets no CertNet note, whatever its trust list says', async () => {
+  const fake = fakeWallet({ status: 'valid' });
+  (fake.wallet.credentials as { refreshStatus: unknown }).refreshStatus = async () => answer('unknown', { id: 'issuer_trust', code: 'TRUST_LIST_UNAVAILABLE' });
+  const controller = createWalletController(fake.wallet, () => undefined, () => 'vi', { dpki: true });
+  await controller.refresh();
+  await controller.checkAgain('c1');
+  assert.deepEqual(controller.getState().notes, {});
+  assert.deepEqual(controller.getState().checking, { id: 'c1', failed: true });
+});
+
+test('receipt while CertNet is silent: nothing stored, the same offer is accepted again without the PIN', async () => {
+  const silent: AcceptResult = {
+    ok: false, code: 'NETWORK_ERROR', retryable: true, codeRedeemed: true,
+    checks: [{ id: 'did_resolution', ok: false, code: 'DID_RESOLUTION_UNAVAILABLE' }],
+  };
+  const saved: AcceptResult = { ok: true, credentialId: 'c1', vct: VCT, issuerName: null, issuerDid: DID, status: 'valid' };
+  const { wallet, calls } = certnetWallet([], [silent, saved]);
+  const events: WalletControllerEvent[] = [];
+  const controller = createWalletController(wallet, (event) => events.push(event), () => 'vi', { dpki: true });
+  controller.open(offerItem);
+  await tick();
+
+  await controller.accept('123456');
+  const waiting = controller.getState().screen;
+  assert.equal(waiting.name === 'offerConsent' && waiting.problem, 'certnetUnavailable');
+  assert.deepEqual(events, [], 'nothing was received');
+
+  // The PIN field is gone (the code is redeemed): accept with nothing typed, and no PIN is sent.
+  assert.equal(await controller.accept(''), 'done');
+  assert.deepEqual(calls.accept, [{ txCode: '123456' }, {}]);
+  const done = controller.getState().screen;
+  assert.deepEqual(done, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: null, issuerDid: DID });
+  assert.deepEqual(events, [{ type: 'credentialReceived', credentialId: 'c1' }]);
+});
+
+test('an offer refused while the CertNet path is off says it cannot be received here; with it on, the usual sentence', async () => {
+  for (const dpki of [false, true]) {
+    const fake = fakeWallet();
+    (fake.wallet.offers as { resolve: unknown }).resolve = async () => ({ ok: false, code: 'OFFER_INVALID' });
+    const controller = createWalletController(fake.wallet, () => undefined, () => 'vi', { dpki });
+    controller.open(offerItem);
+    await tick();
+    assert.deepEqual(controller.getState().screen, { name: 'offerFailed', problem: dpki ? 'offerInvalid' : 'offerNeedsCertNet' });
+  }
 });

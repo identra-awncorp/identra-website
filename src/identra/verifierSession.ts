@@ -180,6 +180,8 @@ export const KNOWN_CHECK_IDS = [
   'structure',
   'algorithm',
   'certificate_chain',
+  // Step 3 of the CertNet path (ADR-0020), where the X.509 path has certificate_chain.
+  'did_resolution',
   'signature',
   'validity_time',
   'credential_type',
@@ -191,8 +193,13 @@ export const KNOWN_CHECK_IDS = [
 ] as const satisfies readonly CheckId[];
 
 export type KnownCheckId = typeof KNOWN_CHECK_IDS[number];
-export type CheckLabelKey = KnownCheckId | 'other';
-export type FailureReasonKey = ErrorCode | 'UNKNOWN';
+/** `issuer_trust_certnet`: issuer_trust of the CertNet path, which asks CertNet, not Identra's trust list. */
+export type CheckLabelKey = KnownCheckId | 'issuer_trust_certnet' | 'other';
+/**
+ * SDK codes, plus the page's own sentences for the CertNet path's issuer_trust codes (the same codes mean
+ * CertNet there, not Identra's trust list).
+ */
+export type FailureReasonKey = ErrorCode | 'CERTNET_ISSUER_NOT_TRUSTED' | 'CERTNET_REGISTRY_UNAVAILABLE' | 'UNKNOWN';
 
 export const ALL_ERROR_CODES = [
   'MALFORMED', 'TYP_INVALID', 'TOO_LARGE', 'ALG_NOT_ALLOWED',
@@ -201,7 +208,7 @@ export const ALL_ERROR_CODES = [
   'NOT_YET_VALID', 'EXPIRED', 'VCT_UNSUPPORTED', 'ISSUER_NOT_TRUSTED', 'TRUST_LIST_UNAVAILABLE',
   'REVOKED', 'SUSPENDED', 'STATUS_UNAVAILABLE', 'DISCLOSURE_INVALID', 'KB_INVALID',
   'NONCE_MISMATCH', 'AUD_MISMATCH', 'CHAIN_BROKEN', 'CLIENT_ID_MISMATCH', 'VERIFIER_NOT_TRUSTED',
-  'DID_RESOLUTION_FAILED', 'KEY_NOT_FOUND', 'SKIPPED',
+  'DID_RESOLUTION_FAILED', 'DID_RESOLUTION_UNAVAILABLE', 'KEY_NOT_FOUND', 'SKIPPED',
   // Wallet operation codes (SDK architecture section 8): never in a verifier result, but every code has a sentence.
   'OFFER_INVALID', 'URL_NOT_ALLOWED', 'TX_CODE_WRONG', 'TX_CODE_REQUIRED', 'OFFER_EXPIRED', 'NETWORK_ERROR', 'ISSUER_ERROR',
   'CREDENTIAL_INVALID', 'CNF_MISMATCH', 'CLAIMS_INCOMPLETE', 'STORAGE_ERROR', 'CREDENTIAL_NOT_FOUND',
@@ -209,8 +216,19 @@ export const ALL_ERROR_CODES = [
   'USER_CANCELLED', 'DEVICE_LOCKED',
 ] as const satisfies readonly ErrorCode[];
 
-/** Failures that may pass on a later try; every other failure is final for this diploma. */
-export const RETRYABLE_REASONS: ReadonlySet<FailureReasonKey> = new Set(['STATUS_UNAVAILABLE', 'TRUST_LIST_UNAVAILABLE']);
+/** Failures that may pass on a later try (a service did not answer); every other failure is final for this diploma. */
+export const RETRYABLE_REASONS: ReadonlySet<FailureReasonKey> = new Set([
+  'STATUS_UNAVAILABLE',
+  'TRUST_LIST_UNAVAILABLE',
+  'DID_RESOLUTION_UNAVAILABLE',
+  'CERTNET_REGISTRY_UNAVAILABLE',
+]);
+
+/**
+ * CertNet did not answer at one of its steps (ADR-0020): nothing was proven about the diploma, so the step
+ * reads "not checked" (amber, as on the product page), never as a failure of the diploma.
+ */
+export const CERTNET_UNCHECKED_REASONS: ReadonlySet<FailureReasonKey> = new Set(['DID_RESOLUTION_UNAVAILABLE', 'CERTNET_REGISTRY_UNAVAILABLE']);
 
 const isKnownCheckId = (id: string): id is KnownCheckId => (KNOWN_CHECK_IDS as readonly string[]).includes(id);
 const isKnownErrorCode = (code: string): code is ErrorCode => (ALL_ERROR_CODES as readonly string[]).includes(code);
@@ -222,16 +240,36 @@ export interface CheckRow {
   reasonKey: FailureReasonKey | null;
 }
 
-export const toCheckRows = (result: Pick<SessionResult, 'checks'>): CheckRow[] => result.checks.map((check) => {
-  const outcome = check.ok ? 'passed' : check.skipped || check.code === 'SKIPPED' ? 'skipped' : 'failed';
-  return {
-    labelKey: isKnownCheckId(check.id) ? check.id : 'other',
-    outcome,
-    reasonKey: outcome === 'failed'
-      ? check.code !== null && isKnownErrorCode(check.code) ? check.code : 'UNKNOWN'
-      : null,
-  };
-});
+export const isUncheckedRow = (row: CheckRow): boolean => row.outcome === 'failed' && CERTNET_UNCHECKED_REASONS.has(row.reasonKey ?? 'UNKNOWN');
+
+/** Failed only because CertNet did not answer: no proven problem among the checks. */
+export const isUncheckedResult = (rows: CheckRow[]): boolean => {
+  const failed = rows.filter((row) => row.outcome === 'failed');
+  return failed.length > 0 && failed.every(isUncheckedRow);
+};
+
+/** The issuer was (or was to be) recognised through CertNet: a success says so, a failure has that path's step 3. */
+export const isCertNetResult = (result: Pick<SessionResult, 'checks' | 'trustPath'>): boolean =>
+  result.trustPath === 'did' || result.checks.some((check) => check.id === 'did_resolution');
+
+const CERTNET_TRUST_REASONS: Partial<Record<ErrorCode, FailureReasonKey>> = {
+  ISSUER_NOT_TRUSTED: 'CERTNET_ISSUER_NOT_TRUSTED',
+  TRUST_LIST_UNAVAILABLE: 'CERTNET_REGISTRY_UNAVAILABLE',
+};
+
+export const toCheckRows = (result: Pick<SessionResult, 'checks' | 'trustPath'>): CheckRow[] => {
+  const certnet = isCertNetResult(result);
+  return result.checks.map((check) => {
+    const outcome = check.ok ? 'passed' : check.skipped || check.code === 'SKIPPED' ? 'skipped' : 'failed';
+    const code: FailureReasonKey = check.code !== null && isKnownErrorCode(check.code) ? check.code : 'UNKNOWN';
+    const certnetTrust = certnet && check.id === 'issuer_trust';
+    return {
+      labelKey: certnetTrust ? 'issuer_trust_certnet' : isKnownCheckId(check.id) ? check.id : 'other',
+      outcome,
+      reasonKey: outcome !== 'failed' ? null : certnetTrust ? CERTNET_TRUST_REASONS[code as ErrorCode] ?? code : code,
+    };
+  });
+};
 
 /**
  * The checks in four plain statements: who signed (and is the signer recognised), unchanged since issued,
@@ -239,7 +277,7 @@ export const toCheckRows = (result: Pick<SessionResult, 'checks'>): CheckRow[] =
  * checked" if any was skipped, and passes only when all of its checks passed.
  */
 export const CHECK_GROUPS = {
-  signer: ['certificate_chain', 'issuer_trust'],
+  signer: ['certificate_chain', 'did_resolution', 'issuer_trust', 'issuer_trust_certnet'],
   unchanged: ['structure', 'algorithm', 'signature', 'product_chain', 'other'],
   valid: ['validity_time', 'status'],
   holder: ['holder_binding', 'credential_type', 'query'],
@@ -249,7 +287,8 @@ export type CheckGroupId = keyof typeof CHECK_GROUPS;
 
 export interface CheckGroup {
   id: CheckGroupId;
-  outcome: 'passed' | 'failed' | 'skipped';
+  /** `unchecked`: its only failures are CertNet not answering. */
+  outcome: 'passed' | 'failed' | 'unchecked' | 'skipped';
   rows: CheckRow[];
 }
 
@@ -257,7 +296,9 @@ export const groupCheckRows = (rows: CheckRow[]): CheckGroup[] =>
   (Object.keys(CHECK_GROUPS) as CheckGroupId[]).flatMap((id) => {
     const members = rows.filter((row) => (CHECK_GROUPS[id] as readonly CheckLabelKey[]).includes(row.labelKey));
     if (members.length === 0) return [];
-    const outcome = members.some((row) => row.outcome === 'failed') ? 'failed' : members.some((row) => row.outcome === 'skipped') ? 'skipped' : 'passed';
+    const outcome = members.some((row) => row.outcome === 'failed' && !isUncheckedRow(row)) ? 'failed'
+      : members.some(isUncheckedRow) ? 'unchecked'
+        : members.some((row) => row.outcome === 'skipped') ? 'skipped' : 'passed';
     return [{ id, outcome, rows: members }];
   });
 
@@ -297,6 +338,20 @@ export const toSharedFields = (claims: Record<string, ClaimValue> | undefined): 
     .filter((name) => !(DIPLOMA_CLAIM_KEYS as readonly string[]).includes(name))
     .map<SharedField>((name) => ({ key: null, rawName: truncateText(name, 64), value: claimText(claims[name] as ClaimValue) }));
   return [...known, ...others];
+};
+
+// ---- A CertNet issuer's identifier (ADR-0020: that path has no name, the identifier stands for it) ----
+
+const CERTNET_ID = /^did:certnet:(local|testnet|mainnet):[A-Za-z0-9_-]{1,200}$/;
+
+/** The identifier when it has the CertNet form (the SDK checked it), else null: nothing else is shown as one. */
+export const certNetIssuerId = (value: unknown): string | null => (typeof value === 'string' && CERTNET_ID.test(value) ? value : null);
+
+/** Readable at a glance: the network prefix kept, a long id cut to its first 6 and last 4 characters. */
+export const shortIssuerId = (id: string): string => {
+  const cut = id.lastIndexOf(':') + 1;
+  const tail = id.slice(cut);
+  return tail.length <= 12 ? id : `${id.slice(0, cut)}${tail.slice(0, 6)}…${tail.slice(-4)}`;
 };
 
 /** Whole seconds left until an ISO instant, never negative. */

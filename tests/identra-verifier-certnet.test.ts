@@ -1,0 +1,210 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+// The employer demo's result on the CertNet path (ADR-0020) beside the X.509 path: the right step 3 for the
+// path, the issuer shown by its CertNet identifier and never by a name, "could not be checked right now"
+// for CertNet not answering (as for the trust list and the status list), no raw id or code on screen, every
+// new sentence in every language. And X.509 results render exactly as before that path existed.
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import test from 'node:test';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { DID_PRESENTATION_CHECK_IDS, type SessionResult } from '@identra/sdk-client';
+import { ApplyJobVerifierResult, CheckList } from '../src/components/demo/ApplyJobVerifierDialog';
+import {
+  certNetIssuerId,
+  firstFailure,
+  isFinalFailure,
+  shortIssuerId,
+  toCheckRows,
+} from '../src/identra/verifierSession';
+import { APPLY_JOB_VERIFIER_DIALOG_TRANSLATIONS as T } from '../src/translations/demo/ApplyJobVerifierDialogTranslations';
+import { DEMO_WALLET_PANEL_TRANSLATIONS as W } from '../src/translations/demo/DemoWalletPanelTranslations';
+import { PRODUCT_PAGE_TRANSLATIONS } from '../src/translations/ProductPageTranslations';
+import { X509_CASES } from './fixtures/verifier-results/x509-cases';
+
+const LOCALES = ['vi', 'en', 'es', 'ja', 'de'] as const;
+const DID = 'did:certnet:testnet:7Hk2XaQ9mLp3Rt8vWz4bNc6dEf';
+const verifiedAt = '2026-11-26T01:00:00.000Z';
+
+const render = (result: SessionResult, locale: typeof LOCALES[number] = 'vi') => {
+  const copy = T[locale];
+  const rows = toCheckRows(result);
+  return renderToStaticMarkup(createElement(ApplyJobVerifierResult, { result, copy, language: locale, verifierName: 'Nhà tuyển dụng mẫu (DEMO)' }))
+    + renderToStaticMarkup(createElement(CheckList, { rows, copy, headlineRow: firstFailure(rows) }));
+};
+/** What a visitor reads: the text, without tags and attributes. */
+const textOf = (html: string) => html.replace(/<\/?(?:wbr|bdi|span)\b[^>]*>/g, '').replace(/<[^>]*>/g, ' ').replace(/&#x27;/g, '\'').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+/** The classes of the headline box (the first element of the result). */
+const headlineClass = (html: string) => html.match(/<div class="space-y-5"><div class="([^"]+)"/)?.[1];
+
+const didSuccess: SessionResult = {
+  ok: true,
+  checks: DID_PRESENTATION_CHECK_IDS.map((id) => ({ id, ok: true, code: null })),
+  claims: { ho_ten: 'Nguyễn Minh Mẫu', nganh: 'Công nghệ thông tin' },
+  trustPath: 'did',
+  issuerDid: DID,
+  verifiedAt,
+};
+const didFailure = (id: string, code: string): SessionResult => {
+  const index = DID_PRESENTATION_CHECK_IDS.indexOf(id as never);
+  const gate = index < 4; // steps 1-4 stop the run
+  return {
+    ok: false,
+    checks: DID_PRESENTATION_CHECK_IDS.map((checkId, i) => (
+      i < index ? { id: checkId, ok: true, code: null }
+        : i === index ? { id: checkId, ok: false, code: code as never }
+          : gate || (checkId === 'status' && id === 'issuer_trust') ? { id: checkId, ok: false, code: 'SKIPPED' as const, skipped: true }
+            : { id: checkId, ok: true, code: null })),
+    verifiedAt,
+  };
+};
+
+test('X.509 results render exactly as before the CertNet path (markup of commit eed1685, every locale)', () => {
+  const snapshot = JSON.parse(readFileSync('tests/fixtures/verifier-results/x509-snapshot.json', 'utf8')) as Record<string, string>;
+  for (const locale of LOCALES) {
+    for (const [name, result] of Object.entries(X509_CASES)) {
+      const hash = createHash('sha256').update(render(result, locale)).digest('hex');
+      assert.equal(hash, snapshot[`${locale}/${name}`], `${locale}/${name} changed`);
+    }
+  }
+});
+
+test('the CertNet identifier: only the CertNet form is shown, a long one shortened with the network kept', () => {
+  assert.equal(certNetIssuerId(DID), DID);
+  for (const bad of ['did:web:example.com', 'did:certnet:devnet:abc', 'did:certnet:testnet:a b', `did:certnet:testnet:x‮`, 'Trường Mẫu', 42, null, undefined]) {
+    assert.equal(certNetIssuerId(bad), null, String(bad));
+  }
+  assert.equal(shortIssuerId(DID), 'did:certnet:testnet:7Hk2Xa…6dEf');
+  assert.equal(shortIssuerId('did:certnet:local:abc123'), 'did:certnet:local:abc123', 'a short identifier is shown whole');
+  assert.equal(shortIssuerId('did:certnet:local:abcdefghijkl'), 'did:certnet:local:abcdefghijkl');
+  assert.equal(shortIssuerId('did:certnet:local:abcdefghijklm'), 'did:certnet:local:abcdef…jklm');
+});
+
+test('a CertNet success: the CertNet step, the identifier (short, full one tap away), no name, CertNet said in a few words', () => {
+  for (const locale of LOCALES) {
+    const copy = T[locale];
+    const html = render(didSuccess, locale);
+    const text = textOf(html);
+    assert.ok(text.includes(copy.verifiedTitle), locale);
+    assert.ok(text.includes(copy.checks.did_resolution), `${locale}: step 3 of this path`);
+    assert.ok(!text.includes(copy.checks.certificate_chain), `${locale}: no certificate step`);
+    assert.ok(text.includes(copy.checks.issuer_trust_certnet), `${locale}: recognised on CertNet`);
+    assert.ok(!text.includes(copy.checks.issuer_trust), `${locale}: not Identra's list`);
+    assert.ok(html.includes('data-testid="verifier-issuer-certnet"'));
+    assert.ok(html.includes(`data-did="${DID}"`));
+    assert.ok(text.includes(shortIssuerId(DID)), 'shortened');
+    assert.equal(textOf(html.match(/<bdi [^>]*data-testid="issuer-did-full"[^>]*>[\s\S]*?<\/bdi>/)![0]).trim(), DID, 'the full value is in the page');
+    assert.ok(text.includes(copy.certnetNote) && text.includes(copy.issuerIdNote));
+    const [before, after] = copy.groups.signerCertNetNamed.split('{issuer}').map((part) => part.trim());
+    const signer = textOf(html.match(/data-group="signer"[\s\S]*?<\/li>/)![0]);
+    for (const part of [before!, shortIssuerId(DID), after!]) assert.ok(signer.includes(part), `${locale}: signer line has "${part}"`);
+    assert.ok(!text.includes(copy.groups.signerNamed.split('{issuer}')[1]!.trim()), `${locale}: not "on the list of recognised organisations"`);
+  }
+});
+
+test('a CertNet success never shows an issuer name, even one the server sent anyway', () => {
+  const withName = { ...didSuccess, issuer: undefined, issuerName: 'Trường Giả Danh' } as unknown as SessionResult;
+  assert.ok(!render(withName).includes('Trường Giả Danh'));
+  // A result whose identifier is not of the CertNet form shows no identifier at all (the client refuses it first).
+  const odd = render({ ...didSuccess, issuerDid: 'did:web:evil.example' });
+  assert.ok(!odd.includes('evil.example'));
+  assert.ok(!odd.includes('verifier-issuer-certnet'));
+});
+
+// `unchecked`: CertNet did not answer, so nothing was proven: amber "not checked", never a cross.
+const failures = [
+  { id: 'did_resolution', code: 'DID_RESOLUTION_FAILED', reason: 'DID_RESOLUTION_FAILED', final: true, unchecked: false },
+  { id: 'did_resolution', code: 'DID_RESOLUTION_UNAVAILABLE', reason: 'DID_RESOLUTION_UNAVAILABLE', final: false, unchecked: true },
+  { id: 'did_resolution', code: 'KEY_NOT_FOUND', reason: 'KEY_NOT_FOUND', final: true, unchecked: false },
+  { id: 'issuer_trust', code: 'ISSUER_NOT_TRUSTED', reason: 'CERTNET_ISSUER_NOT_TRUSTED', final: true, unchecked: false },
+  { id: 'issuer_trust', code: 'TRUST_LIST_UNAVAILABLE', reason: 'CERTNET_REGISTRY_UNAVAILABLE', final: false, unchecked: true },
+  { id: 'status', code: 'REVOKED', reason: 'REVOKED', final: true, unchecked: false },
+  { id: 'status', code: 'STATUS_UNAVAILABLE', reason: 'STATUS_UNAVAILABLE', final: false, unchecked: false },
+] as const;
+
+for (const { id, code, reason, final, unchecked } of failures) {
+  test(`a CertNet failure at ${id} (${code}): its own sentence, ${unchecked ? '"could not be checked right now" in amber' : final ? 'final' : 'retry'}, no issuer, no raw code`, () => {
+    const result = didFailure(id, code);
+    const rows = toCheckRows(result);
+    assert.equal(firstFailure(rows)?.reasonKey, reason);
+    assert.equal(isFinalFailure(rows), final);
+    for (const locale of LOCALES) {
+      const copy = T[locale];
+      const html = render(result, locale);
+      const text = textOf(html);
+      assert.ok(text.includes(unchecked ? copy.uncheckedTitle : copy.failedTitle), locale);
+      assert.equal(headlineClass(html)?.includes(unchecked ? 'bg-amber-50' : 'bg-rose-50'), true, `${locale}: headline colour`);
+      assert.equal(html.includes('data-unchecked="true"'), unchecked, `${locale}: the step reads "not checked"`);
+      const groupOutcome = html.match(/data-group="signer" data-outcome="(\w+)"/)?.[1];
+      if (id !== 'status') assert.equal(groupOutcome, unchecked ? 'unchecked' : 'failed', `${locale}: signer group`);
+      assert.ok(text.includes(copy.reasons[reason]), `${locale}: the headline says why`);
+      assert.ok(text.includes(final ? copy.failedFinalHint : copy.failedRetryHint), `${locale}: ${final ? 'final' : 'retry'} hint`);
+      assert.ok(text.includes(copy.certnetNote), `${locale}: CertNet explained where it appears`);
+      assert.ok(text.includes(copy.checks.did_resolution) && !text.includes(copy.checks.certificate_chain), locale);
+      assert.ok(text.includes(copy.groups.signerCertNet), `${locale}: the signer line of this path`);
+      assert.ok(!html.includes('verifier-issuer-certnet') && !html.includes('data-did'), `${locale}: a failure names no issuer`);
+      assert.ok(!/[A-Z]{2,}_[A-Z]{2,}/.test(text) && !/\b(?:did_resolution|issuer_trust|certificate_chain)\b/.test(text), `${locale}: no raw id or code`);
+    }
+  });
+}
+
+test('CertNet not answering: amber "not checked" with a retry, like the product page\'s unchecked state; a proven problem stays red', () => {
+  for (const result of [didFailure('did_resolution', 'DID_RESOLUTION_UNAVAILABLE'), didFailure('issuer_trust', 'TRUST_LIST_UNAVAILABLE')]) {
+    const html = render(result);
+    assert.match(html, /data-outcome="unchecked"/);
+    assert.ok(headlineClass(html)!.includes('bg-amber-50') && !html.includes('bg-rose-'), 'no red anywhere');
+    assert.ok(textOf(html).includes(T.vi.groupNotChecked));
+    assert.equal(isFinalFailure(toCheckRows(result)), false, 'the dialog offers "try again with a new code"');
+  }
+  // A proven problem next to an unanswered step is still a failure.
+  const both = didFailure('issuer_trust', 'TRUST_LIST_UNAVAILABLE');
+  both.checks = both.checks.map((check) => (check.id === 'validity_time' ? { id: 'validity_time', ok: false, code: 'EXPIRED' } : check));
+  assert.ok(headlineClass(render(both))!.includes('bg-rose-50'));
+});
+
+// Ledger wording is the claims scanner's (npm run scan:claims), which covers these files too.
+const JARGON = /\bDID\b|\bTIR\b|resolver|x5c|did:certnet/;
+const CLAIMS = /\b(?:live|audited|in production|production-ready)\b|đang vận hành|đã kiểm toán|chính thức hoạt động/i;
+
+test('every new sentence exists in every language, plain (no protocol words, no claim that CertNet is live)', () => {
+  const sentencesOf = (copy: typeof T.en) => [
+    copy.checks.did_resolution, copy.checks.issuer_trust_certnet,
+    copy.reasons.DID_RESOLUTION_FAILED, copy.reasons.DID_RESOLUTION_UNAVAILABLE,
+    copy.reasons.CERTNET_ISSUER_NOT_TRUSTED, copy.reasons.CERTNET_REGISTRY_UNAVAILABLE,
+    copy.groups.signerCertNet, copy.groups.signerCertNetNamed,
+    copy.certnetNote, copy.issuerIdNote, copy.issuerIdShowFull, copy.issuerIdHideFull,
+  ];
+  const english = sentencesOf(T.en);
+  for (const locale of LOCALES) {
+    const copy = T[locale];
+    sentencesOf(copy).forEach((sentence, index) => {
+      assert.ok(sentence.trim().length > 3, `${locale}: empty`);
+      assert.ok(!JARGON.test(sentence) && !CLAIMS.test(sentence), `${locale}: "${sentence}"`);
+      if (locale !== 'en') assert.notEqual(sentence, english[index], `${locale}: left in English`);
+    });
+    assert.ok(copy.groups.signerCertNetNamed.includes('{issuer}'), locale);
+    assert.ok(copy.certnetNote.includes('CertNet'), `${locale}: says what CertNet is`);
+  }
+  for (const locale of ['vi', 'en'] as const) {
+    const product = PRODUCT_PAGE_TRANSLATIONS[locale].checks;
+    assert.ok(product.did_resolution && product.issuer_trust_certnet, `${locale}: product page labels`);
+    const wallet = W[locale];
+    const sentences = [
+      wallet.issuerCertNet, wallet.issuerIdShowFull, wallet.issuerIdHideFull, wallet.certnetAbout,
+      wallet.savedIssuerCertNet, wallet.savedIssuerCertNetUnchecked, wallet.savedLeadCertNet, wallet.savedLeadCertNetUnchecked,
+      wallet.checkNotes.certnetUnavailable, wallet.checkNotes.issuerNotRecognised,
+      wallet.problems.certnetUnavailable, wallet.problems.offerNeedsCertNet,
+    ];
+    for (const sentence of sentences) assert.ok(sentence.trim().length > 3 && !JARGON.test(sentence) && !CLAIMS.test(sentence), `${locale}: "${sentence}"`);
+    assert.ok(wallet.certnetAbout.includes('CertNet'));
+  }
+  // Vietnamese is written with its diacritics.
+  for (const sentence of [T.vi.certnetNote, T.vi.reasons.DID_RESOLUTION_UNAVAILABLE, W.vi.problems.certnetUnavailable, W.vi.problems.offerNeedsCertNet]) {
+    assert.match(sentence, /[ăâđêôơưàáạảãằắặẳẵầấậẩẫèéẹẻẽềếệểễìíịỉĩòóọỏõồốộổỗờớợởỡùúụủũừứựửữỳýỵỷỹ]/i);
+  }
+});

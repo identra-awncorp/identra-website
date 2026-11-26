@@ -69,7 +69,11 @@ server {
     # - style-src-elem keeps 'unsafe-inline' for the first-paint skeleton <style>; style-src-attr for the
     #   style="" attributes React and motion write. Fonts' CSS comes from Google Fonts.
     # - img-src: the two image hosts the current pages use (Unsplash, Google user content).
-    # - connect-src: the Identra API only.
+    # - connect-src: the Identra API only. A build with the CertNet path on (VITE_CERTNET_GATEWAY_URL and
+    #   VITE_CERTNET_NETWORK set, ADR-0020; not deployed yet) also needs the gateway's origin, and nothing
+    #   else, appended in BOTH copies of this header, e.g.
+    #     connect-src https://api-identra.awncorp.vn https://<gateway host>;
+    #   A build without those variables never contacts a gateway: keep it out of the policy.
     # HSTS is honoured by browsers only over HTTPS, which Cloudflare terminates in front of this server.
     add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://lh3.googleusercontent.com; connect-src https://api-identra.awncorp.vn; manifest-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;

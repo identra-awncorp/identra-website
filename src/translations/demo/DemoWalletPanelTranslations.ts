@@ -4,7 +4,7 @@
  */
 
 import type { WalletCredentialStatus } from '@identra/sdk-app';
-import type { DiplomaField, WalletProblem } from '../../identra/demoWalletModel';
+import type { DiplomaField, WalletCheckNote, WalletProblem } from '../../identra/demoWalletModel';
 
 // The web trial wallet speaks like the Identra app (identra-app src/native/i18n, `wallet`), with the words
 // changed only where a browser is not a phone (no fingerprint prompt, nothing kept after a reload).
@@ -30,11 +30,18 @@ export interface DemoWalletPanelCopy {
   fieldsSection: string;
   issuerLabel: string;
   issuerUnknown: string;
+  /** A CertNet document: how its issuer was checked, shown with the issuer's identifier (that path has no name). */
+  issuerCertNet: string;
+  issuerIdShowFull: string;
+  issuerIdHideFull: string;
+  /** What CertNet is, on the detail screen of such a document. */
+  certnetAbout: string;
   statusSection: string;
   checkedAt: string;
   checkAgain: string;
   checking: string;
   checkFailed: string;
+  checkNotes: Record<WalletCheckNote, string>;
   backToList: string;
   receiveTitle: string;
   checkingOffer: string;
@@ -54,6 +61,10 @@ export interface DemoWalletPanelCopy {
   savedIssuer: string;
   savedLead: string;
   savedLeadUnchecked: string;
+  savedIssuerCertNet: string;
+  savedIssuerCertNetUnchecked: string;
+  savedLeadCertNet: string;
+  savedLeadCertNetUnchecked: string;
   viewDocument: string;
   nothingSaved: string;
   offerFailedTitle: string;
@@ -123,11 +134,19 @@ const vi: DemoWalletPanelCopy = {
   fieldsSection: 'Thông tin trên giấy tờ',
   issuerLabel: 'Nơi cấp',
   issuerUnknown: 'Chưa xác nhận được nơi cấp',
+  issuerCertNet: 'Nơi cấp kiểm tra qua CertNet',
+  issuerIdShowFull: 'Xem mã đầy đủ',
+  issuerIdHideFull: 'Thu gọn',
+  certnetAbout: 'Nơi cấp của giấy tờ này được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ đang thử nghiệm, thay cho danh sách của Identra. CertNet chưa ghi tên nơi cấp nên ví chỉ hiện mã định danh của họ.',
   statusSection: 'Hiệu lực',
   checkedAt: 'Kiểm tra lần cuối lúc {time}',
   checkAgain: 'Kiểm tra lại',
   checking: 'Đang kiểm tra…',
   checkFailed: 'Chưa kiểm tra được. Kiểm tra mạng rồi thử lại.',
+  checkNotes: {
+    certnetUnavailable: 'CertNet chưa trả lời nên ví chưa kiểm được nơi cấp. Hãy thử lại sau.',
+    issuerNotRecognised: 'CertNet không còn công nhận nơi cấp này cho loại giấy tờ này.',
+  },
   backToList: 'Về danh sách giấy tờ',
   receiveTitle: 'Nhận giấy tờ',
   checkingOffer: 'Đang kiểm tra mã nhận bằng…',
@@ -147,6 +166,10 @@ const vi: DemoWalletPanelCopy = {
   savedIssuer: 'Nơi cấp: {name}, được Identra công nhận.',
   savedLead: 'Giấy tờ đã qua kiểm tra: chữ ký của nơi cấp khớp, nơi cấp được Identra công nhận và giấy tờ còn hiệu lực.',
   savedLeadUnchecked: 'Giấy tờ đã được lưu. Ví chưa kiểm được trạng thái của nó lúc nhận; hãy kiểm tra lại khi có mạng.',
+  savedIssuerCertNet: 'Nơi cấp được công nhận trên CertNet, mã định danh:',
+  savedIssuerCertNetUnchecked: 'Nơi cấp kiểm tra qua CertNet, mã định danh:',
+  savedLeadCertNet: 'Giấy tờ đã qua kiểm tra: chữ ký khớp với khóa của nơi cấp trên CertNet, nơi cấp được công nhận cho loại giấy tờ này và giấy tờ còn hiệu lực.',
+  savedLeadCertNetUnchecked: 'Giấy tờ đã được lưu nhưng chưa kiểm xong: lúc nhận, CertNet hoặc nơi cấp chưa trả lời. Hãy kiểm tra lại sau.',
   viewDocument: 'Xem giấy tờ',
   nothingSaved: 'Chưa có gì được lưu vào ví.',
   offerFailedTitle: 'Không nhận được giấy tờ',
@@ -192,8 +215,10 @@ const vi: DemoWalletPanelCopy = {
     pinRequired: 'Nhập mã PIN 6 chữ số rồi bấm Nhận giấy tờ.',
     offerExpired: 'Mã nhận bằng đã hết hạn hoặc đã được dùng. Hãy xin trường một mã mới.',
     offerInvalid: 'Đây không phải mã nhận giấy tờ mà ví dùng được.',
+    offerNeedsCertNet: 'Ví thử ở trang này không nhận được giấy tờ này. Có thể nơi cấp được kiểm tra qua CertNet, một sổ đăng ký nơi cấp giấy tờ mà ví thử ở đây chưa dùng.',
     notAllowed: 'Mã này dẫn tới một địa chỉ không phải máy chủ Identra nên ví không mở.',
     network: 'Không kết nối được máy chủ Identra. Kiểm tra mạng rồi thử lại.',
+    certnetUnavailable: 'CertNet chưa trả lời nên ví chưa kiểm được nơi cấp. Chưa có gì được lưu. Bấm Nhận giấy tờ để thử lại, không cần nhập lại mã PIN.',
     issuerError: 'Nơi cấp trả lời không như mong đợi. Hãy thử lại sau ít phút.',
     credentialInvalid: 'Giấy tờ nhận được không qua được kiểm tra nên chưa được lưu.',
     storage: 'Ví thử chưa lưu hay mở được giấy tờ. Hãy thử lại.',
@@ -247,11 +272,19 @@ const en: DemoWalletPanelCopy = {
   fieldsSection: 'What the document says',
   issuerLabel: 'Issued by',
   issuerUnknown: 'Issuer not confirmed yet',
+  issuerCertNet: 'Issuer checked through CertNet',
+  issuerIdShowFull: 'Show full identifier',
+  issuerIdHideFull: 'Show less',
+  certnetAbout: 'This document\'s issuer is checked through CertNet, a register of document issuers being trialled, instead of Identra\'s list. CertNet records no name for the issuer yet, so the wallet shows only its identifier.',
   statusSection: 'Validity',
   checkedAt: 'Last checked at {time}',
   checkAgain: 'Check again',
   checking: 'Checking…',
   checkFailed: 'Could not check. Check your connection and try again.',
+  checkNotes: {
+    certnetUnavailable: 'CertNet is not answering, so the wallet could not check the issuer. Try again later.',
+    issuerNotRecognised: 'CertNet no longer recognises this issuer for this kind of document.',
+  },
   backToList: 'Back to my documents',
   receiveTitle: 'Receive a document',
   checkingOffer: 'Checking the code…',
@@ -271,6 +304,10 @@ const en: DemoWalletPanelCopy = {
   savedIssuer: 'Issued by {name}, recognised by Identra.',
   savedLead: 'The document passed the checks: the issuer\'s signature matches, Identra recognises the issuer and the document is valid.',
   savedLeadUnchecked: 'The document is saved. The wallet could not check its status on receipt; check again when you are online.',
+  savedIssuerCertNet: 'Issuer recognised on CertNet, identifier:',
+  savedIssuerCertNetUnchecked: 'Issuer checked through CertNet, identifier:',
+  savedLeadCertNet: 'The document passed the checks: the signature matches the issuer\'s key on CertNet, the issuer is recognised for this kind of document and the document is valid.',
+  savedLeadCertNetUnchecked: 'The document is saved but not fully checked: CertNet or the issuer was not answering on receipt. Check again later.',
   viewDocument: 'View document',
   nothingSaved: 'Nothing was saved to the wallet.',
   offerFailedTitle: 'Document not received',
@@ -316,8 +353,10 @@ const en: DemoWalletPanelCopy = {
     pinRequired: 'Enter the 6-digit PIN, then press Accept document.',
     offerExpired: 'This diploma code has expired or was already used. Ask the university for a new one.',
     offerInvalid: 'This is not a document code the wallet can use.',
+    offerNeedsCertNet: 'This trial wallet cannot receive this document here. The issuer may be checked through CertNet, a register of document issuers that this trial wallet does not use here.',
     notAllowed: 'This code points somewhere other than the Identra server, so the wallet does not open it.',
     network: 'Cannot reach the Identra server. Check your connection and try again.',
+    certnetUnavailable: 'CertNet is not answering, so the wallet could not check the issuer. Nothing was saved. Press Accept document to try again; you do not need the PIN again.',
     issuerError: 'The issuer answered in an unexpected way. Try again in a few minutes.',
     credentialInvalid: 'The document received did not pass the checks, so it was not saved.',
     storage: 'The trial wallet could not save or open the document. Try again.',

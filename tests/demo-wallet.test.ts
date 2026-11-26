@@ -10,10 +10,14 @@ import assert from 'node:assert/strict';
 import { X509Certificate } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-import { createBrowserFetch, createDemoWallet } from '../src/identra/demoWallet';
+import { createBrowserFetch, createCertNetPath, createDemoWallet } from '../src/identra/demoWallet';
+import { resolveCertNetConfig } from '../src/identra/config';
 import {
+  acceptProblemFor,
+  checkNoteFor,
   chooseMatch,
   displayName,
+  issuerView,
   offerProblemFor,
   requestProblemFor,
   requiredFields,
@@ -25,7 +29,16 @@ import {
   type WalletScreen,
 } from '../src/identra/demoWalletModel';
 import { DEMO_WALLET_PANEL_TRANSLATIONS } from '../src/translations/demo/DemoWalletPanelTranslations';
-import { WalletErrorCodes, type CredentialSummary, type ResolvedOffer, type ResolvedPresentation } from '@identra/sdk-app';
+import {
+  createCredentialVault,
+  createInMemoryCredentialRepository,
+  createInMemorySecretStorage,
+  WalletErrorCodes,
+  type CredentialRow,
+  type CredentialSummary,
+  type ResolvedOffer,
+  type ResolvedPresentation,
+} from '@identra/sdk-app';
 
 const CANONICAL = 'https://api-identra.awncorp.vn';
 const LOCAL = 'http://127.0.0.1:47410';
@@ -175,6 +188,8 @@ const match = {
   credentialId: 'c1',
   vct: 'https://identra.awncorp.vn/vct/bang-tot-nghiep/v1',
   issuerName: 'Trường Đại học Mẫu (DEMO)',
+  trustPath: 'x509' as const,
+  issuerDid: null,
   claimSets: [
     { index: 1, claims: ['nganh', 'ho_ten'] },
     { index: 0, claims: ['nam_tot_nghiep', 'ho_ten', 'hang_tot_nghiep', 'nganh'] },
@@ -191,7 +206,7 @@ test('sharing options: fullest first, fields in display order, required = in eve
 });
 
 const summary = (id: string, createdAt: string, status: CredentialSummary['status']): CredentialSummary =>
-  ({ id, vct: match.vct, issuerUri: 'https://api-identra.awncorp.vn/issuers/truong-mau', status, statusCheckedAt: null, createdAt });
+  ({ id, vct: match.vct, issuerUri: 'https://api-identra.awncorp.vn/issuers/truong-mau', trustPath: 'x509', issuerDid: null, status, statusCheckedAt: null, createdAt });
 
 test('the credential to answer with: the newest one not known to be revoked; a revoked one only when nothing else', () => {
   const matches = [{ ...match, credentialId: 'old' }, { ...match, credentialId: 'new' }];
@@ -222,7 +237,7 @@ test('wallet screens: a wrong PIN stays on the offer, an expired offer ends it, 
   assert.deepEqual(expired, { name: 'offerFailed', problem: 'offerExpired' });
 
   const saved = walletReducer(screen, { type: 'accepted', result: { ok: true, credentialId: 'c1', vct: match.vct, issuerName: 'X', status: 'valid' } });
-  assert.deepEqual(saved, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: 'X' });
+  assert.deepEqual(saved, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: 'X', issuerDid: null });
 });
 
 test('wallet screens: an offer refused while checking, and late answers after leaving, are handled', () => {
@@ -271,4 +286,119 @@ test('build check: every chunk the wallet chunk imports (shared ones too) is sca
   assert.match(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', '', ['deeper.js']), 'deeper.js': chunk('deeper.js', bad) }).join(), /deeper\.js/, 'transitively');
   assert.deepEqual(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', ''), 'unrelated.js': chunk('unrelated.js', bad) }), [], 'chunks the wallet does not load are not its concern');
   assert.deepEqual(run({ 'wallet.js': wallet, 'shared.js': chunk('shared.js', 'x instanceof Function?x:y') }), [], 'a type test is allowed');
+});
+
+// ---- The CertNet path (ADR-0020) -------------------------------------------------------------------
+
+const DID = 'did:certnet:local:7Hk2XaQ9mLp3Rt8vWz4bNc6dEf';
+
+test('CertNet path: the gateway is reached only at its origin (mapped to the loopback address), never followed, no cookies', async () => {
+  const { calls, doFetch } = recordingFetch(() => new Response('{}', { status: 503 }));
+  const certnet = resolveCertNetConfig('http://127.0.0.1:47460', 'local')!;
+  const path = createCertNetPath(certnet, createBrowserFetch(doFetch), { now: () => new Date('2026-11-26T00:00:00Z') });
+
+  const resolved = await path.resolver.resolve(DID);
+  assert.equal(resolved.didDocument, null);
+  assert.equal(resolved.didResolutionMetadata.error, 'temporarilyUnavailable', 'a 503 is "not checked yet"');
+  assert.equal(calls[0]!.url, `http://127.0.0.1:47460/v1/dids/${encodeURIComponent(DID)}`);
+  assert.equal(calls[0]!.init.redirect, 'manual');
+  assert.equal(calls[0]!.init.credentials, 'omit');
+
+  await assert.rejects(path.trustRegistry.lookupIssuer(DID, 'https://identra.awncorp.vn/vct/bang-tot-nghiep/v1', new Date()), /CertNet trust registry/);
+  assert.match(calls[1]!.url, /^http:\/\/127\.0\.0\.1:47460\/v1\/trust-registry\/issuers\//);
+  assert.equal(calls.length, 2);
+});
+
+test('CertNet path: a DID of another network is refused without a request; with an https gateway nothing is mapped', async () => {
+  const { calls, doFetch } = recordingFetch(() => new Response('{}', { status: 404 }));
+  const path = createCertNetPath(resolveCertNetConfig('https://gateway.certnet.example/api', 'testnet')!, createBrowserFetch(doFetch), { now: () => new Date() });
+  assert.equal((await path.resolver.resolve(DID)).didResolutionMetadata.error, 'invalidDid');
+  assert.equal(calls.length, 0);
+  assert.equal((await path.resolver.resolve('did:certnet:testnet:abc')).didResolutionMetadata.error, 'notFound');
+  assert.equal(calls[0]!.url, `https://gateway.certnet.example/api/v1/dids/${encodeURIComponent('did:certnet:testnet:abc')}`);
+});
+
+test('with or without the CertNet path, an offer goes to the Identra API only, the same way', async () => {
+  const { calls, doFetch } = recordingFetch(() => new Response('{"error":"not_found"}', { status: 404 }));
+  const offerUri = `openid-credential-offer://?credential_offer_uri=${encodeURIComponent(`${CANONICAL}/issuers/truong-mau/offers/abc`)}`;
+  for (const certnet of [null, resolveCertNetConfig('https://gateway.certnet.example', 'testnet')]) {
+    const wallet = createDemoWallet({ apiOrigin: CANONICAL, apiUrl: CANONICAL, trustedRoots, fetch: doFetch, certnet });
+    assert.deepEqual(await wallet.offers.resolve(offerUri), { ok: false, code: 'OFFER_EXPIRED' });
+  }
+  assert.ok(calls.every((call) => call.url.startsWith(`${CANONICAL}/`)), 'no request to the gateway for an offer');
+});
+
+test('the trial wallet\'s storage keeps the issuer DID; a record written before the CertNet path still opens as X.509', async () => {
+  const rows = new Map<string, CredentialRow>();
+  const random = { bytes: (n: number) => globalThis.crypto.getRandomValues(new Uint8Array(n)) };
+  const vault = createCredentialVault({ repository: createInMemoryCredentialRepository(rows), secrets: createInMemorySecretStorage(), random, clock: { now: () => new Date() } });
+  const issuer = 'https://api-identra.awncorp.vn/issuers/truong-mau';
+  const didId = await vault.save({ compact: 'did-compact', vct: match.vct, issuer, issuerDid: DID, keyId: 'k1' });
+  const oldId = await vault.save({ compact: 'old-compact', vct: match.vct, issuer, keyId: 'k2' });
+  // A row from before the column existed has no issuer_did at all.
+  delete (rows.get(oldId) as Partial<CredentialRow>).issuer_did;
+
+  assert.equal(rows.get(didId)!.issuer_did, DID);
+  assert.equal(await vault.open(didId), 'did-compact');
+  assert.equal(await vault.open(oldId), 'old-compact');
+  const listed = await vault.list();
+  assert.equal(listed.find((row) => row.id === didId)?.issuer_did, DID);
+  assert.equal(listed.find((row) => row.id === oldId)?.issuer_did ?? null, null);
+  assert.deepEqual(issuerView({ issuerDid: listed.find((row) => row.id === oldId)?.issuer_did ?? null, issuerName: 'Trường Đại học Mẫu (DEMO)' }), { trustPath: 'x509', name: 'Trường Đại học Mẫu (DEMO)' });
+});
+
+test('a CertNet document never gets a display name: its identifier stands instead (and only the CertNet form)', () => {
+  assert.deepEqual(issuerView({ trustPath: 'did', issuerDid: DID, issuerName: 'Trường Giả Danh' }), { trustPath: 'did', did: DID });
+  assert.deepEqual(issuerView({ issuerDid: DID, issuerName: 'Trường Giả Danh' }), { trustPath: 'did', did: DID }, 'an accept result has no trustPath');
+  assert.deepEqual(issuerView({ trustPath: 'did', issuerDid: 'https://evil.example' }), { trustPath: 'did', did: null });
+  assert.deepEqual(issuerView({ trustPath: 'x509', issuerDid: null, issuerName: 'evil\u202Ename' }), { trustPath: 'x509', name: null });
+  assert.deepEqual(issuerView({ trustPath: 'x509', issuerDid: null, issuerName: null }), { trustPath: 'x509', name: null });
+});
+
+test('CertNet states map to their own text: saved, saved but not checked, CertNet silent at receipt, offer refused while off', () => {
+  const consent = walletReducer(walletReducer(walletReducer(WALLET_HOME, { type: 'checkOffer' }), { type: 'offerResolved', offer }), { type: 'accept' });
+
+  const saved = walletReducer(consent, { type: 'accepted', result: { ok: true, credentialId: 'c1', vct: match.vct, issuerName: 'Trường Giả Danh', issuerDid: DID, status: 'valid' } });
+  assert.deepEqual(saved, { name: 'offerSaved', credentialId: 'c1', checked: true, issuerName: null, issuerDid: DID });
+  const unchecked = walletReducer(consent, { type: 'accepted', result: { ok: true, credentialId: 'c1', vct: match.vct, issuerName: null, issuerDid: DID, status: 'unknown' } });
+  assert.equal(unchecked.name === 'offerSaved' && unchecked.checked, false, 'never shown as checked');
+
+  // The SDK did not store it; the same offer completes later without the PIN.
+  const silent = {
+    ok: false as const, code: 'NETWORK_ERROR' as const, retryable: true, codeRedeemed: true,
+    checks: [{ id: 'structure' as const, ok: true, code: null }, { id: 'did_resolution' as const, ok: false, code: 'DID_RESOLUTION_UNAVAILABLE' as const }],
+  };
+  assert.equal(acceptProblemFor(silent), 'certnetUnavailable');
+  const waiting = walletReducer(consent, { type: 'accepted', result: silent });
+  assert.equal(waiting.name, 'offerConsent');
+  assert.equal(waiting.name === 'offerConsent' && waiting.problem, 'certnetUnavailable');
+  assert.equal(waiting.name === 'offerConsent' && waiting.busy, false);
+  assert.equal(acceptProblemFor({ ok: false, code: 'NETWORK_ERROR', retryable: true, codeRedeemed: false }), 'network', 'Identra unreachable stays that');
+
+  const checking: WalletScreen = { name: 'offerChecking' };
+  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID', dpki: false }), { name: 'offerFailed', problem: 'offerNeedsCertNet' });
+  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID', dpki: true }), { name: 'offerFailed', problem: 'offerInvalid' });
+  assert.deepEqual(walletReducer(checking, { type: 'offerRefused', code: 'OFFER_INVALID' }), { name: 'offerFailed', problem: 'offerInvalid' });
+  assert.equal(offerProblemFor('OFFER_EXPIRED', false), 'offerExpired', 'only OFFER_INVALID changes meaning');
+
+  for (const locale of ['vi', 'en'] as const) {
+    for (const problem of WALLET_PROBLEMS) assert.ok(DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems[problem].trim(), `${locale}.${problem}`);
+    assert.notEqual(DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems.certnetUnavailable, DEMO_WALLET_PANEL_TRANSLATIONS[locale].problems.network);
+  }
+});
+
+test('a re-check of a CertNet document: CertNet silent, issuer no longer recognised, or nothing to add; X.509 documents get no note', () => {
+  const failing = (id: string, code: string) => [{ id: 'structure', ok: true, code: null }, { id, ok: false, code }] as never;
+  assert.equal(checkNoteFor('did', failing('did_resolution', 'DID_RESOLUTION_UNAVAILABLE')), 'certnetUnavailable');
+  assert.equal(checkNoteFor('did', failing('issuer_trust', 'TRUST_LIST_UNAVAILABLE')), 'certnetUnavailable');
+  assert.equal(checkNoteFor('did', failing('issuer_trust', 'ISSUER_NOT_TRUSTED')), 'issuerNotRecognised');
+  assert.equal(checkNoteFor('did', failing('status', 'STATUS_UNAVAILABLE')), null, 'the issuer\'s own list, not CertNet');
+  assert.equal(checkNoteFor('did', failing('did_resolution', 'DID_RESOLUTION_FAILED')), null);
+  assert.equal(checkNoteFor('did', []), null);
+  assert.equal(checkNoteFor('x509', failing('issuer_trust', 'TRUST_LIST_UNAVAILABLE')), null);
+  assert.equal(checkNoteFor('x509', failing('issuer_trust', 'ISSUER_NOT_TRUSTED')), null);
+  for (const locale of ['vi', 'en'] as const) {
+    const notes = DEMO_WALLET_PANEL_TRANSLATIONS[locale].checkNotes;
+    assert.ok(notes.certnetUnavailable.includes('CertNet') && notes.issuerNotRecognised.includes('CertNet'), locale);
+  }
 });

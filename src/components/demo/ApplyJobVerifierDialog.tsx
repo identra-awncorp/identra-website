@@ -6,20 +6,25 @@
 import { useCallback, useEffect, useReducer, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { AlertTriangle, Check, ChevronDown, Clock, Loader2, Minus, QrCode, RefreshCw, ShieldCheck, Smartphone, X, XCircle } from 'lucide-react';
+import { AlertTriangle, Check, ChevronDown, Clock, CloudOff, Loader2, Minus, QrCode, RefreshCw, ShieldCheck, Smartphone, X, XCircle } from 'lucide-react';
 import { createVerifierClient, type SessionResult } from '@identra/sdk-client';
 import { useLanguage } from '../../context/LanguageContext';
 import { useInertAppRoot, useIsTouchDevice } from '../../hooks/useModalLayer';
 import { useNow } from '../../hooks/useNow';
 import { IDENTRA_API_ORIGIN, IDENTRA_API_URL, SAMPLE_VERIFIER, SAMPLE_VERIFIER_ORGANISATION, SAMPLE_VERIFIER_SCENARIO } from '../../identra/config';
 import {
+  certNetIssuerId,
   firstFailure,
   formatCountdown,
   groupCheckRows,
   INITIAL_VERIFIER_STEP_STATE,
+  isCertNetResult,
   isFinalFailure,
+  isUncheckedResult,
+  isUncheckedRow,
   runVerifierSession,
   secondsUntil,
+  shortIssuerId,
   toCheckRows,
   toSharedFields,
   truncateText,
@@ -34,6 +39,7 @@ import {
 import { fillNodes } from '../../utils/fillTemplate';
 import { getLocalizedRecord } from '../../utils/i18nRuntime';
 import IdentraErrorBoundary from '../IdentraErrorBoundary';
+import IdentraIssuerId, { IssuerIdText } from '../IdentraIssuerId';
 import IdentraOrganisationName from '../IdentraOrganisationName';
 import IdentraQrCode from '../IdentraQrCode';
 import IdentraWalletLink from '../IdentraWalletLink';
@@ -60,37 +66,44 @@ interface ApplyJobVerifierDialogProps {
   trialWalletHref: string;
 }
 
-function CheckList({ rows, copy, headlineRow }: { rows: CheckRow[]; copy: ApplyJobVerifierDialogCopy; headlineRow: CheckRow | null }) {
+export function CheckList({ rows, copy, headlineRow }: { rows: CheckRow[]; copy: ApplyJobVerifierDialogCopy; headlineRow: CheckRow | null }) {
   return (
     <ol className="divide-y divide-slate-100">
-      {rows.map((row, index) => (
-        <li key={`${row.labelKey}-${index}`} className="flex items-start gap-3 py-2.5">
-          <span
-            aria-hidden="true"
-            className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-              row.outcome === 'passed'
-                ? 'bg-emerald-100 text-emerald-700'
-                : row.outcome === 'failed'
-                  ? 'bg-rose-100 text-rose-700'
-                  : 'bg-slate-100 text-slate-500'
-            }`}
-          >
-            {row.outcome === 'passed' ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : row.outcome === 'failed' ? <X className="h-3.5 w-3.5" strokeWidth={3} /> : <Minus className="h-3.5 w-3.5" />}
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className={`type-body ${row.outcome === 'skipped' ? 'text-slate-600' : 'text-slate-900'}`}>
-              {copy.checks[row.labelKey]}
-              <span className="sr-only">
-                {': '}
-                {row.outcome === 'passed' ? copy.checkPassed : row.outcome === 'failed' ? copy.checkFailed : copy.checkSkipped}
-              </span>
-            </p>
-            {/* The headline already explains the first failure; further failures carry their own reason. */}
-            {row.reasonKey && row !== headlineRow && <p className="type-body text-rose-700">{copy.reasons[row.reasonKey]}</p>}
-          </div>
-          {row.outcome === 'skipped' && <span aria-hidden="true" className="type-caption shrink-0 text-slate-600">{copy.checkSkipped}</span>}
-        </li>
-      ))}
+      {rows.map((row, index) => {
+        // CertNet did not answer: "not checked" in amber, never a cross (CERTNET_UNCHECKED_REASONS).
+        const unchecked = isUncheckedRow(row);
+        return (
+          <li key={`${row.labelKey}-${index}`} className="flex items-start gap-3 py-2.5" data-unchecked={unchecked || undefined}>
+            <span
+              aria-hidden="true"
+              className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                unchecked
+                  ? 'bg-amber-100 text-amber-800'
+                  : row.outcome === 'passed'
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : row.outcome === 'failed'
+                    ? 'bg-rose-100 text-rose-700'
+                    : 'bg-slate-100 text-slate-500'
+              }`}
+            >
+              {unchecked ? <CloudOff className="h-3.5 w-3.5" /> : row.outcome === 'passed' ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : row.outcome === 'failed' ? <X className="h-3.5 w-3.5" strokeWidth={3} /> : <Minus className="h-3.5 w-3.5" />}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className={`type-body ${row.outcome === 'skipped' ? 'text-slate-600' : 'text-slate-900'}`}>
+                {copy.checks[row.labelKey]}
+                <span className="sr-only">
+                  {': '}
+                  {unchecked ? copy.groupNotChecked : row.outcome === 'passed' ? copy.checkPassed : row.outcome === 'failed' ? copy.checkFailed : copy.checkSkipped}
+                </span>
+              </p>
+              {/* The headline already explains the first failure; further failures carry their own reason. */}
+              {row.reasonKey && row !== headlineRow && <p className={`type-body ${unchecked ? 'text-amber-900' : 'text-rose-700'}`}>{copy.reasons[row.reasonKey]}</p>}
+            </div>
+            {row.outcome === 'skipped' && <span aria-hidden="true" className="type-caption shrink-0 text-slate-600">{copy.checkSkipped}</span>}
+            {unchecked && <span aria-hidden="true" className="type-caption shrink-0 text-amber-900">{copy.groupNotChecked}</span>}
+          </li>
+        );
+      })}
     </ol>
   );
 }
@@ -112,21 +125,33 @@ export function ApplyJobVerifierResult({
 }) {
   const rows = toCheckRows(result);
   const failure = firstFailure(rows);
+  // Failed only because CertNet did not answer: "could not be checked right now", in amber, not "invalid".
+  const unchecked = !result.ok && isUncheckedResult(rows);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const fields = result.ok ? toSharedFields(result.claims) : [];
+  // The CertNet path (ADR-0020) has no issuer name: a success shows the identifier, never a self-declared name.
+  const certnet = isCertNetResult(result);
+  const issuerDid = result.ok && certnet ? certNetIssuerId(result.issuerDid) : null;
+  const signerLine = result.issuer
+    ? fillNodes(copy.groups.signerNamed, { issuer: <IdentraOrganisationName maToChuc={result.issuer.maToChuc} serverName={result.issuer.ten} language={language} /> })
+    : issuerDid
+      ? fillNodes(copy.groups.signerCertNetNamed, { issuer: <IssuerIdText value={shortIssuerId(issuerDid)} /> })
+      : certnet ? copy.groups.signerCertNet : copy.groups.signer;
   const checkedAt = Number.isNaN(Date.parse(result.verifiedAt))
     ? null
     : new Intl.DateTimeFormat(language, { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date(result.verifiedAt));
 
   return (
     <div className="space-y-5">
-      <div className={`flex items-start gap-3 rounded-2xl p-4 ${result.ok ? 'bg-emerald-50 text-emerald-950' : 'bg-rose-50 text-rose-950'}`}>
+      <div className={`flex items-start gap-3 rounded-2xl p-4 ${result.ok ? 'bg-emerald-50 text-emerald-950' : unchecked ? 'bg-amber-50 text-amber-950' : 'bg-rose-50 text-rose-950'}`} data-outcome={unchecked ? 'unchecked' : undefined}>
         {result.ok
           ? <ShieldCheck aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
-          : <XCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-rose-700" />}
+          : unchecked
+            ? <CloudOff aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />
+            : <XCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-rose-700" />}
         <div className="min-w-0 space-y-1">
           <h3 id="apply-job-verifier-outcome" tabIndex={-1} className="type-card-title focus:outline-none">
-            {result.ok ? copy.verifiedTitle : copy.failedTitle}
+            {result.ok ? copy.verifiedTitle : unchecked ? copy.uncheckedTitle : copy.failedTitle}
           </h3>
           <p className="type-body">{result.ok ? copy.verifiedBody : copy.reasons[failure?.reasonKey ?? 'UNKNOWN']}</p>
           {!result.ok && showFailureHint && (
@@ -159,12 +184,22 @@ export function ApplyJobVerifierResult({
             </dd>
           </div>
         )}
+        {issuerDid && (
+          <div className="min-w-0" data-testid="verifier-issuer-certnet">
+            <dt className="type-body-sm text-slate-600">{copy.issuedBy}</dt>
+            <dd className="type-body font-medium text-slate-900">
+              <IdentraIssuerId id={issuerDid} showFullLabel={copy.issuerIdShowFull} hideFullLabel={copy.issuerIdHideFull} />
+              <p className="type-body-sm mt-1 font-normal text-slate-600" data-testid="verifier-certnet-note">{copy.issuerIdNote}</p>
+            </dd>
+          </div>
+        )}
         <div className="min-w-0">
           <dt className="type-body-sm text-slate-600">{copy.verifiedBy}</dt>
           <dd className="type-body font-medium text-slate-900">
             <IdentraOrganisationName maToChuc={SAMPLE_VERIFIER_ORGANISATION} serverName={verifierName} language={language} />
           </dd>
         </div>
+        {certnet && !issuerDid && <p className="type-body-sm text-slate-600 sm:col-span-2" data-testid="verifier-certnet-note">{copy.certnetNote}</p>}
         {checkedAt && <p className="type-body-sm text-slate-600 sm:col-span-2">{fill(copy.checkedAt, { time: checkedAt })}</p>}
       </dl>
 
@@ -176,20 +211,19 @@ export function ApplyJobVerifierResult({
               <span
                 aria-hidden="true"
                 className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${
-                  group.outcome === 'passed' ? 'bg-emerald-100 text-emerald-700' : group.outcome === 'failed' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-500'
+                  group.outcome === 'passed' ? 'bg-emerald-100 text-emerald-700' : group.outcome === 'failed' ? 'bg-rose-100 text-rose-700' : group.outcome === 'unchecked' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-500'
                 }`}
               >
-                {group.outcome === 'passed' ? <Check className="h-4 w-4" strokeWidth={3} /> : group.outcome === 'failed' ? <X className="h-4 w-4" strokeWidth={3} /> : <Minus className="h-4 w-4" />}
+                {group.outcome === 'passed' ? <Check className="h-4 w-4" strokeWidth={3} /> : group.outcome === 'failed' ? <X className="h-4 w-4" strokeWidth={3} /> : group.outcome === 'unchecked' ? <CloudOff className="h-4 w-4" /> : <Minus className="h-4 w-4" />}
               </span>
               <p className={`type-body min-w-0 ${group.outcome === 'failed' ? 'font-semibold text-rose-900' : 'text-slate-900'} [overflow-wrap:anywhere]`}>
-                {group.id === 'signer' && result.issuer
-                  ? fillNodes(copy.groups.signerNamed, { issuer: <IdentraOrganisationName maToChuc={result.issuer.maToChuc} serverName={result.issuer.ten} language={language} /> })
-                  : copy.groups[group.id === 'signer' ? 'signer' : group.id]}
+                {group.id === 'signer' ? signerLine : copy.groups[group.id]}
                 <span className="sr-only">
                   {': '}
                   {group.outcome === 'passed' ? copy.checkPassed : group.outcome === 'failed' ? copy.checkFailed : copy.groupNotChecked}
                 </span>
                 {group.outcome === 'skipped' && <span aria-hidden="true" className="type-caption ml-2 text-slate-600">{copy.groupNotChecked}</span>}
+                {group.outcome === 'unchecked' && <span aria-hidden="true" className="type-caption ml-2 text-amber-900">{copy.groupNotChecked}</span>}
               </p>
             </li>
           ))}
@@ -319,7 +353,7 @@ export default function ApplyJobVerifierDialog({ onClose, onUseResult, onSettled
       : state.phase === 'verified'
         ? copy.verifiedTitle
         : state.phase === 'failed'
-          ? copy.failedTitle
+          ? isUncheckedResult(toCheckRows(state.result)) ? copy.uncheckedTitle : copy.failedTitle
           : state.phase === 'expired'
             ? copy.expiredTitle
             : state.phase === 'error'
